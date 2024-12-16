@@ -54,10 +54,6 @@ For production deployment with Docker and complete infrastructure setup, please 
 - `SECRET_KEY`: Django secret key
 - `ALLOWED_HOSTS`: Comma-separated list of allowed hosts
 
-### Optional Environment Variables
-- `STORAGE_BACKEND`: Choose between 'minio', 's3', or 'local'
-- `MINIO_*`: MinIO configuration (if using MinIO)
-- `AWS_*`: AWS configuration (if using S3)
 
 ## Development
 
