@@ -38,5 +38,5 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/your-image-name:${{ env.tag }}
-            ${{ secrets.DOCKER_USERNAME }}/your-image-name:latest
+            ${{ secrets.DOCKER_USERNAME }}/watercrawl:${{ env.tag }}
+            ${{ secrets.DOCKER_USERNAME }}/watercrawl:latest
