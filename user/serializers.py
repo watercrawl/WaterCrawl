@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError as DjangoValidationError
 from django.utils.translation import gettext as _
 from rest_framework import serializers
 
-from user.models import User, Team, TeamAPIKey, TeamMember
+from user.models import User, Team, TeamAPIKey, TeamMember, TeamInvitation
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -85,10 +85,6 @@ class APIKeySerializer(serializers.ModelSerializer):
         ]
 
 
-class InviteSerializer(serializers.Serializer):
-    email = serializers.EmailField()
-
-
 class TeamMemberSerializer(serializers.ModelSerializer):
     user = ProfileSerializer(read_only=True)
 
@@ -99,3 +95,42 @@ class TeamMemberSerializer(serializers.ModelSerializer):
             'user',
             'is_owner'
         ]
+
+
+class OauthSerializer(serializers.Serializer):
+    provider = serializers.ChoiceField(choices=['github', 'google'], required=True)
+    token = serializers.CharField(required=True)
+
+
+class ForgotPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+
+
+class ResetPasswordSerializer(serializers.Serializer):
+    password = serializers.CharField(
+        required=True,
+        validators=[validate_password]
+    )
+
+
+class TeamInvitationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TeamInvitation
+        fields = [
+            'uuid',
+            'email',
+            'created_at',
+        ]
+        read_only_fields = ['uuid', 'created_at']
+
+
+class MyTeamInvitationSerializer(serializers.ModelSerializer):
+    team = TeamSerializer(read_only=True)
+    class Meta:
+        model = TeamInvitation
+        fields = [
+            'uuid',
+            'team',
+            'created_at',
+        ]
+        read_only_fields = ['uuid', 'team', 'created_at']

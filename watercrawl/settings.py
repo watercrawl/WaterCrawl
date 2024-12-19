@@ -113,6 +113,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# cache and lock settings
+
+REDIS_LOCKER_CONFIG = env.db_url('REDIS_LOCKER_URL', default='redis://redis:6379/3')
+
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
@@ -227,6 +231,25 @@ DJANGO_CELERY_RESULTS_TASK_ID_MAX_LENGTH = 191
 # You are not allowed in OpenSource usage change this flag
 # This is just for purchased version with a valid license
 IS_ENTERPRISE_MODE_ACTIVE = env('IS_ENTERPRISE_MODE_ACTIVE', cast=bool, default=False)
+FRONTEND_URL = env('FRONTEND_URL', cast=str, default='http://localhost:5173')
+IS_LOGIN_ACTIVE = env('IS_LOGIN_ACTIVE', cast=bool, default=True)
+IS_SIGNUP_ACTIVE = env('IS_SIGNUP_ACTIVE', cast=bool, default=True)
+IS_GITHUB_LOGIN_ACTIVE = env('IS_GITHUB_LOGIN_ACTIVE', cast=bool, default=True)
+IS_GOOGLE_LOGIN_ACTIVE = env('IS_GOOGLE_LOGIN_ACTIVE', cast=bool, default=True)
+
+GOOGLE_CLIENT_ID = env('GOOGLE_CLIENT_ID', cast=str, default='')
+GOOGLE_CLIENT_SECRET = env('GOOGLE_CLIENT_SECRET', cast=str, default='')
+
+GITHUB_CLIENT_ID = env('GITHUB_CLIENT_ID', cast=str, default='')
+GITHUB_CLIENT_SECRET = env('GITHUB_CLIENT_SECRET', cast=str, default='')
+
+EMAIL_BACKEND = env('EMAIL_BACKEND', cast=str, default='django.core.mail.backends.smtp.EmailBackend')
+EMAIL_HOST = env('EMAIL_HOST', cast=str, default='')
+EMAIL_PORT = env('EMAIL_PORT', cast=int, default=587)
+EMAIL_USE_TLS = env('EMAIL_USE_TLS', cast=bool, default=True)
+EMAIL_HOST_USER = env('EMAIL_HOST_USER', cast=str, default='')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', cast=str, default='')
+DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL', cast=str, default='')
 
 LOG_LEVEL = env('LOG_LEVEL', cast=str, default='INFO')
 SPLASH_URL = env('SPLASH_URL', cast=str, default='http://localhost:8050')

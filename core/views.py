@@ -134,6 +134,12 @@ class CrawlResultView(ReadOnlyModelViewSet):
         return crawl_request.results.order_by('created_at').all()
 
 
+@extend_schema_view(
+    get=extend_schema(
+        summary='Usage Report',
+        description='Get usage report for the last 30 days'
+    )
+)
 @setup_current_team
 class UsageAPIView(APIView):
     permission_classes = [
