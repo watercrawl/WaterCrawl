@@ -15,6 +15,27 @@ class User(AbstractUser):
         _('email address'),
         unique=True
     )
+    reset_password_expires_at = models.DateTimeField(
+        _('reset password expires at'),
+        null=True,
+        blank=True,
+    )
+    reset_password_token = models.CharField(
+        _('reset password token'),
+        max_length=255,
+        null=True,
+        blank=True,
+    )
+    email_verification_token = models.CharField(
+        _('email verification token'),
+        max_length=255,
+        null=True,
+        blank=True,
+    )
+    email_verified = models.BooleanField(
+        _('email verified'),
+        default=False,
+    )
 
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
@@ -73,9 +94,10 @@ class TeamInvitation(BaseModel):
     )
     email = models.EmailField(
         _('email address'),
+        db_index=True,
     )
-    active = models.BooleanField(
-        _('active'),
+    activated = models.BooleanField(
+        _('activated'),
         default=False,
     )
 

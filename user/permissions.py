@@ -1,3 +1,4 @@
+from django.conf import settings
 from rest_framework import permissions
 
 
@@ -7,3 +8,13 @@ class IsAuthenticatedTeam(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):
         return self.has_permission(request, view)
+
+
+class CanLogin(permissions.BasePermission):
+    def has_permission(self, request, view):
+        return settings.IS_LOGIN_ACTIVE
+
+
+class CanSignup(permissions.BasePermission):
+    def has_permission(self, request, view):
+        return settings.IS_SIGNUP_ACTIVE

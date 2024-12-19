@@ -29,7 +29,8 @@ class CurrentTeamAuthentication:
             try:
                 request.current_team = request.user.teams.get(pk=team_pk)
             except Team.DoesNotExist:
-                raise AuthenticationFailed(_('Invalid team ID'))
+                pass
+                # raise AuthenticationFailed(_('Invalid team ID'))
 
         if not request.current_team:
             # Automatically create or retrieve the default team
