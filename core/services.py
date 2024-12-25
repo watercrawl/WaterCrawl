@@ -1,6 +1,7 @@
 import fnmatch
 import json
 import subprocess
+from collections import OrderedDict
 from datetime import timedelta
 from functools import cached_property
 from time import sleep
@@ -14,6 +15,7 @@ from django.utils import timezone
 
 from core import consts
 from core.models import CrawlRequest, CrawlResult
+from core.utils import get_active_plugins
 from spider.items import ScrapedItem
 from user.models import Team
 from user.utils import load_class_by_name
@@ -131,8 +133,6 @@ class CrawlHelpers:
         for item in settings.WATERCRAWL_PLUGINS:
             plugin = load_class_by_name(item)
             yield plugin
-
-
 
 
 class CrawlerService:
@@ -306,3 +306,42 @@ class ReportService:
             count=Count('uuid'),
             date=F('created_at__date')
         ).order_by('created_at__date')
+
+
+class PluginService:
+    @classmethod
+    def get_plugin_form_jsonschema(cls):
+        properties = {}
+        for plugin_class in get_active_plugins():
+            json_schema = plugin_class.get_input_validator().get_json_schema()
+            if json_schema:
+
+                if not json_schema.get('properties'):
+                    json_schema['properties'] = {}
+
+                keys = json_schema['properties'].keys()
+
+                # append is_active field at the top
+                json_schema['properties'] = OrderedDict(
+                    [('is_active', {
+                        'type': 'boolean',
+                        'title': 'Is Active',
+                        'default': True
+                    })] + list(json_schema['properties'].items())
+                )
+
+                if json_schema.get('required'):
+                    json_schema['dependentRequired'] = {
+                        **json_schema.get('dependentRequired', {}),
+                        'is_active': json_schema['required']
+                    }
+
+                json_schema['required'] = ['is_active']
+
+                properties[plugin_class.plugin_key()] = json_schema
+
+        return {
+            '$schema': 'http://json-schema.org/draft-07/schema#',
+            'type': 'object',
+            'properties': properties
+        }

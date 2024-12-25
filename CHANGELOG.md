@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.0] - 2024-12-25
+
+### Added
+- Plugin service for managing crawl plugins
+- Plugin schema API endpoint
+- Active plugins loader utility
+- Dynamic middleware and pipeline loading for plugins
+
+### Changed
+- Updated watercrawl-plugin to version 0.1.0
+- Updated watercrawl-openai to version 0.1.0
+- Improved spider middleware configuration
+- Enhanced plugin system architecture
+
 ## [0.0.2] - 2024-12-19
 
 ### Added

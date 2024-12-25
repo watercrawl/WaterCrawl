@@ -15,7 +15,7 @@ from rest_framework.viewsets import GenericViewSet, ReadOnlyModelViewSet
 from common.services import EventStreamResponse
 from core import serializers, consts
 from core.models import CrawlRequest, CrawlResult
-from core.services import CrawlerService, ReportService
+from core.services import CrawlerService, ReportService, PluginService
 from core.tasks import run_spider
 from user.decorators import setup_current_team
 from user.permissions import IsAuthenticatedTeam
@@ -151,3 +151,16 @@ class UsageAPIView(APIView):
     def get(self, request):
         service = ReportService(request.current_team, timedelta(days=30), )
         return Response(serializers.ReportSerializer(service).data)
+
+
+@setup_current_team
+class PluginAPIView(APIView):
+    permission_classes = [
+        IsAuthenticated,
+        IsAuthenticatedTeam
+    ]
+
+    def get(self, request):
+        return Response(
+            PluginService.get_plugin_form_jsonschema()
+        )
