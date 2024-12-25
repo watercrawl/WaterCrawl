@@ -3,6 +3,8 @@ import sys
 import django
 from django.conf import settings
 
+from core.utils import get_active_plugins
+
 sys.path.append(os.path.dirname(os.path.abspath('.')))
 os.environ['DJANGO_SETTINGS_MODULE'] = 'watercrawl.settings'
 django.setup()
@@ -59,8 +61,8 @@ SPIDER_MIDDLEWARES = {
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-# DOWNLOADER_MIDDLEWARES = {
-# }
+DOWNLOADER_MIDDLEWARES = {
+}
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
@@ -74,8 +76,7 @@ EXTENSIONS = {
 ITEM_PIPELINES = {
     "spider.pipelines.HTMLFilterPipeline": 100,
     "spider.pipelines.MarkdownPipeline": 200,
-    "watercrawl_plugin.pipeline.PipelinePluginLoader": 300,
-    "spider.pipelines.SpiderPipeline": 400,
+    "spider.pipelines.SpiderPipeline": 999,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -114,3 +115,10 @@ TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
 
 LOG_LEVEL = settings.SCRAPY_LOG_LEVEL
+
+##### RUN PLUGINS #####
+PLUGINS = get_active_plugins()
+for plugin in PLUGINS:
+    SPIDER_MIDDLEWARES.update(**plugin.get_spider_middleware_classes())
+    DOWNLOADER_MIDDLEWARES.update(**plugin.get_downloader_middleware_classes())
+    ITEM_PIPELINES.update(**plugin.get_pipeline_classes())

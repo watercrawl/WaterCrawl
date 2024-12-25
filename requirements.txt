@@ -16,5 +16,5 @@ django-minio-backend==3.7.2
 djangorestframework-simplejwt==5.3.1
 django_cors_headers==4.6.0
 openai==1.57.4
-watercrawl-plugin==0.0.2
-watercrawl-openai==0.0.1
+watercrawl-plugin==0.1.0
+watercrawl-openai==0.1.0

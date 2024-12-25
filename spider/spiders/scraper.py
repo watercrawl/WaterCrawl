@@ -3,6 +3,7 @@ from typing import Iterable
 from scrapy import Request, Spider
 
 from core.services import CrawlerService
+from spider import settings
 from spider.items import ScrapedItem
 
 
@@ -14,6 +15,14 @@ class SiteScrapper(Spider):
         self.crawler_service = CrawlerService.make_with_pk(crawl_request_uuid)
         self.helpers = self.crawler_service.config_helpers
         self.allowed_domains = self.crawler_service.config_helpers.get_allowed_domains()
+        self.plugin_validators = {}
+        self.init_plugins()
+
+
+    def init_plugins(self):
+        for plugin in settings.PLUGINS:
+            validator = plugin.make_input_validator(self.crawler_service.crawl_request.options)
+            self.plugin_validators[validator.plugin.plugin_key()] = validator
 
     def start_requests(self) -> Iterable[Request]:
         yield Request(
