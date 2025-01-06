@@ -225,7 +225,8 @@ CELERY_RESULT_BACKEND = env('CELERY_RESULT_BACKEND', cast=str, default='django-d
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TIMEZONE = TIME_ZONE
+CELERY_TIMEZONE = TIME_ZONE  # Use Django's TIME_ZONE
+CELERY_ENABLE_UTC = USE_TZ  # Use Django's USE_TZ
 DJANGO_CELERY_RESULTS_TASK_ID_MAX_LENGTH = 191
 
 # You are not allowed in OpenSource usage change this flag

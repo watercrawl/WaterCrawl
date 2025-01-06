@@ -1,3 +1,4 @@
+from pprint import pformat
 from typing import Iterable
 
 from scrapy import Request, Spider
@@ -9,15 +10,14 @@ from spider.items import ScrapedItem
 
 class SiteScrapper(Spider):
     name = 'SiteScrapper'
+    allowed_domains = []
 
     def __init__(self, crawl_request_uuid, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.crawler_service = CrawlerService.make_with_pk(crawl_request_uuid)
         self.helpers = self.crawler_service.config_helpers
-        self.allowed_domains = self.crawler_service.config_helpers.get_allowed_domains()
         self.plugin_validators = {}
         self.init_plugins()
-
 
     def init_plugins(self):
         for plugin in settings.PLUGINS:

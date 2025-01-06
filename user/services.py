@@ -219,6 +219,23 @@ class GoogleOAuthService(AbsractOAuth2Service):
                     'Authorization': f'Bearer {token}'
                 }
             )
+            print(response)
+            response.raise_for_status()
+            data = response.json()
+            return self.get_or_create_user(data['email'], data['given_name'], data['family_name'])
+        except requests.RequestException:
+            return None
+
+
+class GoogleSigninButtonService(AbsractOAuth2Service):
+    def authenticate(self, token):
+        try:
+            response = requests.get(
+                'https://oauth2.googleapis.com/tokeninfo',
+                params={
+                    'id_token': token
+                }
+            )
             response.raise_for_status()
             data = response.json()
             return self.get_or_create_user(data['email'], data['given_name'], data['family_name'])
@@ -264,5 +281,7 @@ def oauth_service_factory(provider: str) -> AbsractOAuth2Service:
         return GithubOAuthService()
     elif provider == 'google':
         return GoogleOAuthService()
+    elif provider == 'google-signin':
+        return GoogleSigninButtonService()
     else:
         raise ValueError(f'Unknown provider: {provider}')

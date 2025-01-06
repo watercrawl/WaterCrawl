@@ -29,8 +29,12 @@ class CrawlHelpers:
     def get_allowed_domains(self) -> list[str]:
         parsed_url = urlparse(self.crawl_request.url)
         allowed_domains = self.crawl_request.options.get('spider_options', {}).get('allowed_domains', [])
-        if parsed_url.netloc not in allowed_domains:
-            allowed_domains.append(parsed_url.netloc)
+        if not allowed_domains:
+            domain = parsed_url.netloc
+            if domain.startswith('www.'):
+                domain = domain[4:]
+
+            allowed_domains = ['*.{}'.format(domain)]
 
         return allowed_domains
 
@@ -49,11 +53,11 @@ class CrawlHelpers:
             '-s',
             'MAX_REQUESTS={}'.format(page_limit),  # +2 for the robots.txt
             '-s',
-            'CONCURRENT_REQUESTS={}'.format(str(1)),
+            'CONCURRENT_REQUESTS={}'.format(str(settings.SCRAPY_CONCURRENT_REQUESTS)),
             '-s',
-            'CONCURRENT_REQUESTS_PER_DOMAIN={}'.format(str(1)),
+            'CONCURRENT_REQUESTS_PER_DOMAIN={}'.format(str(settings.SCRAPY_CONCURRENT_REQUESTS_PER_DOMAIN)),
             '-s',
-            'CONCURRENT_REQUESTS_PER_IP={}'.format(str(1)),
+            'CONCURRENT_REQUESTS_PER_IP={}'.format(str(settings.SCRAPY_CONCURRENT_REQUESTS_PER_IP)),
         ]
 
     @property

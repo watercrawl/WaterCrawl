@@ -98,7 +98,7 @@ class TeamMemberSerializer(serializers.ModelSerializer):
 
 
 class OauthSerializer(serializers.Serializer):
-    provider = serializers.ChoiceField(choices=['github', 'google'], required=True)
+    provider = serializers.ChoiceField(choices=['github', 'google', 'google-signin'], required=True)
     token = serializers.CharField(required=True)
 
 

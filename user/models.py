@@ -58,6 +58,10 @@ class Team(BaseModel):
         through='TeamMember',
         related_name='teams',
     )
+    is_default = models.BooleanField(
+        _('is default'),
+        default=False,
+    )
 
     def __str__(self):
         return self.name
