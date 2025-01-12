@@ -34,7 +34,7 @@ class CrawlHelpers:
             if domain.startswith('www.'):
                 domain = domain[4:]
 
-            allowed_domains = ['*.{}'.format(domain)]
+            allowed_domains = ['*.{}'.format(domain), domain]
 
         return allowed_domains
 

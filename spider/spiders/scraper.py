@@ -1,4 +1,3 @@
-from pprint import pformat
 from typing import Iterable
 
 from scrapy import Request, Spider
