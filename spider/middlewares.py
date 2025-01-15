@@ -1,96 +1,83 @@
-# Define here the models for your spider middleware
-from scrapy import signals
+import re
+
+import httpx
+from scrapy.http import HtmlResponse
+
+from core.services import CrawlHelpers
 
 
-class SpiderSpiderMiddleware:
-    # Not all methods need to be defined. If a method is not defined,
-    # scrapy acts as if the spider middleware does not modify the
-    # passed objects.
+class PlaywrightMiddleware:
 
-    @classmethod
-    def from_crawler(cls, crawler):
-        # This method is used by Scrapy to create your spiders.
-        s = cls()
-        crawler.signals.connect(s.spider_opened, signal=signals.spider_opened)
-        return s
-
-    def process_spider_input(self, response, spider):
-        # Called for each response that goes through the spider
-        # middleware and into the spider.
-
-        # Should return None or raise an exception.
-        return None
-
-    def process_spider_output(self, response, result, spider):
-        # Called with the results returned from the Spider, after
-        # it has processed the response.
-
-        # Must return an iterable of Request, or item objects.
-        for i in result:
-            yield i
-
-    def process_spider_exception(self, response, exception, spider):
-        # Called when a spider or process_spider_input() method
-        # (from other spider middleware) raises an exception.
-
-        # Should return either None or an iterable of Request or item objects.
-        pass
-
-    def process_start_requests(self, start_requests, spider):
-        # Called with the start requests of the spider, and works
-        # similarly to the process_spider_output() method, except
-        # that it doesn’t have a response associated.
-
-        # Must return only requests (not items).
-        for r in start_requests:
-            yield r
-
-    def spider_opened(self, spider):
-        spider.logger.info("Spider opened: %s" % spider.name)
-
-
-class SpiderDownloaderMiddleware:
-    # Not all methods need to be defined. If a method is not defined,
-    # scrapy acts as if the downloader middleware does not modify the
-    # passed objects.
+    def __init__(self, helpers: CrawlHelpers, playwright_server: str, playwright_api_key: str = None):
+        self.helpers = helpers
+        self.playwright_server = playwright_server
+        self.playwright_api_key = playwright_api_key
+        self.is_active = bool(self.helpers.wait_time > 0)
 
     @classmethod
     def from_crawler(cls, crawler):
-        # This method is used by Scrapy to create your spiders.
-        s = cls()
-        crawler.signals.connect(s.spider_opened, signal=signals.spider_opened)
-        return s
+        # Initialize the middleware
+        playwright_server = crawler.settings.get('PLAYWRIGHT_SERVER')
+        playwright_api_key = crawler.settings.get('PLAYWRIGHT_API_KEY')
+        return cls(
+            helpers=crawler.spider.helpers,
+            playwright_server=playwright_server,
+            playwright_api_key=playwright_api_key
+        )
 
-    def process_request(self, request, spider):
-        # Called for each request that goes through the downloader
-        # middleware.
+    async def process_request(self, request, spider):
+        if not self.is_active:
+            return
 
-        # Must either:
-        # - return None: continue processing this request
-        # - or return a Response object
-        # - or return a Request object
-        # - or raise IgnoreRequest: process_exception() methods of
-        #   installed downloader middleware will be called
-        return None
+        # Check if the URL is a JavaScript file
+        if not self.playwright_server:
+            spider.logger.info("Playwright server is not configured")
+            return None
 
-    def process_response(self, request, response, spider):
-        # Called with the response returned from the downloader.
+        payload = {
+            "url": request.url,
+            "block_media": False,
+            "wait_after_load": self.helpers.wait_time,
+            "timeout": self.helpers.timeout,
+            "user_agent": request.headers.get("User-Agent", b"").decode("utf-8"),
+            "accept_cookies_selector": self.helpers.accept_cookies_selector,
+            "locale": self.helpers.locale,
+            "extra_headers": self.helpers.extra_headers,
+            "actions": self.helpers.actions,
+        }
+        proxy = request.meta.get("proxy")
+        if proxy:
+            payload["proxy"] = proxy
+        headers = {
+            'X-Api-Key': self.playwright_api_key,
+            'Content-Type': 'application/json',
+        }
 
-        # Must either;
-        # - return a Response object
-        # - return a Request object
-        # - or raise IgnoreRequest
-        return response
+        async with httpx.AsyncClient() as client:
+            try:
+                response = await client.post(
+                    self.playwright_server + '/html',
+                    headers=headers,
+                    json=payload,
+                    timeout=self.helpers.timeout / 1000  # Convert ms to seconds if needed
+                )
+                response.raise_for_status()
 
-    def process_exception(self, request, exception, spider):
-        # Called when a download handler or a process_request()
-        # (from other downloader middleware) raises an exception.
+                data = response.json()
 
-        # Must either:
-        # - return None: continue processing this exception
-        # - return a Response object: stops process_exception() chain
-        # - return a Request object: stops process_exception() chain
-        pass
-
-    def spider_opened(self, spider):
-        spider.logger.info("Spider opened: %s" % spider.name)
+                request.meta['playwright'] = True
+                request.meta['attachments'] = [{
+                    'content': attachment['content'],
+                    'type': attachment['type'],
+                    'filename': 'Screenshot.{}'.format('png' if attachment['type'] == 'screenshot' else 'pdf')
+                } for attachment in data.get('attachments', [])]
+                return HtmlResponse(
+                    url=request.url,
+                    body=data['html'],
+                    status=data['status_code'],
+                    request=request,
+                    encoding="utf-8",
+                )
+            except httpx.RequestError as e:
+                spider.logger.error(f"Error processing request: {e}")
+                return None

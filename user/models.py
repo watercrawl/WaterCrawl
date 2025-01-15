@@ -129,6 +129,11 @@ class TeamAPIKey(BaseModel):
         unique=True,
         default=generate_random_api_key
     )
+    last_used_at = models.DateTimeField(
+        _('last used at'),
+        null=True,
+        blank=True,
+    )
 
     def __str__(self):
         return str(self.key)

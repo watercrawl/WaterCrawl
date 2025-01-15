@@ -1,3 +1,4 @@
+import base64
 import fnmatch
 import json
 import subprocess
@@ -133,6 +134,26 @@ class CrawlHelpers:
     def wait_time(self):
         return self.crawl_request.options.get('page_options', {}).get('wait_time', 0)
 
+    @cached_property
+    def timeout(self):
+        return self.crawl_request.options.get('page_options', {}).get('timeout', 15000)
+
+    @cached_property
+    def accept_cookies_selector(self):
+        return self.crawl_request.options.get('page_options', {}).get('accept_cookies_selector', None)
+
+    @cached_property
+    def locale(self):
+        return self.crawl_request.options.get('page_options', {}).get('locale', 'en-US')
+
+    @cached_property
+    def extra_headers(self):
+        return self.crawl_request.options.get('page_options', {}).get('extra_headers', {})
+
+    @cached_property
+    def actions(self):
+        return self.crawl_request.options.get('page_options', {}).get('actions', [])
+
     def get_plugins(self):
         for item in settings.WATERCRAWL_PLUGINS:
             plugin = load_class_by_name(item)
@@ -161,6 +182,7 @@ class CrawlerService:
         ]
         subprocess.run(params, check=True)
 
+        self.crawl_request.duration = timezone.now() - self.crawl_request.created_at
         self.crawl_request.status = consts.CRAWL_STATUS_FINISHED
         self.crawl_request.save()
 
@@ -171,11 +193,19 @@ class CrawlerService:
     def add_scraped_item(self, item: ScrapedItem):
         file_content = self.get_file_content(item)
 
-        CrawlResult.objects.create(
+        result = CrawlResult.objects.create(
             request=self.crawl_request,
             url=item['url'],
             result=ContentFile(json.dumps(file_content).encode('utf-8'), name='result.json')
         )
+        for attachment in item['attachments']:
+            result.attachments.create(
+                attachment_type=attachment['type'],
+                attachment=ContentFile(
+                    base64.b64decode(attachment['content']),
+                    name=attachment['filename']
+                )
+            )
 
     def get_file_content(self, item):
         result = {
@@ -198,8 +228,9 @@ class CrawlerService:
 
         app.control.revoke(str(self.crawl_request.uuid), terminate=True)
 
+        self.crawl_request.duration = timezone.now() - self.crawl_request.created_at
         self.crawl_request.status = consts.CRAWL_STATUS_CANCELED
-        self.crawl_request.save(update_fields=['status'])
+        self.crawl_request.save(update_fields=['status', 'duration'])
 
     def download(self):
         count = self.crawl_request.results.count()
@@ -226,7 +257,8 @@ class CrawlerService:
             ]:
                 break
 
-            for item in self.crawl_request.results.exclude(pk__in=items_already_sent):
+            queryset = self.crawl_request.results.prefetch_related('attachments').exclude(pk__in=items_already_sent)
+            for item in queryset:
                 items_already_sent.append(item.pk)
                 yield {
                     'type': 'result',
@@ -240,7 +272,7 @@ class CrawlerService:
             sleep(1)
 
         for item in self.crawl_request.results.exclude(pk__in=items_already_sent):
-            items_already_sent.append(item.pk)
+            items_already_sent.append(item.uuid)
             yield {
                 'type': 'result',
                 'data': CrawlResultSerializer(item).data
@@ -323,14 +355,12 @@ class PluginService:
                 if not json_schema.get('properties'):
                     json_schema['properties'] = {}
 
-                keys = json_schema['properties'].keys()
-
                 # append is_active field at the top
                 json_schema['properties'] = OrderedDict(
                     [('is_active', {
                         'type': 'boolean',
                         'title': 'Is Active',
-                        'default': True
+                        'default': False
                     })] + list(json_schema['properties'].items())
                 )
 

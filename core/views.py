@@ -131,7 +131,7 @@ class CrawlResultView(ReadOnlyModelViewSet):
         crawl_request = self.request.current_team.crawl_requests.get(
             pk=self.kwargs['crawl_request_uuid']
         )  # type: CrawlRequest
-        return crawl_request.results.order_by('created_at').all()
+        return crawl_request.results.prefetch_related('attachments').order_by('created_at').all()
 
 
 @extend_schema_view(

@@ -82,8 +82,13 @@ class TeamService:
         return cls(Team.objects.get(pk=team_pk))
 
     @classmethod
-    def make_with_api_key(cls, api_key: str):
-        return cls(Team.objects.get(api_keys__key=api_key))
+    def make_with_api_key(cls, api_key: str, update_last_used_at: bool = False):
+        team_api_key = TeamAPIKey.objects.get(key=api_key)
+        if update_last_used_at:
+            team_api_key.last_used_at = timezone.now()
+            team_api_key.save(update_fields=['last_used_at'])
+        return cls(team_api_key.team)
+
 
     @classmethod
     def create_team(cls, user: User, name: str = 'Default', is_owner: bool = True):
@@ -219,7 +224,6 @@ class GoogleOAuthService(AbsractOAuth2Service):
                     'Authorization': f'Bearer {token}'
                 }
             )
-            print(response)
             response.raise_for_status()
             data = response.json()
             return self.get_or_create_user(data['email'], data['given_name'], data['family_name'])

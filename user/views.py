@@ -106,6 +106,7 @@ class OauthAPIView(APIView):
         if not user_service:
             raise ValidationError({'token': _('Invalid token')})
 
+        VerificationService(user_service.user).verify_email()
         token = user_service.get_jwt_token()
 
         return Response(
@@ -170,6 +171,7 @@ class ResetPasswordView(APIView):
         service.reset_password(serializer.validated_data['password'])
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 @extend_schema_view(
     get=extend_schema(
         summary='Verify email',
@@ -197,6 +199,7 @@ class VerifyEmailView(APIView):
                 'access': str(token.access_token)
             }
         )
+
 
 @extend_schema_view(
     get=extend_schema(
@@ -318,7 +321,7 @@ class TeamViewSet(
         service = TeamService.create_team(self.request.user, serializer.validated_data['name'])
         serializer.instance = service.team
 
-    @action(detail=False, methods=['get','patch'], url_path='current', url_name='current')
+    @action(detail=False, methods=['get', 'patch'], url_path='current', url_name='current')
     def current(self, request):
         if request.method == 'GET':
             return Response(

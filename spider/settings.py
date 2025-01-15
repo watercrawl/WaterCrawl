@@ -62,6 +62,7 @@ SPIDER_MIDDLEWARES = {
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
+    'spider.middlewares.PlaywrightMiddleware': 560
 }
 
 # Enable or disable extensions
@@ -115,6 +116,9 @@ TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
 
 LOG_LEVEL = settings.SCRAPY_LOG_LEVEL
+
+PLAYWRIGHT_SERVER = settings.PLAYWRIGHT_SERVER
+PLAYWRIGHT_API_KEY = settings.PLAYWRIGHT_API_KEY
 
 ##### RUN PLUGINS #####
 PLUGINS = get_active_plugins()

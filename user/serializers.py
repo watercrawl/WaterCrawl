@@ -82,6 +82,13 @@ class APIKeySerializer(serializers.ModelSerializer):
             'name',
             'key',
             'created_at',
+            'last_used_at',
+        ]
+        read_only_fields = [
+            'uuid',
+            'key',
+            'created_at',
+            'last_used_at'
         ]
 
 
@@ -126,6 +133,7 @@ class TeamInvitationSerializer(serializers.ModelSerializer):
 
 class MyTeamInvitationSerializer(serializers.ModelSerializer):
     team = TeamSerializer(read_only=True)
+
     class Meta:
         model = TeamInvitation
         fields = [

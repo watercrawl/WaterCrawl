@@ -9,6 +9,14 @@ def generate_crawl_result_file_path(instance, filename):
     return 'crawls/{}/results/{}.json'.format(instance.request_id, instance.pk)
 
 
+def generate_crawl_result_attachment_path(instance, filename):
+    return 'crawls/{}/results/{}/attachments/{}'.format(
+        instance.crawl_result.request_id,
+        instance.crawl_result.uuid,
+        filename
+    )
+
+
 def get_active_plugins() -> List[Type['AbstractPlugin']]:
     """
     Get a list of active plugins

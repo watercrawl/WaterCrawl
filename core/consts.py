@@ -93,38 +93,38 @@ IGNORE_FILE_TYPES = [
     # Text file extensions
     "txt",  # Plain text file
     "doc",  # Microsoft Word document
-    "docx", # Microsoft Word Open XML document
+    "docx",  # Microsoft Word Open XML document
     "pdf",  # Portable Document Format
     "odt",  # OpenDocument Text Document
     "rtf",  # Rich Text Format
 
     # Data file extensions
-    "csv",    # Comma-Separated Values
-    "xls",    # Microsoft Excel Spreadsheet
-    "xlsx",   # Microsoft Excel Open XML Spreadsheet
-    "ods",    # OpenDocument Spreadsheet
-    "json",   # JavaScript Object Notation
-    "xml",    # Extensible Markup Language
-    "sql",    # SQL database file
-    "db",     # Database file
-    "sqlite", # SQLite database file
-    "log",    # Log file
+    "csv",  # Comma-Separated Values
+    "xls",  # Microsoft Excel Spreadsheet
+    "xlsx",  # Microsoft Excel Open XML Spreadsheet
+    "ods",  # OpenDocument Spreadsheet
+    "json",  # JavaScript Object Notation
+    "xml",  # Extensible Markup Language
+    "sql",  # SQL database file
+    "db",  # Database file
+    "sqlite",  # SQLite database file
+    "log",  # Log file
 
     # Image file extensions
     "jpg",  # JPEG image
-    "jpeg", # JPEG image
+    "jpeg",  # JPEG image
     "png",  # Portable Network Graphics
     "gif",  # Graphics Interchange Format
     "bmp",  # Bitmap image
     "svg",  # Scalable Vector Graphics
     "tif",  # Tagged Image File Format
-    "tiff", # Tagged Image File Format
-    "webp", # Web Picture format
+    "tiff",  # Tagged Image File Format
+    "webp",  # Web Picture format
 
     # Audio file extensions
     "mp3",  # MP3 audio
     "wav",  # Waveform Audio
-    "flac", # Free Lossless Audio Codec
+    "flac",  # Free Lossless Audio Codec
     "aac",  # Advanced Audio Codec
     "ogg",  # Ogg Vorbis
     "m4a",  # MPEG-4 Audio
@@ -136,51 +136,51 @@ IGNORE_FILE_TYPES = [
     "wmv",  # Windows Media Video
     "mkv",  # Matroska Video
     "flv",  # Flash Video
-    "webm", # Web Media File
+    "webm",  # Web Media File
 
     # Compressed file extensions
     "zip",  # Zip archive
     "rar",  # RAR archive
-    "7z",   # 7-Zip archive
+    "7z",  # 7-Zip archive
     "tar",  # TAR archive
-    "gz",   # Gzip compressed file
+    "gz",  # Gzip compressed file
     "iso",  # Disc Image file
 
     # Executable file extensions
     ".exe",  # Windows executable file
     ".bat",  # Batch file
-    ".sh",   # Shell script
+    ".sh",  # Shell script
     ".msi",  # Microsoft Installer
     ".apk",  # Android Package
     ".app",  # macOS Application
 
     # Programming and script file extensions
-    ".py",     # Python script
-    ".css",    # Cascading Style Sheets
-    ".js",     # JavaScript
-    ".java",   # Java Source Code
-    ".c",      # C Source Code
-    ".cpp",    # C++ Source Code
-    ".h",      # C/C++ Header File
-    ".ts",     # TypeScript
+    ".py",  # Python script
+    ".css",  # Cascading Style Sheets
+    ".js",  # JavaScript
+    ".java",  # Java Source Code
+    ".c",  # C Source Code
+    ".cpp",  # C++ Source Code
+    ".h",  # C/C++ Header File
+    ".ts",  # TypeScript
     ".swift",  # Swift Source Code
-    ".go",     # Go Source Code
-    ".rb",     # Ruby Script
+    ".go",  # Go Source Code
+    ".rb",  # Ruby Script
 
     # Config file extensions
     ".ini",  # Initialization file
-    ".conf", # Configuration file
-    ".yaml", # YAML Ain't Markup Language
+    ".conf",  # Configuration file
+    ".yaml",  # YAML Ain't Markup Language
     ".yml",  # YAML Ain't Markup Language
     ".env",  # Environment variables file
     ".cfg",  # Configuration file
 
     # Web file extensions
     ".css",  # Cascading Style Sheets
-    ".js",   # JavaScript
+    ".js",  # JavaScript
     ".php",  # PHP script
     ".asp",  # Active Server Pages
-    ".aspx", # Active Server Pages
+    ".aspx",  # Active Server Pages
     ".jsp",  # Java Server Pages
 
     # 3D modeling and CAD file extensions
@@ -191,12 +191,20 @@ IGNORE_FILE_TYPES = [
     ".dxf",  # Drawing Exchange Format
 
     # Other common file extensions
-    ".eps",   # Encapsulated PostScript
-    ".psd",   # Photoshop Document
-    ".ai",    # Adobe Illustrator file
-    ".ppt",   # PowerPoint presentation
+    ".eps",  # Encapsulated PostScript
+    ".psd",  # Photoshop Document
+    ".ai",  # Adobe Illustrator file
+    ".ppt",  # PowerPoint presentation
     ".pptx",  # PowerPoint Open XML presentation
-    ".key",   # Apple Keynote presentation
+    ".key",  # Apple Keynote presentation
     ".icns",  # Icon file for macOS
-    ".ico",   # Icon file for Windows
+    ".ico",  # Icon file for Windows
 ]
+
+CRAWL_RESULT_ATTACHMENT_TYPE_PDF = 'pdf'
+CRAWL_RESULT_ATTACHMENT_TYPE_SCREENSHOT = 'screenshot'
+
+CRAWL_RESULT_ATTACHMENT_TYPE_CHOICES = (
+    (CRAWL_RESULT_ATTACHMENT_TYPE_PDF, _('PDF')),
+    (CRAWL_RESULT_ATTACHMENT_TYPE_SCREENSHOT, _('Screenshot')),
+)

@@ -18,3 +18,4 @@ class ScrapedItem(BaseItem):
     html = scrapy.Field()
     filtered_html = scrapy.Field()
     markdown = scrapy.Field()
+    attachments = scrapy.Field()

@@ -28,3 +28,4 @@ Thumbs.db
 .celery/*
 docker-compose.yml
 celerybeat-schedule.db
+VERSION

@@ -8,3 +8,4 @@ class SettingSerializer(serializers.Serializer):
     is_login_active = serializers.BooleanField()
     is_google_login_active = serializers.BooleanField()
     is_github_login_active = serializers.BooleanField()
+    api_version = serializers.CharField()

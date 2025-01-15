@@ -17,3 +17,4 @@ djangorestframework-simplejwt==5.4.0
 django_cors_headers==4.6.0
 watercrawl-plugin==0.1.0
 watercrawl-openai==0.1.0
+httpx==0.28.1

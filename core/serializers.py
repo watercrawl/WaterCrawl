@@ -1,6 +1,10 @@
 from rest_framework import serializers
 
-from core.models import CrawlRequest, CrawlResult
+from core.models import CrawlRequest, CrawlResult, CrawlResultAttachment
+
+
+class ActionSerializer(serializers.Serializer):
+    type = serializers.ChoiceField(choices=['screenshot', 'pdf'])
 
 
 class PageOptionSerializer(serializers.Serializer):
@@ -25,6 +29,27 @@ class PageOptionSerializer(serializers.Serializer):
     )
     include_links = serializers.BooleanField(
         default=False
+    )
+    timeout = serializers.IntegerField(
+        required=False,
+        default=15000,
+    )
+    accept_cookies_selector = serializers.CharField(
+        required=False,
+        default=None
+    )
+    locale = serializers.CharField(
+        required=False,
+        default='en-US'
+    )
+    extra_headers = serializers.JSONField(
+        required=False,
+        default=dict
+    )
+    actions = ActionSerializer(
+        required=False,
+        many=True,
+        default=[]
     )
 
 
@@ -59,6 +84,7 @@ class CrawlOptionSerializer(serializers.Serializer):
     page_options = PageOptionSerializer()
     plugin_options = serializers.JSONField(required=False)
 
+
 class CrawlRequestSerializer(serializers.ModelSerializer):
     options = CrawlOptionSerializer()
 
@@ -71,6 +97,7 @@ class CrawlRequestSerializer(serializers.ModelSerializer):
             'options',
             'created_at',
             'updated_at',
+            'duration',
             'number_of_documents',
         ]
         read_only_fields = [
@@ -79,23 +106,46 @@ class CrawlRequestSerializer(serializers.ModelSerializer):
             'created_at',
             'updated_at',
             'number_of_documents',
+            'duration',
+        ]
+
+
+class CrawlResultAttachmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CrawlResultAttachment
+        fields = [
+            'uuid',
+            'attachment',
+            'attachment_type',
+            'filename'
+        ]
+        read_only_fields = [
+            'uuid',
+            'attachment',
+            'attachment_type',
+            'filename'
         ]
 
 
 class CrawlResultSerializer(serializers.ModelSerializer):
+    attachments = CrawlResultAttachmentSerializer(many=True)
+
     class Meta:
         model = CrawlResult
         fields = [
             'uuid',
             'url',
             'result',
+            'attachments',
             'created_at',
             'updated_at',
         ]
 
+
 class ReportDateChartSerializer(serializers.Serializer):
     date = serializers.DateField()
     count = serializers.IntegerField()
+
 
 class ReportSerializer(serializers.Serializer):
     total_crawls = serializers.IntegerField()

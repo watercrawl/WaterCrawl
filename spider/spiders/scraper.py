@@ -65,4 +65,5 @@ class SiteScrapper(Spider):
         item['metadata'] = meta_data
         item['html'] = response.text
         item['crawl_request_uuid'] = self.crawler_service.crawl_request.uuid
+        item['attachments'] = response.meta['attachments'] if 'attachments' in response.meta else []
         return item

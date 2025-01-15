@@ -8,6 +8,8 @@ from django.core.mail import EmailMultiAlternatives
 from django.http import StreamingHttpResponse
 from django.template.loader import render_to_string
 
+import watercrawl
+
 
 class EventStreamResponse(StreamingHttpResponse):
     def __init__(self, generator: Generator):
@@ -47,6 +49,10 @@ class FrontendSettingService:
     @cached_property
     def is_github_login_active(self):
         return settings.IS_GITHUB_LOGIN_ACTIVE
+
+    @cached_property
+    def api_version(self):
+        return watercrawl.__version__
 
 
 class EmailService:

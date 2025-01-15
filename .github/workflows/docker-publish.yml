@@ -2,6 +2,9 @@ name: Build and Push Docker Image
 
 on:
   push:
+    branches:
+      - development
+      - main
     tags:
       - '*'
 
@@ -14,6 +17,12 @@ jobs:
       # Checkout the repository
       - name: Checkout Code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      # Set up QEMU for multi-platform builds
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
 
       # Set up Docker Buildx
       - name: Set up Docker Buildx
@@ -26,10 +35,27 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # Extract tag name and set it as the Docker image tag
-      - name: Extract Git Tag
-        id: get_tag
-        run: echo "tag=${GITHUB_REF##*/}" >> $GITHUB_ENV
+      # Set environment variables and tags based on ref
+      - name: Set Environment Variables
+        id: vars
+        run: |
+          DATE=$(date +'%Y%m%d')
+          if [[ ${{ github.ref }} == refs/heads/development ]]; then
+            VERSION="alpha-${DATE}"
+            echo "TAG=$VERSION" >> $GITHUB_ENV
+            echo "DOCKER_TAGS=${{ secrets.DOCKER_USERNAME }}/watercrawl:$VERSION,${{ secrets.DOCKER_USERNAME }}/watercrawl:$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          elif [[ ${{ github.ref }} == refs/heads/main ]]; then
+            VERSION="beta-${DATE}"
+            echo "TAG=$VERSION" >> $GITHUB_ENV
+            echo "DOCKER_TAGS=${{ secrets.DOCKER_USERNAME }}/watercrawl:$VERSION,${{ secrets.DOCKER_USERNAME }}/watercrawl:$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          elif [[ ${{ github.ref }} == refs/tags/* ]]; then
+            VERSION=${GITHUB_REF#refs/tags/}
+            echo "TAG=$VERSION" >> $GITHUB_ENV
+            echo "DOCKER_TAGS=${{ secrets.DOCKER_USERNAME }}/watercrawl:$VERSION,${{ secrets.DOCKER_USERNAME }}/watercrawl:$(git rev-parse --short HEAD),${{ secrets.DOCKER_USERNAME }}/watercrawl:latest" >> $GITHUB_ENV
+          fi
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          echo "BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_ENV
 
       # Build and push the Docker image
       - name: Build and Push Docker Image
@@ -37,6 +63,13 @@ jobs:
         with:
           context: .
           push: true
-          tags: |
-            ${{ secrets.DOCKER_USERNAME }}/watercrawl:${{ env.tag }}
-            ${{ secrets.DOCKER_USERNAME }}/watercrawl:latest
+          platforms: linux/amd64,linux/arm64
+          build-args: |
+            APP_VERSION=${{ env.VERSION }}
+          cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/watercrawl:buildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/watercrawl:buildcache,mode=max
+          tags: ${{ env.DOCKER_TAGS }}
+          labels: |
+            org.opencontainers.image.created=${{ env.BUILD_DATE }}
+            org.opencontainers.image.revision=${{ env.COMMIT_HASH }}
+            org.opencontainers.image.version=${{ env.TAG }}
