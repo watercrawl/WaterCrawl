@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2025-01-15
+
+### Added
+- Integrated Playwright for dynamic page rendering and JavaScript execution
+- Support for PDF and Screenshot attachments for crawl results
+- Advanced page interaction options (wait time, cookie acceptance, locale settings)
+- Improved Docker build process with multi-platform support
+- Added API version endpoint
+- Extended crawler options with timeout, cookies, locale, and headers support
+- Duration tracking for crawl requests
+- Support for longer URLs (up to 2048 characters)
+
+### Changed
+- Enhanced page rendering with Playwright middleware
+- Improved JavaScript handling and dynamic content extraction
+- Enhanced Docker workflow with better caching and versioning
+- Improved domain handling in spider options
+- Updated concurrent request settings
+- Better organization of crawler constants and types
+
+### Infrastructure
+- Added multi-platform Docker builds (linux/amd64, linux/arm64)
+- Improved Docker caching and build optimization
+- Added version tracking in Docker builds
+
 ## [0.1.1] - 2024-12-25
 
 ### Changed
