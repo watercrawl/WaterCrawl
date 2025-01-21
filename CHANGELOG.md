@@ -5,6 +5,45 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.1] - 2025-01-21
+
+### Added
+- New `TeamSchemaView` for dedicated team API documentation
+- Custom schema generator for filtering team-specific endpoints
+- Separate documentation files for better organization
+- Tags for all API endpoints:
+  - Auth
+  - Profile
+  - Team
+  - API Key
+  - Crawl Requests
+  - Crawl Results
+  - Reports
+  - Plugins
+  - Common
+- Token refresh and verify views with proper documentation
+- Theme customization for documentation UI
+
+### Changed
+- Moved API documentation strings to dedicated files
+- Improved endpoint descriptions and documentation structure
+- Updated API key authentication to track last used timestamp
+- Enhanced schema security configuration
+- Reorganized URL patterns for better documentation access
+- Updated settings for better API documentation title and description
+- Changed "Get the current team" to "Get/Update the current team" for clarity
+
+### Fixed
+- API key authentication display in ReDoc
+- Documentation organization and endpoint grouping
+- Swagger UI and ReDoc configuration
+- Unused imports and code cleanup
+
+### Removed
+- Redundant schema URL configuration
+- Unused plan URLs
+- Manual operation sorting in favor of tag-based organization
+
 ## [0.2.0] - 2025-01-15
 
 ### Added
