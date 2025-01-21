@@ -1,9 +1,9 @@
 from django.urls.conf import path
 from rest_framework.routers import DefaultRouter
-from rest_framework_simplejwt.views import TokenRefreshView, TokenVerifyView
 
 from user.views import RegisterView, ProfileView, TeamViewSet, LogingView, APIKeyViewSet, CurrentTeamMembersView, \
-    OauthAPIView, ForgotPasswordView, ResetPasswordView, MyInvitationsView, VerifyEmailView
+    OauthAPIView, ForgotPasswordView, ResetPasswordView, MyInvitationsView, VerifyEmailView, TokenRefreshView, \
+    TokenVerifyView
 
 router = DefaultRouter()
 router.register(r'teams', TeamViewSet, basename='team')

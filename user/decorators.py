@@ -40,7 +40,7 @@ class CurrentTeamAuthentication:
         api_key = request.headers.get('X-API-Key')
         if api_key:
             try:
-                request.current_team = TeamService.make_with_api_key(api_key).team
+                request.current_team = TeamService.make_with_api_key(api_key, update_last_used_at=True).team
             except Team.DoesNotExist:
                 raise AuthenticationFailed(_('Invalid API key'))
 

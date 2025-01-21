@@ -174,9 +174,10 @@ REST_FRAMEWORK = {
 # DRF Spectacular settings
 SPECTACULAR_SETTINGS = {
     'TITLE': 'WaterCrawl API',
-    'DESCRIPTION': 'WaterCrawl API',
+    'DESCRIPTION': 'API documentation for WaterCrawl',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
+    # 'SORT_OPERATIONS': 'common.schema.sort_operations',
 }
 
 # Simple JWT settings

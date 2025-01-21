@@ -13,7 +13,7 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet, ReadOnlyModelViewSet
 
 from common.services import EventStreamResponse
-from core import serializers, consts
+from core import serializers, consts, docs
 from core.models import CrawlRequest, CrawlResult
 from core.services import CrawlerService, ReportService, PluginService
 from core.tasks import run_spider
@@ -24,30 +24,34 @@ from user.permissions import IsAuthenticatedTeam
 @extend_schema_view(
     create=extend_schema(
         summary='Start a new crawl request',
-        description='Start a new crawl request'
+        description=docs.CRAWL_REQUEST_CREATE,
+        tags=['Crawl Requests']
     ),
     list=extend_schema(
         summary='List crawl requests',
-        description='List crawl requests'
+        description=docs.CRAWL_REQUEST_LIST,
+        tags=['Crawl Requests']
     ),
     retrieve=extend_schema(
         summary='Get crawl request',
-        description='Get crawl request'
+        description=docs.CRAWL_REQUEST_RETRIEVE,
+        tags=['Crawl Requests']
     ),
     destroy=extend_schema(
         summary='Cancel a running crawl',
-        description='Cancel a running crawl'
+        description=docs.CRAWL_REQUEST_DESTROY,
+        tags=['Crawl Requests']
     ),
     download=extend_schema(
-        summary='Download a crawl result',
-        description='Download a crawl result',
+        summary='Download crawl result',
+        description=docs.CRAWL_REQUEST_DOWNLOAD,
+        tags=['Crawl Requests'],
         responses={200: OpenApiTypes.OBJECT}
     ),
     check_status=extend_schema(
         summary='Check crawl status',
-        description='This endpoint uses server-sent events and send the result every 1 second'
-                    'each message contains type and data. the type can be result or state.'
-                    'data contains the will be a crawl result or a crawl request.',
+        description=docs.CRAWL_REQUEST_CHECK_STATUS,
+        tags=['Crawl Requests'],
         request=None,
         responses={
             200: OpenApiResponse(
@@ -113,11 +117,13 @@ class CrawlRequestView(
 @extend_schema_view(
     list=extend_schema(
         summary='List crawl results',
-        description='List crawl results',
+        description=docs.CRAWL_RESULT_LIST,
+        tags=['Crawl Results']
     ),
     retrieve=extend_schema(
         summary='Get crawl result',
-        description='Get crawl result'
+        description=docs.CRAWL_RESULT_RETRIEVE,
+        tags=['Crawl Results']
     )
 )
 @setup_current_team
@@ -137,7 +143,8 @@ class CrawlResultView(ReadOnlyModelViewSet):
 @extend_schema_view(
     get=extend_schema(
         summary='Usage Report',
-        description='Get usage report for the last 30 days'
+        description=docs.USAGE_REPORT,
+        tags=['Reports']
     )
 )
 @setup_current_team
@@ -152,7 +159,13 @@ class UsageAPIView(APIView):
         service = ReportService(request.current_team, timedelta(days=30), )
         return Response(serializers.ReportSerializer(service).data)
 
-
+@extend_schema_view(
+    get=extend_schema(
+        summary='Plugin Form',
+        description=docs.PLUGIN_LIST,
+        tags=['Plugins']
+    )
+)
 @setup_current_team
 class PluginAPIView(APIView):
     permission_classes = [

@@ -1,6 +1,3 @@
-from pickle import FALSE
-from xmlrpc.client import Fault
-
 from rest_framework import mixins
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from django.utils.translation import gettext_lazy as _
@@ -11,6 +8,10 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from rest_framework.viewsets import GenericViewSet
+from rest_framework_simplejwt.views import (
+    TokenRefreshView as BaseTokenRefreshView,
+    TokenVerifyView as BaseTokenVerifyView
+)
 
 from user import serializers
 from .decorators import setup_current_team
@@ -25,6 +26,7 @@ from .tasks import send_forget_password_email, send_invitation_email, send_verif
     post=extend_schema(
         summary='Register a new user',
         description='Register a new user',
+        tags=['Auth'],
         request=serializers.RegisterSerializer,
         responses={201: serializers.RegisterSerializer},
     )
@@ -51,6 +53,7 @@ class RegisterView(APIView):
     post=extend_schema(
         summary='Authenticate using email and password',
         description='Authenticate using email and password',
+        tags=['Auth'],
         responses={
             200: {
                 "type": "object",
@@ -84,6 +87,7 @@ class LogingView(APIView):
     post=extend_schema(
         summary='Authenticate using OAuth',
         description='Authenticate using OAuth',
+        tags=['Auth'],
         responses={200: {
             "type": "object",
             "properties": {"refresh": {"type": "string"}, "access": {"type": "string"}}
@@ -122,6 +126,7 @@ class OauthAPIView(APIView):
     post=extend_schema(
         summary='Send a forgot password email',
         description='Send a forgot password email',
+        tags=['Auth'],
         request=serializers.ForgotPasswordSerializer,
         responses={204: None},
     ),
@@ -142,12 +147,14 @@ class ForgotPasswordView(APIView):
     get=extend_schema(
         summary='Verify reset password token',
         description='Verify reset password token',
+        tags=['Auth'],
         request=None,
         responses={204: None},
     ),
     post=extend_schema(
         summary='Reset password',
         description='Reset password',
+        tags=['Auth'],
         request=serializers.ResetPasswordSerializer,
         responses={204: None},
     ),
@@ -176,6 +183,7 @@ class ResetPasswordView(APIView):
     get=extend_schema(
         summary='Verify email',
         description='Verify email',
+        tags=['Auth'],
         request=None,
         responses={200: {
             "type": "object",
@@ -205,10 +213,12 @@ class VerifyEmailView(APIView):
     get=extend_schema(
         summary='Get user profile',
         description='Get the current user profile',
+        tags=['Profile'],
     ),
     patch=extend_schema(
         summary='Update user profile',
         description='Update user profile',
+        tags=['Profile'],
     ),
 )
 class ProfileView(APIView):
@@ -236,10 +246,12 @@ class ProfileView(APIView):
     list=extend_schema(
         summary='Get my invitations',
         description='Get my invitations',
+        tags=['Profile'],
     ),
     accept=extend_schema(
         summary='Accept an invitation',
         description='Accept an invitation',
+        tags=['Profile'],
         responses={204: None},
     ),
 )
@@ -270,34 +282,41 @@ class MyInvitationsView(
     create=extend_schema(
         summary='Create a new team',
         description='Create a new team',
+        tags=['Team'],
     ),
     retrieve=extend_schema(
         summary='Get a team',
         description='Get a team',
+        tags=['Team'],
     ),
     update=extend_schema(
         summary='Update a team',
         description='Update a team',
+        tags=['Team'],
     ),
     list=extend_schema(
         summary='List teams',
         description='List teams',
+        tags=['Team'],
     ),
     current=extend_schema(
-        summary='Get the current team',
+        summary='Get/Update the current team',
         description='Get the current team',
         responses={200: serializers.TeamSerializer},
+        tags=['Team'],
     ),
     invite=extend_schema(
         summary='Invite a user to the current team',
         description='Invite a user to the current team',
         request=serializers.TeamInvitationSerializer,
         responses={204: None},
+        tags=['Team'],
     ),
     invitations=extend_schema(
         summary='List invitations to the current team',
         description='List invitations to the current team',
         responses={200: serializers.TeamInvitationSerializer(many=True)},
+        tags=['Team'],
     ),
 )
 @setup_current_team
@@ -360,14 +379,17 @@ class TeamViewSet(
     create=extend_schema(
         summary='Create a new API key',
         description='Create a new API key',
+        tags=['API Key'],
     ),
     list=extend_schema(
         summary='List API keys',
         description='List API keys',
+        tags=['API Key'],
     ),
     destroy=extend_schema(
         summary='Delete an API key',
         description='Delete an API key',
+        tags=['API Key'],
     ),
 )
 @setup_current_team
@@ -397,10 +419,12 @@ class APIKeyViewSet(
     list=extend_schema(
         summary='List team members',
         description='List team members',
+        tags=['Team'],
     ),
     destroy=extend_schema(
         summary='Delete a team member',
         description='Delete a team member',
+        tags=['Team'],
     ),
 )
 @setup_current_team
@@ -422,3 +446,24 @@ class CurrentTeamMembersView(
         if instance.is_owner:
             raise PermissionDenied(_('You can not delete the owner of the team'))
         instance.delete()
+
+
+@extend_schema_view(
+    post=extend_schema(
+        summary='Refresh token',
+        description='Refresh token',
+        tags=['Token'],
+    )
+)
+class TokenRefreshView(BaseTokenRefreshView):
+    pass
+
+@extend_schema_view(
+    post=extend_schema(
+        summary='Verify token',
+        description='Verify token',
+        tags=['Token'],
+    )
+)
+class TokenVerifyView(BaseTokenVerifyView):
+    pass

@@ -19,14 +19,17 @@ from django.urls import path
 from django.urls.conf import include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 
+from common.views import TeamSchemaView
+
 urlpatterns = [
     path('admin/', admin.site.urls),
 
     # YOUR PATTERNS
+    path('api/schema/team/', TeamSchemaView.as_view(), name='team_schema'),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     # Optional UI:
-    path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
-    path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+    path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(), name='swagger-ui'),
+    path('api/schema/redoc/', SpectacularRedocView.as_view(), name='redoc'),
     path('api/v1/user/', include('user.urls')),
     path('api/v1/common/', include('common.urls')),
     path('api/v1/core/', include('core.urls')),
