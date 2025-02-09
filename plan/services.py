@@ -555,11 +555,7 @@ class StripeService:
                     'plan_id': str(plan.uuid),
                     'team_id': str(team.uuid)
                 },
-                allow_promotion_codes=True,
-                subscription_data={
-                    "proration_behavior": "create_prorations",
-                    "billing_cycle_anchor": int(timezone.now().timestamp())
-                }
+                allow_promotion_codes=True
             )
 
             return session.url
