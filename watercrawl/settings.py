@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from datetime import timedelta
 from pathlib import Path
 
+from celery.schedules import crontab
 from corsheaders.defaults import default_headers
 from environ import Env
 
@@ -229,6 +230,12 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE  # Use Django's TIME_ZONE
 CELERY_ENABLE_UTC = USE_TZ  # Use Django's USE_TZ
+CELERY_BEAT_SCHEDULE = {
+    'reset_daily_page_credits': {
+        'task': 'plan.tasks.reset_daily_page_credits',
+        'schedule': crontab(hour="0", minute="1"),
+    },
+}
 DJANGO_CELERY_RESULTS_TASK_ID_MAX_LENGTH = 191
 
 # You are not allowed in OpenSource usage change this flag
