@@ -5,6 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2025-02-09
+
+### Added
+- Team plan management system with Stripe integration
+- Usage tracking and plan-based limits
+- Enterprise mode configuration
+- Resend email verification endpoint
+- Comprehensive admin panel for User, Team, TeamMember, and API key management
+- Unique email constraint with case-insensitive lookups
+- Plan-based crawl request validation
+- Usage history tracking
+- Stripe webhook handling for subscription management
+
+### Changed
+- Enhanced user authentication system
+- Improved email templates (removed emojis, simplified text)
+- Added translations for user-facing messages
+- Better spider include/exclude paths handling
+- Updated admin interface with improved filters and search
+- Enhanced team member management
+- Improved error handling and validation messages
+
+### Fixed
+- Spider options handling for include/exclude paths
+- Email verification and authentication issues
+- Case-sensitive email lookup issues
+- Team member invitation process
+
+### Security
+- Added unique email constraint
+- Improved API key management
+- Enhanced authentication validation
+
 ## [0.2.1] - 2025-01-21
 
 ### Added
