@@ -455,14 +455,14 @@ class StripeService:
         price_id = subscription['items']['data'][0]['price']['id']
 
         plan = Plan.objects.get(stripe_price_id=price_id)
-        if plan.is_default:
-            return
         team = Team.objects.get(stripe_customer_id=subscription['customer'])
 
         return team, plan, subscription
 
     def _handle_subscription_created(self, event_data):
         team, plan, subscription = self.__pre_process_webhook(event_data)
+        if plan.is_default:
+            return
         SubscriptionService.create_subscription(
             team=team,
             plan=plan,

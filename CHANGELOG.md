@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Removed custom billing cycle anchor from Stripe checkout to fix subscription timing issues
 - Simplified Stripe checkout session configuration for better compatibility
+- Fixed Stripe webhook handling for default plan subscriptions
 
 ## [0.3.0] - 2025-02-09
 
