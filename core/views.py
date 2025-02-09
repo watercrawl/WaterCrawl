@@ -1,9 +1,9 @@
 from datetime import timedelta
 
-from django.http import HttpResponse, StreamingHttpResponse
+from django.http import StreamingHttpResponse
 from django.utils.translation import gettext_lazy as _
 from drf_spectacular.types import OpenApiTypes
-from drf_spectacular.utils import extend_schema_view, extend_schema, OpenApiParameter, OpenApiResponse
+from drf_spectacular.utils import extend_schema_view, extend_schema, OpenApiResponse
 from rest_framework import mixins
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
@@ -14,7 +14,7 @@ from rest_framework.viewsets import GenericViewSet, ReadOnlyModelViewSet
 
 from common.services import EventStreamResponse
 from core import serializers, consts, docs
-from core.models import CrawlRequest, CrawlResult
+from core.models import CrawlRequest
 from core.services import CrawlerService, ReportService, PluginService
 from core.tasks import run_spider
 from user.decorators import setup_current_team
@@ -23,33 +23,33 @@ from user.permissions import IsAuthenticatedTeam
 
 @extend_schema_view(
     create=extend_schema(
-        summary='Start a new crawl request',
+        summary=_('Start a new crawl request'),
         description=docs.CRAWL_REQUEST_CREATE,
         tags=['Crawl Requests']
     ),
     list=extend_schema(
-        summary='List crawl requests',
+        summary=_('List crawl requests'),
         description=docs.CRAWL_REQUEST_LIST,
         tags=['Crawl Requests']
     ),
     retrieve=extend_schema(
-        summary='Get crawl request',
+        summary=_('Get crawl request'),
         description=docs.CRAWL_REQUEST_RETRIEVE,
         tags=['Crawl Requests']
     ),
     destroy=extend_schema(
-        summary='Cancel a running crawl',
+        summary=_('Cancel a running crawl'),
         description=docs.CRAWL_REQUEST_DESTROY,
         tags=['Crawl Requests']
     ),
     download=extend_schema(
-        summary='Download crawl result',
+        summary=_('Download crawl result'),
         description=docs.CRAWL_REQUEST_DOWNLOAD,
         tags=['Crawl Requests'],
         responses={200: OpenApiTypes.OBJECT}
     ),
     check_status=extend_schema(
-        summary='Check crawl status',
+        summary=_('Check crawl status'),
         description=docs.CRAWL_REQUEST_CHECK_STATUS,
         tags=['Crawl Requests'],
         request=None,
@@ -75,6 +75,11 @@ class CrawlRequestView(
 
     def get_queryset(self):
         return self.request.current_team.crawl_requests.order_by('-created_at').all()
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['team'] = self.request.current_team
+        return context
 
     def perform_create(self, serializer):
         instance = serializer.save(team=self.request.current_team)
@@ -116,12 +121,12 @@ class CrawlRequestView(
 
 @extend_schema_view(
     list=extend_schema(
-        summary='List crawl results',
+        summary=_('List crawl results'),
         description=docs.CRAWL_RESULT_LIST,
         tags=['Crawl Results']
     ),
     retrieve=extend_schema(
-        summary='Get crawl result',
+        summary=_('Get crawl result'),
         description=docs.CRAWL_RESULT_RETRIEVE,
         tags=['Crawl Results']
     )
@@ -142,7 +147,7 @@ class CrawlResultView(ReadOnlyModelViewSet):
 
 @extend_schema_view(
     get=extend_schema(
-        summary='Usage Report',
+        summary=_('Usage Report'),
         description=docs.USAGE_REPORT,
         tags=['Reports']
     )
@@ -159,9 +164,10 @@ class UsageAPIView(APIView):
         service = ReportService(request.current_team, timedelta(days=30), )
         return Response(serializers.ReportSerializer(service).data)
 
+
 @extend_schema_view(
     get=extend_schema(
-        summary='Plugin Form',
+        summary=_('Plugin Form'),
         description=docs.PLUGIN_LIST,
         tags=['Plugins']
     )

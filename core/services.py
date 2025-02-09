@@ -61,15 +61,13 @@ class CrawlHelpers:
             'CONCURRENT_REQUESTS_PER_IP={}'.format(str(settings.SCRAPY_CONCURRENT_REQUESTS_PER_IP)),
         ]
 
-    @property
+    @cached_property
     def __include_paths(self):
-        include_paths = self.crawl_request.options.get('spider_options', {}).get('spider_options', ['*'])
-        return include_paths
+        return self.crawl_request.options.get('spider_options', {}).get('include_paths', [])
 
-    @property
+    @cached_property
     def __exclude_paths(self):
-        exclude_paths = self.crawl_request.options.get('spider_options', {}).get('exclude_paths', [])
-        return exclude_paths
+        return self.crawl_request.options.get('spider_options', {}).get('exclude_paths', [])
 
     def is_allowed_path(self, url):
         parsed_url = urlparse(url)
@@ -92,9 +90,18 @@ class CrawlHelpers:
 
         # check include path with start check
         uri = parsed_url.path
-        for include_path in self.__include_paths:
-            if fnmatch.fnmatch(uri, include_path):
-                return True
+
+        # if there is no include path the current path is included
+        included = not self.__include_paths
+
+        if not included:
+            for include_path in self.__include_paths:
+                if fnmatch.fnmatch(uri, include_path):
+                    included = True
+                    break
+
+        if not included:
+            return False
 
         # check exclude path with start check
         for exclude_path in self.__exclude_paths:

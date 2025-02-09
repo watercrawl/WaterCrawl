@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from core.models import CrawlRequest, CrawlResult, CrawlResultAttachment
+from plan.validators import PlanLimitValidator
 
 
 class ActionSerializer(serializers.Serializer):
@@ -108,6 +109,9 @@ class CrawlRequestSerializer(serializers.ModelSerializer):
             'number_of_documents',
             'duration',
         ]
+
+    def validate(self, attrs):
+        return PlanLimitValidator(self.context['team']).validate_crawl_request(attrs)
 
 
 class CrawlResultAttachmentSerializer(serializers.ModelSerializer):

@@ -37,7 +37,7 @@ class ForgotPasswordService:
 
     @classmethod
     def make_with_email(cls, email: str):
-        return cls(User.objects.get(email=email))
+        return cls(User.objects.get(email__iexact=email))
 
     @classmethod
     def make_with_reset_password_token(cls, token: str):
@@ -89,10 +89,9 @@ class TeamService:
             team_api_key.save(update_fields=['last_used_at'])
         return cls(team_api_key.team)
 
-
     @classmethod
-    def create_team(cls, user: User, name: str = 'Default', is_owner: bool = True):
-        team = Team.objects.create(name=name)
+    def create_team(cls, user: User, name: str = 'Default', is_owner: bool = True, is_default: bool = False):
+        team = Team.objects.create(name=name, is_default=is_default)
         APIKeyService.create_api_key(team)
         return cls(team).add_user(user, is_owner)
 
@@ -106,10 +105,10 @@ class TeamService:
             team = user.teams.order_by('created_at').first()
             if team:
                 return cls(team)
-            return cls.create_team(user, is_owner=True)
+            return cls.create_team(user, is_owner=True, is_default=True)
 
     def invite(self, email: str):
-        if self.team.members.filter(email=email).exists():
+        if self.team.members.filter(email__iexact=email).exists():
             raise ValidationError('User is already a member of the team')
         invitation, _ = self.team.invitations.update_or_create(email=email, defaults={'activated': False})
         return invitation
@@ -176,6 +175,15 @@ class VerificationService:
     def make_with_verification_token(cls, token: str):
         return cls(User.objects.get(email_verification_token=token))
 
+    @classmethod
+    def make_with_email(cls, email: str, raise_error: bool = True):
+        try:
+            return cls(User.objects.get(email__iexact=email))
+        except User.DoesNotExist:
+            if raise_error:
+                raise ValidationError('User does not exist')
+            return None
+
     def send_verification_email(self):
         (
             EmailService()
@@ -205,7 +213,7 @@ class AbsractOAuth2Service:
 
     def get_or_create_user(self, email, first_name=None, last_name=None) -> UserService:
         try:
-            return UserService(User.objects.get(email=email))
+            return UserService(User.objects.get(email__iexact=email))
         except User.DoesNotExist:
             return UserService.create_user(
                 email=email,

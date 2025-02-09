@@ -27,6 +27,10 @@ class EventStreamResponse(StreamingHttpResponse):
 class FrontendSettingService:
 
     @cached_property
+    def is_enterprise_mode_active(self):
+        return settings.IS_ENTERPRISE_MODE_ACTIVE
+
+    @cached_property
     def github_client_id(self):
         return settings.GITHUB_CLIENT_ID
 

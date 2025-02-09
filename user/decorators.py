@@ -2,7 +2,7 @@ from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
 from rest_framework.exceptions import AuthenticationFailed
 
-from user.models import Team
+from user.models import Team, TeamAPIKey
 from user.services import TeamService
 
 
@@ -41,7 +41,7 @@ class CurrentTeamAuthentication:
         if api_key:
             try:
                 request.current_team = TeamService.make_with_api_key(api_key, update_last_used_at=True).team
-            except Team.DoesNotExist:
+            except TeamAPIKey.DoesNotExist:
                 raise AuthenticationFailed(_('Invalid API key'))
 
 

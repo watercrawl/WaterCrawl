@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 
 class SettingSerializer(serializers.Serializer):
+    is_enterprise_mode_active = serializers.BooleanField()
     github_client_id = serializers.CharField()
     google_client_id = serializers.CharField()
     is_signup_active = serializers.BooleanField()

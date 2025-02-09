@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'common',
     'core',
     'user',
+    'plan',
 ]
 
 MIDDLEWARE = [
@@ -160,7 +161,7 @@ AUTH_USER_MODEL = 'user.User'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        # 'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -313,3 +314,10 @@ SCRAPY_LOG_LEVEL = env('SCRAPY_LOG_LEVEL', cast=str, default='ERROR')
 
 PLAYWRIGHT_SERVER = env('PLAYWRIGHT_SERVER', cast=str, default=None)
 PLAYWRIGHT_API_KEY = env('PLAYWRIGHT_API_KEY', cast=str, default=None)
+
+STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY', cast=str, default='')
+STRIPE_WEBHOOK_SECRET = env('STRIPE_WEBHOOK_SECRET', cast=str, default='')
+
+MAX_CRAWL_DEPTH = env('MAX_CRAWL_DEPTH', cast=int, default=-1)
+
+CAPTURE_USAGE_HISTORY = env.bool('CAPTURE_USAGE_HISTORY', default=True) or IS_ENTERPRISE_MODE_ACTIVE

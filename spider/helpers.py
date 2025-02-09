@@ -45,7 +45,7 @@ class HtmlFilter:
                 element.getparent().remove(element)
 
     def _handle_exclude_tags(self):
-        exclude_tags = self.scrape_options['excludeTags']
+        exclude_tags = self.scrape_options['exclude_tags']
         for tag in exclude_tags:
             # Handle wildcards or specific tags
             if tag.startswith("*") and tag.endswith("*"):  # For wildcard search

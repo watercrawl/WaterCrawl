@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 
 from user.views import RegisterView, ProfileView, TeamViewSet, LogingView, APIKeyViewSet, CurrentTeamMembersView, \
     OauthAPIView, ForgotPasswordView, ResetPasswordView, MyInvitationsView, VerifyEmailView, TokenRefreshView, \
-    TokenVerifyView
+    TokenVerifyView, RequestEmailVerificationView
 
 router = DefaultRouter()
 router.register(r'teams', TeamViewSet, basename='team')
@@ -21,6 +21,8 @@ urlpatterns = [
     path('auth/forgot-password/', ForgotPasswordView.as_view(), name='forgot_password'),
 
     path('auth/reset-password/<str:token>/', ResetPasswordView.as_view(), name='reset_password'),
+
+    path('auth/resend-verify-email/', RequestEmailVerificationView.as_view(), name='resend_verify_email'),
 
     path('auth/verify-email/<str:token>/', VerifyEmailView.as_view(), name='verify_email'),
 

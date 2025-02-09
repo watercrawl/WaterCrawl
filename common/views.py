@@ -1,3 +1,4 @@
+from django.utils.translation import gettext_lazy as _
 from drf_spectacular.utils import extend_schema_view, extend_schema
 from drf_spectacular.views import SpectacularAPIView
 from drf_spectacular.generators import SchemaGenerator
@@ -8,14 +9,15 @@ from rest_framework.views import APIView
 
 from common import serializers, docs
 from common.services import FrontendSettingService
+from django.utils.translation import gettext_lazy as _
 from user.permissions import IsAuthenticatedTeam
 
 
 @extend_schema_view(
     get=extend_schema(
-        summary="Frontend Setting",
-        description="Retrieve the frontend setting.",
-        tags=["Common"],
+        summary=_('Frontend Setting'),
+        description=_('Retrieve the frontend setting.'),
+        tags=['Common'],
         responses={200: serializers.SettingSerializer},
     ),
 )

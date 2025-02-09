@@ -24,8 +24,8 @@ from .tasks import send_forget_password_email, send_invitation_email, send_verif
 
 @extend_schema_view(
     post=extend_schema(
-        summary='Register a new user',
-        description='Register a new user',
+        summary=_('Register a new user'),
+        description=_('Register a new user'),
         tags=['Auth'],
         request=serializers.RegisterSerializer,
         responses={201: serializers.RegisterSerializer},
@@ -41,8 +41,10 @@ class RegisterView(APIView):
     def post(self, request):
         serializer = serializers.RegisterSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        instance = serializer.save()
-        send_verification_email.delay(instance.pk)
+        user_service = UserService.create_user(
+            **serializer.validated_data
+        )
+        send_verification_email.delay(user_service.user.pk)
         return Response(
             status=status.HTTP_201_CREATED,
             data=serializer.data
@@ -51,8 +53,8 @@ class RegisterView(APIView):
 
 @extend_schema_view(
     post=extend_schema(
-        summary='Authenticate using email and password',
-        description='Authenticate using email and password',
+        summary=_('Authenticate using email and password'),
+        description=_('Authenticate using email and password'),
         tags=['Auth'],
         responses={
             200: {
@@ -85,8 +87,36 @@ class LogingView(APIView):
 
 @extend_schema_view(
     post=extend_schema(
-        summary='Authenticate using OAuth',
-        description='Authenticate using OAuth',
+        summary=_('Send a verification email'),
+        description=_('Send a verification email'),
+        tags=['Auth'],
+        request=serializers.RequestEmailVerificationSerializer,
+        responses={204: None},
+    )
+)
+class RequestEmailVerificationView(APIView):
+    permission_classes = []
+    authentication_classes = []
+    serializer_class = serializers.RequestEmailVerificationSerializer
+
+    def post(self, request):
+        serializer = serializers.RequestEmailVerificationSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        verification_service = VerificationService.make_with_email(
+            serializer.validated_data['email'],
+            raise_error=False
+        )
+
+        if verification_service:
+            send_verification_email.delay(verification_service.user.pk)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@extend_schema_view(
+    post=extend_schema(
+        summary=_('Authenticate using OAuth'),
+        description=_('Authenticate using OAuth'),
         tags=['Auth'],
         responses={200: {
             "type": "object",
@@ -124,8 +154,8 @@ class OauthAPIView(APIView):
 
 @extend_schema_view(
     post=extend_schema(
-        summary='Send a forgot password email',
-        description='Send a forgot password email',
+        summary=_('Send a forgot password email'),
+        description=_('Send a forgot password email'),
         tags=['Auth'],
         request=serializers.ForgotPasswordSerializer,
         responses={204: None},
@@ -145,15 +175,15 @@ class ForgotPasswordView(APIView):
 
 @extend_schema_view(
     get=extend_schema(
-        summary='Verify reset password token',
-        description='Verify reset password token',
+        summary=_('Verify reset password token'),
+        description=_('Verify reset password token'),
         tags=['Auth'],
         request=None,
         responses={204: None},
     ),
     post=extend_schema(
-        summary='Reset password',
-        description='Reset password',
+        summary=_('Reset password'),
+        description=_('Reset password'),
         tags=['Auth'],
         request=serializers.ResetPasswordSerializer,
         responses={204: None},
@@ -181,8 +211,8 @@ class ResetPasswordView(APIView):
 
 @extend_schema_view(
     get=extend_schema(
-        summary='Verify email',
-        description='Verify email',
+        summary=_('Verify email'),
+        description=_('Verify email'),
         tags=['Auth'],
         request=None,
         responses={200: {
@@ -211,13 +241,13 @@ class VerifyEmailView(APIView):
 
 @extend_schema_view(
     get=extend_schema(
-        summary='Get user profile',
-        description='Get the current user profile',
+        summary=_('Get user profile'),
+        description=_('Get the current user profile'),
         tags=['Profile'],
     ),
     patch=extend_schema(
-        summary='Update user profile',
-        description='Update user profile',
+        summary=_('Update user profile'),
+        description=_('Update user profile'),
         tags=['Profile'],
     ),
 )
@@ -244,15 +274,16 @@ class ProfileView(APIView):
 
 @extend_schema_view(
     list=extend_schema(
-        summary='Get my invitations',
-        description='Get my invitations',
+        summary=_('Get my invitations'),
+        description=_('Get my invitations'),
         tags=['Profile'],
     ),
     accept=extend_schema(
-        summary='Accept an invitation',
-        description='Accept an invitation',
+        summary=_('Accept an invitation'),
+        description=_('Accept an invitation'),
         tags=['Profile'],
         responses={204: None},
+        request=None
     ),
 )
 class MyInvitationsView(
@@ -280,41 +311,41 @@ class MyInvitationsView(
 
 @extend_schema_view(
     create=extend_schema(
-        summary='Create a new team',
-        description='Create a new team',
+        summary=_('Create a new team'),
+        description=_('Create a new team'),
         tags=['Team'],
     ),
     retrieve=extend_schema(
-        summary='Get a team',
-        description='Get a team',
+        summary=_('Get a team'),
+        description=_('Get a team'),
         tags=['Team'],
     ),
     update=extend_schema(
-        summary='Update a team',
-        description='Update a team',
+        summary=_('Update a team'),
+        description=_('Update a team'),
         tags=['Team'],
     ),
     list=extend_schema(
-        summary='List teams',
-        description='List teams',
+        summary=_('List teams'),
+        description=_('List teams'),
         tags=['Team'],
     ),
     current=extend_schema(
-        summary='Get/Update the current team',
-        description='Get the current team',
+        summary=_('Get/Update the current team'),
+        description=_('Get the current team'),
         responses={200: serializers.TeamSerializer},
         tags=['Team'],
     ),
     invite=extend_schema(
-        summary='Invite a user to the current team',
-        description='Invite a user to the current team',
+        summary=_('Invite a user to the current team'),
+        description=_('Invite a user to the current team'),
         request=serializers.TeamInvitationSerializer,
         responses={204: None},
         tags=['Team'],
     ),
     invitations=extend_schema(
-        summary='List invitations to the current team',
-        description='List invitations to the current team',
+        summary=_('List invitations to the current team'),
+        description=_('List invitations to the current team'),
         responses={200: serializers.TeamInvitationSerializer(many=True)},
         tags=['Team'],
     ),
@@ -377,18 +408,18 @@ class TeamViewSet(
 
 @extend_schema_view(
     create=extend_schema(
-        summary='Create a new API key',
-        description='Create a new API key',
+        summary=_('Create a new API key'),
+        description=_('Create a new API key'),
         tags=['API Key'],
     ),
     list=extend_schema(
-        summary='List API keys',
-        description='List API keys',
+        summary=_('List API keys'),
+        description=_('List API keys'),
         tags=['API Key'],
     ),
     destroy=extend_schema(
-        summary='Delete an API key',
-        description='Delete an API key',
+        summary=_('Delete an API key'),
+        description=_('Delete an API key'),
         tags=['API Key'],
     ),
 )
@@ -417,13 +448,13 @@ class APIKeyViewSet(
 
 @extend_schema_view(
     list=extend_schema(
-        summary='List team members',
-        description='List team members',
+        summary=_('List team members'),
+        description=_('List team members'),
         tags=['Team'],
     ),
     destroy=extend_schema(
-        summary='Delete a team member',
-        description='Delete a team member',
+        summary=_('Delete a team member'),
+        description=_('Delete a team member'),
         tags=['Team'],
     ),
 )
@@ -450,18 +481,19 @@ class CurrentTeamMembersView(
 
 @extend_schema_view(
     post=extend_schema(
-        summary='Refresh token',
-        description='Refresh token',
+        summary=_('Refresh token'),
+        description=_('Refresh token'),
         tags=['Token'],
     )
 )
 class TokenRefreshView(BaseTokenRefreshView):
     pass
 
+
 @extend_schema_view(
     post=extend_schema(
-        summary='Verify token',
-        description='Verify token',
+        summary=_('Verify token'),
+        description=_('Verify token'),
         tags=['Token'],
     )
 )

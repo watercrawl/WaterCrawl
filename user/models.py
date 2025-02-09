@@ -1,6 +1,7 @@
 import uuid
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.db.models.functions import Lower
 from django.utils.translation import gettext_lazy as _
 
 from common.models import BaseModel
@@ -43,6 +44,13 @@ class User(AbstractUser):
 
     objects = UserManager()
 
+    class Meta:
+        verbose_name = _('user')
+        verbose_name_plural = _('users')
+        constraints = [
+            models.UniqueConstraint(Lower('email'), name='unique_email'),
+        ]
+
     def __str__(self):
         return self.email
 
@@ -58,6 +66,12 @@ class Team(BaseModel):
         through='TeamMember',
         related_name='teams',
     )
+    stripe_customer_id = models.CharField(
+        _('stripe customer id'),
+        max_length=255,
+        null=True,
+        blank=True
+    )
     is_default = models.BooleanField(
         _('is default'),
         default=False,
@@ -65,6 +79,11 @@ class Team(BaseModel):
 
     def __str__(self):
         return self.name
+
+    @property
+    def owner(self):
+        team_member = TeamMember.objects.filter(team=self).filter(is_owner=True).first()
+        return team_member.user if team_member else self.members.order_by('id').first()
 
 
 class TeamMember(BaseModel):

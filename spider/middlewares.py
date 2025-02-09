@@ -1,5 +1,3 @@
-import re
-
 import httpx
 from scrapy.http import HtmlResponse
 

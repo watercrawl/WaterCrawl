@@ -2,6 +2,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError as DjangoValidationError
 from django.utils.translation import gettext as _
 from rest_framework import serializers
+from rest_framework.exceptions import PermissionDenied
 
 from user.models import User, Team, TeamAPIKey, TeamMember, TeamInvitation
 
@@ -19,6 +20,11 @@ class RegisterSerializer(serializers.ModelSerializer):
             'first_name',
             'last_name'
         ]
+
+    def validate_email(self, value):
+        if User.objects.filter(email__iexact=value).exists():
+            raise serializers.ValidationError(_("Email already exists"))
+        return value
 
     def validate_password(self, value):
         try:
@@ -55,11 +61,15 @@ class LoginSerializer(serializers.Serializer):
     )
 
     def validate(self, attrs):
-        user = User.objects.filter(email=attrs.get('email'), is_active=True).first()
+        user = User.objects.filter(email__iexact=attrs.get('email'), is_active=True).first()
         if user is None:
             raise serializers.ValidationError({"email": _("Invalid email or password")})
         if not user.check_password(attrs.get('password')):
             raise serializers.ValidationError({"email": _("Invalid email or password")})
+
+        if not user.email_verified:
+            raise PermissionDenied(_("Email is not verified"))
+
         return {
             'user': user
         }
@@ -70,7 +80,8 @@ class TeamSerializer(serializers.ModelSerializer):
         model = Team
         fields = [
             'uuid',
-            'name'
+            'name',
+            'is_default',
         ]
 
 
@@ -142,3 +153,7 @@ class MyTeamInvitationSerializer(serializers.ModelSerializer):
             'created_at',
         ]
         read_only_fields = ['uuid', 'team', 'created_at']
+
+
+class RequestEmailVerificationSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)

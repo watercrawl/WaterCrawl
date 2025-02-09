@@ -1,10 +1,6 @@
-import copy
-
 from drf_spectacular.openapi import AutoSchema
-from drf_spectacular.utils import Direction, _SchemaType, OpenApiResponse
-from rest_framework import serializers
+from drf_spectacular.utils import Direction
 from rest_framework.fields import JSONField
-from rest_framework.serializers import SerializerMetaclass
 
 
 class WatterCrawlAutoSchema(AutoSchema):
@@ -132,3 +128,69 @@ class WatterCrawlAutoSchema(AutoSchema):
                 "code": {"type": "integer", "example": 404}
             }
         }
+
+
+def sort_operations(endpoint):
+    """
+    Custom sorting function for API endpoints.
+
+    Sorting priority:
+    1. Tag name
+    2. HTTP method (GET, POST, PUT, DELETE)
+    3. Path
+    """
+
+    path, path_regex, method, callback = endpoint
+
+    # Define tag order
+    tag_order = {
+        'Auth': 1,
+        'Profile': 2,
+        'Team': 3,
+        'API Key': 4,
+        'Crawl Requests': 5,
+        'Crawl Results': 6,
+        'Reports': 7,
+        'Plugins': 8,
+        'Common': 9,
+    }
+
+    # Define method order
+    method_order = {
+        'GET': 1,
+        'POST': 2,
+        'PUT': 3,
+        'PATCH': 4,
+        'DELETE': 5,
+    }
+
+    # Get view class and method
+    view = callback.cls
+
+    # Get tags from view method
+    tags = []
+    if hasattr(view, 'tags'):
+        tags = view.tags
+    elif hasattr(callback, 'tags'):
+        tags = callback.tags
+
+    # Get first tag or use 'Other' if no tags
+    tag = tags[0] if tags else 'Other'
+
+    # Get tag order (default to 999 if tag not in predefined order)
+    tag_priority = tag_order.get(tag, 999)
+
+    # Get method order (default to 999 if method not in predefined order)
+    method_priority = method_order.get(method, 999)
+    print((
+        tags,
+        tag_priority,  # First sort by tag priority
+        method,
+        method_priority,  # Then by HTTP method priority
+        path  # Finally by path
+    ))
+    return (
+        tag_priority,  # First sort by tag priority
+        method_priority,  # Then by HTTP method priority
+        path  # Finally by path
+    )
