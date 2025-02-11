@@ -37,6 +37,20 @@ class User(AbstractUser):
         _('email verified'),
         default=False,
     )
+    privacy_confirmed_at = models.DateTimeField(
+        _('privacy confirmed at'),
+        null=True,
+        blank=True,
+    )
+    terms_confirmed_at = models.DateTimeField(
+        _('terms confirmed at'),
+        null=True,
+        blank=True,
+    )
+    newsletter_confirmed = models.BooleanField(
+        _('newsletter confirmed'),
+        default=False,
+    )
 
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'

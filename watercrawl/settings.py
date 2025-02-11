@@ -328,3 +328,5 @@ STRIPE_WEBHOOK_SECRET = env('STRIPE_WEBHOOK_SECRET', cast=str, default='')
 MAX_CRAWL_DEPTH = env('MAX_CRAWL_DEPTH', cast=int, default=-1)
 
 CAPTURE_USAGE_HISTORY = env.bool('CAPTURE_USAGE_HISTORY', default=True) or IS_ENTERPRISE_MODE_ACTIVE
+
+GOOGLE_ANALYTICS_ID = env('GOOGLE_ANALYTICS_ID', cast=str, default='')

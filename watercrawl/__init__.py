@@ -6,6 +6,11 @@ import os
 # Django starts, ensuring Celery tasks can be registered.
 from .celery import app as celery_app
 
+LATEST_PRIVACY_UPDATE_AT = '2025-01-02T00:00:00'
+LATEST_TERMS_UPDATE_AT = '2025-02-11T00:00:00'
+PRIVACY_URL = "https://watercrawl.dev/privacy"
+TERMS_URL = "https://watercrawl.dev/terms"
+
 if os.path.exists('./VERSION'):
     with open('./VERSION') as f:
         __version__ = f.read().strip()

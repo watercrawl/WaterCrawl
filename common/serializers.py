@@ -10,3 +10,8 @@ class SettingSerializer(serializers.Serializer):
     is_google_login_active = serializers.BooleanField()
     is_github_login_active = serializers.BooleanField()
     api_version = serializers.CharField()
+    policy_url = serializers.CharField()
+    terms_url = serializers.CharField()
+    policy_update_at = serializers.DateTimeField()
+    terms_update_at = serializers.DateTimeField()
+    google_analytics_id = serializers.CharField()

@@ -1,5 +1,6 @@
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError as DjangoValidationError
+from django.utils import timezone
 from django.utils.translation import gettext as _
 from rest_framework import serializers
 from rest_framework.exceptions import PermissionDenied
@@ -36,19 +37,31 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class ProfileSerializer(RegisterSerializer):
+    privacy_confirmed = serializers.BooleanField(write_only=True)
+    terms_confirmed = serializers.BooleanField(write_only=True)
+
     class Meta:
         model = User
         fields = [
             'email',
             'first_name',
             'password',
-            'last_name'
+            'last_name',
+            'privacy_confirmed',
+            'terms_confirmed',
+            'privacy_confirmed_at',
+            'terms_confirmed_at',
+            'newsletter_confirmed'
         ]
-        read_only_fields = ['email']
+        read_only_fields = ['email', 'privacy_confirmed_at', 'terms_confirmed_at']
 
     def update(self, instance, validated_data):
         if validated_data.get('password', None):
             instance.set_password(validated_data.pop('password'))
+        if validated_data.get('privacy_confirmed', None):
+            instance.privacy_confirmed_at = timezone.now()
+        if validated_data.get('terms_confirmed', None):
+            instance.terms_confirmed_at = timezone.now()
         return super().update(instance, validated_data)
 
 

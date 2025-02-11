@@ -58,6 +58,26 @@ class FrontendSettingService:
     def api_version(self):
         return watercrawl.__version__
 
+    @cached_property
+    def policy_url(self):
+        return watercrawl.PRIVACY_URL
+
+    @cached_property
+    def terms_url(self):
+        return watercrawl.TERMS_URL
+
+    @cached_property
+    def policy_update_at(self):
+        return watercrawl.LATEST_PRIVACY_UPDATE_AT
+
+    @cached_property
+    def terms_update_at(self):
+        return watercrawl.LATEST_TERMS_UPDATE_AT
+
+    @cached_property
+    def google_analytics_id(self):
+        return settings.GOOGLE_ANALYTICS_ID
+
 
 class EmailService:
     def __init__(self):

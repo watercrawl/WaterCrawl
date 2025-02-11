@@ -203,7 +203,8 @@ class VerificationService:
 
     def verify_email(self):
         self.user.email_verified = True
-        self.user.save(update_fields=['email_verified'])
+        self.user.email_verification_token = None
+        self.user.save(update_fields=['email_verified', 'email_verification_token'])
         return self
 
 
