@@ -15,7 +15,6 @@ from django.conf import settings
 from django.core.files.base import ContentFile
 from django.db.models import Count, F
 from django.utils import timezone
-from zipstream import ZipStream
 
 from core import consts
 from core.models import CrawlRequest, CrawlResult
