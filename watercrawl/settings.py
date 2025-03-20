@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'drf_spectacular_sidecar',
     'corsheaders',
+    'django_filters',
 
     'common',
     'core',
@@ -167,7 +168,8 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'DEFAULT_PAGINATION_CLASS': 'common.pagination.PageNumberPagination',
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_SCHEMA_CLASS': 'common.schema.WatterCrawlAutoSchema',
     'EXCEPTION_HANDLER': 'common.handlers.water_crawl_exception_handler',
     'PAGE_SIZE': 10,

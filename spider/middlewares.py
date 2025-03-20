@@ -59,6 +59,8 @@ class PlaywrightMiddleware:
                     json=payload,
                     timeout=self.helpers.timeout / 1000  # Convert ms to seconds if needed
                 )
+                print("##", response.status_code)
+                print(response.content)
                 response.raise_for_status()
 
                 data = response.json()

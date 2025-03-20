@@ -59,6 +59,9 @@ class SiteScrapper(Spider):
             elif property:
                 meta_data[property] = content  # Store by 'property'
 
+        # add title to meta data
+        meta_data['title'] = response.xpath("//title/text()").get()
+
         item = ScrapedItem()
         item['url'] = response.url
         item['links'] = links or []
