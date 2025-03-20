@@ -1,7 +1,9 @@
 import base64
 import fnmatch
+import io
 import json
 import subprocess
+import zipfile
 from collections import OrderedDict
 from datetime import timedelta
 from functools import cached_property
@@ -13,6 +15,7 @@ from django.conf import settings
 from django.core.files.base import ContentFile
 from django.db.models import Count, F
 from django.utils import timezone
+from zipstream import ZipStream
 
 from core import consts
 from core.models import CrawlRequest, CrawlResult
@@ -239,22 +242,26 @@ class CrawlerService:
         self.crawl_request.status = consts.CRAWL_STATUS_CANCELED
         self.crawl_request.save(update_fields=['status', 'duration'])
 
-    def download(self):
-        count = self.crawl_request.results.count()
-        yield "["
-        index = 0
-        for item in self.crawl_request.results.iterator():
-            index += 1
-            yield item.result.read().decode('utf-8')
-            if index < count:
-                yield ","
+    def download_zip(self, output_format='json'):
+        """Generator function that streams ZIP content dynamically."""
+        buffer = io.BytesIO()
+        with zipfile.ZipFile(buffer, 'w', zipfile.ZIP_DEFLATED) as zipf:
+            for item in self.crawl_request.results.iterator():
+                file_name = item.url.replace("https://", "").replace("http://", "").replace("/", "_")
+                if output_format == 'json':
+                    zipf.writestr(file_name + '.json', item.result.read())
+                else:
+                    zipf.writestr(file_name + '.md', json.load(item.result)['markdown'])
 
-        yield "]"
+        yield buffer.getvalue()
 
-    def check_status(self):
-        from .serializers import CrawlResultSerializer, CrawlRequestSerializer
-        # check task in celery is running
+
+    def check_status(self, prefetched=False):
+        from .serializers import CrawlResultSerializer, CrawlRequestSerializer, FullCrawlResultSerializer
+
+        ResultSerializer = CrawlResultSerializer if not prefetched else FullCrawlResultSerializer
         items_already_sent = []
+        # check task in celery is running
         while AsyncResult(str(self.crawl_request.uuid)).state in ('PENDING', 'STARTED'):
             self.crawl_request.refresh_from_db()
             if self.crawl_request.status in [
@@ -269,7 +276,7 @@ class CrawlerService:
                 items_already_sent.append(item.pk)
                 yield {
                     'type': 'result',
-                    'data': CrawlResultSerializer(item).data
+                    'data': ResultSerializer(item).data
                 }
 
             yield {
@@ -282,7 +289,7 @@ class CrawlerService:
             items_already_sent.append(item.uuid)
             yield {
                 'type': 'result',
-                'data': CrawlResultSerializer(item).data
+                'data': ResultSerializer(item).data
             }
 
         self.crawl_request.refresh_from_db()

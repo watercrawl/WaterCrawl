@@ -73,7 +73,6 @@ OPTIONS_SCHEMA = {
 
 CRAWL_STATUS_NEW = 'new'
 CRAWL_STATUS_RUNNING = 'running'
-CRAWL_STATUS_PAUSED = 'paused'
 CRAWL_STATUS_FINISHED = 'finished'
 CRAWL_STATUS_CANCELING = 'cancelling'
 CRAWL_STATUS_CANCELED = 'canceled'
@@ -82,7 +81,6 @@ CRAWL_STATUS_FAILED = 'failed'
 CRAWL_STATUS_CHOICES = (
     (CRAWL_STATUS_NEW, _('New')),
     (CRAWL_STATUS_RUNNING, _('Running')),
-    (CRAWL_STATUS_PAUSED, _('Paused')),
     (CRAWL_STATUS_FINISHED, _('Finished')),
     (CRAWL_STATUS_CANCELING, _('Canceling')),
     (CRAWL_STATUS_CANCELED, _('Canceled')),

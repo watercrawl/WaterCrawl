@@ -1,3 +1,5 @@
+import json
+
 from rest_framework import serializers
 
 from core.models import CrawlRequest, CrawlResult, CrawlResultAttachment
@@ -37,6 +39,7 @@ class PageOptionSerializer(serializers.Serializer):
     )
     accept_cookies_selector = serializers.CharField(
         required=False,
+        allow_null=True,
         default=None
     )
     locale = serializers.CharField(
@@ -144,6 +147,13 @@ class CrawlResultSerializer(serializers.ModelSerializer):
             'created_at',
             'updated_at',
         ]
+
+
+class FullCrawlResultSerializer(CrawlResultSerializer):
+    result = serializers.SerializerMethodField()
+
+    def get_result(self, obj):
+        return json.load(obj.result)
 
 
 class ReportDateChartSerializer(serializers.Serializer):

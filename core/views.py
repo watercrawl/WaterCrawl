@@ -3,7 +3,7 @@ from datetime import timedelta
 from django.http import StreamingHttpResponse
 from django.utils.translation import gettext_lazy as _
 from drf_spectacular.types import OpenApiTypes
-from drf_spectacular.utils import extend_schema_view, extend_schema, OpenApiResponse
+from drf_spectacular.utils import extend_schema_view, extend_schema, OpenApiResponse, OpenApiParameter
 from rest_framework import mixins
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
@@ -30,6 +30,7 @@ from user.permissions import IsAuthenticatedTeam
     list=extend_schema(
         summary=_('List crawl requests'),
         description=docs.CRAWL_REQUEST_LIST,
+        parameters=docs.CRAWL_REQUEST_LIST_PARAMETERS,
         tags=['Crawl Requests']
     ),
     retrieve=extend_schema(
@@ -45,12 +46,14 @@ from user.permissions import IsAuthenticatedTeam
     download=extend_schema(
         summary=_('Download crawl result'),
         description=docs.CRAWL_REQUEST_DOWNLOAD,
+        parameters=docs.CRAWL_REQUEST_DOWNLOAD_PARAMETERS,
         tags=['Crawl Requests'],
         responses={200: OpenApiTypes.OBJECT}
     ),
     check_status=extend_schema(
         summary=_('Check crawl status'),
         description=docs.CRAWL_REQUEST_CHECK_STATUS,
+        parameters=docs.CRAWL_REQUEST_CHECK_STATUS_PARAMETERS,
         tags=['Crawl Requests'],
         request=None,
         responses={
@@ -72,6 +75,7 @@ class CrawlRequestView(
         IsAuthenticatedTeam
     ]
     serializer_class = serializers.CrawlRequestSerializer
+    filterset_fields = ['uuid', 'url', 'status', 'created_at']
 
     def get_queryset(self):
         return self.request.current_team.crawl_requests.order_by('-created_at').all()
@@ -102,11 +106,16 @@ class CrawlRequestView(
         obj = self.get_object()
         service = CrawlerService(obj)
 
+        output_format = request.query_params.get('output_format', 'json')
+        if output_format not in ['markdown', 'json']:
+            raise PermissionDenied(_('Invalid output format'))
+
+        file_name = obj.url.replace("https://", "").replace("http://", "").replace("/", "_")
         return StreamingHttpResponse(
-            service.download(),
-            content_type='application/json',
+            service.download_zip(output_format),
+            content_type='application/zip',
             headers={
-                'Content-Disposition': f'attachment; filename="{obj.uuid}.json"'
+                'Content-Disposition': f'attachment; filename="{file_name}.zip"'
             }
         )
 
@@ -114,8 +123,9 @@ class CrawlRequestView(
     def check_status(self, request, **kwargs):
         obj = self.get_object()
         service = CrawlerService(obj)
+        prefetched = request.query_params.get('prefetched', 'False') in ['true', 'True', '1']
         return EventStreamResponse(
-            service.check_status(),
+            service.check_status(prefetched),
         )
 
 
@@ -123,6 +133,7 @@ class CrawlRequestView(
     list=extend_schema(
         summary=_('List crawl results'),
         description=docs.CRAWL_RESULT_LIST,
+        parameters=docs.CRAWL_RESULTS_PARAMETERS,
         tags=['Crawl Results']
     ),
     retrieve=extend_schema(
@@ -137,12 +148,19 @@ class CrawlResultView(ReadOnlyModelViewSet):
         IsAuthenticatedTeam
     ]
     serializer_class = serializers.CrawlResultSerializer
+    filterset_fields = ['url', 'created_at']
 
     def get_queryset(self):
         crawl_request = self.request.current_team.crawl_requests.get(
             pk=self.kwargs['crawl_request_uuid']
         )  # type: CrawlRequest
         return crawl_request.results.prefetch_related('attachments').order_by('created_at').all()
+
+    def get_serializer_class(self):
+        if self.request.query_params.get('prefetched', 'False') in ['true', 'True', '1']:
+            return serializers.FullCrawlResultSerializer
+
+        return super().get_serializer_class()
 
 
 @extend_schema_view(
