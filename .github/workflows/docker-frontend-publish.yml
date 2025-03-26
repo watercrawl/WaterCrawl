@@ -1,4 +1,4 @@
-name: Build and Push Backend Docker Image
+name: Build and Push Frontend Docker Image
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   build-and-push:
-    name: Build and Push Backend Docker Image
+    name: Build and Push Frontend Docker Image
     runs-on: ubuntu-latest
 
     steps:
@@ -43,15 +43,15 @@ jobs:
           if [[ ${{ github.ref }} == refs/heads/development ]]; then
             VERSION="alpha-${DATE}"
             echo "TAG=$VERSION" >> $GITHUB_ENV
-            echo "DOCKER_TAGS=${{ secrets.DOCKER_USERNAME }}/watercrawl:$VERSION,${{ secrets.DOCKER_USERNAME }}/watercrawl:$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+            echo "DOCKER_TAGS=${{ secrets.DOCKER_USERNAME }}/frontend:$VERSION,${{ secrets.DOCKER_USERNAME }}/frontend:$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           elif [[ ${{ github.ref }} == refs/heads/main ]]; then
             VERSION="beta-${DATE}"
             echo "TAG=$VERSION" >> $GITHUB_ENV
-            echo "DOCKER_TAGS=${{ secrets.DOCKER_USERNAME }}/watercrawl:$VERSION,${{ secrets.DOCKER_USERNAME }}/watercrawl:$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+            echo "DOCKER_TAGS=${{ secrets.DOCKER_USERNAME }}/frontend:$VERSION,${{ secrets.DOCKER_USERNAME }}/frontend:$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           elif [[ ${{ github.ref }} == refs/tags/* ]]; then
             VERSION=${GITHUB_REF#refs/tags/}
             echo "TAG=$VERSION" >> $GITHUB_ENV
-            echo "DOCKER_TAGS=${{ secrets.DOCKER_USERNAME }}/watercrawl:$VERSION,${{ secrets.DOCKER_USERNAME }}/watercrawl:$(git rev-parse --short HEAD),${{ secrets.DOCKER_USERNAME }}/watercrawl:latest" >> $GITHUB_ENV
+            echo "DOCKER_TAGS=${{ secrets.DOCKER_USERNAME }}/frontend:$VERSION,${{ secrets.DOCKER_USERNAME }}/frontend:$(git rev-parse --short HEAD),${{ secrets.DOCKER_USERNAME }}/watercrawl-frontend:latest" >> $GITHUB_ENV
           fi
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
@@ -61,13 +61,13 @@ jobs:
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v4
         with:
-          context: ./backend
+          context: ./frontend
           push: true
           platforms: linux/amd64,linux/arm64
           build-args: |
-            APP_VERSION=${{ env.VERSION }}
-          cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/watercrawl:buildcache
-          cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/watercrawl:buildcache,mode=max
+            VITE_VERSION=${{ env.VERSION }}
+          cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/frontend:buildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/frontend:buildcache,mode=max
           tags: ${{ env.DOCKER_TAGS }}
           labels: |
             org.opencontainers.image.created=${{ env.BUILD_DATE }}
