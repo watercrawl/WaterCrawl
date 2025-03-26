@@ -12,57 +12,54 @@ from user.utils import generate_random_api_key
 class User(AbstractUser):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     username = None
-    email = models.EmailField(
-        _('email address'),
-        unique=True
-    )
+    email = models.EmailField(_("email address"), unique=True)
     reset_password_expires_at = models.DateTimeField(
-        _('reset password expires at'),
+        _("reset password expires at"),
         null=True,
         blank=True,
     )
     reset_password_token = models.CharField(
-        _('reset password token'),
+        _("reset password token"),
         max_length=255,
         null=True,
         blank=True,
     )
     email_verification_token = models.CharField(
-        _('email verification token'),
+        _("email verification token"),
         max_length=255,
         null=True,
         blank=True,
     )
     email_verified = models.BooleanField(
-        _('email verified'),
+        _("email verified"),
         default=False,
     )
     privacy_confirmed_at = models.DateTimeField(
-        _('privacy confirmed at'),
+        _("privacy confirmed at"),
         null=True,
         blank=True,
     )
     terms_confirmed_at = models.DateTimeField(
-        _('terms confirmed at'),
+        _("terms confirmed at"),
         null=True,
         blank=True,
     )
     newsletter_confirmed = models.BooleanField(
-        _('newsletter confirmed'),
+        _("newsletter confirmed"),
         default=False,
     )
 
-    USERNAME_FIELD = 'email'
-    EMAIL_FIELD = 'email'
+    USERNAME_FIELD = "email"
+    EMAIL_FIELD = "email"
     REQUIRED_FIELDS = []
 
     objects = UserManager()
 
     class Meta:
-        verbose_name = _('user')
-        verbose_name_plural = _('users')
+        verbose_name = _("user")
+        verbose_name_plural = _("users")
         constraints = [
-            models.UniqueConstraint(Lower('email'), name='unique_email'),
+            models.UniqueConstraint(Lower("email"), name="unique_email"),
         ]
 
     def __str__(self):
@@ -71,23 +68,20 @@ class User(AbstractUser):
 
 class Team(BaseModel):
     name = models.CharField(
-        _('name'),
+        _("name"),
         max_length=255,
     )
     members = models.ManyToManyField(
         User,
-        verbose_name=_('members'),
-        through='TeamMember',
-        related_name='teams',
+        verbose_name=_("members"),
+        through="TeamMember",
+        related_name="teams",
     )
     stripe_customer_id = models.CharField(
-        _('stripe customer id'),
-        max_length=255,
-        null=True,
-        blank=True
+        _("stripe customer id"), max_length=255, null=True, blank=True
     )
     is_default = models.BooleanField(
-        _('is default'),
+        _("is default"),
         default=False,
     )
 
@@ -97,24 +91,24 @@ class Team(BaseModel):
     @property
     def owner(self):
         team_member = TeamMember.objects.filter(team=self).filter(is_owner=True).first()
-        return team_member.user if team_member else self.members.order_by('id').first()
+        return team_member.user if team_member else self.members.order_by("id").first()
 
 
 class TeamMember(BaseModel):
     user = models.ForeignKey(
         User,
-        verbose_name=_('user'),
+        verbose_name=_("user"),
         on_delete=models.CASCADE,
-        related_name='member_teams',
+        related_name="member_teams",
     )
     team = models.ForeignKey(
         Team,
-        verbose_name=_('team'),
+        verbose_name=_("team"),
         on_delete=models.CASCADE,
-        related_name='team_members',
+        related_name="team_members",
     )
     is_owner = models.BooleanField(
-        _('is owner'),
+        _("is owner"),
         default=False,
     )
 
@@ -125,16 +119,16 @@ class TeamMember(BaseModel):
 class TeamInvitation(BaseModel):
     team = models.ForeignKey(
         Team,
-        verbose_name=_('team'),
+        verbose_name=_("team"),
         on_delete=models.CASCADE,
-        related_name='invitations',
+        related_name="invitations",
     )
     email = models.EmailField(
-        _('email address'),
+        _("email address"),
         db_index=True,
     )
     activated = models.BooleanField(
-        _('activated'),
+        _("activated"),
         default=False,
     )
 
@@ -142,28 +136,25 @@ class TeamInvitation(BaseModel):
         return self.email
 
     class Meta:
-        unique_together = ('team', 'email')
+        unique_together = ("team", "email")
 
 
 class TeamAPIKey(BaseModel):
     name = models.CharField(
-        _('name'),
+        _("name"),
         max_length=255,
     )
     team = models.ForeignKey(
         Team,
-        verbose_name=_('team'),
+        verbose_name=_("team"),
         on_delete=models.CASCADE,
-        related_name='api_keys',
+        related_name="api_keys",
     )
     key = models.CharField(
-        _('key'),
-        max_length=255,
-        unique=True,
-        default=generate_random_api_key
+        _("key"), max_length=255, unique=True, default=generate_random_api_key
     )
     last_used_at = models.DateTimeField(
-        _('last used at'),
+        _("last used at"),
         null=True,
         blank=True,
     )

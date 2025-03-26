@@ -14,18 +14,17 @@ import watercrawl
 class EventStreamResponse(StreamingHttpResponse):
     def __init__(self, generator: Generator):
         self.generator = generator
-        super().__init__(self.callback(), content_type='text/event-stream')
-        self['Cache-Control'] = 'no-cache'
-        self['X-Accel-Buffering'] = 'no'
+        super().__init__(self.callback(), content_type="text/event-stream")
+        self["Cache-Control"] = "no-cache"
+        self["X-Accel-Buffering"] = "no"
 
     def callback(self):
         for event in self.generator:
             data = json.dumps(event)
-            yield f'data: {data}\n\n'
+            yield f"data: {data}\n\n"
 
 
 class FrontendSettingService:
-
     @cached_property
     def is_enterprise_mode_active(self):
         return settings.IS_ENTERPRISE_MODE_ACTIVE
@@ -85,7 +84,7 @@ class EmailService:
         self.tos = []
         self.ccs = []
         self.bccs = []
-        self.subject = ''
+        self.subject = ""
         self.body = None
         self.html = None
         self.attachments = []
@@ -93,10 +92,7 @@ class EmailService:
     def send(self):
         self.validate()
         email = EmailMultiAlternatives(
-            self.subject,
-            self.__process_body(),
-            self.from_email,
-            self.tos
+            self.subject, self.__process_body(), self.from_email, self.tos
         )
         if self.html:
             email.attach_alternative(self.html, "text/html")
@@ -104,11 +100,11 @@ class EmailService:
 
     def validate(self):
         if not self.tos:
-            raise ValueError('No recipient provided')
+            raise ValueError("No recipient provided")
         if not self.subject:
-            raise ValueError('No subject provided')
+            raise ValueError("No subject provided")
         if not self.body and not self.html:
-            raise ValueError('No body or html provided')
+            raise ValueError("No body or html provided")
 
     def add_to(self, to):
         self.tos.append(to)

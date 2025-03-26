@@ -6,18 +6,16 @@ from watercrawl_plugin import AbstractPlugin
 
 
 def generate_crawl_result_file_path(instance, filename):
-    return 'crawls/{}/results/{}.json'.format(instance.request_id, instance.pk)
+    return "crawls/{}/results/{}.json".format(instance.request_id, instance.pk)
 
 
 def generate_crawl_result_attachment_path(instance, filename):
-    return 'crawls/{}/results/{}/attachments/{}'.format(
-        instance.crawl_result.request_id,
-        instance.crawl_result.uuid,
-        filename
+    return "crawls/{}/results/{}/attachments/{}".format(
+        instance.crawl_result.request_id, instance.crawl_result.uuid, filename
     )
 
 
-def get_active_plugins() -> List[Type['AbstractPlugin']]:
+def get_active_plugins() -> List[Type["AbstractPlugin"]]:
     """
     Get a list of active plugins
     :return: AbstractPlugin[]
@@ -25,10 +23,10 @@ def get_active_plugins() -> List[Type['AbstractPlugin']]:
     result = []
     plugins = settings.WATERCRAWL_PLUGINS
     if not isinstance(plugins, list):
-        plugins = plugins.split(',')
+        plugins = plugins.split(",")
 
     for plugin_class in plugins:
-        module_name, class_name = plugin_class.rsplit('.', 1)
+        module_name, class_name = plugin_class.rsplit(".", 1)
 
         # Import the module
         module = importlib.import_module(module_name)

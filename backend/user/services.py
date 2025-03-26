@@ -42,34 +42,45 @@ class ForgotPasswordService:
     @classmethod
     def make_with_reset_password_token(cls, token: str):
         return cls(
-            User.objects.filter(
-                reset_password_expires_at__gt=timezone.now()
-            ).get(reset_password_token=token)
+            User.objects.filter(reset_password_expires_at__gt=timezone.now()).get(
+                reset_password_token=token
+            )
         )
 
     def reset_password(self, new_password: str):
         self.user.set_password(new_password)
         self.user.reset_password_token = None
         self.user.reset_password_expires_at = None
-        self.user.save(update_fields=['password', 'reset_password_token', 'reset_password_expires_at'])
+        self.user.save(
+            update_fields=[
+                "password",
+                "reset_password_token",
+                "reset_password_expires_at",
+            ]
+        )
         return self
 
     def send_reset_password_email(self):
         (
             EmailService()
-            .set_subject('Reset your password')
+            .set_subject("Reset your password")
             .add_to(self.user.email)
-            .set_template('user/reset_password.html', {'link': self.get_link()})
+            .set_template("user/reset_password.html", {"link": self.get_link()})
             .send()
         )
 
     def get_link(self):
-        return urljoin(settings.FRONTEND_URL, f'/reset-password/{self.generate_reset_password_token()}')
+        return urljoin(
+            settings.FRONTEND_URL,
+            f"/reset-password/{self.generate_reset_password_token()}",
+        )
 
     def generate_reset_password_token(self):
         self.user.reset_password_token = get_random_string(length=64)
         self.user.reset_password_expires_at = timezone.now() + timedelta(hours=1)
-        self.user.save(update_fields=['reset_password_token', 'reset_password_expires_at'])
+        self.user.save(
+            update_fields=["reset_password_token", "reset_password_expires_at"]
+        )
         return self.user.reset_password_token
 
 
@@ -86,11 +97,17 @@ class TeamService:
         team_api_key = TeamAPIKey.objects.get(key=api_key)
         if update_last_used_at:
             team_api_key.last_used_at = timezone.now()
-            team_api_key.save(update_fields=['last_used_at'])
+            team_api_key.save(update_fields=["last_used_at"])
         return cls(team_api_key.team)
 
     @classmethod
-    def create_team(cls, user: User, name: str = 'Default', is_owner: bool = True, is_default: bool = False):
+    def create_team(
+        cls,
+        user: User,
+        name: str = "Default",
+        is_owner: bool = True,
+        is_default: bool = False,
+    ):
         team = Team.objects.create(name=name, is_default=is_default)
         APIKeyService.create_api_key(team)
         return cls(team).add_user(user, is_owner)
@@ -101,16 +118,18 @@ class TeamService:
 
     @classmethod
     def create_or_get_default_team(cls, user: User):
-        with redis_lock(f'create_or_get_default_team_{user.pk}'):
-            team = user.teams.order_by('created_at').first()
+        with redis_lock(f"create_or_get_default_team_{user.pk}"):
+            team = user.teams.order_by("created_at").first()
             if team:
                 return cls(team)
             return cls.create_team(user, is_owner=True, is_default=True)
 
     def invite(self, email: str):
         if self.team.members.filter(email__iexact=email).exists():
-            raise ValidationError('User is already a member of the team')
-        invitation, _ = self.team.invitations.update_or_create(email=email, defaults={'activated': False})
+            raise ValidationError("User is already a member of the team")
+        invitation, _ = self.team.invitations.update_or_create(
+            email=email, defaults={"activated": False}
+        )
         return invitation
 
 
@@ -123,12 +142,12 @@ class APIKeyService:
         return cls(TeamAPIKey.objects.get(pk=api_key_pk))
 
     @classmethod
-    def create_api_key(cls, team: Team, name: str = 'Default'):
+    def create_api_key(cls, team: Team, name: str = "Default"):
         return cls(TeamAPIKey.objects.create(team=team, name=name))
 
     def reset_api_key(self):
         self.api_key.key = generate_random_api_key()
-        self.api_key.save(update_fields=['key'])
+        self.api_key.save(update_fields=["key"])
         return self
 
 
@@ -143,19 +162,19 @@ class TeamInvitationService:
     def send_invitation_email(self):
         (
             EmailService()
-            .set_subject('Join our team')
+            .set_subject("Join our team")
             .add_to(self.invitation.email)
-            .set_template('user/team_invitation.html', {
-                'link': self.get_link(),
-                'team_name': self.invitation.team.name
-            })
+            .set_template(
+                "user/team_invitation.html",
+                {"link": self.get_link(), "team_name": self.invitation.team.name},
+            )
             .send()
         )
 
     @atomic
     def accept_invitation(self, user: User):
         self.invitation.activated = True
-        self.invitation.save(update_fields=['activated'])
+        self.invitation.save(update_fields=["activated"])
         TeamService(self.invitation.team).add_user(user)
         return self
 
@@ -181,30 +200,32 @@ class VerificationService:
             return cls(User.objects.get(email__iexact=email))
         except User.DoesNotExist:
             if raise_error:
-                raise ValidationError('User does not exist')
+                raise ValidationError("User does not exist")
             return None
 
     def send_verification_email(self):
         (
             EmailService()
-            .set_subject('Verify your email')
+            .set_subject("Verify your email")
             .add_to(self.user.email)
-            .set_template('user/verify_email.html', {'link': self.get_link()})
+            .set_template("user/verify_email.html", {"link": self.get_link()})
             .send()
         )
 
     def get_link(self):
-        return urljoin(settings.FRONTEND_URL, f'/verify-email/{self.generate_verification_token()}')
+        return urljoin(
+            settings.FRONTEND_URL, f"/verify-email/{self.generate_verification_token()}"
+        )
 
     def generate_verification_token(self):
         self.user.email_verification_token = get_random_string(length=64)
-        self.user.save(update_fields=['email_verification_token'])
+        self.user.save(update_fields=["email_verification_token"])
         return self.user.email_verification_token
 
     def verify_email(self):
         self.user.email_verified = True
         self.user.email_verification_token = None
-        self.user.save(update_fields=['email_verified', 'email_verification_token'])
+        self.user.save(update_fields=["email_verified", "email_verification_token"])
         return self
 
 
@@ -219,8 +240,8 @@ class AbsractOAuth2Service:
             return UserService.create_user(
                 email=email,
                 password=None,
-                first_name=first_name or '',
-                last_name=last_name or ''
+                first_name=first_name or "",
+                last_name=last_name or "",
             )
 
 
@@ -228,14 +249,14 @@ class GoogleOAuthService(AbsractOAuth2Service):
     def authenticate(self, token):
         try:
             response = requests.get(
-                'https://www.googleapis.com/oauth2/v3/userinfo',
-                headers={
-                    'Authorization': f'Bearer {token}'
-                }
+                "https://www.googleapis.com/oauth2/v3/userinfo",
+                headers={"Authorization": f"Bearer {token}"},
             )
             response.raise_for_status()
             data = response.json()
-            return self.get_or_create_user(data['email'], data['given_name'], data['family_name'])
+            return self.get_or_create_user(
+                data["email"], data["given_name"], data["family_name"]
+            )
         except requests.RequestException:
             return None
 
@@ -244,14 +265,13 @@ class GoogleSigninButtonService(AbsractOAuth2Service):
     def authenticate(self, token):
         try:
             response = requests.get(
-                'https://oauth2.googleapis.com/tokeninfo',
-                params={
-                    'id_token': token
-                }
+                "https://oauth2.googleapis.com/tokeninfo", params={"id_token": token}
             )
             response.raise_for_status()
             data = response.json()
-            return self.get_or_create_user(data['email'], data['given_name'], data['family_name'])
+            return self.get_or_create_user(
+                data["email"], data["given_name"], data["family_name"]
+            )
         except requests.RequestException:
             return None
 
@@ -260,28 +280,24 @@ class GithubOAuthService(AbsractOAuth2Service):
     def authenticate(self, token) -> UserService or None:
         try:
             response = requests.post(
-                'https://github.com/login/oauth/access_token',
+                "https://github.com/login/oauth/access_token",
                 data={
-                    'client_id': settings.GITHUB_CLIENT_ID,
-                    'client_secret': settings.GITHUB_CLIENT_SECRET,
-                    'code': token,
+                    "client_id": settings.GITHUB_CLIENT_ID,
+                    "client_secret": settings.GITHUB_CLIENT_SECRET,
+                    "code": token,
                 },
-                headers={
-                    'Accept': 'application/json'
-                }
+                headers={"Accept": "application/json"},
             )
             response.raise_for_status()
             data = response.json()
-            access_token = data['access_token']
+            access_token = data["access_token"]
             response = requests.get(
-                'https://api.github.com/user/emails',
-                headers={
-                    'Authorization': f'token {access_token}'
-                }
+                "https://api.github.com/user/emails",
+                headers={"Authorization": f"token {access_token}"},
             )
             response.raise_for_status()
             data = response.json()
-            email = next(email['email'] for email in data if email['primary'])
+            email = next(email["email"] for email in data if email["primary"])
             if not email:
                 return None
             return self.get_or_create_user(email)
@@ -290,11 +306,11 @@ class GithubOAuthService(AbsractOAuth2Service):
 
 
 def oauth_service_factory(provider: str) -> AbsractOAuth2Service:
-    if provider == 'github':
+    if provider == "github":
         return GithubOAuthService()
-    elif provider == 'google':
+    elif provider == "google":
         return GoogleOAuthService()
-    elif provider == 'google-signin':
+    elif provider == "google-signin":
         return GoogleSigninButtonService()
     else:
-        raise ValueError(f'Unknown provider: {provider}')
+        raise ValueError(f"Unknown provider: {provider}")

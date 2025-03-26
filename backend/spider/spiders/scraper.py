@@ -8,7 +8,7 @@ from spider.items import ScrapedItem
 
 
 class SiteScrapper(Spider):
-    name = 'SiteScrapper'
+    name = "SiteScrapper"
     allowed_domains = []
 
     def __init__(self, crawl_request_uuid, *args, **kwargs):
@@ -20,7 +20,9 @@ class SiteScrapper(Spider):
 
     def init_plugins(self):
         for plugin in settings.PLUGINS:
-            validator = plugin.make_input_validator(self.crawler_service.crawl_request.options)
+            validator = plugin.make_input_validator(
+                self.crawler_service.crawl_request.options
+            )
             self.plugin_validators[validator.plugin.plugin_key()] = validator
 
     def start_requests(self) -> Iterable[Request]:
@@ -30,15 +32,13 @@ class SiteScrapper(Spider):
         )
 
     def parse(self, response, **kwargs):
-        links = response.css('a::attr(href)').getall()
+        links = response.css("a::attr(href)").getall()
         result_links = []
         for link in links:
-            link = link if link.startswith('http') else response.urljoin(link)
+            link = link if link.startswith("http") else response.urljoin(link)
             if not self.helpers.is_allowed_path(link):
                 continue
-            result_links.append(
-                link
-            )
+            result_links.append(link)
             yield response.follow(link, callback=self.parse)
 
         yield self.__process_response(response, sorted(set(result_links)))
@@ -60,13 +60,15 @@ class SiteScrapper(Spider):
                 meta_data[property] = content  # Store by 'property'
 
         # add title to meta data
-        meta_data['title'] = response.xpath("//title/text()").get()
+        meta_data["title"] = response.xpath("//title/text()").get()
 
         item = ScrapedItem()
-        item['url'] = response.url
-        item['links'] = links or []
-        item['metadata'] = meta_data
-        item['html'] = response.text
-        item['crawl_request_uuid'] = self.crawler_service.crawl_request.uuid
-        item['attachments'] = response.meta['attachments'] if 'attachments' in response.meta else []
+        item["url"] = response.url
+        item["links"] = links or []
+        item["metadata"] = meta_data
+        item["html"] = response.text
+        item["crawl_request_uuid"] = self.crawler_service.crawl_request.uuid
+        item["attachments"] = (
+            response.meta["attachments"] if "attachments" in response.meta else []
+        )
         return item

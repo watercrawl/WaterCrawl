@@ -21,7 +21,7 @@ export const EmailVerificationPopup: React.FC<EmailVerificationPopupProps> = ({ 
             // setResendMessage('Verification email has been resent. Please check your inbox.');
             toast.success('Verification email has been resent. Please check your inbox.');
             onClose();
-        } catch (error) {
+        } catch (_error) {
             setResendMessage('Failed to resend verification email. Please try again.');
         } finally {
             setIsResending(false);

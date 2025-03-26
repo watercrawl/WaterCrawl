@@ -1,9 +1,10 @@
 """Documentation strings for core API endpoints."""
+
 from django.utils.translation import gettext_lazy as _
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import OpenApiParameter
 
-CRAWL_REQUEST_CREATE = '''
+CRAWL_REQUEST_CREATE = """
 Start a new web crawling task with specified configuration.
 
 This endpoint allows you to:
@@ -14,9 +15,9 @@ This endpoint allows you to:
 
 The crawl request will be processed asynchronously. 
 you will receive a task ID that you can use to track the progress of the crawl.
-'''
+"""
 
-CRAWL_REQUEST_LIST = '''
+CRAWL_REQUEST_LIST = """
 Retrieve a list of all crawl requests for your team.
 
 The response includes:
@@ -40,18 +41,18 @@ Extra filters:
 - created_at__gt: Filter requests by creation date (greater than)
 - created_at__lt: Filter requests by creation date (less than)
 
-'''
+"""
 
-CRAWL_REQUEST_RETRIEVE = '''
+CRAWL_REQUEST_RETRIEVE = """
 Get detailed information about a specific crawl request.
 
 Returns comprehensive information including:
 - Current status and progress
 - Configuration settings used
 - Resource usage statistics
-'''
+"""
 
-CRAWL_REQUEST_DESTROY = '''
+CRAWL_REQUEST_DESTROY = """
 Cancel an active crawling task.
 
 This will:
@@ -61,13 +62,13 @@ This will:
 - Mark the request as cancelled
 
 Note: Cancelled requests cannot be resumed.
-'''
+"""
 
-CRAWL_REQUEST_DOWNLOAD = '''
+CRAWL_REQUEST_DOWNLOAD = """
 Download the results of a completed crawl request as a JSON file.
-'''
+"""
 
-CRAWL_REQUEST_CHECK_STATUS = '''
+CRAWL_REQUEST_CHECK_STATUS = """
 Real-time status monitoring using Server-Sent Events (SSE).
 
 The endpoint streams updates every second with:
@@ -87,9 +88,9 @@ Connection remains open until:
 Query Parameters:
 - prefetched: If you set this to True, you will get the result json instead of a download link. Default is False
 
-'''
+"""
 
-CRAWL_RESULT_LIST = '''
+CRAWL_RESULT_LIST = """
 List all crawl results associated with your team's crawl requests.
 
 The response includes:
@@ -113,9 +114,9 @@ Extra filters:
 - created_at__lt: Filter results by creation date (less than or equal to)
 
 Results are paginated and can be filtered by crawl request.
-'''
+"""
 
-CRAWL_RESULT_RETRIEVE = '''
+CRAWL_RESULT_RETRIEVE = """
 Get detailed information about a specific crawl result.
 
 Returns:
@@ -123,9 +124,9 @@ Returns:
 - Crawling metadata
 - Performance metrics
 - Resource usage statistics
-'''
+"""
 
-USAGE_REPORT = '''
+USAGE_REPORT = """
 Get detailed usage statistics for your team.
 
 The report includes:
@@ -136,9 +137,9 @@ The report includes:
 - Plan limits and remaining credits
 
 Default period is last 30 days.
-'''
+"""
 
-PLUGIN_LIST = '''
+PLUGIN_LIST = """
 Get a list of available plugins for data extraction.
 
 Each plugin includes:
@@ -149,50 +150,74 @@ Each plugin includes:
 - Usage examples
 
 Use these schemas to configure your crawl requests.
-'''
+"""
 
 ####### PARAMETERS #######
 CRAWL_REQUEST_LIST_PARAMETERS = [
     OpenApiParameter(
-        'uuid', OpenApiTypes.STR, OpenApiParameter.QUERY, description=_('Filter crawl requests by UUID.')
+        "uuid",
+        OpenApiTypes.STR,
+        OpenApiParameter.QUERY,
+        description=_("Filter crawl requests by UUID."),
     ),
     OpenApiParameter(
-        'url', OpenApiTypes.STR, OpenApiParameter.QUERY, description=_('Filter crawl requests by start URL.')
+        "url",
+        OpenApiTypes.STR,
+        OpenApiParameter.QUERY,
+        description=_("Filter crawl requests by start URL."),
     ),
     OpenApiParameter(
-        'status', OpenApiTypes.STR, OpenApiParameter.QUERY, description=_('Filter crawl requests by status.')
+        "status",
+        OpenApiTypes.STR,
+        OpenApiParameter.QUERY,
+        description=_("Filter crawl requests by status."),
     ),
     OpenApiParameter(
-        'created_at', OpenApiTypes.DATETIME, OpenApiParameter.QUERY, description=_('Filter crawl requests by date')
+        "created_at",
+        OpenApiTypes.DATETIME,
+        OpenApiParameter.QUERY,
+        description=_("Filter crawl requests by date"),
     ),
 ]
 
 CRAWL_RESULTS_PARAMETERS = [
     OpenApiParameter(
-        'prefetched',
+        "prefetched",
         OpenApiTypes.BOOL,
         OpenApiParameter.QUERY,
-        description=_('Prefetch crawl results. Default: False.')
+        description=_("Prefetch crawl results. Default: False."),
     ),
     OpenApiParameter(
-        'url', OpenApiTypes.STR, OpenApiParameter.QUERY, description=_('Filter crawl results by URL.')
+        "url",
+        OpenApiTypes.STR,
+        OpenApiParameter.QUERY,
+        description=_("Filter crawl results by URL."),
     ),
     OpenApiParameter(
-        'created_at', OpenApiTypes.DATETIME, OpenApiParameter.QUERY, description=_('Filter crawl results by date')
+        "created_at",
+        OpenApiTypes.DATETIME,
+        OpenApiParameter.QUERY,
+        description=_("Filter crawl results by date"),
     ),
 ]
 
 CRAWL_REQUEST_CHECK_STATUS_PARAMETERS = [
     OpenApiParameter(
-        'prefetched', OpenApiTypes.BOOL, OpenApiParameter.QUERY,
-        description=_('Prefetch crawl results. Default: False.')
+        "prefetched",
+        OpenApiTypes.BOOL,
+        OpenApiParameter.QUERY,
+        description=_("Prefetch crawl results. Default: False."),
     )
 ]
 
 CRAWL_REQUEST_DOWNLOAD_PARAMETERS = [
     OpenApiParameter(
-        'output_format', OpenApiTypes.STR, OpenApiParameter.QUERY,
-        enum=['markdown', 'json'],
-        description=_('Format of the download file. Default: json. Available formats: markdown, json.')
+        "output_format",
+        OpenApiTypes.STR,
+        OpenApiParameter.QUERY,
+        enum=["markdown", "json"],
+        description=_(
+            "Format of the download file. Default: json. Available formats: markdown, json."
+        ),
     )
 ]

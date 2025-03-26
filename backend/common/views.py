@@ -9,15 +9,14 @@ from rest_framework.views import APIView
 
 from common import serializers, docs
 from common.services import FrontendSettingService
-from django.utils.translation import gettext_lazy as _
 from user.permissions import IsAuthenticatedTeam
 
 
 @extend_schema_view(
     get=extend_schema(
-        summary=_('Frontend Setting'),
-        description=_('Retrieve the frontend setting.'),
-        tags=['Common'],
+        summary=_("Frontend Setting"),
+        description=_("Retrieve the frontend setting."),
+        tags=["Common"],
         responses={200: serializers.SettingSerializer},
     ),
 )
@@ -33,29 +32,27 @@ class SettingAPIView(APIView):
 
 
 class CustomSchemaGenerator(SchemaGenerator):
-
     def get_schema(self, request=None, public=False):
         schema = super().get_schema(request, public)
-        
+
         # Add custom documentation
-        schema['info']['description'] = docs.API_DESCRIPTION
-        
+        schema["info"]["description"] = docs.API_DESCRIPTION
+
         # Add security scheme for API Key
-        schema['components']['securitySchemes'] = {
-            'ApiKeyAuth': {
-                'type': 'apiKey',
-                'in': 'header',
-                'name': 'X-API-Key',
-                'description': docs.API_KEY_DESCRIPTION
+        schema["components"]["securitySchemes"] = {
+            "ApiKeyAuth": {
+                "type": "apiKey",
+                "in": "header",
+                "name": "X-API-Key",
+                "description": docs.API_KEY_DESCRIPTION,
             }
         }
-        
-        for path in schema['paths'].values():
+
+        for path in schema["paths"].values():
             for operation in path.values():
                 if isinstance(operation, dict):
-                    operation['security'] = [{'ApiKeyAuth': []}]
-        
-      
+                    operation["security"] = [{"ApiKeyAuth": []}]
+
         return schema
 
     def _get_paths_and_endpoints(self):
@@ -67,20 +64,23 @@ class CustomSchemaGenerator(SchemaGenerator):
             view = self.create_view(callback, method)
             path = self.coerce_path(path, method, view)
             # Filter and return APIs that only require API key authentication
-            if IsAuthenticatedTeam in view.permission_classes and IsAuthenticated not in view.permission_classes:
+            if (
+                IsAuthenticatedTeam in view.permission_classes
+                and IsAuthenticated not in view.permission_classes
+            ):
                 view_endpoints.append((path, path_regex, method, view))
         return view_endpoints
 
 
 class TeamSchemaView(SpectacularAPIView):
     generator_class = CustomSchemaGenerator
-    
+
     def get_customizations(self):
         return {
-            'theme': {
-                'colors': {
-                    'primary': {
-                        'main': '#1976d2'  # Blue color for the theme
+            "theme": {
+                "colors": {
+                    "primary": {
+                        "main": "#1976d2"  # Blue color for the theme
                     }
                 }
             }

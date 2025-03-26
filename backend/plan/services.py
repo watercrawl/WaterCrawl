@@ -11,7 +11,13 @@ from rest_framework.exceptions import PermissionDenied
 
 from core.models import CrawlRequest
 from plan import consts
-from plan.models import Plan, Subscription, SubscriptionPayment, StripeWebhookHistory, UsageHistory
+from plan.models import (
+    Plan,
+    Subscription,
+    SubscriptionPayment,
+    StripeWebhookHistory,
+    UsageHistory,
+)
 from user.models import Team
 
 
@@ -106,10 +112,9 @@ class TeamPlanAbstractService(ABC):
 
 
 class TeamPlanUnlimitedService(TeamPlanAbstractService):
-
     @property
     def plan_name(self):
-        return _('Unlimited')
+        return _("Unlimited")
 
     @property
     def status(self):
@@ -185,7 +190,7 @@ class TeamPlanEnterpriseService(TeamPlanAbstractService, ABC):
         if current:
             return current
 
-        raise PermissionDenied(_('You have no active subscription'))
+        raise PermissionDenied(_("You have no active subscription"))
 
     @property
     def plan_name(self):
@@ -258,10 +263,14 @@ class TeamPlanEnterpriseService(TeamPlanAbstractService, ABC):
 
     @atomic
     def balance_page_credit(self, amount: int):
-        if amount == 0 or (self.remaining_page_credit == -1 and self.remaining_daily_page_credit == -1):
+        if amount == 0 or (
+            self.remaining_page_credit == -1 and self.remaining_daily_page_credit == -1
+        ):
             return
 
-        subscription = Subscription.objects.select_for_update().get(pk=self.subscription.pk)
+        subscription = Subscription.objects.select_for_update().get(
+            pk=self.subscription.pk
+        )
 
         if self.remaining_page_credit != -1:
             subscription.remain_page_credit -= amount
@@ -269,13 +278,20 @@ class TeamPlanEnterpriseService(TeamPlanAbstractService, ABC):
         if self.remaining_daily_page_credit != -1:
             subscription.remain_daily_page_credit -= amount
 
-        subscription.save(update_fields=['remain_page_credit', 'remain_daily_page_credit'])
+        subscription.save(
+            update_fields=["remain_page_credit", "remain_daily_page_credit"]
+        )
 
 
-TeamPlanService = TeamPlanEnterpriseService if settings.IS_ENTERPRISE_MODE_ACTIVE else TeamPlanUnlimitedService
+TeamPlanService = (
+    TeamPlanEnterpriseService
+    if settings.IS_ENTERPRISE_MODE_ACTIVE
+    else TeamPlanUnlimitedService
+)
 
 
 ##### Subscription
+
 
 class SubscriptionService:
     def __init__(self, subscription: Subscription):
@@ -289,35 +305,42 @@ class SubscriptionService:
 
     @classmethod
     def convert_timestamp_to_datetime(cls, timestamp):
-        return timezone.make_aware(
-            datetime.datetime.fromtimestamp(timestamp),
-            timezone.get_current_timezone()
-        ) if timestamp else None
+        return (
+            timezone.make_aware(
+                datetime.datetime.fromtimestamp(timestamp),
+                timezone.get_current_timezone(),
+            )
+            if timestamp
+            else None
+        )
 
     @classmethod
     def create_subscription(
-            cls,
-            team,
-            plan,
-            status,
-            stripe_subscription_id,
-            start_at=None,
-            current_period_start_at=None,
-            current_period_end_at=None,
+        cls,
+        team,
+        plan,
+        status,
+        stripe_subscription_id,
+        start_at=None,
+        current_period_start_at=None,
+        current_period_end_at=None,
     ):
-
         subscription, created = Subscription.objects.update_or_create(
             stripe_subscription_id=stripe_subscription_id,
             defaults=dict(
                 team=team,
                 plan=plan,
                 start_at=cls.convert_timestamp_to_datetime(start_at),
-                current_period_start_at=cls.convert_timestamp_to_datetime(current_period_start_at),
-                current_period_end_at=cls.convert_timestamp_to_datetime(current_period_end_at),
+                current_period_start_at=cls.convert_timestamp_to_datetime(
+                    current_period_start_at
+                ),
+                current_period_end_at=cls.convert_timestamp_to_datetime(
+                    current_period_end_at
+                ),
                 remain_page_credit=plan.page_credit,
                 remain_daily_page_credit=plan.daily_page_credit,
                 status=status,
-            )
+            ),
         )
 
         return cls(subscription)
@@ -325,20 +348,20 @@ class SubscriptionService:
     @classmethod
     @atomic
     def updated_subscription(
-            cls,
-            team: Team,
-            plan: Plan,
-            stripe_subscription_id: str,
-            status: str,
-            current_period_start_at,
-            current_period_end_at,
-            cancel_at=None
+        cls,
+        team: Team,
+        plan: Plan,
+        stripe_subscription_id: str,
+        status: str,
+        current_period_start_at,
+        current_period_end_at,
+        cancel_at=None,
     ):
-
-        subscription = Subscription.objects.select_for_update().filter(
-            team=team,
-            stripe_subscription_id=stripe_subscription_id
-        ).first()  # type: Subscription
+        subscription = (
+            Subscription.objects.select_for_update()
+            .filter(team=team, stripe_subscription_id=stripe_subscription_id)
+            .first()
+        )  # type: Subscription
 
         old_plan = subscription.plan
         subscription.plan = plan
@@ -351,21 +374,33 @@ class SubscriptionService:
 
             # if upgrade to upper plan we have to balance the page credit
             else:
-                used_page_credit = old_plan.page_credit - subscription.remain_page_credit
+                used_page_credit = (
+                    old_plan.page_credit - subscription.remain_page_credit
+                )
                 subscription.remain_page_credit = plan.page_credit - used_page_credit
 
-                used_daily_page_credit = old_plan.daily_page_credit - subscription.remain_daily_page_credit
-                subscription.remain_daily_page_credit = plan.daily_page_credit - used_daily_page_credit
-
+                used_daily_page_credit = (
+                    old_plan.daily_page_credit - subscription.remain_daily_page_credit
+                )
+                subscription.remain_daily_page_credit = (
+                    plan.daily_page_credit - used_daily_page_credit
+                )
 
         # New period started we have to reset the page credit
-        elif cls.convert_timestamp_to_datetime(current_period_start_at) != subscription.current_period_start_at:
+        elif (
+            cls.convert_timestamp_to_datetime(current_period_start_at)
+            != subscription.current_period_start_at
+        ):
             subscription.remain_daily_page_credit = plan.daily_page_credit
             subscription.remain_page_credit = plan.page_credit
 
         subscription.status = status
-        subscription.current_period_start_at = cls.convert_timestamp_to_datetime(current_period_start_at)
-        subscription.current_period_end_at = cls.convert_timestamp_to_datetime(current_period_end_at)
+        subscription.current_period_start_at = cls.convert_timestamp_to_datetime(
+            current_period_start_at
+        )
+        subscription.current_period_end_at = cls.convert_timestamp_to_datetime(
+            current_period_end_at
+        )
         subscription.cancel_at = cls.convert_timestamp_to_datetime(cancel_at)
 
         subscription.save()
@@ -373,7 +408,9 @@ class SubscriptionService:
         return cls(subscription)
 
     def reset_daily_page_credit(self, commit=True):
-        self.subscription.remain_daily_page_credit = self.subscription.plan.daily_page_credit
+        self.subscription.remain_daily_page_credit = (
+            self.subscription.plan.daily_page_credit
+        )
         if commit:
             self.subscription.save()
         return self
@@ -386,7 +423,7 @@ class SubscriptionService:
         return self
 
     @classmethod
-    def make_by_stripe_subscription_id(cls, subscription_id) -> 'SubscriptionService':
+    def make_by_stripe_subscription_id(cls, subscription_id) -> "SubscriptionService":
         return cls(Subscription.objects.get(stripe_subscription_id=subscription_id))
 
     def add_payment(self, amount, stripe_payment_id, status):
@@ -394,12 +431,11 @@ class SubscriptionService:
             subscription=self.subscription,
             amount=amount,
             stripe_payment_id=stripe_payment_id,
-            status=status
+            status=status,
         )
 
 
 class StripeService:
-
     def __init__(self):
         stripe.api_key = settings.STRIPE_SECRET_KEY
         self.client = stripe
@@ -409,11 +445,7 @@ class StripeService:
             return self.client.Customer.retrieve(team.stripe_customer_id)
 
         customer = self.client.Customer.create(
-            name=team.name,
-            email=team.owner.email,
-            metadata={
-                'team_id': str(team.uuid)
-            }
+            name=team.name, email=team.owner.email, metadata={"team_id": str(team.uuid)}
         )
 
         team.stripe_customer_id = customer.id
@@ -421,41 +453,41 @@ class StripeService:
 
         return customer
 
-    def get_return_url(self, state=None, path='stripe-callback/'):
+    def get_return_url(self, state=None, path="stripe-callback/"):
         if state:
-            return f'{settings.FRONTEND_URL}/{path}?state={state}'
-        return f'{settings.FRONTEND_URL}/{path}'
+            return f"{settings.FRONTEND_URL}/{path}?state={state}"
+        return f"{settings.FRONTEND_URL}/{path}"
 
     def handle_webhook_event(self, event_data, save_history=True):
         """Handle Stripe webhook events for subscription management."""
         if save_history:
             StripeWebhookHistory.objects.create(data=event_data)
 
-        event_type = event_data['type']
+        event_type = event_data["type"]
 
-        if event_type == 'checkout.session.completed':
+        if event_type == "checkout.session.completed":
             self._handle_checkout_session_completed(event_data)
-        elif event_type == 'customer.subscription.created':
+        elif event_type == "customer.subscription.created":
             self._handle_subscription_created(event_data)
-        elif event_type == 'customer.subscription.updated':
+        elif event_type == "customer.subscription.updated":
             self._handle_subscription_updated(event_data)
-        elif event_type == 'customer.subscription.deleted':
+        elif event_type == "customer.subscription.deleted":
             self._handle_subscription_updated(event_data)
-        elif event_type == 'invoice.payment_succeeded':
+        elif event_type == "invoice.payment_succeeded":
             self._handle_payment_succeeded(event_data)
-        elif event_type == 'invoice.payment_failed':
+        elif event_type == "invoice.payment_failed":
             self._handle_payment_failed(event_data)
 
     def _handle_checkout_session_completed(self, event_data):
         pass
 
     def __pre_process_webhook(self, event_data):
-        subscription = event_data['data']['object']
+        subscription = event_data["data"]["object"]
         # Find order by subscription ID
-        price_id = subscription['items']['data'][0]['price']['id']
+        price_id = subscription["items"]["data"][0]["price"]["id"]
 
         plan = Plan.objects.get(stripe_price_id=price_id)
-        team = Team.objects.get(stripe_customer_id=subscription['customer'])
+        team = Team.objects.get(stripe_customer_id=subscription["customer"])
 
         return team, plan, subscription
 
@@ -466,11 +498,11 @@ class StripeService:
         SubscriptionService.create_subscription(
             team=team,
             plan=plan,
-            status=subscription['status'],
-            stripe_subscription_id=subscription['id'],
-            start_at=subscription['start_date'],
-            current_period_start_at=subscription['current_period_start'],
-            current_period_end_at=subscription['current_period_end'],
+            status=subscription["status"],
+            stripe_subscription_id=subscription["id"],
+            start_at=subscription["start_date"],
+            current_period_start_at=subscription["current_period_start"],
+            current_period_end_at=subscription["current_period_end"],
         )
 
     def _handle_subscription_updated(self, event_data):
@@ -478,33 +510,37 @@ class StripeService:
         SubscriptionService.updated_subscription(
             team=team,
             plan=plan,
-            stripe_subscription_id=subscription['id'],
-            status=subscription['status'],
-            current_period_start_at=subscription['current_period_start'],
-            current_period_end_at=subscription['current_period_end'],
-            cancel_at=subscription['cancel_at']
+            stripe_subscription_id=subscription["id"],
+            status=subscription["status"],
+            current_period_start_at=subscription["current_period_start"],
+            current_period_end_at=subscription["current_period_end"],
+            cancel_at=subscription["cancel_at"],
         )
 
     def _handle_payment_succeeded(self, event_data):
-        invoice = event_data['data']['object']
+        invoice = event_data["data"]["object"]
 
-        service = SubscriptionService.make_by_stripe_subscription_id(invoice['subscription'])
+        service = SubscriptionService.make_by_stripe_subscription_id(
+            invoice["subscription"]
+        )
 
         service.add_payment(
-            amount=invoice['total'] / 100,
-            stripe_payment_id=invoice['payment_intent'],
-            status=invoice['status']
+            amount=invoice["total"] / 100,
+            stripe_payment_id=invoice["payment_intent"],
+            status=invoice["status"],
         )
 
     def _handle_payment_failed(self, event_data):
-        invoice = event_data['data']['object']
+        invoice = event_data["data"]["object"]
 
-        service = SubscriptionService.make_by_stripe_subscription_id(invoice['subscription'])
+        service = SubscriptionService.make_by_stripe_subscription_id(
+            invoice["subscription"]
+        )
 
         service.add_payment(
-            amount=invoice['total'] / 100,
-            stripe_payment_id=invoice['payment_intent'],
-            status=invoice['status']
+            amount=invoice["total"] / 100,
+            stripe_payment_id=invoice["payment_intent"],
+            status=invoice["status"],
         )
 
     def start_payment(self, plan: Plan, team: Team):
@@ -516,25 +552,27 @@ class StripeService:
         if existing_subscription.plan.price > plan.price:
             raise PermissionDenied(_("You can't downgrade your plan."))
 
-        current = self.client.Subscription.retrieve(existing_subscription.stripe_subscription_id)
+        current = self.client.Subscription.retrieve(
+            existing_subscription.stripe_subscription_id
+        )
 
         return self.start_customer_portal(
             team,
             flow_data={
-                'type': 'subscription_update_confirm',
-                'subscription_update_confirm': {
-                    'subscription': current.id,
-                    'items': [
+                "type": "subscription_update_confirm",
+                "subscription_update_confirm": {
+                    "subscription": current.id,
+                    "items": [
                         {
-                            'id': current['items']['data'][0]['id'],
-                            'price': plan.stripe_price_id,
-                            'quantity': 1
+                            "id": current["items"]["data"][0]["id"],
+                            "price": plan.stripe_price_id,
+                            "quantity": 1,
                         }
-                    ]
-                }
+                    ],
+                },
             },
-            cancel_url=self.get_return_url('payment-cancel'),
-            success_url=self.get_return_url('payment-success')
+            cancel_url=self.get_return_url("payment-cancel"),
+            success_url=self.get_return_url("payment-success"),
         )
 
     def create_session(self, plan: Plan, team: Team):
@@ -542,65 +580,51 @@ class StripeService:
         try:
             session = self.client.checkout.Session.create(
                 customer=customer.id,
-                mode='subscription',
-                success_url=self.get_return_url('payment-success'),
-                cancel_url=self.get_return_url('payment-cancel'),
-                line_items=[
-                    {
-                        'price': plan.stripe_price_id,
-                        'quantity': 1
-                    }
-                ],
-                metadata={
-                    'plan_id': str(plan.uuid),
-                    'team_id': str(team.uuid)
-                },
-                allow_promotion_codes=True
+                mode="subscription",
+                success_url=self.get_return_url("payment-success"),
+                cancel_url=self.get_return_url("payment-cancel"),
+                line_items=[{"price": plan.stripe_price_id, "quantity": 1}],
+                metadata={"plan_id": str(plan.uuid), "team_id": str(team.uuid)},
+                allow_promotion_codes=True,
             )
 
             return session.url
         except Exception as e:
-            raise ValidationError(f'Failed to create checkout session: {str(e)}')
+            raise ValidationError(f"Failed to create checkout session: {str(e)}")
 
     def start_freemium_plan(self, plan: Plan, current_team: Team):
-        existing_subscription = SubscriptionService.get_current_subscription(current_team)
+        existing_subscription = SubscriptionService.get_current_subscription(
+            current_team
+        )
         if existing_subscription:
             raise PermissionDenied(_("Team already has an active subscription."))
 
         customer = self.get_or_create_customer(current_team)
         subscription = self.client.Subscription.create(
-            customer=customer.id,
-            items=[
-                {
-                    'price': plan.stripe_price_id,
-                    'quantity': 1
-                }
-            ]
+            customer=customer.id, items=[{"price": plan.stripe_price_id, "quantity": 1}]
         )
 
         SubscriptionService.create_subscription(
             team=current_team,
             plan=plan,
-            status=subscription['status'],
-            stripe_subscription_id=subscription['id'],
-            start_at=subscription['start_date'],
-            current_period_start_at=subscription['current_period_start'],
-            current_period_end_at=subscription['current_period_end'],
+            status=subscription["status"],
+            stripe_subscription_id=subscription["id"],
+            start_at=subscription["start_date"],
+            current_period_start_at=subscription["current_period_start"],
+            current_period_end_at=subscription["current_period_end"],
         )
 
-    def start_customer_portal(self, team: Team, flow_data=None, cancel_url=None, success_url=None):
+    def start_customer_portal(
+        self, team: Team, flow_data=None, cancel_url=None, success_url=None
+    ):
         customer = self.get_or_create_customer(team)
         if flow_data:
-            flow_data['after_completion'] = {
+            flow_data["after_completion"] = {
                 "type": "redirect",
-                "redirect": {
-                    "return_url": success_url
-                }
+                "redirect": {"return_url": success_url},
             }
         session = self.client.billing_portal.Session.create(
-            return_url=cancel_url,
-            customer=customer.id,
-            flow_data=flow_data
+            return_url=cancel_url, customer=customer.id, flow_data=flow_data
         )
         return session.url
 
@@ -612,26 +636,26 @@ class StripeService:
         if existing_subscription.plan.is_default:
             raise PermissionDenied(_("You cannot cancel freemium plan."))
 
-        subscription = self.client.Subscription.retrieve(existing_subscription.stripe_subscription_id)
+        subscription = self.client.Subscription.retrieve(
+            existing_subscription.stripe_subscription_id
+        )
 
         return self.start_customer_portal(
             team,
             flow_data={
-                'type': 'subscription_cancel',
-                'subscription_cancel': {
-                    'subscription': subscription.id
-                }
+                "type": "subscription_cancel",
+                "subscription_cancel": {"subscription": subscription.id},
             },
-            cancel_url=self.get_return_url(path='dashboard/settings#billing'),
-            success_url=self.get_return_url(path='dashboard/settings#billing')
+            cancel_url=self.get_return_url(path="dashboard/settings#billing"),
+            success_url=self.get_return_url(path="dashboard/settings#billing"),
         )
 
     def manage_subscription(self, team: Team):
         return self.start_customer_portal(
             team,
             flow_data=None,
-            cancel_url=self.get_return_url(path='dashboard/settings#billing'),
-            success_url=self.get_return_url(path='dashboard/settings#billing')
+            cancel_url=self.get_return_url(path="dashboard/settings#billing"),
+            success_url=self.get_return_url(path="dashboard/settings#billing"),
         )
 
     def cancel_subscription_immediately(self, team: Team):
@@ -642,17 +666,19 @@ class StripeService:
         if existing_subscription.plan.is_default:
             raise PermissionDenied(_("You cannot cancel freemium plan."))
 
-        subscription = self.client.Subscription.retrieve(existing_subscription.stripe_subscription_id)
+        subscription = self.client.Subscription.retrieve(
+            existing_subscription.stripe_subscription_id
+        )
         subscription = subscription.delete()
 
         SubscriptionService.updated_subscription(
             team=team,
             plan=existing_subscription.plan,
             stripe_subscription_id=subscription.id,
-            status=subscription['status'],
-            current_period_start_at=subscription['current_period_start'],
-            current_period_end_at=subscription['current_period_end'],
-            cancel_at=subscription['cancel_at']
+            status=subscription["status"],
+            current_period_start_at=subscription["current_period_start"],
+            current_period_end_at=subscription["current_period_end"],
+            cancel_at=subscription["cancel_at"],
         )
 
     def renew_subscription(self, team: Team):
@@ -666,20 +692,21 @@ class StripeService:
         if not existing_subscription.cancel_at:
             raise PermissionDenied(_("This plan is already active."))
 
-        subscription = self.client.Subscription.retrieve(existing_subscription.stripe_subscription_id)
+        subscription = self.client.Subscription.retrieve(
+            existing_subscription.stripe_subscription_id
+        )
 
         subscription = self.client.Subscription.modify(
-            subscription.id,
-            cancel_at_period_end=False
+            subscription.id, cancel_at_period_end=False
         )
         SubscriptionService.updated_subscription(
             team=team,
             plan=existing_subscription.plan,
             stripe_subscription_id=subscription.id,
-            status=subscription['status'],
-            current_period_start_at=subscription['current_period_start'],
-            current_period_end_at=subscription['current_period_end'],
-            cancel_at=subscription['cancel_at']
+            status=subscription["status"],
+            current_period_start_at=subscription["current_period_start"],
+            current_period_end_at=subscription["current_period_end"],
+            cancel_at=subscription["cancel_at"],
         )
 
 
@@ -692,8 +719,10 @@ class UsageHistoryService:
         usage_history = UsageHistory.objects.create(
             team=self.team,
             crawl_request=crawl_request,
-            requested_page_credit=crawl_request.options.get('spider_options', {}).get('page_limit', 1),
-            used_page_credit=0
+            requested_page_credit=crawl_request.options.get("spider_options", {}).get(
+                "page_limit", 1
+            ),
+            used_page_credit=0,
         )
         self.team_plan_service.balance_page_credit(usage_history.requested_page_credit)
 

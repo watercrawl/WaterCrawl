@@ -39,16 +39,16 @@ export const JsonEditorWidget: React.FC<FieldProps> = ({
       }
       const parsedValue = JSON.parse(value);
       onChange(parsedValue);
-    } catch (error) {
+    } catch (_error) {
       // Don't update the value if JSON is invalid
-      console.error('Invalid JSON:', error);
+      console.error('Invalid JSON:', _error);
     }
   }, [onChange]);
 
   const stringifiedValue = React.useMemo(() => {
     try {
       return JSON.stringify(value || {}, null, 2);
-    } catch (error) {
+    } catch (_error) {
       return '';
     }
   }, [value]);

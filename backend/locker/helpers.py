@@ -3,10 +3,10 @@ from redis import Redis
 from django.conf import settings
 
 connection = Redis(
-    host=settings.REDIS_LOCKER_CONFIG['HOST'],
-    port=settings.REDIS_LOCKER_CONFIG['PORT'],
-    db=settings.REDIS_LOCKER_CONFIG['NAME'],
-    password=settings.REDIS_LOCKER_CONFIG['PASSWORD']
+    host=settings.REDIS_LOCKER_CONFIG["HOST"],
+    port=settings.REDIS_LOCKER_CONFIG["PORT"],
+    db=settings.REDIS_LOCKER_CONFIG["NAME"],
+    password=settings.REDIS_LOCKER_CONFIG["PASSWORD"],
 )
 
 
@@ -38,7 +38,9 @@ class RedisLock:
 
     def __enter__(self):
         if not self.acquire():
-            raise TimeoutError(f"Failed to acquire lock '{self.lock_name}' within {self.wait_time} seconds")
+            raise TimeoutError(
+                f"Failed to acquire lock '{self.lock_name}' within {self.wait_time} seconds"
+            )
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

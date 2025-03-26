@@ -5,8 +5,8 @@ from django.conf import settings
 
 from core.utils import get_active_plugins
 
-sys.path.append(os.path.dirname(os.path.abspath('.')))
-os.environ['DJANGO_SETTINGS_MODULE'] = 'watercrawl.settings'
+sys.path.append(os.path.dirname(os.path.abspath(".")))
+os.environ["DJANGO_SETTINGS_MODULE"] = "watercrawl.settings"
 django.setup()
 
 # Scrapy settings for spider project
@@ -61,14 +61,12 @@ SPIDER_MIDDLEWARES = {
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-DOWNLOADER_MIDDLEWARES = {
-    'spider.middlewares.PlaywrightMiddleware': 560
-}
+DOWNLOADER_MIDDLEWARES = {"spider.middlewares.PlaywrightMiddleware": 560}
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
 EXTENSIONS = {
-    'spider.extensions.StopAfterRequestsExtension': 500,
+    "spider.extensions.StopAfterRequestsExtension": 500,
     # "scrapy.extensions.telnet.TelnetConsole": None,
 }
 

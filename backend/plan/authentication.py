@@ -13,20 +13,20 @@ class StripeSignatureAuthentication(authentication.BaseAuthentication):
 
     def authenticate(self, request):
         # Get the signature from headers
-        signature = request.headers.get('Stripe-Signature')
+        signature = request.headers.get("Stripe-Signature")
         if not signature:
-            raise AuthenticationFailed(_('No Stripe signature found'))
+            raise AuthenticationFailed(_("No Stripe signature found"))
 
         try:
             # Verify the signature
             Webhook.construct_event(
                 payload=request.body,
                 sig_header=signature,
-                secret=settings.STRIPE_WEBHOOK_SECRET
+                secret=settings.STRIPE_WEBHOOK_SECRET,
             )
             # Return None for the user since webhook requests are not associated with any user
             return (None, None)
         except SignatureVerificationError:
-            raise AuthenticationFailed(_('Invalid Stripe signature'))
+            raise AuthenticationFailed(_("Invalid Stripe signature"))
         except Exception as e:
             raise AuthenticationFailed(str(e))

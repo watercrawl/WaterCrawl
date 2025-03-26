@@ -7,79 +7,45 @@ from plan.validators import PlanLimitValidator
 
 
 class ActionSerializer(serializers.Serializer):
-    type = serializers.ChoiceField(choices=['screenshot', 'pdf'])
+    type = serializers.ChoiceField(choices=["screenshot", "pdf"])
 
 
 class PageOptionSerializer(serializers.Serializer):
     exclude_tags = serializers.ListField(
-        required=False,
-        child=serializers.CharField(),
-        default=[]
+        required=False, child=serializers.CharField(), default=[]
     )
     include_tags = serializers.ListField(
-        required=False,
-        child=serializers.CharField(),
-        default=[]
+        required=False, child=serializers.CharField(), default=[]
     )
     wait_time = serializers.IntegerField(
         default=100,
     )
-    include_html = serializers.BooleanField(
-        default=False
-    )
-    only_main_content = serializers.BooleanField(
-        default=True
-    )
-    include_links = serializers.BooleanField(
-        default=False
-    )
+    include_html = serializers.BooleanField(default=False)
+    only_main_content = serializers.BooleanField(default=True)
+    include_links = serializers.BooleanField(default=False)
     timeout = serializers.IntegerField(
         required=False,
         default=15000,
     )
     accept_cookies_selector = serializers.CharField(
-        required=False,
-        allow_null=True,
-        default=None
+        required=False, allow_null=True, default=None
     )
-    locale = serializers.CharField(
-        required=False,
-        default='en-US'
-    )
-    extra_headers = serializers.JSONField(
-        required=False,
-        default=dict
-    )
-    actions = ActionSerializer(
-        required=False,
-        many=True,
-        default=[]
-    )
+    locale = serializers.CharField(required=False, default="en-US")
+    extra_headers = serializers.JSONField(required=False, default=dict)
+    actions = ActionSerializer(required=False, many=True, default=[])
 
 
 class SpiderOptionSerializer(serializers.Serializer):
-    max_depth = serializers.IntegerField(
-        default=1,
-        required=False
-    )
-    page_limit = serializers.IntegerField(
-        default=1,
-        required=False
-    )
+    max_depth = serializers.IntegerField(default=1, required=False)
+    page_limit = serializers.IntegerField(default=1, required=False)
     allowed_domains = serializers.ListField(
-        child=serializers.CharField(),
-        required=False,
-        default=[]
+        child=serializers.CharField(), required=False, default=[]
     )
     exclude_paths = serializers.ListField(
-        child=serializers.CharField(),
-        required=False,
-        default=[]
+        child=serializers.CharField(), required=False, default=[]
     )
     include_paths = serializers.ListField(
-        child=serializers.CharField(),
-        required=False,
-        default=[]
+        child=serializers.CharField(), required=False, default=[]
     )
 
 
@@ -95,43 +61,33 @@ class CrawlRequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = CrawlRequest
         fields = [
-            'uuid',
-            'url',
-            'status',
-            'options',
-            'created_at',
-            'updated_at',
-            'duration',
-            'number_of_documents',
+            "uuid",
+            "url",
+            "status",
+            "options",
+            "created_at",
+            "updated_at",
+            "duration",
+            "number_of_documents",
         ]
         read_only_fields = [
-            'uuid',
-            'status',
-            'created_at',
-            'updated_at',
-            'number_of_documents',
-            'duration',
+            "uuid",
+            "status",
+            "created_at",
+            "updated_at",
+            "number_of_documents",
+            "duration",
         ]
 
     def validate(self, attrs):
-        return PlanLimitValidator(self.context['team']).validate_crawl_request(attrs)
+        return PlanLimitValidator(self.context["team"]).validate_crawl_request(attrs)
 
 
 class CrawlResultAttachmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = CrawlResultAttachment
-        fields = [
-            'uuid',
-            'attachment',
-            'attachment_type',
-            'filename'
-        ]
-        read_only_fields = [
-            'uuid',
-            'attachment',
-            'attachment_type',
-            'filename'
-        ]
+        fields = ["uuid", "attachment", "attachment_type", "filename"]
+        read_only_fields = ["uuid", "attachment", "attachment_type", "filename"]
 
 
 class CrawlResultSerializer(serializers.ModelSerializer):
@@ -140,12 +96,12 @@ class CrawlResultSerializer(serializers.ModelSerializer):
     class Meta:
         model = CrawlResult
         fields = [
-            'uuid',
-            'url',
-            'result',
-            'attachments',
-            'created_at',
-            'updated_at',
+            "uuid",
+            "url",
+            "result",
+            "attachments",
+            "created_at",
+            "updated_at",
         ]
 
 

@@ -25,7 +25,7 @@ export const teamApi = {
     return api.patch<Team>('/api/v1/user/teams/current/', { name }).then(({ data }) => data);
   },
 
-  async inviteMember(email: string, _newMemberRole: boolean): Promise<void> {
+  async inviteMember(email: string): Promise<void> {
     return api.post('/api/v1/user/teams/current/invite/', { email });
   },
 
