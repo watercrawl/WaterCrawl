@@ -1,4 +1,4 @@
-name: Build and Push Docker Image
+name: Build and Push Backend Docker Image
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   build-and-push:
-    name: Build and Push Docker Image
+    name: Build and Push Backend Docker Image
     runs-on: ubuntu-latest
 
     steps:
@@ -61,7 +61,7 @@ jobs:
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v4
         with:
-          context: .
+          context: ./backend
           push: true
           platforms: linux/amd64,linux/arm64
           build-args: |

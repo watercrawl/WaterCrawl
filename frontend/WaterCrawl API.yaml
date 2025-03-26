@@ -1,0 +1,3463 @@
+openapi: 3.0.3
+info:
+  title: WaterCrawl API
+  version: 1.0.0
+  description: API documentation for WaterCrawl
+paths:
+  /api/v1/common/settings/:
+    get:
+      operationId: v1_common_settings_retrieve
+      description: Retrieve the frontend setting.
+      summary: Frontend Setting
+      tags:
+      - Common
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Setting'
+          description: ''
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/core/crawl-requests/:
+    get:
+      operationId: v1_core_crawl_requests_list
+      description: |2
+
+        Retrieve a list of all crawl requests for your team.
+
+        The response includes:
+        - Request status (pending, running, completed, failed)
+        - Creation and completion timestamps
+        - Crawling configuration details
+        - Progress statistics
+
+        Results are paginated and can be filtered by status.
+      summary: List crawl requests
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - Crawl Requests
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCrawlRequestList'
+          description: ''
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+    post:
+      operationId: v1_core_crawl_requests_create
+      description: |2
+
+        Start a new web crawling task with specified configuration.
+
+        This endpoint allows you to:
+        - Start a new crawl with custom settings
+        - Configure crawling depth and scope
+        - Set specific data extraction rules
+        - Define crawling boundaries and limits
+
+        The crawl request will be queued and processed based on your team's plan limits.
+      summary: Start a new crawl request
+      tags:
+      - Crawl Requests
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CrawlRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CrawlRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CrawlRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CrawlRequest'
+          description: ''
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: Invalid input data.
+                  errors:
+                    type: object
+                    properties:
+                      url:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - The error message.
+                      options:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - The error message.
+                      non_field_errors:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - In the case of errors that are not related to a specific
+                          field.
+                    required:
+                    - url
+                    - options
+                  code:
+                    type: integer
+                    example: 400
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/core/crawl-requests/{crawl_request_uuid}/results/:
+    get:
+      operationId: v1_core_crawl_requests_results_list
+      description: |2
+
+        List all crawl results associated with your team's requests.
+
+        The response includes:
+        - Extracted data
+        - Timestamps
+        - Success/failure status
+        - Resource statistics
+        - Associated attachments
+
+        Results are paginated and can be filtered by crawl request.
+      summary: List crawl results
+      parameters:
+      - in: path
+        name: crawl_request_uuid
+        schema:
+          type: string
+          pattern: ^[0-9a-fA-F-]{36}$
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - Crawl Results
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCrawlResultList'
+          description: ''
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/core/crawl-requests/{crawl_request_uuid}/results/{id}/:
+    get:
+      operationId: v1_core_crawl_requests_results_retrieve
+      description: |2
+
+        Get detailed information about a specific crawl result.
+
+        Returns:
+        - Complete extracted data
+        - Crawling metadata
+        - Error details (if any)
+        - Performance metrics
+        - Resource usage statistics
+      summary: Get crawl result
+      parameters:
+      - in: path
+        name: crawl_request_uuid
+        schema:
+          type: string
+          pattern: ^[0-9a-fA-F-]{36}$
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Crawl Results
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CrawlResult'
+          description: ''
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: Not found.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 404
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/core/crawl-requests/{id}/:
+    get:
+      operationId: v1_core_crawl_requests_retrieve
+      description: |2
+
+        Get detailed information about a specific crawl request.
+
+        Returns comprehensive information including:
+        - Current status and progress
+        - Configuration settings used
+        - Error details (if any)
+        - Resource usage statistics
+        - Associated results and downloads
+      summary: Get crawl request
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Crawl Requests
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CrawlRequest'
+          description: ''
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: Not found.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 404
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+    delete:
+      operationId: v1_core_crawl_requests_destroy
+      description: |2
+
+        Cancel an active crawling task.
+
+        This will:
+        - Stop the crawler immediately
+        - Save any data collected so far
+        - Free up crawling resources
+        - Mark the request as cancelled
+
+        Note: Cancelled requests cannot be resumed.
+      summary: Cancel a running crawl
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Crawl Requests
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: Not found.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 404
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/core/crawl-requests/{id}/download/:
+    get:
+      operationId: v1_core_crawl_requests_download_retrieve
+      description: |2
+
+        Download the collected data from a completed crawl request.
+
+        Supports multiple formats:
+        - JSON (structured data)
+        - CSV (tabular data)
+        - ZIP (compressed with attachments)
+
+        The response includes:
+        - Extracted data points
+        - Metadata and timestamps
+        - Error logs (if any)
+        - Downloaded resources (based on configuration)
+      summary: Download crawl result
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Crawl Requests
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: Not found.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 404
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/core/crawl-requests/{id}/status/:
+    get:
+      operationId: v1_core_crawl_requests_status_retrieve
+      description: |2
+
+        Real-time status monitoring using Server-Sent Events (SSE).
+
+        The endpoint streams updates every second with:
+        - Current crawling status
+        - Pages crawled/remaining
+        - Data extracted
+        - Error counts
+        - Resource usage
+
+        Message Types:
+        1. 'state': Contains crawl request status updates
+        2. 'result': Contains new crawl results as they arrive
+
+        Connection remains open until:
+        - Crawl completes
+        - Error occurs
+        - Client disconnects
+      summary: Check crawl status
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Crawl Requests
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: string
+          description: ''
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: Not found.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 404
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/core/plugins/schema:
+    get:
+      operationId: v1_core_plugins_schema_retrieve
+      description: |2
+
+        Get a list of available plugins for data extraction.
+
+        Each plugin includes:
+        - Configuration schema
+        - Supported features
+        - Required parameters
+        - Optional settings
+        - Usage examples
+
+        Use these schemas to configure your crawl requests.
+      summary: Plugin Form
+      tags:
+      - Plugins
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/core/usage/:
+    get:
+      operationId: v1_core_usage_retrieve
+      description: |2
+
+        Get detailed usage statistics for your team.
+
+        The report includes:
+        - Total requests made
+        - Pages crawled
+        - Data extracted
+        - Resource usage
+        - Plan limits and remaining credits
+
+        Default period is last 30 days.
+      summary: Usage Report
+      tags:
+      - Reports
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+          description: ''
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/plan/plans/:
+    get:
+      operationId: v1_plan_plans_list
+      description: Returns a list of all active subscription plans with their details
+        including pricing, features and limits.
+      summary: List available plans
+      tags:
+      - Subscriptions
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Plan'
+          description: ''
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/plan/plans/{id}/:
+    get:
+      operationId: v1_plan_plans_retrieve
+      description: Returns detailed information about a specific subscription plan.
+      summary: Get plan details
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Subscriptions
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plan'
+          description: ''
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: Not found.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 404
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/plan/subscriptions/:
+    get:
+      operationId: v1_plan_subscriptions_list
+      description: Returns a list of all active subscriptions for the team.
+      summary: List team subscriptions
+      tags:
+      - Subscriptions
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Subscription'
+          description: ''
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/plan/subscriptions/{id}/:
+    get:
+      operationId: v1_plan_subscriptions_retrieve
+      description: Returns detailed information about the team's current subscription.
+      summary: Get subscription details
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Subscriptions
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subscription'
+          description: ''
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: Not found.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 404
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/plan/subscriptions/{id}/cancel/:
+    delete:
+      operationId: v1_plan_subscriptions_cancel_destroy
+      description: Cancels the active subscription for the team.
+      summary: Cancel subscription
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Subscriptions
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: Not found.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 404
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/plan/subscriptions/current/:
+    get:
+      operationId: v1_plan_subscriptions_current_retrieve
+      description: Returns detailed information about the team's current subscription.
+      summary: Get current subscription
+      tags:
+      - Subscriptions
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subscription'
+          description: ''
+        '404':
+          description: You have no active subscription
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/plan/subscriptions/payment-settings/:
+    post:
+      operationId: v1_plan_subscriptions_payment_settings_create
+      description: Returns the URL to redirect the user to for payment processing.
+      summary: Get customer session
+      tags:
+      - Subscriptions
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    description: The URL to redirect the user to for payment processing.
+          description: Returns the URL to redirect the user to for payment processing.
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: Not found.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 404
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/plan/subscriptions/start/:
+    post:
+      operationId: v1_plan_subscriptions_start_create
+      description: Starts a new subscription for the team.
+      summary: Start a new subscription
+      tags:
+      - Subscriptions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StartSubscription'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/StartSubscription'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StartSubscription'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: Subscription started successfully.
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  redirect_url:
+                    type: string
+                    description: The URL to redirect the user to for payment processing.
+          description: Returns the URL to redirect the user to for payment processing.
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: Invalid input data.
+                  errors:
+                    type: object
+                    properties:
+                      plan_uuid:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - The error message.
+                      non_field_errors:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - In the case of errors that are not related to a specific
+                          field.
+                    required:
+                    - plan_uuid
+                  code:
+                    type: integer
+                    example: 400
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: Not found.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 404
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/plan/webhook/stripe/:
+    post:
+      operationId: v1_plan_webhook_stripe_create
+      description: Processes webhook events from Stripe for subscription and payment
+        updates.
+      summary: Handle Stripe webhooks
+      tags:
+      - Webhooks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StripeWebhook'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/StripeWebhook'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StripeWebhook'
+        required: true
+      responses:
+        '204':
+          description: No response body
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: Invalid input data.
+                  errors:
+                    type: object
+                    properties:
+                      type:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - The error message.
+                      data:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - The error message.
+                      non_field_errors:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - In the case of errors that are not related to a specific
+                          field.
+                    required:
+                    - type
+                    - data
+                  code:
+                    type: integer
+                    example: 400
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/user/api-keys/:
+    get:
+      operationId: v1_user_api_keys_list
+      description: List API keys
+      summary: List API keys
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - API Key
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAPIKeyList'
+          description: ''
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+    post:
+      operationId: v1_user_api_keys_create
+      description: Create a new API key
+      summary: Create a new API key
+      tags:
+      - API Key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/APIKey'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/APIKey'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/APIKey'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIKey'
+          description: ''
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: Invalid input data.
+                  errors:
+                    type: object
+                    properties:
+                      name:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - The error message.
+                      non_field_errors:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - In the case of errors that are not related to a specific
+                          field.
+                    required:
+                    - name
+                  code:
+                    type: integer
+                    example: 400
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/user/api-keys/{id}/:
+    delete:
+      operationId: v1_user_api_keys_destroy
+      description: Delete an API key
+      summary: Delete an API key
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - API Key
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: Not found.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 404
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/user/auth/forgot-password/:
+    post:
+      operationId: v1_user_auth_forgot_password_create
+      description: Send a forgot password email
+      summary: Send a forgot password email
+      tags:
+      - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForgotPassword'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ForgotPassword'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ForgotPassword'
+        required: true
+      responses:
+        '204':
+          description: No response body
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: Invalid input data.
+                  errors:
+                    type: object
+                    properties:
+                      email:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - The error message.
+                      non_field_errors:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - In the case of errors that are not related to a specific
+                          field.
+                    required:
+                    - email
+                  code:
+                    type: integer
+                    example: 400
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/user/auth/login/:
+    post:
+      operationId: v1_user_auth_login_create
+      description: Authenticate using email and password
+      summary: Authenticate using email and password
+      tags:
+      - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Login'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Login'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  refresh:
+                    type: string
+                  access:
+                    type: string
+          description: ''
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: Invalid input data.
+                  errors:
+                    type: object
+                    properties:
+                      email:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - The error message.
+                      password:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - The error message.
+                      non_field_errors:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - In the case of errors that are not related to a specific
+                          field.
+                    required:
+                    - email
+                    - password
+                  code:
+                    type: integer
+                    example: 400
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/user/auth/oauth/:
+    post:
+      operationId: v1_user_auth_oauth_create
+      description: Authenticate using OAuth
+      summary: Authenticate using OAuth
+      tags:
+      - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Oauth'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Oauth'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Oauth'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  refresh:
+                    type: string
+                  access:
+                    type: string
+          description: ''
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: Invalid input data.
+                  errors:
+                    type: object
+                    properties:
+                      provider:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - The error message.
+                      token:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - The error message.
+                      non_field_errors:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - In the case of errors that are not related to a specific
+                          field.
+                    required:
+                    - provider
+                    - token
+                  code:
+                    type: integer
+                    example: 400
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/user/auth/register/:
+    post:
+      operationId: v1_user_auth_register_create
+      description: Register a new user
+      summary: Register a new user
+      tags:
+      - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Register'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Register'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Register'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Register'
+          description: ''
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: Invalid input data.
+                  errors:
+                    type: object
+                    properties:
+                      email:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - The error message.
+                      password:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - The error message.
+                      first_name:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - The error message.
+                      last_name:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - The error message.
+                      non_field_errors:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - In the case of errors that are not related to a specific
+                          field.
+                    required:
+                    - email
+                    - password
+                  code:
+                    type: integer
+                    example: 400
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/user/auth/reset-password/{token}/:
+    get:
+      operationId: v1_user_auth_reset_password_retrieve
+      description: Verify reset password token
+      summary: Verify reset password token
+      parameters:
+      - in: path
+        name: token
+        schema:
+          type: string
+        required: true
+      tags:
+      - Auth
+      responses:
+        '204':
+          description: No response body
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+    post:
+      operationId: v1_user_auth_reset_password_create
+      description: Reset password
+      summary: Reset password
+      parameters:
+      - in: path
+        name: token
+        schema:
+          type: string
+        required: true
+      tags:
+      - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPassword'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ResetPassword'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ResetPassword'
+        required: true
+      responses:
+        '204':
+          description: No response body
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: Invalid input data.
+                  errors:
+                    type: object
+                    properties:
+                      password:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - The error message.
+                      non_field_errors:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - In the case of errors that are not related to a specific
+                          field.
+                    required:
+                    - password
+                  code:
+                    type: integer
+                    example: 400
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/user/auth/token/refresh/:
+    post:
+      operationId: v1_user_auth_token_refresh_create
+      description: Refresh token
+      summary: Refresh token
+      tags:
+      - Token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: Invalid input data.
+                  errors:
+                    type: object
+                    properties:
+                      refresh:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - The error message.
+                      non_field_errors:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - In the case of errors that are not related to a specific
+                          field.
+                    required:
+                    - refresh
+                  code:
+                    type: integer
+                    example: 400
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/user/auth/token/verify/:
+    post:
+      operationId: v1_user_auth_token_verify_create
+      description: Verify token
+      summary: Verify token
+      tags:
+      - Token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenVerify'
+          description: ''
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: Invalid input data.
+                  errors:
+                    type: object
+                    properties:
+                      token:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - The error message.
+                      non_field_errors:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - In the case of errors that are not related to a specific
+                          field.
+                    required:
+                    - token
+                  code:
+                    type: integer
+                    example: 400
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/user/auth/verify-email/{token}/:
+    get:
+      operationId: v1_user_auth_verify_email_retrieve
+      description: Verify email
+      summary: Verify email
+      parameters:
+      - in: path
+        name: token
+        schema:
+          type: string
+        required: true
+      tags:
+      - Auth
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  refresh:
+                    type: string
+                  access:
+                    type: string
+          description: ''
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/user/profile/:
+    get:
+      operationId: v1_user_profile_retrieve
+      description: Get the current user profile
+      summary: Get user profile
+      tags:
+      - Profile
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+          description: ''
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+    patch:
+      operationId: v1_user_profile_partial_update
+      description: Update user profile
+      summary: Update user profile
+      tags:
+      - Profile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedProfile'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedProfile'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedProfile'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+          description: ''
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: Invalid input data.
+                  errors:
+                    type: object
+                    properties:
+                      first_name:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - The error message.
+                      password:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - The error message.
+                      last_name:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - The error message.
+                      non_field_errors:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - In the case of errors that are not related to a specific
+                          field.
+                    required:
+                    - password
+                  code:
+                    type: integer
+                    example: 400
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/user/profile/invitations/:
+    get:
+      operationId: v1_user_profile_invitations_list
+      description: Get my invitations
+      summary: Get my invitations
+      tags:
+      - Profile
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MyTeamInvitation'
+          description: ''
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/user/profile/invitations/{id}/accept/:
+    post:
+      operationId: v1_user_profile_invitations_accept_create
+      description: Accept an invitation
+      summary: Accept an invitation
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Profile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MyTeamInvitation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MyTeamInvitation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MyTeamInvitation'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: Invalid input data.
+                  errors:
+                    type: object
+                    properties:
+                      non_field_errors:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - In the case of errors that are not related to a specific
+                          field.
+                    required: []
+                  code:
+                    type: integer
+                    example: 400
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: Not found.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 404
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/user/teams/:
+    get:
+      operationId: v1_user_teams_list
+      description: List teams
+      summary: List teams
+      tags:
+      - Team
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Team'
+          description: ''
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+    post:
+      operationId: v1_user_teams_create
+      description: Create a new team
+      summary: Create a new team
+      tags:
+      - Team
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Team'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Team'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Team'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+          description: ''
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: Invalid input data.
+                  errors:
+                    type: object
+                    properties:
+                      name:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - The error message.
+                      non_field_errors:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - In the case of errors that are not related to a specific
+                          field.
+                    required:
+                    - name
+                  code:
+                    type: integer
+                    example: 400
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/user/teams/{id}/:
+    get:
+      operationId: v1_user_teams_retrieve
+      description: Get a team
+      summary: Get a team
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Team
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+          description: ''
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: Not found.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 404
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/user/teams/current/:
+    get:
+      operationId: v1_user_teams_current_retrieve
+      description: Get the current team
+      summary: Get/Update the current team
+      tags:
+      - Team
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+          description: ''
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: Not found.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 404
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+    patch:
+      operationId: v1_user_teams_current_partial_update
+      description: Get the current team
+      summary: Get/Update the current team
+      tags:
+      - Team
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTeam'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedTeam'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedTeam'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+          description: ''
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: Invalid input data.
+                  errors:
+                    type: object
+                    properties:
+                      name:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - The error message.
+                      non_field_errors:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - In the case of errors that are not related to a specific
+                          field.
+                    required:
+                    - name
+                  code:
+                    type: integer
+                    example: 400
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: Not found.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 404
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/user/teams/current/invitations/:
+    get:
+      operationId: v1_user_teams_current_invitations_list
+      description: List invitations to the current team
+      summary: List invitations to the current team
+      tags:
+      - Team
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TeamInvitation'
+          description: ''
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: Not found.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 404
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/user/teams/current/invite/:
+    post:
+      operationId: v1_user_teams_current_invite_create
+      description: Invite a user to the current team
+      summary: Invite a user to the current team
+      tags:
+      - Team
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamInvitation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TeamInvitation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TeamInvitation'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: Invalid input data.
+                  errors:
+                    type: object
+                    properties:
+                      email:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - The error message.
+                      non_field_errors:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - In the case of errors that are not related to a specific
+                          field.
+                    required:
+                    - email
+                  code:
+                    type: integer
+                    example: 400
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: Not found.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 404
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/user/teams/current/members/:
+    get:
+      operationId: v1_user_teams_current_members_list
+      description: List team members
+      summary: List team members
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - Team
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTeamMemberList'
+          description: ''
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+  /api/v1/user/teams/current/members/{id}/:
+    delete:
+      operationId: v1_user_teams_current_members_destroy
+      description: Delete a team member
+      summary: Delete a team member
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Team
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: Not found.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 404
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'message:':
+                    type: string
+                    example: An unexpected error occurred.
+                  errors:
+                    type: object
+                    example: null
+                  code:
+                    type: integer
+                    example: 500
+components:
+  schemas:
+    APIKey:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        key:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        last_used_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+      required:
+      - created_at
+      - key
+      - last_used_at
+      - name
+      - uuid
+    Action:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/TypeEnum'
+      required:
+      - type
+    AttachmentTypeEnum:
+      enum:
+      - pdf
+      - screenshot
+      type: string
+      description: |-
+        * `pdf` - PDF
+        * `screenshot` - Screenshot
+    CrawlOption:
+      type: object
+      properties:
+        spider_options:
+          $ref: '#/components/schemas/SpiderOption'
+        page_options:
+          $ref: '#/components/schemas/PageOption'
+        plugin_options:
+          type: object
+          additionalProperties:
+            type: string
+      required:
+      - page_options
+      - spider_options
+    CrawlRequest:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        url:
+          type: string
+          format: uri
+          maxLength: 255
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StatusEnum'
+          readOnly: true
+        options:
+          $ref: '#/components/schemas/CrawlOption'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        duration:
+          type: string
+          readOnly: true
+          nullable: true
+        number_of_documents:
+          type: string
+          readOnly: true
+      required:
+      - created_at
+      - duration
+      - number_of_documents
+      - options
+      - status
+      - updated_at
+      - url
+      - uuid
+    CrawlResult:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        url:
+          type: string
+          format: uri
+          maxLength: 2048
+        result:
+          type: string
+          format: uri
+        attachments:
+          type: array
+          items:
+            $ref: '#/components/schemas/CrawlResultAttachment'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - attachments
+      - created_at
+      - result
+      - updated_at
+      - url
+      - uuid
+    CrawlResultAttachment:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        attachment:
+          type: string
+          format: uri
+          readOnly: true
+        attachment_type:
+          allOf:
+          - $ref: '#/components/schemas/AttachmentTypeEnum'
+          readOnly: true
+        filename:
+          type: string
+          readOnly: true
+      required:
+      - attachment
+      - attachment_type
+      - filename
+      - uuid
+    ForgotPassword:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+      required:
+      - email
+    GroupEnum:
+      enum:
+      - yearly
+      - monthly
+      type: string
+      description: |-
+        * `yearly` - Yearly
+        * `monthly` - Monthly
+    Login:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+      required:
+      - email
+      - password
+    MyTeamInvitation:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        team:
+          allOf:
+          - $ref: '#/components/schemas/Team'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - team
+      - uuid
+    Oauth:
+      type: object
+      properties:
+        provider:
+          $ref: '#/components/schemas/ProviderEnum'
+        token:
+          type: string
+      required:
+      - provider
+      - token
+    PageOption:
+      type: object
+      properties:
+        exclude_tags:
+          type: array
+          items:
+            type: string
+          default: []
+        include_tags:
+          type: array
+          items:
+            type: string
+          default: []
+        wait_time:
+          type: integer
+          default: 100
+        include_html:
+          type: boolean
+          default: false
+        only_main_content:
+          type: boolean
+          default: true
+        include_links:
+          type: boolean
+          default: false
+        timeout:
+          type: integer
+          default: 15000
+        accept_cookies_selector:
+          type: string
+        locale:
+          type: string
+          default: en-US
+        extra_headers:
+          type: object
+          additionalProperties:
+            type: string
+        actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Action'
+          default: []
+    PaginatedAPIKeyList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/APIKey'
+    PaginatedCrawlRequestList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CrawlRequest'
+    PaginatedCrawlResultList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CrawlResult'
+    PaginatedTeamMemberList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamMember'
+    PatchedProfile:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          readOnly: true
+          title: Email address
+        first_name:
+          type: string
+          maxLength: 150
+        password:
+          type: string
+          writeOnly: true
+        last_name:
+          type: string
+          maxLength: 150
+    PatchedTeam:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+    Plan:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        label:
+          type: string
+          nullable: true
+          maxLength: 100
+        group:
+          $ref: '#/components/schemas/GroupEnum'
+        description:
+          type: string
+        price_before_discount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          nullable: true
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        number_of_users:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: Number of users that can be added to the team.
+        page_credit:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: Number of pages that can be crawled in plan duration.
+        daily_page_credit:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          description: Number of pages that can be crawled per day. resets at midnight.
+            -1 for unlimited
+        crawl_max_depth:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: Max depth of crawling.
+        crawl_max_limit:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: Max number of pages to crawl.
+        max_concurrent_crawl:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: Max Number of concurrent crawling.
+        features:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlanFeature'
+      required:
+      - description
+      - features
+      - group
+      - name
+      - price
+      - uuid
+    PlanFeature:
+      type: object
+      properties:
+        title:
+          type: string
+          maxLength: 100
+        help_text:
+          type: string
+          nullable: true
+      required:
+      - title
+    Profile:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          readOnly: true
+          title: Email address
+        first_name:
+          type: string
+          maxLength: 150
+        password:
+          type: string
+          writeOnly: true
+        last_name:
+          type: string
+          maxLength: 150
+      required:
+      - email
+      - password
+    ProviderEnum:
+      enum:
+      - github
+      - google
+      - google-signin
+      type: string
+      description: |-
+        * `github` - github
+        * `google` - google
+        * `google-signin` - google-signin
+    Register:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        password:
+          type: string
+          writeOnly: true
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+      required:
+      - email
+      - password
+    Report:
+      type: object
+      properties:
+        total_crawls:
+          type: integer
+        total_documents:
+          type: integer
+        finished_crawls:
+          type: integer
+        crawl_history:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportDateChart'
+        document_history:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportDateChart'
+      required:
+      - crawl_history
+      - document_history
+      - finished_crawls
+      - total_crawls
+      - total_documents
+    ReportDateChart:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        count:
+          type: integer
+      required:
+      - count
+      - date
+    ResetPassword:
+      type: object
+      properties:
+        password:
+          type: string
+      required:
+      - password
+    Setting:
+      type: object
+      properties:
+        github_client_id:
+          type: string
+        google_client_id:
+          type: string
+        is_signup_active:
+          type: boolean
+        is_login_active:
+          type: boolean
+        is_google_login_active:
+          type: boolean
+        is_github_login_active:
+          type: boolean
+        api_version:
+          type: string
+      required:
+      - api_version
+      - github_client_id
+      - google_client_id
+      - is_github_login_active
+      - is_google_login_active
+      - is_login_active
+      - is_signup_active
+    SpiderOption:
+      type: object
+      properties:
+        max_depth:
+          type: integer
+          default: 1
+        page_limit:
+          type: integer
+          default: 1
+        allowed_domains:
+          type: array
+          items:
+            type: string
+          default: []
+        exclude_paths:
+          type: array
+          items:
+            type: string
+          default: []
+        include_paths:
+          type: array
+          items:
+            type: string
+          default: []
+    StartSubscription:
+      type: object
+      properties:
+        plan_uuid:
+          type: string
+          format: uuid
+      required:
+      - plan_uuid
+    StatusEnum:
+      enum:
+      - new
+      - running
+      - paused
+      - finished
+      - cancelling
+      - canceled
+      - failed
+      type: string
+      description: |-
+        * `new` - New
+        * `running` - Running
+        * `paused` - Paused
+        * `finished` - Finished
+        * `cancelling` - Canceling
+        * `canceled` - Canceled
+        * `failed` - Failed
+    StripeWebhook:
+      type: object
+      properties:
+        type:
+          type: string
+        data:
+          type: object
+          additionalProperties:
+            type: string
+      required:
+      - data
+      - type
+    Subscription:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        plan:
+          $ref: '#/components/schemas/Plan'
+        status:
+          type: string
+          maxLength: 255
+        remain_daily_page_credit:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        start_datetime:
+          type: string
+          format: date-time
+          nullable: true
+        end_datetime:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - plan
+      - status
+      - updated_at
+      - uuid
+    Team:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+      required:
+      - name
+      - uuid
+    TeamInvitation:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - email
+      - uuid
+    TeamMember:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        user:
+          allOf:
+          - $ref: '#/components/schemas/Profile'
+          readOnly: true
+        is_owner:
+          type: boolean
+      required:
+      - user
+      - uuid
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          writeOnly: true
+      required:
+      - access
+      - refresh
+    TokenVerify:
+      type: object
+      properties:
+        token:
+          type: string
+          writeOnly: true
+      required:
+      - token
+    TypeEnum:
+      enum:
+      - screenshot
+      - pdf
+      type: string
+      description: |-
+        * `screenshot` - screenshot
+        * `pdf` - pdf
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
