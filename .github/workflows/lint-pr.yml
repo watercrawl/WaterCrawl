@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   lint-backend:
@@ -30,10 +31,14 @@ jobs:
         uses: snok/install-poetry@v1
         with:
           version: 1.7.1
+          virtualenvs-create: true
+          virtualenvs-in-project: true
       
       - name: Install dependencies
         working-directory: ./backend
-        run: poetry install --no-interaction --no-root
+        run: |
+          poetry config virtualenvs.in-project true
+          poetry install --no-interaction --no-root
       
       - name: Lint backend with Ruff
         working-directory: ./backend
@@ -60,7 +65,7 @@ jobs:
         working-directory: ./backend
         run: |
           # Run again without --fix to see if there are any issues that couldn't be fixed
-          poetry run ruff check . --exit-non-zero-on-fix
+          poetry run ruff check .
   
   lint-frontend:
     name: Lint Frontend Code
@@ -73,17 +78,17 @@ jobs:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
       
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
           cache: 'pnpm'
-      
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
-          run_install: false
+          cache-dependency-path: './frontend/pnpm-lock.yaml'
       
       - name: Install dependencies
         working-directory: ./frontend
@@ -114,4 +119,4 @@ jobs:
         working-directory: ./frontend
         run: |
           # Run again without fixing to see if there are any issues that couldn't be fixed
-          pnpm run lint
+          pnpm run lint || exit 1
