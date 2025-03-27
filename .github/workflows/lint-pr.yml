@@ -28,18 +28,21 @@ jobs:
           cache: 'pip'
       
       - name: Install Poetry
-        uses: snok/install-poetry@v1
-        with:
-          version: 1.7.1
-          virtualenvs-create: true
-          virtualenvs-in-project: true
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+      
+      - name: Poetry diagnostics
+        run: |
+          poetry --version
+          poetry config --list
       
       - name: Install dependencies
         working-directory: ./backend
         run: |
           poetry config virtualenvs.in-project true
-          poetry install --no-interaction --no-root
-      
+          poetry install --no-interaction
+        
       - name: Lint backend with Ruff
         working-directory: ./backend
         run: |
@@ -50,6 +53,9 @@ jobs:
         run: |
           git config --global user.name "GitHub Actions Bot"
           git config --global user.email "actions@github.com"
+          
+          # Exclude lockfiles from being committed
+          git restore --staged **/pnpm-lock.yaml **/yarn.lock **/package-lock.json
           
           # Check if there are any changes
           if [[ -n "$(git status --porcelain)" ]]; then
@@ -104,6 +110,9 @@ jobs:
         run: |
           git config --global user.name "GitHub Actions Bot"
           git config --global user.email "actions@github.com"
+          
+          # Exclude lockfiles from being committed
+          git restore --staged **/pnpm-lock.yaml **/yarn.lock **/package-lock.json
           
           # Check if there are any changes
           if [[ -n "$(git status --porcelain)" ]]; then
