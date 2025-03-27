@@ -111,7 +111,7 @@ jobs:
           git config --global user.email "actions@github.com"
           
           # Exclude lockfiles from being committed
-          git restore --staged **/pnpm-lock.yaml **/yarn.lock **/package-lock.json
+          git restore --staged **/pnpm-lock.yaml
           
           # Check if there are any changes
           if [[ -n "$(git status --porcelain)" ]]; then
