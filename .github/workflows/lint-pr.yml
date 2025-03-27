@@ -40,7 +40,7 @@ jobs:
       - name: Install dependencies
         working-directory: ./backend
         run: |
-          poetry install
+          poetry install --no-root --prefer-binary --sync --no-cache
         
       - name: Lint backend with Ruff
         working-directory: ./backend
