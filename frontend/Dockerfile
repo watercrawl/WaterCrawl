@@ -8,17 +8,20 @@ WORKDIR /app
 ENV VITE_API_URL=http://DUMMY_URL_FOR_REPLACE
 ARG VITE_VERSION=unknown
 
+# Install pnpm
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
 # Copy package files
-COPY package.json yarn.lock ./
+COPY package.json pnpm-lock.yaml* ./
 
 # Install dependencies
-RUN yarn install
+RUN pnpm install --frozen-lockfile
 
 # Copy source code
 COPY . .
 
 # Build the application
-RUN yarn build
+RUN pnpm build
 
 # Production stage
 FROM nginx:alpine
