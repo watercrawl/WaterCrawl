@@ -29,19 +29,18 @@ jobs:
       
       - name: Install Poetry
         run: |
-          curl -sSL https://install.python-poetry.org | python3 -
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
-      
-      - name: Poetry diagnostics
-        run: |
+          pip install poetry==1.7.1
           poetry --version
+      
+      - name: Configure Poetry
+        run: |
+          poetry config virtualenvs.in-project true
           poetry config --list
       
       - name: Install dependencies
         working-directory: ./backend
         run: |
-          poetry config virtualenvs.in-project true
-          poetry install --no-interaction
+          poetry install
         
       - name: Lint backend with Ruff
         working-directory: ./backend
@@ -55,7 +54,7 @@ jobs:
           git config --global user.email "actions@github.com"
           
           # Exclude lockfiles from being committed
-          git restore --staged **/pnpm-lock.yaml **/yarn.lock **/package-lock.json
+          git restore --staged **/pnpm-lock.yaml
           
           # Check if there are any changes
           if [[ -n "$(git status --porcelain)" ]]; then
