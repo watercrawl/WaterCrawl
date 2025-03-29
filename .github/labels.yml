@@ -1,0 +1,146 @@
+# .github/labels.yml
+
+# 🧩 Size Labels
+- name: "🟢 size:xs"
+  color: "e4e669"
+  description: "Extra small – up to 10 lines of code"
+
+- name: "🔹 size:s"
+  color: "c2e0c6"
+  description: "Small – 11 to 50 lines of code"
+
+- name: "🟠 size:m"
+  color: "f9d0c4"
+  description: "Medium – 51 to 200 lines of code"
+
+- name: "🔵 size:l"
+  color: "f9a825"
+  description: "Large – 201 to 500 lines of code"
+
+- name: "🔴 size:xl"
+  color: "e11d48"
+  description: "Extra large – 501 to 1000 lines of code"
+
+- name: "💣 size:xxl"
+  color: "8b0000"
+  description: "XXL – Over 1000 lines of code"
+
+# 🚀 Feature Labels
+- name: "🕷️ feat:spider"
+  color: "1f77b4"
+  description: "Web crawling engine, spiders, selectors"
+
+- name: "🧪 feat:playground"
+  color: "9467bd"
+  description: "LLM prompt testing and sandbox area"
+
+- name: "⚙️ feat:settings"
+  color: "8c564b"
+  description: "Global or project settings features"
+
+- name: "🔌 feat:plugin"
+  color: "2ca02c"
+  description: "Plugin system, daemon, gRPC"
+
+- name: "🧠 feat:workflow"
+  color: "17becf"
+  description: "Smart crawl planning, route building"
+
+- name: "🔐 feat:auth"
+  color: "ff7f0e"
+  description: "Authentication, permissions"
+
+- name: "📦 feat:export"
+  color: "bcbd22"
+  description: "Markdown, JSON, or file export logic"
+
+- name: "🖼️ feat:ui"
+  color: "dbdb8d"
+  description: "Frontend/UI components"
+
+- name: "🔗 feat:integration"
+  color: "9edae5"
+  description: "3rd-party tool integrations"
+
+- name: "💳 feat:billing"
+  color: "d62728"
+  description: "Payment, subscriptions, invoices"
+
+# 🐞 Bug Labels
+- name: "🐞 bug"
+  color: "d73a4a"
+  description: "General or uncategorized bug"
+
+- name: "🎨 bug:frontend"
+  color: "f66a0a"
+  description: "UI bugs, display issues"
+
+- name: "🛠️ bug:backend"
+  color: "b60205"
+  description: "API, Django, Celery issues"
+
+- name: "🧲 bug:crawler"
+  color: "fbca04"
+  description: "Spider or scraping logic errors"
+
+- name: "🔧 bug:plugin"
+  color: "c2185b"
+  description: "Plugin lifecycle, gRPC errors"
+
+- name: "📤 bug:export"
+  color: "ffcccb"
+  description: "Problems with file/markdown output"
+
+- name: "🐢 bug:performance"
+  color: "ff7f50"
+  description: "Slowness, memory or CPU issues"
+
+# 📁 Edition Labels
+- name: "🌍 edition:community"
+  color: "ededed"
+  description: "For open-source/self-hosted features"
+
+- name: "🏢 edition:enterprise"
+  color: "0075ca"
+  description: "Enterprise-only features"
+
+- name: "☁️ edition:cloud"
+  color: "00bcd4"
+  description: "Cloud environment specific issues"
+
+- name: "🏠 edition:self-hosted"
+  color: "607d8b"
+  description: "For on-premise/self-hosted setup"
+
+# 📌 Status & Misc
+- name: "🔄 status:in-progress"
+  color: "0e8a16"
+  description: "Currently being worked on"
+
+- name: "⛔ status:blocked"
+  color: "b60205"
+  description: "Blocked by another task"
+
+- name: "✅ status:ready-for-review"
+  color: "0366d6"
+  description: "Needs code or content review"
+
+- name: "❓ status:needs-info"
+  color: "d4c5f9"
+  description: "More detail needed from reporter"
+
+- name: "💬 type:question"
+  color: "d876e3"
+  description: "A question, not necessarily a bug"
+
+- name: "🧵 type:discussion"
+  color: "6f42c1"
+  description: "Open discussion or idea"
+
+- name: "🤝 help-wanted"
+  color: "159818"
+  description: "Looking for contributor help"
+
+- name: "🌱 good-first-issue"
+  color: "7057ff"
+  description: "Beginner-friendly starter task"
