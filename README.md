@@ -1,5 +1,5 @@
 # WaterCrawl
-![Water Crawl](assets/watercrawl.png)
+![Water Crawl](https://raw.githubusercontent.com/watercrawl/WaterCrawl/0d60be2a79e8d4ce62ae5c7c77f4f8bdf0113dc9/assets/banner.png)
 
 WaterCrawl is a web application that uses Python, Django, Scrapy, and Celery to crawl web pages and extract relevant data.
 
