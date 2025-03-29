@@ -1,4 +1,4 @@
-name: Build and Push Frontend Docker Image
+name: Build and Push Docs Docker Image
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   build-and-push:
-    name: Build and Push Frontend Docker Image
+    name: Build and Push Docs Docker Image
     runs-on: ubuntu-latest
 
     steps:
@@ -43,15 +43,15 @@ jobs:
           if [[ ${{ github.ref }} == refs/heads/development ]]; then
             VERSION="alpha-${DATE}"
             echo "TAG=$VERSION" >> $GITHUB_ENV
-            echo "DOCKER_TAGS=${{ secrets.DOCKER_USERNAME }}/frontend:$VERSION,${{ secrets.DOCKER_USERNAME }}/frontend:$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+            echo "DOCKER_TAGS=${{ secrets.DOCKER_USERNAME }}/docs:$VERSION,${{ secrets.DOCKER_USERNAME }}/docs:$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           elif [[ ${{ github.ref }} == refs/heads/main ]]; then
             VERSION="beta-${DATE}"
             echo "TAG=$VERSION" >> $GITHUB_ENV
-            echo "DOCKER_TAGS=${{ secrets.DOCKER_USERNAME }}/frontend:$VERSION,${{ secrets.DOCKER_USERNAME }}/frontend:$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+            echo "DOCKER_TAGS=${{ secrets.DOCKER_USERNAME }}/docs:$VERSION,${{ secrets.DOCKER_USERNAME }}/docs:$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           elif [[ ${{ github.ref }} == refs/tags/* ]]; then
             VERSION=${GITHUB_REF#refs/tags/}
             echo "TAG=$VERSION" >> $GITHUB_ENV
-            echo "DOCKER_TAGS=${{ secrets.DOCKER_USERNAME }}/frontend:$VERSION,${{ secrets.DOCKER_USERNAME }}/frontend:$(git rev-parse --short HEAD),${{ secrets.DOCKER_USERNAME }}/frontend:latest" >> $GITHUB_ENV
+            echo "DOCKER_TAGS=${{ secrets.DOCKER_USERNAME }}/docs:$VERSION,${{ secrets.DOCKER_USERNAME }}/docs:$(git rev-parse --short HEAD),${{ secrets.DOCKER_USERNAME }}/docs:latest" >> $GITHUB_ENV
           fi
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
@@ -61,7 +61,7 @@ jobs:
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v4
         with:
-          context: ./frontend
+          context: ./docs
           push: true
           platforms: linux/amd64,linux/arm64
           build-args: |
