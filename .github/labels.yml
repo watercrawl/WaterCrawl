@@ -1,29 +1,5 @@
 # .github/labels.yml
 
-# 🧩 Size Labels
-- name: "🟢 size:xs"
-  color: "e4e669"
-  description: "Extra small – up to 10 lines of code"
-
-- name: "🔹 size:s"
-  color: "c2e0c6"
-  description: "Small – 11 to 50 lines of code"
-
-- name: "🟠 size:m"
-  color: "f9d0c4"
-  description: "Medium – 51 to 200 lines of code"
-
-- name: "🔵 size:l"
-  color: "f9a825"
-  description: "Large – 201 to 500 lines of code"
-
-- name: "🔴 size:xl"
-  color: "e11d48"
-  description: "Extra large – 501 to 1000 lines of code"
-
-- name: "💣 size:xxl"
-  color: "8b0000"
-  description: "XXL – Over 1000 lines of code"
 
 # 🚀 Feature Labels
 - name: "🕷️ feat:spider"
