@@ -1,4 +1,4 @@
-FROM python:3.13 as base
+FROM python:3.13 AS base
 
 ENV PYTHONUNBUFFERED=1
 ARG APP_VERSION=unknown
@@ -15,7 +15,7 @@ ENV POETRY_VIRTUALENVS_IN_PROJECT=true
 ENV POETRY_VIRTUALENVS_CREATE=true
 ENV POETRY_REQUESTS_TIMEOUT=15
 
-FROM base as builder
+FROM base AS builder
 
 RUN apt-get update && apt-get install -y \
         nginx \
@@ -32,7 +32,7 @@ COPY pyproject.toml poetry.lock ./
 
 RUN poetry install --sync --no-cache --no-root
 
-FROM builder as runtime
+FROM builder AS runtime
 
 ADD . /var/www
 
