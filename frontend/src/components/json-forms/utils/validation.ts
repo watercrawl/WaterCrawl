@@ -19,7 +19,7 @@ export function validateValue(
   }
 
   switch (schema.type) {
-    case 'string':
+    case 'string': {
       if (typeof value !== 'string') {
         errors.push({ path, message: 'Must be a string' });
       } else {
@@ -34,9 +34,10 @@ export function validateValue(
         }
       }
       break;
+    }
 
     case 'number':
-    case 'integer':
+    case 'integer': {
       const num = Number(value);
       if (isNaN(num)) {
         errors.push({ path, message: `Must be a ${schema.type}` });
@@ -52,14 +53,16 @@ export function validateValue(
         }
       }
       break;
+    }
 
-    case 'boolean':
+    case 'boolean': {
       if (typeof value !== 'boolean') {
         errors.push({ path, message: 'Must be a boolean' });
       }
       break;
+    }
 
-    case 'array':
+    case 'array': {
       if (!Array.isArray(value)) {
         errors.push({ path, message: 'Must be an array' });
       } else {
@@ -79,8 +82,9 @@ export function validateValue(
         }
       }
       break;
+    }
 
-    case 'object':
+    case 'object': {
       if (typeof value !== 'object' || Array.isArray(value)) {
         errors.push({ path, message: 'Must be an object' });
       } else if (schema.properties) {
@@ -117,6 +121,7 @@ export function validateValue(
         });
       }
       break;
+    }
   }
 
   return errors;

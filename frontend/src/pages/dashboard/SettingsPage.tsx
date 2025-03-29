@@ -25,7 +25,6 @@ const SettingsPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [newMemberEmail, setNewMemberEmail] = useState('');
-  const [newMemberRole, setNewMemberRole] = useState<TeamMember['is_owner']>(false);
   const [loading, setLoading] = useState(false);
   const [editingName, setEditingName] = useState(false);
   const [newTeamName, setNewTeamName] = useState('');
@@ -112,11 +111,10 @@ const SettingsPage: React.FC = () => {
 
     setLoading(true);
     teamApi
-      .inviteMember(newMemberEmail, newMemberRole)
+      .inviteMember(newMemberEmail)
       .then(() => {
         fetchMembers(); // Refresh members list
         setNewMemberEmail('');
-        setNewMemberRole(false);
         toast.success('Member invited successfully');
         invitationsListRef.current?.reloadInvitations();
       })

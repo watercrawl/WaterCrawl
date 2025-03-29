@@ -1,5 +1,5 @@
 export interface ApiKey {
-    uuid: any;
+    uuid: string;
     created_at: string | number | Date;
     name: string;
     key: string;

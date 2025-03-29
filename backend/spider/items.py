@@ -2,7 +2,6 @@ import scrapy
 
 
 class BaseItem(scrapy.Item):
-
     def __getitem__(self, key):
         return self._values.get(key)
 

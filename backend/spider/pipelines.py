@@ -14,19 +14,13 @@ class SpiderPipeline:
 
 class MarkdownPipeline:
     def process_item(self, item: ScrapedItem, spider: SiteScrapper):
-        item['markdown'] = HtmlToMarkdown(
-            item['filtered_html']
-        ).convert_to_markdown()
+        item["markdown"] = HtmlToMarkdown(item["filtered_html"]).convert_to_markdown()
         return item
 
 
 class HTMLFilterPipeline:
     def process_item(self, item: ScrapedItem, spider: SiteScrapper):
-        item['filtered_html'] = HtmlFilter(
-            item['html'],
-            spider.helpers.get_html_filter_options()
+        item["filtered_html"] = HtmlFilter(
+            item["html"], spider.helpers.get_html_filter_options()
         ).filter_html()
         return item
-
-
-

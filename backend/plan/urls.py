@@ -5,10 +5,10 @@ from plan.views import PlanViewSet, StripeWebhookView, SubscriptionViewSet
 
 router = DefaultRouter()
 
-router.register(r'plans', PlanViewSet, basename='plan')
-router.register(r'subscriptions', SubscriptionViewSet, basename='subscription')
+router.register(r"plans", PlanViewSet, basename="plan")
+router.register(r"subscriptions", SubscriptionViewSet, basename="subscription")
 
 urlpatterns = [
-    path('webhook/stripe/', StripeWebhookView.as_view(), name='stripe-webhook'),
-    *router.urls
+    path("webhook/stripe/", StripeWebhookView.as_view(), name="stripe-webhook"),
+    *router.urls,
 ]

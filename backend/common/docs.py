@@ -26,4 +26,6 @@ curl -H "X-API-Key: your_api_key_here" https://api.watercrawl.dev/v1/...
 API requests are rate-limited based on your team's plan. Please refer to your plan details for specific limits.
 """)
 
-API_KEY_DESCRIPTION = _('API Key for team authentication. Generate from https://app.watercrawl.dev/dashboard/api-keys')
+API_KEY_DESCRIPTION = _(
+    "API Key for team authentication. Generate from https://app.watercrawl.dev/dashboard/api-keys"
+)

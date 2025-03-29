@@ -26,7 +26,7 @@ export interface UsageHistory {
 export interface UsageResponse {
     crawl_history: UsageHistory[];
     document_history: UsageHistory[];
-    finished_crawls: any;
-    total_documents: any;
-    total_crawls: any;
+    finished_crawls: number;
+    total_documents: number;
+    total_crawls: number;
 }

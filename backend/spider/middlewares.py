@@ -5,8 +5,12 @@ from core.services import CrawlHelpers
 
 
 class PlaywrightMiddleware:
-
-    def __init__(self, helpers: CrawlHelpers, playwright_server: str, playwright_api_key: str = None):
+    def __init__(
+        self,
+        helpers: CrawlHelpers,
+        playwright_server: str,
+        playwright_api_key: str = None,
+    ):
         self.helpers = helpers
         self.playwright_server = playwright_server
         self.playwright_api_key = playwright_api_key
@@ -15,12 +19,12 @@ class PlaywrightMiddleware:
     @classmethod
     def from_crawler(cls, crawler):
         # Initialize the middleware
-        playwright_server = crawler.settings.get('PLAYWRIGHT_SERVER')
-        playwright_api_key = crawler.settings.get('PLAYWRIGHT_API_KEY')
+        playwright_server = crawler.settings.get("PLAYWRIGHT_SERVER")
+        playwright_api_key = crawler.settings.get("PLAYWRIGHT_API_KEY")
         return cls(
             helpers=crawler.spider.helpers,
             playwright_server=playwright_server,
-            playwright_api_key=playwright_api_key
+            playwright_api_key=playwright_api_key,
         )
 
     async def process_request(self, request, spider):
@@ -47,17 +51,18 @@ class PlaywrightMiddleware:
         if proxy:
             payload["proxy"] = proxy
         headers = {
-            'X-Api-Key': self.playwright_api_key,
-            'Content-Type': 'application/json',
+            "X-Api-Key": self.playwright_api_key,
+            "Content-Type": "application/json",
         }
 
         async with httpx.AsyncClient() as client:
             try:
                 response = await client.post(
-                    self.playwright_server + '/html',
+                    self.playwright_server + "/html",
                     headers=headers,
                     json=payload,
-                    timeout=self.helpers.timeout / 1000  # Convert ms to seconds if needed
+                    timeout=self.helpers.timeout
+                    / 1000,  # Convert ms to seconds if needed
                 )
                 print("##", response.status_code)
                 print(response.content)
@@ -65,16 +70,21 @@ class PlaywrightMiddleware:
 
                 data = response.json()
 
-                request.meta['playwright'] = True
-                request.meta['attachments'] = [{
-                    'content': attachment['content'],
-                    'type': attachment['type'],
-                    'filename': 'Screenshot.{}'.format('png' if attachment['type'] == 'screenshot' else 'pdf')
-                } for attachment in data.get('attachments', [])]
+                request.meta["playwright"] = True
+                request.meta["attachments"] = [
+                    {
+                        "content": attachment["content"],
+                        "type": attachment["type"],
+                        "filename": "Screenshot.{}".format(
+                            "png" if attachment["type"] == "screenshot" else "pdf"
+                        ),
+                    }
+                    for attachment in data.get("attachments", [])
+                ]
                 return HtmlResponse(
                     url=request.url,
-                    body=data['html'],
-                    status=data['status_code'],
+                    body=data["html"],
+                    status=data["status_code"],
                     request=request,
                     encoding="utf-8",
                 )

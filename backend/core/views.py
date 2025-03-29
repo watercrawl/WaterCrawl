@@ -3,7 +3,7 @@ from datetime import timedelta
 from django.http import StreamingHttpResponse
 from django.utils.translation import gettext_lazy as _
 from drf_spectacular.types import OpenApiTypes
-from drf_spectacular.utils import extend_schema_view, extend_schema, OpenApiResponse, OpenApiParameter
+from drf_spectacular.utils import extend_schema_view, extend_schema, OpenApiResponse
 from rest_framework import mixins
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
@@ -23,45 +23,45 @@ from user.permissions import IsAuthenticatedTeam
 
 @extend_schema_view(
     create=extend_schema(
-        summary=_('Start a new crawl request'),
+        summary=_("Start a new crawl request"),
         description=docs.CRAWL_REQUEST_CREATE,
-        tags=['Crawl Requests']
+        tags=["Crawl Requests"],
     ),
     list=extend_schema(
-        summary=_('List crawl requests'),
+        summary=_("List crawl requests"),
         description=docs.CRAWL_REQUEST_LIST,
         parameters=docs.CRAWL_REQUEST_LIST_PARAMETERS,
-        tags=['Crawl Requests']
+        tags=["Crawl Requests"],
     ),
     retrieve=extend_schema(
-        summary=_('Get crawl request'),
+        summary=_("Get crawl request"),
         description=docs.CRAWL_REQUEST_RETRIEVE,
-        tags=['Crawl Requests']
+        tags=["Crawl Requests"],
     ),
     destroy=extend_schema(
-        summary=_('Cancel a running crawl'),
+        summary=_("Cancel a running crawl"),
         description=docs.CRAWL_REQUEST_DESTROY,
-        tags=['Crawl Requests']
+        tags=["Crawl Requests"],
     ),
     download=extend_schema(
-        summary=_('Download crawl result'),
+        summary=_("Download crawl result"),
         description=docs.CRAWL_REQUEST_DOWNLOAD,
         parameters=docs.CRAWL_REQUEST_DOWNLOAD_PARAMETERS,
-        tags=['Crawl Requests'],
-        responses={200: OpenApiTypes.OBJECT}
+        tags=["Crawl Requests"],
+        responses={200: OpenApiTypes.OBJECT},
     ),
     check_status=extend_schema(
-        summary=_('Check crawl status'),
+        summary=_("Check crawl status"),
         description=docs.CRAWL_REQUEST_CHECK_STATUS,
         parameters=docs.CRAWL_REQUEST_CHECK_STATUS_PARAMETERS,
-        tags=['Crawl Requests'],
+        tags=["Crawl Requests"],
         request=None,
         responses={
             200: OpenApiResponse(
                 response=OpenApiTypes.STR,
             )
-        }
-    )
+        },
+    ),
 )
 @setup_current_team
 class CrawlRequestView(
@@ -69,61 +69,58 @@ class CrawlRequestView(
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
     mixins.DestroyModelMixin,
-    GenericViewSet
+    GenericViewSet,
 ):
-    permission_classes = [
-        IsAuthenticatedTeam
-    ]
+    permission_classes = [IsAuthenticatedTeam]
     serializer_class = serializers.CrawlRequestSerializer
-    filterset_fields = ['uuid', 'url', 'status', 'created_at']
+    filterset_fields = ["uuid", "url", "status", "created_at"]
 
     def get_queryset(self):
-        return self.request.current_team.crawl_requests.order_by('-created_at').all()
+        return self.request.current_team.crawl_requests.order_by("-created_at").all()
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
-        context['team'] = self.request.current_team
+        context["team"] = self.request.current_team
         return context
 
     def perform_create(self, serializer):
         instance = serializer.save(team=self.request.current_team)
         run_spider.apply_async(
-            kwargs={
-                'crawl_request_pk': instance.pk
-            },
-            task_id=str(instance.uuid)
+            kwargs={"crawl_request_pk": instance.pk}, task_id=str(instance.uuid)
         )
 
     def perform_destroy(self, instance: CrawlRequest):
         if instance.status != consts.CRAWL_STATUS_RUNNING:
-            raise PermissionDenied(
-                _('Only running crawl requests can be deleted')
-            )
+            raise PermissionDenied(_("Only running crawl requests can be deleted"))
         CrawlerService(instance).stop()
 
-    @action(detail=True, methods=['get'], url_path='download', url_name='download')
+    @action(detail=True, methods=["get"], url_path="download", url_name="download")
     def download(self, request, **kwargs):
         obj = self.get_object()
         service = CrawlerService(obj)
 
-        output_format = request.query_params.get('output_format', 'json')
-        if output_format not in ['markdown', 'json']:
-            raise PermissionDenied(_('Invalid output format'))
+        output_format = request.query_params.get("output_format", "json")
+        if output_format not in ["markdown", "json"]:
+            raise PermissionDenied(_("Invalid output format"))
 
-        file_name = obj.url.replace("https://", "").replace("http://", "").replace("/", "_")
+        file_name = (
+            obj.url.replace("https://", "").replace("http://", "").replace("/", "_")
+        )
         return StreamingHttpResponse(
             service.download_zip(output_format),
-            content_type='application/zip',
-            headers={
-                'Content-Disposition': f'attachment; filename="{file_name}.zip"'
-            }
+            content_type="application/zip",
+            headers={"Content-Disposition": f'attachment; filename="{file_name}.zip"'},
         )
 
-    @action(detail=True, methods=['get'], url_path='status', url_name='status')
+    @action(detail=True, methods=["get"], url_path="status", url_name="status")
     def check_status(self, request, **kwargs):
         obj = self.get_object()
         service = CrawlerService(obj)
-        prefetched = request.query_params.get('prefetched', 'False') in ['true', 'True', '1']
+        prefetched = request.query_params.get("prefetched", "False") in [
+            "true",
+            "True",
+            "1",
+        ]
         return EventStreamResponse(
             service.check_status(prefetched),
         )
@@ -131,33 +128,39 @@ class CrawlRequestView(
 
 @extend_schema_view(
     list=extend_schema(
-        summary=_('List crawl results'),
+        summary=_("List crawl results"),
         description=docs.CRAWL_RESULT_LIST,
         parameters=docs.CRAWL_RESULTS_PARAMETERS,
-        tags=['Crawl Results']
+        tags=["Crawl Results"],
     ),
     retrieve=extend_schema(
-        summary=_('Get crawl result'),
+        summary=_("Get crawl result"),
         description=docs.CRAWL_RESULT_RETRIEVE,
-        tags=['Crawl Results']
-    )
+        tags=["Crawl Results"],
+    ),
 )
 @setup_current_team
 class CrawlResultView(ReadOnlyModelViewSet):
-    permission_classes = [
-        IsAuthenticatedTeam
-    ]
+    permission_classes = [IsAuthenticatedTeam]
     serializer_class = serializers.CrawlResultSerializer
-    filterset_fields = ['url', 'created_at']
+    filterset_fields = ["url", "created_at"]
 
     def get_queryset(self):
         crawl_request = self.request.current_team.crawl_requests.get(
-            pk=self.kwargs['crawl_request_uuid']
+            pk=self.kwargs["crawl_request_uuid"]
         )  # type: CrawlRequest
-        return crawl_request.results.prefetch_related('attachments').order_by('created_at').all()
+        return (
+            crawl_request.results.prefetch_related("attachments")
+            .order_by("created_at")
+            .all()
+        )
 
     def get_serializer_class(self):
-        if self.request.query_params.get('prefetched', 'False') in ['true', 'True', '1']:
+        if self.request.query_params.get("prefetched", "False") in [
+            "true",
+            "True",
+            "1",
+        ]:
             return serializers.FullCrawlResultSerializer
 
         return super().get_serializer_class()
@@ -165,39 +168,30 @@ class CrawlResultView(ReadOnlyModelViewSet):
 
 @extend_schema_view(
     get=extend_schema(
-        summary=_('Usage Report'),
-        description=docs.USAGE_REPORT,
-        tags=['Reports']
+        summary=_("Usage Report"), description=docs.USAGE_REPORT, tags=["Reports"]
     )
 )
 @setup_current_team
 class UsageAPIView(APIView):
-    permission_classes = [
-        IsAuthenticated,
-        IsAuthenticatedTeam
-    ]
+    permission_classes = [IsAuthenticated, IsAuthenticatedTeam]
     serializer_class = serializers.ReportSerializer
 
     def get(self, request):
-        service = ReportService(request.current_team, timedelta(days=30), )
+        service = ReportService(
+            request.current_team,
+            timedelta(days=30),
+        )
         return Response(serializers.ReportSerializer(service).data)
 
 
 @extend_schema_view(
     get=extend_schema(
-        summary=_('Plugin Form'),
-        description=docs.PLUGIN_LIST,
-        tags=['Plugins']
+        summary=_("Plugin Form"), description=docs.PLUGIN_LIST, tags=["Plugins"]
     )
 )
 @setup_current_team
 class PluginAPIView(APIView):
-    permission_classes = [
-        IsAuthenticated,
-        IsAuthenticatedTeam
-    ]
+    permission_classes = [IsAuthenticated, IsAuthenticatedTeam]
 
     def get(self, request):
-        return Response(
-            PluginService.get_plugin_form_jsonschema()
-        )
+        return Response(PluginService.get_plugin_form_jsonschema())

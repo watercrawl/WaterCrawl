@@ -7,84 +7,42 @@ OPTIONS_SCHEMA = {
         "page_options": {
             "type": "object",
             "properties": {
-                "exclude_tags": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "include_tags": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "wait_time": {
-                    "type": "number"
-                },
-                "include_html": {
-                    "type": "boolean"
-                },
-                "only_main_content": {
-                    "type": "boolean"
-                },
-                "include_links": {
-                    "type": "boolean"
-                }
-            }
+                "exclude_tags": {"type": "array", "items": {"type": "string"}},
+                "include_tags": {"type": "array", "items": {"type": "string"}},
+                "wait_time": {"type": "number"},
+                "include_html": {"type": "boolean"},
+                "only_main_content": {"type": "boolean"},
+                "include_links": {"type": "boolean"},
+            },
         },
         "spider_options": {
             "type": "object",
             "properties": {
-                "max_depth": {
-                    "type": "number"
-                },
-                "page_limit": {
-                    "type": "number"
-                },
-                "allowed_domains": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "exclude_paths": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "include_paths": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                }
-            }
+                "max_depth": {"type": "number"},
+                "page_limit": {"type": "number"},
+                "allowed_domains": {"type": "array", "items": {"type": "string"}},
+                "exclude_paths": {"type": "array", "items": {"type": "string"}},
+                "include_paths": {"type": "array", "items": {"type": "string"}},
+            },
         },
-        "map_options": {
-            "type": "object",
-            "properties": {
-
-            }
-        }
-    }
+        "map_options": {"type": "object", "properties": {}},
+    },
 }
 
-CRAWL_STATUS_NEW = 'new'
-CRAWL_STATUS_RUNNING = 'running'
-CRAWL_STATUS_FINISHED = 'finished'
-CRAWL_STATUS_CANCELING = 'cancelling'
-CRAWL_STATUS_CANCELED = 'canceled'
-CRAWL_STATUS_FAILED = 'failed'
+CRAWL_STATUS_NEW = "new"
+CRAWL_STATUS_RUNNING = "running"
+CRAWL_STATUS_FINISHED = "finished"
+CRAWL_STATUS_CANCELING = "cancelling"
+CRAWL_STATUS_CANCELED = "canceled"
+CRAWL_STATUS_FAILED = "failed"
 
 CRAWL_STATUS_CHOICES = (
-    (CRAWL_STATUS_NEW, _('New')),
-    (CRAWL_STATUS_RUNNING, _('Running')),
-    (CRAWL_STATUS_FINISHED, _('Finished')),
-    (CRAWL_STATUS_CANCELING, _('Canceling')),
-    (CRAWL_STATUS_CANCELED, _('Canceled')),
-    (CRAWL_STATUS_FAILED, _('Failed')),
+    (CRAWL_STATUS_NEW, _("New")),
+    (CRAWL_STATUS_RUNNING, _("Running")),
+    (CRAWL_STATUS_FINISHED, _("Finished")),
+    (CRAWL_STATUS_CANCELING, _("Canceling")),
+    (CRAWL_STATUS_CANCELED, _("Canceled")),
+    (CRAWL_STATUS_FAILED, _("Failed")),
 )
 
 IGNORE_FILE_TYPES = [
@@ -95,7 +53,6 @@ IGNORE_FILE_TYPES = [
     "pdf",  # Portable Document Format
     "odt",  # OpenDocument Text Document
     "rtf",  # Rich Text Format
-
     # Data file extensions
     "csv",  # Comma-Separated Values
     "xls",  # Microsoft Excel Spreadsheet
@@ -107,7 +64,6 @@ IGNORE_FILE_TYPES = [
     "db",  # Database file
     "sqlite",  # SQLite database file
     "log",  # Log file
-
     # Image file extensions
     "jpg",  # JPEG image
     "jpeg",  # JPEG image
@@ -118,7 +74,6 @@ IGNORE_FILE_TYPES = [
     "tif",  # Tagged Image File Format
     "tiff",  # Tagged Image File Format
     "webp",  # Web Picture format
-
     # Audio file extensions
     "mp3",  # MP3 audio
     "wav",  # Waveform Audio
@@ -126,7 +81,6 @@ IGNORE_FILE_TYPES = [
     "aac",  # Advanced Audio Codec
     "ogg",  # Ogg Vorbis
     "m4a",  # MPEG-4 Audio
-
     # Video file extensions
     "mp4",  # MPEG-4 Video
     "avi",  # Audio Video Interleave
@@ -135,7 +89,6 @@ IGNORE_FILE_TYPES = [
     "mkv",  # Matroska Video
     "flv",  # Flash Video
     "webm",  # Web Media File
-
     # Compressed file extensions
     "zip",  # Zip archive
     "rar",  # RAR archive
@@ -143,7 +96,6 @@ IGNORE_FILE_TYPES = [
     "tar",  # TAR archive
     "gz",  # Gzip compressed file
     "iso",  # Disc Image file
-
     # Executable file extensions
     ".exe",  # Windows executable file
     ".bat",  # Batch file
@@ -151,7 +103,6 @@ IGNORE_FILE_TYPES = [
     ".msi",  # Microsoft Installer
     ".apk",  # Android Package
     ".app",  # macOS Application
-
     # Programming and script file extensions
     ".py",  # Python script
     ".css",  # Cascading Style Sheets
@@ -164,7 +115,6 @@ IGNORE_FILE_TYPES = [
     ".swift",  # Swift Source Code
     ".go",  # Go Source Code
     ".rb",  # Ruby Script
-
     # Config file extensions
     ".ini",  # Initialization file
     ".conf",  # Configuration file
@@ -172,7 +122,6 @@ IGNORE_FILE_TYPES = [
     ".yml",  # YAML Ain't Markup Language
     ".env",  # Environment variables file
     ".cfg",  # Configuration file
-
     # Web file extensions
     ".css",  # Cascading Style Sheets
     ".js",  # JavaScript
@@ -180,14 +129,12 @@ IGNORE_FILE_TYPES = [
     ".asp",  # Active Server Pages
     ".aspx",  # Active Server Pages
     ".jsp",  # Java Server Pages
-
     # 3D modeling and CAD file extensions
     ".stl",  # Stereolithography
     ".obj",  # 3D Object file
     ".fbx",  # Autodesk FBX
     ".dwg",  # AutoCAD Drawing
     ".dxf",  # Drawing Exchange Format
-
     # Other common file extensions
     ".eps",  # Encapsulated PostScript
     ".psd",  # Photoshop Document
@@ -199,10 +146,10 @@ IGNORE_FILE_TYPES = [
     ".ico",  # Icon file for Windows
 ]
 
-CRAWL_RESULT_ATTACHMENT_TYPE_PDF = 'pdf'
-CRAWL_RESULT_ATTACHMENT_TYPE_SCREENSHOT = 'screenshot'
+CRAWL_RESULT_ATTACHMENT_TYPE_PDF = "pdf"
+CRAWL_RESULT_ATTACHMENT_TYPE_SCREENSHOT = "screenshot"
 
 CRAWL_RESULT_ATTACHMENT_TYPE_CHOICES = (
-    (CRAWL_RESULT_ATTACHMENT_TYPE_PDF, _('PDF')),
-    (CRAWL_RESULT_ATTACHMENT_TYPE_SCREENSHOT, _('Screenshot')),
+    (CRAWL_RESULT_ATTACHMENT_TYPE_PDF, _("PDF")),
+    (CRAWL_RESULT_ATTACHMENT_TYPE_SCREENSHOT, _("Screenshot")),
 )

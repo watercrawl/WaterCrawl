@@ -10,25 +10,25 @@ class HtmlFilter:
 
     def filter_html(self):
         # Step 1: Handle includeTags if provided
-        if self.scrape_options.get('include_tags'):
+        if self.scrape_options.get("include_tags"):
             return self._handle_include_tags()
 
         # Step 2: Remove unwanted elements like <script>, <style>, etc.
         self._remove_unwanted_tags()
 
         # Step 3: Handle excludeTags
-        if self.scrape_options.get('exclude_tags'):
+        if self.scrape_options.get("exclude_tags"):
             self._handle_exclude_tags()
 
         # Step 4: If onlyMainContent is specified, remove non-main content
-        if self.scrape_options.get('only_main_content'):
+        if self.scrape_options.get("only_main_content"):
             self._remove_non_main_content()
 
         # Return the final cleaned HTML
         return self._get_cleaned_html()
 
     def _handle_include_tags(self):
-        include_tags = self.scrape_options['include_tags']
+        include_tags = self.scrape_options["include_tags"]
         # Create a new root element to hold the tags to keep
         new_root = html.Element("div")
 
@@ -40,12 +40,12 @@ class HtmlFilter:
 
     def _remove_unwanted_tags(self):
         # Remove common unwanted tags like script, style, etc.
-        for unwanted_tag in ['script', 'style', 'noscript', 'meta', 'head']:
+        for unwanted_tag in ["script", "style", "noscript", "meta", "head"]:
             for element in self.tree.cssselect(unwanted_tag):
                 element.getparent().remove(element)
 
     def _handle_exclude_tags(self):
-        exclude_tags = self.scrape_options['exclude_tags']
+        exclude_tags = self.scrape_options["exclude_tags"]
         for tag in exclude_tags:
             # Handle wildcards or specific tags
             if tag.startswith("*") and tag.endswith("*"):  # For wildcard search
@@ -59,7 +59,7 @@ class HtmlFilter:
 
     def _remove_non_main_content(self):
         # Define a list of tags to exclude from non-main content
-        exclude_non_main_tags = ['header', 'footer', 'nav', 'aside']
+        exclude_non_main_tags = ["header", "footer", "nav", "aside"]
         for tag in exclude_non_main_tags:
             for element in self.tree.cssselect(tag):
                 element.getparent().remove(element)
@@ -77,5 +77,3 @@ class HtmlToMarkdown:
         h = html2text.HTML2Text()
         h.body_width = 0
         return h.handle(self.html_content)
-
-

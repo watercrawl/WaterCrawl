@@ -8,35 +8,33 @@ class PlanFeatureSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlanFeature
         fields = [
-            'title',
-            'help_text',
-            'icon',
+            "title",
+            "help_text",
+            "icon",
         ]
 
 
 class PlanSerializer(serializers.ModelSerializer):
-    features = PlanFeatureSerializer(
-        many=True
-    )
+    features = PlanFeatureSerializer(many=True)
 
     class Meta:
         model = Plan
         fields = [
-            'uuid',
-            'name',
-            'label',
-            'group',
-            'description',
-            'price_before_discount',
-            'price',
-            'number_of_users',
-            'page_credit',
-            'daily_page_credit',
-            'crawl_max_depth',
-            'crawl_max_limit',
-            'max_concurrent_crawl',
-            'is_default',
-            'features',
+            "uuid",
+            "name",
+            "label",
+            "group",
+            "description",
+            "price_before_discount",
+            "price",
+            "number_of_users",
+            "page_credit",
+            "daily_page_credit",
+            "crawl_max_depth",
+            "crawl_max_limit",
+            "max_concurrent_crawl",
+            "is_default",
+            "features",
         ]
 
 
@@ -51,17 +49,17 @@ class SubscriptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subscription
         fields = [
-            'uuid',
-            'plan',
-            'status',
-            'remain_page_credit',
-            'remain_daily_page_credit',
-            'start_at',
-            'current_period_start_at',
-            'current_period_end_at',
-            'cancel_at',
-            'created_at',
-            'updated_at',
+            "uuid",
+            "plan",
+            "status",
+            "remain_page_credit",
+            "remain_daily_page_credit",
+            "start_at",
+            "current_period_start_at",
+            "current_period_end_at",
+            "cancel_at",
+            "created_at",
+            "updated_at",
         ]
 
 
@@ -75,9 +73,7 @@ class StartSubscriptionSerializer(serializers.Serializer):
         return plan
 
     class Meta:
-        fields = [
-            'plan_uuid'
-        ]
+        fields = ["plan_uuid"]
 
 
 class TeamPlanSerializer(serializers.Serializer):

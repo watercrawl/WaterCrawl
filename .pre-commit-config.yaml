@@ -1,0 +1,16 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.11.2  # Match the version in your pyproject.toml
+    hooks:
+      # Run the Ruff linter
+      - id: ruff
+        name: ruff (linter)
+        args: [--fix]
+        files: ^backend/
+        exclude: ^backend/(migrations|__pycache__|venv)/
+      
+      # Run the Ruff formatter
+      - id: ruff-format
+        name: ruff (formatter)
+        files: ^backend/
+        exclude: ^backend/(migrations|__pycache__|venv)/

@@ -15,7 +15,10 @@ def update_crawl_request(sender, instance: CrawlRequest, **kwargs):
     if instance.status == core_consts.CRAWL_STATUS_NEW:
         UsageHistoryService(instance.team).create(instance)
 
-    if instance.status in [core_consts.CRAWL_STATUS_CANCELED, core_consts.CRAWL_STATUS_FINISHED]:
+    if instance.status in [
+        core_consts.CRAWL_STATUS_CANCELED,
+        core_consts.CRAWL_STATUS_FINISHED,
+    ]:
         UsageHistoryService(instance.team).update_used_page_credit(instance)
 
     if instance.status == core_consts.CRAWL_STATUS_FAILED:

@@ -1,6 +1,10 @@
 from celery import shared_task
 
-from user.services import ForgotPasswordService, TeamInvitationService, VerificationService
+from user.services import (
+    ForgotPasswordService,
+    TeamInvitationService,
+    VerificationService,
+)
 
 
 @shared_task

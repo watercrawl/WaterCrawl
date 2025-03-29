@@ -18,7 +18,7 @@ export class TeamService {
     if (!teamStr) return null;
     try {
       return JSON.parse(teamStr) as Team;
-    } catch (e) {
+    } catch (_e) {
       this.removeCurrentTeam();
       return null;
     }
