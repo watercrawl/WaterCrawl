@@ -5,23 +5,15 @@ data.
 
 ## Installation
 
-### Production Deployment
+ِYou have 3 options to install WaterCrawl:
 
-For production deployment with Docker and complete infrastructure setup, please refer to our dedicated self-hosted
-repository:
-[WaterCrawl Self-Hosted](https://github.com/watercrawl/self-hosted)
+1. [Build and Run **(Running on Docker locally)**](#build-and-run-running-on-docker-locally)
+2. [Development **(For Contributing)**](./CONTRIBUTING.md)
+3. [Self-Hosted **(For Production)**](https://github.com/watercrawl/self-hosted)
+### Build and Run (Running on Docker locally)
+----
 
-### Local Development and Contributing
-
-For local development and contribution, please follow these steps:
-
-### requirements
-
-- Python version 3.13
-- Node.js version 20
-- PNPM `corepack enable && corepack prepare pnpm@latest --activate`
-- Poetry `curl -sSL https://install.python-poetry.org | python3 -`
-- Docker ([instant](https://www.docker.com/get-docker))
+To build and run WaterCrawl on Docker locally, please follow these steps:
 
 1. Clone the repository:
 
@@ -29,38 +21,24 @@ For local development and contribution, please follow these steps:
     $ git clone https://github.com/watercrawl/watercrawl.git
     ```
 
-2. Install frontend and backend dependencies:
-
-    ```bash
-    $ make install
-    ```
-
-3. Start the development requirements containers:
+2. Build and run the Docker containers:
 
     ```bash
     $ cd docker
     $ cp .env.example .env
     $ docker compose up -d
     ```
-   
-4. Start backend development server:
+### Development (For Contributing)
+------
 
-    #### Note: you have to run the following commands in separate terminals
-    
-    ```bash
-    $ cd backend
-    $ cp app.env.example app.env
-    $ poetry run python manage.py runserver
-    $ poetry run celery -A watercrawl --beat worker -l info
-    ```
-   
-5. Start frontend development server:
+For local development and contribution, please follow [Contributing](./CONTRIBUTING.md) guide
 
-    ```bash
-    $ cd frontend
-    $ cp .env.example .env
-    $ npm run dev
-    ```
+### Production Deployment
+------
+
+For production deployment with Docker and complete infrastructure setup, please refer to our dedicated self-hosted
+repository:
+[WaterCrawl Self-Hosted](https://github.com/watercrawl/self-hosted)
 
 ## Features
 

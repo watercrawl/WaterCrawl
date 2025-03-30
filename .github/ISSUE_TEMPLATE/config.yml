@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security Issue
+    url: mailto:support@watercrawl.dev
+    about: Please report security vulnerabilities directly to our security team
+  - name: Questions & Discussions
+    url: https://github.com/watercrawl/watercrawl/discussions
+    about: Ask questions and discuss with other community members
