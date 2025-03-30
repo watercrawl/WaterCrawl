@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Read environment variables from .env file
 env = Env()
-env.read_env("app.env")
+env.read_env(BASE_DIR / ".env")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -291,8 +291,6 @@ EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", cast=str, default="")
 DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", cast=str, default="")
 
 LOG_LEVEL = env("LOG_LEVEL", cast=str, default="INFO")
-SPLASH_URL = env("SPLASH_URL", cast=str, default="http://localhost:8050")
-
 MINIO_ENDPOINT = env("MINIO_ENDPOINT", cast=str, default="localhost:9000")
 MINIO_EXTERNAL_ENDPOINT = env(
     "MINIO_EXTERNAL_ENDPOINT", cast=str, default="localhost:9000"
