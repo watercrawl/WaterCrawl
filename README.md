@@ -29,15 +29,18 @@ To build and run WaterCrawl on Docker locally, please follow these steps:
 
 1. Clone the repository:
     ```bash
-    $ git clone https://github.com/watercrawl/watercrawl.git
+    git clone https://github.com/watercrawl/watercrawl.git
     ```
 
 2. Build and run the Docker containers:
     ```bash
-    $ cd docker
-    $ cp .env.example .env
-    $ docker compose up -d
+    cp backend/.env.example backend/.env
+    cd docker
+    cp .env.example .env
+    docker compose up -d --build
     ```
+
+3. Access the application with open [http://localhost:3000](http://localhost:3000)
 
 ### 💻 Development (For Contributing)
 
