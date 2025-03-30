@@ -24,13 +24,8 @@ Thumbs.db
 
 # Ignore .env files
 *.env
-!docker/db.env
-!docker/minio.env
-!docker/playwright.env
 .scrapy/*
 .celery/*
+docker-compose.yml
 celerybeat-schedule.db
 VERSION
-
-# Docker volumes
-docker/volumes/
