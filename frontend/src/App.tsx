@@ -19,6 +19,7 @@ const SignupPage = React.lazy(() => import('./pages/auth/SignupPage'));
 const ForgotPasswordPage = React.lazy(() => import('./pages/auth/ForgotPasswordPage'));
 const ResetPasswordPage = React.lazy(() => import('./pages/auth/ResetPasswordPage'));
 const VerifyEmailPage = React.lazy(() => import('./pages/auth/VerifyEmailPage'));
+const InstallPage = React.lazy(() => import('./pages/auth/InstallPage'));
 const DashboardPage = React.lazy(() => import('./pages/dashboard/DashboardPage'));
 const ActivityLogsPage = React.lazy(() => import('./pages/dashboard/ActivityLogsPage'));
 const ApiKeysPage = React.lazy(() => import('./pages/dashboard/ApiKeysPage'));
@@ -61,6 +62,7 @@ const App: React.FC = () => {
             <Suspense fallback={<div>Loading...</div>}>
               <Routes>
                 <Route element={<AuthLayout />}>
+                  <Route path="/install" element={<InstallPage />} />
                   <Route path="/" element={<LoginPage />} />
                   <Route path="/register" element={<SignupPage />} />
                   <Route path="/forgot-password" element={<ForgotPasswordPage />} />

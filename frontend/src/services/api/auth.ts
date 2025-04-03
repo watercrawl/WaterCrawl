@@ -1,5 +1,5 @@
 import api from './api';
-import { AuthResponse, LoginRequest, RegisterRequest } from '../../types/auth';
+import { AuthResponse, LoginRequest, RegisterRequest, InstallRequest } from '../../types/auth';
 
 export const authApi = {
   async login(request: LoginRequest): Promise<AuthResponse> {
@@ -8,6 +8,10 @@ export const authApi = {
 
   async register(request: RegisterRequest): Promise<void> {
     return api.post('/api/v1/user/auth/register/', request);
+  },
+
+  async install(request: InstallRequest): Promise<null> {
+    return api.post('/api/v1/user/install/', request).then(({ data }) => data);
   },
 
   async verifyEmail(token: string): Promise<AuthResponse> {

@@ -10,6 +10,7 @@ interface SettingsContextType {
     error: Error | null;
     isCompatibleBackend: boolean;
     compatibleBackendVersion: string;
+    reloadSettings: () => void;
 }
 
 const SettingsContext = createContext<SettingsContextType>({
@@ -18,6 +19,7 @@ const SettingsContext = createContext<SettingsContextType>({
     isCompatibleBackend: true,
     compatibleBackendVersion: COMPATIBLE_BACKEND_VERSION,
     error: null,
+    reloadSettings: () => { },
 });
 
 export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -26,18 +28,16 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<Error | null>(null);
 
+    const fetchSettings = () => {
+      settingsApi.getSettings().then((data) => {
+        setSettings(data);
+      }).catch((err) => {
+        setError(err instanceof Error ? err : new Error('Unknown error occurred'));
+      }).finally(() => {
+        setLoading(false);
+      });
+    };
     useEffect(() => {
-        const fetchSettings = async () => {
-            try {
-                const data = await settingsApi.getSettings();
-                setSettings(data);
-            } catch (err) {
-                setError(err instanceof Error ? err : new Error('Unknown error occurred'));
-            } finally {
-                setLoading(false);
-            }
-        };
-
         fetchSettings();
     }, []);
 
@@ -68,7 +68,7 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }, [settings])
 
     return (
-        <SettingsContext.Provider value={{ settings, loading, error, isCompatibleBackend, compatibleBackendVersion: COMPATIBLE_BACKEND_VERSION }}>
+        <SettingsContext.Provider value={{ settings, loading, error, isCompatibleBackend, compatibleBackendVersion: COMPATIBLE_BACKEND_VERSION, reloadSettings: fetchSettings }}>
             {children}
         </SettingsContext.Provider>
     );

@@ -16,6 +16,7 @@ from user.views import (
     TokenRefreshView,
     TokenVerifyView,
     RequestEmailVerificationView,
+    InstallView,
 )
 
 router = DefaultRouter()
@@ -26,6 +27,7 @@ router.register(
 )
 router.register(r"profile/invitations", MyInvitationsView, basename="invitations")
 urlpatterns = [
+    path("install/", InstallView.as_view(), name="install"),
     path("auth/register/", RegisterView.as_view(), name="register"),
     path("auth/login/", LogingView.as_view(), name="login"),
     path("auth/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),

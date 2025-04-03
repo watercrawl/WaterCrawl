@@ -30,6 +30,19 @@ class UserService:
     def get_jwt_token(self):
         return RefreshToken.for_user(self.user)
 
+    @classmethod
+    def install(cls, email, password):
+        user_service = cls.create_user(
+            email,
+            password,
+            is_staff=True,
+            is_superuser=True,
+            is_active=True,
+            email_verified=True,
+        )
+        TeamService.create_or_get_default_team(user_service.user)
+        return user_service
+
 
 class ForgotPasswordService:
     def __init__(self, user: User):

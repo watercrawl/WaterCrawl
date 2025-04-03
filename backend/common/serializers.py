@@ -15,3 +15,4 @@ class SettingSerializer(serializers.Serializer):
     policy_update_at = serializers.DateTimeField()
     terms_update_at = serializers.DateTimeField()
     google_analytics_id = serializers.CharField()
+    is_installed = serializers.BooleanField()

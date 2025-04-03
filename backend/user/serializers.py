@@ -151,3 +151,10 @@ class MyTeamInvitationSerializer(serializers.ModelSerializer):
 
 class RequestEmailVerificationSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
+
+
+class InstallSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+    password = serializers.CharField(required=True, validators=[validate_password])
+    newsletter_confirmed = serializers.BooleanField(required=False, default=False)
+    analytics_confirmed = serializers.BooleanField(required=False, default=False)
