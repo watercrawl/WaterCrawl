@@ -2,17 +2,27 @@ x-app: &app
   build:
     context: ../backend
     dockerfile: ../backend/Dockerfile
+    args:
+      - APP_VERSION=${VERSION:-development}
   env_file:
     - ../backend/.env
+  depends_on:
+    db:
+      condition: service_healthy
   profiles:
     - dev
+
 
 x-frontend: &frontend
   build:
     context: ../frontend
     dockerfile: ../frontend/Dockerfile
+    args:
+      - VITE_VERSION=${VERSION:-development}
   env_file:
     - ../frontend/.env
+  depends_on:
+    - app
   profiles:
     - dev
 
@@ -63,6 +73,11 @@ services:
       - ./volumes/postgres-db:/var/lib/postgresql/data
     ports:
       - "127.0.0.1:5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   redis:
     image: redis:latest

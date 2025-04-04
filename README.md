@@ -19,22 +19,24 @@
 
 You have 3 options to install WaterCrawl:
 
-1. 🐳 [Build and Run **(Running on Docker locally)**](#build-and-run-running-on-docker-locally)
+1. 🐳 [Quick start  **(Running on Docker locally)**](#-quick-start-running-on-docker-locally)
 2. 💻 [Development **(For Contributing)**](./CONTRIBUTING.md)
 3. 🌐 [Self-Hosted **(For Production)**](https://github.com/watercrawl/self-hosted)
 
-### 🐳 Build and Run (Running on Docker locally)
+### 🐳 Quick start (Running on Docker locally)
 
 To build and run WaterCrawl on Docker locally, please follow these steps:
 
 1. Clone the repository:
     ```bash
     git clone https://github.com/watercrawl/watercrawl.git
+    cd watercrawl
     ```
 
 2. Build and run the Docker containers:
     ```bash
     cp backend/.env.example backend/.env
+    cp frontend/.env.example frontend/.env
     cd docker
     cp .env.example .env
     docker compose up -d --build

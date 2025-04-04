@@ -22,7 +22,7 @@ dependencies = [
     "psycopg2-binary (==2.9.10)",
     "html2text (==2024.2.26)",
     "scrapy-splash (==0.9.0)",
-    "django-minio-backend (==3.7.2)",
+    "django-minio-backend (==3.8.0)",
     "djangorestframework-simplejwt (==5.4.0)",
     "django-cors-headers (==4.6.0)",
     "watercrawl-plugin (==0.1.0)",
