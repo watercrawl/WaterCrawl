@@ -2,10 +2,14 @@ import { useState } from "react";
 import { useCookieConsent } from "../contexts/CookieConsentContext";
 import { CheckCircle, Cookie, Settings } from "lucide-react";
 import CookieConsentModal from "./CookieConsentModal";
+import {useSettings} from "../../contexts/SettingsProvider.tsx";
 
 export const CookieConsentBanner: React.FC = () => {
     const { isConsentGiven, updateConsent, categories, isClient } = useCookieConsent();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const { settings, loading } = useSettings();
+
+
 
     const handleAcceptAll = () => {
         const allNonEssentialCategories = categories
@@ -15,7 +19,7 @@ export const CookieConsentBanner: React.FC = () => {
         updateConsent(allNonEssentialCategories);
     };
 
-    if (!isClient || isConsentGiven) return null;
+    if (!isClient || isConsentGiven || !settings?.is_enterprise_mode_active || loading) return null;
 
     return (
         <>

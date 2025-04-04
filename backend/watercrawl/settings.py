@@ -164,14 +164,6 @@ STATIC_URL = "/static/"
 STATIC_ROOT = env("STATIC_ROOT", cast=str, default="storage/static/")
 MEDIA_URL = "/media/"
 MEDIA_ROOT = env("MEDIA_ROOT", cast=str, default="storage/media/")
-STATICFILES_STORAGE = env(
-    "STATICFILES_STORAGE",
-    cast=str,
-    default="django_minio_backend.models.MinioBackendStatic",
-)
-DEFAULT_FILE_STORAGE = env(
-    "DEFAULT_FILE_STORAGE", cast=str, default="django_minio_backend.models.MinioBackend"
-)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
