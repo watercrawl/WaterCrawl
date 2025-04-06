@@ -35,3 +35,17 @@ export interface AuthResponse {
 export interface TokenPayload {
   exp: number;
 }
+
+
+export interface VerifyInvitationResponse {
+  invitation_code: string;
+  new_user: boolean;
+  email: string;
+}
+
+export interface RegisterResponse {
+  first_name: string;
+  last_name: string;
+  email: string;
+  email_verified: boolean;
+}

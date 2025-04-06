@@ -4,7 +4,10 @@ from django.http import Http404
 from django.utils.translation import gettext_lazy as _
 from rest_framework import status, exceptions
 from rest_framework.exceptions import ValidationError
-from django.core.exceptions import ValidationError as DjangoValidationError
+from django.core.exceptions import (
+    ValidationError as DjangoValidationError,
+    ObjectDoesNotExist,
+)
 from rest_framework.response import Response
 
 
@@ -51,6 +54,10 @@ def water_crawl_exception_handler(exc, context):
 
     elif isinstance(exc, Http404):
         # Handle not found errors
+        custom_response_data["code"] = status.HTTP_404_NOT_FOUND
+        custom_response_data["message"] = _("Not found.")
+
+    elif isinstance(exc, ObjectDoesNotExist):
         custom_response_data["code"] = status.HTTP_404_NOT_FOUND
         custom_response_data["message"] = _("Not found.")
 
