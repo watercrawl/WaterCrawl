@@ -67,6 +67,8 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         );
     }, [settings])
 
+    
+
     return (
         <SettingsContext.Provider value={{ settings, loading, error, isCompatibleBackend, compatibleBackendVersion: COMPATIBLE_BACKEND_VERSION, reloadSettings: fetchSettings }}>
             {children}

@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { FormInput } from '../shared/FormInput';
 import { ValidationMessage } from '../shared/ValidationMessage';
 import { OAuthButtons } from './OAuthButtons';
 import { authApi } from '../../services/api/auth';
+import { RegisterRequest, VerifyInvitationResponse } from '../../types/auth';
+import toast from 'react-hot-toast';
 
 const passwordStrengthRegex = {
   hasNumber: /\d/,
@@ -35,6 +37,10 @@ const schema = yup.object({
 }).required();
 
 type FormData = yup.InferType<typeof schema>;
+
+interface SignupFormProps {
+  invitation?: VerifyInvitationResponse | null;
+}
 
 const getPasswordStrength = (password: string): { score: number; message: string } => {
   let score = 0;
@@ -66,16 +72,36 @@ const getPasswordStrength = (password: string): { score: number; message: string
   };
 };
 
-export const SignupForm: React.FC = () => {
+export const SignupForm: React.FC<SignupFormProps> = ({ invitation }) => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [success, setSuccess] = useState(false);
+  const navigate = useNavigate();
+
+  const defaultValues = React.useMemo(() => {
+    if (invitation) {
+      return {
+        email: invitation.email
+      };
+    }
+    return {};
+  }, [invitation]);
 
   const methods = useForm<FormData>({
     resolver: yupResolver(schema),
     mode: 'onChange',
+    defaultValues
   });
+
+  useEffect(() => {
+    if (invitation) {
+      methods.reset({
+        ...methods.getValues(),
+        email: invitation.email
+      });
+    }
+  }, [invitation, methods]);
 
   const { handleSubmit, formState: { errors }, watch, setError: setFieldError } = methods;
   const password = watch('password', '');
@@ -90,8 +116,25 @@ export const SignupForm: React.FC = () => {
       setFieldError(field as keyof FormData, { type: 'manual', message: '' });
     });
 
-    authApi.register(data)
-      .then((_response) => {
+    const registerRequest: RegisterRequest = {
+      ...data,
+    };
+
+    let request;
+    if (invitation) {
+      request = authApi.registerWithInvitation(registerRequest, invitation.invitation_code);
+    } else {
+      request = authApi.register(registerRequest);
+    }
+
+    request
+      .then((response) => {
+        if (response.email_verified) {
+          toast.success('You account created successfully and you can login now.', {
+            duration: 3000,
+          });
+          navigate('/');
+        }
         setSuccess(true);
       })
       .catch((err: any) => {
@@ -191,7 +234,9 @@ export const SignupForm: React.FC = () => {
               name="email"
               type="email"
               error={errors.email?.message}
+              disabled={!!invitation}
               required
+              defaultValue={invitation?.email}
             />
 
             <div className="space-y-1">

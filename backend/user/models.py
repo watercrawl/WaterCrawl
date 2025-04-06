@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 
 from common.models import BaseModel
 from user.managers import UserManager
-from user.utils import generate_random_api_key
+from user.utils import generate_random_api_key, generate_random_invitation_code
 
 
 class User(AbstractUser):
@@ -122,6 +122,12 @@ class TeamInvitation(BaseModel):
         verbose_name=_("team"),
         on_delete=models.CASCADE,
         related_name="invitations",
+    )
+    invitation_token = models.CharField(
+        _("invitation token"),
+        max_length=255,
+        default=generate_random_invitation_code,
+        null=True,
     )
     email = models.EmailField(
         _("email address"),

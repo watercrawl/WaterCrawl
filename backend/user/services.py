@@ -24,7 +24,7 @@ class UserService:
         return cls(User.objects.get(pk=user_pk))
 
     @classmethod
-    def create_user(cls, email, password, **kwargs):
+    def create_user(cls, email, password, **kwargs) -> "UserService":
         return cls(User.objects.create_user(email, password, **kwargs))
 
     def get_jwt_token(self):
@@ -42,6 +42,9 @@ class UserService:
         )
         TeamService.create_or_get_default_team(user_service.user)
         return user_service
+
+    def activate_invitation(self, invitation_code):
+        pass
 
 
 class ForgotPasswordService:
@@ -172,6 +175,16 @@ class TeamInvitationService:
     def make_with_pk(cls, invitation_pk: str):
         return cls(TeamInvitation.objects.get(pk=invitation_pk))
 
+    @classmethod
+    def make_with_invitation_token(
+        cls, invitation_token: str
+    ) -> "TeamInvitationService":
+        return cls(
+            TeamInvitation.objects.get(
+                invitation_token=invitation_token, activated=False
+            )
+        )
+
     def send_invitation_email(self):
         (
             EmailService()
@@ -187,12 +200,19 @@ class TeamInvitationService:
     @atomic
     def accept_invitation(self, user: User):
         self.invitation.activated = True
-        self.invitation.save(update_fields=["activated"])
+        self.invitation.invitation_token = None
+        self.invitation.save(update_fields=["activated", "invitation_token"])
         TeamService(self.invitation.team).add_user(user)
         return self
 
     def get_link(self):
-        return settings.FRONTEND_URL
+        return urljoin(
+            settings.FRONTEND_URL,
+            f"/register/?invitation_code={self.invitation.invitation_token}",
+        )
+
+    def is_new_user(self):
+        return not User.objects.filter(email__iexact=self.invitation.email).exists()
 
 
 class VerificationService:

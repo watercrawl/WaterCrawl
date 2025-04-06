@@ -1,10 +1,39 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
 import { SunIcon, MoonIcon } from '@heroicons/react/24/outline';
+import { useSettings } from '../contexts/SettingsProvider';
+import Loading from '../components/shared/Loading';
 
 export const AuthLayout: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
+  const { settings, loading } = useSettings();
+
+  const isInstallRoute = window.location.pathname === '/install';
+
+  if (settings && !settings.is_installed && !isInstallRoute) {
+    return <Navigate to="/install" />;
+  }
+
+
+  if (!settings) {
+    return (
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="bg-white dark:bg-gray-800 py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          {loading ?
+            (<div className="flex items-center justify-center">
+              <Loading />
+            </div>)
+            : (
+              <p className="text-center text-sm text-gray-500 dark:text-gray-400">
+                There is a problem with load settings. Please try again later.
+              </p>
+            )}
+        </div>
+      </div>
+    )
+  }
+
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8">

@@ -7,20 +7,15 @@ import { useSettings } from "../../contexts/SettingsProvider.tsx";
 
 const InstallPage = () => {
   const navigate = useNavigate();
-  const authService = AuthService.getInstance();
   const {settings, loading} = useSettings();
 
   useEffect(() => {
     // If already installed, redirect to home page
-    if (!loading && settings?.is_installed) {
+    if (settings && settings?.is_installed) {
       navigate('/');
     }
 
-    // Simulate API check for installation status
-    setTimeout(() => {
-
-    }, 500);
-  }, [navigate, authService, settings, loading]);
+  }, [navigate, settings]);
 
   if (loading) {
     return (
@@ -32,11 +27,6 @@ const InstallPage = () => {
         </div>
       </div>
     );
-  }
-
-  // If already installed, redirect to home page
-  if (settings?.is_installed) {
-    return null; // Component will unmount and redirect through useEffect
   }
 
   return <InstallForm />;

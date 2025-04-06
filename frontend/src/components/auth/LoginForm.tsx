@@ -71,24 +71,6 @@ export const LoginForm: React.FC = () => {
       });
   });
 
-  if (!settings) {
-    return (
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white dark:bg-gray-800 py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          {loading ?
-            (<div className="flex items-center justify-center">
-              <Loading />
-            </div>)
-            : (
-              <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-                There is a problem with load settings. Please try again later.
-              </p>
-            )}
-        </div>
-      </div>
-    )
-  }
-
   return (
     <FormProvider {...methods}>
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
@@ -179,9 +161,9 @@ export const LoginForm: React.FC = () => {
         </div>
       </div>
       {showEmailVerificationPopup && (
-        <EmailVerificationPopup 
-          email={userEmail} 
-          onClose={() => setShowEmailVerificationPopup(false)} 
+        <EmailVerificationPopup
+          email={userEmail}
+          onClose={() => setShowEmailVerificationPopup(false)}
         />
       )}
     </FormProvider>

@@ -11,6 +11,12 @@ def generate_random_api_key(length=32):
     )
 
 
+def generate_random_invitation_code(length=64):
+    return get_random_string(
+        length=length, allowed_chars="ABCDEFGHJKMNPQRSTUWXYZ0123456789"
+    )
+
+
 def load_class_by_name(full_class_name):
     # Split the full class name into module path and class name
     module_name, class_name = full_class_name.rsplit(".", 1)
