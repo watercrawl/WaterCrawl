@@ -39,6 +39,17 @@ To build and run WaterCrawl on Docker locally, please follow these steps:
 
 3. Access the application with open [http://localhost](http://localhost)
 
+> **⚠️ IMPORTANT**: If you're deploying on a domain or IP address other than localhost, you MUST update the MinIO configuration in your .env file:
+> ```bash
+> # Change this from 'localhost' to your actual domain or IP
+> MINIO_EXTERNAL_ENDPOINT=your-domain.com
+> 
+> # Also update these URLs accordingly
+> MINIO_BROWSER_REDIRECT_URL=http://your-domain.com/minio-console/
+> MINIO_SERVER_URL=http://your-domain.com/
+> ```
+> Failure to update these settings will result in broken file uploads and downloads. For more details, see [DEPLOYMENT.md](./DEPLOYMENT.md).
+
 > **Important:** Before deploying to production, ensure that you update the `.env` file with the appropriate configuration values. Additionally, make sure to set up and configure the database, MinIO, and any other required services. for more information, please read the [Deployment Guide](./DEPLOYMENT.md).
 
 

@@ -154,14 +154,14 @@ These settings control MinIO object storage (S3-compatible):
 | Variable | Description | Default | Required? |
 |----------|-------------|---------|-----------|
 | `MINIO_ENDPOINT` | MinIO endpoint for Django | `minio:9000` | No |
-| `MINIO_EXTERNAL_ENDPOINT` | External MinIO endpoint | `localhost:9000` | No |
-| `MINIO_REGION` | MinIO region (optional) | Empty | No |
+| `MINIO_EXTERNAL_ENDPOINT` | External MinIO endpoint | `localhost` | **Yes** for production |
+| `MINIO_REGION` | MinIO region (optional) | `us-east-1` | No |
 | `MINIO_ACCESS_KEY` | MinIO access key (username) | `minio` | **Yes** for production |
 | `MINIO_SECRET_KEY` | MinIO secret key (password) | `minio123` | **Yes** for production |
 | `MINIO_USE_HTTPS` | Use HTTPS for MinIO | `False` | No |
 | `MINIO_EXTERNAL_ENDPOINT_USE_HTTPS` | Use HTTPS for external endpoint | `False` | No |
 | `MINIO_URL_EXPIRY_HOURS` | MinIO URL expiry in hours | `7` | No |
-| `MINIO_CONSISTENCY_CHECK_ON_START` | Check consistency on startup | `False` | No |
+| `MINIO_CONSISTENCY_CHECK_ON_START` | Check consistency on startup | `True` | No |
 | `MINIO_PRIVATE_BUCKET` | Private bucket name | `private` | No |
 | `MINIO_PUBLIC_BUCKET` | Public bucket name | `public` | No |
 | `MINIO_BUCKET_CHECK_ON_SAVE` | Check bucket existence on save | `False` | No |
@@ -170,8 +170,11 @@ These settings control MinIO object storage (S3-compatible):
 
 **Setup Steps:**
 1. For production, set strong credentials for `MINIO_ACCESS_KEY` and `MINIO_SECRET_KEY`
-2. If you're exposing MinIO publicly, adjust the URLs to match your domain
+2. **IMPORTANT**: When deploying to a domain other than localhost, you MUST change:
+   - `MINIO_EXTERNAL_ENDPOINT` to your domain (e.g., `example.com`)
+   - This variable controls how presigned URLs are generated for file downloads/uploads
 3. If using HTTPS, set `MINIO_USE_HTTPS=True` and `MINIO_EXTERNAL_ENDPOINT_USE_HTTPS=True`
+4. Update `MINIO_BROWSER_REDIRECT_URL` and `MINIO_SERVER_URL` to match your domain
 
 ### CORS Settings
 
@@ -339,6 +342,7 @@ Follow these steps to deploy WaterCrawl:
    POSTGRES_PASSWORD=your-strong-password
    MINIO_ACCESS_KEY=your-minio-username
    MINIO_SECRET_KEY=your-minio-password
+   MINIO_EXTERNAL_ENDPOINT=your-domain.com  # CRITICAL: Set to your domain
    PLAYWRIGHT_API_KEY=your-strong-api-key
    ```
 
