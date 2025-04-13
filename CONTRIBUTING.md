@@ -32,7 +32,7 @@ Thank you for your interest in contributing to WaterCrawl! This document provide
 
     ```bash
     cd watercrawl/docker
-    cp .env.local.example .env.local  # Adjust settings if needed
+    cp .env.local .env
     docker-compose -f docker-compose.local.yml up -d
     ```
 
@@ -89,18 +89,6 @@ Thank you for your interest in contributing to WaterCrawl! This document provide
     - MinIO Console: http://localhost:9001
     - Mailpit (Email Testing): http://localhost:8025
 
-### Docker Local Development
-
-If you prefer to only run the external dependencies with Docker and develop the frontend and backend locally:
-
-1. Start only the external dependencies:
-
-    ```bash
-    cd watercrawl/docker
-    docker-compose -f docker-compose.local.yml up -d
-    ```
-
-2. Follow steps 4-6 above to set up the backend and frontend locally.
 
 ## Code Quality
 
@@ -116,7 +104,7 @@ To run linting checks:
 ```bash
 # Backend
 cd backend
-ruff check
+poetry run ruff check
 
 # Frontend
 cd frontend
@@ -128,7 +116,7 @@ For automatic fixes where possible:
 ```bash
 # Backend
 cd backend
-ruff check --fix
+poetry run ruff check --fix
 
 # Frontend
 cd frontend
@@ -139,21 +127,29 @@ Our CI pipeline automatically runs linting checks on pull requests. Please ensur
 
 ## Submitting Changes
 
-1. Create a new branch for your changes:
+1. **Create an issue first**:
+   - All pull requests must be associated with an issue
+   - Create a new issue describing the bug or feature before starting work
+   - You can begin development immediately after creating the issue
+
+2. Create a new branch for your changes:
    ```bash
    git checkout -b feature/your-feature-name
    ```
 
-2. Make your changes and commit them with clear, descriptive commit messages.
+3. Make your changes and commit them with clear, descriptive commit messages.
 
-3. Push your branch to your fork:
+4. Push your branch to your fork:
    ```bash
    git push origin feature/your-feature-name
    ```
 
-4. Open a pull request from your branch to the main repository.
+5. Open a pull request from your branch to the main repository.
 
-5. In your pull request description, clearly explain the changes you've made and why they should be included.
+6. In your pull request description:
+   - Reference the issue number (e.g., "Fixes #123" or "Relates to #123")
+   - Clearly explain the changes you've made
+   - Include screenshots for UI changes if applicable
 
 ## License
 
