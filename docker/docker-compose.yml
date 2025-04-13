@@ -107,7 +107,12 @@ services:
     ports:
       - "${NGINX_PORT:-80}:80"
     volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf.template
+      - ./nginx/entrypoint.sh:/entrypoint.sh
+    environment:
+      - MINIO_PRIVATE_BUCKET=${MINIO_PRIVATE_BUCKET:-private}
+      - MINIO_PUBLIC_BUCKET=${MINIO_PUBLIC_BUCKET:-public}
+    command: ["/bin/sh", "/entrypoint.sh"]
     depends_on:
       - app
       - frontend
