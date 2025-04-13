@@ -28,94 +28,133 @@ Thank you for your interest in contributing to WaterCrawl! This document provide
     git clone https://github.com/USERNAME/watercrawl.git
     ```
 
-3. Setup git upstream:
+3. Set up external dependencies using Docker:
+
     ```bash
-    cd watercrawl
-    git remote add upstream https://github.com/watercrawl/watercrawl.git
+    cd watercrawl/docker
+    cp .env.local.example .env.local  # Adjust settings if needed
+    docker-compose -f docker-compose.local.yml up -d
     ```
 
-4. Install frontend and backend dependencies:
-    ```bash
-    make install
-    ```
+    This will start PostgreSQL, Redis, MinIO, and Mailpit services needed for development.
 
-5. Start the development requirements containers:
-    ```bash
-    cd docker
-    cp .env.local .env
-    docker compose up -d
-    ```
+4. Set up backend:
 
-6. Start backend development server (run in separate terminals):
     ```bash
-    cd backend
-    cp app.env.example app.env
-    poetry run python manage.py runserver
-    poetry run celery -A watercrawl --beat worker -l info
-    ```
-
-7. Start frontend development server:
-    ```bash
-    cd frontend
+    cd ../backend
+    
+    # Setup Poetry environment
+    poetry env use python3.13
+    poetry shell
+    
+    # Install dependencies
+    poetry install
+    
+    # Configure environment
     cp .env.example .env
-    npm run dev
+    # Edit .env to point to the Docker services
+    # Example: DATABASE_URL=postgres://postgres:postgres@localhost:5432/postgres
+    
+    # Run migrations
+    python manage.py migrate
+    
+    # Create a superuser (if needed)
+    python manage.py createsuperuser
+    
+    # Start development server
+    python manage.py runserver
     ```
 
-### Setting up Pre-commit Hooks
+5. Set up frontend:
 
-We use pre-commit hooks to ensure code quality. Install them after setting up your development environment:
+    ```bash
+    cd ../frontend
+    
+    # Install dependencies
+    pnpm install
+    
+    # Configure environment
+    cp .env.example .env
+    # Edit .env to point to your local backend
+    # Example: API_BASE_URL=http://localhost:8000/api
+    
+    # Start development server
+    pnpm run dev
+    ```
+
+6. Access the application:
+    - Frontend: http://localhost:5173
+    - Backend API: http://localhost:8000/api
+    - API Documentation: http://localhost:8000/api/schema/swagger-ui/
+    - MinIO Console: http://localhost:9001
+    - Mailpit (Email Testing): http://localhost:8025
+
+### Docker Local Development
+
+If you prefer to only run the external dependencies with Docker and develop the frontend and backend locally:
+
+1. Start only the external dependencies:
+
+    ```bash
+    cd watercrawl/docker
+    docker-compose -f docker-compose.local.yml up -d
+    ```
+
+2. Follow steps 4-6 above to set up the backend and frontend locally.
+
+## Code Quality
+
+### Linting
+
+We use the following tools for linting:
+
+- Backend (Python): [Ruff](https://github.com/astral-sh/ruff)
+- Frontend (TypeScript/React): [ESLint](https://eslint.org/) with TypeScript and React plugins
+
+To run linting checks:
 
 ```bash
-pre-commit install
+# Backend
+cd backend
+ruff check
+
+# Frontend
+cd frontend
+pnpm run lint
 ```
 
-This will set up:
-- Ruff for Python code linting and formatting
-- ESLint for TypeScript/React code linting
-- Additional code quality checks
+For automatic fixes where possible:
 
-## Development Workflow
+```bash
+# Backend
+cd backend
+ruff check --fix
 
-1. **Create an Issue First**
-   - All pull requests must be associated with an issue
-   - Create a new issue describing the bug or feature before starting work
-   - Wait for issue to be triaged and approved
+# Frontend
+cd frontend
+pnpm run lint:fix
+```
 
-2. **Code Quality**
-   - Follow the linting rules configured in:
-     - Backend: `backend/pyproject.toml` (Ruff)
-     - Frontend: `.eslintrc.js` and `eslint.config.js`
-   - Run linting checks locally:
-     ```bash
-     ./lint.sh
-     ```
-   - Fix any linting issues before committing
+Our CI pipeline automatically runs linting checks on pull requests. Please ensure your code passes these checks before submitting a PR.
 
-3. **Making Changes**
-   - Create a new branch from `main`
-   - Make your changes
-   - Write or update tests as needed
-   - Commit your changes using conventional commit messages
+## Submitting Changes
 
-4. **Creating Pull Requests**
-   - Link the related issue in your PR description
-   - Include screenshots for UI changes
-   - Ensure all checks pass
-   - Request review from maintainers
+1. Create a new branch for your changes:
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
 
-## Pull Request Guidelines
+2. Make your changes and commit them with clear, descriptive commit messages.
 
-- Keep PRs focused and atomic
-- Update documentation as needed
-- Include tests for new features
-- Follow our code style guidelines
-- Squash commits before merging
+3. Push your branch to your fork:
+   ```bash
+   git push origin feature/your-feature-name
+   ```
 
-## Need Help?
+4. Open a pull request from your branch to the main repository.
 
-Feel free to ask questions in:
-- GitHub Discussions
-- Issue comments
-- Our community channels
+5. In your pull request description, clearly explain the changes you've made and why they should be included.
 
-Thank you for contributing to WaterCrawl! 🚀
+## License
+
+By contributing to WaterCrawl, you agree that your contributions will be licensed under the project's license.

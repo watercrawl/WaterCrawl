@@ -17,13 +17,10 @@
 
 ## 🚀 Quick Start
 
-You have 3 options to install WaterCrawl:
-
-1. 🐳 [Quick start  **(Running on Docker locally)**](#-quick-start-running-on-docker-locally)
+1. 🐳 [Quick start](#-quick-start)
 2. 💻 [Development **(For Contributing)**](./CONTRIBUTING.md)
-3. 🌐 [Self-Hosted **(For Production)**](https://github.com/watercrawl/self-hosted)
 
-### 🐳 Quick start (Running on Docker locally)
+### 🐳 Quick start
 
 To build and run WaterCrawl on Docker locally, please follow these steps:
 
@@ -35,22 +32,19 @@ To build and run WaterCrawl on Docker locally, please follow these steps:
 
 2. Build and run the Docker containers:
     ```bash
-    cp backend/.env.example backend/.env
-    cp frontend/.env.example frontend/.env
     cd docker
     cp .env.example .env
-    docker compose up -d --build
+    docker compose up -d
     ```
 
-3. Access the application with open [http://localhost:3000](http://localhost:3000)
+3. Access the application with open [http://localhost](http://localhost)
+
+> **Important:** Before deploying to production, ensure that you update the `.env` file with the appropriate configuration values. Additionally, make sure to set up and configure the database, MinIO, and any other required services. for more information, please read the [Deployment Guide](./DEPLOYMENT.md).
+
 
 ### 💻 Development (For Contributing)
 
 For local development and contribution, please follow our [Contributing Guide](./CONTRIBUTING.md) 🤝
-
-### 🌐 Production Deployment
-
-For production deployment with Docker and complete infrastructure setup, please refer to our dedicated [self-hosted repository](https://github.com/watercrawl/self-hosted) 🚀
 
 ## ✨ Features
 
