@@ -13,6 +13,7 @@ import { AnimatedProcessing } from '../../components/shared/AnimatedProcessing';
 import { formatDuration } from '../../utils/formatters';
 import { StatusBadge } from '../../components/shared/StatusBadge';
 import { DownloadFormatSelector } from '../../components/shared/DownloadFormatSelector';
+import { SitemapModalSelector } from '../../components/shared/SitemapModalSelector';
 
 const CrawlRequestDetailPage: React.FC = () => {
   const { requestId } = useParams<{ requestId: string }>();
@@ -116,7 +117,7 @@ const CrawlRequestDetailPage: React.FC = () => {
     };
 
     fetchResults();
-  }, [request]);
+  }, [request, requestId, navigate, wasRunning]);
 
   const loadMore = async () => {
     if (!requestId || !results?.next || loadingMore ) return;
@@ -205,7 +206,8 @@ const CrawlRequestDetailPage: React.FC = () => {
                 </div>
               </button>
             )}
-            {requestId && <DownloadFormatSelector requestId={requestId} buttonWithText/>}
+            {request && <DownloadFormatSelector request={request} buttonWithText/>}
+            {request && <SitemapModalSelector request={request} buttonWithText/>}
             <button
               onClick={handleTryInPlayground}
               className="inline-flex items-center px-3 py-1.5 text-sm border border-primary-300 dark:border-primary-600 rounded-md shadow-sm font-medium text-primary-700 dark:text-primary-200 bg-white dark:bg-gray-800 hover:bg-primary-50 dark:hover:bg-primary-900/20 focus:outline-none focus:ring-primary-500 focus:ring-offset-2 transition-colors"

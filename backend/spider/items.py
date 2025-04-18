@@ -18,3 +18,9 @@ class ScrapedItem(BaseItem):
     filtered_html = scrapy.Field()
     markdown = scrapy.Field()
     attachments = scrapy.Field()
+
+
+class LinkItem(BaseItem):
+    title = scrapy.Field()
+    url = scrapy.Field()
+    verified = scrapy.Field()

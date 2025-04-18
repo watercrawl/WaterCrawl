@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { toast } from 'react-hot-toast';
 import { Tab } from '@headlessui/react';
 import { CrawlEvent, CrawlRequest, CrawlResult, CrawlState, PageOptions } from '../../types/crawl';
@@ -109,7 +109,7 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ showSpiderOptions, initial
         }
       }
     }
-  }, [initialRequest]);  // Add url to dependencies to prevent re-initialization
+  }, [initialRequest, url]);  // Add url to dependencies to prevent re-initialization
 
   // Add a shared function to filter active plugins
   const getActivePlugins = (plugins: Record<string, object>) => {
@@ -121,7 +121,7 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ showSpiderOptions, initial
     }, {} as Record<string, object>);
   };
 
-  const updateRequest = () => {
+  const updateRequest = useCallback(() => {
     if (!url) return;
 
     const request = {
@@ -152,11 +152,11 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ showSpiderOptions, initial
     } as CrawlRequest;
 
     setCurrentRequest(request);
-  };
+  }, [url, pageOptions, spiderOptions, pluginOptions]);
 
   useEffect(() => {
     updateRequest();
-  }, [url, pageOptions, spiderOptions, pluginOptions]);
+  }, [url, pageOptions, spiderOptions, pluginOptions, updateRequest]);
 
   useEffect(() => {
     const fetchSchema = async () => {

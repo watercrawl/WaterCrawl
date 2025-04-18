@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import ResultModal from '../../components/ResultModal';
 import { CrawlRequestCard } from '../../components/shared/CrawlRequestCard';
 import { EmptyState } from '../../components/activity-logs/EmptyState';
 import { PaginatedResponse } from '../../types/common';
-import { CrawlRequest, CrawlResult } from '../../types/crawl';
+import { CrawlRequest } from '../../types/crawl';
 import { activityLogsApi } from '../../services/api/activityLogs';
 import { useIsTabletOrMobile } from '../../hooks/useMediaQuery';
 import { Pagination } from '../../components/shared/Pagination';
@@ -13,6 +12,7 @@ import { StatusBadge } from '../../components/shared/StatusBadge';
 import { formatDistanceToNow } from 'date-fns';
 import { formatDuration } from '../../utils/formatters';
 import { DownloadFormatSelector } from '../../components/shared/DownloadFormatSelector';
+import { SitemapModalSelector } from '../../components/shared/SitemapModalSelector';
 
 // Status options for filtering
 const STATUS_OPTIONS = [
@@ -30,8 +30,6 @@ const ActivityLogsPage: React.FC = () => {
   const [crawlRequests, setCrawlRequests] = useState<PaginatedResponse<CrawlRequest> | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [selectedResult, setSelectedResult] = useState<CrawlResult | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState<string>('');
 
   const isTabletOrMobile = useIsTabletOrMobile();
@@ -205,13 +203,15 @@ const ActivityLogsPage: React.FC = () => {
                                     </td>
                                     <td className="whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                                       <div className="flex justify-end space-x-3">
-                                        <DownloadFormatSelector requestId={request.uuid} />
+                                        <DownloadFormatSelector request={request} />
+                                        <SitemapModalSelector request={request} />
                                         <button
                                           onClick={(e) => handleViewDetails(e, request.uuid)}
                                           className="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 focus:outline-none"
-                                          title="View Details"
+                                          title="View details"
                                         >
-                                          <EyeIcon className="h-5 w-5" />
+                                          <span className="sr-only">View details</span>
+                                          <EyeIcon className="h-5 w-5" aria-hidden="true" />
                                         </button>
                                       </div>
                                     </td>
@@ -242,18 +242,6 @@ const ActivityLogsPage: React.FC = () => {
           )}
         </div>
       </div>
-
-      {/* Result Modal */}
-      {selectedResult && (
-        <ResultModal
-          isOpen={isModalOpen}
-          onClose={() => {
-            setIsModalOpen(false);
-            setSelectedResult(null);
-          }}
-          result={selectedResult}
-        />
-      )}
     </div>
   );
 };

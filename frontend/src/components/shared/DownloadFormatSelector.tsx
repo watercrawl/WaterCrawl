@@ -2,17 +2,18 @@ import React, { useState, useRef, useEffect } from 'react';
 import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 import { activityLogsApi } from '../../services/api/activityLogs';
 import toast from 'react-hot-toast';
+import { CrawlRequest } from '../../types/crawl';
 
 type DownloadFormat = 'json' | 'markdown';
 
 interface DownloadFormatSelectorProps {
-  requestId: string;
+  request: CrawlRequest;
   className?: string;
   buttonWithText?: boolean;
 }
 
 export const DownloadFormatSelector: React.FC<DownloadFormatSelectorProps> = ({
-  requestId,
+  request,
   className = '',
   buttonWithText = false
 }) => {
@@ -38,15 +39,15 @@ export const DownloadFormatSelector: React.FC<DownloadFormatSelectorProps> = ({
       e.stopPropagation();
     }
 
-    if (!requestId) return;
+    if (!request.uuid) return;
 
     try {
       setIsDownloading(true);
-      const blob = await activityLogsApi.downloadResults(requestId, format);
+      const blob = await activityLogsApi.downloadResults(request.uuid, format);
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `crawl-results-${requestId}.${format === 'json' ? 'zip' : 'zip'}`;
+      a.download = `crawl-results-${request.uuid}.${format === 'json' ? 'zip' : 'zip'}`;
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
@@ -105,6 +106,18 @@ export const DownloadFormatSelector: React.FC<DownloadFormatSelectorProps> = ({
               className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
             >
               Download as Markdown
+            </button>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if(!request.sitemap) return;
+                window.open(request.sitemap);
+              }}
+              disabled={!request.sitemap}
+              className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+            >
+              Download Sitemap
             </button>
           </div>
         </div>

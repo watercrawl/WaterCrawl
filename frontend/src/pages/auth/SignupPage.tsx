@@ -20,7 +20,7 @@ const SignupPage = () => {
     if (token && !authService.isTokenExpired()) {
       navigate('/dashboard');
     }
-  }, [navigate]);
+  }, [navigate, authService]);
 
   useEffect(() => {
     if (invitationCode) {
@@ -47,7 +47,7 @@ const SignupPage = () => {
         navigate('/');
       }
     }
-  }, [invitationCode, navigate]);
+  }, [invitationCode, navigate, settings?.is_signup_active]);
 
   return (<SignupForm invitation={invitation} /> );
 };

@@ -16,7 +16,7 @@ export const activityLogsApi = {
   async getCrawlResults(requestId: string, page: number = 1): Promise<PaginatedResponse<CrawlResult>> {
     return api.get<PaginatedResponse<CrawlResult>>(
       `/api/v1/core/crawl-requests/${requestId}/results/`,
-      { params: { page, page_size: 25 } }
+      { params: { page, page_size: 25, prefetched: true } }
     ).then(({ data }) => data);
   },
 

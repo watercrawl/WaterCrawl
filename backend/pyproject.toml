@@ -29,7 +29,8 @@ dependencies = [
     "watercrawl-openai (==0.1.0)",
     "httpx (==0.28.1)",
     "stripe (==11.5.0)",
-    "django-filter (==25.1)"
+    "django-filter (==25.1)",
+    "django-redis (>=5.4.0,<6.0.0)"
 ]
 
 

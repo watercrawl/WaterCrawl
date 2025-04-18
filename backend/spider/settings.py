@@ -73,6 +73,7 @@ EXTENSIONS = {
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
+    "spider.pipelines.SiteScrapperPipeline": 50,
     "spider.pipelines.HTMLFilterPipeline": 100,
     "spider.pipelines.MarkdownPipeline": 200,
     "spider.pipelines.SpiderPipeline": 999,

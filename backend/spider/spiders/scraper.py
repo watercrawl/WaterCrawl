@@ -4,7 +4,7 @@ from scrapy import Request, Spider
 
 from core.services import CrawlerService
 from spider import settings
-from spider.items import ScrapedItem
+from spider.items import ScrapedItem, LinkItem
 
 
 class SiteScrapper(Spider):
@@ -32,16 +32,27 @@ class SiteScrapper(Spider):
         )
 
     def parse(self, response, **kwargs):
-        links = response.css("a::attr(href)").getall()
         result_links = []
-        for link in links:
+        for a_tag in response.css("a"):
+            link = a_tag.css("::attr(href)").get()
+            if not link:
+                continue
+
             link = link if link.startswith("http") else response.urljoin(link)
             if not self.helpers.is_allowed_path(link):
                 continue
             result_links.append(link)
+
+            text = (
+                "".join(a_tag.xpath(".//text()").getall()).strip()
+                or a_tag.css("::attr(alt)").get()
+                or a_tag.css("::attr(title)").get()
+            )
+            # LinkItem used for making a sitemap
+            yield LinkItem(url=link, title=text, verified=False)
             yield response.follow(link, callback=self.parse)
 
-        yield self.__process_response(response, sorted(set(result_links)))
+        yield from self.__process_response(response, sorted(set(result_links)))
 
     def __process_response(self, response, links=None):
         # Create a dictionary to store all meta tag data
@@ -51,16 +62,18 @@ class SiteScrapper(Spider):
         for meta_tag in response.xpath("//meta"):
             # Get the 'name' and 'property' attributes, and their 'content'
             name = meta_tag.xpath("@name").get()
-            property = meta_tag.xpath("@property").get()
+            property_tag = meta_tag.xpath("@property").get()
             content = meta_tag.xpath("@content").get()
 
             if name:
                 meta_data[name] = content  # Store by 'name'
-            elif property:
-                meta_data[property] = content  # Store by 'property'
+            elif property_tag:
+                meta_data[property_tag] = content  # Store by 'property'
 
         # add title to meta data
         meta_data["title"] = response.xpath("//title/text()").get()
+
+        yield LinkItem(url=response.url, title=meta_data["title"], verified=True)
 
         item = ScrapedItem()
         item["url"] = response.url
@@ -71,4 +84,4 @@ class SiteScrapper(Spider):
         item["attachments"] = (
             response.meta["attachments"] if "attachments" in response.meta else []
         )
-        return item
+        yield item

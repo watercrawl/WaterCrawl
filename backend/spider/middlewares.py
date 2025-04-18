@@ -1,3 +1,5 @@
+import traceback
+
 import httpx
 from scrapy.http import HtmlResponse
 
@@ -88,4 +90,6 @@ class PlaywrightMiddleware:
                 )
             except httpx.RequestError as e:
                 spider.logger.error(f"Error processing request: {e}")
+                # print traceback
+                traceback.print_exc()
                 return None

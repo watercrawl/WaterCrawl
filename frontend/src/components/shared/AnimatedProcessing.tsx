@@ -18,7 +18,7 @@ export const AnimatedProcessing: React.FC<AnimatedProcessingProps> = ({ classNam
       setMessageIndex((prev) => (prev + 1) % messages.length);
     }, 2000);
     return () => clearInterval(interval);
-  }, []);
+  }, [messages.length]);
 
   return (
     <div className={`text-md text-gray-500 dark:text-gray-400 ${className} self-center`}>

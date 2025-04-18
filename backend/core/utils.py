@@ -15,6 +15,10 @@ def generate_crawl_result_attachment_path(instance, filename):
     )
 
 
+def generate_crawl_request_sitemap_path(instance, filename):
+    return "crawls/{}/sitemap.json".format(instance.uuid)
+
+
 def get_active_plugins() -> List[Type["AbstractPlugin"]]:
     """
     Get a list of active plugins
