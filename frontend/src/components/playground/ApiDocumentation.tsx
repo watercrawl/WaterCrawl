@@ -116,7 +116,7 @@ export const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ request }) =
   const getBaseUrl = useCallback(() => {
     let url = API_URL;
     if (!/^https?:\/\//i.test(url)) {
-      url = window.location.origin + (url.startsWith('/') ? '' : '/') + url;
+      url = window.location.origin;
     }
     return url;
   }, []);
