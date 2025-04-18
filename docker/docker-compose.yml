@@ -15,6 +15,7 @@ x-app: &app
     - STATIC_ROOT=${STATIC_ROOT:-storage/static/}
     - MEDIA_ROOT=${MEDIA_ROOT:-storage/media/}
     - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    - REDIS_URL=${REDIS_URL:-redis://redis:6379/1}
     
     # Database
     - DATABASE_URL=postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-db}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-postgres}

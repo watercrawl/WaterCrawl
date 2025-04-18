@@ -18,7 +18,7 @@ export const ActivityLogResultCard: React.FC<ActivityLogResultCardProps> = ({
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${result.title}.json`;
+    a.download = `${result.uuid}.json`;
     a.click();
     URL.revokeObjectURL(url);
   };
