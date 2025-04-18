@@ -12,6 +12,16 @@ export const ActivityLogResultCard: React.FC<ActivityLogResultCardProps> = ({
   result,
   onPreviewClick,
 }) => {
+  const onDownloadClick = (result: CrawlResult) => {
+    // download result as blob
+    const blob = new Blob([JSON.stringify(result)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${result.title}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
   return (
     <div className="p-3 border border-gray-200 dark:border-gray-700 rounded-md">
       {/* Header Section */}
@@ -34,15 +44,16 @@ export const ActivityLogResultCard: React.FC<ActivityLogResultCardProps> = ({
 
         {/* Right Side - Action Buttons */}
         <div className="flex items-center space-x-2 ml-4">
-          <a
-            href={result.result}
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              onDownloadClick(result);
+            }}
             className="p-1.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
             title="Download"
           >
             <ArrowDownTrayIcon className="h-4 w-4" />
-          </a>
+          </button>
           <button
             onClick={(e) => {
               e.preventDefault();
@@ -62,10 +73,15 @@ export const ActivityLogResultCard: React.FC<ActivityLogResultCardProps> = ({
           {formatDistanceToNow(new Date(result.created_at), { addSuffix: true })}
         </span>
         {result.attachments && result.attachments.length > 0 && (
-          <div className="flex items-center text-xs">
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              onPreviewClick(result);
+            }}
+            className="flex items-center text-xs">
             <PaperClipIcon className="h-3.5 w-3.5 mr-1" />
             <span>{result.attachments.length} attachment{result.attachments.length > 1 ? 's' : ''}</span>
-          </div>
+          </button>
         )}
       </div>
     </div>
