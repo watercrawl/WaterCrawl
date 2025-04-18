@@ -7,7 +7,7 @@ import zipfile
 from collections import OrderedDict
 from datetime import timedelta
 from functools import cached_property
-from time import sleep
+from time import time
 from urllib.parse import urlparse
 
 from celery.result import AsyncResult
@@ -15,6 +15,7 @@ from django.conf import settings
 from django.core.files.base import ContentFile
 from django.db.models import Count, F
 from django.utils import timezone
+from django_redis import get_redis_connection
 
 from core import consts
 from core.models import CrawlRequest, CrawlResult
@@ -197,9 +198,120 @@ class CrawlHelpers:
             yield plugin
 
 
+class CrawlPupSupService:
+    def __init__(self, crawl_request: CrawlRequest):
+        self.crawl_request = crawl_request
+        self.redis_channel = f"crawl:{self.crawl_request.uuid}"
+        self.connection = get_redis_connection("default")
+
+    def send_status(self, event_type, payload=None):
+        self.connection.publish(
+            self.redis_channel,
+            json.dumps({"event_type": event_type, "payload": payload}),
+        )
+
+    def check_status(self, prefetched=False):
+        """
+        New method using Redis Pub/Sub for real-time updates.
+        If no new data comes from Redis, it sends crawl status every 5 seconds.
+        """
+        from .serializers import (
+            CrawlResultSerializer,
+            CrawlRequestSerializer,
+            FullCrawlResultSerializer,
+        )
+
+        ResultSerializer = (
+            CrawlResultSerializer if not prefetched else FullCrawlResultSerializer
+        )
+
+        # Initialize Redis connection and pubsub
+        pubsub = self.connection.pubsub()
+        pubsub.subscribe(self.redis_channel)
+
+        # Initialize tracking variables
+        items_already_sent = []
+        send_state_interval = 5  # Send state every 5 seconds
+
+        # First load existing results from database that might have been added
+        # before subscription was established
+        queryset = self.crawl_request.results.prefetch_related("attachments").all()
+        for item in queryset:
+            items_already_sent.append(item.pk)
+            yield {"type": "result", "data": ResultSerializer(item).data}
+
+        # Send initial state
+        self.crawl_request.refresh_from_db()
+        yield {"type": "state", "data": CrawlRequestSerializer(self.crawl_request).data}
+        last_state_time = time()
+
+        # Process messages while the task is running
+        while AsyncResult(str(self.crawl_request.uuid)).state in ("PENDING", "STARTED"):
+            self.crawl_request.refresh_from_db()
+            if self.crawl_request.status in [
+                consts.CRAWL_STATUS_CANCELED,
+                consts.CRAWL_STATUS_FINISHED,
+                consts.CRAWL_STATUS_FAILED,
+            ]:
+                break
+
+            # Check for new messages with a timeout
+            message = pubsub.get_message(timeout=0.1)
+
+            if message and message["type"] == "message":
+                # Process the message
+                try:
+                    data = json.loads(message["data"].decode("utf-8"))
+                    if data["event_type"] == "result":
+                        # If it's a result, track it
+                        item = queryset.filter(pk=data["payload"]).first()
+                        if not item:
+                            continue
+                        items_already_sent.append(item.pk)
+                        yield {"type": "result", "data": ResultSerializer(item).data}
+                    elif data["event_type"] == "state":
+                        self.crawl_request.refresh_from_db()
+                        last_state_time = time()
+                        yield {
+                            "type": "state",
+                            "data": CrawlRequestSerializer(self.crawl_request).data,
+                        }
+                except Exception as e:
+                    # Log error but continue
+                    print(f"Error processing Redis message: {str(e)}")
+
+            # Check if we need to send state update
+            current_time = time()
+            if current_time - last_state_time >= send_state_interval:
+                self.crawl_request.refresh_from_db()
+                yield {
+                    "type": "state",
+                    "data": CrawlRequestSerializer(self.crawl_request).data,
+                }
+                last_state_time = current_time
+
+        # After the task is complete, check for any missed results from the database
+        # This ensures we don't miss any items that might have been added
+        # after our subscription was established but before messages were processed
+        queryset = self.crawl_request.results.prefetch_related("attachments").exclude(
+            pk__in=items_already_sent
+        )
+        for item in queryset:
+            yield {"type": "result", "data": ResultSerializer(item).data}
+
+        # Send final state
+        self.crawl_request.refresh_from_db()
+        yield {"type": "state", "data": CrawlRequestSerializer(self.crawl_request).data}
+
+        # Clean up
+        pubsub.unsubscribe(self.redis_channel)
+        pubsub.close()
+
+
 class CrawlerService:
     def __init__(self, crawl_request: CrawlRequest):
         self.crawl_request = crawl_request
+        self.pubsub_service = CrawlPupSupService(self.crawl_request)
 
     @cached_property
     def config_helpers(self):
@@ -208,6 +320,7 @@ class CrawlerService:
     def run(self):
         self.crawl_request.status = consts.CRAWL_STATUS_RUNNING
         self.crawl_request.save()
+        self.pubsub_service.send_status("state")
 
         params = [
             "scrapy",
@@ -221,7 +334,8 @@ class CrawlerService:
 
         self.crawl_request.duration = timezone.now() - self.crawl_request.created_at
         self.crawl_request.status = consts.CRAWL_STATUS_FINISHED
-        self.crawl_request.save()
+        self.crawl_request.save(update_fields=["status", "duration"])
+        self.pubsub_service.send_status("state")
 
     @classmethod
     def make_with_pk(cls, crawl_request_pk: str):
@@ -245,6 +359,15 @@ class CrawlerService:
                 ),
             )
 
+        self.pubsub_service.send_status("result", str(result.pk))
+
+    def add_sitemap(self, results: list):
+        json_file = ContentFile(
+            json.dumps(results).encode("utf-8"), name="sitemap.json"
+        )
+        self.crawl_request.sitemap = json_file
+        self.crawl_request.save(update_fields=["sitemap"])
+
     def get_file_content(self, item):
         result = {"metadata": item["metadata"], "markdown": item["markdown"]}
         if self.config_helpers.include_links:
@@ -260,12 +383,14 @@ class CrawlerService:
     def stop(self):
         self.crawl_request.status = consts.CRAWL_STATUS_CANCELING
         self.crawl_request.save(update_fields=["status"])
+        self.pubsub_service.send_status("state")
 
         app.control.revoke(str(self.crawl_request.uuid), terminate=True)
 
         self.crawl_request.duration = timezone.now() - self.crawl_request.created_at
         self.crawl_request.status = consts.CRAWL_STATUS_CANCELED
         self.crawl_request.save(update_fields=["status", "duration"])
+        self.pubsub_service.send_status("state")
 
     def download_zip(self, output_format="json"):
         """Generator function that streams ZIP content dynamically."""
@@ -284,46 +409,52 @@ class CrawlerService:
 
         yield buffer.getvalue()
 
-    def check_status(self, prefetched=False):
-        from .serializers import (
-            CrawlResultSerializer,
-            CrawlRequestSerializer,
-            FullCrawlResultSerializer,
-        )
 
-        ResultSerializer = (
-            CrawlResultSerializer if not prefetched else FullCrawlResultSerializer
-        )
-        items_already_sent = []
-        # check task in celery is running
-        while AsyncResult(str(self.crawl_request.uuid)).state in ("PENDING", "STARTED"):
-            self.crawl_request.refresh_from_db()
-            if self.crawl_request.status in [
-                consts.CRAWL_STATUS_CANCELED,
-                consts.CRAWL_STATUS_FINISHED,
-                consts.CRAWL_STATUS_FAILED,
-            ]:
-                break
+class SitemapService:
+    def __init__(self, crawl_request: CrawlRequest):
+        self.crawl_request = crawl_request
+        self.data = json.load(self.crawl_request.sitemap)
 
-            queryset = self.crawl_request.results.prefetch_related(
-                "attachments"
-            ).exclude(pk__in=items_already_sent)
-            for item in queryset:
-                items_already_sent.append(item.pk)
-                yield {"type": "result", "data": ResultSerializer(item).data}
+    def insert_into_tree(self, tree, parts, item, query):
+        current = tree
+        for i, part in enumerate(parts):
+            # Skip inserting empty string part
+            if part == "":
+                continue
+            current = current.setdefault(part, {})
 
-            yield {
-                "type": "state",
-                "data": CrawlRequestSerializer(self.crawl_request).data,
-            }
-            sleep(1)
+        if "__self__" not in current:
+            current["__self__"] = item
+        else:
+            if query:
+                current.setdefault("__query__", []).append(item)
 
-        for item in self.crawl_request.results.exclude(pk__in=items_already_sent):
-            items_already_sent.append(item.uuid)
-            yield {"type": "result", "data": ResultSerializer(item).data}
+    def build_tree(self, data):
+        tree = {}
+        for item in data:
+            parsed = urlparse(item["url"])
+            domain = parsed.netloc
+            path = parsed.path.rstrip("/")  # remove trailing slash
+            if path == "":
+                # Root path: attach directly under the domain
+                tree.setdefault(domain, {})
+                if "__self__" not in tree[domain]:
+                    tree[domain]["__self__"] = item
+                elif parsed.query:
+                    tree[domain].setdefault("__query__", []).append(item)
+            else:
+                parts = [domain] + path.strip("/").split("/")
+                self.insert_into_tree(tree, parts, item, parsed.query)
+        return tree
 
-        self.crawl_request.refresh_from_db()
-        yield {"type": "state", "data": CrawlRequestSerializer(self.crawl_request).data}
+    def to_graph(self):
+        return self.build_tree(self.data)
+
+    def build_markdown(self, data):
+        return "\n".join([f"- [{item['title']}]({item['url']})" for item in data])
+
+    def to_markdown(self):
+        return self.build_markdown(self.data)
 
 
 class ReportService:

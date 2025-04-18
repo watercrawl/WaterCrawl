@@ -47,7 +47,7 @@ export const JsonSchemaForm: React.FC<JsonSchemaFormProps> = ({
         }
       }
     }
-  }, [schema]); // Only depend on schema changes
+  }, [schema, onChange, value]); // Only depend on schema changes
 
   // Validate on value or schema changes
   useEffect(() => {
@@ -58,7 +58,7 @@ export const JsonSchemaForm: React.FC<JsonSchemaFormProps> = ({
         onError(validationErrors);
       }
     }
-  }, [value, schema]);  // Remove onError from dependencies
+  }, [value, schema, onChange, onError]);  // Remove onError from dependencies
 
   const handleChange = (newValue: any) => {
     onChange(newValue);

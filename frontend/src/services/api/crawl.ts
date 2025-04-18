@@ -1,4 +1,4 @@
-import { CrawlEvent, CrawlRequest } from '../../types/crawl';
+import { CrawlEvent, CrawlRequest, SitemapGraph } from '../../types/crawl';
 import api from './api';
 
 export const crawlRequestApi = {
@@ -18,8 +18,19 @@ export const crawlRequestApi = {
     await api.delete(`/api/v1/core/crawl-requests/${id}/`);
   },
 
+  async sitmapGraph(uuid: string) {
+    return api.get<SitemapGraph>(`/api/v1/core/crawl-requests/${uuid}/sitemap/graph/`).then(({ data }) => data);
+  },
+
+  async sitmapMarkdown(uuid: string) {
+    return api.get<string>(`/api/v1/core/crawl-requests/${uuid}/sitemap/markdown/`).then(({ data }) => data);
+  },
+
   async subscribeToStatus(uuid: string, onEvent: (data: CrawlEvent) => void, onEnd?: () => void) {
     const response = await api.get(`/api/v1/core/crawl-requests/${uuid}/status/`, {
+      params: {
+        prefetched: true
+      },
       responseType: 'stream',
       onDownloadProgress: (progressEvent) => {
         const chunk = progressEvent.event.target.response;

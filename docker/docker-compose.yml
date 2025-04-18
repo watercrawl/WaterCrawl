@@ -153,8 +153,8 @@ services:
     user: root
     environment:
       - AUTH_API_KEY=${PLAYWRIGHT_API_KEY:-your-secret-api-key}
-      - PORT=${PORT:-8000}
-      - HOST=${HOST:-0.0.0.0}
+      - PORT=${PLAYWRIGHT_PORT:-8000}
+      - HOST=${PLAYWRIGHT_HOST:-0.0.0.0}
 
   db:
     image: postgres:17.2-alpine3.21

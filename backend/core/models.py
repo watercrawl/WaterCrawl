@@ -6,6 +6,7 @@ from core import consts
 from core.utils import (
     generate_crawl_result_file_path,
     generate_crawl_result_attachment_path,
+    generate_crawl_request_sitemap_path,
 )
 
 
@@ -25,6 +26,13 @@ class CrawlRequest(BaseModel):
     )
     options = models.JSONField(_("options"), default=dict)
     duration = models.DurationField(_("duration"), null=True)
+    sitemap = models.FileField(
+        _("sitemap"),
+        max_length=255,
+        upload_to=generate_crawl_request_sitemap_path,
+        null=True,
+        blank=True,
+    )
 
     def number_of_documents(self):
         return self.results.count()

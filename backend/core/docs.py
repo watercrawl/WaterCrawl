@@ -152,6 +152,14 @@ Each plugin includes:
 Use these schemas to configure your crawl requests.
 """
 
+CRAWL_REQUEST_GRAPH = """
+Get a graph representation of a crawl request.
+"""
+
+CRAWL_REQUEST_MARKDOWN = """
+Get a markdown representation of a crawl request.
+"""
+
 ####### PARAMETERS #######
 CRAWL_REQUEST_LIST_PARAMETERS = [
     OpenApiParameter(

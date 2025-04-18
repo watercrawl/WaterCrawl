@@ -5,6 +5,7 @@ import { StatusBadge } from '../shared/StatusBadge';
 import { formatDistanceToNow } from 'date-fns';
 import { ChevronDownIcon, ChevronRightIcon, EyeIcon } from '@heroicons/react/24/outline';
 import { DownloadFormatSelector } from '../shared/DownloadFormatSelector';
+import { SitemapModalSelector } from '../shared/SitemapModalSelector';
 
 interface ActivityLogRowProps {
   request: CrawlRequest;
@@ -72,7 +73,8 @@ export const ActivityLogRow: React.FC<ActivityLogRowProps> = ({
       </td>
       <td className="px-4 py-4 whitespace-nowrap text-right text-sm font-medium">
         <div className="flex justify-end space-x-3">
-          <DownloadFormatSelector requestId={request.uuid}/>
+          <DownloadFormatSelector request={request}/>
+          <SitemapModalSelector request={request} />
           <button
             onClick={handleViewDetails}
             className="text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400"

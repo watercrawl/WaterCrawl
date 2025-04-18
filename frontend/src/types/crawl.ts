@@ -7,6 +7,7 @@ export interface CrawlRequest {
   options: CrawlOptions;
   created_at: string;
   updated_at: string;
+  sitemap: string | null;
   number_of_documents: number;
   duration: string | null;
 }
@@ -18,11 +19,18 @@ export interface ResultAttachment {
   filename: string;
 }
 
+export interface ResultData {
+  markdown?: string;
+  links?: string[];
+  html?: string;
+  metadata?: Record<string, string>;
+}
+
 export interface CrawlResult {
   uuid: string;
   title: string;
   url: string;
-  result: string;
+  result: string | ResultData;
   created_at: string;
   attachments: ResultAttachment[];
 }
@@ -69,3 +77,13 @@ export interface CrawlState {
   results: CrawlResult[];
   isExpanded: boolean;
 }
+export interface SitemapNode {
+  title: string;
+  url: string;
+}
+
+export interface SitemapGraph {
+  __self__: SitemapNode;
+  __query__?: SitemapNode[];
+  [key: string]: SitemapGraph | SitemapNode | SitemapNode[] | undefined;
+};

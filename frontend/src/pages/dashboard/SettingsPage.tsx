@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Tab } from '@headlessui/react';
 import { teamApi } from '../../services/api/team';
 import { UserCircleIcon, TrashIcon } from '@heroicons/react/24/outline';
@@ -53,15 +53,8 @@ const SettingsPage: React.FC = () => {
     };
   }, []);
 
-  useEffect(() => {
-    fetchTeam();
-  }, []);
 
-  useEffect(() => {
-    fetchMembers();
-  }, [currentPage]);
-
-  const fetchTeam = async () => {
+  const fetchTeam = useCallback(async () => {
     try {
       setLoading(true);
       const data = await teamApi.getCurrentTeam();
@@ -72,9 +65,9 @@ const SettingsPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const fetchMembers = async () => {
+  const fetchMembers = useCallback(async () => {
     try {
       setLoading(true);
       const data = await teamApi.listMembers(currentPage);
@@ -85,7 +78,16 @@ const SettingsPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentPage]);
+
+  useEffect(() => {
+    fetchTeam();
+  }, [fetchTeam]);
+
+  useEffect(() => {
+    fetchMembers();
+  }, [currentPage, fetchMembers]);
+
 
   const handleUpdateTeamName = async (e: React.FormEvent) => {
     e.preventDefault();

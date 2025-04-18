@@ -6,7 +6,7 @@ from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema_view, extend_schema, OpenApiResponse
 from rest_framework import mixins
 from rest_framework.decorators import action
-from rest_framework.exceptions import PermissionDenied
+from rest_framework.exceptions import PermissionDenied, NotFound
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -15,7 +15,13 @@ from rest_framework.viewsets import GenericViewSet, ReadOnlyModelViewSet
 from common.services import EventStreamResponse
 from core import serializers, consts, docs
 from core.models import CrawlRequest
-from core.services import CrawlerService, ReportService, PluginService
+from core.services import (
+    CrawlerService,
+    ReportService,
+    PluginService,
+    SitemapService,
+    CrawlPupSupService,
+)
 from core.tasks import run_spider
 from user.decorators import setup_current_team
 from user.permissions import IsAuthenticatedTeam
@@ -61,6 +67,18 @@ from user.permissions import IsAuthenticatedTeam
                 response=OpenApiTypes.STR,
             )
         },
+    ),
+    graph=extend_schema(
+        summary=_("Get sitemap graph"),
+        description=docs.CRAWL_REQUEST_GRAPH,
+        tags=["Crawl Requests"],
+        responses={200: OpenApiTypes.OBJECT},
+    ),
+    markdown=extend_schema(
+        summary=_("Get markdown report"),
+        description=docs.CRAWL_REQUEST_MARKDOWN,
+        tags=["Crawl Requests"],
+        responses={200: OpenApiTypes.STR},
     ),
 )
 @setup_current_team
@@ -115,7 +133,7 @@ class CrawlRequestView(
     @action(detail=True, methods=["get"], url_path="status", url_name="status")
     def check_status(self, request, **kwargs):
         obj = self.get_object()
-        service = CrawlerService(obj)
+        service = CrawlPupSupService(obj)
         prefetched = request.query_params.get("prefetched", "False") in [
             "true",
             "True",
@@ -123,6 +141,35 @@ class CrawlRequestView(
         ]
         return EventStreamResponse(
             service.check_status(prefetched),
+        )
+
+    @action(
+        detail=True, methods=["get"], url_path="sitemap/graph", url_name="sitemap-graph"
+    )
+    def graph(self, request, **kwargs):
+        obj = self.get_object()  # type: CrawlRequest
+        if not obj.sitemap:
+            raise NotFound(_("Sitemap for this crawl request does not exist"))
+        service = SitemapService(obj)
+        return Response(service.to_graph())
+
+    @action(
+        detail=True,
+        methods=["get"],
+        url_path="sitemap/markdown",
+        url_name="sitemap-markdown",
+    )
+    def markdown(self, request, **kwargs):
+        obj = self.get_object()  # type: CrawlRequest
+        if not obj.sitemap:
+            raise NotFound(_("Sitemap for this crawl request does not exist"))
+        service = SitemapService(obj)
+        return Response(
+            service.to_markdown(),
+            headers={
+                "Content-Type": "text/markdown",
+                "Content-Disposition": f'attachment; filename="sitemap-{obj.uuid}.md"',
+            },
         )
 
 

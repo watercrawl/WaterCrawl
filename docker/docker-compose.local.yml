@@ -47,3 +47,14 @@ services:
     ports:
       - "${MAILPIT_SMTP_PORT:-1025}:1025"
       - "${MAILPIT_UI_PORT:-8025}:8025"
+
+  playwright:
+    image: watercrawl/playwright:1.1
+    restart: always
+    user: root
+    environment:
+      - AUTH_API_KEY=${PLAYWRIGHT_API_KEY:-your-secret-api-key}
+      - PORT=${PLAYWRIGHT_PORT:-8800}
+      - HOST=${PLAYWRIGHT_HOST:-0.0.0.0}
+    ports:
+      - "${PLAYWRIGHT_PORT:-8800}:${PLAYWRIGHT_PORT:-8800}"

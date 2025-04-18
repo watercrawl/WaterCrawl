@@ -69,6 +69,7 @@ class CrawlRequestSerializer(serializers.ModelSerializer):
             "updated_at",
             "duration",
             "number_of_documents",
+            "sitemap",
         ]
         read_only_fields = [
             "uuid",
@@ -77,6 +78,7 @@ class CrawlRequestSerializer(serializers.ModelSerializer):
             "updated_at",
             "number_of_documents",
             "duration",
+            "sitemap",
         ]
 
     def validate(self, attrs):

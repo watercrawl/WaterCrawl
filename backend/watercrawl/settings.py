@@ -101,6 +101,11 @@ DATABASES = {
     "default": env.db("DATABASE_URL", default="sqlite:///db.sqlite3"),
 }
 
+CACHES = {
+    "default": env.cache_url("REDIS_URL", default="redis://localhost:6379/1"),
+}
+
+
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -282,7 +287,7 @@ EMAIL_HOST_USER = env("EMAIL_HOST_USER", cast=str, default="")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", cast=str, default="")
 DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", cast=str, default="")
 
-LOG_LEVEL = env("LOG_LEVEL", cast=str, default="INFO")
+LOG_LEVEL = env("LOG_LEVEL", cast=str, default="DEBUG")
 MINIO_ENDPOINT = env("MINIO_ENDPOINT", cast=str, default="localhost:9000")
 MINIO_EXTERNAL_ENDPOINT = env(
     "MINIO_EXTERNAL_ENDPOINT", cast=str, default="localhost:9000"

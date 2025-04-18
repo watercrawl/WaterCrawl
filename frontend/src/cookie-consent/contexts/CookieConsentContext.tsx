@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
 import {
   COOKIE_CATEGORIES,
   COOKIE_CONFIG_KEY,
@@ -58,16 +58,16 @@ export const CookieConsentProvider: React.FC<{ children: React.ReactNode }> = ({
     setIsClient(true);
   }, []);
 
-  const initializeAnalytics = () => {
+  const initializeAnalytics = useCallback(() => {
     console.log('Initializing analytics');
     if (settings?.google_analytics_id) {
       initializeGoogleAnalytics(settings.google_analytics_id);
     }
-  };
+  }, [settings?.google_analytics_id]);
 
-  const initializeMarketing = () => {
+  const initializeMarketing = useCallback(() => {
     console.log('Initializing marketing');
-  };
+  }, []);
 
   const updateConsent = (categories: string[] | undefined) => {
     if (!isClient || !settings?.is_enterprise_mode_active) return;
@@ -108,7 +108,7 @@ export const CookieConsentProvider: React.FC<{ children: React.ReactNode }> = ({
       initializeMarketing();
       setMarketingInitialized(true);
     }
-  }, [selectedCategories, settings?.is_enterprise_mode_active]);
+  }, [selectedCategories, settings?.is_enterprise_mode_active, initializeAnalytics, initializeMarketing, analyticsInitialized, marketingInitialized]);
 
   return (
     <CookieConsentContext.Provider
