@@ -84,6 +84,6 @@ export interface SitemapNode {
 
 export interface SitemapGraph {
   __self__: SitemapNode;
-  __query__?: SitemapNode[];
+  __query__: SitemapNode[];
   [key: string]: SitemapGraph | SitemapNode | SitemapNode[] | undefined;
 };

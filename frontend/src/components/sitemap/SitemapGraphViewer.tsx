@@ -6,25 +6,25 @@ interface SitemapGraphViewerProps {
   isLoading: boolean;
 }
 
-const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({ 
+const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({
   sitemapData,
   isLoading
 }) => {
   // Keep track of which nodes have been expanded
   const [expandedPaths, setExpandedPaths] = useState<Set<string>>(new Set());
   const [rootExpanded, setRootExpanded] = useState(true);
-  
+
   React.useEffect(() => {
     if (sitemapData) {
       // Automatically expand the root level items
       const roots = new Set<string>();
-      
+
       Object.keys(sitemapData).forEach(key => {
         if (key !== '__self__' && key !== '__query__') {
           roots.add(key);
         }
       });
-      
+
       setExpandedPaths(roots);
       setRootExpanded(true);
     }
@@ -45,39 +45,39 @@ const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({
   // Calculate the total number of children recursively, including all sublevels
   const getTotalChildCount = (obj: any): number => {
     if (!obj || typeof obj !== 'object') return 0;
-    
+
     let count = 0;
-    
+
     // Count all properties except special ones
     for (const key of Object.keys(obj)) {
       if (key !== '__self__' && key !== '__query__') {
         count++; // Count this node
-        
+
         // If this is an object with children, recursively count them
         if (obj[key] && typeof obj[key] === 'object' && !('url' in obj[key])) {
           count += getTotalChildCount(obj[key]);
         }
       }
     }
-    
+
     return count;
   };
 
   // Recursive function to render the sitemap tree
   const renderSitemapTree = (data: SitemapGraph | SitemapNode, path: string = "", level: number = 0) => {
     if (!data) return null;
-
     // If it's a SitemapNode (has url and title properties)
     if ('url' in data && 'title' in data) {
+      data = data as SitemapNode;
       return (
-        <div 
-          key={data.url} 
+        <div
+          key={data.url}
           className="py-1.5"
           style={{ paddingLeft: `${level * 1.5}rem` }}
         >
-          <a 
-            href={data.url} 
-            target="_blank" 
+          <a
+            href={data.url}
+            target="_blank"
             rel="noopener noreferrer"
             className="text-blue-600 dark:text-blue-400 hover:underline truncate inline-block max-w-xs"
             title={`${data.title || 'No title'}\n${data.url}`}
@@ -92,45 +92,46 @@ const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({
     const filteredEntries = Object.entries(data).filter(
       ([key]) => key !== '__self__' && key !== '__query__'
     );
-    
+
     // Prepare components
     const components: JSX.Element[] = [];
-    
+
     // Render all nodes except special keys
     for (const [key, value] of filteredEntries) {
       const currentPath = path ? `${path}.${key}` : key;
-      
+
       // Filter out __self__ and __query__ to determine if node has children
-      const hasChildren = value && 
-        typeof value === 'object' && 
+      const hasChildren = value &&
+        typeof value === 'object' &&
         Object.keys(value)
           .filter(k => k !== '__self__' && k !== '__query__')
           .length > 0;
-      
+
       const totalChildCount = hasChildren ? getTotalChildCount(value) : 0;
-      
+
       // Check if this node has a __self__ reference
       const hasSelf = value && typeof value === 'object' && '__self__' in value;
       const selfNode = hasSelf ? (value as SitemapGraph).__self__ : null;
-      
+
       // Check if this node has query parameters
-      const hasQueries = value && 
-        typeof value === 'object' && 
-        '__query__' in value && 
-        Array.isArray((value as SitemapGraph).__query__) && 
-        (value as SitemapGraph).__query__?.length > 0;
-      
+      const hasQueries =
+        value &&
+        typeof value === 'object' &&
+        '__query__' in value &&
+        Array.isArray((value as SitemapGraph).__query__) &&
+        ((value as SitemapGraph).__query__?.length ?? 0) > 0;
+
       const isExpanded = expandedPaths.has(currentPath);
       const shouldRenderChildren = hasChildren && isExpanded;
-      
+
       // When a node is clicked, toggle its expanded state
       const handleClick = () => {
         togglePath(currentPath);
       };
-      
+
       components.push(
         <div key={currentPath}>
-          <div 
+          <div
             className={`py-1.5 flex items-center ${hasChildren || hasQueries ? 'cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50' : ''}`}
             style={{ paddingLeft: `${level * 1.5}rem` }}
             onClick={(hasChildren || hasQueries) ? handleClick : undefined}
@@ -141,26 +142,26 @@ const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({
                 {isExpanded ? '▼' : '►'}
               </span>
             )}
-            
+
             <div className="flex items-center">
-              <span 
+              <span
                 className="font-medium text-gray-800 dark:text-gray-200 truncate max-w-[120px] inline-block"
                 title={key}
               >
                 {key}
               </span>
-              
+
               {totalChildCount > 0 && (
                 <span className="text-gray-500 dark:text-gray-400 text-xs ml-1" title={`${totalChildCount} sub-items total`}>
                   ({totalChildCount})
                 </span>
               )}
-              
+
               {/* Show __self__ link on the same line */}
               {selfNode && (
-                <a 
-                  href={selfNode.url} 
-                  target="_blank" 
+                <a
+                  href={selfNode.url}
+                  target="_blank"
                   rel="noopener noreferrer"
                   onClick={(e) => e.stopPropagation()}
                   className="text-blue-600 dark:text-blue-400 hover:underline truncate inline-block max-w-[150px] ml-2 text-sm"
@@ -172,19 +173,19 @@ const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({
               )}
             </div>
           </div>
-          
+
           {/* Render query parameters if this node is expanded */}
           {isExpanded && hasQueries && Array.isArray((value as SitemapGraph).__query__) && (
             <div className="ml-6">
               {(value as SitemapGraph).__query__?.map((queryNode, index) => (
-                <div 
+                <div
                   key={`${currentPath}-query-${index}`}
-                  className="py-1.5 flex items-center" 
-                  style={{ paddingLeft: `${(level+1) * 1.5}rem` }}
+                  className="py-1.5 flex items-center"
+                  style={{ paddingLeft: `${(level + 1) * 1.5}rem` }}
                 >
-                  <a 
-                    href={queryNode.url} 
-                    target="_blank" 
+                  <a
+                    href={queryNode.url}
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600 dark:text-blue-400 hover:underline truncate inline-block max-w-xs flex items-center"
                     title={`${queryNode.title || 'No title'}\n${queryNode.url}`}
@@ -198,7 +199,7 @@ const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({
               ))}
             </div>
           )}
-          
+
           {/* Render children if this node is expanded */}
           {shouldRenderChildren && (
             <div className="ml-2">
@@ -208,19 +209,20 @@ const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({
         </div>
       );
     }
-    
+
     // Handle root-level query parameters if they exist
     if ('__query__' in data && Array.isArray(data.__query__) && data.__query__?.length > 0) {
+      data = data as SitemapGraph;
       data.__query__.forEach((queryNode, index) => {
         components.push(
-          <div 
+          <div
             key={`${path}-root-query-${index}`}
-            className="py-1.5 flex items-center" 
+            className="py-1.5 flex items-center"
             style={{ paddingLeft: `${level * 1.5}rem` }}
           >
-            <a 
-              href={queryNode.url} 
-              target="_blank" 
+            <a
+              href={queryNode.url}
+              target="_blank"
               rel="noopener noreferrer"
               className="text-blue-600 dark:text-blue-400 hover:underline truncate inline-block max-w-xs flex items-center"
               title={`${queryNode.title || 'No title'}\n${queryNode.url}`}
@@ -234,7 +236,7 @@ const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({
         );
       });
     }
-    
+
     return <>{components}</>;
   };
 
@@ -257,7 +259,7 @@ const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({
   return (
     <div className="text-sm">
       {rootExpanded ? renderSitemapTree(sitemapData) : (
-        <button 
+        <button
           onClick={() => setRootExpanded(true)}
           className="text-primary-600 hover:text-primary-700 font-medium"
         >
