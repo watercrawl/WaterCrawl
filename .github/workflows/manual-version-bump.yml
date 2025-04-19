@@ -139,30 +139,39 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "Creating pull request..."
-          PR_URL=$(gh pr create --title "Release v${{ env.VERSION }}" --body "Bump version to v${{ env.VERSION }} and update all related files for release.
+          # Set base URL for creating PR manually as fallback
+          MANUAL_PR_URL="${{ github.server_url }}/${{ github.repository }}/compare/main...release/v${{ env.VERSION }}?expand=1&title=Release%20v${{ env.VERSION }}"
+          
+          # Try to create the PR using GitHub CLI
+          if ! PR_URL=$(gh pr create --title "Release v${{ env.VERSION }}" --body "Bump version to v${{ env.VERSION }} and update all related files for release.
 
           - DEPLOYMENT.md
           - backend/pyproject.toml
           - docker/.env.example
-          - docker/docker-compose.yml" --base main --head release/v${{ env.VERSION }})
-          echo "Pull request created: $PR_URL"
+          - docker/docker-compose.yml" --base main --head release/v${{ env.VERSION }}); then
+            echo "❌ Failed to create PR automatically."
+            echo "🔗 Please create PR manually: $MANUAL_PR_URL"
+            exit 0  # Don't fail the workflow
+          fi
+          
+          echo "✅ Pull request created: $PR_URL"
           echo "PR_URL=$PR_URL" >> $GITHUB_ENV
 
-      # Use the Peter Evans action as the primary method
-      - name: Create Pull Request (Action)
-        if: steps.push.outcome == 'success' && !env.PR_URL
-        uses: peter-evans/create-pull-request@v5
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "chore(release): bump version to v${{ env.VERSION }}"
-          branch: release/v${{ env.VERSION }}
-          delete-branch: false
-          base: main
-          title: "Release v${{ env.VERSION }}"
-          body: |
-            Bump version to v${{ env.VERSION }} and update all related files for release.
-            
-            - DEPLOYMENT.md
-            - backend/pyproject.toml
-            - docker/.env.example
-            - docker/docker-compose.yml
+      # Use the Peter Evans action as a fallback - disabled since we're using GitHub CLI
+      # - name: Create Pull Request (Action)
+      #   if: steps.push.outcome == 'success' && !env.PR_URL
+      #   uses: peter-evans/create-pull-request@v5
+      #   with:
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      #     commit-message: "chore(release): bump version to v${{ env.VERSION }}"
+      #     branch: release/v${{ env.VERSION }}
+      #     delete-branch: false
+      #     base: main
+      #     title: "Release v${{ env.VERSION }}"
+      #     body: |
+      #       Bump version to v${{ env.VERSION }} and update all related files for release.
+      #       
+      #       - DEPLOYMENT.md
+      #       - backend/pyproject.toml
+      #       - docker/.env.example
+      #       - docker/docker-compose.yml
