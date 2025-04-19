@@ -69,7 +69,7 @@ These settings control basic Docker and version information:
 
 | Variable | Description | Default | Required? |
 |----------|-------------|---------|-----------|
-| `VERSION` | Application version | `v0.5.0` | No |
+| `VERSION` | Application version | `v0.6.0` | No |
 | `NGINX_PORT` | Port for the Nginx service | `80` | No |
 
 **Setup Steps:**
@@ -245,7 +245,7 @@ These settings control web scraping with Scrapy:
 
 | Variable | Description | Default | Required? |
 |----------|-------------|---------|-----------|
-| `SCRAPY_USER_AGENT` | User agent for scraping | `WaterCrawl/0.5.0 (+https://github.com/watercrawl/watercrawl)` | No |
+| `SCRAPY_USER_AGENT` | User agent for scraping | `WaterCrawl/0.6.0 (+https://github.com/watercrawl/watercrawl)` | No |
 | `SCRAPY_ROBOTSTXT_OBEY` | Obey robots.txt rules | `True` | No |
 | `SCRAPY_CONCURRENT_REQUESTS` | Concurrent requests | `16` | No |
 | `SCRAPY_DOWNLOAD_DELAY` | Download delay (seconds) | `0` | No |

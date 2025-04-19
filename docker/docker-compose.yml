@@ -1,5 +1,5 @@
 x-app: &app
-  image: watercrawl/watercrawl:${VERSION:-v0.5.0}
+  image: watercrawl/watercrawl:${VERSION:-v0.6.0}
   depends_on:
     db:
       condition: service_healthy
@@ -96,7 +96,7 @@ x-app: &app
     - CAPTURE_USAGE_HISTORY=${CAPTURE_USAGE_HISTORY:-True}
 
 x-frontend: &frontend
-  image: watercrawl/frontend:${VERSION:-v0.5.0}
+  image: watercrawl/frontend:${VERSION:-v0.6.0}
   environment:
     - VITE_API_BASE_URL=${API_BASE_URL:-http://localhost/api}
   depends_on:
