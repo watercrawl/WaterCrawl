@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { settingsApi } from '../services/api/settings';
 import { Settings } from '../types/settings';
 
-const COMPATIBLE_BACKEND_VERSION = '0.4.0';
+const COMPATIBLE_BACKEND_VERSION = '0.6.0';
 
 interface SettingsContextType {
     settings: Settings | null;
