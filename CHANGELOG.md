@@ -5,6 +5,46 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2025-04-19
+
+### Added
+- Monorepo structure for backend (Django) and frontend (React, Vite)
+- PR linting workflow for backend (Ruff) and frontend (ESLint) code quality checks
+- Downloadable and viewable sitemap visualization system
+- Contribution guidelines and GitHub templates
+- Enhanced README with badges and emojis 🎨
+- Invitation-based user registration
+
+### Changed
+- Improved Docker configurations and documentation
+- Enhanced mono-repo tooling and developer experience
+- Enable MinIO consistency check on startup
+- Update project configuration and documentation 🔧
+- Improved Docker setup and documentation
+
+### Fixed
+- Add `packageManager` to `package.json`
+- Fix Docker build warning
+- Update dependencies to address multiple vulnerabilities
+
+### Docs
+- Move documentation from another repo to this repo
+
+#### PRs
+- Feature/mono repo by @amirasaran in #5
+- Add PR linting workflow and improve Docker configurations by @amirasaran in #6
+- fix: add packageManager to package json by @amirasaran in #7
+- fix: fix docker build warning by @amirasaran in #8
+- docs: move documentations from another repo to this repo by @amirasaran in #9
+- docs: add contribution guidelines and GitHub templates by @amirasaran in #10
+- docs: enhance README with badges and emojis 🎨 by @amirasaran in #11
+- chore: update project configuration and documentation 🔧 by @amirasaran in #12
+- Feature: Mono-repo Enhancements by @amirasaran in #13
+- docs(docker): improve docker setup and documentation by @amirasaran in #16
+- chore: Enable MinIO consistency check on startup by @amirasaran in #17
+- fix(security): update dependencies to address multiple vulnerabilities by @amirasaran in #18
+- feat: implement invitation-based user registration by @amirasaran #21
+
 ## [0.4.0] - 2025-03-20
 
 ### Added
