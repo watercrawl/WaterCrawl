@@ -115,6 +115,13 @@ jobs:
             echo "Warning: backend/pyproject.toml not found"
           fi
           
+          # SettingsProvider.tsx - update the compatible backend version
+          if [[ -f "frontend/src/contexts/SettingsProvider.tsx" ]]; then
+            update_version "frontend/src/contexts/SettingsProvider.tsx" "COMPATIBLE_BACKEND_VERSION" "'[0-9]+\\.[0-9]+\\.[0-9]+'" "'${{ env.VERSION }}'" "Compatible backend version" && UPDATED=1
+          else
+            echo "Warning: frontend/src/contexts/SettingsProvider.tsx not found"
+          fi
+          
           # .env.example - look specifically for VERSION variables
           if [[ -f "docker/.env.example" ]]; then
             update_version "docker/.env.example" "^VERSION=" "=[0-9]+\\.[0-9]+\\.[0-9]+" "=${{ env.VERSION }}" "Main VERSION variable" && UPDATED=1
@@ -152,6 +159,12 @@ jobs:
         run: |
           git add -A
           git commit -m "chore(release): bump version to v${{ env.VERSION }}"
+          echo "Changes committed to the following files:"
+          echo "- DEPLOYMENT.md"
+          echo "- backend/pyproject.toml"
+          echo "- frontend/src/contexts/SettingsProvider.tsx"
+          echo "- docker/.env.example"
+          echo "- docker/docker-compose.yml"
           echo "Changes committed"
 
       - name: Push branch
@@ -186,6 +199,7 @@ jobs:
 
           - DEPLOYMENT.md
           - backend/pyproject.toml
+          - frontend/src/contexts/SettingsProvider.tsx
           - docker/.env.example
           - docker/docker-compose.yml" --base main --head release/v${{ env.VERSION }}); then
             echo "❌ Failed to create PR automatically."
@@ -212,5 +226,6 @@ jobs:
       #       
       #       - DEPLOYMENT.md
       #       - backend/pyproject.toml
+      #       - frontend/src/contexts/SettingsProvider.tsx
       #       - docker/.env.example
       #       - docker/docker-compose.yml
