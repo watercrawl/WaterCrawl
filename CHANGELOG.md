@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] - 2025-04-19
+
+### Added
+- Unified Docker build workflow for backend, frontend, and docs
+- Manual version bump and release PR workflow for GitHub Actions
+- Enhanced sitemap visualization and markdown export
+
+### Changed
+- Improved error handling and PR creation in CI workflows
+- Improved deployment infrastructure with dynamic Nginx config for MinIO buckets
+- Enhanced API docs UI and added code examples (Go/Node/Python)
+- Refactored hooks and improved API documentation rendering
+
+### Fixed
+- Security audit issues and dependency updates
+- Build issues and minor fixes
+
+### Docs
+- Updated CONTRIBUTING.md with correct file paths and commands
+
+
 ## [0.5.0] - 2025-04-19
 
 ### Added
