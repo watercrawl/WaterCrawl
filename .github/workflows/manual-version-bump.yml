@@ -1,0 +1,75 @@
+name: Manual Version Bump and Release PR
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g. 0.6.0)'
+        required: true
+        type: string
+
+jobs:
+  version-bump:
+    name: Bump version and open PR
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Prepare version variables
+        id: vars
+        run: |
+          echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
+          echo "VERSION_V=v${{ github.event.inputs.version }}" >> $GITHUB_ENV
+
+      - name: Create release branch
+        run: |
+          git checkout -b release/v${{ env.VERSION }}
+
+      - name: Bump version in all files
+        run: |
+          # DEPLOYMENT.md
+          sed -i '72s/v[0-9]\+\.[0-9]\+\.[0-9]\+/v${{ env.VERSION }}/' DEPLOYMENT.md
+          sed -i '248s/[0-9]\+\.[0-9]\+\.[0-9]\+/${{ env.VERSION }}/' DEPLOYMENT.md
+          # pyproject.toml
+          sed -i '3s/[0-9]\+\.[0-9]\+\.[0-9]\+/${{ env.VERSION }}/' backend/pyproject.toml
+          # .env.example
+          sed -i '3s/[0-9]\+\.[0-9]\+\.[0-9]\+/${{ env.VERSION }}/' docker/.env.example
+          sed -i '4s/v[0-9]\+\.[0-9]\+\.[0-9]\+/v${{ env.VERSION }}/' docker/.env.example
+          # docker-compose.yml
+          sed -i '2s/[0-9]\+\.[0-9]\+\.[0-9]\+/${{ env.VERSION }}/' docker/docker-compose.yml
+          sed -i '99s/v[0-9]\+\.[0-9]\+\.[0-9]\+/v${{ env.VERSION }}/' docker/docker-compose.yml
+
+      - name: Commit changes
+        run: |
+          git add DEPLOYMENT.md backend/pyproject.toml docker/.env.example docker/docker-compose.yml
+          git commit -m "chore(release): bump version to v${{ env.VERSION }}\n\n- Update version strings in DEPLOYMENT.md, .env.example, pyproject.toml, and docker-compose.yml"
+
+      - name: Push branch
+        run: |
+          git push origin release/v${{ env.VERSION }}
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: release/v${{ env.VERSION }}
+          base: main
+          title: "Release v${{ env.VERSION }}"
+          body: |
+            Bump version to v${{ env.VERSION }} and update all related files for release.
+            
+            - DEPLOYMENT.md
+            - backend/pyproject.toml
+            - docker/.env.example
+            - docker/docker-compose.yml
