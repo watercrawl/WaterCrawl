@@ -51,6 +51,16 @@ jobs:
         with:
           context: ./backend
           push: true
+          platforms: linux/amd64,linux/arm64
+          build-args: |
+            APP_VERSION=${{ env.VERSION }}
+          cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/watercrawl:buildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/watercrawl:buildcache,mode=max
+          tags: ${{ env.DOCKER_TAGS }}
+          labels: |
+            org.opencontainers.image.created=${{ env.BUILD_DATE }}
+            org.opencontainers.image.revision=${{ env.COMMIT_HASH }}
+            org.opencontainers.image.version=${{ env.TAG }}
 
   build-and-push-frontend:
     name: Build and Push Frontend Docker Image
@@ -94,6 +104,16 @@ jobs:
         with:
           context: ./frontend
           push: true
+          platforms: linux/amd64,linux/arm64
+          build-args: |
+            APP_VERSION=${{ env.VERSION }}
+          cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/frontend:buildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/frontend:buildcache,mode=max
+          tags: ${{ env.DOCKER_TAGS }}
+          labels: |
+            org.opencontainers.image.created=${{ env.BUILD_DATE }}
+            org.opencontainers.image.revision=${{ env.COMMIT_HASH }}
+            org.opencontainers.image.version=${{ env.TAG }}
 
   build-and-push-docs:
     name: Build and Push Docs Docker Image
@@ -137,3 +157,13 @@ jobs:
         with:
           context: ./docs
           push: true
+          platforms: linux/amd64,linux/arm64
+          build-args: |
+            APP_VERSION=${{ env.VERSION }}
+          cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/docs:buildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/docs:buildcache,mode=max
+          tags: ${{ env.DOCKER_TAGS }}
+          labels: |
+            org.opencontainers.image.created=${{ env.BUILD_DATE }}
+            org.opencontainers.image.revision=${{ env.COMMIT_HASH }}
+            org.opencontainers.image.version=${{ env.TAG }}
