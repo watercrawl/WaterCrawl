@@ -20,6 +20,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Git
         run: |
@@ -31,39 +32,131 @@ jobs:
         run: |
           echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
           echo "VERSION_V=v${{ github.event.inputs.version }}" >> $GITHUB_ENV
+          echo "BRANCH_NAME=release/v${{ github.event.inputs.version }}" >> $GITHUB_ENV
+
+      # Check if branch already exists
+      - name: Check if branch exists
+        id: check-branch
+        run: |
+          if git ls-remote --heads origin release/v${{ env.VERSION }} | grep -q "release/v${{ env.VERSION }}"; then
+            echo "Branch already exists"
+            echo "BRANCH_EXISTS=true" >> $GITHUB_ENV
+          else
+            echo "Branch does not exist"
+            echo "BRANCH_EXISTS=false" >> $GITHUB_ENV
+          fi
+
+      # Delete branch if it exists and we're starting fresh
+      - name: Delete branch if it exists
+        if: env.BRANCH_EXISTS == 'true'
+        run: |
+          git push origin --delete release/v${{ env.VERSION }} || true
+          echo "Deleted existing branch release/v${{ env.VERSION }}"
 
       - name: Create release branch
         run: |
           git checkout -b release/v${{ env.VERSION }}
+          echo "Created branch release/v${{ env.VERSION }}"
 
       - name: Bump version in all files
+        id: bump-version
         run: |
+          echo "Bumping version to ${{ env.VERSION }} in files..."
+          
           # DEPLOYMENT.md
-          sed -i '72s/v[0-9]\+\.[0-9]\+\.[0-9]\+/v${{ env.VERSION }}/' DEPLOYMENT.md
-          sed -i '248s/[0-9]\+\.[0-9]\+\.[0-9]\+/${{ env.VERSION }}/' DEPLOYMENT.md
+          if [[ -f DEPLOYMENT.md ]]; then
+            sed -i '72s/v[0-9]\+\.[0-9]\+\.[0-9]\+/v${{ env.VERSION }}/' DEPLOYMENT.md || echo "Failed to update DEPLOYMENT.md line 72"
+            sed -i '248s/[0-9]\+\.[0-9]\+\.[0-9]\+/${{ env.VERSION }}/' DEPLOYMENT.md || echo "Failed to update DEPLOYMENT.md line 248"
+          else
+            echo "Warning: DEPLOYMENT.md not found"
+          fi
+          
           # pyproject.toml
-          sed -i '3s/[0-9]\+\.[0-9]\+\.[0-9]\+/${{ env.VERSION }}/' backend/pyproject.toml
+          if [[ -f backend/pyproject.toml ]]; then
+            sed -i '3s/[0-9]\+\.[0-9]\+\.[0-9]\+/${{ env.VERSION }}/' backend/pyproject.toml || echo "Failed to update pyproject.toml"
+          else
+            echo "Warning: backend/pyproject.toml not found"
+          fi
+          
           # .env.example
-          sed -i '3s/[0-9]\+\.[0-9]\+\.[0-9]\+/${{ env.VERSION }}/' docker/.env.example
-          sed -i '4s/v[0-9]\+\.[0-9]\+\.[0-9]\+/v${{ env.VERSION }}/' docker/.env.example
+          if [[ -f docker/.env.example ]]; then
+            sed -i '3s/[0-9]\+\.[0-9]\+\.[0-9]\+/${{ env.VERSION }}/' docker/.env.example || echo "Failed to update .env.example line 3"
+            sed -i '4s/v[0-9]\+\.[0-9]\+\.[0-9]\+/v${{ env.VERSION }}/' docker/.env.example || echo "Failed to update .env.example line 4"
+          else
+            echo "Warning: docker/.env.example not found"
+          fi
+          
           # docker-compose.yml
-          sed -i '2s/[0-9]\+\.[0-9]\+\.[0-9]\+/${{ env.VERSION }}/' docker/docker-compose.yml
-          sed -i '99s/v[0-9]\+\.[0-9]\+\.[0-9]\+/v${{ env.VERSION }}/' docker/docker-compose.yml
+          if [[ -f docker/docker-compose.yml ]]; then
+            sed -i '2s/[0-9]\+\.[0-9]\+\.[0-9]\+/${{ env.VERSION }}/' docker/docker-compose.yml || echo "Failed to update docker-compose.yml line 2"
+            sed -i '99s/v[0-9]\+\.[0-9]\+\.[0-9]\+/v${{ env.VERSION }}/' docker/docker-compose.yml || echo "Failed to update docker-compose.yml line 99"
+          else
+            echo "Warning: docker/docker-compose.yml not found"
+          fi
+          
+          # Show changes
+          git diff
+          
+          # Check if any files were changed
+          if [[ -z "$(git status --porcelain)" ]]; then
+            echo "ERROR: No files were changed!"
+            echo "VERSION_BUMPED=false" >> $GITHUB_ENV
+            exit 1
+          else
+            echo "Files were successfully updated"
+            echo "VERSION_BUMPED=true" >> $GITHUB_ENV
+          fi
 
       - name: Commit changes
+        if: env.VERSION_BUMPED == 'true'
+        id: commit
         run: |
-          git add DEPLOYMENT.md backend/pyproject.toml docker/.env.example docker/docker-compose.yml
-          git commit -m "chore(release): bump version to v${{ env.VERSION }}\n\n- Update version strings in DEPLOYMENT.md, .env.example, pyproject.toml, and docker-compose.yml"
+          git add -A
+          git commit -m "chore(release): bump version to v${{ env.VERSION }}"
+          echo "Changes committed"
 
       - name: Push branch
+        if: steps.commit.outcome == 'success'
+        id: push
         run: |
-          git push origin release/v${{ env.VERSION }}
+          echo "Pushing branch to remote..."
+          git push -f origin release/v${{ env.VERSION }}
+          echo "PUSH_STATUS=success" >> $GITHUB_ENV
 
-      - name: Create Pull Request
+      # Manual PR creation using the GitHub CLI as a fallback
+      - name: Install GitHub CLI
+        if: steps.push.outcome == 'success'
+        run: |
+          curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+          sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+          sudo apt update
+          sudo apt install gh
+
+      - name: Create PR using GitHub CLI
+        if: steps.push.outcome == 'success'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Creating pull request..."
+          PR_URL=$(gh pr create --title "Release v${{ env.VERSION }}" --body "Bump version to v${{ env.VERSION }} and update all related files for release.
+
+          - DEPLOYMENT.md
+          - backend/pyproject.toml
+          - docker/.env.example
+          - docker/docker-compose.yml" --base main --head release/v${{ env.VERSION }})
+          echo "Pull request created: $PR_URL"
+          echo "PR_URL=$PR_URL" >> $GITHUB_ENV
+
+      # Use the Peter Evans action as the primary method
+      - name: Create Pull Request (Action)
+        if: steps.push.outcome == 'success' && !env.PR_URL
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore(release): bump version to v${{ env.VERSION }}"
           branch: release/v${{ env.VERSION }}
+          delete-branch: false
           base: main
           title: "Release v${{ env.VERSION }}"
           body: |
