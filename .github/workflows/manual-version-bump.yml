@@ -63,43 +63,82 @@ jobs:
         run: |
           echo "Bumping version to ${{ env.VERSION }} in files..."
           
-          # DEPLOYMENT.md
-          if [[ -f DEPLOYMENT.md ]]; then
-            sed -i '72s/v[0-9]\+\.[0-9]\+\.[0-9]\+/v${{ env.VERSION }}/' DEPLOYMENT.md || echo "Failed to update DEPLOYMENT.md line 72"
-            sed -i '248s/[0-9]\+\.[0-9]\+\.[0-9]\+/${{ env.VERSION }}/' DEPLOYMENT.md || echo "Failed to update DEPLOYMENT.md line 248"
+          # Function to update version patterns in a file with specific line context
+          update_version() {
+            local file=$1
+            local context=$2  # Line context to identify the right version to update
+            local pattern=$3
+            local replacement=$4
+            local description=$5
+            
+            if [[ ! -f "$file" ]]; then
+              echo "Warning: $file not found"
+              return 1
+            fi
+            
+            # Find lines with the specific context and update only those versions
+            if grep -q "$context" "$file"; then
+              # Using awk to search for context and only update versions in matching lines
+              awk -v context="$context" -v pattern="$pattern" -v replacement="$replacement" '
+              $0 ~ context {
+                # Only replace in lines with the specified context
+                gsub(pattern, replacement);
+                changes = 1;
+              }
+              { print }
+              ' "$file" > "$file.tmp" && mv "$file.tmp" "$file"
+              
+              echo "Updated $description in $file (context: $context)"
+            else
+              echo "Context '$context' not found in $file"
+              return 1
+            fi
+            return 0
+          }
+          
+          # Track if any files were updated
+          UPDATED=0
+          
+          # DEPLOYMENT.md - specifically look for WaterCrawl version references
+          if [[ -f "DEPLOYMENT.md" ]]; then
+            # Look for specific line contexts before updating
+            update_version "DEPLOYMENT.md" "watercrawl" "v[0-9]+\\.[0-9]+\\.[0-9]+" "v${{ env.VERSION }}" "WaterCrawl version with v prefix" && UPDATED=1
+            update_version "DEPLOYMENT.md" "VERSION" "[0-9]+\\.[0-9]+\\.[0-9]+" "${{ env.VERSION }}" "WaterCrawl version in VERSION context" && UPDATED=1
           else
             echo "Warning: DEPLOYMENT.md not found"
           fi
           
-          # pyproject.toml
-          if [[ -f backend/pyproject.toml ]]; then
-            sed -i '3s/[0-9]\+\.[0-9]\+\.[0-9]\+/${{ env.VERSION }}/' backend/pyproject.toml || echo "Failed to update pyproject.toml"
+          # pyproject.toml - look for the project version line specifically
+          if [[ -f "backend/pyproject.toml" ]]; then
+            update_version "backend/pyproject.toml" "version =" "\"[0-9]+\\.[0-9]+\\.[0-9]+\"" "\"${{ env.VERSION }}\"" "WaterCrawl project version" && UPDATED=1
           else
             echo "Warning: backend/pyproject.toml not found"
           fi
           
-          # .env.example
-          if [[ -f docker/.env.example ]]; then
-            sed -i '3s/[0-9]\+\.[0-9]\+\.[0-9]\+/${{ env.VERSION }}/' docker/.env.example || echo "Failed to update .env.example line 3"
-            sed -i '4s/v[0-9]\+\.[0-9]\+\.[0-9]\+/v${{ env.VERSION }}/' docker/.env.example || echo "Failed to update .env.example line 4"
+          # .env.example - look specifically for VERSION variables
+          if [[ -f "docker/.env.example" ]]; then
+            update_version "docker/.env.example" "^VERSION=" "=[0-9]+\\.[0-9]+\\.[0-9]+" "=${{ env.VERSION }}" "Main VERSION variable" && UPDATED=1
+            update_version "docker/.env.example" "^VERSION=" "=v[0-9]+\\.[0-9]+\\.[0-9]+" "=v${{ env.VERSION }}" "Main VERSION variable with v prefix" && UPDATED=1
           else
             echo "Warning: docker/.env.example not found"
           fi
           
-          # docker-compose.yml
-          if [[ -f docker/docker-compose.yml ]]; then
-            sed -i '2s/[0-9]\+\.[0-9]\+\.[0-9]\+/${{ env.VERSION }}/' docker/docker-compose.yml || echo "Failed to update docker-compose.yml line 2"
-            sed -i '99s/v[0-9]\+\.[0-9]\+\.[0-9]\+/v${{ env.VERSION }}/' docker/docker-compose.yml || echo "Failed to update docker-compose.yml line 99"
+          # docker-compose.yml - specifically update image versions
+          if [[ -f "docker/docker-compose.yml" ]]; then
+            update_version "docker/docker-compose.yml" "watercrawl" ":[0-9]+\\.[0-9]+\\.[0-9]+" ":${{ env.VERSION }}" "WaterCrawl image version" && UPDATED=1
+            update_version "docker/docker-compose.yml" "VERSION:" "-[0-9]+\\.[0-9]+\\.[0-9]+" "-${{ env.VERSION }}" "VERSION default variable" && UPDATED=1
+            update_version "docker/docker-compose.yml" "VERSION:" "-v[0-9]+\\.[0-9]+\\.[0-9]+" "-v${{ env.VERSION }}" "VERSION default with v prefix" && UPDATED=1
           else
             echo "Warning: docker/docker-compose.yml not found"
           fi
           
           # Show changes
+          echo "Showing changes made:"
           git diff
           
           # Check if any files were changed
-          if [[ -z "$(git status --porcelain)" ]]; then
-            echo "ERROR: No files were changed!"
+          if [[ $UPDATED -eq 0 ]]; then
+            echo "ERROR: No files were updated successfully!"
             echo "VERSION_BUMPED=false" >> $GITHUB_ENV
             exit 1
           else
