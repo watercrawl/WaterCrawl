@@ -91,7 +91,7 @@ export const TeamProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setCurrentSubscription(null);
     setShowSubscriptionBanner(false);
     refreshCurrentSubscription();
-  }, [currentTeam]);
+  }, [currentTeam, refreshCurrentSubscription]);
 
   return (
     <TeamContext.Provider

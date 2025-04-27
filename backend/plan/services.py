@@ -1,4 +1,5 @@
 import datetime
+import json
 from abc import ABC, abstractmethod
 import stripe
 from django.db.transaction import atomic
@@ -9,7 +10,7 @@ from django.core.exceptions import ValidationError
 from django.utils import timezone
 from rest_framework.exceptions import PermissionDenied
 
-from core.models import CrawlRequest
+from core.models import CrawlRequest, SearchRequest
 from plan import consts
 from plan.models import (
     Plan,
@@ -18,6 +19,7 @@ from plan.models import (
     StripeWebhookHistory,
     UsageHistory,
 )
+from plan.utils import calculate_number_of_search_credits
 from user.models import Team
 
 
@@ -728,6 +730,19 @@ class UsageHistoryService:
 
         return usage_history
 
+    def create_search(self, search: SearchRequest):
+        usage_history = UsageHistory.objects.create(
+            team=self.team,
+            search_request=search,
+            requested_page_credit=calculate_number_of_search_credits(
+                search.result_limit, search.search_options["depth"]
+            ),
+            used_page_credit=0,
+        )
+        self.team_plan_service.balance_page_credit(usage_history.requested_page_credit)
+
+        return usage_history
+
     def update_used_page_credit(self, crawl_request: CrawlRequest):
         try:
             usage_history = self.team.usage_histories.get(crawl_request=crawl_request)
@@ -746,6 +761,31 @@ class UsageHistoryService:
             usage_history = self.team.usage_histories.get(crawl_request=crawl_request)
         except UsageHistory.DoesNotExist:
             usage_history = self.create(crawl_request)
+
+        self.team_plan_service.balance_page_credit(usage_history.requested_page_credit)
+        usage_history.used_page_credit = 0
+        usage_history.save()
+
+    def update_used_search_credit(self, search_request: SearchRequest):
+        try:
+            usage_history = self.team.usage_histories.get(search_request=search_request)
+        except UsageHistory.DoesNotExist:
+            usage_history = self.create_search(search_request)
+
+        actual_documents = (
+            len(json.load(search_request.result)) if search_request.result else 0
+        )
+        usage_diff = actual_documents - usage_history.requested_page_credit
+        self.team_plan_service.balance_page_credit(usage_diff)
+
+        usage_history.used_page_credit = actual_documents
+        usage_history.save()
+
+    def revert_search_credit(self, instance):
+        try:
+            usage_history = self.team.usage_histories.get(search_request=instance)
+        except UsageHistory.DoesNotExist:
+            usage_history = self.create_search(instance)
 
         self.team_plan_service.balance_page_credit(usage_history.requested_page_credit)
         usage_history.used_page_credit = 0

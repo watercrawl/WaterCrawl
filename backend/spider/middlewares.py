@@ -36,7 +36,10 @@ class PlaywrightMiddleware:
         # Check if the URL is a JavaScript file
         if not self.playwright_server:
             spider.logger.info("Playwright server is not configured")
-            return None
+            return
+
+        if "skip_playwright" in request.meta and request.meta["skip_playwright"]:
+            return
 
         payload = {
             "url": request.url,

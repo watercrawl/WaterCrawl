@@ -6,16 +6,24 @@ import logging
 from scrapy import signals
 
 from .helpers import HtmlFilter, HtmlToMarkdown
-from .items import ScrapedItem, LinkItem
+from .items import ScrapedItem, LinkItem, SearchResult
+from .spiders.google_search import SearchScrapper
 from .spiders.scraper import SiteScrapper
 
 
 class SpiderPipeline:
     @sync_to_async
-    def process_item(self, item: ScrapedItem, spider: SiteScrapper):
-        if not isinstance(item, ScrapedItem):
-            return item
-        spider.crawler_service.add_scraped_item(item)
+    def process_item(self, item: ScrapedItem, spider):
+        if isinstance(item, ScrapedItem) and isinstance(spider, SiteScrapper):
+            """
+            spider # type: SiteScrapper
+            """
+            spider.crawler_service.add_scraped_item(item)
+        elif isinstance(item, SearchResult) and isinstance(spider, SearchScrapper):
+            """
+            spider # type: SearchScrapper
+            """
+            spider.search_service.add_search_result(item)
         return item
 
 
@@ -31,7 +39,6 @@ class SiteScrapperPipeline:
     def __init__(self):
         """Initialize the pipeline with configuration settings."""
         self.url_map = {}
-        self.output_file = "all_links_with_text.json"
         self.title_max_length = 100
         self.logger = logging.getLogger(__name__)
         self.processed_count = 0
@@ -91,6 +98,9 @@ class SiteScrapperPipeline:
         Args:
             spider: The Spider instance that closed
         """
+
+        if not self.url_map:
+            return
 
         await sync_to_async(spider.crawler_service.add_sitemap)(
             [{"url": url, "title": text} for url, text in self.url_map.items()]

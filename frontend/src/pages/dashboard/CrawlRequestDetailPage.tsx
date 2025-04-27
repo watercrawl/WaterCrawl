@@ -185,7 +185,7 @@ const CrawlRequestDetailPage: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
           <div className="flex items-center space-x-3">
             <button
-              onClick={() => navigate('/dashboard/logs')}
+              onClick={() => navigate('/dashboard/logs/crawls')}
               className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
             >
               <ArrowLeftIcon className="h-5 w-5" />
