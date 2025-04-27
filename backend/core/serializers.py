@@ -2,7 +2,8 @@ import json
 
 from rest_framework import serializers
 
-from core.models import CrawlRequest, CrawlResult, CrawlResultAttachment
+from core import consts
+from core.models import CrawlRequest, CrawlResult, CrawlResultAttachment, SearchRequest
 from plan.validators import PlanLimitValidator
 
 
@@ -125,3 +126,64 @@ class ReportSerializer(serializers.Serializer):
     finished_crawls = serializers.IntegerField()
     crawl_history = ReportDateChartSerializer(many=True)
     document_history = ReportDateChartSerializer(many=True)
+
+
+class SearchOptionsSerializer(serializers.Serializer):
+    language = serializers.CharField(
+        required=False, max_length=8, allow_null=True, default=None
+    )
+    country = serializers.CharField(
+        required=False, max_length=8, allow_null=True, default=None
+    )
+    time_renge = serializers.ChoiceField(
+        required=False,
+        choices=consts.SEARCH_TIME_RENGE_CHOICES,
+        default=consts.SEARCH_TIME_RENGE_ANY,
+    )
+    search_type = serializers.ChoiceField(
+        required=False,
+        choices=consts.SEARCH_TYPE_CHOICES,
+        default=consts.SEARCH_TYPE_WEB,
+    )
+    depth = serializers.ChoiceField(
+        required=False,
+        choices=consts.SEARCH_DEPTH_CHOICES,
+        default=consts.SEARCH_DEPTH_BASIC,
+    )
+
+
+class SearchRequestSerializer(serializers.ModelSerializer):
+    search_options = SearchOptionsSerializer()
+    result_limit = serializers.IntegerField(default=5, min_value=1, max_value=20)
+
+    class Meta:
+        model = SearchRequest
+        fields = [
+            "uuid",
+            "query",
+            "search_options",
+            "result_limit",
+            "duration",
+            "status",
+            "result",
+            "created_at",
+        ]
+        read_only_fields = [
+            "uuid",
+            "duration",
+            "status",
+            "result",
+            "created_at",
+        ]
+
+
+class FullSearchResultSerializer(SearchRequestSerializer):
+    result = serializers.SerializerMethodField()
+
+    def get_result(self, obj):
+        if not obj.result:
+            return None
+        return json.load(obj.result)
+
+    class Meta(SearchRequestSerializer.Meta):
+        fields = SearchRequestSerializer.Meta.fields + ["result"]

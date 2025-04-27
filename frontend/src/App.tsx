@@ -21,13 +21,16 @@ const ResetPasswordPage = React.lazy(() => import('./pages/auth/ResetPasswordPag
 const VerifyEmailPage = React.lazy(() => import('./pages/auth/VerifyEmailPage'));
 const InstallPage = React.lazy(() => import('./pages/auth/InstallPage'));
 const DashboardPage = React.lazy(() => import('./pages/dashboard/DashboardPage'));
-const ActivityLogsPage = React.lazy(() => import('./pages/dashboard/ActivityLogsPage'));
+const ActivityLogsPage = React.lazy(() => import('./pages/dashboard/CrawlLogsPage'));
 const ApiKeysPage = React.lazy(() => import('./pages/dashboard/ApiKeysPage'));
 const SettingsPage = React.lazy(() => import('./pages/dashboard/SettingsPage'));
 const PlaygroundPage = React.lazy(() => import('./pages/dashboard/PlaygroundPage'));
 const UsagePage = React.lazy(() => import('./pages/dashboard/UsagePage'));
 const ProfilePage = React.lazy(() => import('./pages/dashboard/ProfilePage'));
 const CrawlRequestDetailPage = React.lazy(() => import('./pages/dashboard/CrawlRequestDetailPage'));
+const SearchPage = React.lazy(() => import('./pages/dashboard/SearchPage'));
+const SearchLogsPage = React.lazy(() => import('./pages/dashboard/SearchLogsPage'));
+const SearchRequestDetailPage = React.lazy(() => import('./pages/dashboard/SearchRequestDetailPage'));
 
 const App: React.FC = () => {
   return (
@@ -83,8 +86,11 @@ const App: React.FC = () => {
                   <Route path="/dashboard">
                     <Route index element={<DashboardPage />} />
                     <Route path="playground" element={<PlaygroundPage />} />
-                    <Route path="logs" element={<ActivityLogsPage />} />
-                    <Route path="logs/:requestId" element={<CrawlRequestDetailPage />} />
+                    <Route path="search" element={<SearchPage />} />
+                    <Route path="logs/crawls" element={<ActivityLogsPage />} />
+                    <Route path="logs/crawls/:requestId" element={<CrawlRequestDetailPage />} />
+                    <Route path="logs/searches" element={<SearchLogsPage />} />
+                    <Route path="logs/searches/:id" element={<SearchRequestDetailPage />} />
                     <Route path="usage" element={<UsagePage />} />
                     <Route path="api-keys" element={<ApiKeysPage />} />
                     <Route path="settings" element={<SettingsPage />} />

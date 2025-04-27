@@ -185,6 +185,14 @@ class UsageHistory(BaseModel):
         verbose_name=_("Crawl request"),
         on_delete=models.RESTRICT,
         related_name="usage_history",
+        null=True,
+    )
+    search_request = models.OneToOneField(
+        "core.SearchRequest",
+        verbose_name=_("Search request"),
+        on_delete=models.RESTRICT,
+        related_name="usage_history",
+        null=True,
     )
     requested_page_credit = models.PositiveIntegerField(
         _("Requested page credit"),
@@ -199,4 +207,4 @@ class UsageHistory(BaseModel):
         ordering = ["-created_at"]
 
     def __str__(self):
-        return f"{self.team.name} - {self.crawl_request.url}"
+        return f"{self.team.name} - {self.crawl_request.url if self.crawl_request else self.search_request.query}"

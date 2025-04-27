@@ -21,8 +21,9 @@ from core.services import (
     PluginService,
     SitemapService,
     CrawlPupSupService,
+    SearchPupSupService,
 )
-from core.tasks import run_spider
+from core.tasks import run_spider, run_search
 from user.decorators import setup_current_team
 from user.permissions import IsAuthenticatedTeam
 
@@ -242,3 +243,84 @@ class PluginAPIView(APIView):
 
     def get(self, request):
         return Response(PluginService.get_plugin_form_jsonschema())
+
+
+@extend_schema_view(
+    list=extend_schema(
+        summary=_("List search requests"),
+        description=docs.SEARCH_REQUEST_LIST,
+        tags=["Search Requests"],
+    ),
+    retrieve=extend_schema(
+        summary=_("Get search request"),
+        parameters=docs.CRAWL_REQUEST_CHECK_STATUS_PARAMETERS,
+        description=docs.SEARCH_REQUEST_RETRIEVE,
+        tags=["Search Requests"],
+    ),
+    create=extend_schema(
+        summary=_("Create search request"),
+        description=docs.SEARCH_REQUEST_CREATE,
+        tags=["Search Requests"],
+    ),
+    destroy=extend_schema(
+        summary=_("Delete search request"),
+        description=docs.SEARCH_REQUEST_DELETE,
+        tags=["Search Requests"],
+    ),
+    check_status=extend_schema(
+        summary=_("Check search request status"),
+        parameters=docs.CRAWL_REQUEST_CHECK_STATUS_PARAMETERS,
+        description=docs.SEARCH_REQUEST_CHECK_STATUS,
+        tags=["Search Requests"],
+    ),
+)
+@setup_current_team
+class SearchRequestAPIView(
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.DestroyModelMixin,
+    GenericViewSet,
+):
+    permission_classes = [IsAuthenticatedTeam]
+    serializer_class = serializers.SearchRequestSerializer
+
+    def get_serializer_class(self):
+        if self.request.query_params.get("prefetched", "False") in [
+            "true",
+            "True",
+            "1",
+        ]:
+            return serializers.FullSearchResultSerializer
+
+        return super().get_serializer_class()
+
+    def get_queryset(self):
+        return self.request.current_team.search_requests.order_by("-created_at").all()
+
+    def perform_create(self, serializer):
+        instance = serializer.save(team=self.request.current_team)
+        run_search.apply_async(args=[instance.pk], task_id=str(instance.uuid))
+
+    def perform_destroy(self, instance: CrawlRequest):
+        if instance.status != consts.CRAWL_STATUS_RUNNING:
+            raise PermissionDenied(_("Only running crawl requests can be deleted"))
+        CrawlerService(instance).stop()
+
+    @action(
+        detail=True,
+        methods=["get"],
+        url_path="status",
+        url_name="status",
+    )
+    def check_status(self, request, **kwargs):
+        obj = self.get_object()  # type: SearchRequest
+        service = SearchPupSupService(obj)
+        prefetched = request.query_params.get("prefetched", "False") in [
+            "true",
+            "True",
+            "1",
+        ]
+        return EventStreamResponse(
+            service.check_status(prefetched=prefetched),
+        )

@@ -160,6 +160,27 @@ CRAWL_REQUEST_MARKDOWN = """
 Get a markdown representation of a crawl request.
 """
 
+
+SEARCH_REQUEST_LIST = """
+Get a list of all search requests for your team.
+"""
+SEARCH_REQUEST_RETRIEVE = """
+Get detailed information about a specific search request.
+"""
+SEARCH_REQUEST_CREATE = """
+Create a new search request.
+"""
+SEARCH_REQUEST_DELETE = """
+Stop a running search request.
+"""
+SEARCH_REQUEST_CHECK_STATUS = """
+Real-time status monitoring using Server-Sent Events (SSE).
+
+The endpoint streams updates every second with:
+- Current search request status
+- Data extracted
+"""
+
 ####### PARAMETERS #######
 CRAWL_REQUEST_LIST_PARAMETERS = [
     OpenApiParameter(

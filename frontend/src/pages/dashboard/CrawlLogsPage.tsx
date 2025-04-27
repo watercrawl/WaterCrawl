@@ -24,7 +24,7 @@ const STATUS_OPTIONS = [
   // { value: 'failed', label: 'Failed' },
 ];
 
-const ActivityLogsPage: React.FC = () => {
+const CrawlLogsPage: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [crawlRequests, setCrawlRequests] = useState<PaginatedResponse<CrawlRequest> | null>(null);
@@ -75,7 +75,7 @@ const ActivityLogsPage: React.FC = () => {
 
   const handleViewDetails = (e: React.MouseEvent, requestId: string) => {
     e.stopPropagation();
-    navigate(`/dashboard/logs/${requestId}`);
+    navigate(`/dashboard/logs/crawls/${requestId}`);
   };
 
   if (loading && !crawlRequests) {
@@ -246,4 +246,4 @@ const ActivityLogsPage: React.FC = () => {
   );
 };
 
-export default ActivityLogsPage;
+export default CrawlLogsPage;
