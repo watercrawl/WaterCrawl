@@ -1,5 +1,9 @@
 x-app: &app
-  image: watercrawl/watercrawl:${VERSION:-v0.6.0}
+  build:
+    context: ../backend
+    dockerfile: Dockerfile
+    args:
+      - VERSION=${VERSION:-v0.6.0}
   depends_on:
     db:
       condition: service_healthy
@@ -122,19 +126,19 @@ services:
 
   app:
     <<: *app
-    command: [ "gunicorn", "-b", "0.0.0.0:9000", "-w", "2", "watercrawl.wsgi:application", "--access-logfile", "-", "--error-logfile", "-", "--timeout", "60" ]
+    command: ["/bin/bash", "/var/www/install_extras.sh", "gunicorn", "-b", "0.0.0.0:9000", "-w", "2", "watercrawl.wsgi:application", "--access-logfile", "-", "--error-logfile", "-", "--timeout", "60"]
 
   celery:
     <<: *app
-    command: [ "celery", "-A", "watercrawl", "worker", "-l", "info", "-S", "django" ]
+    command: ["/bin/bash", "/var/www/install_extras.sh", "celery", "-A", "watercrawl", "worker", "-l", "info", "-S", "django"]
 
   celery-beat:
     <<: *app
-    command: [ "celery", "-A", "watercrawl", "beat", "-l", "info", "-S", "django" ]
+    command: ["/bin/bash", "/var/www/install_extras.sh", "celery", "-A", "watercrawl", "beat", "-l", "info", "-S", "django"]
 
   frontend:
     <<: *frontend
-    command: [ "npm", "run", "serve" ]
+    command: ["npm", "run", "serve"]
 
   minio:
     image: minio/minio:RELEASE.2024-11-07T00-52-20Z
