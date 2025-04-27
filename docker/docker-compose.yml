@@ -126,15 +126,15 @@ services:
 
   app:
     <<: *app
-    command: ["/bin/bash", "/var/www/install_extras.sh", "gunicorn", "-b", "0.0.0.0:9000", "-w", "2", "watercrawl.wsgi:application", "--access-logfile", "-", "--error-logfile", "-", "--timeout", "60"]
+    command: ["gunicorn", "-b", "0.0.0.0:9000", "-w", "2", "watercrawl.wsgi:application", "--access-logfile", "-", "--error-logfile", "-", "--timeout", "60"]
 
   celery:
     <<: *app
-    command: ["/bin/bash", "/var/www/install_extras.sh", "celery", "-A", "watercrawl", "worker", "-l", "info", "-S", "django"]
+    command: ["celery", "-A", "watercrawl", "worker", "-l", "info", "-S", "django"]
 
   celery-beat:
     <<: *app
-    command: ["/bin/bash", "/var/www/install_extras.sh", "celery", "-A", "watercrawl", "beat", "-l", "info", "-S", "django"]
+    command: ["celery", "-A", "watercrawl", "beat", "-l", "info", "-S", "django"]
 
   frontend:
     <<: *frontend
