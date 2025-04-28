@@ -360,6 +360,8 @@ SCRAPY_HTTPCACHE_EXPIRATION_SECS = env(
 )
 SCRAPY_HTTPCACHE_DIR = env("SCRAPY_HTTPCACHE_DIR", cast=str, default="httpcache")
 SCRAPY_LOG_LEVEL = env("SCRAPY_LOG_LEVEL", cast=str, default="ERROR")
+SCRAPY_GOOGLE_API_KEY = env("SCRAPY_GOOGLE_API_KEY", cast=str, default="")
+SCRAPY_GOOGLE_CSE_ID = env("SCRAPY_GOOGLE_CSE_ID", cast=str, default="")
 
 PLAYWRIGHT_SERVER = env("PLAYWRIGHT_SERVER", cast=str, default=None)
 PLAYWRIGHT_API_KEY = env("PLAYWRIGHT_API_KEY", cast=str, default=None)

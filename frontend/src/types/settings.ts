@@ -13,4 +13,5 @@ export interface Settings {
     policy_update_at: string;
     terms_update_at: string;
     is_installed: boolean;
+    is_search_configured: boolean;
 }

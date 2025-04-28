@@ -234,6 +234,18 @@ class SearchHelpers(BaseHelpers):
             "depth", consts.SEARCH_DEPTH_BASIC
         )
 
+    @cached_property
+    def search_query(self):
+        return self.search_request.query
+
+    @property
+    def language(self):
+        return self.search_request.search_options.get("language", None)
+
+    @property
+    def country(self):
+        return self.search_request.search_options.get("country", None)
+
     @property
     def advanced_search(self) -> bool:
         return self.depth != consts.SEARCH_DEPTH_BASIC
@@ -243,27 +255,13 @@ class SearchHelpers(BaseHelpers):
         return self.depth == consts.SEARCH_DEPTH_ULTIMATE
 
     @property
-    def __tbs_value(self):
+    def time_range(self):
         value = self.search_request.search_options.get(
             "time_renge", consts.SEARCH_TIME_RENGE_ANY
         )
         if value == consts.SEARCH_TIME_RENGE_ANY:
             return None
-        return f"qdr:{value[0]}"
-
-    @property
-    def search_url(self):
-        query_params = {
-            "q": self.search_request.query,
-            "hl": self.search_request.search_options.get("language", None),
-            "gl": self.search_request.search_options.get("country", None),
-            "tbs": self.__tbs_value,
-        }
-        print(query_params)
-        query = "&".join(
-            [f"{key}={value}" for key, value in query_params.items() if value]
-        )
-        return f"https://www.google.com/search?{query}"
+        return value
 
 
 class CrawlPupSupService:
@@ -471,7 +469,14 @@ class CrawlerService:
             f"crawl_request_uuid={self.crawl_request.pk}",
             *self.config_helpers.get_spider_settings(),
         ]
-        subprocess.run(params, check=True)
+        try:
+            subprocess.run(params, check=True, cwd=settings.BASE_DIR)
+        except subprocess.CalledProcessError:
+            self.crawl_request.duration = timezone.now() - self.crawl_request.created_at
+            self.crawl_request.status = consts.CRAWL_STATUS_FAILED
+            self.crawl_request.save(update_fields=["status", "duration"])
+            self.pubsub_service.send_status("state")
+            raise
 
         self.crawl_request.duration = timezone.now() - self.crawl_request.created_at
         self.crawl_request.status = consts.CRAWL_STATUS_FINISHED
@@ -569,7 +574,7 @@ class SearchService:
         params = [
             "scrapy",
             "crawl",
-            "GoogleSearchScrapper",
+            "GoogleCustomSearchScrapper",
             "-a",
             f"search_request_uuid={self.search_request.pk}",
         ]

@@ -82,6 +82,10 @@ class FrontendSettingService:
     def is_installed(self):
         return User.objects.exists()
 
+    @cached_property
+    def is_search_configured(self):
+        return bool(settings.SCRAPY_GOOGLE_CSE_ID and settings.SCRAPY_GOOGLE_API_KEY)
+
 
 class EmailService:
     def __init__(self):
