@@ -176,6 +176,9 @@ class SearchRequestSerializer(serializers.ModelSerializer):
             "created_at",
         ]
 
+    def validate(self, attrs):
+        return PlanLimitValidator(self.context["team"]).validate_search_request(attrs)
+
 
 class FullSearchResultSerializer(SearchRequestSerializer):
     result = serializers.SerializerMethodField()

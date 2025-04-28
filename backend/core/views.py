@@ -285,6 +285,11 @@ class SearchRequestAPIView(
     permission_classes = [IsAuthenticatedTeam]
     serializer_class = serializers.SearchRequestSerializer
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["team"] = self.request.current_team
+        return context
+
     def get_serializer_class(self):
         if self.request.query_params.get("prefetched", "False") in [
             "true",

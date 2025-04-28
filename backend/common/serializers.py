@@ -16,3 +16,4 @@ class SettingSerializer(serializers.Serializer):
     terms_update_at = serializers.DateTimeField()
     google_analytics_id = serializers.CharField()
     is_installed = serializers.BooleanField()
+    is_search_configured = serializers.BooleanField()

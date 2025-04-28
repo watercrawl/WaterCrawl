@@ -114,41 +114,48 @@ class SearchScrapper(Spider):
             )
 
 
-class GoogleSearchScrapper(SearchScrapper):
-    name = "GoogleSearchScrapper"
+class GoogleCustomSearchScrapper(SearchScrapper):
+    name = "GoogleCustomSearchScrapper"
     allowed_domains = []
 
-    def parse(self, response, **kwargs):
-        for result in response.css("#search a"):
-            if result.css(".fl"):
-                continue
+    def make_url(self, start=None):
+        url = "https://www.googleapis.com/customsearch/v1"
+        params = {
+            "key": settings.GOOGLE_API_KEY,
+            "cx": settings.GOOGLE_CSE_ID,
+            "q": self.helpers.search_query,
+            "hl": self.helpers.language,
+            "gl": self.helpers.country,
+            "start": start,
+            "dateRestrict": self.helpers.time_range[0]
+            if self.helpers.time_range
+            else None,
+        }
 
-            url = result.css("a::attr(href)").get()
-            if not url or url.startswith("/search") or url.startswith("#"):
-                continue
+        url = f"{url}?{'&'.join([f'{key}={value}' for key, value in params.items() if value])}"
+        return url
 
-            description = "".join(
-                result.xpath("ancestor::div[5]")
-                .css(".VwiC3b")
-                .xpath(".//text()")
-                .getall()
-            )
-            if not description:
-                description = "".join(
-                    result.xpath("ancestor::div[7]")
-                    .css(".VwiC3b")
-                    .xpath(".//text()")
-                    .getall()
-                )
+    def start_requests(self) -> Iterable[Request]:
+        yield Request(
+            url=self.make_url(),
+            callback=self.parse_json,
+            meta={"skip_playwright": True},
+        )
 
-            title = (
-                result.css("h3").xpath(".//text()").get()
-                or result.xpath(".//text()").get()
-                or ""
-            )
+    def parse_json(self, response):
+        data = response.json()
 
-            if not title and not description:
-                continue
+        for item in data["items"]:
+            url = item["link"]
+            title = item["title"]
+            description = item["snippet"]
+
+            if "pagemap" in item:
+                if "metatags" in item["pagemap"]:
+                    if "og:title" in item["pagemap"]["metatags"][0]:
+                        title = item["pagemap"]["metatags"][0]["og:title"]
+                    if "og:description" in item["pagemap"]["metatags"][0]:
+                        description = item["pagemap"]["metatags"][0]["og:description"]
 
             if self.append_result(
                 url=url,
@@ -165,9 +172,9 @@ class GoogleSearchScrapper(SearchScrapper):
                 # If we've reached the result limit, finalize and stop
                 return
 
-        next_page = response.css("a#pnnext::attr(href)").get()
-        if not next_page:
-            # If there's no next page, finalize
-            return
-
-        yield response.follow(next_page, callback=self.parse)
+        if "queries" in data and "nextPage" in data["queries"]:
+            yield Request(
+                url=self.make_url(start=data["queries"]["nextPage"][0]["startIndex"]),
+                callback=self.parse_json,
+                meta={"skip_playwright": True},
+            )

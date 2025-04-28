@@ -12,7 +12,6 @@ import {
   SunIcon,
   MoonIcon,
   InformationCircleIcon,
-  XCircleIcon,
   ChevronDownIcon,
   MagnifyingGlassIcon,
 } from '@heroicons/react/24/outline';
@@ -31,16 +30,16 @@ import SpiderIcon from '../components/icons/SpiderIcon';
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, end: true },
-  { 
-    name: 'Playground', 
-    icon: BeakerIcon, 
+  {
+    name: 'Playground',
+    icon: BeakerIcon,
     children: [
       { name: 'Crawl', href: '/dashboard/playground', icon: SpiderIcon },
       { name: 'Search', href: '/dashboard/search', icon: MagnifyingGlassIcon },
     ]
   },
-  { 
-    name: 'Activity Logs', 
+  {
+    name: 'Activity Logs',
     icon: ClockIcon,
     children: [
       { name: 'Crawls', href: '/dashboard/logs/crawls', icon: SpiderIcon },
@@ -56,7 +55,7 @@ const navigation = [
 // Reusable Navigation component
 interface NavigationMenuProps {
   isMobile?: boolean;
-  expandedMenus: {[key: string]: boolean};
+  expandedMenus: { [key: string]: boolean };
   toggleMenu: (menuName: string) => void;
   isMenuExpanded: (menuName: string) => boolean;
   isMenuActive: (item: any) => boolean;
@@ -79,11 +78,10 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
             <div className="space-y-1">
               <button
                 onClick={() => toggleMenu(item.name)}
-                className={`w-full flex justify-between items-center gap-x-3 rounded-md p-2 text-sm font-medium leading-6 transition-colors duration-200 ${
-                  isMenuActive(item) 
-                    ? 'bg-blue-800/60 text-blue-100' 
+                className={`w-full flex justify-between items-center gap-x-3 rounded-md p-2 text-sm font-medium leading-6 transition-colors duration-200 ${isMenuActive(item)
+                    ? 'bg-blue-800/60 text-blue-100'
                     : 'text-blue-200 hover:text-blue-100 hover:bg-blue-800/30'
-                }`}
+                  }`}
               >
                 <div className="flex items-center gap-x-3">
                   <item.icon
@@ -92,12 +90,12 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
                   />
                   <span className={isMenuExpanded(item.name) ? 'font-medium text-blue-100' : ''}>{item.name}</span>
                 </div>
-                <ChevronDownIcon 
-                  className={`h-5 w-5 shrink-0 text-blue-300 transition-transform duration-200 ease-in-out ${isMenuExpanded(item.name) ? 'rotate-0' : '-rotate-90'}`} 
-                  aria-hidden="true" 
+                <ChevronDownIcon
+                  className={`h-5 w-5 shrink-0 text-blue-300 transition-transform duration-200 ease-in-out ${isMenuExpanded(item.name) ? 'rotate-0' : '-rotate-90'}`}
+                  aria-hidden="true"
                 />
               </button>
-              
+
               <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isMenuExpanded(item.name) ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'}`}>
                 <ul className="ml-6 mt-2 space-y-2 pl-3 border-l border-blue-700/60">
                   {item.children.map((child: any) => (
@@ -106,11 +104,10 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
                         to={child.href}
                         onClick={isMobile && closeSidebar ? closeSidebar : undefined}
                         className={({ isActive }) => {
-                          return `group flex items-center gap-x-3 rounded-md px-3 py-2 text-sm font-medium leading-6 transition-all duration-150 ${
-                            isActive
+                          return `group flex items-center gap-x-3 rounded-md px-3 py-2 text-sm font-medium leading-6 transition-all duration-150 ${isActive
                               ? 'bg-blue-700/50 text-white shadow-sm'
                               : 'text-blue-300 hover:text-blue-100 hover:bg-blue-800/40'
-                          }`;
+                            }`;
                         }}
                       >
                         {({ isActive }) => (
@@ -155,11 +152,11 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
 
 export const DashboardLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [expandedMenus, setExpandedMenus] = useState<{[key: string]: boolean}>({
+  const [expandedMenus, setExpandedMenus] = useState<{ [key: string]: boolean }>({
     'Playground': true // Initially expanded
   });
   const { theme, toggleTheme } = useTheme();
-  const { settings, isCompatibleBackend, compatibleBackendVersion, loading } = useSettings();
+  const { settings, loading } = useSettings();
   const { showSubscriptionBanner } = useTeam();
   const { showPrivacyTermsModal } = useUser();
   const location = useLocation();
@@ -197,11 +194,11 @@ export const DashboardLayout = () => {
     if (item.href) {
       return location.pathname === item.href;
     }
-    
+
     if (item.children) {
       return item.children.some((child: any) => location.pathname === child.href);
     }
-    
+
     return false;
   };
 
@@ -209,18 +206,6 @@ export const DashboardLayout = () => {
 
   return (
     <div>
-      {/* Check version Compatibility */}
-      <NotificationBanner
-        show={isCompatibleBackend === false}
-        onClose={() => { }}
-        closeable={false}
-        variant="error"
-        icon={<XCircleIcon className="h-6 w-6" aria-hidden="true" />}
-      >
-        Your backend version is not compatible with the current frontend version. <br />
-        The current backend version is <b>{settings?.api_version}</b> and the compatible backend version is <b>{compatibleBackendVersion}</b>.
-      </NotificationBanner>
-
       {/* Global Notification Area */}
       <NotificationBanner
         show={showSubscriptionBanner}
@@ -283,7 +268,7 @@ export const DashboardLayout = () => {
           <nav className="flex flex-1 flex-col">
             <ul role="list" className="flex flex-1 flex-col gap-y-7">
               <li>
-                <NavigationMenu 
+                <NavigationMenu
                   isMobile={true}
                   expandedMenus={expandedMenus}
                   toggleMenu={toggleMenu}
@@ -320,7 +305,7 @@ export const DashboardLayout = () => {
           <nav className="flex flex-1 flex-col">
             <ul role="list" className="flex flex-1 flex-col gap-y-7">
               <li>
-                <NavigationMenu 
+                <NavigationMenu
                   expandedMenus={expandedMenus}
                   toggleMenu={toggleMenu}
                   isMenuExpanded={isMenuExpanded}
@@ -332,12 +317,12 @@ export const DashboardLayout = () => {
           <div className="text-blue-200/60 text-xs text-center pb-2">
             {/* GitHub Stars */}
             <div className="mt-3 mb-3 px-2">
-              <GitHubStars 
-                owner="watercrawl" 
-                repo="watercrawl" 
+              <GitHubStars
+                owner="watercrawl"
+                repo="watercrawl"
               />
             </div>
-            
+
             Version: <b>{settings?.api_version}</b>
 
             {/* Copyright */}
