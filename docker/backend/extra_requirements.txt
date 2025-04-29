@@ -1,0 +1,2 @@
+# Add your additional Python packages here, one per line
+watercrawl-openai==0.1.0

@@ -1,5 +1,9 @@
 x-app: &app
-  image: watercrawl/watercrawl:${VERSION:-v0.6.0}
+  build:
+    context: ../backend
+    dockerfile: Dockerfile
+    args:
+      - VERSION=${VERSION:-v0.6.0}
   depends_on:
     db:
       condition: service_healthy
