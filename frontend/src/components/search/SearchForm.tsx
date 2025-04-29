@@ -9,6 +9,7 @@ import { SearchApiDocumentation } from './SearchApiDocumentation';
 import { SearchRequest, SearchStatus, SearchType, SearchOptions, Depth, TimeRange } from '../../types/search';
 import { searchApi } from '../../services/api/search';
 import { SearchResultDisplay } from './SearchResultDisplay';
+import { AxiosError } from 'axios';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -501,7 +502,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({ initialRequest, initialQ
       ),
     },
     {
-      name: 'API',
+      name: 'API Documentation',
       content: (
         <div className="w-full">
           <SearchApiDocumentation 
@@ -609,8 +610,12 @@ export const SearchForm: React.FC<SearchFormProps> = ({ initialRequest, initialQ
         );
       }
     } catch (error) {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data?.message || 'Failed to start search.');
+      } else {
+        toast.error('Failed to start search.');
+      }
       console.error('Error starting search:', error);
-      toast.error('Failed to start search.');
       setIsLoading(false);
     }
   };

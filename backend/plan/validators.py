@@ -115,7 +115,7 @@ class PlanLimitValidator:
         if self.team_plan_service.remaining_page_credit <= 0:
             raise PermissionDenied(_("You have no more pages left in your plan"))
 
-        number_of_results = data.get("number_of_results", 5)
+        number_of_results = data.get("result_limit", 5)
         depth = data.get("search_options", {}).get(
             "depth", core_consts.SEARCH_DEPTH_BASIC
         )
@@ -124,8 +124,23 @@ class PlanLimitValidator:
         if number_of_credit > self.team_plan_service.remaining_page_credit:
             raise PermissionDenied(
                 _(
-                    "You just have {} page credits left in your plan. for current search you need {} page credits."
+                    "You just have {} credits left in your plan. for current search you need {} credits."
                 ).format(self.team_plan_service.remaining_page_credit, number_of_credit)
+            )
+
+        if self.team_plan_service.remaining_daily_page_credit == -1:
+            return
+
+        if self.team_plan_service.remaining_daily_page_credit <= 0:
+            raise PermissionDenied(_("You have no more daily credit left in your plan"))
+
+        if number_of_credit > self.team_plan_service.remaining_daily_page_credit:
+            raise PermissionDenied(
+                _(
+                    "You just have {} daily credit left in your plan. for current search you need {} credits."
+                ).format(
+                    self.team_plan_service.remaining_daily_page_credit, number_of_credit
+                )
             )
 
     def _validate_current_search(self, data: dict):
