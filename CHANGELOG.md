@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.1] - 2025-04-29
+
+### Fixed
+- Fixed search credit calculation to properly account for search depth
+- Added daily credit limit validation with improved error messages
+- Enhanced error handling in frontend with detailed backend error messages
+
+### Changed
+- Added beta tag to Search Playground title
+- Renamed API tab to "API Documentation" for better clarity
+
 ## [0.7.0] - 2025-04-29
 
 ### Added

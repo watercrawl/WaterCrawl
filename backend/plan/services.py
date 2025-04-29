@@ -772,13 +772,17 @@ class UsageHistoryService:
         except UsageHistory.DoesNotExist:
             usage_history = self.create_search(search_request)
 
-        actual_documents = (
+        number_of_results = (
             len(json.load(search_request.result)) if search_request.result else 0
         )
-        usage_diff = actual_documents - usage_history.requested_page_credit
+        depth = usage_history.search_request.search_options["depth"]
+        actual_document_used = calculate_number_of_search_credits(
+            number_of_results, depth
+        )
+        usage_diff = actual_document_used - usage_history.requested_page_credit
         self.team_plan_service.balance_page_credit(usage_diff)
 
-        usage_history.used_page_credit = actual_documents
+        usage_history.used_page_credit = actual_document_used
         usage_history.save()
 
     def revert_search_credit(self, instance):
