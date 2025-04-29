@@ -83,7 +83,7 @@ x-app: &app
     - SCRAPY_GOOGLE_CSE_ID=${SCRAPY_GOOGLE_CSE_ID:-}
     
     # Playwright
-    - PLAYWRIGHT_SERVER=${PLAYWRIGHT_SERVER:-}
+    - PLAYWRIGHT_SERVER=${PLAYWRIGHT_SERVER:-http://playwright:8000}
     - PLAYWRIGHT_API_KEY=${PLAYWRIGHT_API_KEY:-your-secret-api-key}
     
     # Integrations
