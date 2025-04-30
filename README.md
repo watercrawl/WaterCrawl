@@ -13,6 +13,7 @@
 
 </div>
 
+
 🕷️ WaterCrawl is a powerful web application that uses Python, Django, Scrapy, and Celery to crawl web pages and extract relevant data.
 
 ## 🚀 Quick Start
@@ -57,22 +58,38 @@ To build and run WaterCrawl on Docker locally, please follow these steps:
 
 For local development and contribution, please follow our [Contributing Guide](./CONTRIBUTING.md) 🤝
 
+<div align="">
+   <a href="https://watercrawl.dev/jobs">
+      <img src="https://img.shields.io/badge/🚀_We're_Hiring!-Join_Our_Team-F59E0B?style=for-the-badge" alt="We're Hiring" />
+   </a>
+</div>
+
 ## ✨ Features
 
-- 🕷️ Crawl web pages using Scrapy
-- 📊 Extract data from crawled pages using Scrapy
-- 💾 Store extracted data in a database using Django
-- ⚡ Use Celery to run tasks asynchronously
-- 📁 File storage support (MinIO/S3/Local)
-- 🔄 REST API with OpenAPI documentation
-- 🔐 User authentication and authorization
-- ⏰ Task scheduling with Celery Beat
+- **🕸️ Advanced Web Crawling & Scraping** - Crawl websites with highly customizable options for depth, speed, and targeting specific content
+- **🔍 Powerful Search Engine** - Find relevant content across the web with multiple search depths (basic, advanced, ultimate)
+- **🌐 Multi-language Support** - Search and crawl content in different languages with country-specific targeting
+- **⚡ Asynchronous Processing** - Monitor real-time progress of crawls and searches via Server-Sent Events (SSE)
+- **🔄 REST API with OpenAPI** - Comprehensive API with detailed documentation and client libraries
+- **🔌 Rich Ecosystem** - Integrations with Dify, N8N, and other AI/automation platforms
+- **🏠 Self-hosted & Open Source** - Full control over your data with easy deployment options
+- **📊 Advanced Results Handling** - Download and process search results with customizable parameters
+
+Check our [API Overview](https://docs.watercrawl.dev/intro) to learn more about these features.
+
+## 🛠️ Client SDKs
+
+- ✅ [**Python Client**](https://docs.watercrawl.dev/clients/python) - Full-featured SDK with support for all API endpoints
+- ✅ [**Node.js Client**](https://docs.watercrawl.dev/clients/nodejs) - Complete JavaScript/TypeScript integration
+- ✅ [**Go Client**](https://docs.watercrawl.dev/clients/go) - Full-featured SDK with support for all API endpoints
+- ✅ [**PHP Client**](https://docs.watercrawl.dev/clients/php) - Full-featured SDK with support for all API endpoints
+- 🔜 [**Rust Client**](https://docs.watercrawl.dev/clients/rust) - Coming soon
 
 ## 🔌 Integrations
 
 - ✅ [Dify Plugin](https://marketplace.dify.ai/plugins/watercrawl/watercrawl) ([source code](https://github.com/watercrawl/watercrawl-dify-plugin))
 - ✅ [N8N workflow node](https://www.npmjs.com/package/@watercrawl/n8n-nodes-watercrawl) ([source code](https://github.com/watercrawl/n8n-nodes-watercrawl))
-- 🔄 Dify Knowledge Base (Pull Request - Not Merged yet)
+- ✅ [Dify Knowledge Base](https://dify.ai/)
 - 🔄 Langflow (Pull Request - Not Merged yet)
 - 🔜 Flowise (Coming soon)
 
