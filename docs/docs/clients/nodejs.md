@@ -1,24 +1,8 @@
 # Node.js Client
-
-A TypeScript/Node.js client library for the WaterCrawl API. This client provides a simple and intuitive way to interact with WaterCrawl's web crawling service.
-
-[![Test](https://github.com/watercrawl/watercrawl-nodejs/actions/workflows/test.yml/badge.svg)](https://github.com/watercrawl/watercrawl-nodejs/actions/workflows/test.yml)
 [![npm version](https://badge.fury.io/js/@watercrawl%2Fnodejs.svg)](https://badge.fury.io/js/@watercrawl%2Fnodejs)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Features
-
-- Full API coverage for WaterCrawl endpoints
-- Written in TypeScript with complete type definitions
-- Support for both synchronous and asynchronous crawling
-- Real-time crawl monitoring with event streaming
-- Automatic result downloading and processing
-- Promise-based API with async/await support
-- Comprehensive error handling
-- ESLint and Prettier configured for code quality
-- Built with ES Modules
-- Continuous Integration with GitHub Actions
-- Automated npm publishing with version tags
+A TypeScript/Node.js client library for interacting with the WaterCrawl API - a powerful web crawling and scraping service.
 
 ## Installation
 
@@ -26,260 +10,283 @@ A TypeScript/Node.js client library for the WaterCrawl API. This client provides
 npm install @watercrawl/nodejs
 ```
 
+## Requirements
+
+- Node.js >= 14
+- `axios`, `url-join`, `dotenv` packages
+
 ## Quick Start
 
 ```typescript
 import { WaterCrawlAPIClient } from '@watercrawl/nodejs';
 
-// Initialize the client with your API key
+// Initialize the client
 const client = new WaterCrawlAPIClient('your-api-key');
 
-// Simple synchronous crawling
-const result = await client.scrapeUrl('https://watercrawl.dev');
-console.log(result);
+// Simple URL scraping
+const result = await client.scrapeUrl('https://example.com');
 
-// Asynchronous crawling with monitoring
-const request = await client.scrapeUrl('https://watercrawl.dev', {}, {}, false);
-for await (const event of client.monitorCrawlRequest(request.uuid)) {
-    console.log('Event:', event);
-}
-```
+// Advanced crawling with options
+const crawlRequest = await client.createCrawlRequest(
+    'https://example.com',
+    {}, // spider options
+    {}, // page options
+    {}  // plugin options
+);
 
-## API Reference
-
-### Types
-
-```typescript
-interface CrawlRequest {
-    uuid: string;
-    status: 'pending' | 'running' | 'completed' | 'failed' | 'stopped';
-    created_at: string;
-    updated_at: string;
-}
-
-interface CrawlResult {
-    uuid: string;
-    url: string;
-    data: Record<string, any>;
-    metadata: Record<string, any>;
-}
-
-interface PageOptions {
-    wait_for_selector?: string;
-    screenshot?: boolean;
-    viewport?: {
-        width: number;
-        height: number;
-    };
-}
-
-interface PluginOptions {
-    extract_links?: boolean;
-    extract_text?: boolean;
-    custom_js?: string;
-}
-
-interface CrawlEvent {
-    type: 'status' | 'result' | 'error';
-    data: any;
-}
-```
-
-### Constructor
-
-```typescript
-class WaterCrawlAPIClient {
-    constructor(apiKey: string, baseUrl?: string);
-}
-```
-
-### Methods
-
-#### Crawl Requests
-
-```typescript
-// Create a new crawl request
-async createCrawlRequest(
-    url: string,
-    spiderOptions?: Record<string, any>,
-    pageOptions?: PageOptions,
-    pluginOptions?: PluginOptions
-): Promise<CrawlRequest>;
-
-// List all crawl requests
-async getCrawlRequestsList(
-    page?: number,
-    pageSize?: number
-): Promise<{ results: CrawlRequest[] }>;
-
-// Get a specific crawl request
-async getCrawlRequest(itemId: string): Promise<CrawlRequest>;
-
-// Stop a crawl request
-async stopCrawlRequest(itemId: string): Promise<null>;
-
-// Download crawl request results
-async downloadCrawlRequest(itemId: string): Promise<CrawlResult[]>;
-```
-
-#### Monitoring and Results
-
-```typescript
-// Monitor crawl progress in real-time
-async *monitorCrawlRequest(
-    itemId: string,
-    download?: boolean
-): AsyncGenerator<CrawlEvent, void, unknown>;
-
-// Get results for a crawl request
-async getCrawlRequestResults(
-    itemId: string
-): Promise<{ results: CrawlResult[] }>;
-
-// Download a specific result
-async downloadResult(resultObject: CrawlResult): Promise<Record<string, any>>;
-```
-
-#### Simplified Crawling
-
-```typescript
-// Synchronous crawling (waits for result)
-async scrapeUrl(
-    url: string,
-    pageOptions?: PageOptions,
-    pluginOptions?: PluginOptions,
-    sync?: true,
-    download?: true
-): Promise<Record<string, any>>;
-
-// Asynchronous crawling (returns immediately)
-async scrapeUrl(
-    url: string,
-    pageOptions?: PageOptions,
-    pluginOptions?: PluginOptions,
-    sync: false
-): Promise<CrawlRequest>;
-```
-
-## Examples
-
-### Basic Crawling
-
-```typescript
-import { WaterCrawlAPIClient } from '@watercrawl/nodejs';
-import type { CrawlResult } from '@watercrawl/nodejs';
-
-const client = new WaterCrawlAPIClient('your-api-key');
-
-// Simple crawl
-const result = await client.scrapeUrl('https://watercrawl.dev');
-console.log('Crawl result:', result);
-```
-
-### Advanced Crawling with Options
-
-```typescript
-import { WaterCrawlAPIClient } from '@watercrawl/nodejs';
-import type { PageOptions, PluginOptions } from '@watercrawl/nodejs';
-
-const client = new WaterCrawlAPIClient('your-api-key');
-
-// Crawl with custom options
-const pageOptions: PageOptions = {
-    wait_for_selector: '.content',
-    screenshot: true,
-    viewport: {
-        width: 1920,
-        height: 1080
-    }
-};
-
-const pluginOptions: PluginOptions = {
-    extract_links: true,
-    extract_text: true,
-    custom_js: `
-        // Custom JavaScript to run on the page
-        return {
-            title: document.title,
-            metaDescription: document.querySelector('meta[name="description"]')?.content
-        };
-    `
-};
-
-const result = await client.scrapeUrl('https://watercrawl.dev', pageOptions, pluginOptions);
-```
-
-### Asynchronous Crawling with Progress Monitoring
-
-```typescript
-import { WaterCrawlAPIClient } from '@watercrawl/nodejs';
-import type { CrawlEvent } from '@watercrawl/nodejs';
-
-const client = new WaterCrawlAPIClient('your-api-key');
-
-// Start crawl asynchronously
-const request = await client.scrapeUrl('https://watercrawl.dev', {}, {}, false);
-
-// Monitor progress
-for await (const event of client.monitorCrawlRequest(request.uuid)) {
-    switch (event.type) {
-        case 'status':
-            console.log('Status update:', event.data);
-            break;
-        case 'result':
-            console.log('Got result:', event.data);
-            break;
-        case 'error':
-            console.error('Error:', event.data);
-            break;
+// Monitor and download results
+for await (const result of client.monitorCrawlRequest(crawlRequest.uuid)) {
+    if (result.type === 'result') {
+        console.log(result.data);  // it is a result object per page
     }
 }
 ```
 
-### Managing Multiple Crawls
+## API Examples
+
+### Client Initialization
 
 ```typescript
 import { WaterCrawlAPIClient } from '@watercrawl/nodejs';
-import type { CrawlRequest, CrawlResult } from '@watercrawl/nodejs';
 
+// Initialize with default base URL
 const client = new WaterCrawlAPIClient('your-api-key');
 
-// List all crawl requests
-const { results: requests } = await client.getCrawlRequestsList();
-console.log('All requests:', requests);
-
-// Get specific request details
-const request: CrawlRequest = await client.getCrawlRequest(requests[0].uuid);
-console.log('Request details:', request);
-
-// Stop a crawl
-await client.stopCrawlRequest(request.uuid);
-
-// Download results
-const { results } = await client.getCrawlRequestResults(request.uuid);
-console.log('Results:', results);
+// Or specify a custom base URL
+const client = new WaterCrawlAPIClient('your-api-key', 'https://custom-app.watercrawl.dev/');
 ```
 
-## Error Handling
+### Crawling Operations
 
-The client includes comprehensive error handling with TypeScript support:
+#### List all crawl requests
 
 ```typescript
-import { WaterCrawlAPIClient } from '@watercrawl/nodejs';
-import type { APIError } from '@watercrawl/nodejs';
+// Get the first page of requests (default page size: 10)
+const requests = await client.getCrawlRequestsList();
 
-try {
-    const result = await client.scrapeUrl('https://watercrawl.dev');
-} catch (error) {
-    if ((error as APIError).response) {
-        // API error with response
-        console.error('API Error:', (error as APIError).response.data);
-    } else {
-        // Network or other error
-        console.error('Error:', error.message);
+// Specify page number and size
+const requests = await client.getCrawlRequestsList(2, 20);
+```
+
+#### Get a specific crawl request
+
+```typescript
+const request = await client.getCrawlRequest('request-uuid');
+```
+
+#### Create a crawl request
+
+```typescript
+// Simple request with just a URL
+const request = await client.createCrawlRequest('https://example.com');
+
+// Advanced request with a single URL
+const request = await client.createCrawlRequest(
+    'https://example.com',
+    {
+        max_depth: 1, // maximum depth to crawl
+        page_limit: 1, // maximum number of pages to crawl
+        allowed_domains: [], // allowed domains to crawl
+        exclude_paths: [], // exclude paths
+        include_paths: [] // include paths
+    },
+    {
+        exclude_tags: [], // exclude tags from the page
+        include_tags: [], // include tags from the page
+        wait_time: 1000, // wait time in milliseconds after page load
+        include_html: false, // the result will include HTML
+        only_main_content: true, // only main content of the page automatically remove headers, footers, etc.
+        include_links: false, // if True the result will include links
+        timeout: 15000, // timeout in milliseconds
+        accept_cookies_selector: null, // accept cookies selector e.g. "#accept-cookies"
+        locale: "en-US", // locale
+        extra_headers: {}, // extra headers e.g. {"Authorization": "Bearer your_token"}
+        actions: [] // actions to perform {"type": "screenshot"} or {"type": "pdf"}
+    },
+    {}
+);
+```
+
+#### Stop a crawl request
+
+```typescript
+await client.stopCrawlRequest('request-uuid');
+```
+
+#### Download a crawl request result
+
+```typescript
+// Download the crawl request results
+const results = await client.downloadCrawlRequest('request-uuid');
+```
+
+#### Monitor a crawl request
+
+```typescript
+// Monitor with automatic result download (default)
+for await (const event of client.monitorCrawlRequest('request-uuid')) {
+    if (event.type === 'status') {
+        console.log(`Crawl state: ${event.data.status}`);
+    } else if (event.type === 'result') {
+        console.log(`Received result for: ${event.data.url}`);
     }
 }
+
+// Monitor without downloading results
+for await (const event of client.monitorCrawlRequest('request-uuid', false)) {
+    console.log(`Event type: ${event.type}`);
+}
 ```
+
+#### Get crawl request results
+
+```typescript
+// Get the results
+const results = await client.getCrawlRequestResults('request-uuid');
+```
+
+#### Quick URL scraping
+
+```typescript
+// Synchronous scraping (default)
+const result = await client.scrapeUrl('https://example.com');
+
+// With page options
+const result = await client.scrapeUrl(
+    'https://example.com',
+    {} // page options
+);
+
+// Asynchronous scraping
+const request = await client.scrapeUrl('https://example.com', {}, {}, false);
+// Later check for results with getCrawlRequest
+```
+
+### Sitemap Operations
+
+#### Download a sitemap
+
+```typescript
+// Download using a crawl request object
+const crawlRequest = await client.getCrawlRequest('request-uuid');
+const sitemap = await client.downloadSitemap(crawlRequest);
+
+// Or download using just the UUID
+const sitemap = await client.downloadSitemap('request-uuid');
+
+// Process sitemap entries
+for (const entry of sitemap) {
+    console.log(`URL: ${entry.url}, Title: ${entry.title}`);
+}
+```
+
+#### Download sitemap as graph data
+
+```typescript
+// You need to provide crawl request uuid or crawl request object
+const graphData = await client.downloadSitemapGraph('request-uuid');
+```
+
+#### Download sitemap as markdown
+
+```typescript
+// You need to provide crawl request uuid or crawl request object
+const markdown = await client.downloadSitemapMarkdown('request-uuid');
+```
+
+### Search Operations
+
+#### Create a search request
+
+```typescript
+// Simple search
+const search = await client.createSearchRequest('nodejs programming');
+
+// Search with options and limited results
+const search = await client.createSearchRequest(
+    'typescript tutorial',
+    {
+        language: null, // language code e.g. "en" or "fr" or "es"
+        country: null, // country code e.g. "us" or "fr" or "es"
+        time_range: "any", // time range e.g. "any" or "hour" or "day" or "week" or "month" or "year"
+        search_type: "web", // search type e.g. "web" now just web is supported
+        depth: "basic" // depth e.g. "basic" or "advanced" or "ultimate"
+    },
+    5, // limit the number of results
+    true, // wait for results
+    true // download results
+);
+
+// Asynchronous search
+const search = await client.createSearchRequest(
+    'machine learning',
+    {}, // search options
+    5, // limit the number of results
+    false, // Don't wait for results
+    false // Don't download results
+);
+```
+
+#### Monitor a search request
+
+```typescript
+// Monitor with automatic result download
+for await (const event of client.monitorSearchRequest('search-uuid')) {
+    if (event.type === 'state') {
+        console.log(`Search state: ${event.data.status}`);
+    }
+}
+
+// Monitor without downloading results
+for await (const event of client.monitorSearchRequest('search-uuid', false)) {
+    console.log(`Event: ${event}`);
+}
+```
+
+#### Get search request details
+
+```typescript
+const search = await client.getSearchRequest('search-uuid');
+```
+
+#### Stop a search request
+
+```typescript
+await client.stopSearchRequest('search-uuid');
+```
+
+## Features
+
+- Simple and intuitive API client
+- Support for both synchronous and asynchronous crawling
+- Comprehensive crawling options and configurations
+- Built-in request monitoring and result downloading
+- Efficient session management and request handling
+- Support for sitemaps and search operations
+- Written in TypeScript with complete type definitions
+- Promise-based API with async/await support
+- ESLint and Prettier configured for code quality
+- Built with ES Modules
+
+
+## Compatibility
+
+- WaterCrawl API >= 0.7.1
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/watercrawl/watercrawl-nodejs/blob/main/LICENSE) file for details.
+
+## Support
+
+For support, please visit:
+- Issues: [GitHub Issues](https://github.com/watercrawl/watercrawl-nodejs/issues)
+- Homepage: [GitHub Repository](https://github.com/watercrawl/watercrawl-nodejs)
+- Documentation: [WaterCrawl Docs](https://docs.watercrawl.dev/)
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## Development
 
@@ -313,42 +320,3 @@ npm run format
 
 # Prepare for publishing
 npm run prepare
-```
-
-### Continuous Integration
-
-This project uses GitHub Actions for continuous integration and deployment:
-
-- **Testing**: All pushes to `main` and pull requests are automatically tested against Node.js versions 16, 18, and 20.
-- **Publishing**: When a version tag (e.g., `v1.0.0`) is pushed, the package is automatically:
-  1. Built and tested
-  2. Version number is validated
-  3. Published to npm
-  4. A GitHub release is created
-
-### Publishing a New Version
-
-To publish a new version:
-
-1. Update the version in `package.json`:
-   ```bash
-   npm version patch  # or minor, or major
-   ```
-
-2. Push the changes and the new tag:
-   ```bash
-   git push && git push --tags
-   ```
-
-3. The GitHub Action will automatically:
-   - Run all tests
-   - Publish to npm if tests pass
-   - Create a GitHub release
-
-## License
-
-MIT
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.

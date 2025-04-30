@@ -47,6 +47,10 @@ const sidebars: SidebarsConfig = {
         'api/monitor-crawl',
         'api/cancel-crawl',
         'api/list-results',
+        'api/create-search',
+        'api/monitor-search',
+        'api/get-search',
+        'api/cancel-search',
       ],
     },
     {

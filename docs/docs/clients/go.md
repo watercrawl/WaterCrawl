@@ -137,8 +137,8 @@ The SDK uses standard Go error handling patterns. All methods that can fail retu
 
 ## Contributing
 
-Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to contribute to this project.
+Please see [CONTRIBUTING.md](https://github.com/watercrawl/watercrawl-go/blob/main/CONTRIBUTING.md) for details on how to contribute to this project.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. 
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/watercrawl/watercrawl-go/blob/main/LICENSE) file for details. 
