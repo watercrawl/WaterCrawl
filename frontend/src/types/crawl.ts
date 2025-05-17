@@ -59,6 +59,7 @@ export interface SpiderOptions {
   allowed_domains?: string[];
   exclude_paths?: string[];
   include_paths?: string[];
+  proxy_server?: string;
 }
 
 export interface CrawlOptions {

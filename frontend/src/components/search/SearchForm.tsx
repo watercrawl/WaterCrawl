@@ -1,9 +1,7 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
-import { ComboboxButton, ComboboxInput, ComboboxOption, ComboboxOptions, Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
-import { Combobox, Transition } from '@headlessui/react';
-import { ChevronUpDownIcon } from '@heroicons/react/20/solid';
-import { CheckIcon } from '@heroicons/react/20/solid';
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
+import ComboboxComponent from '../shared/ComboboxComponent';
 import { FormInput } from '../shared/FormComponents';
 import { SearchApiDocumentation } from './SearchApiDocumentation';
 import { SearchRequest, SearchStatus, SearchType, SearchOptions, Depth, TimeRange } from '../../types/search';
@@ -135,26 +133,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({ initialRequest, initialQ
   const [isLoading, setIsLoading] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
   const [searchResult, setSearchResult] = useState<SearchRequest | null>(null);
-  const [languageQuery, setLanguageQuery] = useState('');
-  const [countryQuery, setCountryQuery] = useState('');
-
-  const filteredLanguages = languageQuery === ''
-    ? LANGUAGES
-    : LANGUAGES.filter((language) =>
-      language.name
-        .toLowerCase()
-        .replace(/\s+/g, '')
-        .includes(languageQuery.toLowerCase().replace(/\s+/g, ''))
-    );
-
-  const filteredCountries = countryQuery === ''
-    ? COUNTRIES
-    : COUNTRIES.filter((country) =>
-      country.name
-        .toLowerCase()
-        .replace(/\s+/g, '')
-        .includes(countryQuery.toLowerCase().replace(/\s+/g, ''))
-    );
+  // Country filtering handled by ComboboxComponent
 
   // Convert API SearchOptions to form options structure
   const getInitialFormOptions = () => {
@@ -230,78 +209,15 @@ export const SearchForm: React.FC<SearchFormProps> = ({ initialRequest, initialQ
               <label htmlFor="language" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Language
               </label>
-              <Combobox value={searchOptions.language} onChange={(value) => handleOptionChange('language', value)}>
-                <div className="relative mt-1">
-                  <div className="relative w-full cursor-default overflow-hidden rounded-md border border-gray-300 dark:border-gray-700 dark:bg-gray-800 text-left focus-within:border-primary-500 focus-within:ring-1 focus-within:ring-primary-500 sm:text-sm">
-                    <ComboboxInput
-                      className="w-full border-none py-2 pl-10 pr-4 text-sm leading-5 text-gray-900 dark:text-white bg-transparent focus:ring-0"
-                      placeholder="Any language"
-                      displayValue={(code: string) => LANGUAGES.find((lang) => lang.code === code)?.name || ''}
-                      onChange={(event) => setLanguageQuery(event.target.value)}
-                    />
-                    <ComboboxButton className="absolute inset-y-0 left-0 flex items-center pl-3">
-                      <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-                    </ComboboxButton>
-                    {searchOptions.language && (
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          handleOptionChange('language', '');
-                        }}
-                        className="absolute inset-y-0 right-0 flex items-center pr-2"
-                      >
-                        <span className="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                          </svg>
-                        </span>
-                      </button>
-                    )}
-                  </div>
-                  <Transition
-                    as={Fragment}
-                    leave="transition ease-in duration-100"
-                    leaveFrom="opacity-100"
-                    leaveTo="opacity-0"
-                    afterLeave={() => setLanguageQuery('')}
-                  >
-                    <ComboboxOptions className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-gray-800 py-1 text-base border border-gray-300 dark:border-gray-700 focus:outline-none sm:text-sm">
-                      {filteredLanguages.length === 0 && languageQuery !== '' ? (
-                        <div className="relative cursor-default select-none py-2 px-4 text-gray-700 dark:text-gray-300">
-                          Nothing found.
-                        </div>
-                      ) : (
-                        filteredLanguages.map((language) => (
-                          <ComboboxOption
-                            key={language.code}
-                            className={({ active }) =>
-                              `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-primary-600 text-white' : 'text-gray-900 dark:text-white'
-                              }`
-                            }
-                            value={language.code}
-                          >
-                            {({ selected, active }) => (
-                              <>
-                                <span className={`block truncate ${selected ? 'font-medium' : 'font-normal'}`}>
-                                  {language.name}
-                                </span>
-                                {selected ? (
-                                  <span className={`absolute inset-y-0 left-0 flex items-center pl-3 ${active ? 'text-white' : 'text-primary-600'
-                                    }`}>
-                                    <CheckIcon className="h-5 w-5" aria-hidden="true" />
-                                  </span>
-                                ) : null}
-                              </>
-                            )}
-                          </ComboboxOption>
-                        ))
-                      )}
-                    </ComboboxOptions>
-                  </Transition>
-                </div>
-              </Combobox>
+              <ComboboxComponent
+                items={LANGUAGES.map(lang => ({
+                  id: lang.code,
+                  label: lang.name
+                }))}
+                value={searchOptions.language}
+                onChange={(value) => handleOptionChange('language', value)}
+                placeholder="Any language"
+              />
             </div>
 
             {/* Country */}
@@ -309,78 +225,15 @@ export const SearchForm: React.FC<SearchFormProps> = ({ initialRequest, initialQ
               <label htmlFor="country" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Country
               </label>
-              <Combobox value={searchOptions.country} onChange={(value) => handleOptionChange('country', value)}>
-                <div className="relative mt-1">
-                  <div className="relative w-full cursor-default overflow-hidden rounded-md border border-gray-300 dark:border-gray-700 dark:bg-gray-800 text-left focus-within:border-primary-500 focus-within:ring-1 focus-within:ring-primary-500 sm:text-sm">
-                    <ComboboxInput
-                      className="w-full border-none py-2 pl-10 pr-4 text-sm leading-5 text-gray-900 dark:text-white bg-transparent focus:ring-0"
-                      placeholder="Any country"
-                      displayValue={(code: string) => COUNTRIES.find((country) => country.code === code)?.name || ''}
-                      onChange={(event) => setCountryQuery(event.target.value)}
-                    />
-                    <ComboboxButton className="absolute inset-y-0 left-0 flex items-center pl-3">
-                      <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-                    </ComboboxButton>
-                    {searchOptions.country && (
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          handleOptionChange('country', '');
-                        }}
-                        className="absolute inset-y-0 right-0 flex items-center pr-2"
-                      >
-                        <span className="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                          </svg>
-                        </span>
-                      </button>
-                    )}
-                  </div>
-                  <Transition
-                    as={Fragment}
-                    leave="transition ease-in duration-100"
-                    leaveFrom="opacity-100"
-                    leaveTo="opacity-0"
-                    afterLeave={() => setCountryQuery('')}
-                  >
-                    <ComboboxOptions className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-gray-800 py-1 text-base border border-gray-300 dark:border-gray-700 focus:outline-none sm:text-sm">
-                      {filteredCountries.length === 0 && countryQuery !== '' ? (
-                        <div className="relative cursor-default select-none py-2 px-4 text-gray-700 dark:text-gray-300">
-                          Nothing found.
-                        </div>
-                      ) : (
-                        filteredCountries.map((country) => (
-                          <ComboboxOption
-                            key={country.code}
-                            className={({ active }) =>
-                              `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-primary-600 text-white' : 'text-gray-900 dark:text-white'
-                              }`
-                            }
-                            value={country.code}
-                          >
-                            {({ selected, active }) => (
-                              <>
-                                <span className={`block truncate ${selected ? 'font-medium' : 'font-normal'}`}>
-                                  {country.name}
-                                </span>
-                                {selected ? (
-                                  <span className={`absolute inset-y-0 left-0 flex items-center pl-3 ${active ? 'text-white' : 'text-primary-600'
-                                    }`}>
-                                    <CheckIcon className="h-5 w-5" aria-hidden="true" />
-                                  </span>
-                                ) : null}
-                              </>
-                            )}
-                          </ComboboxOption>
-                        ))
-                      )}
-                    </ComboboxOptions>
-                  </Transition>
-                </div>
-              </Combobox>
+              <ComboboxComponent
+                items={COUNTRIES.map(country => ({
+                  id: country.code,
+                  label: country.name
+                }))}
+                value={searchOptions.country}
+                onChange={(value) => handleOptionChange('country', value)}
+                placeholder="Any country"
+              />
             </div>
 
             {/* Time Range */}

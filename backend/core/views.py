@@ -6,11 +6,11 @@ from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema_view, extend_schema, OpenApiResponse
 from rest_framework import mixins
 from rest_framework.decorators import action
-from rest_framework.exceptions import PermissionDenied, NotFound
+from rest_framework.exceptions import PermissionDenied, NotFound, ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.viewsets import GenericViewSet, ReadOnlyModelViewSet
+from rest_framework.viewsets import GenericViewSet, ReadOnlyModelViewSet, ModelViewSet
 
 from common.services import EventStreamResponse
 from core import serializers, consts, docs
@@ -22,6 +22,7 @@ from core.services import (
     SitemapService,
     CrawlPupSupService,
     SearchPupSupService,
+    ProxyService,
 )
 from core.tasks import run_spider, run_search
 from user.decorators import setup_current_team
@@ -329,3 +330,92 @@ class SearchRequestAPIView(
         return EventStreamResponse(
             service.check_status(prefetched=prefetched),
         )
+
+
+@extend_schema_view(
+    list=extend_schema(
+        summary=_("List proxy servers"),
+        description=docs.PROXY_SERVER_LIST,
+        tags=["Proxy Servers"],
+    ),
+    create=extend_schema(
+        summary=_("Create proxy server"),
+        description=docs.PROXY_SERVER_CREATE,
+        tags=["Proxy Servers"],
+    ),
+    retrieve=extend_schema(
+        summary=_("Get proxy server"),
+        description=docs.PROXY_SERVER_RETRIEVE,
+        tags=["Proxy Servers"],
+    ),
+    destroy=extend_schema(
+        summary=_("Delete proxy server"),
+        description=docs.PROXY_SERVER_DELETE,
+        tags=["Proxy Servers"],
+    ),
+    partial_update=extend_schema(
+        summary=_("Update proxy server"),
+        description=docs.PROXY_SERVER_UPDATE,
+        tags=["Proxy Servers"],
+    ),
+    update=extend_schema(
+        summary=_("Update proxy server"),
+        description=docs.PROXY_SERVER_UPDATE,
+        tags=["Proxy Servers"],
+    ),
+    list_all=extend_schema(
+        summary=_("List all proxy servers (Global and Private proxies)"),
+        description=docs.PROXY_SERVER_LIST_ALL,
+        tags=["Proxy Servers"],
+        responses={"200": serializers.ListAllProxyServerSerializer},
+    ),
+)
+@setup_current_team
+class ProxyServerView(ModelViewSet):
+    permission_classes = [IsAuthenticated, IsAuthenticatedTeam]
+    serializer_class = serializers.ProxyServerSerializer
+    lookup_field = "slug"
+    lookup_url_kwarg = "slug"
+
+    def get_queryset(self):
+        return self.request.current_team.proxy_servers.order_by("created_at").all()
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["team"] = self.request.current_team
+        return context
+
+    def perform_create(self, serializer):
+        serializer.save(
+            team=self.request.current_team, category=consts.PROXY_CATEGORY_TEAM
+        )
+
+    @action(
+        detail=False,
+        methods=["get"],
+        url_path="list-all",
+        url_name="list-all",
+        permission_classes=[IsAuthenticatedTeam],
+    )
+    def list_all(self, request, **kwargs):
+        queryset = ProxyService.get_team_proxies(request.current_team)
+        serializer = serializers.ListAllProxyServerSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    @action(
+        detail=False,
+        methods=["post"],
+        url_path="test-proxy",
+        url_name="test-proxy",
+    )
+    def test_proxy(self, request, **kwargs):
+        serializer = serializers.TestProxySerializer(
+            data=request.data, context={"team": request.current_team}
+        )
+        serializer.is_valid(raise_exception=True)
+        try:
+            response = ProxyService.test_proxy(**serializer.validated_data)
+            return Response(response)
+        except Exception as e:
+            print(type(e))
+            raise ValidationError({"non_field_errors": [str(e)]})
