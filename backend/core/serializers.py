@@ -1,9 +1,18 @@
 import json
 
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
+from common.encryption import encrypt_key, decrypt_key
 from core import consts
-from core.models import CrawlRequest, CrawlResult, CrawlResultAttachment, SearchRequest
+from core.models import (
+    CrawlRequest,
+    CrawlResult,
+    CrawlResultAttachment,
+    SearchRequest,
+    ProxyServer,
+)
+from core.services import ProxyService
 from plan.validators import PlanLimitValidator
 
 
@@ -48,6 +57,17 @@ class SpiderOptionSerializer(serializers.Serializer):
     include_paths = serializers.ListField(
         child=serializers.CharField(), required=False, default=[]
     )
+    proxy_server = serializers.CharField(required=False, allow_null=True, default=None)
+
+    def validate_proxy_server(self, value):
+        if (
+            value
+            and not ProxyService.get_team_proxies(self.context["team"])
+            .filter(slug=value)
+            .exists()
+        ):
+            raise serializers.ValidationError("Proxy server does not exist")
+        return value
 
 
 class CrawlOptionSerializer(serializers.Serializer):
@@ -190,3 +210,99 @@ class FullSearchResultSerializer(SearchRequestSerializer):
 
     class Meta(SearchRequestSerializer.Meta):
         fields = SearchRequestSerializer.Meta.fields + ["result"]
+
+
+class ProxyServerSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(
+        required=False,
+        write_only=True,
+        allow_blank=True,
+        allow_null=True,
+        max_length=128,
+        style={"input_type": "password"},
+    )
+
+    class Meta:
+        model = ProxyServer
+        fields = [
+            "name",
+            "slug",
+            "is_default",
+            "proxy_type",
+            "host",
+            "port",
+            "username",
+            "password",
+            "has_password",
+            "created_at",
+            "updated_at",
+        ]
+
+    def validate_slug(self, value):
+        team = self.context["team"]
+        query = ProxyServer.objects.filter(team=team, slug=value)
+        if self.instance is not None:
+            query = query.exclude(pk=self.instance.pk)
+        if query.exists():
+            raise serializers.ValidationError(
+                "Proxy Server with this slug already exists"
+            )
+        return value
+
+    def save(self, **kwargs):
+        if "password" in self.validated_data:
+            password = self.validated_data["password"]
+            if not password:
+                self.validated_data["password"] = None
+            else:
+                self.validated_data["password"] = encrypt_key(password)
+
+        return super().save(**kwargs)
+
+
+class ListAllProxyServerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProxyServer
+        fields = ["name", "slug", "category"]
+
+
+class TestProxySerializer(serializers.Serializer):
+    slug = serializers.CharField(required=False, allow_null=True, allow_blank=True)
+    host = serializers.CharField(required=False, allow_null=True, allow_blank=True)
+    port = serializers.IntegerField(required=False, allow_null=True)
+    proxy_type = serializers.CharField(
+        required=False, allow_null=True, allow_blank=True
+    )
+    username = serializers.CharField(required=False, allow_null=True, allow_blank=True)
+    password = serializers.CharField(required=False, allow_null=True, allow_blank=True)
+
+    def validate(self, attrs):
+        team = self.context["team"]
+        if "slug" in attrs and attrs["slug"]:
+            proxy = ProxyServer.objects.filter(team=team, slug=attrs["slug"]).first()
+            if not proxy:
+                raise serializers.ValidationError(
+                    {"slug": _("Proxy server does not exist")}
+                )
+            attrs.pop("slug")
+
+            if "host" not in attrs:
+                attrs["host"] = proxy.host
+            if "port" not in attrs:
+                attrs["port"] = proxy.port
+            if "username" not in attrs:
+                attrs["username"] = proxy.username
+            if "password" not in attrs:
+                attrs["password"] = (
+                    decrypt_key(proxy.password) if proxy.has_password else None
+                )
+            if "proxy_type" not in attrs:
+                attrs["proxy_type"] = proxy.proxy_type
+
+        errors = {}
+        for key in ["host", "port", "proxy_type"]:
+            if key not in attrs or not attrs[key]:
+                errors[key] = [_("This field is required")]
+        if errors:
+            raise serializers.ValidationError(errors)
+        return attrs

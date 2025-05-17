@@ -160,7 +160,6 @@ CRAWL_REQUEST_MARKDOWN = """
 Get a markdown representation of a crawl request.
 """
 
-
 SEARCH_REQUEST_LIST = """
 Get a list of all search requests for your team.
 """
@@ -179,6 +178,26 @@ Real-time status monitoring using Server-Sent Events (SSE).
 The endpoint streams updates every second with:
 - Current search request status
 - Data extracted
+"""
+
+PROXY_SERVER_LIST = """
+Get a list of all proxy servers for your team.
+"""
+PROXY_SERVER_CREATE = """
+Create a new proxy server.    
+"""
+PROXY_SERVER_RETRIEVE = """
+Get detailed information about a specific proxy server.
+"""
+PROXY_SERVER_DELETE = """
+Delete a proxy server.
+"""
+PROXY_SERVER_UPDATE = """
+Update a proxy server.
+"""
+
+PROXY_SERVER_LIST_ALL = """
+Get a list of all proxy servers. This list includes all Global and Team proxy servers.
 """
 
 ####### PARAMETERS #######

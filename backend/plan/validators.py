@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from rest_framework.exceptions import PermissionDenied
 
+from core.services import ProxyService
 from plan.services import TeamPlanService
 from plan.utils import calculate_number_of_search_credits
 from user.models import Team
@@ -17,6 +18,7 @@ class PlanLimitValidator:
 
     def validate_crawl_request(self, data: dict):
         self._validate_remaining_pages(data)
+        self._validate_proxy(data)
         self._validate_max_depth(data)
         self._validate_max_limit(data)
         self._validate_plugins(data)
@@ -52,6 +54,29 @@ class PlanLimitValidator:
                 _(
                     "You just have {} daily pages left in your plan. change the page limit in spider options."
                 ).format(self.team_plan_service.remaining_daily_page_credit)
+            )
+
+    def _validate_proxy(self, data):
+        proxy_server_slug = (
+            data.get("options", {}).get("spider_options", {}).get("proxy_server", None)
+        )
+        if not proxy_server_slug:
+            return
+
+        proxy_server = (
+            ProxyService.get_team_proxies(self.team)
+            .filter(slug=proxy_server_slug)
+            .first()
+        )
+        if not proxy_server:
+            return
+
+        if proxy_server.category not in self.team_plan_service.allowed_proxy_categories:
+            raise PermissionDenied(
+                _(
+                    "With the current plan you cannot use this proxy server."
+                    " Upgrade your plan to use Premium proxy servers."
+                )
             )
 
     def _validate_max_depth(self, data):

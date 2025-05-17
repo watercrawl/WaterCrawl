@@ -158,7 +158,6 @@ SEARCH_TYPE_WEB = "web"
 
 SEARCH_TYPE_CHOICES = ((SEARCH_TYPE_WEB, _("Web")),)
 
-
 SEARCH_DEPTH_BASIC = "basic"
 SEARCH_DEPTH_ADVANCED = "advanced"
 SEARCH_DEPTH_ULTIMATE = "ultimate"
@@ -181,4 +180,24 @@ SEARCH_TIME_RENGE_CHOICES = (
     (SEARCH_TIME_RENGE_WEEK, _("Week")),
     (SEARCH_TIME_RENGE_MONTH, _("Month")),
     (SEARCH_TIME_RENGE_YEAR, _("Year")),
+)
+
+PROXY_TYPE_HTTP = "http"
+PROXY_TYPE_SOCKS4 = "socks4"
+PROXY_TYPE_SOCKS5 = "socks5"
+
+PROXY_TYPE_CHOICES = (
+    ("http", _("HTTP")),
+    ("socks4", _("SOCKS4")),
+    ("socks5", _("SOCKS5")),
+)
+
+PROXY_CATEGORY_GENERAL = "general"
+PROXY_CATEGORY_PREMIUM = "premium"
+PROXY_CATEGORY_TEAM = "team"
+
+PROXY_CATEGORY_CHOICES = (
+    (PROXY_CATEGORY_GENERAL, _("General")),
+    (PROXY_CATEGORY_PREMIUM, _("Premium")),
+    (PROXY_CATEGORY_TEAM, _("Team")),
 )

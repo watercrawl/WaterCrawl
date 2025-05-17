@@ -105,7 +105,6 @@ CACHES = {
     "default": env.cache_url("REDIS_URL", default="redis://localhost:6379/1"),
 }
 
-
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -376,3 +375,9 @@ CAPTURE_USAGE_HISTORY = (
 )
 
 GOOGLE_ANALYTICS_ID = env("GOOGLE_ANALYTICS_ID", cast=str, default="")
+
+API_ENCRYPTION_KEY = env(
+    "API_ENCRYPTION_KEY",
+    cast=str,
+    default="8zSd6JIuC7ovfZ4AoxG_XmhubW6CPnQWW7Qe_4TD1TQ=",
+)

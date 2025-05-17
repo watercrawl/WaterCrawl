@@ -8,17 +8,20 @@ from collections import OrderedDict
 from datetime import timedelta
 from functools import cached_property
 from time import time
+from typing import Optional
 from urllib.parse import urlparse
 
+import requests
 from celery.result import AsyncResult
 from django.conf import settings
 from django.core.files.base import ContentFile
-from django.db.models import Count, F
+from django.db.models import Count, F, Q
 from django.utils import timezone
 from django_redis import get_redis_connection
 
+from common.encryption import decrypt_key
 from core import consts
-from core.models import CrawlRequest, CrawlResult, SearchRequest
+from core.models import CrawlRequest, CrawlResult, SearchRequest, ProxyServer
 from core.utils import get_active_plugins
 from spider.items import ScrapedItem
 from user.models import Team
@@ -448,6 +451,7 @@ class SearchPupSupService:
 class CrawlerService:
     def __init__(self, crawl_request: CrawlRequest):
         self.crawl_request = crawl_request
+        self.proxy_service = ProxyService.get_proxy_for_crawl_request(crawl_request)
         self.pubsub_service = CrawlPupSupService(
             self.crawl_request,
         )
@@ -482,6 +486,12 @@ class CrawlerService:
         self.crawl_request.status = consts.CRAWL_STATUS_FINISHED
         self.crawl_request.save(update_fields=["status", "duration"])
         self.pubsub_service.send_status("state")
+
+    @cached_property
+    def proxy_object(self):
+        if not self.proxy_service:
+            return
+        return self.proxy_service.get_proxy_object()
 
     @classmethod
     def make_with_pk(cls, crawl_request_pk: str):
@@ -757,3 +767,57 @@ class PluginService:
             "type": "object",
             "properties": properties,
         }
+
+
+class ProxyService:
+    def __init__(self, proxy_server: ProxyServer):
+        self.proxy_server = proxy_server
+
+    @classmethod
+    def get_team_proxies(cls, team):
+        return ProxyServer.objects.filter(Q(team=team) | Q(team__isnull=True))
+
+    @classmethod
+    def get_proxy_for_crawl_request(
+        cls, crawl_request: CrawlRequest
+    ) -> Optional["ProxyService"]:
+        proxies = cls.get_team_proxies(crawl_request.team)
+        if not proxies.exists():
+            return None
+        proxies = proxies.order_by("team", "?")
+        proxy_slug = crawl_request.options.get("spider_options", {}).get(
+            "proxy_server", None
+        )
+
+        if proxy_slug:
+            proxy = proxies.filter(slug=proxy_slug).first()
+            if proxy:
+                return cls(proxy)
+
+        default_proxy = proxies.filter(is_default=True).first()
+        if default_proxy:
+            return cls(default_proxy)
+
+        return None
+
+    def get_proxy_object(self) -> dict[str, str]:
+        return {
+            "type": self.proxy_server.proxy_type,
+            "host": self.proxy_server.host,
+            "port": str(self.proxy_server.port),
+            "username": self.proxy_server.username,
+            "password": decrypt_key(self.proxy_server.password),
+        }
+
+    @classmethod
+    def test_proxy(cls, host, port, proxy_type, username, password):
+        response = requests.get(
+            "https://httpbin.org/ip",
+            proxies={
+                "http": f"{proxy_type}://{username}:{password}@{host}:{port}",
+                "https": f"{proxy_type}://{username}:{password}@{host}:{port}",
+            },
+            timeout=10,
+        )
+        response.raise_for_status()
+        return response.json()

@@ -11,6 +11,7 @@ from django.utils import timezone
 from rest_framework.exceptions import PermissionDenied
 
 from core.models import CrawlRequest, SearchRequest
+from core import consts as core_consts
 from plan import consts
 from plan.models import (
     Plan,
@@ -107,6 +108,11 @@ class TeamPlanAbstractService(ABC):
     def is_default(self):
         raise NotImplementedError
 
+    @property
+    @abstractmethod
+    def allowed_proxy_categories(self):
+        raise NotImplementedError
+
     @abstractmethod
     def balance_page_credit(self, amount: int):
         """Amount can be positive or negative"""
@@ -180,6 +186,14 @@ class TeamPlanUnlimitedService(TeamPlanAbstractService):
 
     def balance_page_credit(self, amount: int):
         pass
+
+    @property
+    def allowed_proxy_categories(self):
+        return [
+            core_consts.PROXY_CATEGORY_TEAM,
+            core_consts.PROXY_CATEGORY_GENERAL,
+            core_consts.PROXY_CATEGORY_PREMIUM,
+        ]
 
 
 class TeamPlanEnterpriseService(TeamPlanAbstractService, ABC):
@@ -283,6 +297,17 @@ class TeamPlanEnterpriseService(TeamPlanAbstractService, ABC):
         subscription.save(
             update_fields=["remain_page_credit", "remain_daily_page_credit"]
         )
+
+    @property
+    def allowed_proxy_categories(self):
+        categories = [
+            core_consts.PROXY_CATEGORY_TEAM,
+            core_consts.PROXY_CATEGORY_GENERAL,
+        ]
+        if not self.is_default:
+            categories.append(core_consts.PROXY_CATEGORY_PREMIUM)
+
+        return categories
 
 
 TeamPlanService = (

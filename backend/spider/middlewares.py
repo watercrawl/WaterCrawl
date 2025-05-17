@@ -52,7 +52,7 @@ class PlaywrightMiddleware:
             "extra_headers": self.helpers.extra_headers,
             "actions": self.helpers.actions,
         }
-        proxy = request.meta.get("proxy")
+        proxy = request.meta.get("proxy_object", None)
         if proxy:
             payload["proxy"] = proxy
         headers = {
