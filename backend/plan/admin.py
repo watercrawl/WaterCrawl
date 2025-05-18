@@ -5,6 +5,7 @@ from .models import (
     Subscription,
     SubscriptionPayment,
     StripeWebhookHistory,
+    UsageHistory,
 )
 
 
@@ -124,3 +125,10 @@ class StripeWebhookHistoryAdmin(admin.ModelAdmin):
         (None, {"fields": ("data",)}),
         ("Timestamps", {"fields": ("created_at", "updated_at")}),
     )
+
+
+@admin.register(UsageHistory)
+class UsageHistoryAdmin(admin.ModelAdmin):
+    list_display = ("__str__", "created_at", "updated_at")
+    readonly_fields = ("created_at", "updated_at")
+    list_per_page = 20

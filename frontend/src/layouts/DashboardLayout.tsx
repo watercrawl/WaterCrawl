@@ -12,37 +12,154 @@ import {
   SunIcon,
   MoonIcon,
   InformationCircleIcon,
-  XCircleIcon,
+  ChevronDownIcon,
+  MagnifyingGlassIcon,
 } from '@heroicons/react/24/outline';
-import { Link, NavLink, Outlet } from 'react-router-dom';
+import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { TeamSelector } from '../components/dashboard/TeamSelector';
 import { useTheme } from '../contexts/ThemeContext';
 import { NotificationBanner } from '../components/common/NotificationBanner';
-import { APP_VERSION } from '../utils/env';
 import { useSettings } from '../contexts/SettingsProvider';
 import { useTeam } from '../contexts/TeamContext';
 import Loading from '../components/shared/Loading';
 import { useUser } from '../contexts/UserContext';
 import { PrivacyTermsModal } from '../components/shared/PrivacyTermsModal';
 import { GitHubStars } from '../components/shared/GitHubStars';
+import SpiderIcon from '../components/icons/SpiderIcon';
+
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, end: true },
-  { name: 'Playground', href: '/dashboard/playground', icon: BeakerIcon },
-  { name: 'Activity Logs', href: '/dashboard/logs', icon: ClockIcon },
+  {
+    name: 'Playground',
+    icon: BeakerIcon,
+    children: [
+      { name: 'Crawl', href: '/dashboard/playground', icon: SpiderIcon },
+      { name: 'Search', href: '/dashboard/search', icon: MagnifyingGlassIcon },
+    ]
+  },
+  {
+    name: 'Activity Logs',
+    icon: ClockIcon,
+    children: [
+      { name: 'Crawls', href: '/dashboard/logs/crawls', icon: SpiderIcon },
+      { name: 'Searches', href: '/dashboard/logs/searches', icon: MagnifyingGlassIcon },
+    ]
+  },
   { name: 'Usage', href: '/dashboard/usage', icon: ChartBarIcon },
   { name: 'API Keys', href: '/dashboard/api-keys', icon: KeyIcon },
   { name: 'Settings', href: '/dashboard/settings', icon: Cog6ToothIcon },
   { name: 'Profile', href: '/dashboard/profile', icon: UserIcon },
 ];
 
+// Reusable Navigation component
+interface NavigationMenuProps {
+  isMobile?: boolean;
+  expandedMenus: { [key: string]: boolean };
+  toggleMenu: (menuName: string) => void;
+  isMenuExpanded: (menuName: string) => boolean;
+  isMenuActive: (item: any) => boolean;
+  closeSidebar?: () => void;
+}
+
+const NavigationMenu: React.FC<NavigationMenuProps> = ({
+  isMobile = false,
+  expandedMenus: _expandedMenus, // Renamed to avoid lint error
+  toggleMenu,
+  isMenuExpanded,
+  isMenuActive,
+  closeSidebar
+}) => {
+  return (
+    <ul role="list" className="-mx-2 space-y-1">
+      {navigation.map((item) => (
+        <li key={item.name}>
+          {item.children ? (
+            <div className="space-y-1">
+              <button
+                onClick={() => toggleMenu(item.name)}
+                className={`w-full flex justify-between items-center gap-x-3 rounded-md p-2 text-sm font-medium leading-6 transition-colors duration-200 ${isMenuActive(item)
+                    ? 'bg-blue-800/60 text-blue-100'
+                    : 'text-blue-200 hover:text-blue-100 hover:bg-blue-800/30'
+                  }`}
+              >
+                <div className="flex items-center gap-x-3">
+                  <item.icon
+                    className={`h-5 w-5 shrink-0 transition-colors duration-200 ${isMenuExpanded(item.name) ? 'text-blue-100' : ''}`}
+                    aria-hidden="true"
+                  />
+                  <span className={isMenuExpanded(item.name) ? 'font-medium text-blue-100' : ''}>{item.name}</span>
+                </div>
+                <ChevronDownIcon
+                  className={`h-5 w-5 shrink-0 text-blue-300 transition-transform duration-200 ease-in-out ${isMenuExpanded(item.name) ? 'rotate-0' : '-rotate-90'}`}
+                  aria-hidden="true"
+                />
+              </button>
+
+              <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isMenuExpanded(item.name) ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'}`}>
+                <ul className="ml-6 mt-2 space-y-2 pl-3 border-l border-blue-700/60">
+                  {item.children.map((child: any) => (
+                    <li key={child.name} className="relative">
+                      <NavLink
+                        to={child.href}
+                        onClick={isMobile && closeSidebar ? closeSidebar : undefined}
+                        className={({ isActive }) => {
+                          return `group flex items-center gap-x-3 rounded-md px-3 py-2 text-sm font-medium leading-6 transition-all duration-150 ${isActive
+                              ? 'bg-blue-700/50 text-white shadow-sm'
+                              : 'text-blue-300 hover:text-blue-100 hover:bg-blue-800/40'
+                            }`;
+                        }}
+                      >
+                        {({ isActive }) => (
+                          <>
+                            <child.icon
+                              className={`h-4 w-4 shrink-0 transition-colors duration-150 ${isActive ? 'text-white' : ''}`}
+                              aria-hidden="true"
+                            />
+                            <span>{child.name}</span>
+                          </>
+                        )}
+                      </NavLink>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ) : (
+            <NavLink
+              to={item.href}
+              end={item.end}
+              onClick={isMobile && closeSidebar ? closeSidebar : undefined}
+              className={({ isActive }) =>
+                `group flex gap-x-3 rounded-md p-2 text-sm font-medium leading-6 ${isActive
+                  ? 'bg-blue-800/50 text-blue-100'
+                  : 'text-blue-200 hover:text-blue-100 hover:bg-blue-800/30'
+                }`
+              }
+            >
+              <item.icon
+                className="h-5 w-5 shrink-0"
+                aria-hidden="true"
+              />
+              {item.name}
+            </NavLink>
+          )}
+        </li>
+      ))}
+    </ul>
+  );
+};
+
 export const DashboardLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [expandedMenus, setExpandedMenus] = useState<{ [key: string]: boolean }>({
+    'Playground': true // Initially expanded
+  });
   const { theme, toggleTheme } = useTheme();
-  const { settings, isCompatibleBackend, compatibleBackendVersion, loading } = useSettings();
+  const { settings, loading } = useSettings();
   const { showSubscriptionBanner } = useTeam();
   const { showPrivacyTermsModal } = useUser();
-
+  const location = useLocation();
 
   if (!settings) {
     return (
@@ -62,22 +179,33 @@ export const DashboardLayout = () => {
     )
   }
 
+  const toggleMenu = (menuName: string) => {
+    setExpandedMenus(prev => ({
+      ...prev,
+      [menuName]: !prev[menuName]
+    }));
+  };
 
+  const isMenuExpanded = (menuName: string) => {
+    return expandedMenus[menuName] || false;
+  };
+
+  const isMenuActive = (item: any) => {
+    if (item.href) {
+      return location.pathname === item.href;
+    }
+
+    if (item.children) {
+      return item.children.some((child: any) => location.pathname === child.href);
+    }
+
+    return false;
+  };
+
+  const closeSidebar = () => setSidebarOpen(false);
 
   return (
     <div>
-      {/* Check version Compatibility */}
-      <NotificationBanner
-        show={isCompatibleBackend === false}
-        onClose={() => { }}
-        closeable={false}
-        variant="error"
-        icon={<XCircleIcon className="h-6 w-6" aria-hidden="true" />}
-      >
-        Your backend version is not compatible with the current frontend version. <br />
-        The current backend version is <b>{settings?.api_version}</b> and the compatible backend version is <b>{compatibleBackendVersion}</b>.
-      </NotificationBanner>
-
       {/* Global Notification Area */}
       <NotificationBanner
         show={showSubscriptionBanner}
@@ -109,96 +237,60 @@ export const DashboardLayout = () => {
 
         {/* Sidebar */}
         <div
-          className={`fixed inset-y-0 left-0 flex w-full max-w-xs transform transition-transform duration-200 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          className={`fixed inset-y-0 left-0 z-50 flex w-full max-w-xs transform flex-col overflow-y-auto bg-blue-950 px-6 py-6 transition-transform duration-200 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
             }`}
         >
-          <div className="relative mr-16 flex w-full max-w-xs flex-1">
-            <div className="absolute left-full top-0 flex w-16 justify-center pt-5">
-              <button
-                type="button"
-                className="-m-2.5 p-2.5"
-                onClick={() => setSidebarOpen(false)}
-              >
-                <span className="sr-only">Close sidebar</span>
-                <XMarkIcon className="h-6 w-6 text-white" aria-hidden="true" />
-              </button>
-            </div>
-            <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gradient-to-b from-blue-950 to-blue-900 px-6 pb-4">
-              <div className="flex h-16 shrink-0 items-center">
-                <Link to="/dashboard" className="flex items-center space-x-2">
-                  <img
-                    src="/logo-dark.svg"
-                    alt="WaterCrawl"
-                    width={32}
-                    height={32}
-                  />
-                  <span className="text-lg font-semibold bg-gradient-to-r from-blue-200 to-blue-100 bg-clip-text text-transparent">
-                    WaterCrawl
-                  </span>
-                </Link>
-              </div>
-              <nav className="flex flex-1 flex-col">
-                <ul role="list" className="flex flex-1 flex-col gap-y-7">
-                  <li>
-                    <ul role="list" className="-mx-2 space-y-1">
-                      {navigation.map((item) => (
-                        <li key={item.name}>
-                          <NavLink
-                            to={item.href}
-                            end={item.end}
-                            onClick={() => setSidebarOpen(false)}
-                            className={({ isActive }) =>
-                              `group flex gap-x-3 rounded-md p-2 text-sm font-medium leading-6 ${isActive
-                                ? 'bg-blue-800/50 text-blue-100'
-                                : 'text-blue-200 hover:text-blue-100 hover:bg-blue-800/30'
-                              }`
-                            }
-                          >
-                            <item.icon
-                              className="h-5 w-5 shrink-0"
-                              aria-hidden="true"
-                            />
-                            {item.name}
-                          </NavLink>
-                        </li>
-                      ))}
-                    </ul>
-                  </li>
-                </ul>
-              </nav>
-              <div className="text-blue-200/60 text-xs text-center pb-2">
-                {/* GitHub Stars */}
-                <div className="mt-3 mb-3 px-2">
-                  <GitHubStars 
-                    owner="watercrawl" 
-                    repo="watercrawl" 
-                  />
-                </div>
-                Frontend Version: <b>{APP_VERSION}</b> <br />
-                Backend Version: <b>{settings?.api_version}</b>
-                {/* Copyright */}
-                <p className="text-xs leading-6 text-blue-200/60 pt-2">
-                  &copy;{new Date().getFullYear()} - Made with ❤️ by{' '}
-                  <a
-                    href="https://watercrawl.dev"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-200/60 hover:text-blue-100"
-                  >
-                    <b>WaterCrawl</b>
-                  </a>
-                </p>
-              </div>
-            </div>
+          <div className="flex items-center justify-between mb-6">
+            <Link
+              to="/dashboard"
+              onClick={() => setSidebarOpen(false)}
+              className="flex items-center gap-2"
+            >
+              <img
+                src="/logo-dark.svg"
+                alt="WaterCrawl"
+                width={32}
+                height={32}
+              />
+              <span className="text-lg font-semibold bg-gradient-to-r from-blue-200 to-blue-100 bg-clip-text text-transparent">
+                WaterCrawl
+              </span>
+            </Link>
+            <button
+              type="button"
+              className="-m-2.5 rounded-md p-2.5 text-blue-200"
+              onClick={() => setSidebarOpen(false)}
+            >
+              <span className="sr-only">Close sidebar</span>
+              <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+            </button>
           </div>
+          <nav className="flex flex-1 flex-col">
+            <ul role="list" className="flex flex-1 flex-col gap-y-7">
+              <li>
+                <NavigationMenu
+                  isMobile={true}
+                  expandedMenus={expandedMenus}
+                  toggleMenu={toggleMenu}
+                  isMenuExpanded={isMenuExpanded}
+                  isMenuActive={isMenuActive}
+                  closeSidebar={closeSidebar}
+                />
+              </li>
+              <li className="mt-6">
+                <div className="text-xs font-semibold leading-6 text-blue-200">TeamSelector Area</div>
+                <TeamSelector />
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
 
       {/* Static sidebar for desktop */}
       <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
-        <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gradient-to-b from-blue-950 to-blue-900 px-6 pb-4">
-          <div className="flex h-16 shrink-0 items-center">
-            <Link to="/dashboard" className="flex items-center space-x-2">
+        <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-blue-950 px-6 pb-4">
+          <div className="flex h-16 shrink-0 items-center gap-2">
+            <Link to="/dashboard" className="flex items-center gap-2">
               <img
                 src="/logo-dark.svg"
                 alt="WaterCrawl"
@@ -213,42 +305,25 @@ export const DashboardLayout = () => {
           <nav className="flex flex-1 flex-col">
             <ul role="list" className="flex flex-1 flex-col gap-y-7">
               <li>
-                <ul role="list" className="-mx-2 space-y-1">
-                  {navigation.map((item) => (
-                    <li key={item.name}>
-                      <NavLink
-                        to={item.href}
-                        end={item.end}
-                        className={({ isActive }) =>
-                          `group flex gap-x-3 rounded-md p-2 text-sm font-medium leading-6 ${isActive
-                            ? 'bg-blue-800/50 text-blue-100'
-                            : 'text-blue-200 hover:text-blue-100 hover:bg-blue-800/30'
-                          }`
-                        }
-                      >
-                        <item.icon
-                          className="h-5 w-5 shrink-0"
-                          aria-hidden="true"
-                        />
-                        {item.name}
-                      </NavLink>
-                    </li>
-                  ))}
-                </ul>
+                <NavigationMenu
+                  expandedMenus={expandedMenus}
+                  toggleMenu={toggleMenu}
+                  isMenuExpanded={isMenuExpanded}
+                  isMenuActive={isMenuActive}
+                />
               </li>
             </ul>
           </nav>
           <div className="text-blue-200/60 text-xs text-center pb-2">
             {/* GitHub Stars */}
             <div className="mt-3 mb-3 px-2">
-              <GitHubStars 
-                owner="watercrawl" 
-                repo="watercrawl" 
+              <GitHubStars
+                owner="watercrawl"
+                repo="watercrawl"
               />
             </div>
-            
-            Frontend Version: <b>{APP_VERSION}</b> <br />
-            Backend Version: <b>{settings?.api_version}</b>
+
+            Version: <b>{settings?.api_version}</b>
 
             {/* Copyright */}
             <p className="text-xs leading-6 text-blue-200/60 pt-2">

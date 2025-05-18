@@ -1,4 +1,16 @@
 /**
+ * Capitalizes the first letter of each word in a string
+ * @param str String to capitalize
+ * @returns String with first letter of each word capitalized
+ */
+export function capFirst(str: string): string {
+  if (!str) return '';
+  return str.split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+}
+
+/**
  * Formats a duration string or calculates duration from a start time
  * @param duration Duration string in format "HH:MM:SS.MS" or null
  * @param startTime Optional start time for calculating ongoing duration

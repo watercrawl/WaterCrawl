@@ -1,7 +1,14 @@
 from django.urls import path
 from rest_framework.routers import DefaultRouter
 
-from core.views import CrawlRequestView, CrawlResultView, UsageAPIView, PluginAPIView
+from core.views import (
+    CrawlRequestView,
+    CrawlResultView,
+    UsageAPIView,
+    PluginAPIView,
+    SearchRequestAPIView,
+    ProxyServerView,
+)
 
 router = DefaultRouter()
 router.register(r"crawl-requests", CrawlRequestView, basename="crawl-requests")
@@ -10,6 +17,9 @@ router.register(
     CrawlResultView,
     basename="crawl-results",
 )
+router.register(r"search", SearchRequestAPIView, basename="search")
+
+router.register(r"proxy-servers", ProxyServerView, basename="proxy-servers")
 
 urlpatterns = [
     path("usage/", UsageAPIView.as_view(), name="usage"),

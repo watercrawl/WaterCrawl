@@ -8,17 +8,20 @@ from collections import OrderedDict
 from datetime import timedelta
 from functools import cached_property
 from time import time
+from typing import Optional
 from urllib.parse import urlparse
 
+import requests
 from celery.result import AsyncResult
 from django.conf import settings
 from django.core.files.base import ContentFile
-from django.db.models import Count, F
+from django.db.models import Count, F, Q
 from django.utils import timezone
 from django_redis import get_redis_connection
 
+from common.encryption import decrypt_key
 from core import consts
-from core.models import CrawlRequest, CrawlResult
+from core.models import CrawlRequest, CrawlResult, SearchRequest, ProxyServer
 from core.utils import get_active_plugins
 from spider.items import ScrapedItem
 from user.models import Team
@@ -26,7 +29,33 @@ from user.utils import load_class_by_name
 from watercrawl.celery import app
 
 
-class CrawlHelpers:
+class BaseHelpers:
+    @property
+    def wait_time(self):
+        return 500
+
+    @property
+    def timeout(self):
+        return 15000
+
+    @property
+    def accept_cookies_selector(self):
+        return None
+
+    @property
+    def locale(self):
+        return "en-US"
+
+    @property
+    def extra_headers(self):
+        return None
+
+    @property
+    def actions(self):
+        return []
+
+
+class CrawlHelpers(BaseHelpers):
     def __init__(self, crawl_request: CrawlRequest):
         self.crawl_request = crawl_request
 
@@ -198,6 +227,46 @@ class CrawlHelpers:
             yield plugin
 
 
+class SearchHelpers(BaseHelpers):
+    def __init__(self, search_request: SearchRequest):
+        self.search_request = search_request
+
+    @cached_property
+    def depth(self):
+        return self.search_request.search_options.get(
+            "depth", consts.SEARCH_DEPTH_BASIC
+        )
+
+    @cached_property
+    def search_query(self):
+        return self.search_request.query
+
+    @property
+    def language(self):
+        return self.search_request.search_options.get("language", None)
+
+    @property
+    def country(self):
+        return self.search_request.search_options.get("country", None)
+
+    @property
+    def advanced_search(self) -> bool:
+        return self.depth != consts.SEARCH_DEPTH_BASIC
+
+    @property
+    def is_ultimate(self) -> bool:
+        return self.depth == consts.SEARCH_DEPTH_ULTIMATE
+
+    @property
+    def time_range(self):
+        value = self.search_request.search_options.get(
+            "time_renge", consts.SEARCH_TIME_RENGE_ANY
+        )
+        if value == consts.SEARCH_TIME_RENGE_ANY:
+            return None
+        return value
+
+
 class CrawlPupSupService:
     def __init__(self, crawl_request: CrawlRequest):
         self.crawl_request = crawl_request
@@ -308,10 +377,84 @@ class CrawlPupSupService:
         pubsub.close()
 
 
+class SearchPupSupService:
+    def __init__(self, search_request: SearchRequest):
+        self.search_request = search_request
+        self.redis_channel = f"search:{self.search_request.uuid}"
+        self.connection = get_redis_connection("default")
+
+    def send_status(self, event_type, payload=None):
+        self.connection.publish(
+            self.redis_channel,
+            json.dumps({"event_type": event_type, "payload": payload}),
+        )
+
+    def check_status(self, prefetched=False):
+        from .serializers import (
+            SearchRequestSerializer,
+            FullSearchResultSerializer,
+        )
+
+        ResultSerializer = (
+            SearchRequestSerializer if not prefetched else FullSearchResultSerializer
+        )
+
+        # Initialize Redis connection and pubsub
+        pubsub = self.connection.pubsub()
+        pubsub.subscribe(self.redis_channel)
+        yield {
+            "type": "state",
+            "data": ResultSerializer(self.search_request).data,
+        }
+        # Process messages while the task is running
+        while AsyncResult(str(self.search_request.uuid)).state in (
+            "PENDING",
+            "STARTED",
+        ):
+            self.search_request.refresh_from_db()
+            if self.search_request.status in [
+                consts.CRAWL_STATUS_CANCELED,
+                consts.CRAWL_STATUS_FINISHED,
+                consts.CRAWL_STATUS_FAILED,
+            ]:
+                break
+
+            # Check for new messages with a timeout
+            message = pubsub.get_message(timeout=0.1)
+
+            if message and message["type"] == "message":
+                # Process the message
+                try:
+                    data = json.loads(message["data"].decode("utf-8"))
+                    if data["event_type"] == "state":
+                        self.search_request.refresh_from_db()
+                        yield {
+                            "type": "state",
+                            "data": ResultSerializer(self.search_request).data,
+                        }
+                except Exception as e:
+                    # Log error but continue
+                    print(f"Error processing Redis message: {str(e)}")
+
+        # Send final state
+        self.search_request.refresh_from_db()
+        yield {
+            "type": "state",
+            "data": ResultSerializer(self.search_request).data,
+        }
+
+        # Clean up
+        pubsub.unsubscribe(self.redis_channel)
+        pubsub.close()
+
+
 class CrawlerService:
     def __init__(self, crawl_request: CrawlRequest):
         self.crawl_request = crawl_request
-        self.pubsub_service = CrawlPupSupService(self.crawl_request)
+        self.proxy_service = ProxyService.get_proxy_for_crawl_request(crawl_request)
+        self.pubsub_service = CrawlPupSupService(
+            self.crawl_request,
+        )
 
     @cached_property
     def config_helpers(self):
@@ -330,12 +473,25 @@ class CrawlerService:
             f"crawl_request_uuid={self.crawl_request.pk}",
             *self.config_helpers.get_spider_settings(),
         ]
-        subprocess.run(params, check=True)
+        try:
+            subprocess.run(params, check=True, cwd=settings.BASE_DIR)
+        except subprocess.CalledProcessError:
+            self.crawl_request.duration = timezone.now() - self.crawl_request.created_at
+            self.crawl_request.status = consts.CRAWL_STATUS_FAILED
+            self.crawl_request.save(update_fields=["status", "duration"])
+            self.pubsub_service.send_status("state")
+            raise
 
         self.crawl_request.duration = timezone.now() - self.crawl_request.created_at
         self.crawl_request.status = consts.CRAWL_STATUS_FINISHED
         self.crawl_request.save(update_fields=["status", "duration"])
         self.pubsub_service.send_status("state")
+
+    @cached_property
+    def proxy_object(self):
+        if not self.proxy_service:
+            return
+        return self.proxy_service.get_proxy_object()
 
     @classmethod
     def make_with_pk(cls, crawl_request_pk: str):
@@ -408,6 +564,61 @@ class CrawlerService:
                     zipf.writestr(file_name + ".md", json.load(item.result)["markdown"])
 
         yield buffer.getvalue()
+
+
+class SearchService:
+    def __init__(self, search_request: SearchRequest):
+        self.search_request = search_request
+        self.pubsub_service = SearchPupSupService(self.search_request)
+        self.config_helpers = SearchHelpers(self.search_request)
+
+    @classmethod
+    def make_with_pk(cls, search_request_uuid):
+        return cls(SearchRequest.objects.get(uuid=search_request_uuid))
+
+    def run(self):
+        self.search_request.status = consts.CRAWL_STATUS_RUNNING
+        self.search_request.save(update_fields=["status"])
+        self.pubsub_service.send_status("state")
+
+        params = [
+            "scrapy",
+            "crawl",
+            "GoogleCustomSearchScrapper",
+            "-a",
+            f"search_request_uuid={self.search_request.pk}",
+        ]
+        subprocess.run(params, check=True)
+
+        self.search_request.refresh_from_db()
+        self.search_request.duration = timezone.now() - self.search_request.created_at
+        if self.search_request.result:
+            self.search_request.status = consts.CRAWL_STATUS_FINISHED
+        else:
+            self.search_request.status = consts.CRAWL_STATUS_FAILED
+        self.search_request.save(update_fields=["status", "duration"])
+        self.pubsub_service.send_status("state")
+
+    def stop(self):
+        self.search_request.status = consts.CRAWL_STATUS_CANCELING
+        self.search_request.save(update_fields=["status"])
+        self.pubsub_service.send_status("state")
+
+        app.control.revoke(str(self.search_request.uuid), terminate=True)
+
+        self.search_request.duration = timezone.now() - self.search_request.created_at
+        self.search_request.status = consts.CRAWL_STATUS_CANCELED
+        self.search_request.save(update_fields=["status", "duration"])
+        self.pubsub_service.send_status("state")
+
+    def add_search_result(self, item):
+        content_file = ContentFile(
+            json.dumps(item["results"]).encode("utf-8"), name="result.json"
+        )
+        self.search_request.result = content_file
+        self.search_request.save(update_fields=["result"])
+
+        self.pubsub_service.send_status("state")
 
 
 class SitemapService:
@@ -556,3 +767,57 @@ class PluginService:
             "type": "object",
             "properties": properties,
         }
+
+
+class ProxyService:
+    def __init__(self, proxy_server: ProxyServer):
+        self.proxy_server = proxy_server
+
+    @classmethod
+    def get_team_proxies(cls, team):
+        return ProxyServer.objects.filter(Q(team=team) | Q(team__isnull=True))
+
+    @classmethod
+    def get_proxy_for_crawl_request(
+        cls, crawl_request: CrawlRequest
+    ) -> Optional["ProxyService"]:
+        proxies = cls.get_team_proxies(crawl_request.team)
+        if not proxies.exists():
+            return None
+        proxies = proxies.order_by("team", "?")
+        proxy_slug = crawl_request.options.get("spider_options", {}).get(
+            "proxy_server", None
+        )
+
+        if proxy_slug:
+            proxy = proxies.filter(slug=proxy_slug).first()
+            if proxy:
+                return cls(proxy)
+
+        default_proxy = proxies.filter(is_default=True).first()
+        if default_proxy:
+            return cls(default_proxy)
+
+        return None
+
+    def get_proxy_object(self) -> dict[str, str]:
+        return {
+            "type": self.proxy_server.proxy_type,
+            "host": self.proxy_server.host,
+            "port": str(self.proxy_server.port),
+            "username": self.proxy_server.username,
+            "password": decrypt_key(self.proxy_server.password),
+        }
+
+    @classmethod
+    def test_proxy(cls, host, port, proxy_type, username, password):
+        response = requests.get(
+            "https://httpbin.org/ip",
+            proxies={
+                "http": f"{proxy_type}://{username}:{password}@{host}:{port}",
+                "https": f"{proxy_type}://{username}:{password}@{host}:{port}",
+            },
+            timeout=10,
+        )
+        response.raise_for_status()
+        return response.json()

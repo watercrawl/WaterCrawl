@@ -26,7 +26,7 @@ export const ActivityLogRow: React.FC<ActivityLogRowProps> = ({
     e.preventDefault();
     e.stopPropagation();
     if (!request.uuid) return;
-    navigate(`/dashboard/logs/${request.uuid}`);
+    navigate(`/dashboard/logs/crawls/${request.uuid}`);
   };
 
   return (

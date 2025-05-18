@@ -24,3 +24,7 @@ class LinkItem(BaseItem):
     title = scrapy.Field()
     url = scrapy.Field()
     verified = scrapy.Field()
+
+
+class SearchResult(BaseItem):
+    results = scrapy.Field()

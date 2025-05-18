@@ -72,6 +72,17 @@ Crawl requests can have the following status values:
 - `canceled`: Crawl was cancelled
 - `failed`: Crawl failed due to an error
 
+### Search Status Values
+
+Search requests have the same status values:
+
+- `new`: Search request created but not started
+- `running`: Search is in progress
+- `finished`: Search completed successfully
+- `cancelling`: Search is being cancelled
+- `canceled`: Search was cancelled
+- `failed`: Search failed due to an error
+
 ## API Endpoints
 1. [Scrape URL](./scrape-url): Start a new crawl
 2. [Create Crawl Request](./create-crawl): Start a new crawl
@@ -80,6 +91,10 @@ Crawl requests can have the following status values:
 5. [Cancel Crawl Request](./cancel-crawl): Stop a crawl
 6. [Monitor Crawl Status](./monitor-crawl): Track progress
 7. [List Crawl Results](./list-results): Get results
+8. [Create Search Request](./create-search): Create a new search
+9. [Monitor Search Status](./monitor-search): Track search progress
+10. [Get Search Request](./get-search): Get search details
+11. [Cancel Search Request](./cancel-search): Stop a search
 
 ## Best Practices
 

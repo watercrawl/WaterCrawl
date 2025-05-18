@@ -5,6 +5,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.1] - 2025-04-29
+
+### Fixed
+- Fixed search credit calculation to properly account for search depth
+- Added daily credit limit validation with improved error messages
+- Enhanced error handling in frontend with detailed backend error messages
+
+### Changed
+- Added beta tag to Search Playground title
+- Renamed API tab to "API Documentation" for better clarity
+
+## [0.7.0] - 2025-04-29
+
+### Added
+- Added complete web search functionality with advanced filtering options
+- Created SearchRequest model, serializers, and API endpoints
+- Implemented search services and task handlers
+- Added usage tracking for search requests with credit consumption
+- Integrated Google Custom Search API for more reliable and compliant search results
+- Added configuration system for Google API credentials (API Key and CSE ID)
+- Implemented comprehensive setup instructions in UI for search configuration
+- Added searchable language and country dropdown menus in search form
+- Added real-time search status monitoring
+- Added credit usage tracking for different search depths
+
+### Changed
+- Simplified SettingsProvider by removing version compatibility checks
+- Refactored dashboard navigation structure with collapsible menu items
+- Enhanced search form UI with clear buttons for dropdown selections
+- Updated API documentation with search parameters and examples
+- Updated Docker configuration to support search functionality
+
+### Fixed
+- Fixed TypeScript errors in frontend components
+- Enhanced component structure for better maintainability
+
 ## [0.6.0] - 2025-04-19
 
 ### Added

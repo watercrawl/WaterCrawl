@@ -23,7 +23,7 @@ export const CrawlRequestCard: React.FC<CrawlRequestCardProps> = ({ request }) =
   return (
     <div 
       className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:border-gray-300 dark:hover:border-gray-600 transition-colors cursor-pointer"
-      onClick={() => navigate(`/dashboard/logs/${request.uuid}`)}
+      onClick={() => navigate(`/dashboard/logs/crawls/${request.uuid}`)}
     >
       {/* Header */}
       <div className="p-4">

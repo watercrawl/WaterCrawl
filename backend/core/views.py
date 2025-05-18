@@ -6,11 +6,11 @@ from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema_view, extend_schema, OpenApiResponse
 from rest_framework import mixins
 from rest_framework.decorators import action
-from rest_framework.exceptions import PermissionDenied, NotFound
+from rest_framework.exceptions import PermissionDenied, NotFound, ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.viewsets import GenericViewSet, ReadOnlyModelViewSet
+from rest_framework.viewsets import GenericViewSet, ReadOnlyModelViewSet, ModelViewSet
 
 from common.services import EventStreamResponse
 from core import serializers, consts, docs
@@ -21,8 +21,10 @@ from core.services import (
     PluginService,
     SitemapService,
     CrawlPupSupService,
+    SearchPupSupService,
+    ProxyService,
 )
-from core.tasks import run_spider
+from core.tasks import run_spider, run_search
 from user.decorators import setup_current_team
 from user.permissions import IsAuthenticatedTeam
 
@@ -242,3 +244,178 @@ class PluginAPIView(APIView):
 
     def get(self, request):
         return Response(PluginService.get_plugin_form_jsonschema())
+
+
+@extend_schema_view(
+    list=extend_schema(
+        summary=_("List search requests"),
+        description=docs.SEARCH_REQUEST_LIST,
+        tags=["Search Requests"],
+    ),
+    retrieve=extend_schema(
+        summary=_("Get search request"),
+        parameters=docs.CRAWL_REQUEST_CHECK_STATUS_PARAMETERS,
+        description=docs.SEARCH_REQUEST_RETRIEVE,
+        tags=["Search Requests"],
+    ),
+    create=extend_schema(
+        summary=_("Create search request"),
+        description=docs.SEARCH_REQUEST_CREATE,
+        tags=["Search Requests"],
+    ),
+    destroy=extend_schema(
+        summary=_("Delete search request"),
+        description=docs.SEARCH_REQUEST_DELETE,
+        tags=["Search Requests"],
+    ),
+    check_status=extend_schema(
+        summary=_("Check search request status"),
+        parameters=docs.CRAWL_REQUEST_CHECK_STATUS_PARAMETERS,
+        description=docs.SEARCH_REQUEST_CHECK_STATUS,
+        tags=["Search Requests"],
+    ),
+)
+@setup_current_team
+class SearchRequestAPIView(
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.DestroyModelMixin,
+    GenericViewSet,
+):
+    permission_classes = [IsAuthenticatedTeam]
+    serializer_class = serializers.SearchRequestSerializer
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["team"] = self.request.current_team
+        return context
+
+    def get_serializer_class(self):
+        if self.request.query_params.get("prefetched", "False") in [
+            "true",
+            "True",
+            "1",
+        ]:
+            return serializers.FullSearchResultSerializer
+
+        return super().get_serializer_class()
+
+    def get_queryset(self):
+        return self.request.current_team.search_requests.order_by("-created_at").all()
+
+    def perform_create(self, serializer):
+        instance = serializer.save(team=self.request.current_team)
+        run_search.apply_async(args=[instance.pk], task_id=str(instance.uuid))
+
+    def perform_destroy(self, instance: CrawlRequest):
+        if instance.status != consts.CRAWL_STATUS_RUNNING:
+            raise PermissionDenied(_("Only running crawl requests can be deleted"))
+        CrawlerService(instance).stop()
+
+    @action(
+        detail=True,
+        methods=["get"],
+        url_path="status",
+        url_name="status",
+    )
+    def check_status(self, request, **kwargs):
+        obj = self.get_object()  # type: SearchRequest
+        service = SearchPupSupService(obj)
+        prefetched = request.query_params.get("prefetched", "False") in [
+            "true",
+            "True",
+            "1",
+        ]
+        return EventStreamResponse(
+            service.check_status(prefetched=prefetched),
+        )
+
+
+@extend_schema_view(
+    list=extend_schema(
+        summary=_("List proxy servers"),
+        description=docs.PROXY_SERVER_LIST,
+        tags=["Proxy Servers"],
+    ),
+    create=extend_schema(
+        summary=_("Create proxy server"),
+        description=docs.PROXY_SERVER_CREATE,
+        tags=["Proxy Servers"],
+    ),
+    retrieve=extend_schema(
+        summary=_("Get proxy server"),
+        description=docs.PROXY_SERVER_RETRIEVE,
+        tags=["Proxy Servers"],
+    ),
+    destroy=extend_schema(
+        summary=_("Delete proxy server"),
+        description=docs.PROXY_SERVER_DELETE,
+        tags=["Proxy Servers"],
+    ),
+    partial_update=extend_schema(
+        summary=_("Update proxy server"),
+        description=docs.PROXY_SERVER_UPDATE,
+        tags=["Proxy Servers"],
+    ),
+    update=extend_schema(
+        summary=_("Update proxy server"),
+        description=docs.PROXY_SERVER_UPDATE,
+        tags=["Proxy Servers"],
+    ),
+    list_all=extend_schema(
+        summary=_("List all proxy servers (Global and Private proxies)"),
+        description=docs.PROXY_SERVER_LIST_ALL,
+        tags=["Proxy Servers"],
+        responses={"200": serializers.ListAllProxyServerSerializer},
+    ),
+)
+@setup_current_team
+class ProxyServerView(ModelViewSet):
+    permission_classes = [IsAuthenticated, IsAuthenticatedTeam]
+    serializer_class = serializers.ProxyServerSerializer
+    lookup_field = "slug"
+    lookup_url_kwarg = "slug"
+
+    def get_queryset(self):
+        return self.request.current_team.proxy_servers.order_by("created_at").all()
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["team"] = self.request.current_team
+        return context
+
+    def perform_create(self, serializer):
+        serializer.save(
+            team=self.request.current_team, category=consts.PROXY_CATEGORY_TEAM
+        )
+
+    @action(
+        detail=False,
+        methods=["get"],
+        url_path="list-all",
+        url_name="list-all",
+        permission_classes=[IsAuthenticatedTeam],
+    )
+    def list_all(self, request, **kwargs):
+        queryset = ProxyService.get_team_proxies(request.current_team)
+        serializer = serializers.ListAllProxyServerSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    @action(
+        detail=False,
+        methods=["post"],
+        url_path="test-proxy",
+        url_name="test-proxy",
+    )
+    def test_proxy(self, request, **kwargs):
+        serializer = serializers.TestProxySerializer(
+            data=request.data, context={"team": request.current_team}
+        )
+        serializer.is_valid(raise_exception=True)
+        try:
+            response = ProxyService.test_proxy(**serializer.validated_data)
+            return Response(response)
+        except Exception as e:
+            print(type(e))
+            raise ValidationError({"non_field_errors": [str(e)]})

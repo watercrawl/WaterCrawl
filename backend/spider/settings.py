@@ -125,3 +125,6 @@ for plugin in PLUGINS:
     SPIDER_MIDDLEWARES.update(**plugin.get_spider_middleware_classes())
     DOWNLOADER_MIDDLEWARES.update(**plugin.get_downloader_middleware_classes())
     ITEM_PIPELINES.update(**plugin.get_pipeline_classes())
+
+GOOGLE_API_KEY = settings.SCRAPY_GOOGLE_API_KEY
+GOOGLE_CSE_ID = settings.SCRAPY_GOOGLE_CSE_ID

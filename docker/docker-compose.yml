@@ -3,7 +3,7 @@ x-app: &app
     context: ../backend
     dockerfile: Dockerfile
     args:
-      - VERSION=${VERSION:-v0.6.0}
+      - VERSION=${VERSION:-v0.7.1}
   depends_on:
     db:
       condition: service_healthy
@@ -83,9 +83,11 @@ x-app: &app
     - SCRAPY_HTTPCACHE_EXPIRATION_SECS=${SCRAPY_HTTPCACHE_EXPIRATION_SECS:-3600}
     - SCRAPY_HTTPCACHE_DIR=${SCRAPY_HTTPCACHE_DIR:-httpcache}
     - SCRAPY_LOG_LEVEL=${SCRAPY_LOG_LEVEL:-ERROR}
-    
+    - SCRAPY_GOOGLE_API_KEY=${SCRAPY_GOOGLE_API_KEY:-}
+    - SCRAPY_GOOGLE_CSE_ID=${SCRAPY_GOOGLE_CSE_ID:-}
+
     # Playwright
-    - PLAYWRIGHT_SERVER=${PLAYWRIGHT_SERVER:-}
+    - PLAYWRIGHT_SERVER=${PLAYWRIGHT_SERVER:-http://playwright:8000}
     - PLAYWRIGHT_API_KEY=${PLAYWRIGHT_API_KEY:-your-secret-api-key}
     
     # Integrations
@@ -100,7 +102,7 @@ x-app: &app
     - CAPTURE_USAGE_HISTORY=${CAPTURE_USAGE_HISTORY:-True}
 
 x-frontend: &frontend
-  image: watercrawl/frontend:${VERSION:-v0.6.0}
+  image: watercrawl/frontend:${VERSION:-v0.7.1}
   environment:
     - VITE_API_BASE_URL=${API_BASE_URL:-http://localhost/api}
   depends_on:

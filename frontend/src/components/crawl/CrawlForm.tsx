@@ -83,6 +83,7 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ showSpiderOptions, initial
             allowedDomains: spider_options.allowed_domains || [],
             excludePaths: spider_options.exclude_paths || [],
             includePaths: spider_options.include_paths || [],
+            proxy_server: spider_options.proxy_server,
           });
         }
 
@@ -133,6 +134,7 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ showSpiderOptions, initial
           allowed_domains: spiderOptions.allowedDomains,
           exclude_paths: spiderOptions.excludePaths,
           include_paths: spiderOptions.includePaths,
+          proxy_server: spiderOptions.proxy_server,
         },
         page_options: {
           exclude_tags: pageOptions.exclude_tags,

@@ -2,7 +2,7 @@ from typing import Iterable
 
 from scrapy import Request, Spider
 
-from core.services import CrawlerService
+from core.services import CrawlerService, CrawlHelpers
 from spider import settings
 from spider.items import ScrapedItem, LinkItem
 
@@ -13,8 +13,10 @@ class SiteScrapper(Spider):
 
     def __init__(self, crawl_request_uuid, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.crawler_service = CrawlerService.make_with_pk(crawl_request_uuid)
-        self.helpers = self.crawler_service.config_helpers
+        self.crawler_service: CrawlerService = CrawlerService.make_with_pk(
+            crawl_request_uuid
+        )
+        self.helpers: CrawlHelpers = self.crawler_service.config_helpers
         self.plugin_validators = {}
         self.init_plugins()
 
@@ -26,9 +28,13 @@ class SiteScrapper(Spider):
             self.plugin_validators[validator.plugin.plugin_key()] = validator
 
     def start_requests(self) -> Iterable[Request]:
+        print(self.crawler_service.proxy_object)
         yield Request(
             url=self.crawler_service.crawl_request.url,
             callback=self.parse,
+            meta={
+                "proxy_object": self.crawler_service.proxy_object,
+            },
         )
 
     def parse(self, response, **kwargs):
@@ -50,7 +56,13 @@ class SiteScrapper(Spider):
             )
             # LinkItem used for making a sitemap
             yield LinkItem(url=link, title=text, verified=False)
-            yield response.follow(link, callback=self.parse)
+            yield response.follow(
+                link,
+                callback=self.parse,
+                meta={
+                    "proxy_object": self.crawler_service.proxy_object,
+                },
+            )
 
         yield from self.__process_response(response, sorted(set(result_links)))
 
