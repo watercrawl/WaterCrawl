@@ -21,7 +21,6 @@ import { useTheme } from '../contexts/ThemeContext';
 import { NotificationBanner } from '../components/common/NotificationBanner';
 import { useSettings } from '../contexts/SettingsProvider';
 import { useTeam } from '../contexts/TeamContext';
-import Loading from '../components/shared/Loading';
 import { useUser } from '../contexts/UserContext';
 import { PrivacyTermsModal } from '../components/shared/PrivacyTermsModal';
 import { GitHubStars } from '../components/shared/GitHubStars';
@@ -156,28 +155,10 @@ export const DashboardLayout = () => {
     'Playground': true // Initially expanded
   });
   const { theme, toggleTheme } = useTheme();
-  const { settings, loading } = useSettings();
+  const { settings } = useSettings();
   const { showSubscriptionBanner } = useTeam();
   const { showPrivacyTermsModal } = useUser();
   const location = useLocation();
-
-  if (!settings) {
-    return (
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white dark:bg-gray-800 py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          {loading ?
-            (<div className="flex items-center justify-center">
-              <Loading />
-            </div>)
-            : (
-              <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-                There is a problem with load settings. Please try again later.
-              </p>
-            )}
-        </div>
-      </div>
-    )
-  }
 
   const toggleMenu = (menuName: string) => {
     setExpandedMenus(prev => ({

@@ -1,6 +1,10 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { settingsApi } from '../services/api/settings';
 import { Settings } from '../types/settings';
+import { useCallback } from 'react';
+import { InstallPage } from '../pages/custom/InstallPage';
+import { ErrorPage } from '../pages/custom/ErrorPage';
+import { LoadingPage } from '../pages/custom/LoadingPage';
 
 interface SettingsContextType {
     settings: Settings | null;
@@ -21,7 +25,9 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<Error | null>(null);
 
-    const fetchSettings = () => {
+    const fetchSettings = useCallback(() => {
+        setLoading(true);
+        setError(null);
         settingsApi.getSettings().then((data) => {
             setSettings(data);
         }).catch((err) => {
@@ -29,15 +35,26 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         }).finally(() => {
             setLoading(false);
         });
-    };
+    }, []);
     useEffect(() => {
         fetchSettings();
-    }, []);
+    }, [fetchSettings]);
 
 
+    // Show a loading spinner while fetching settings
+    if (loading) {
+        return <LoadingPage />;
+    }
+
+    // Show an error message if settings failed to load
+    if (error) {
+        return <ErrorPage error={error} onRetry={fetchSettings} />;
+    }
+
+    // Render children only when settings are loaded successfully
     return (
         <SettingsContext.Provider value={{ settings, loading, error, reloadSettings: fetchSettings }}>
-            {children}
+            {settings?.is_installed ? children : <InstallPage />}
         </SettingsContext.Provider>
     );
 };
