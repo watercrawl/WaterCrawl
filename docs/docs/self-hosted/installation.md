@@ -23,6 +23,7 @@
    
    Edit the `.env` file to customize your installation. At minimum, you should update:
    - `SECRET_KEY` (for security)
+   - `API_ENCRYPTION_KEY` (for security)
    - `FRONTEND_URL` (if deploying on a domain other than localhost)
    - `MINIO_EXTERNAL_ENDPOINT`, `MINIO_BROWSER_REDIRECT_URL`, and `MINIO_SERVER_URL` (if deploying on a domain other than localhost)
 

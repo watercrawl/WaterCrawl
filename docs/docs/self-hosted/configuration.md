@@ -20,6 +20,7 @@ WaterCrawl uses a single `.env` file in the `docker` directory for all configura
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
 | `SECRET_KEY` | `django-insecure-el4wo4a4--=f0+ag#omp@^w4eq^8v4(scda&1a(td_y2@=sh6&` | **Secret key for Django application. Generate a new one using `openssl rand -base64 32`. MUST be changed in production!** |
+| `API_ENCRYPTION_KEY` | `8zSd6JIuC7ovfZ4AoxG_XmhubW6CPnQWW7Qe_4TD1TQ=` | **API encryption key for security. Generate a new one using `python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"`. MUST be changed in production!** |
 | `DEBUG` | `True` | Debug mode (set to `False` in production) |
 | `ALLOWED_HOSTS` | `*` | List of allowed hosts (comma-separated) |
 | `LANGUAGE_CODE` | `en-us` | Default language code |
@@ -158,6 +159,7 @@ Below is a basic configuration example for the `.env` file:
 VERSION=v0.7.1  # Check https://github.com/watercrawl/WaterCrawl/releases for latest version
 NGINX_PORT=80
 SECRET_KEY=your_secure_secret_key_here  # Generate with: openssl rand -base64 32
+API_ENCRYPTION_KEY=your_secure_api_encryption_key_here  # Generate with: python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
 DEBUG=False
 ALLOWED_HOSTS=example.com,www.example.com
 FRONTEND_URL=https://example.com
