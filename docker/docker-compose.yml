@@ -6,6 +6,7 @@ x-app: &app
   environment:
     # Django Core
     - SECRET_KEY=${SECRET_KEY:-django-insecure-el4wo4a4--=f0+ag#omp@^w4eq^8v4(scda&1a(td_y2@=sh6&}
+    - API_ENCRYPTION_KEY=${API_ENCRYPTION_KEY:-8zSd6JIuC7ovfZ4AoxG_XmhubW6CPnQWW7Qe_4TD1TQ=}
     - DEBUG=${DEBUG:-True}
     - ALLOWED_HOSTS=${ALLOWED_HOSTS:-*}
     - LANGUAGE_CODE=${LANGUAGE_CODE:-en-us}

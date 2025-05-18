@@ -83,6 +83,7 @@ These settings control the Django backend application:
 | Variable | Description | Default | Required? |
 |----------|-------------|---------|-----------|
 | `SECRET_KEY` | Django secret key for security | *Long string* | **Yes** for production |
+| `API_ENCRYPTION_KEY` | API encryption key for security | *Long string* | **Yes** for production |
 | `DEBUG` | Debug mode (set to False in production) | `True` | No |
 | `ALLOWED_HOSTS` | Comma-separated list of allowed hosts | `*` | No |
 | `LANGUAGE_CODE` | Language code | `en-us` | No |
@@ -337,6 +338,7 @@ Follow these steps to deploy WaterCrawl:
    ```bash
    # At minimum for production, set these:
    SECRET_KEY="your-generated-secret-key"
+   API_ENCRYPTION_KEY="your-generated-api-encryption-key" # Generate a new one using `python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"`
    DEBUG=False
    ALLOWED_HOSTS=your-domain.com
    POSTGRES_PASSWORD=your-strong-password
