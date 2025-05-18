@@ -152,6 +152,112 @@ def answer_question(query, context):
 ```
 
 
+
+
+# Jupyter Notebook Integration
+
+For data scientists and researchers, integrating this into a Jupyter notebook provides an interactive experience. Here's a simplified version:
+
+```python
+bot = WebsiteChatBot(WATERCRAWL_KEY, DEEPSEEK_KEY)
+page = bot.crawl("https://watercrawl.dev/")
+print(bot.summarize(page))
+bot.ask("What is the main topic of the page?")
+```
+
+
+# Real-World Use Cases
+
+The combination of WaterCrawl and DeepSeek R1 enables many powerful applications:
+
+### 1. Competitive Analysis
+
+Keep track of competitor websites and automatically extract key information:
+
+```python
+competitor_urls = [
+    "https://competitor1.com/pricing",
+    "https://competitor2.com/features",
+    "https://competitor3.com/about"
+]
+
+bot = WebsiteChatBot(api_keys)
+for url in competitor_urls:
+    bot.extract_website_content(url)
+
+analysis = bot.process_user_query("Compare the pricing models of all competitors and summarize the key differences.")
+```
+
+### 2. Research Assistant
+
+Help researchers quickly digest scientific papers and technical content:
+
+```python
+bot = WebsiteChatBot(api_keys)
+bot.extract_website_content("https://arxiv.org/abs/2302.04023")
+summary = bot.summarize_website_content(bot.website_content["https://arxiv.org/abs/2302.04023"])
+key_findings = bot.process_user_query("What are the key findings and limitations of this paper?")
+```
+
+### 3. Content Monitoring
+
+Track changes to important web pages over time:
+
+```python
+def monitor_website_changes(url, check_interval=86400):  # 24 hours
+    bot = WebsiteChatBot(api_keys)
+    previous_content = None
+    
+    while True:
+        current_content = bot.extract_website_content(url)
+        
+        if previous_content and current_content != previous_content:
+            changes = bot.process_user_query(
+                f"Compare the previous and current versions of this page and summarize what changed:\n\n"
+                f"PREVIOUS: {previous_content[:5000]}\n\n"
+                f"CURRENT: {current_content[:5000]}"
+            )
+            notify_changes(url, changes)
+        
+        previous_content = current_content
+        time.sleep(check_interval)
+```
+
+## Conclusion: Building Your Own Web Knowledge Engine
+
+We've explored how to combine WaterCrawl's powerful web extraction capabilities with DeepSeek R1's sophisticated language understanding to create a system that can crawl websites and answer questions about them in real-time.
+
+The applications for this technology are vast:
+- Customer service bots that understand your product documentation
+- Research assistants that help users navigate complex information
+- Competitive intelligence systems that keep you informed about market changes
+- Content monitoring tools that track important web pages
+
+By following the code examples in this guide, you can build your own web knowledge engine, customizing it to fit your specific needs and use cases.
+
+### Next Steps
+
+To take your implementation further:
+1. Experiment with different WaterCrawl extraction settings
+2. Try various prompting strategies with DeepSeek R1
+3. Implement vector search for more efficient content retrieval
+4. Add multi-website support for broader knowledge bases
+5. Explore visualization options for extracted data
+
+The open-source nature of WaterCrawl means you can also contribute to its development and benefit from community improvements over time.
+
+---
+
+## Resources
+
+- [WaterCrawl Official Website](https://watercrawl.dev/)
+- [WaterCrawl GitHub Repository](https://github.com/watercrawl/watercrawl)
+- [DeepSeek API Documentation](https://docs.deepseek.ai/)
+- [Sample Jupyter Notebook](https://github.com/yourusername/watercrawl-deepseek-demo)
+
+---
+
+
 ## What’s Next: Future Improvements and Performance Tweaks
 
 While the basic system works well, here are some enhancements that you can do to take it to the next level.
@@ -295,108 +401,5 @@ def _list_links(self):
 ```
 
 
-
-# Jupyter Notebook Integration
-
-For data scientists and researchers, integrating this into a Jupyter notebook provides an interactive experience. Here's a simplified version:
-
-```python
-bot = WebsiteChatBot(WATERCRAWL_KEY, DEEPSEEK_KEY)
-page = bot.crawl("https://watercrawl.dev/")
-print(bot.summarize(page))
-bot.ask("What is the main topic of the page?")
-```
-
-
-# Real-World Use Cases
-
-The combination of WaterCrawl and DeepSeek R1 enables many powerful applications:
-
-### 1. Competitive Analysis
-
-Keep track of competitor websites and automatically extract key information:
-
-```python
-competitor_urls = [
-    "https://competitor1.com/pricing",
-    "https://competitor2.com/features",
-    "https://competitor3.com/about"
-]
-
-bot = WebsiteChatBot(api_keys)
-for url in competitor_urls:
-    bot.extract_website_content(url)
-
-analysis = bot.process_user_query("Compare the pricing models of all competitors and summarize the key differences.")
-```
-
-### 2. Research Assistant
-
-Help researchers quickly digest scientific papers and technical content:
-
-```python
-bot = WebsiteChatBot(api_keys)
-bot.extract_website_content("https://arxiv.org/abs/2302.04023")
-summary = bot.summarize_website_content(bot.website_content["https://arxiv.org/abs/2302.04023"])
-key_findings = bot.process_user_query("What are the key findings and limitations of this paper?")
-```
-
-### 3. Content Monitoring
-
-Track changes to important web pages over time:
-
-```python
-def monitor_website_changes(url, check_interval=86400):  # 24 hours
-    bot = WebsiteChatBot(api_keys)
-    previous_content = None
-    
-    while True:
-        current_content = bot.extract_website_content(url)
-        
-        if previous_content and current_content != previous_content:
-            changes = bot.process_user_query(
-                f"Compare the previous and current versions of this page and summarize what changed:\n\n"
-                f"PREVIOUS: {previous_content[:5000]}\n\n"
-                f"CURRENT: {current_content[:5000]}"
-            )
-            notify_changes(url, changes)
-        
-        previous_content = current_content
-        time.sleep(check_interval)
-```
-
-## Conclusion: Building Your Own Web Knowledge Engine
-
-We've explored how to combine WaterCrawl's powerful web extraction capabilities with DeepSeek R1's sophisticated language understanding to create a system that can crawl websites and answer questions about them in real-time.
-
-The applications for this technology are vast:
-- Customer service bots that understand your product documentation
-- Research assistants that help users navigate complex information
-- Competitive intelligence systems that keep you informed about market changes
-- Content monitoring tools that track important web pages
-
-By following the code examples in this guide, you can build your own web knowledge engine, customizing it to fit your specific needs and use cases.
-
-### Next Steps
-
-To take your implementation further:
-1. Experiment with different WaterCrawl extraction settings
-2. Try various prompting strategies with DeepSeek R1
-3. Implement vector search for more efficient content retrieval
-4. Add multi-website support for broader knowledge bases
-5. Explore visualization options for extracted data
-
-The open-source nature of WaterCrawl means you can also contribute to its development and benefit from community improvements over time.
-
----
-
-## Resources
-
-- [WaterCrawl Official Website](https://watercrawl.dev/)
-- [WaterCrawl GitHub Repository](https://github.com/watercrawl/watercrawl)
-- [DeepSeek API Documentation](https://docs.deepseek.ai/)
-- [Sample Jupyter Notebook](https://github.com/yourusername/watercrawl-deepseek-demo)
-
----
 
 *How are you using web crawling and AI in your projects? Let us know in the comments below!*
