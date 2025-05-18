@@ -139,6 +139,13 @@ jobs:
             echo "Warning: docker/docker-compose.yml not found"
           fi
           
+          # backend/Dockerfile - update base image version
+          if [[ -f "docker/backend/Dockerfile" ]]; then
+            update_version "docker/backend/Dockerfile" "FROM watercrawl/watercrawl" "v[0-9]+\\.[0-9]+\\.[0-9]+" "v${{ env.VERSION }}" "base image version in backend Dockerfile" && UPDATED=1
+          else
+            echo "Warning: docker/backend/Dockerfile not found"
+          fi
+          
           # Show changes
           echo "Showing changes made:"
           git diff
@@ -165,6 +172,7 @@ jobs:
           echo "- frontend/src/contexts/SettingsProvider.tsx"
           echo "- docker/.env.example"
           echo "- docker/docker-compose.yml"
+          echo "- docker/backend/Dockerfile"
           echo "Changes committed"
 
       - name: Push branch
@@ -201,7 +209,8 @@ jobs:
           - backend/pyproject.toml
           - frontend/src/contexts/SettingsProvider.tsx
           - docker/.env.example
-          - docker/docker-compose.yml" --base main --head release/v${{ env.VERSION }}); then
+          - docker/docker-compose.yml
+          - docker/backend/Dockerfile" --base main --head release/v${{ env.VERSION }}); then
             echo "❌ Failed to create PR automatically."
             echo "🔗 Please create PR manually: $MANUAL_PR_URL"
             exit 0  # Don't fail the workflow
@@ -229,3 +238,4 @@ jobs:
       #       - frontend/src/contexts/SettingsProvider.tsx
       #       - docker/.env.example
       #       - docker/docker-compose.yml
+      #       - docker/backend/Dockerfile
