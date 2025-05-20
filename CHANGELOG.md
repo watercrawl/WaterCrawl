@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.0] - 2025-05-20
+
+### Added
+- Proxy server management with UI for configuration and testing
+- Comprehensive API documentation for search functionality
+- New tutorials for R1 integration and webpage chat
+- Support for backend plugins via Docker
+
+### Changed
+- Docker configuration for better plugin support and version management
+- Improved UI loading states with skeleton components
+- Enhanced error pages with troubleshooting information
+
+### Fixed
+- Resolved Playwright configuration issues
+- Fixed dependency conflicts and cleaned up codebase
+- Improved error handling and user feedback
+
+### Dependencies
+- Upgraded outdated packages for security and performance
+- Added dependencies for proxy management
+
 ## [0.7.1] - 2025-04-29
 
 ### Fixed
