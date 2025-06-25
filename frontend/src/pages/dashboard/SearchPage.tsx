@@ -20,7 +20,7 @@ const SearchPage: React.FC = () => {
   return (
     <div className="px-8 py-6 space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Search Playground <small className="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300">beta</small></h1>
+        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Search Playground</h1>
         <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
           Test and experiment with different internet search configurations in real-time
         </p>

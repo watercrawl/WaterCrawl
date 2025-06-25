@@ -18,7 +18,7 @@ const STATUS_OPTIONS = [
   { value: 'new', label: 'New' },
   { value: 'running', label: 'Running' },
   { value: 'finished', label: 'Finished' },
-  { value: 'cancelled', label: 'Cancelled' },
+  { value: 'canceled', label: 'Canceled' },
 ];
 
 const SearchLogsPage: React.FC = () => {

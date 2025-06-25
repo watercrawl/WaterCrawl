@@ -1,51 +1,15 @@
 import React, { useState } from 'react';
 import { PlusIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import { Switch } from '@headlessui/react';
 import { PageOptions } from '../../types/crawl';
 import { OptionGroup, FormInput, InfoTooltip } from '../shared/FormComponents';
 import { Button } from '../shared/Button';
+import { Switch } from '../shared/Switch';
 
 interface PageOptionsFormProps {
   options: PageOptions;
   onChange: (options: Partial<PageOptions>) => void;
 }
 
-interface ToggleOptionProps {
-  label: string;
-  description?: string;
-  checked: boolean;
-  onChange: (checked: boolean) => void;
-}
-
-const ToggleOption: React.FC<ToggleOptionProps> = ({ label, description, checked, onChange }) => {
-  return (
-    <Switch.Group>
-      <div className="flex items-center space-x-3">
-        <Switch
-          checked={checked}
-          onChange={onChange}
-          className={`${
-            checked ? 'bg-primary-600' : 'bg-gray-200 dark:bg-gray-700'
-          } relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2`}
-        >
-          <span
-            className={`${
-              checked ? 'translate-x-5' : 'translate-x-0'
-            } pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out`}
-          />
-        </Switch>
-        <div className="flex-1">
-          <div className="flex items-center space-x-1">
-            <Switch.Label className="text-sm font-medium text-gray-900 dark:text-white cursor-pointer">
-              {label}
-            </Switch.Label>
-            {description && <InfoTooltip content={description} />}
-          </div>
-        </div>
-      </div>
-    </Switch.Group>
-  );
-};
 
 export const PageOptionsForm: React.FC<PageOptionsFormProps> = ({ options, onChange }) => {
   const [newHeaderKey, setNewHeaderKey] = useState('');
@@ -118,19 +82,19 @@ export const PageOptionsForm: React.FC<PageOptionsFormProps> = ({ options, onCha
           description="Configure how content should be extracted from web pages"
         >
           <div className="space-y-4">
-            <ToggleOption
+            <Switch
               label="Extract Main Content"
               description="Automatically detect and extract the main content area of the page, removing navigation, ads, and other irrelevant content"
               checked={options.only_main_content}
               onChange={(checked) => handleInputChange('only_main_content', checked)}
             />
-            <ToggleOption
+            <Switch
               label="Include HTML"
               description="Include the raw HTML content in addition to the extracted text"
               checked={options.include_html}
               onChange={(checked) => handleInputChange('include_html', checked)}
             />
-            <ToggleOption
+            <Switch
               label="Include Links"
               description="Extract and include all links found in the content"
               checked={options.include_links}
@@ -177,12 +141,12 @@ export const PageOptionsForm: React.FC<PageOptionsFormProps> = ({ options, onCha
               {options.exclude_tags.length > 0 && (
                 <div className="mt-2 flex flex-wrap gap-2">
                   {options.exclude_tags.map((tag) => (
-                    <span 
-                      key={tag} 
+                    <span
+                      key={tag}
                       className="inline-flex items-center bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded-full text-xs"
                     >
                       {tag}
-                      <button 
+                      <button
                         onClick={() => handleRemoveExcludeTag(tag)}
                         className="ml-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                       >
@@ -227,12 +191,12 @@ export const PageOptionsForm: React.FC<PageOptionsFormProps> = ({ options, onCha
               {options.include_tags.length > 0 && (
                 <div className="mt-2 flex flex-wrap gap-2">
                   {options.include_tags.map((tag) => (
-                    <span 
-                      key={tag} 
+                    <span
+                      key={tag}
                       className="inline-flex items-center bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded-full text-xs"
                     >
                       {tag}
-                      <button 
+                      <button
                         onClick={() => handleRemoveIncludeTag(tag)}
                         className="ml-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                       >
@@ -293,7 +257,7 @@ export const PageOptionsForm: React.FC<PageOptionsFormProps> = ({ options, onCha
           description="Additional actions to perform on each page"
         >
           <div className="space-y-4">
-            <ToggleOption
+            <Switch
               label="Generate PDF"
               description="Save the page as a PDF file for offline viewing or archiving"
               checked={options.actions?.some(action => action.type === 'pdf') ?? false}
@@ -310,7 +274,7 @@ export const PageOptionsForm: React.FC<PageOptionsFormProps> = ({ options, onCha
                 }
               }}
             />
-            <ToggleOption
+            <Switch
               label="Take Screenshot"
               description="Capture a screenshot of the page for visual reference"
               checked={options.actions?.some(action => action.type === 'screenshot') ?? false}

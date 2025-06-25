@@ -361,6 +361,12 @@ SCRAPY_HTTPCACHE_DIR = env("SCRAPY_HTTPCACHE_DIR", cast=str, default="httpcache"
 SCRAPY_LOG_LEVEL = env("SCRAPY_LOG_LEVEL", cast=str, default="ERROR")
 SCRAPY_GOOGLE_API_KEY = env("SCRAPY_GOOGLE_API_KEY", cast=str, default="")
 SCRAPY_GOOGLE_CSE_ID = env("SCRAPY_GOOGLE_CSE_ID", cast=str, default="")
+SCRAPY_MAX_NUMBER_OF_SITEMAP_URLS = env(
+    "SCRAPY_MAX_NUMBER_OF_SITEMAP_URLS", cast=int, default=20000
+)
+SCRAPY_SITEMAP_CRAWL_PAGE_LIMIT = env(
+    "SCRAPY_SITEMAP_CRAWL_PAGE_LIMIT", cast=int, default=100
+)
 
 PLAYWRIGHT_SERVER = env("PLAYWRIGHT_SERVER", cast=str, default=None)
 PLAYWRIGHT_API_KEY = env("PLAYWRIGHT_API_KEY", cast=str, default=None)

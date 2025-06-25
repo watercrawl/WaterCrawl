@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect, useCallback } from 'react';
-import { Tab } from '@headlessui/react';
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
 import { CrawlRequest } from '../../types/crawl';
 import { ClipboardIcon } from '@heroicons/react/24/outline';
 import { toast } from 'react-hot-toast';
@@ -10,6 +10,7 @@ import DocumentItem from './DocumentItem';
 
 interface ApiDocumentationProps {
   request: CrawlRequest | null;
+  isBatch: boolean;
 }
 
 function classNames(...classes: string[]) {
@@ -91,7 +92,7 @@ function toGoMap(obj: any, indent = 2, level = 2): string {
   return 'nil';
 }
 
-export const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ request }) => {
+export const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ request, isBatch }) => {
   const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
   const [selectedApiKey, setSelectedApiKey] = useState<string>('');
   const [loadingKeys, setLoadingKeys] = useState(false);
@@ -131,43 +132,148 @@ export const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ request }) =
 
   const generateCurlCommand = useCallback((request: CrawlRequest | null) => {
     if (!request) return 'No request data available';
-    const data = {
-      url: request.url,
-      options: request.options
-    };
-    return `curl -X POST \\\n  "${getBaseUrl()}/api/v1/core/crawl-requests/" \\\n  -H "Content-Type: application/json" \\\n  -H "X-API-Key: ${getApiKeyValue()}" \\\n  -d '${JSON.stringify(data, null, 2)}'`;
-  }, [getApiKeyValue, getBaseUrl]);
+    const data = isBatch
+      ? {
+          urls: request.urls,
+          options: request.options
+        }
+      : {
+          url: request.url,
+          options: request.options
+        };
+    return `curl -X POST \
+  "${getBaseUrl()}/api/v1/core/crawl-requests/${isBatch ? 'batch' : ''}" \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: ${getApiKeyValue()}" \
+  -d '${JSON.stringify(data, null, 2)}'`;
+  }, [getApiKeyValue, getBaseUrl, isBatch]);
 
   const generatePythonCode = useCallback((request: CrawlRequest | null) => {
     const apiKey = getApiKeyValue();
     const baseUrl = getBaseUrl();
-    const url = request?.url || 'https://example.com';
     // Build options objects (show as empty dicts or with real data if present)
     const spiderOptions = request?.options?.spider_options || {};
     const pageOptions = request?.options?.page_options || {};
     const pluginOptions = request?.options?.plugin_options || {};
-    return `from watercrawl import WaterCrawlAPIClient\n\n# Initialize the client\nclient = WaterCrawlAPIClient(api_key='${apiKey}', base_url='${baseUrl}')\n\n# Advanced crawling with options\ncrawl_request = client.create_crawl_request(\n    url='${url}',\n    spider_options=${toPythonDict(spiderOptions, 4, 2)},\n    page_options=${toPythonDict(pageOptions, 4, 2)},\n    plugin_options=${toPythonDict(pluginOptions, 4, 2)}\n)`;
-  }, [getApiKeyValue, getBaseUrl]);
+    
+    if (isBatch) {
+      const urls = request?.urls || ['https://example.com', 'https://example.org'];
+      return `from watercrawl import WaterCrawlAPIClient
+
+# Initialize the client
+client = WaterCrawlAPIClient(api_key='${apiKey}', base_url='${baseUrl}')
+
+# Advanced batch crawling with options
+crawl_request = client.create_batch_crawl_request(
+    urls=${toPythonDict(urls, 4, 2)},
+    spider_options=${toPythonDict(spiderOptions, 4, 2)},
+    page_options=${toPythonDict(pageOptions, 4, 2)},
+    plugin_options=${toPythonDict(pluginOptions, 4, 2)}
+)`;
+    } else {
+      const url = request?.url || 'https://example.com';
+      return `from watercrawl import WaterCrawlAPIClient
+
+# Initialize the client
+client = WaterCrawlAPIClient(api_key='${apiKey}', base_url='${baseUrl}')
+
+# Advanced crawling with options
+crawl_request = client.create_crawl_request(
+    url='${url}',
+    spider_options=${toPythonDict(spiderOptions, 4, 2)},
+    page_options=${toPythonDict(pageOptions, 4, 2)},
+    plugin_options=${toPythonDict(pluginOptions, 4, 2)}
+)`;
+    }
+  }, [getApiKeyValue, getBaseUrl, isBatch]);
 
   const generateNodeCode = useCallback((request: CrawlRequest | null) => {
     const apiKey = getApiKeyValue();
     const baseUrl = getBaseUrl();
-    const url = request?.url || 'https://example.com';
     const spiderOptions = request?.options?.spider_options || {};
     const pageOptions = request?.options?.page_options || {};
     const pluginOptions = request?.options?.plugin_options || {};
-    return `import { WaterCrawlAPIClient } from '@watercrawl/nodejs';\n\n// Initialize the client with your API key\nconst client = new WaterCrawlAPIClient('${apiKey}', '${baseUrl}');\n\nconst crawlRequest = await client.createCrawlRequest(\n  '${url}',\n  ${toNodeJsOptions(spiderOptions, 2, 2)},\n  ${toNodeJsOptions(pageOptions, 2, 2)},\n  ${toNodeJsOptions(pluginOptions, 2, 2)}\n);\nconsole.log(crawlRequest);`;
-  }, [getApiKeyValue, getBaseUrl]);
+    
+    if (isBatch) {
+      const urls = request?.urls || ['https://example.com', 'https://example.org'];
+      return `import { WaterCrawlAPIClient } from '@watercrawl/nodejs';
+
+// Initialize the client with your API key
+const client = new WaterCrawlAPIClient('${apiKey}', '${baseUrl}');
+
+const crawlRequest = await client.createBatchCrawlRequest(
+  ${toNodeJsOptions(urls, 2, 2)},
+  ${toNodeJsOptions(spiderOptions, 2, 2)},
+  ${toNodeJsOptions(pageOptions, 2, 2)},
+  ${toNodeJsOptions(pluginOptions, 2, 2)}
+);
+console.log(crawlRequest);`;
+    } else {
+      const url = request?.url || 'https://example.com';
+      return `import { WaterCrawlAPIClient } from '@watercrawl/nodejs';
+
+// Initialize the client with your API key
+const client = new WaterCrawlAPIClient('${apiKey}', '${baseUrl}');
+
+const crawlRequest = await client.createCrawlRequest(
+  '${url}',
+  ${toNodeJsOptions(spiderOptions, 2, 2)},
+  ${toNodeJsOptions(pageOptions, 2, 2)},
+  ${toNodeJsOptions(pluginOptions, 2, 2)}
+);
+console.log(crawlRequest);`;
+    }
+  }, [getApiKeyValue, getBaseUrl, isBatch]);
 
   const generateGoCode = useCallback((request: CrawlRequest | null) => {
     const apiKey = getApiKeyValue();
     const baseUrl = getBaseUrl();
-    const url = request?.url || 'https://example.com';
     const spiderOptions = request?.options?.spider_options || {};
     const pageOptions = request?.options?.page_options || {};
     const pluginOptions = request?.options?.plugin_options || {};
-    return `import "github.com/watercrawl/watercrawl-go"\n\nclient := watercrawl.NewClient("${apiKey}", "${baseUrl}")  // Empty string uses default base URL\n\nctx := context.Background()\ninput := watercrawl.CreateCrawlRequestInput{\n    URL: "${url}",\n    Options: watercrawl.CrawlOptions{\n        SpiderOptions: ${toGoMap(spiderOptions, 4, 3)},\n        PageOptions: ${toGoMap(pageOptions, 4, 3)},\n        PluginOptions: ${toGoMap(pluginOptions, 4, 3)},\n    },\n}\n\nresult, err := client.CreateCrawlRequest(ctx, input)\nif err != nil {\n    log.Fatal(err)\n}`;
-  }, [getApiKeyValue, getBaseUrl]);
+    
+    if (isBatch) {
+      const urls = request?.urls || ['https://example.com', 'https://example.org'];
+      return `import "github.com/watercrawl/watercrawl-go"
+
+client := watercrawl.NewClient("${apiKey}", "${baseUrl}")  // Empty string uses default base URL
+
+ctx := context.Background()
+input := watercrawl.CreateBatchCrawlRequestInput{
+    URLs: ${toGoMap(urls, 4, 3)},
+    Options: watercrawl.CrawlOptions{
+        SpiderOptions: ${toGoMap(spiderOptions, 4, 3)},
+        PageOptions: ${toGoMap(pageOptions, 4, 3)},
+        PluginOptions: ${toGoMap(pluginOptions, 4, 3)},
+    },
+}
+
+result, err := client.CreateBatchCrawlRequest(ctx, input)
+if err != nil {
+    log.Fatal(err)
+}`;
+    } else {
+      const url = request?.url || 'https://example.com';
+      return `import "github.com/watercrawl/watercrawl-go"
+
+client := watercrawl.NewClient("${apiKey}", "${baseUrl}")  // Empty string uses default base URL
+
+ctx := context.Background()
+input := watercrawl.CreateCrawlRequestInput{
+    URL: "${url}",
+    Options: watercrawl.CrawlOptions{
+        SpiderOptions: ${toGoMap(spiderOptions, 4, 3)},
+        PageOptions: ${toGoMap(pageOptions, 4, 3)},
+        PluginOptions: ${toGoMap(pluginOptions, 4, 3)},
+    },
+}
+
+result, err := client.CreateCrawlRequest(ctx, input)
+if err != nil {
+    log.Fatal(err)
+}`;
+    }
+  }, [getApiKeyValue, getBaseUrl, isBatch]);
 
   const tabs = useMemo(() => [
     { name: 'cURL', content: generateCurlCommand(request) },
@@ -194,12 +300,12 @@ export const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ request }) =
         </p>
       </div>
       <div className="p-6">
-        <Tab.Group>
-          <Tab.List className="flex space-x-1 border-b border-gray-200 dark:border-gray-700">
+        <TabGroup>
+          <TabList className="flex space-x-1 border-b border-gray-200 dark:border-gray-700">
             {tabs.map((tab) => (
               <Tab
                 key={tab.name}
-                className={({ selected }) =>
+                className={({ selected }: { selected: boolean }) =>
                   classNames(
                     'px-4 py-2.5 text-sm font-medium leading-5 focus:outline-none',
                     selected
@@ -211,10 +317,10 @@ export const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ request }) =
                 {tab.name}
               </Tab>
             ))}
-          </Tab.List>
-          <Tab.Panels className="mt-6">
+          </TabList>
+          <TabPanels className="mt-6">
             {tabs.map((tab, idx) => (
-              <Tab.Panel key={idx}>
+              <TabPanel key={idx}>
                 <div className="bg-[#1E1E1E] rounded-lg overflow-hidden">
                   <div className="flex items-center justify-between px-4 py-2 bg-[#2D2D2D] border-b border-[#404040]">
                     <div className="flex space-x-2 items-center">
@@ -248,7 +354,7 @@ export const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ request }) =
                       </button>
                     </div>
                   </div>
-                  
+
                   {/* cURL documentation info block */}
                   {tab.name === 'cURL' && (
                     <DocumentItem
@@ -291,10 +397,10 @@ export const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ request }) =
                   )}
 
                 </div>
-              </Tab.Panel>
+              </TabPanel>
             ))}
-          </Tab.Panels>
-        </Tab.Group>
+          </TabPanels>
+        </TabGroup>
       </div>
     </div>
   );

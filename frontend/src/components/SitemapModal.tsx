@@ -194,7 +194,7 @@ const SitemapModal: React.FC<SitemapModalProps> = ({
                   <Tab.Group selectedIndex={activeTabIndex} onChange={setActiveTabIndex}>
                     <Tab.List className="flex space-x-1 rounded-xl bg-gray-100 dark:bg-gray-800 p-1 mb-4">
                       <Tab
-                        className={({ selected }) =>
+                        className={({ selected }: { selected: boolean }) =>
                           classNames(
                             'w-full rounded-lg py-2.5 text-sm font-medium leading-5 transition-colors',
                             'focus:outline-none focus:ring-2 ring-offset-2 ring-offset-primary-400 ring-white/60 ring-opacity-60',
@@ -207,7 +207,7 @@ const SitemapModal: React.FC<SitemapModalProps> = ({
                         Graph View
                       </Tab>
                       <Tab
-                        className={({ selected }) =>
+                        className={({ selected }: { selected: boolean }) =>
                           classNames(
                             'w-full rounded-lg py-2.5 text-sm font-medium leading-5 transition-colors',
                             'focus:outline-none focus:ring-2 ring-offset-2 ring-offset-primary-400 ring-white/60 ring-opacity-60',

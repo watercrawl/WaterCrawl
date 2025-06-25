@@ -213,7 +213,7 @@ const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({
     // Handle root-level query parameters if they exist
     if ('__query__' in data && Array.isArray(data.__query__) && data.__query__?.length > 0) {
       data = data as SitemapGraph;
-      data.__query__.forEach((queryNode, index) => {
+      data.__query__?.forEach((queryNode, index) => {
         components.push(
           <div
             key={`${path}-root-query-${index}`}

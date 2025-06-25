@@ -26,7 +26,7 @@ const StripeCallbackPage: React.FC = () => {
         toast.success('New subscription activated successfully!');
         break;
       case 'payment-cancel':
-        toast.error('Subscription process cancelled.');
+        toast.error('Subscription process canceled.');
         break;
       case 'subscription-cancel':
         toast.success('Subscription will continue as planned.', {
@@ -37,7 +37,7 @@ const StripeCallbackPage: React.FC = () => {
         toast.success('Subscription will be deactivated at the end of the current period.');
         break;
       case 'payment-method-update-cancel':
-        toast.error('Payment method update cancelled.');
+        toast.error('Payment method update canceled.');
         break;
       case 'payment-method-update-success':
         toast.success('Payment method updated successfully!');
@@ -60,8 +60,8 @@ const StripeCallbackPage: React.FC = () => {
       case 'payment-cancel':
         return {
           icon: <XCircleIcon className="h-16 w-16 text-red-500 mx-auto" />,
-          title: 'Subscription Process Cancelled',
-          description: 'You have cancelled the subscription process. Feel free to explore other plans.',
+          title: 'Subscription Process Canceled',
+          description: 'You have canceled the subscription process. Feel free to explore other plans.',
           buttonText: 'View Plans',
           onClick: () => navigate('/dashboard/plans')
         };
@@ -84,7 +84,7 @@ const StripeCallbackPage: React.FC = () => {
       case 'payment-method-update-cancel':
         return {
           icon: <XCircleIcon className="h-16 w-16 text-red-500 mx-auto" />,
-          title: 'Payment Method Update Cancelled',
+          title: 'Payment Method Update Canceled',
           description: 'Your current payment method remains unchanged.',
           buttonText: 'Back to Settings',
           onClick: () => navigate('/dashboard/settings#billing')

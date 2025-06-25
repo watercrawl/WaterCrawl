@@ -4,7 +4,6 @@ import {
   ChartBarIcon,
   HomeIcon,
   XMarkIcon,
-  BeakerIcon,
   KeyIcon,
   Cog6ToothIcon,
   ClockIcon,
@@ -14,6 +13,7 @@ import {
   InformationCircleIcon,
   ChevronDownIcon,
   MagnifyingGlassIcon,
+  MapIcon
 } from '@heroicons/react/24/outline';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { TeamSelector } from '../components/dashboard/TeamSelector';
@@ -25,24 +25,22 @@ import { useUser } from '../contexts/UserContext';
 import { PrivacyTermsModal } from '../components/shared/PrivacyTermsModal';
 import { GitHubStars } from '../components/shared/GitHubStars';
 import SpiderIcon from '../components/icons/SpiderIcon';
+import Breadcrumbs from '../components/shared/Breadcrumbs';
+import { getBreadcrumbs } from '../utils/breadcrumbs';
 
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, end: true },
-  {
-    name: 'Playground',
-    icon: BeakerIcon,
-    children: [
-      { name: 'Crawl', href: '/dashboard/playground', icon: SpiderIcon },
-      { name: 'Search', href: '/dashboard/search', icon: MagnifyingGlassIcon },
-    ]
-  },
+  { name: 'Crawl', href: '/dashboard/crawl', icon: SpiderIcon },
+  { name: 'Search', href: '/dashboard/search', icon: MagnifyingGlassIcon },
+  { name: 'Sitemap', href: '/dashboard/sitemap', icon: MapIcon },
   {
     name: 'Activity Logs',
     icon: ClockIcon,
     children: [
       { name: 'Crawls', href: '/dashboard/logs/crawls', icon: SpiderIcon },
       { name: 'Searches', href: '/dashboard/logs/searches', icon: MagnifyingGlassIcon },
+      { name: 'Sitemaps', href: '/dashboard/logs/sitemaps', icon: MapIcon },
     ]
   },
   { name: 'Usage', href: '/dashboard/usage', icon: ChartBarIcon },
@@ -78,8 +76,8 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
               <button
                 onClick={() => toggleMenu(item.name)}
                 className={`w-full flex justify-between items-center gap-x-3 rounded-md p-2 text-sm font-medium leading-6 transition-colors duration-200 ${isMenuActive(item)
-                    ? 'bg-blue-800/60 text-blue-100'
-                    : 'text-blue-200 hover:text-blue-100 hover:bg-blue-800/30'
+                  ? 'bg-blue-800/60 text-blue-100'
+                  : 'text-blue-200 hover:text-blue-100 hover:bg-blue-800/30'
                   }`}
               >
                 <div className="flex items-center gap-x-3">
@@ -104,8 +102,8 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
                         onClick={isMobile && closeSidebar ? closeSidebar : undefined}
                         className={({ isActive }) => {
                           return `group flex items-center gap-x-3 rounded-md px-3 py-2 text-sm font-medium leading-6 transition-all duration-150 ${isActive
-                              ? 'bg-blue-700/50 text-white shadow-sm'
-                              : 'text-blue-300 hover:text-blue-100 hover:bg-blue-800/40'
+                            ? 'bg-blue-700/50 text-white shadow-sm'
+                            : 'text-blue-300 hover:text-blue-100 hover:bg-blue-800/40'
                             }`;
                         }}
                       >
@@ -151,14 +149,15 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
 
 export const DashboardLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [expandedMenus, setExpandedMenus] = useState<{ [key: string]: boolean }>({
-    'Playground': true // Initially expanded
-  });
+  const [expandedMenus, setExpandedMenus] = useState<{ [key: string]: boolean }>({});
   const { theme, toggleTheme } = useTheme();
   const { settings } = useSettings();
+  const location = useLocation();
   const { showSubscriptionBanner } = useTeam();
   const { showPrivacyTermsModal } = useUser();
-  const location = useLocation();
+
+  // Get breadcrumbs based on current path
+  const breadcrumbItems = getBreadcrumbs(location.pathname);
 
   const toggleMenu = (menuName: string) => {
     setExpandedMenus(prev => ({
@@ -261,6 +260,7 @@ export const DashboardLayout = () => {
               <li className="mt-6">
                 <div className="text-xs font-semibold leading-6 text-blue-200">TeamSelector Area</div>
                 <TeamSelector />
+
               </li>
             </ul>
           </nav>
@@ -295,6 +295,8 @@ export const DashboardLayout = () => {
               </li>
             </ul>
           </nav>
+
+
           <div className="text-blue-200/60 text-xs text-center pb-2">
             {/* GitHub Stars */}
             <div className="mt-3 mb-3 px-2">
@@ -323,40 +325,51 @@ export const DashboardLayout = () => {
       </div>
 
       <div className="lg:pl-72 min-h-screen flex flex-col">
-        <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
-          <button
-            type="button"
-            className="-m-2.5 p-2.5 text-gray-700 dark:text-gray-200 lg:hidden"
-            onClick={() => setSidebarOpen(true)}
-          >
-            <span className="sr-only">Open sidebar</span>
-            <Bars3Icon className="h-6 w-6" aria-hidden="true" />
-          </button>
+        <main className="bg-gray-50 dark:bg-gray-900 flex-1">
+          <div className="sticky top-0 z-40 flex h-16 items-center gap-x-4 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 px-4 sm:px-6 lg:px-8 shadow-sm">
+            <button
+              type="button"
+              className="-m-2.5 p-2.5 text-gray-700 dark:text-gray-200 lg:hidden"
+              onClick={() => setSidebarOpen(true)}
+            >
+              <span className="sr-only">Open sidebar</span>
+              <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+            </button>
 
-          {/* Separator */}
-          <div className="h-6 w-px bg-gray-200 dark:bg-gray-700 lg:hidden" aria-hidden="true" />
+            {/* Separator */}
+            <div className="h-6 w-px bg-gray-200 dark:bg-gray-700 lg:hidden" aria-hidden="true" />
 
-          <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-            <div className="flex items-center gap-x-4 lg:gap-x-6">
-              <TeamSelector />
-              <div className="h-6 w-px bg-gray-200 dark:bg-gray-700" aria-hidden="true" />
-              <button
-                onClick={toggleTheme}
-                className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-                aria-label="Toggle theme"
-              >
-                {theme === 'dark' ? (
-                  <SunIcon className="h-5 w-5" />
-                ) : (
-                  <MoonIcon className="h-5 w-5" />
-                )}
-              </button>
+            <div className="flex flex-1 items-center">
+              <div className="flex-1">
+                <div className="flex items-center justify-between w-full">
+                  <div className="flex items-center space-x-2 sm:space-x-3 overflow-hidden">
+                    <div className="flex-shrink-0">
+                      <TeamSelector />
+                    </div>
+                    <div className="overflow-x-auto py-1 no-scrollbar">
+
+                    </div>
+                  </div>
+                  <button
+                    onClick={toggleTheme}
+                    className="flex-shrink-0 p-1.5 sm:p-2 rounded-md bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 ml-2"
+                    aria-label="Toggle theme"
+                  >
+                    {theme === 'dark' ? (
+                      <SunIcon className="h-4 w-4 sm:h-5 sm:w-5" />
+                    ) : (
+                      <MoonIcon className="h-4 w-4 sm:h-5 sm:w-5" />
+                    )}
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
 
-        <main className="bg-gray-50 dark:bg-gray-900 flex-1">
-          <Outlet />
+          <div className="px-4 sm:px-6 lg:px-8 pt-6">
+            <Breadcrumbs items={breadcrumbItems} />
+            <Outlet />
+          </div>
         </main>
       </div>
     </div>

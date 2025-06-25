@@ -194,6 +194,13 @@ class UsageHistory(BaseModel):
         related_name="usage_history",
         null=True,
     )
+    sitemap_request = models.OneToOneField(
+        "core.SitemapRequest",
+        verbose_name=_("Sitemap request"),
+        on_delete=models.RESTRICT,
+        related_name="usage_history",
+        null=True,
+    )
     requested_page_credit = models.PositiveIntegerField(
         _("Requested page credit"),
     )
@@ -207,4 +214,9 @@ class UsageHistory(BaseModel):
         ordering = ["-created_at"]
 
     def __str__(self):
-        return f"{self.team.name} - {self.crawl_request.url if self.crawl_request else self.search_request.query}"
+        if self.crawl_request:
+            return f"{self.team.name} -CRAWL- {self.crawl_request.url}"
+        if self.search_request:
+            return f"{self.team.name} -SEARCH- {self.search_request.query}"
+        if self.sitemap_request:
+            return f"{self.team.name} -MAP- {self.sitemap_request.url}"

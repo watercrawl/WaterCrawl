@@ -1,3 +1,5 @@
+import { FeedMessage } from "./feed";
+
 export enum SearchType {
   Web = 'web',
 }
@@ -7,7 +9,7 @@ export enum SearchStatus {
   Running = 'running',
   Finished = 'finished',
   Failed = 'failed',
-  Cancelled = 'cancelled'
+  Canceled = 'canceled'
 }
 
 export enum Depth {
@@ -55,6 +57,6 @@ export interface SearchRequest {
 }
 
 export interface SearchEvent {
-  type: 'state';
-  data: SearchRequest;
+  type: 'state' | 'feed';
+  data: SearchRequest | FeedMessage;
 }
