@@ -18,11 +18,15 @@ class SitemapScrapper(Spider):
     custom_settings = {
         "ROBOTSTXT_OBEY": False,
         "DOWNLOAD_DELAY": 0,
+        "DOWNLOAD_TIMEOUT": 10,
+        "RETRY_ENABLED": False,
         "CONCURRENT_REQUESTS": 10,
         "CONCURRENT_REQUESTS_PER_DOMAIN": 10,
         "CONCURRENT_REQUESTS_PER_IP": 10,
         "USER_AGENT": "WaterCrawlBot/1.0 (+http://www.watercrawl.dev/bot)",
         "PAGE_LIMIT": settings.SITEMAP_CRAWL_PAGE_LIMIT,
+        "HTTPCACHE_ENABLED": True,
+        "HTTPCACHE_EXPIRATION_SECS": 86400,  # 1 day
     }
 
     def __init__(self, sitemap_request_uuid, *args, **kwargs):
@@ -72,13 +76,13 @@ class SitemapScrapper(Spider):
             # todo: define how we want to use plugins in sitemap
             self.plugin_validators[plugin.plugin_key()] = None
 
-    def append_result(self, url):
+    def append_result(self, url, searched=False):
         if not self.helpers.is_allowed_domain(url):
             self.log(f"Skipping URL not in allowed domain: {url}")
             return False
 
-        if not self.helpers.is_allowed_path(url):
-            self.log(f"Skipping URL not in allowed path: {url}")
+        if not searched and not self.helpers.is_allowed_search(url):
+            self.log(f"Skipping URL not in allowed with search query: {url}")
             return False
 
         if not self.stopping and len(self.results) + 1 >= self.max_urls:
@@ -303,12 +307,13 @@ class SitemapScrapper(Spider):
                 self.log(f"Skipping already visited URL: {clean_url}")
                 continue  # Skip already seen
 
+            self.append_result(clean_url)
             pattern = self.extract_pattern(clean_url)
 
             if pattern not in self.patterns:
                 self.patterns.add(pattern)
                 new_patterns.add(pattern)
-                self.append_result(clean_url)  # store result
+                # store result
                 discovered_links.append((clean_url, pattern))
 
         self.visited_urls.update([url for url, _ in discovered_links])
@@ -388,7 +393,7 @@ class SitemapScrapper(Spider):
             if "items" in data:
                 for item in data["items"]:
                     url = item["link"]
-                    if self.append_result(url):
+                    if self.append_result(url, searched=True):
                         self.log(f"Site search found URL: {url}")
 
             # Request the next page if we haven't reached page 10 yet
