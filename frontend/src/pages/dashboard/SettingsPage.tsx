@@ -39,10 +39,8 @@ const SettingsPage: React.FC = () => {
     const handleHashChange = () => {
       if (window.location.hash === '#proxy') {
         setSelectedTabIndex(1);
-      } else if (window.location.hash === '#provider-config') {
-        setSelectedTabIndex(2);
       } else if (window.location.hash === '#billing') {
-        setSelectedTabIndex(3);
+        setSelectedTabIndex(2);
       } else {
         setSelectedTabIndex(0);
       }
