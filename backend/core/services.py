@@ -371,6 +371,11 @@ class SitemapHelpers(BaseHelpers):
             if fnmatch.fnmatch(uri, exclude_path):
                 return False
 
+        return True
+
+    def is_allowed_search(self, url):
+        parsed_url = urlparse(url)
+        uri = parsed_url.path
         if self.search_value and not self.__check_search_value(uri):
             # If search value is provided, we need to check if the path contains it
             return False

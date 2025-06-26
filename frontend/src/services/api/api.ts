@@ -67,8 +67,14 @@ api.subscribeToSSE = async <T>(url: string, config: AxiosRequestConfig, onEvent:
     // Create a fetch request with the correct headers for SSE
     const headers = new Headers();
     headers.set('Connection', 'keep-alive');
-    headers.set('Authorization', "Bearer " + AuthService.getInstance().getToken()!);
-    headers.set('x-team-id', TeamService.getInstance().getCurrentTeamId()!);
+    const token = AuthService.getInstance().getToken();
+    if (token) {
+      headers.set('Authorization', "Bearer " + token);
+    }
+    const teamId = TeamService.getInstance().getCurrentTeamId();
+    if (teamId) {
+      headers.set('x-team-id', teamId);
+    }
     const response = await fetch(apiUrl.toString(), {
       method: 'GET',
       headers,
