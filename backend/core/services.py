@@ -371,7 +371,6 @@ class SitemapHelpers(BaseHelpers):
             if fnmatch.fnmatch(uri, exclude_path):
                 return False
 
-        print(self.search_value)
         if self.search_value and not self.__check_search_value(uri):
             # If search value is provided, we need to check if the path contains it
             return False
@@ -379,7 +378,6 @@ class SitemapHelpers(BaseHelpers):
 
     def __check_search_value(self, path: str) -> bool:
         for split_value in self.__split_search_value:
-            print(split_value, path.lower(), split_value in path.lower())
             if split_value in path.lower():
                 return True
         return False
