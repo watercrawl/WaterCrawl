@@ -143,7 +143,7 @@ export const ProfileForm: React.FC = () => {
                       control={control}
                       render={({ field: { value, onChange } }) => (
                         <Switch
-                          checked={value}
+                          checked={value || false}
                           onChange={onChange}
                           label="Receive newsletters and updates"
                         />

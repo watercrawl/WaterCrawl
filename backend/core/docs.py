@@ -22,7 +22,7 @@ Retrieve a list of all crawl requests for your team.
 
 The response includes:
 - A list of crawl requests
-- Request status (new, running, paused, finished, cancelling, canceled, failed)
+- Request status (new, running, paused, finished, canceling, canceled, failed)
 - Creation and completion timestamps
 - Crawling configuration details
 - Progress statistics
@@ -59,9 +59,9 @@ This will:
 - Stop the crawler immediately
 - Save any data collected so far
 - Free up crawling resources
-- Mark the request as cancelled
+- Mark the request as canceled
 
-Note: Cancelled requests cannot be resumed.
+Note: Canceled requests cannot be resumed.
 """
 
 CRAWL_REQUEST_DOWNLOAD = """
@@ -198,6 +198,36 @@ Update a proxy server.
 
 PROXY_SERVER_LIST_ALL = """
 Get a list of all proxy servers. This list includes all Global and Team proxy servers.
+"""
+
+SITEMAP_REQUEST_LIST = """
+Get a list of all sitemap requests for your team.
+"""
+
+SITEMAP_REQUEST_CREATE = """
+Create a new sitemap request.
+"""
+
+SITEMAP_REQUEST_RETRIEVE = """
+Get detailed information about a specific sitemap request.
+"""
+
+SITEMAP_REQUEST_DELETE = """
+Delete a sitemap request.
+"""
+
+SITEMAP_REQUEST_CHECK_STATUS = """
+Real-time status monitoring using Server-Sent Events (SSE).
+The endpoint streams updates every second with:
+- Current sitemap request status
+"""
+
+SITEMAP_REQUEST_GRAPH = """
+Get a graph representation of a sitemap request.
+"""
+
+SITEMAP_REQUEST_MARKDOWN = """
+Get a markdown representation of a sitemap request.
 """
 
 ####### PARAMETERS #######

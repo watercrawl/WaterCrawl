@@ -3,12 +3,12 @@ import { ArrowDownTrayIcon, EyeIcon, PaperClipIcon } from '@heroicons/react/24/o
 import { formatDistanceToNow } from 'date-fns';
 import { CrawlResult } from '../../types/crawl';
 
-interface ActivityLogResultCardProps {
+interface CrawlResultCardProps {
   result: CrawlResult;
   onPreviewClick: (result: CrawlResult) => void;
 }
 
-export const ActivityLogResultCard: React.FC<ActivityLogResultCardProps> = ({
+export const CrawlResultCard: React.FC<CrawlResultCardProps> = ({
   result,
   onPreviewClick,
 }) => {

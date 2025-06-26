@@ -21,6 +21,12 @@ def search_result_file_path(instance, filename):
     )
 
 
+def sitemap_result_file_path(instance, filename):
+    return "sitemaps/{}/result.json".format(
+        instance.uuid,
+    )
+
+
 def generate_crawl_request_sitemap_path(instance, filename):
     return "crawls/{}/sitemap.json".format(instance.uuid)
 
@@ -46,3 +52,7 @@ def get_active_plugins() -> List[Type["AbstractPlugin"]]:
         result.append(cls)
 
     return result
+
+
+def cast_bool(value):
+    return value.lower() in ("true", "1", "t")

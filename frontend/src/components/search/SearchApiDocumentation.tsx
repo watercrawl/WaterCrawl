@@ -4,7 +4,7 @@ import { ClipboardIcon } from '@heroicons/react/24/outline';
 import { toast } from 'react-hot-toast';
 import { apiKeysApi } from '../../services/api/apiKeys';
 import { ApiKey } from '../../types/apiKeys';
-import DocumentItem from '../playground/DocumentItem';
+import DocumentItem from '../crawl/DocumentItem';
 import { API_URL } from '../../utils/env';
 import { TimeRange, Depth, SearchType } from '../../types/search';
 
@@ -60,11 +60,6 @@ export const SearchApiDocumentation: React.FC<SearchApiDocumentationProps> = ({ 
 
       if (response && response.results) {
         setApiKeys(response.results);
-
-        // Set first key as selected by default if available
-        if (response.results.length > 0) {
-          setSelectedApiKey(response.results[0].uuid);
-        }
       }
     } catch (error) {
       console.error('Error fetching API keys:', error);
@@ -185,8 +180,8 @@ const searchRequest = await client.createSearchRequest(
   {
     language: ${searchOptions.language ? `'${searchOptions.language}'` : 'null'},
     country: ${searchOptions.country ? `'${searchOptions.country}'` : 'null'},
-    timeRange: ${searchOptions.timeRange ? `'${searchOptions.timeRange}'` : 'null'},
-    searchType: 'web',
+    time_range: ${searchOptions.timeRange ? `'${searchOptions.timeRange}'` : 'null'},
+    search_type: 'web',
     depth: '${searchOptions.depth}'
   },
   ${searchOptions.numResults},
@@ -200,48 +195,10 @@ console.log('Results count:', searchRequest.results ? searchRequest.results.leng
 `;
   }, [getBaseUrl, query, searchOptions, getApiKeyForExample]);
 
-  const generateGoCommand = useCallback(() => {
-    const apiKey = getApiKeyForExample();
-    const baseUrl = getBaseUrl();
-
-    return `package main
-
-import (
-	"fmt"
-	"github.com/watercrawl/watercrawl-go"
-)
-
-func main() {
-	// Initialize the client
-	client := watercrawl.NewClient("${apiKey}", "${baseUrl}")
-	
-	// Create search options
-	searchOptions := watercrawl.SearchOptions{
-		Language:   ${searchOptions.language ? `"${searchOptions.language}"` : `""`},
-		Country:    ${searchOptions.country ? `"${searchOptions.country}"` : `""`},
-		TimeRange:  ${searchOptions.timeRange ? `"${searchOptions.timeRange}"` : `""`},
-		SearchType: "web",
-		Depth:      "${searchOptions.depth}",
-	}
-	
-	// Create search request
-	searchReq, err := client.CreateSearchRequest("${query}", searchOptions, ${searchOptions.numResults})
-	if err != nil {
-		fmt.Printf("Error creating search request: %v\\n", err)
-		return
-	}
-	
-	fmt.Printf("Search request ID: %s\\n", searchReq.ID)
-	fmt.Printf("Status: %s\\n", searchReq.Status)
-	fmt.Printf("Results: %d\\n", len(searchReq.Results))
-}`;
-  }, [getBaseUrl, query, searchOptions, getApiKeyForExample]);
-
   const tabs = [
     { name: 'cURL', content: generateCurlCommand },
     { name: 'Python', content: generatePythonCommand },
     { name: 'Node.js', content: generateNodeJsCommand },
-    { name: 'Go', content: generateGoCommand },
   ];
 
   return (
@@ -258,7 +215,7 @@ func main() {
             {tabs.map((tab) => (
               <Tab
                 key={tab.name}
-                className={({ selected }) =>
+                className={({ selected }: { selected: boolean }) =>
                   classNames(
                     'px-4 py-2.5 text-sm font-medium leading-5 focus:outline-none',
                     selected
@@ -325,9 +282,9 @@ func main() {
                     <DocumentItem
                       content={typeof tab.content === 'function' ? tab.content() : tab.content}
                       documentTitle="API Documentation"
-                      documentUrl="https://docs.watercrawl.dev/api/search-documentation/"
+                      documentUrl="https://docs.watercrawl.dev/api/documentation/"
                       installCommand="no additional installation required"
-                      language="bash"
+                      language="python"
                     />
                   )}
                   {/* Python documentation info block */}

@@ -8,6 +8,7 @@ from core.views import (
     PluginAPIView,
     SearchRequestAPIView,
     ProxyServerView,
+    SitemapRequestView,
 )
 
 router = DefaultRouter()
@@ -18,6 +19,8 @@ router.register(
     basename="crawl-results",
 )
 router.register(r"search", SearchRequestAPIView, basename="search")
+
+router.register(r"sitemaps", SitemapRequestView, basename="sitemap")
 
 router.register(r"proxy-servers", ProxyServerView, basename="proxy-servers")
 

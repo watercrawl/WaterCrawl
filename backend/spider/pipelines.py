@@ -6,9 +6,10 @@ import logging
 from scrapy import signals
 
 from .helpers import HtmlFilter, HtmlToMarkdown
-from .items import ScrapedItem, LinkItem, SearchResult
+from .items import ScrapedItem, LinkItem, SearchResult, SitemapResult
 from .spiders.google_search import SearchScrapper
 from .spiders.scraper import SiteScrapper
+from .spiders.sitemap import SitemapScrapper
 
 
 class SpiderPipeline:
@@ -24,7 +25,12 @@ class SpiderPipeline:
             spider # type: SearchScrapper
             """
             spider.search_service.add_search_result(item)
-        return item
+
+        elif isinstance(item, SitemapResult) and isinstance(spider, SitemapScrapper):
+            """
+            spider # type: SitemapScrapper
+            """
+            spider.sitemap_request_service.add_sitemap_result(item)
 
 
 class SiteScrapperPipeline:

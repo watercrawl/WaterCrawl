@@ -28,3 +28,7 @@ class LinkItem(BaseItem):
 
 class SearchResult(BaseItem):
     results = scrapy.Field()
+
+
+class SitemapResult(BaseItem):
+    results = scrapy.Field()

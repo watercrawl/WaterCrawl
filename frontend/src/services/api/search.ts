@@ -18,46 +18,23 @@ export const searchApi = {
   },
   
   // List all search requests with pagination
-  async list(page = 1, filters = {}) {
+  async list(page = 1, status?: string) {
     return api.get<PaginatedResponse<SearchRequest>>('/api/v1/core/search/', {
       params: {
         page,
-        ...filters
+        page_size: 10,
+        status
       }
     }).then(({ data }) => data);
   },
   
   // Subscribe to search request status updates using Server-Sent Events (SSE)
   async subscribeToStatus(uuid: string, onEvent: (data: SearchEvent) => void, onEnd?: () => void) {
-    const response = await api.get(`/api/v1/core/search/${uuid}/status/`, {
+    return api.subscribeToSSE<SearchEvent>(`/api/v1/core/search/${uuid}/status/`, {
       params: {
         prefetched: true
-      },
-      responseType: 'stream',
-      onDownloadProgress: (progressEvent) => {
-        const chunk = progressEvent.event.target.response;
-        if (!chunk) return;
-
-        const lines = chunk.split('\n');
-        for (const line of lines) {
-          if (line.startsWith('data: ')) {
-            try {
-              const jsonStr = line.slice(6);
-              const data = JSON.parse(jsonStr);
-              onEvent(data);
-            } catch (error) {
-              console.error('Error parsing SSE data:', error);
-            }
-          }
-        }
       }
-    });
-
-    if (onEnd) {
-      onEnd();
-    }
-
-    return response.data;
+    }, onEvent, onEnd);
   },
   
   // Delete/cancel a search request

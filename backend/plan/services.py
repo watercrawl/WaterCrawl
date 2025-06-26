@@ -20,7 +20,10 @@ from plan.models import (
     StripeWebhookHistory,
     UsageHistory,
 )
-from plan.utils import calculate_number_of_search_credits
+from plan.utils import (
+    calculate_number_of_search_credits,
+    calculate_number_of_sitemap_credits,
+)
 from user.models import Team
 
 
@@ -815,6 +818,31 @@ class UsageHistoryService:
             usage_history = self.team.usage_histories.get(search_request=instance)
         except UsageHistory.DoesNotExist:
             usage_history = self.create_search(instance)
+
+        self.team_plan_service.balance_page_credit(usage_history.requested_page_credit)
+        usage_history.used_page_credit = 0
+        usage_history.save()
+
+    def create_sitemap(self, sitemap_request):
+        usage_history = UsageHistory.objects.create(
+            team=self.team,
+            sitemap_request=sitemap_request,
+            requested_page_credit=calculate_number_of_sitemap_credits(
+                sitemap_request.options.get("ignore_sitemap_xml", False)
+            ),
+            used_page_credit=0,
+        )
+        self.team_plan_service.balance_page_credit(usage_history.requested_page_credit)
+
+        return usage_history
+
+    def revert_sitemap_credit(self, sitemap_request):
+        try:
+            usage_history = self.team.usage_histories.get(
+                sitemap_request=sitemap_request
+            )
+        except UsageHistory.DoesNotExist:
+            usage_history = self.create_search(sitemap_request)
 
         self.team_plan_service.balance_page_credit(usage_history.requested_page_credit)
         usage_history.used_page_credit = 0

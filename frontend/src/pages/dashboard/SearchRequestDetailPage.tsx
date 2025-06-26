@@ -107,7 +107,7 @@ const SearchRequestDetailPage: React.FC = () => {
     }
   };
 
-  const handleTryInPlayground = () => {
+  const handleTryInSearch = () => {
     if (searchRequest) {
       navigate('/dashboard/search', {
         state: {
@@ -194,11 +194,11 @@ const SearchRequestDetailPage: React.FC = () => {
                   Download Results
                 </button>
             <button
-              onClick={handleTryInPlayground}
+              onClick={handleTryInSearch}
               className="inline-flex items-center px-3 py-1.5 text-sm border border-primary-300 dark:border-primary-600 rounded-md shadow-sm font-medium text-primary-700 dark:text-primary-200 bg-white dark:bg-gray-800 hover:bg-primary-50 dark:hover:bg-primary-900/20 focus:outline-none focus:ring-primary-500 focus:ring-offset-2 transition-colors"
             >
               <ArrowRightIcon className="h-4 w-4 mr-1.5" />
-              Try in Playground
+              Try in Search Playground
             </button>
           </div>
         </div>

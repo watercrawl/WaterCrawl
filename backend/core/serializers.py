@@ -1,4 +1,5 @@
 import json
+from urllib.parse import urlparse
 
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
@@ -11,6 +12,7 @@ from core.models import (
     CrawlResultAttachment,
     SearchRequest,
     ProxyServer,
+    SitemapRequest,
 )
 from core.services import ProxyService
 from plan.validators import PlanLimitValidator
@@ -38,9 +40,11 @@ class PageOptionSerializer(serializers.Serializer):
         default=15000,
     )
     accept_cookies_selector = serializers.CharField(
-        required=False, allow_null=True, default=None
+        required=False, allow_null=True, allow_blank=True, default=None
     )
-    locale = serializers.CharField(required=False, default="en-US")
+    locale = serializers.CharField(
+        required=False, allow_null=True, allow_blank=True, default="en-US"
+    )
     extra_headers = serializers.JSONField(required=False, default=dict)
     actions = ActionSerializer(required=False, many=True, default=[])
 
@@ -73,17 +77,20 @@ class SpiderOptionSerializer(serializers.Serializer):
 class CrawlOptionSerializer(serializers.Serializer):
     spider_options = SpiderOptionSerializer()
     page_options = PageOptionSerializer()
-    plugin_options = serializers.JSONField(required=False)
+    plugin_options = serializers.JSONField(required=False, default={})
 
 
 class CrawlRequestSerializer(serializers.ModelSerializer):
     options = CrawlOptionSerializer()
+    url = serializers.URLField()
 
     class Meta:
         model = CrawlRequest
         fields = [
             "uuid",
             "url",
+            "urls",
+            "crawl_type",
             "status",
             "options",
             "created_at",
@@ -94,6 +101,8 @@ class CrawlRequestSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = [
             "uuid",
+            "urls",
+            "crawl_type",
             "status",
             "created_at",
             "updated_at",
@@ -103,7 +112,59 @@ class CrawlRequestSerializer(serializers.ModelSerializer):
         ]
 
     def validate(self, attrs):
+        attrs["urls"] = [attrs.pop("url")]
+        attrs["crawl_type"] = consts.CRAWL_TYPE_SINGLE
         return PlanLimitValidator(self.context["team"]).validate_crawl_request(attrs)
+
+
+class BatchSpiderOptionSerializer(SpiderOptionSerializer):
+    max_depth = serializers.HiddenField(default=1)
+    page_limit = serializers.HiddenField(default=0)
+    allowed_domains = serializers.HiddenField(default=[])
+    exclude_paths = serializers.HiddenField(default=[])
+    include_paths = serializers.HiddenField(default=[])
+
+
+class BatchCrawlOptionSerializer(CrawlOptionSerializer):
+    spider_options = BatchSpiderOptionSerializer()
+
+
+class BatchCrawlRequestSerializer(serializers.ModelSerializer):
+    urls = serializers.ListField(
+        child=serializers.URLField(), allow_empty=False, min_length=1
+    )
+    options = BatchCrawlOptionSerializer()
+
+    class Meta:
+        model = CrawlRequest
+        fields = [
+            "uuid",
+            "urls",
+            "status",
+            "options",
+            "created_at",
+            "updated_at",
+            "duration",
+        ]
+        read_only_fields = [
+            "uuid",
+            "status",
+            "created_at",
+            "updated_at",
+            "duration",
+        ]
+
+    def validate(self, attrs):
+        attrs["options"]["spider_options"] = {
+            **attrs["options"]["spider_options"],
+            "max_depth": 0,
+            "page_limit": len(attrs["urls"]),
+            "allowed_domains": [urlparse(url).netloc for url in attrs["urls"]],
+        }
+        attrs["crawl_type"] = consts.CRAWL_TYPE_BATCH
+        return PlanLimitValidator(self.context["team"]).validate_batch_crawl_request(
+            attrs
+        )
 
 
 class CrawlResultAttachmentSerializer(serializers.ModelSerializer):
@@ -306,3 +367,52 @@ class TestProxySerializer(serializers.Serializer):
         if errors:
             raise serializers.ValidationError(errors)
         return attrs
+
+
+class SitemapRequestOptionSerializer(serializers.Serializer):
+    include_subdomains = serializers.BooleanField(default=True)
+    ignore_sitemap_xml = serializers.BooleanField(default=False)
+    search = serializers.CharField(required=False, allow_null=True, allow_blank=True)
+    include_paths = serializers.ListField(
+        child=serializers.CharField(), required=False, default=[]
+    )
+    exclude_paths = serializers.ListField(
+        child=serializers.CharField(), required=False, default=[]
+    )
+
+
+class SitemapRequestSerializer(serializers.ModelSerializer):
+    options = SitemapRequestOptionSerializer()
+
+    class Meta:
+        model = SitemapRequest
+        fields = [
+            "uuid",
+            "url",
+            "status",
+            "options",
+            "duration",
+            "result",
+            "created_at",
+            "updated_at",
+        ]
+        read_only_fields = [
+            "uuid",
+            "status",
+            "duration",
+            "result",
+            "created_at",
+            "updated_at",
+        ]
+
+    def validate(self, attrs):
+        return PlanLimitValidator(self.context["team"]).validate_sitemap_request(attrs)
+
+
+class FullSitemapRequestSerializer(SitemapRequestSerializer):
+    result = serializers.SerializerMethodField()
+
+    def get_result(self, obj):
+        if not obj.result:
+            return None
+        return json.load(obj.result)

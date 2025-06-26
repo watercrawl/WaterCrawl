@@ -15,15 +15,20 @@ export interface SpiderOptions {
   allowedDomains: string[];
   excludePaths: string[];
   includePaths: string[];
-  proxy_server?: string;
+  proxy_server: string | null;
+}
+
+interface BatchSpiderOptions {
+  proxy_server: string | null;
 }
 
 interface SpiderOptionsFormProps {
-  options: SpiderOptions;
+  options: SpiderOptions | BatchSpiderOptions;
   onChange: (options: Partial<SpiderOptions>) => void;
+  isBatchMode?: boolean;
 }
 
-export const SpiderOptionsForm: React.FC<SpiderOptionsFormProps> = ({ options, onChange }) => {
+export const SpiderOptionsForm: React.FC<SpiderOptionsFormProps> = ({ options, onChange, isBatchMode }) => {
   const [newExcludePath, setNewExcludePath] = useState('');
   const [newIncludePath, setNewIncludePath] = useState('');
   const [newAllowedDomain, setNewAllowedDomain] = useState('');
@@ -48,9 +53,9 @@ export const SpiderOptionsForm: React.FC<SpiderOptionsFormProps> = ({ options, o
     fetchProxies();
   }, []);
 
-  const excludePaths = options.excludePaths;
-  const includePaths = options.includePaths;
-  const allowedDomains = options.allowedDomains;
+  const excludePaths = isBatchMode ? [] : (options as SpiderOptions).excludePaths;
+  const includePaths = isBatchMode ? [] : (options as SpiderOptions).includePaths;
+  const allowedDomains = isBatchMode ? [] : (options as SpiderOptions).allowedDomains;
 
   const handleInputChange = (name: keyof SpiderOptions, value: string) => {
     onChange({ [name]: value });
@@ -111,6 +116,7 @@ export const SpiderOptionsForm: React.FC<SpiderOptionsFormProps> = ({ options, o
         <div>
           <OptionGroup
             title="Crawler Settings"
+            subtitle={isBatchMode ? (<small className="text-red-500 dark:text-red-400">(This option is not available in batch mode)</small>) : ''}
             description="Configure how deep and wide the crawler should go"
           >
             <div className="space-y-4">
@@ -125,9 +131,10 @@ export const SpiderOptionsForm: React.FC<SpiderOptionsFormProps> = ({ options, o
                   <FormInput
                     label=""
                     type="number"
-                    value={options.maxDepth}
+                    value={isBatchMode ? 'Auto' : (options as SpiderOptions).maxDepth}
+                    disabled={isBatchMode}
                     onChange={(value) => handleInputChange('maxDepth', value)}
-                    placeholder="1"
+                    placeholder={isBatchMode ? 'Auto' : '1'}
                   />
                 </div>
 
@@ -141,9 +148,10 @@ export const SpiderOptionsForm: React.FC<SpiderOptionsFormProps> = ({ options, o
                   <FormInput
                     label=""
                     type="number"
-                    value={options.pageLimit}
+                    value={isBatchMode ? 'Auto' : (options as SpiderOptions).pageLimit}
+                    disabled={isBatchMode}
                     onChange={(value) => handleInputChange('pageLimit', value)}
-                    placeholder="1"
+                    placeholder={isBatchMode ? 'Auto' : '1'}
                   />
                 </div>
               </div>
@@ -164,7 +172,8 @@ export const SpiderOptionsForm: React.FC<SpiderOptionsFormProps> = ({ options, o
                         label=""
                         value={newAllowedDomain}
                         onChange={setNewAllowedDomain}
-                        placeholder="eg. example.com"
+                        placeholder={isBatchMode ? 'Auto' : 'eg. example.com'}
+                        disabled={isBatchMode}
                         className="flex-grow"
                       />
                       <Button
@@ -207,6 +216,7 @@ export const SpiderOptionsForm: React.FC<SpiderOptionsFormProps> = ({ options, o
         <div className="space-y-6">
           <OptionGroup
             title="Path Filters"
+            subtitle={isBatchMode ? (<small className="text-red-500 dark:text-red-400">(This option is not available in batch mode)</small>) : ''}
             description="Specify which paths to include or exclude from crawling"
           >
             <div className="space-y-4">
@@ -224,7 +234,8 @@ export const SpiderOptionsForm: React.FC<SpiderOptionsFormProps> = ({ options, o
                         label=""
                         value={newExcludePath}
                         onChange={setNewExcludePath}
-                        placeholder="eg. /login/*, "
+                        disabled={isBatchMode}
+                        placeholder={isBatchMode ? 'Auto' : 'eg. /login/*, '}
                         className="flex-grow"
                       />
                       <Button
@@ -274,7 +285,8 @@ export const SpiderOptionsForm: React.FC<SpiderOptionsFormProps> = ({ options, o
                         label=""
                         value={newIncludePath}
                         onChange={setNewIncludePath}
-                        placeholder="eg. /blog/*, *docs*"
+                        disabled={isBatchMode}
+                        placeholder={isBatchMode ? 'Auto' : 'eg. /blog/*, *docs*'}
                         className="flex-grow"
                       />
                       <Button

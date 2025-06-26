@@ -6,7 +6,10 @@ from rest_framework.exceptions import PermissionDenied
 
 from core.services import ProxyService
 from plan.services import TeamPlanService
-from plan.utils import calculate_number_of_search_credits
+from plan.utils import (
+    calculate_number_of_search_credits,
+    calculate_number_of_sitemap_credits,
+)
 from user.models import Team
 import core.consts as core_consts
 
@@ -15,6 +18,9 @@ class PlanLimitValidator:
     def __init__(self, team: Team):
         self.team = team
         self.team_plan_service = TeamPlanService(team=team)
+
+    def validate_batch_crawl_request(self, data):
+        return self.validate_crawl_request(data)
 
     def validate_crawl_request(self, data: dict):
         self._validate_remaining_pages(data)
@@ -185,5 +191,64 @@ class PlanLimitValidator:
             raise PermissionDenied(
                 _(
                     "Your plan does not support more than {} concurrent searches. Wait for them to finish."
+                ).format(self.team_plan_service.max_concurrent_crawl)
+            )
+
+    def validate_sitemap_request(self, data: dict):
+        self._validate_remaining_pages_for_sitemap(data)
+        self._validate_current_sitemap(data)
+
+        return data
+
+    def _validate_remaining_pages_for_sitemap(self, data: dict):
+        if self.team_plan_service.remaining_page_credit == -1:
+            return
+
+        if self.team_plan_service.remaining_page_credit <= 0:
+            raise PermissionDenied(_("You have no more pages left in your plan"))
+
+        number_of_credit = calculate_number_of_sitemap_credits(
+            data.get("options", {}).get("ignore_sitemap_xml", False)
+        )
+
+        if number_of_credit > self.team_plan_service.remaining_page_credit:
+            raise PermissionDenied(
+                _(
+                    "You just have {} credits left in your plan. for current sitemap you need {} credits."
+                ).format(self.team_plan_service.remaining_page_credit, number_of_credit)
+            )
+
+        if self.team_plan_service.remaining_daily_page_credit == -1:
+            return
+
+        if self.team_plan_service.remaining_daily_page_credit <= 0:
+            raise PermissionDenied(_("You have no more daily credit left in your plan"))
+
+        if number_of_credit > self.team_plan_service.remaining_daily_page_credit:
+            raise PermissionDenied(
+                _(
+                    "You just have {} daily credit left in your plan. for current sitemap you need {} credits."
+                ).format(
+                    self.team_plan_service.remaining_daily_page_credit, number_of_credit
+                )
+            )
+
+    def _validate_current_sitemap(self, data: dict):
+        if self.team_plan_service.max_concurrent_crawl == -1:
+            return
+
+        if (
+            self.team.sitemap_requests.filter(
+                status__in=[
+                    core_consts.CRAWL_STATUS_NEW,
+                    core_consts.CRAWL_STATUS_RUNNING,
+                ],
+                created_at__gte=timezone.now() - datetime.timedelta(hours=2),
+            ).count()
+            >= self.team_plan_service.max_concurrent_crawl
+        ):
+            raise PermissionDenied(
+                _(
+                    "Your plan does not support more than {} concurrent sitemaps. Wait for them to finish."
                 ).format(self.team_plan_service.max_concurrent_crawl)
             )

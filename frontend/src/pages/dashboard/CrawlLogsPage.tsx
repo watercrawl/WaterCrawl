@@ -184,7 +184,7 @@ const CrawlLogsPage: React.FC = () => {
                                   <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200">
                                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 dark:text-white sm:pl-6">
                                       <div className="flex items-center">
-                                        <span className="max-w-[300px] truncate" title={request.url}>
+                                        <span className="max-w-[300px] truncate" title={request.url || ''}>
                                           {request.url}
                                         </span>
                                       </div>

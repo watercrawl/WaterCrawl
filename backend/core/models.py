@@ -8,6 +8,7 @@ from core.utils import (
     generate_crawl_result_attachment_path,
     generate_crawl_request_sitemap_path,
     search_result_file_path,
+    sitemap_result_file_path,
 )
 
 
@@ -18,7 +19,14 @@ class CrawlRequest(BaseModel):
         verbose_name=_("team"),
         related_name="crawl_requests",
     )
-    url = models.URLField(_("url"), max_length=255)
+    # url = models.URLField(_("url"), max_length=255)
+    urls = models.JSONField(_("urls"), default=list)
+    crawl_type = models.CharField(
+        _("crawl type"),
+        max_length=255,
+        choices=consts.CRAWL_TYPE_CHOICES,
+        default=consts.CRAWL_TYPE_SINGLE,
+    )
     status = models.CharField(
         _("status"),
         max_length=255,
@@ -34,6 +42,19 @@ class CrawlRequest(BaseModel):
         null=True,
         blank=True,
     )
+
+    @property
+    def url(self):
+        if self.urls:
+            return self.urls[0] if isinstance(self.urls, list) else self.urls
+        return ""
+
+    @url.setter
+    def url(self, value):
+        if isinstance(value, str):
+            self.urls = [value]
+        else:
+            raise ValueError("URL must be a string.")
 
     def number_of_documents(self):
         return self.results.count()
@@ -161,3 +182,32 @@ class ProxyServer(BaseModel):
     @property
     def has_password(self):
         return bool(self.password)
+
+
+class SitemapRequest(BaseModel):
+    team = models.ForeignKey(
+        "user.Team",
+        on_delete=models.CASCADE,
+        verbose_name=_("team"),
+        related_name="sitemap_requests",
+    )
+    url = models.URLField(_("url"), max_length=255)
+    options = models.JSONField(_("options"), default=dict)
+    status = models.CharField(
+        _("status"),
+        max_length=255,
+        choices=consts.CRAWL_STATUS_CHOICES,
+        default=consts.CRAWL_STATUS_NEW,
+    )
+    duration = models.DurationField(_("duration"), null=True)
+    result = models.FileField(
+        _("result"),
+        max_length=255,
+        upload_to=sitemap_result_file_path,
+        null=True,
+        blank=True,
+    )
+
+    class Meta:
+        verbose_name = _("Sitemap Request")
+        verbose_name_plural = _("Sitemap Requests")

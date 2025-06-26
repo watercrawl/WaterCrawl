@@ -3,7 +3,7 @@ from typing import Iterable
 from scrapy import Request, Spider, signals
 
 from core import consts
-from core.services import SearchService
+from core.services import SearchService, BasePubSupService
 from spider import settings
 from spider.items import SearchResult
 
@@ -22,6 +22,7 @@ class SearchScrapper(Spider):
             search_request_uuid
         )
         self.helpers = self.search_service.config_helpers
+        self.pubsub_service: BasePubSupService = self.search_service.pubsub_service
         self.plugin_validators = {}
         self.results = dict()
         self.init_plugins()
@@ -32,9 +33,13 @@ class SearchScrapper(Spider):
         crawler.signals.connect(spider.spider_closed, signal=signals.spider_closed)
         return spider
 
-    def spider_closed(self, spider):
+    def spider_closed(self, spider, reason):
         # This will be called automatically when the spider is about to close
         # The yielded item will be processed by the pipelines
+        self.pubsub_service.send_feed(
+            f"Search completed with {len(self.results)} result(s). Stopped due to: {reason}.",
+            feed_type="info",
+        )
         self.crawler.engine.scraper.itemproc.process_item(
             SearchResult(
                 results=[
@@ -90,15 +95,26 @@ class SearchScrapper(Spider):
         if not self.helpers.advanced_search:
             return
 
+        self.pubsub_service.send_feed(
+            f"Performing advanced search for URL: {url}", feed_type="info"
+        )
+
         yield Request(
             url=url,
             callback=self.parse_advanced,
+            errback=self.search_error,
             meta={
                 "url": url,
                 "title": title,
                 "description": description,
                 "skip_playwright": False if self.helpers.is_ultimate else True,
             },
+        )
+
+    def search_error(self, failure):
+        self.pubsub_service.send_feed(
+            f"Error occurred while searching/scraping: {failure.value}",
+            feed_type="error",
         )
 
     def parse_advanced(self, response):
@@ -136,9 +152,13 @@ class GoogleCustomSearchScrapper(SearchScrapper):
         return url
 
     def start_requests(self) -> Iterable[Request]:
+        self.pubsub_service.send_feed(
+            f"Starting Search for query: {self.helpers.search_query}", feed_type="info"
+        )
         yield Request(
             url=self.make_url(),
             callback=self.parse_json,
+            errback=self.search_error,
             meta={"skip_playwright": True},
         )
 
@@ -173,8 +193,12 @@ class GoogleCustomSearchScrapper(SearchScrapper):
                 return
 
         if "queries" in data and "nextPage" in data["queries"]:
+            self.pubsub_service.send_feed(
+                "Fetching next page of results", feed_type="info"
+            )
             yield Request(
                 url=self.make_url(start=data["queries"]["nextPage"][0]["startIndex"]),
                 callback=self.parse_json,
+                errback=self.search_error,
                 meta={"skip_playwright": True},
             )

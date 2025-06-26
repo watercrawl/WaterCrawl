@@ -32,7 +32,7 @@ OPTIONS_SCHEMA = {
 CRAWL_STATUS_NEW = "new"
 CRAWL_STATUS_RUNNING = "running"
 CRAWL_STATUS_FINISHED = "finished"
-CRAWL_STATUS_CANCELING = "cancelling"
+CRAWL_STATUS_CANCELING = "canceling"
 CRAWL_STATUS_CANCELED = "canceled"
 CRAWL_STATUS_FAILED = "failed"
 
@@ -200,4 +200,12 @@ PROXY_CATEGORY_CHOICES = (
     (PROXY_CATEGORY_GENERAL, _("General")),
     (PROXY_CATEGORY_PREMIUM, _("Premium")),
     (PROXY_CATEGORY_TEAM, _("Team")),
+)
+
+CRAWL_TYPE_SINGLE = "single"
+CRAWL_TYPE_BATCH = "batch"
+
+CRAWL_TYPE_CHOICES = (
+    (CRAWL_TYPE_SINGLE, _("Single")),
+    (CRAWL_TYPE_BATCH, _("Batch")),
 )

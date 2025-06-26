@@ -35,7 +35,7 @@ const SettingsPage: React.FC = () => {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
 
   useEffect(() => {
-    // Check for #billing hash on initial load
+    // Check for hash on initial load
     const handleHashChange = () => {
       if (window.location.hash === '#proxy') {
         setSelectedTabIndex(1);
@@ -165,7 +165,7 @@ const SettingsPage: React.FC = () => {
         <TabGroup selectedIndex={selectedTabIndex} onChange={setSelectedTabIndex}>
           <TabList className="flex space-x-1 mt-8 border-b border-gray-200 dark:border-gray-700">
             <Tab
-              className={({ selected }) =>
+              className={({ selected }: { selected: boolean }) =>
                 classNames(
                   'px-4 py-2.5 text-sm font-medium leading-5 transition-all duration-200',
                   'focus:outline-none',
@@ -178,7 +178,7 @@ const SettingsPage: React.FC = () => {
               Team
             </Tab>
             <Tab
-              className={({ selected }) =>
+              className={({ selected }: { selected: boolean }) =>
                 classNames(
                   'px-4 py-2.5 text-sm font-medium leading-5 transition-all duration-200',
                   'focus:outline-none',
@@ -192,7 +192,7 @@ const SettingsPage: React.FC = () => {
             </Tab>
             {settings?.is_enterprise_mode_active && (
               <Tab
-                className={({ selected }) =>
+                className={({ selected }: { selected: boolean }) =>
                   classNames(
                     'px-4 py-2.5 text-sm font-medium leading-5 transition-all duration-200',
                     'focus:outline-none',

@@ -23,8 +23,11 @@ from core.services import (
     CrawlPupSupService,
     SearchPupSupService,
     ProxyService,
+    SitemapRequestService,
+    SitemapPubSupService,
 )
-from core.tasks import run_spider, run_search
+from core.tasks import run_spider, run_search, run_sitemap
+from core.utils import cast_bool
 from user.decorators import setup_current_team
 from user.permissions import IsAuthenticatedTeam
 
@@ -93,10 +96,19 @@ class CrawlRequestView(
 ):
     permission_classes = [IsAuthenticatedTeam]
     serializer_class = serializers.CrawlRequestSerializer
-    filterset_fields = ["uuid", "url", "status", "created_at"]
+    filterset_fields = [
+        "uuid",
+        "status",
+        "created_at",
+    ]  # todo: add url filter before commit
 
     def get_queryset(self):
         return self.request.current_team.crawl_requests.order_by("-created_at").all()
+
+    def get_serializer_class(self):
+        if self.action == "batch":
+            return serializers.BatchCrawlRequestSerializer
+        return super().get_serializer_class()
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
@@ -113,6 +125,10 @@ class CrawlRequestView(
         if instance.status != consts.CRAWL_STATUS_RUNNING:
             raise PermissionDenied(_("Only running crawl requests can be deleted"))
         CrawlerService(instance).stop()
+
+    @action(detail=False, methods=["post"], url_path="batch", url_name="batch")
+    def batch(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)
 
     @action(detail=True, methods=["get"], url_path="download", url_name="download")
     def download(self, request, **kwargs):
@@ -136,11 +152,7 @@ class CrawlRequestView(
     def check_status(self, request, **kwargs):
         obj = self.get_object()
         service = CrawlPupSupService(obj)
-        prefetched = request.query_params.get("prefetched", "False") in [
-            "true",
-            "True",
-            "1",
-        ]
+        prefetched = cast_bool(request.query_params.get("prefetched", "False"))
         return EventStreamResponse(
             service.check_status(prefetched),
         )
@@ -152,7 +164,7 @@ class CrawlRequestView(
         obj = self.get_object()  # type: CrawlRequest
         if not obj.sitemap:
             raise NotFound(_("Sitemap for this crawl request does not exist"))
-        service = SitemapService(obj)
+        service = SitemapService(obj.sitemap)
         return Response(service.to_graph())
 
     @action(
@@ -165,7 +177,7 @@ class CrawlRequestView(
         obj = self.get_object()  # type: CrawlRequest
         if not obj.sitemap:
             raise NotFound(_("Sitemap for this crawl request does not exist"))
-        service = SitemapService(obj)
+        service = SitemapService(obj.sitemap)
         return Response(
             service.to_markdown(),
             headers={
@@ -205,11 +217,7 @@ class CrawlResultView(ReadOnlyModelViewSet):
         )
 
     def get_serializer_class(self):
-        if self.request.query_params.get("prefetched", "False") in [
-            "true",
-            "True",
-            "1",
-        ]:
+        if cast_bool(self.request.query_params.get("prefetched", "False")):
             return serializers.FullCrawlResultSerializer
 
         return super().get_serializer_class()
@@ -292,11 +300,7 @@ class SearchRequestAPIView(
         return context
 
     def get_serializer_class(self):
-        if self.request.query_params.get("prefetched", "False") in [
-            "true",
-            "True",
-            "1",
-        ]:
+        if cast_bool(self.request.query_params.get("prefetched", "False")):
             return serializers.FullSearchResultSerializer
 
         return super().get_serializer_class()
@@ -322,11 +326,7 @@ class SearchRequestAPIView(
     def check_status(self, request, **kwargs):
         obj = self.get_object()  # type: SearchRequest
         service = SearchPupSupService(obj)
-        prefetched = request.query_params.get("prefetched", "False") in [
-            "true",
-            "True",
-            "1",
-        ]
+        prefetched = cast_bool(request.query_params.get("prefetched", "False"))
         return EventStreamResponse(
             service.check_status(prefetched=prefetched),
         )
@@ -419,3 +419,131 @@ class ProxyServerView(ModelViewSet):
         except Exception as e:
             print(type(e))
             raise ValidationError({"non_field_errors": [str(e)]})
+
+
+@extend_schema_view(
+    list=extend_schema(
+        summary=_("List sitemap requests"),
+        description=docs.SITEMAP_REQUEST_LIST,
+        tags=["Sitemap Requests"],
+    ),
+    create=extend_schema(
+        summary=_("Create sitemap request"),
+        description=docs.SITEMAP_REQUEST_CREATE,
+        tags=["Sitemap Requests"],
+    ),
+    retrieve=extend_schema(
+        summary=_("Get sitemap request"),
+        description=docs.SITEMAP_REQUEST_RETRIEVE,
+        tags=["Sitemap Requests"],
+    ),
+    destroy=extend_schema(
+        summary=_("Delete sitemap request"),
+        description=docs.SITEMAP_REQUEST_DELETE,
+        tags=["Sitemap Requests"],
+    ),
+    check_status=extend_schema(
+        summary=_("Check sitemap request status"),
+        description=docs.SITEMAP_REQUEST_CHECK_STATUS,
+        parameters=docs.CRAWL_REQUEST_CHECK_STATUS_PARAMETERS,
+        tags=["Sitemap Requests"],
+        request=None,
+        responses={
+            200: OpenApiResponse(
+                response=OpenApiTypes.STR,
+            )
+        },
+    ),
+    graph=extend_schema(
+        summary=_("Get sitemap graph"),
+        description=docs.SITEMAP_REQUEST_GRAPH,
+        tags=["Sitemap Requests"],
+        responses={200: OpenApiTypes.OBJECT},
+    ),
+    markdown=extend_schema(
+        summary=_("Get sitemap markdown"),
+        description=docs.SITEMAP_REQUEST_MARKDOWN,
+        tags=["Sitemap Requests"],
+        responses={200: OpenApiTypes.STR},
+    ),
+)
+@setup_current_team
+class SitemapRequestView(
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.DestroyModelMixin,
+    GenericViewSet,
+):
+    permission_classes = [IsAuthenticatedTeam]
+    serializer_class = serializers.SitemapRequestSerializer
+    filterset_fields = ["uuid", "status", "created_at"]
+
+    def get_queryset(self):
+        return self.request.current_team.sitemap_requests.order_by("-created_at").all()
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["team"] = self.request.current_team
+        return context
+
+    def get_serializer_class(self):
+        if cast_bool(self.request.query_params.get("prefetched", "False")):
+            return serializers.FullSitemapRequestSerializer
+
+        return super().get_serializer_class()
+
+    def perform_create(self, serializer):
+        instance = serializer.save(team=self.request.current_team)
+        run_sitemap.apply_async(args=[instance.pk], task_id=str(instance.uuid))
+
+    def perform_destroy(self, instance):
+        if instance.status != consts.CRAWL_STATUS_RUNNING:
+            raise PermissionDenied(_("Only running sitemap requests can be deleted"))
+        SitemapRequestService(instance).stop()
+
+    @action(
+        detail=True,
+        methods=["get"],
+        url_path="status",
+        url_name="status",
+    )
+    def check_status(self, request, **kwargs):
+        obj = self.get_object()
+        service = SitemapPubSupService(obj)
+        prefetched = cast_bool(request.query_params.get("prefetched", "False"))
+        return EventStreamResponse(
+            service.check_status(prefetched=prefetched),
+        )
+
+    @action(
+        detail=True,
+        methods=["get"],
+        url_path="graph",
+        url_name="sitemap-graph",
+    )
+    def graph(self, request, **kwargs):
+        obj = self.get_object()  # type: SitemapRequest
+        if not obj.result:
+            raise NotFound(_("Sitemap for this request does not exist"))
+        service = SitemapService(obj.result)
+        return Response(service.to_graph())
+
+    @action(
+        detail=True,
+        methods=["get"],
+        url_path="markdown",
+        url_name="sitemap-markdown",
+    )
+    def markdown(self, request, **kwargs):
+        obj = self.get_object()  # type: SitemapRequest
+        if not obj.result:
+            raise NotFound(_("Sitemap for this request does not exist"))
+        service = SitemapService(obj.result)
+        return Response(
+            service.to_markdown(),
+            headers={
+                "Content-Type": "text/markdown",
+                "Content-Disposition": f'attachment; filename="sitemap-{obj.uuid}.md"',
+            },
+        )

@@ -5,7 +5,7 @@ description = "WaterCrawl is a smart and extensible web crawler that extracts st
 authors = [
     {name = "AmirMohsen Asaran",email = "amir.asaran92@gmail.com"}
 ]
-readme = "README.md"
+readme = "../README.md"
 requires-python = ">=3.13,<4"
 dependencies = [
     "gunicorn (==23.0.0)",

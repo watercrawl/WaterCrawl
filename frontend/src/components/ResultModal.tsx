@@ -4,13 +4,13 @@ import { XMarkIcon, ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 import Editor from "@monaco-editor/react";
 import { CrawlResult, ResultData } from '../types/crawl';
 
-interface ResultModalProps {
+interface CrawlResultModalProps {
   isOpen: boolean;
   onClose: () => void;
   result: CrawlResult;
 }
 
-export default function ResultModal({ isOpen, onClose, result }: ResultModalProps) {
+export default function CrawlResultModal({ isOpen, onClose, result }: CrawlResultModalProps) {
 
 
   if (!isOpen) return null;
@@ -50,7 +50,7 @@ export default function ResultModal({ isOpen, onClose, result }: ResultModalProp
           <Tab.Group>
             <Tab.List className="flex space-x-1 rounded-xl bg-gray-100 dark:bg-gray-800 p-1 mb-4">
               <Tab
-                className={({ selected }) =>
+                className={({ selected }: { selected: boolean }) =>
                   `${selected
                     ? 'bg-white dark:bg-gray-700 shadow text-primary-700 dark:text-white'
                     : 'text-gray-600 dark:text-gray-400 hover:bg-white/[0.12] hover:text-primary-700 dark:hover:text-white'
@@ -60,7 +60,7 @@ export default function ResultModal({ isOpen, onClose, result }: ResultModalProp
                 Markdown
               </Tab>
               <Tab
-                className={({ selected }) =>
+                className={({ selected }: { selected: boolean }) =>
                   `${selected
                     ? 'bg-white dark:bg-gray-700 shadow text-primary-700 dark:text-white'
                     : 'text-gray-600 dark:text-gray-400 hover:bg-white/[0.12] hover:text-primary-700 dark:hover:text-white'
@@ -71,7 +71,7 @@ export default function ResultModal({ isOpen, onClose, result }: ResultModalProp
               </Tab>
               {result.attachments && result.attachments.length > 0 && (
                 <Tab
-                  className={({ selected }) =>
+                  className={({ selected }: { selected: boolean }) =>
                     `${selected
                       ? 'bg-white dark:bg-gray-700 shadow text-primary-700 dark:text-white'
                       : 'text-gray-600 dark:text-gray-400 hover:bg-white/[0.12] hover:text-primary-700 dark:hover:text-white'

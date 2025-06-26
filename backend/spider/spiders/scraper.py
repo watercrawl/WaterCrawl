@@ -1,8 +1,8 @@
 from typing import Iterable
 
-from scrapy import Request, Spider
+from scrapy import Request, Spider, signals
 
-from core.services import CrawlerService, CrawlHelpers
+from core.services import CrawlerService, CrawlHelpers, BasePubSupService
 from spider import settings
 from spider.items import ScrapedItem, LinkItem
 
@@ -17,8 +17,24 @@ class SiteScrapper(Spider):
             crawl_request_uuid
         )
         self.helpers: CrawlHelpers = self.crawler_service.config_helpers
+        self.pubsub_service: BasePubSupService = self.crawler_service.pubsub_service
         self.plugin_validators = {}
         self.init_plugins()
+        self.num_items = 0
+
+    @classmethod
+    def from_crawler(cls, crawler, *args, **kwargs):
+        spider = super().from_crawler(crawler, *args, **kwargs)
+        crawler.signals.connect(spider.spider_closed, signal=signals.spider_closed)
+        return spider
+
+    def spider_closed(self, spider, reason):
+        # This will be called automatically when the spider is about to close
+        # The yielded item will be processed by the pipelines
+        self.pubsub_service.send_feed(
+            f"Crawl completed with {self.num_items} item(s). Stopped due to: {reason}.",
+            feed_type="info",
+        )
 
     def init_plugins(self):
         for plugin in settings.PLUGINS:
@@ -28,16 +44,25 @@ class SiteScrapper(Spider):
             self.plugin_validators[validator.plugin.plugin_key()] = validator
 
     def start_requests(self) -> Iterable[Request]:
-        print(self.crawler_service.proxy_object)
-        yield Request(
-            url=self.crawler_service.crawl_request.url,
-            callback=self.parse,
-            meta={
-                "proxy_object": self.crawler_service.proxy_object,
-            },
+        for url in self.crawler_service.crawl_request.urls:
+            self.pubsub_service.send_feed("Starting crawl for URL: {}".format(url))
+            yield Request(
+                url=url,
+                callback=self.parse,
+                errback=self.crawl_error,
+                meta={
+                    "proxy_object": self.crawler_service.proxy_object,
+                },
+            )
+
+    def crawl_error(self, failure):
+        """Handle errors during the crawl."""
+        self.pubsub_service.send_feed(
+            f"Error occurred while crawling: {failure.value}", feed_type="error"
         )
 
     def parse(self, response, **kwargs):
+        self.pubsub_service.send_feed("Parsing response from: {}".format(response.url))
         result_links = []
         for a_tag in response.css("a"):
             link = a_tag.css("::attr(href)").get()
@@ -56,13 +81,16 @@ class SiteScrapper(Spider):
             )
             # LinkItem used for making a sitemap
             yield LinkItem(url=link, title=text, verified=False)
-            yield response.follow(
-                link,
-                callback=self.parse,
-                meta={
-                    "proxy_object": self.crawler_service.proxy_object,
-                },
-            )
+
+            if str(self.settings.get("DEPTH_LIMIT")) != "0":
+                yield response.follow(
+                    link,
+                    callback=self.parse,
+                    errback=self.crawl_error,
+                    meta={
+                        "proxy_object": self.crawler_service.proxy_object,
+                    },
+                )
 
         yield from self.__process_response(response, sorted(set(result_links)))
 
@@ -96,4 +124,5 @@ class SiteScrapper(Spider):
         item["attachments"] = (
             response.meta["attachments"] if "attachments" in response.meta else []
         )
+        self.num_items += 1
         yield item
