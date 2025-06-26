@@ -40,7 +40,6 @@ class CurrentTeamAuthentication:
 
     def authenticate_with_api_key(self, request):
         api_key = request.headers.get("X-API-Key")
-        print("api_key", api_key)
         if api_key:
             try:
                 request.current_team = TeamService.make_with_api_key(
