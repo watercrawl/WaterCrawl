@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import { Menu, Transition, Dialog } from '@headlessui/react';
+import { Menu, Transition, Dialog, MenuButton, MenuItems, MenuItem, TransitionChild, DialogPanel, DialogTitle } from '@headlessui/react';
 import { ChevronDownIcon, PlusIcon } from '@heroicons/react/20/solid';
 import { classNames } from '../../utils/classNames';
 import { useTeam } from '../../contexts/TeamContext';
@@ -24,10 +24,10 @@ export const TeamSelector: React.FC = () => {
   return (
     <>
       <Menu as="div" className="relative">
-        <Menu.Button className="flex items-center gap-x-1 text-sm font-medium leading-6 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700 rounded-md px-3 py-1 hover:border-gray-300 dark:hover:border-gray-600">
+        <MenuButton className="flex items-center gap-x-1 text-sm font-medium leading-6 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700 rounded-md px-3 py-1 hover:border-gray-300 dark:hover:border-gray-600">
           {currentTeam.name}
           <ChevronDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-        </Menu.Button>
+        </MenuButton>
 
         <Transition
           as={Fragment}
@@ -38,9 +38,9 @@ export const TeamSelector: React.FC = () => {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Menu.Items className="absolute left-0 z-10 mt-2.5 w-48 origin-top-left rounded-md bg-white dark:bg-gray-800 py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
+          <MenuItems anchor="bottom start" className="absolute left-0 z-10 mt-2.5 w-48 origin-top-left rounded-md bg-white dark:bg-gray-800 py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
             {teams.map((team) => (
-              <Menu.Item key={team.uuid}>
+              <MenuItem key={team.uuid}>
                 {({ active }) => (
                   <button
                     onClick={() => setCurrentTeam(team)}
@@ -52,10 +52,10 @@ export const TeamSelector: React.FC = () => {
                     {team.name}
                   </button>
                 )}
-              </Menu.Item>
+              </MenuItem>
             ))}
             <div className="border-t border-gray-100 dark:border-gray-700 my-1" />
-            <Menu.Item>
+            <MenuItem>
               {({ active }) => (
                 <button
                   onClick={() => setIsCreateTeamOpen(true)}
@@ -70,14 +70,14 @@ export const TeamSelector: React.FC = () => {
                   </div>
                 </button>
               )}
-            </Menu.Item>
-          </Menu.Items>
+            </MenuItem>
+          </MenuItems>
         </Transition>
       </Menu>
 
       <Transition appear show={isCreateTeamOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={() => setIsCreateTeamOpen(false)}>
-          <Transition.Child
+          <TransitionChild
             as={Fragment}
             enter="ease-out duration-300"
             enterFrom="opacity-0"
@@ -87,11 +87,11 @@ export const TeamSelector: React.FC = () => {
             leaveTo="opacity-0"
           >
             <div className="fixed inset-0 bg-black/25 dark:bg-black/40" />
-          </Transition.Child>
+          </TransitionChild>
 
           <div className="fixed inset-0 overflow-y-auto">
             <div className="flex min-h-full items-center justify-center p-4 text-center">
-              <Transition.Child
+              <TransitionChild
                 as={Fragment}
                 enter="ease-out duration-300"
                 enterFrom="opacity-0 scale-95"
@@ -100,13 +100,13 @@ export const TeamSelector: React.FC = () => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-gray-800 p-6 text-left align-middle shadow-xl transition-all">
-                  <Dialog.Title
+                <DialogPanel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-gray-800 p-6 text-left align-middle shadow-xl transition-all">
+                  <DialogTitle
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900 dark:text-white"
                   >
                     Create New Team
-                  </Dialog.Title>
+                  </DialogTitle>
                   <div className="mt-4">
                     <input
                       type="text"
@@ -133,8 +133,8 @@ export const TeamSelector: React.FC = () => {
                       Create
                     </button>
                   </div>
-                </Dialog.Panel>
-              </Transition.Child>
+                </DialogPanel>
+              </TransitionChild>
             </div>
           </div>
         </Dialog>
