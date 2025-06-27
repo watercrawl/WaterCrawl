@@ -12,6 +12,7 @@ import { SitemapOptionsForm } from '../forms/SitemapOptionsForm';
 import { SitemapDownloadFormatSelector } from '../shared/SitemapDownloadFormatSelector';
 import Feed from '../shared/Feed';
 import { FeedMessage } from '../../types/feed';
+import { useSettings } from '../../contexts/SettingsProvider';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -36,6 +37,7 @@ export const SitemapForm: React.FC<SitemapFormProps> = ({
   const [currentRequest, setCurrentRequest] = useState<SitemapRequest | null>(null);
   const [sitemapResult, setSitemapResult] = useState<SitemapRequest | null>(null);
   const [feedMessages, setFeedMessages] = useState<FeedMessage[]>([]);
+  const { settings } = useSettings();
 
   // Sitemap options state
   const [sitemapOptions, setSitemapOptions] = useState<SitemapOptions>({
@@ -164,25 +166,27 @@ export const SitemapForm: React.FC<SitemapFormProps> = ({
               });
             }}
           />
-          <div className="mt-3 space-y-2 bg-gray-50 dark:bg-gray-900 rounded-md p-3 border border-gray-200 dark:border-gray-700">
-            <p className="text-xs font-medium text-gray-700 dark:text-gray-300">Credit Usage & Speed:</p>
-            <div className="grid grid-cols-1 gap-2">
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 rounded-full bg-green-400"></div>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  5 credits per sitemap
-                  <span className="ml-1 text-xs text-green-600 dark:text-green-400">(Fastest speed)</span>
-                </p>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 rounded-full bg-yellow-400"></div>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  <span className="font-medium">With Ignore Sitemap.xml:</span> 15 credits per sitemap
-                  <span className="ml-1 text-xs text-yellow-600 dark:text-yellow-400">(Moderate speed)</span>
-                </p>
+          {settings?.is_enterprise_mode_active && (
+            <div className="mt-3 space-y-2 bg-gray-50 dark:bg-gray-900 rounded-md p-3 border border-gray-200 dark:border-gray-700">
+              <p className="text-xs font-medium text-gray-700 dark:text-gray-300">Credit Usage & Speed:</p>
+              <div className="grid grid-cols-1 gap-2">
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 rounded-full bg-green-400"></div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    5 credits per sitemap
+                    <span className="ml-1 text-xs text-green-600 dark:text-green-400">(Fastest speed)</span>
+                  </p>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 rounded-full bg-yellow-400"></div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    <span className="font-medium">With Ignore Sitemap.xml:</span> 15 credits per sitemap
+                    <span className="ml-1 text-xs text-yellow-600 dark:text-yellow-400">(Moderate speed)</span>
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       ),
     },
