@@ -1138,8 +1138,8 @@ class ProxyService:
         response = requests.get(
             "https://httpbin.org/ip",
             proxies={
-                "http": f"{username_password}{host}:{port}",
-                "https": f"{username_password}{host}:{port}",
+                "http": f"{proxy_type}://{username_password}{host}:{port}",
+                "https": f"{proxy_type}://{username_password}{host}:{port}",
             },
             timeout=10,
         )

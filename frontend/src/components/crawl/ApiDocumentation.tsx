@@ -134,17 +134,17 @@ export const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ request, isB
     if (!request) return 'No request data available';
     const data = isBatch
       ? {
-          urls: request.urls,
-          options: request.options
-        }
+        urls: request.urls,
+        options: request.options
+      }
       : {
-          url: request.url,
-          options: request.options
-        };
-    return `curl -X POST \
-  "${getBaseUrl()}/api/v1/core/crawl-requests/${isBatch ? 'batch' : ''}" \
-  -H "Content-Type: application/json" \
-  -H "X-API-Key: ${getApiKeyValue()}" \
+        url: request.url,
+        options: request.options
+      };
+    return `curl -X POST \\
+  "${getBaseUrl()}/api/v1/core/crawl-requests/${isBatch ? 'batch/' : ''}" \\
+  -H "Content-Type: application/json" \\
+  -H "X-API-Key: ${getApiKeyValue()}" \\
   -d '${JSON.stringify(data, null, 2)}'`;
   }, [getApiKeyValue, getBaseUrl, isBatch]);
 
@@ -155,7 +155,7 @@ export const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ request, isB
     const spiderOptions = request?.options?.spider_options || {};
     const pageOptions = request?.options?.page_options || {};
     const pluginOptions = request?.options?.plugin_options || {};
-    
+
     if (isBatch) {
       const urls = request?.urls || ['https://example.com', 'https://example.org'];
       return `from watercrawl import WaterCrawlAPIClient
@@ -193,7 +193,7 @@ crawl_request = client.create_crawl_request(
     const spiderOptions = request?.options?.spider_options || {};
     const pageOptions = request?.options?.page_options || {};
     const pluginOptions = request?.options?.plugin_options || {};
-    
+
     if (isBatch) {
       const urls = request?.urls || ['https://example.com', 'https://example.org'];
       return `import { WaterCrawlAPIClient } from '@watercrawl/nodejs';
@@ -231,7 +231,7 @@ console.log(crawlRequest);`;
     const spiderOptions = request?.options?.spider_options || {};
     const pageOptions = request?.options?.page_options || {};
     const pluginOptions = request?.options?.plugin_options || {};
-    
+
     if (isBatch) {
       const urls = request?.urls || ['https://example.com', 'https://example.org'];
       return `import "github.com/watercrawl/watercrawl-go"
@@ -301,7 +301,7 @@ if err != nil {
       </div>
       <div className="p-6">
         <TabGroup>
-          <TabList className="flex space-x-1 border-b border-gray-200 dark:border-gray-700">
+          <TabList className="flex p-1 space-x-1 bg-gray-100 dark:bg-gray-800 rounded-lg">
             {tabs.map((tab) => (
               <Tab
                 key={tab.name}

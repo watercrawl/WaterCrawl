@@ -125,6 +125,12 @@ console.log('Sitemap request created:', sitemapRequest.uuid);`;
     );
   }
 
+  const tabs = [
+    { name: 'cURL', content: generateCurlCommand },
+    { name: 'Python', content: generatePythonCommand },
+    { name: 'Node.js', content: generateNodeJsCommand },
+  ];
+
   return (
     <div className="border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800">
       <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
@@ -135,12 +141,8 @@ console.log('Sitemap request created:', sitemapRequest.uuid);`;
       </div>
       <div className="p-6">
         <TabGroup selectedIndex={selectedTab} onChange={setSelectedTab}>
-          <TabList className="flex border-b border-gray-200 dark:border-gray-700 overflow-x-auto">
-            {[
-              { name: 'cURL', content: generateCurlCommand },
-              { name: 'Python', content: generatePythonCommand },
-              { name: 'Node.js', content: generateNodeJsCommand }
-            ].map((tab) => (
+          <TabList className="flex p-1 space-x-1 bg-gray-100 dark:bg-gray-800 rounded-lg">
+            {tabs.map((tab) => (
               <Tab
                 key={tab.name}
                 className={({ selected }: { selected: boolean }) =>
@@ -156,13 +158,9 @@ console.log('Sitemap request created:', sitemapRequest.uuid);`;
               </Tab>
             ))}
           </TabList>
-          <TabPanels>
-            {[
-              { name: 'cURL', content: generateCurlCommand },
-              { name: 'Python', content: generatePythonCommand },
-              { name: 'Node.js', content: generateNodeJsCommand }
-            ].map((tab) => (
-              <TabPanel key={tab.name} className="focus:outline-none">
+          <TabPanels className="mt-6">
+            {tabs.map((tab, idx) => (
+              <TabPanel key={idx} className="focus:outline-none">
                 <div className="bg-[#1E1E1E] rounded-lg overflow-hidden">
                   <div className="flex items-center justify-between px-4 py-2 bg-[#2D2D2D] border-b border-[#404040]">
                     <div className="flex space-x-2 items-center">
