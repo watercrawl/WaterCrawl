@@ -56,8 +56,20 @@ api.interceptors.response.use(
 );
 
 api.subscribeToSSE = async <T>(url: string, config: AxiosRequestConfig, onEvent: (data: T) => void, onEnd?: () => void) => {
-  const apiUrl = new URL(url, api.defaults.baseURL);
-  // apiUrl.searchParams.append('prefetched', 'true');
+  // Handle case when baseURL is empty by using the current location as fallback
+  let apiUrl: URL;
+  if (!url.startsWith('http') && (!api.defaults.baseURL || api.defaults.baseURL === '')) {
+    // If URL is relative and no baseURL is set, use current location
+    apiUrl = new URL(url, window.location.origin);
+  } else {
+    // Otherwise use the provided baseURL or treat URL as absolute
+    try {
+      apiUrl = new URL(url, api.defaults.baseURL);
+    } catch (_error) {
+      // Fallback to absolute URL if construction fails
+      apiUrl = new URL(url.startsWith('http') ? url : `${window.location.origin}${url.startsWith('/') ? '' : '/'}${url}`);
+    }
+  }
   // set query param from config
   for (const [key, value] of Object.entries(config.params || {})) {
     apiUrl.searchParams.append(key, value as string);
