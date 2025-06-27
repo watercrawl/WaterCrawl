@@ -69,7 +69,7 @@ These settings control basic Docker and version information:
 
 | Variable | Description | Default | Required? |
 |----------|-------------|---------|-----------|
-| `VERSION` | Application version | `v0.8.0` | No |
+| `VERSION` | Application version | `v0.9.0` | No |
 | `NGINX_PORT` | Port for the Nginx service | `80` | No |
 
 **Setup Steps:**
