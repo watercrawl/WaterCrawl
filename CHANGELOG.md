@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.0] - 2025-06-27
+
+### Added
+- Sitemap generation functionality with comprehensive options
+- Multiple sitemap visualization methods (graph view, markdown view)
+- Batch crawling support for processing multiple URLs in a single request
+- Feed message system for real-time operational updates
+- Breadcrumb navigation for improved user orientation
+
+### Changed
+- Enhanced API documentation with better organization
+- Improved tab selection logic and styling across components
+- Updated status terminology for consistency (renamed 'cancelled' to 'canceled')
+- Enhanced URL handling in server-sent event subscriptions
+
+### Fixed
+- Resolved issues with conditional rendering of credit usage information
+- Fixed tab selection in settings page
+- Removed debug print statements from backend services
+- Fixed API key handling in components
+- Improved handling of empty baseURL in SSE subscription
+
+### Dependencies
+- Updated backend dependencies for improved performance and compatibility
+- Updated frontend dependencies for improved performance and compatibility
+
 ## [0.8.0] - 2025-05-20
 
 ### Added
