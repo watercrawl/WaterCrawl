@@ -1,6 +1,6 @@
 [project]
 name = "watercrawl"
-version = "0.9.0"
+version = "0.9.1"
 description = "WaterCrawl is a smart and extensible web crawler that extracts structured knowledge from websites, generates LLM-ready Markdown files, and visualizes crawl strategies. Built with Django, Scrapy, and Playwright."
 authors = [
     {name = "AmirMohsen Asaran",email = "amir.asaran92@gmail.com"}
