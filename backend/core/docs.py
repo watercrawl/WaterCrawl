@@ -17,6 +17,16 @@ The crawl request will be processed asynchronously.
 you will receive a task ID that you can use to track the progress of the crawl.
 """
 
+CRAWL_REQUEST_BATCH_CREATE = """
+Start multiple urls crawling tasks in a single request.
+This endpoint allows you to:
+- Submit a batch of crawl requests
+- The other parameters are the same as the single crawl request creation endpoint.
+
+The crawl request will be processed asynchronously.
+you will receive a task ID that you can use to track the progress of the crawl.
+"""
+
 CRAWL_REQUEST_LIST = """
 Retrieve a list of all crawl requests for your team.
 

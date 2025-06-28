@@ -38,6 +38,13 @@ from user.permissions import IsAuthenticatedTeam
         description=docs.CRAWL_REQUEST_CREATE,
         tags=["Crawl Requests"],
     ),
+    batch=extend_schema(
+        summary=_("Batch create crawl requests"),
+        description=docs.CRAWL_REQUEST_BATCH_CREATE,
+        tags=["Crawl Requests"],
+        request=serializers.BatchCrawlRequestSerializer,
+        responses={201: serializers.CrawlRequestSerializer},
+    ),
     list=extend_schema(
         summary=_("List crawl requests"),
         description=docs.CRAWL_REQUEST_LIST,
@@ -126,7 +133,13 @@ class CrawlRequestView(
             raise PermissionDenied(_("Only running crawl requests can be deleted"))
         CrawlerService(instance).stop()
 
-    @action(detail=False, methods=["post"], url_path="batch", url_name="batch")
+    @action(
+        detail=False,
+        methods=["post"],
+        url_path="batch",
+        url_name="batch",
+        serializer_class=serializers.BatchCrawlRequestSerializer,
+    )
     def batch(self, request, *args, **kwargs):
         return super().create(request, *args, **kwargs)
 

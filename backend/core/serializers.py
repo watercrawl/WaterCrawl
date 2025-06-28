@@ -83,6 +83,7 @@ class CrawlOptionSerializer(serializers.Serializer):
 class CrawlRequestSerializer(serializers.ModelSerializer):
     options = CrawlOptionSerializer()
     url = serializers.URLField()
+    urls = serializers.ListField(child=serializers.URLField(), read_only=True)
 
     class Meta:
         model = CrawlRequest
