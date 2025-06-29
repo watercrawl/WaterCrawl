@@ -210,6 +210,10 @@ PROXY_SERVER_LIST_ALL = """
 Get a list of all proxy servers. This list includes all Global and Team proxy servers.
 """
 
+PROXY_SERVER_TEST_PROXY = """
+Test a proxy server.
+"""
+
 SITEMAP_REQUEST_LIST = """
 Get a list of all sitemap requests for your team.
 """
