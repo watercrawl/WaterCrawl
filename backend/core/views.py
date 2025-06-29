@@ -14,7 +14,7 @@ from rest_framework.viewsets import GenericViewSet, ReadOnlyModelViewSet, ModelV
 
 from common.services import EventStreamResponse
 from core import serializers, consts, docs
-from core.models import CrawlRequest
+from core.models import CrawlRequest, SearchRequest
 from core.services import (
     CrawlerService,
     ReportService,
@@ -25,6 +25,7 @@ from core.services import (
     ProxyService,
     SitemapRequestService,
     SitemapPubSupService,
+    SearchService,
 )
 from core.tasks import run_spider, run_search, run_sitemap
 from core.utils import cast_bool
@@ -285,7 +286,7 @@ class PluginAPIView(APIView):
         tags=["Search Requests"],
     ),
     destroy=extend_schema(
-        summary=_("Delete search request"),
+        summary=_("Stop search request"),
         description=docs.SEARCH_REQUEST_DELETE,
         tags=["Search Requests"],
     ),
@@ -325,10 +326,10 @@ class SearchRequestAPIView(
         instance = serializer.save(team=self.request.current_team)
         run_search.apply_async(args=[instance.pk], task_id=str(instance.uuid))
 
-    def perform_destroy(self, instance: CrawlRequest):
+    def perform_destroy(self, instance: SearchRequest):
         if instance.status != consts.CRAWL_STATUS_RUNNING:
-            raise PermissionDenied(_("Only running crawl requests can be deleted"))
-        CrawlerService(instance).stop()
+            raise PermissionDenied(_("Only running search requests can be deleted"))
+        SearchService(instance).stop()
 
     @action(
         detail=True,
