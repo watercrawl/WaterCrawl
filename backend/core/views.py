@@ -383,6 +383,17 @@ class SearchRequestAPIView(
         tags=["Proxy Servers"],
         responses={"200": serializers.ListAllProxyServerSerializer},
     ),
+    test_proxy=extend_schema(
+        summary=_("Test proxy"),
+        description=docs.PROXY_SERVER_TEST_PROXY,
+        request=serializers.TestProxySerializer,
+        responses={
+            "200": OpenApiResponse(
+                response=OpenApiTypes.OBJECT,
+            )
+        },
+        tags=["Proxy Servers"],
+    ),
 )
 @setup_current_team
 class ProxyServerView(ModelViewSet):
