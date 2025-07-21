@@ -8,7 +8,7 @@ import { UsableProxy } from '../../types/proxy';
 import ComboboxComponent from '../shared/ComboboxComponent';
 import { useTeam } from '../../contexts/TeamContext';
 import { capFirst } from '../../utils/formatters';
-
+import { Switch } from '@headlessui/react';
 export interface SpiderOptions {
   maxDepth: string;
   pageLimit: string;
@@ -16,10 +16,12 @@ export interface SpiderOptions {
   excludePaths: string[];
   includePaths: string[];
   proxy_server: string | null;
+  ignore_rendering?: boolean;
 }
 
 interface BatchSpiderOptions {
   proxy_server: string | null;
+  ignore_rendering?: boolean;
 }
 
 interface SpiderOptionsFormProps {
@@ -324,8 +326,33 @@ export const SpiderOptionsForm: React.FC<SpiderOptionsFormProps> = ({ options, o
             </div>
           </OptionGroup>
         </div>
-
         <div>
+        <div className="space-y-1">
+  <div className="flex items-center justify-between">
+    <label htmlFor="ignore-rendering" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+      Ignore Rendering
+      <span className="text-gray-500 text-xs ml-1">(Faster, no JavaScript)</span>
+    </label>
+    <Switch
+      checked={options.ignore_rendering || false}
+      onChange={(checked) => onChange({ ignore_rendering: checked })}
+      className={`${
+        options.ignore_rendering ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-600'
+      } relative inline-flex h-6 w-11 items-center rounded-full`}
+    >
+      <span className="sr-only">Ignore Rendering</span>
+      <span
+        className={`${
+          options.ignore_rendering ? 'translate-x-6' : 'translate-x-1'
+        } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+      />
+    </Switch>
+  </div>
+  <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5 mb-1">
+    When enabled, uses faster HTTP requests without JavaScript rendering. Disable for JavaScript-heavy sites.
+  </p>
+</div>
+<br />
           <OptionGroup
             title="Proxy Settings"
             description="Configure proxy servers for your crawl requests"

@@ -23,6 +23,7 @@ OPTIONS_SCHEMA = {
                 "allowed_domains": {"type": "array", "items": {"type": "string"}},
                 "exclude_paths": {"type": "array", "items": {"type": "string"}},
                 "include_paths": {"type": "array", "items": {"type": "string"}},
+                "ignore_rendering": {"type": "boolean"},
             },
         },
         "map_options": {"type": "object", "properties": {}},

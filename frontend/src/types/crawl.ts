@@ -78,6 +78,7 @@ export interface SpiderOptions {
   exclude_paths?: string[];
   include_paths?: string[];
   proxy_server: string | null;
+  ignore_rendering?: boolean;
 }
 
 export interface CrawlOptions {

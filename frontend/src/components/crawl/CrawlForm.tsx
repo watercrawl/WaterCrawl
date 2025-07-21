@@ -66,6 +66,7 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ initialRequest, onCrawlEve
     excludePaths: [],
     includePaths: [],
     proxy_server: null,
+    ignore_rendering: false,
   });
 
   const [crawlStatus, setCrawlStatus] = useState<CrawlState>({
@@ -98,6 +99,7 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ initialRequest, onCrawlEve
           excludePaths: spider_options.exclude_paths || [],
           includePaths: spider_options.include_paths || [],
           proxy_server: spider_options.proxy_server,
+          ignore_rendering: spider_options.ignore_rendering,
         });
       }
 
@@ -149,6 +151,7 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ initialRequest, onCrawlEve
             exclude_paths: spiderOptions.excludePaths,
             include_paths: spiderOptions.includePaths,
             proxy_server: spiderOptions.proxy_server,
+            ignore_rendering: spiderOptions.ignore_rendering,
           }),
         },
         page_options: {

@@ -65,7 +65,8 @@ console.log(`Documents Found: ${crawl.number_of_documents}`);
             'page_limit': 100,
             'allowed_domains': ['example.com'],
             'exclude_paths': ['/private/*'],
-            'include_paths': ['/blog/*']
+            'include_paths': ['/blog/*'],
+            'ignore_rendering': False,
         },
         'page_options': {
             'exclude_tags': ['nav', 'footer', 'aside'],
@@ -97,7 +98,8 @@ console.log(`Documents Found: ${crawl.number_of_documents}`);
             "page_limit": 100,
             "allowed_domains": ["example.com"],
             "exclude_paths": ["/private/*"],
-            "include_paths": ["/blog/*"]
+            "include_paths": ["/blog/*"],
+            "ignore_rendering": False,
         },
         "page_options": {
             "exclude_tags": ["nav", "footer", "aside"],
@@ -129,7 +131,8 @@ console.log(`Documents Found: ${crawl.number_of_documents}`);
             page_limit: 100,
             allowed_domains: ['example.com'],
             exclude_paths: ['/private/*'],
-            include_paths: ['/blog/*']
+            include_paths: ['/blog/*'],
+            ignore_rendering: false,
         },
         page_options: {
             exclude_tags: ['nav', 'footer', 'aside'],

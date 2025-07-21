@@ -35,7 +35,8 @@ Start a new web crawling operation with specified options.
       "page_limit": 100,
       "allowed_domains": ["example.com"],
       "exclude_paths": ["/private/*"],
-      "include_paths": ["/blog/*"]
+      "include_paths": ["/blog/*"],
+      "ignore_rendering": false
     },
     "page_options": {
       "exclude_tags": ["nav", "footer", "aside"],
@@ -68,6 +69,7 @@ Start a new web crawling operation with specified options.
 | allowed_domains | array | List of allowed domains to crawl | [] |
 | exclude_paths | array | List of paths to exclude | [] |
 | include_paths | array | List of paths to include | [] |
+| ignore_rendering | boolean | Ignore rendering | false |
 
 ##### Page Options
 
@@ -145,7 +147,8 @@ Retrieve details of a specific crawl request.
       "page_limit": 100,
       "allowed_domains": ["example.com"],
       "exclude_paths": ["/private/*"],
-      "include_paths": ["/blog/*"]
+      "include_paths": ["/blog/*"],
+      "ignore_rendering": false
     },
     "page_options": {
       "exclude_tags": ["nav", "footer", "aside"],
@@ -335,3 +338,5 @@ All endpoints may return the following error responses:
 3. **Error Handling**: Always check the status of your crawl requests and implement proper error handling.
 4. **Content Extraction**: Use `exclude_tags` and `include_tags` to precisely target the content you need.
 5. **Domain Restrictions**: Use `allowed_domains` to prevent the crawler from accessing unintended domains.
+6. **Ignore Rendering**: Use `ignore_rendering` to prevent the crawler from rendering a JS-heavy page.
+
