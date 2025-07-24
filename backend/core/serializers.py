@@ -125,7 +125,7 @@ class BatchSpiderOptionSerializer(SpiderOptionSerializer):
     allowed_domains = serializers.HiddenField(default=[])
     exclude_paths = serializers.HiddenField(default=[])
     include_paths = serializers.HiddenField(default=[])
-    ignore_rendering = serializers.HiddenField(default=False)
+    ignore_rendering = serializers.HiddenField(default=True)
 
 
 class BatchCrawlOptionSerializer(CrawlOptionSerializer):

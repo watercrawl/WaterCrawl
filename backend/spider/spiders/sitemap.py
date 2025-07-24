@@ -116,7 +116,10 @@ class SitemapScrapper(Spider):
                 url=robots_url,
                 callback=self.parse_robots_txt,
                 errback=self.robots_txt_not_found,
-                meta={"skip_playwright": True, "original_url": self.helpers.base_url},
+                meta={
+                    "skip_playwright": getattr(self.helpers, 'ignore_rendering', False),
+                    "original_url": self.helpers.base_url
+                },
             )
 
     ############
@@ -413,7 +416,7 @@ class SitemapScrapper(Spider):
                 yield Request(
                     url=search_url,
                     callback=lambda resp: self.parse_google_search(resp, next_page),
-                    meta={"skip_playwright": True},
+                    meta={"skip_playwright": getattr(self.helpers, 'ignore_rendering', False)},
                 )
 
         except Exception as e:

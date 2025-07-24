@@ -18,8 +18,7 @@ class PlaywrightMiddleware:
         self.pubsub_service = pubsub_service
         self.playwright_server = playwright_server
         self.playwright_api_key = playwright_api_key
-        self.ignore_rendering = helpers.crawl_request.options.get("spider_options", {}).get("ignore_rendering", False)
-        self.is_active = bool(self.helpers.wait_time > 0) and not self.ignore_rendering
+        self.is_active = bool(helpers.wait_time > 0)
 
     @classmethod
     def from_crawler(cls, crawler):
@@ -35,12 +34,15 @@ class PlaywrightMiddleware:
 
     async def process_request(self, request, spider):
         if not self.is_active:
-            if self.ignore_rendering:
-                spider.logger.info("Skipping Playwright rendering as ignore_rendering is True")
-            else:
-                self.pubsub_service.send_feed(
-                    "Playwright middleware is not active", feed_type="warning"
-                )
+            self.pubsub_service.send_feed(
+                "Playwright middleware is not active", 
+                feed_type="warning"
+            )
+            return
+        spider_ignore_rendering = getattr(getattr(spider, 'helpers', None), 'ignore_rendering', False)    
+        if request.meta.get('skip_playwright', False) or spider_ignore_rendering:
+            reason = 'skip_playwright' if request.meta.get('skip_playwright') else 'ignore_rendering'
+            spider.logger.debug(f"Skipping Playwright rendering for {request.url} - {reason} is True")
             return
 
         # Check if the URL is a JavaScript file
