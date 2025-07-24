@@ -29,7 +29,8 @@ crawl = client.create_crawl_request(
         "page_limit": 100,
         "allowed_domains": ["example.com"],
         "exclude_paths": ["/private/*"],
-        "include_paths": ["/blog/*"]
+        "include_paths": ["/blog/*"],
+        "ignore_rendering": False,
     },
     page_options={
         "exclude_tags": ["nav", "footer", "aside"],
@@ -57,7 +58,8 @@ curl -X POST "https://api.watercrawl.dev/api/v1/core/crawl-requests/" \
         "page_limit": 100,
         "allowed_domains": ["example.com"],
         "exclude_paths": ["/private/*"],
-        "include_paths": ["/blog/*"]
+        "include_paths": ["/blog/*"],
+        "ignore_rendering": false,
       },
       "page_options": {
         "exclude_tags": ["nav", "footer", "aside"],
@@ -114,6 +116,7 @@ console.log(`Crawl started with ID: ${crawl.uuid}`);
 | allowed_domains | array | List of domains to crawl (support star pattern `*.example.com`) |
 | exclude_paths | array | URL patterns to exclude (support star pattern `blog/*`) |
 | include_paths | array | URL patterns to include (support star pattern `blog/*`) |
+| ignore_rendering | boolean | Ignore rendering | false |
 
 ### Page Options
 
@@ -141,7 +144,8 @@ console.log(`Crawl started with ID: ${crawl.uuid}`);
           'page_limit': 100,
           'allowed_domains': ['example.com'],
           'exclude_paths': ['/private/*'],
-          'include_paths': ['/blog/*']
+          'include_paths': ['/blog/*'],
+          'ignore_rendering': False,
       },
       'page_options': {
           'exclude_tags': ['nav', 'footer', 'aside'],
@@ -170,7 +174,8 @@ console.log(`Crawl started with ID: ${crawl.uuid}`);
       "page_limit": 100,
       "allowed_domains": ["example.com"],
       "exclude_paths": ["/private/*"],
-      "include_paths": ["/blog/*"]
+      "include_paths": ["/blog/*"],
+      "ignore_rendering": false,
     },
     "page_options": {
       "exclude_tags": ["nav", "footer", "aside"],
@@ -199,7 +204,8 @@ console.log(`Crawl started with ID: ${crawl.uuid}`);
           'page_limit': 100,
           'allowed_domains': ['example.com'],
           'exclude_paths': ['/private/*'],
-          'include_paths': ['/blog/*']
+          'include_paths': ['/blog/*'],
+          'ignore_rendering': false,
       },
       'page_options': {
           'exclude_tags': ['nav', 'footer', 'aside'],

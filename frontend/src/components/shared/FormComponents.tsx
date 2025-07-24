@@ -2,7 +2,7 @@ import React from 'react';
 import { QuestionMarkCircleIcon } from '@heroicons/react/24/outline';
 
 export const OptionGroup: React.FC<{
-  title: string;
+  title: React.ReactNode;
   subtitle?: React.ReactNode;
   description?: string;
   children: React.ReactNode;

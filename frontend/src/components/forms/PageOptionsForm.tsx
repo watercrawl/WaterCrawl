@@ -8,10 +8,25 @@ import { Switch } from '../shared/Switch';
 interface PageOptionsFormProps {
   options: PageOptions;
   onChange: (options: Partial<PageOptions>) => void;
+  ignoreRendering?: boolean;
 }
 
 
-export const PageOptionsForm: React.FC<PageOptionsFormProps> = ({ options, onChange }) => {
+export const PageOptionsForm: React.FC<PageOptionsFormProps> = ({ options, onChange, ignoreRendering = false }) => {
+  // Effect to disable PDF and screenshot actions when ignoreRendering is true
+  React.useEffect(() => {
+    if (ignoreRendering && options.actions && options.actions.length > 0) {
+      const actionsToRemove = ['pdf', 'screenshot'];
+      const hasActionsToRemove = options.actions.some(action => action && actionsToRemove.includes(action.type));
+      
+      if (hasActionsToRemove) {
+        const updatedActions = options.actions.filter(action => action && !actionsToRemove.includes(action.type));
+        onChange({ actions: updatedActions });
+      }
+    }
+  }, [ignoreRendering, options.actions, onChange]);
+  
+  console.log('ignoreRendering in PageOptionsForm:', ignoreRendering);
   const [newHeaderKey, setNewHeaderKey] = useState('');
   const [newHeaderValue, setNewHeaderValue] = useState('');
   const [newExcludeTag, setNewExcludeTag] = useState('');
@@ -222,6 +237,11 @@ export const PageOptionsForm: React.FC<PageOptionsFormProps> = ({ options, onCha
               <div className="flex items-center space-x-1 mb-1">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Wait Time
+                  {ignoreRendering && (
+                    <span className="ml-1 text-xs text-gray-500 dark:text-gray-400">
+                      (not used when ignore rendering is on)
+                    </span>
+                  )}
                 </label>
                 <InfoTooltip content="Time to wait in milliseconds for dynamic content to load before extracting content" />
               </div>
@@ -231,6 +251,7 @@ export const PageOptionsForm: React.FC<PageOptionsFormProps> = ({ options, onCha
                 onChange={(value) => handleInputChange('wait_time', value)}
                 type="number"
                 placeholder="1000"
+                disabled={ignoreRendering}
               />
             </div>
 
@@ -253,7 +274,16 @@ export const PageOptionsForm: React.FC<PageOptionsFormProps> = ({ options, onCha
         </OptionGroup>
 
         <OptionGroup
-          title="Actions"
+          title={
+            <div className="flex items-center space-x-1">
+              <span>Actions</span>
+              {ignoreRendering && (
+                <span className="text-xs text-gray-500 dark:text-gray-400">
+                  (not available when ignore rendering is on)
+                </span>
+              )}
+            </div>
+          }
           description="Additional actions to perform on each page"
         >
           <div className="space-y-4">
@@ -273,6 +303,7 @@ export const PageOptionsForm: React.FC<PageOptionsFormProps> = ({ options, onCha
                   });
                 }
               }}
+              disabled={ignoreRendering}
             />
             <Switch
               label="Take Screenshot"
@@ -290,6 +321,7 @@ export const PageOptionsForm: React.FC<PageOptionsFormProps> = ({ options, onCha
                   });
                 }
               }}
+              disabled={ignoreRendering}
             />
           </div>
         </OptionGroup>
@@ -306,6 +338,11 @@ export const PageOptionsForm: React.FC<PageOptionsFormProps> = ({ options, onCha
               <div className="flex items-center space-x-1 mb-1">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Accept Cookies Selector
+                  {ignoreRendering && (
+                    <span className="ml-1 text-xs text-gray-500 dark:text-gray-400">
+                      (not used when ignore rendering is on)
+                    </span>
+                  )}
                 </label>
                 <InfoTooltip content="CSS selector for the accept cookies button (e.g., #accept-cookies-btn, .cookie-accept)" />
               </div>
@@ -314,6 +351,7 @@ export const PageOptionsForm: React.FC<PageOptionsFormProps> = ({ options, onCha
                 value={options.accept_cookies_selector || ''}
                 onChange={(value) => handleInputChange('accept_cookies_selector', value)}
                 placeholder="#accept-cookies-btn"
+                disabled={ignoreRendering}
               />
             </div>
 

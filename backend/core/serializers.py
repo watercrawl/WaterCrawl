@@ -62,6 +62,7 @@ class SpiderOptionSerializer(serializers.Serializer):
         child=serializers.CharField(), required=False, default=[]
     )
     proxy_server = serializers.CharField(required=False, allow_null=True, default=None)
+    ignore_rendering = serializers.BooleanField(required=False, default=False)
 
     def validate_proxy_server(self, value):
         if (
