@@ -334,6 +334,7 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ initialRequest, onCrawlEve
         <PageOptionsForm
           options={pageOptions}
           onChange={handlePageOptionsChange}
+          ignoreRendering={spiderOptions.ignore_rendering}
         />
       )
     },

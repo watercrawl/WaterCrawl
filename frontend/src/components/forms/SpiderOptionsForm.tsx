@@ -103,6 +103,8 @@ export const SpiderOptionsForm: React.FC<SpiderOptionsFormProps> = ({ options, o
     onChange({ proxy_server: value || undefined });
   };
 
+  console.log('ignore_rendering in SpiderOptionsForm:', options.ignore_rendering);
+
   const getCategoryText = (category: string) => {
     if (category.toLowerCase() === 'premium') {
       return 'Premium (Just for paid plans)';
