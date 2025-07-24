@@ -45,7 +45,6 @@ Thank you for your interest in contributing to WaterCrawl! This document provide
     
     # Setup Poetry environment
     poetry env use python3.13
-    poetry self add poetry-plugin-shell
     poetry shell
     
     # Install dependencies
