@@ -29,8 +29,7 @@ crawl = client.create_crawl_request(
         "page_limit": 100,
         "allowed_domains": ["example.com"],
         "exclude_paths": ["/private/*"],
-        "include_paths": ["/blog/*"],
-        "ignore_rendering": False,
+        "include_paths": ["/blog/*"]
     },
     page_options={
         "exclude_tags": ["nav", "footer", "aside"],
@@ -38,7 +37,8 @@ crawl = client.create_crawl_request(
         "wait_time": 100,
         "include_html": False,
         "only_main_content": True,
-        "include_links": False
+        "include_links": False,
+        "ignore_rendering": False,
     }
 )
 
@@ -58,8 +58,7 @@ curl -X POST "https://api.watercrawl.dev/api/v1/core/crawl-requests/" \
         "page_limit": 100,
         "allowed_domains": ["example.com"],
         "exclude_paths": ["/private/*"],
-        "include_paths": ["/blog/*"],
-        "ignore_rendering": false,
+        "include_paths": ["/blog/*"]
       },
       "page_options": {
         "exclude_tags": ["nav", "footer", "aside"],
@@ -67,7 +66,8 @@ curl -X POST "https://api.watercrawl.dev/api/v1/core/crawl-requests/" \
         "wait_time": 100,
         "include_html": false,
         "only_main_content": true,
-        "include_links": false
+        "include_links": false,
+        "ignore_rendering": false
       }
     }
   }'
@@ -116,7 +116,6 @@ console.log(`Crawl started with ID: ${crawl.uuid}`);
 | allowed_domains | array | List of domains to crawl (support star pattern `*.example.com`) |
 | exclude_paths | array | URL patterns to exclude (support star pattern `blog/*`) |
 | include_paths | array | URL patterns to include (support star pattern `blog/*`) |
-| ignore_rendering | boolean | Ignore rendering | false |
 
 ### Page Options
 
@@ -128,6 +127,7 @@ console.log(`Crawl started with ID: ${crawl.uuid}`);
 | include_html | boolean | Include HTML in the extracted content |
 | only_main_content | boolean | Extract only the main content |
 | include_links | boolean | Include links in the extracted content |
+| ignore_rendering | boolean | Ignore rendering | false |
 
 ## Response Examples
 
@@ -144,8 +144,7 @@ console.log(`Crawl started with ID: ${crawl.uuid}`);
           'page_limit': 100,
           'allowed_domains': ['example.com'],
           'exclude_paths': ['/private/*'],
-          'include_paths': ['/blog/*'],
-          'ignore_rendering': False,
+          'include_paths': ['/blog/*']
       },
       'page_options': {
           'exclude_tags': ['nav', 'footer', 'aside'],
@@ -153,7 +152,8 @@ console.log(`Crawl started with ID: ${crawl.uuid}`);
           'wait_time': 100,
           'include_html': False,
           'only_main_content': True,
-          'include_links': False
+          'include_links': False,
+          'ignore_rendering': False
       }
   },
   'created_at': '2024-01-01T00:00:00Z',
@@ -174,8 +174,7 @@ console.log(`Crawl started with ID: ${crawl.uuid}`);
       "page_limit": 100,
       "allowed_domains": ["example.com"],
       "exclude_paths": ["/private/*"],
-      "include_paths": ["/blog/*"],
-      "ignore_rendering": false,
+      "include_paths": ["/blog/*"]
     },
     "page_options": {
       "exclude_tags": ["nav", "footer", "aside"],
@@ -183,7 +182,8 @@ console.log(`Crawl started with ID: ${crawl.uuid}`);
       "wait_time": 100,
       "include_html": false,
       "only_main_content": true,
-      "include_links": false
+      "include_links": false,
+      "ignore_rendering": false,
     }
   },
   "created_at": "2024-01-01T00:00:00Z",

@@ -13,6 +13,7 @@ OPTIONS_SCHEMA = {
                 "include_html": {"type": "boolean"},
                 "only_main_content": {"type": "boolean"},
                 "include_links": {"type": "boolean"},
+                "ignore_rendering": {"type": "boolean"},
             },
         },
         "spider_options": {
@@ -23,7 +24,6 @@ OPTIONS_SCHEMA = {
                 "allowed_domains": {"type": "array", "items": {"type": "string"}},
                 "exclude_paths": {"type": "array", "items": {"type": "string"}},
                 "include_paths": {"type": "array", "items": {"type": "string"}},
-                "ignore_rendering": {"type": "boolean"},
             },
         },
         "map_options": {"type": "object", "properties": {}},

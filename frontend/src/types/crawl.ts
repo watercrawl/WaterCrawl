@@ -69,6 +69,7 @@ export interface PageOptions {
   locale?: string;
   extra_headers?: Record<string, string>;
   actions?: Action[]
+  ignore_rendering?: boolean;
 }
 
 export interface SpiderOptions {
@@ -78,7 +79,6 @@ export interface SpiderOptions {
   exclude_paths?: string[];
   include_paths?: string[];
   proxy_server: string | null;
-  ignore_rendering?: boolean;
 }
 
 export interface CrawlOptions {
