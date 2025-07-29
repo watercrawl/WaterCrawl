@@ -56,7 +56,8 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ initialRequest, onCrawlEve
     accept_cookies_selector: '',
     locale: '',
     extra_headers: {},
-    actions: []
+    actions: [],
+    ignore_rendering: false,
   });
 
   const [spiderOptions, setSpiderOptions] = useState<SpiderOptions>({
@@ -66,7 +67,6 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ initialRequest, onCrawlEve
     excludePaths: [],
     includePaths: [],
     proxy_server: null,
-    ignore_rendering: false,
   });
 
   const [crawlStatus, setCrawlStatus] = useState<CrawlState>({
@@ -99,7 +99,6 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ initialRequest, onCrawlEve
           excludePaths: spider_options.exclude_paths || [],
           includePaths: spider_options.include_paths || [],
           proxy_server: spider_options.proxy_server,
-          ignore_rendering: spider_options.ignore_rendering,
         });
       }
 
@@ -116,7 +115,8 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ initialRequest, onCrawlEve
           accept_cookies_selector: page_options.accept_cookies_selector || '',
           locale: page_options.locale || '',
           extra_headers: page_options.extra_headers || {},
-          actions: page_options.actions || []
+          actions: page_options.actions || [],
+          ignore_rendering: page_options.ignore_rendering ?? false
         });
       }
 
@@ -151,7 +151,6 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ initialRequest, onCrawlEve
             exclude_paths: spiderOptions.excludePaths,
             include_paths: spiderOptions.includePaths,
             proxy_server: spiderOptions.proxy_server,
-            ignore_rendering: spiderOptions.ignore_rendering,
           }),
         },
         page_options: {
@@ -165,7 +164,8 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ initialRequest, onCrawlEve
           accept_cookies_selector: pageOptions.accept_cookies_selector || undefined,
           locale: pageOptions.locale || undefined,
           extra_headers: pageOptions.extra_headers,
-          actions: pageOptions.actions || []
+          actions: pageOptions.actions || [],
+          ignore_rendering: pageOptions.ignore_rendering ?? false
         },
         plugin_options: getActivePlugins(pluginOptions)
       }
@@ -334,7 +334,6 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ initialRequest, onCrawlEve
         <PageOptionsForm
           options={pageOptions}
           onChange={handlePageOptionsChange}
-          ignoreRendering={spiderOptions.ignore_rendering}
         />
       )
     },

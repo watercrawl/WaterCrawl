@@ -88,8 +88,7 @@ const request = await client.createCrawlRequest(
         page_limit: 1, // maximum number of pages to crawl
         allowed_domains: [], // allowed domains to crawl
         exclude_paths: [], // exclude paths
-        include_paths: [], // include paths
-        ignore_rendering: false, // ignore rendering
+        include_paths: [] // include paths
     },
     {
         exclude_tags: [], // exclude tags from the page
@@ -102,7 +101,8 @@ const request = await client.createCrawlRequest(
         accept_cookies_selector: null, // accept cookies selector e.g. "#accept-cookies"
         locale: "en-US", // locale
         extra_headers: {}, // extra headers e.g. {"Authorization": "Bearer your_token"}
-        actions: [] // actions to perform {"type": "screenshot"} or {"type": "pdf"}
+        actions: [], // actions to perform {"type": "screenshot"} or {"type": "pdf"}
+        ignore_rendering: false // ignore rendering
     },
     {}
 );

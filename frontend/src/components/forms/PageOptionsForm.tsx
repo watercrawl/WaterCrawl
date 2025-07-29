@@ -8,25 +8,22 @@ import { Switch } from '../shared/Switch';
 interface PageOptionsFormProps {
   options: PageOptions;
   onChange: (options: Partial<PageOptions>) => void;
-  ignoreRendering?: boolean;
 }
 
 
-export const PageOptionsForm: React.FC<PageOptionsFormProps> = ({ options, onChange, ignoreRendering = false }) => {
-  // Effect to disable PDF and screenshot actions when ignoreRendering is true
+export const PageOptionsForm: React.FC<PageOptionsFormProps> = ({ options, onChange }) => {
   React.useEffect(() => {
-    if (ignoreRendering && options.actions && options.actions.length > 0) {
+    if (options.ignore_rendering && options.actions && options.actions.length > 0) {
       const actionsToRemove = ['pdf', 'screenshot'];
       const hasActionsToRemove = options.actions.some(action => action && actionsToRemove.includes(action.type));
-      
+
       if (hasActionsToRemove) {
         const updatedActions = options.actions.filter(action => action && !actionsToRemove.includes(action.type));
         onChange({ actions: updatedActions });
       }
     }
-  }, [ignoreRendering, options.actions, onChange]);
-  
-  console.log('ignoreRendering in PageOptionsForm:', ignoreRendering);
+  }, [options.actions, onChange]);
+
   const [newHeaderKey, setNewHeaderKey] = useState('');
   const [newHeaderValue, setNewHeaderValue] = useState('');
   const [newExcludeTag, setNewExcludeTag] = useState('');
@@ -114,6 +111,12 @@ export const PageOptionsForm: React.FC<PageOptionsFormProps> = ({ options, onCha
               description="Extract and include all links found in the content"
               checked={options.include_links}
               onChange={(checked) => handleInputChange('include_links', checked)}
+            />
+            <Switch
+              label="Ignore Rendering"
+              description="When enabled, uses faster HTTP requests without JavaScript rendering. Disable for SSR sites."
+              checked={options.ignore_rendering || false}
+              onChange={(checked) => handleInputChange('ignore_rendering', checked)}
             />
           </div>
         </OptionGroup>
@@ -237,9 +240,9 @@ export const PageOptionsForm: React.FC<PageOptionsFormProps> = ({ options, onCha
               <div className="flex items-center space-x-1 mb-1">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Wait Time
-                  {ignoreRendering && (
-                    <span className="ml-1 text-xs text-gray-500 dark:text-gray-400">
-                      (not used when ignore rendering is on)
+                  {options.ignore_rendering && (
+                    <span className="ml-1 text-xs text-red-500 dark:text-gray-400">
+                      (not available when ignore rendering is on)
                     </span>
                   )}
                 </label>
@@ -247,11 +250,11 @@ export const PageOptionsForm: React.FC<PageOptionsFormProps> = ({ options, onCha
               </div>
               <FormInput
                 label=""
-                value={options.wait_time.toString()}
+                value={options.ignore_rendering ? '' : options.wait_time.toString()}
                 onChange={(value) => handleInputChange('wait_time', value)}
                 type="number"
-                placeholder="1000"
-                disabled={ignoreRendering}
+                placeholder={options.ignore_rendering ? 'Auto' : '1000'}
+                disabled={options.ignore_rendering}
               />
             </div>
 
@@ -277,8 +280,8 @@ export const PageOptionsForm: React.FC<PageOptionsFormProps> = ({ options, onCha
           title={
             <div className="flex items-center space-x-1">
               <span>Actions</span>
-              {ignoreRendering && (
-                <span className="text-xs text-gray-500 dark:text-gray-400">
+              {options.ignore_rendering && (
+                <span className="text-xs text-red-500 dark:text-gray-400">
                   (not available when ignore rendering is on)
                 </span>
               )}
@@ -303,7 +306,7 @@ export const PageOptionsForm: React.FC<PageOptionsFormProps> = ({ options, onCha
                   });
                 }
               }}
-              disabled={ignoreRendering}
+              disabled={options.ignore_rendering}
             />
             <Switch
               label="Take Screenshot"
@@ -321,7 +324,7 @@ export const PageOptionsForm: React.FC<PageOptionsFormProps> = ({ options, onCha
                   });
                 }
               }}
-              disabled={ignoreRendering}
+              disabled={options.ignore_rendering}
             />
           </div>
         </OptionGroup>
@@ -338,9 +341,9 @@ export const PageOptionsForm: React.FC<PageOptionsFormProps> = ({ options, onCha
               <div className="flex items-center space-x-1 mb-1">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Accept Cookies Selector
-                  {ignoreRendering && (
-                    <span className="ml-1 text-xs text-gray-500 dark:text-gray-400">
-                      (not used when ignore rendering is on)
+                  {options.ignore_rendering && (
+                    <span className="ml-1 text-xs text-red-500 dark:text-gray-400">
+                      (not available when ignore rendering is on)
                     </span>
                   )}
                 </label>
@@ -348,10 +351,10 @@ export const PageOptionsForm: React.FC<PageOptionsFormProps> = ({ options, onCha
               </div>
               <FormInput
                 label=""
-                value={options.accept_cookies_selector || ''}
+                value={options.ignore_rendering ? '' : options.accept_cookies_selector || ''}
                 onChange={(value) => handleInputChange('accept_cookies_selector', value)}
-                placeholder="#accept-cookies-btn"
-                disabled={ignoreRendering}
+                placeholder={options.ignore_rendering ? "-" : "#accept-cookies-btn"}
+                disabled={options.ignore_rendering}
               />
             </div>
 

@@ -86,8 +86,7 @@ request = client.create_crawl_request(
         "page_limit": 1, # maximum number of pages to crawl
         "allowed_domains": [], # allowed domains to crawl
         "exclude_paths": [], # exclude paths
-        "include_paths": [], # include paths
-        "ignore_rendering": False # ignore rendering
+        "include_paths": [] # include paths
     },
     page_options={
         "exclude_tags": [], # exclude tags from the page
@@ -100,7 +99,8 @@ request = client.create_crawl_request(
         "accept_cookies_selector": None, # accept cookies selector e.g. "#accept-cookies"
         "locale": "en-US", # locale
         "extra_headers": {}, # extra headers e.g. {"Authorization": "Bearer your_token"}
-        "actions": [] # actions to perform {"type": "screenshot"} or {"type": "pdf"}
+        "actions": [], # actions to perform {"type": "screenshot"} or {"type": "pdf"}
+        "ignore_rendering": False # ignore rendering
     },
     plugin_options={}
 )

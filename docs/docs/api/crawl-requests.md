@@ -36,7 +36,6 @@ Start a new web crawling operation with specified options.
       "allowed_domains": ["example.com"],
       "exclude_paths": ["/private/*"],
       "include_paths": ["/blog/*"],
-      "ignore_rendering": false
     },
     "page_options": {
       "exclude_tags": ["nav", "footer", "aside"],
@@ -44,7 +43,8 @@ Start a new web crawling operation with specified options.
       "wait_time": 100,
       "include_html": false,
       "only_main_content": true,
-      "include_links": false
+      "include_links": false,
+      "ignore_rendering": false
     },
     "plugin_options": {
       // Optional plugin-specific configuration
@@ -69,7 +69,6 @@ Start a new web crawling operation with specified options.
 | allowed_domains | array | List of allowed domains to crawl | [] |
 | exclude_paths | array | List of paths to exclude | [] |
 | include_paths | array | List of paths to include | [] |
-| ignore_rendering | boolean | Ignore rendering | false |
 
 ##### Page Options
 
@@ -81,6 +80,8 @@ Start a new web crawling operation with specified options.
 | include_html | boolean | Include HTML in the extracted content |
 | only_main_content | boolean | Extract only the main content |
 | include_links | boolean | Include links in the extracted content |
+| ignore_rendering | boolean | Ignore rendering | false |
+
 
 ### 2. List Crawl Requests
 
@@ -147,8 +148,7 @@ Retrieve details of a specific crawl request.
       "page_limit": 100,
       "allowed_domains": ["example.com"],
       "exclude_paths": ["/private/*"],
-      "include_paths": ["/blog/*"],
-      "ignore_rendering": false
+      "include_paths": ["/blog/*"]
     },
     "page_options": {
       "exclude_tags": ["nav", "footer", "aside"],
@@ -156,7 +156,8 @@ Retrieve details of a specific crawl request.
       "wait_time": 100,
       "include_html": false,
       "only_main_content": true,
-      "include_links": false
+      "include_links": false,
+      "ignore_rendering": false
     },
     "plugin_options": {
       // Optional plugin-specific configuration

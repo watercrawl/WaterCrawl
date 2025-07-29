@@ -83,8 +83,7 @@ $request = $client->createCrawlRequest(
         'page_limit' => 1, // maximum number of pages to crawl
         'allowed_domains' => [], // allowed domains to crawl
         'exclude_paths' => [], // exclude paths
-        'include_paths' => [], // include paths
-        'ignore_rendering' => false // ignore rendering
+        'include_paths' => [] // include paths
     ],
     [
         'exclude_tags' => [], // exclude tags from the page
@@ -97,7 +96,9 @@ $request = $client->createCrawlRequest(
         'accept_cookies_selector' => null, // accept cookies selector
         'locale' => "en-US", // locale
         'extra_headers' => [], // extra headers
-        'actions' => [] // actions to perform
+        'actions' => [], // actions to perform
+        'ignore_rendering' => false // ignore rendering
+
     ],
     [] // plugin options
 );

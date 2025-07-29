@@ -65,8 +65,7 @@ console.log(`Documents Found: ${crawl.number_of_documents}`);
             'page_limit': 100,
             'allowed_domains': ['example.com'],
             'exclude_paths': ['/private/*'],
-            'include_paths': ['/blog/*'],
-            'ignore_rendering': False,
+            'include_paths': ['/blog/*']
         },
         'page_options': {
             'exclude_tags': ['nav', 'footer', 'aside'],
@@ -74,7 +73,8 @@ console.log(`Documents Found: ${crawl.number_of_documents}`);
             'wait_time': 100,
             'include_html': False,
             'only_main_content': True,
-            'include_links': False
+            'include_links': False,
+            'ignore_rendering': False,
         },
         'plugin_options': {
             // Optional plugin-specific configuration
@@ -98,8 +98,7 @@ console.log(`Documents Found: ${crawl.number_of_documents}`);
             "page_limit": 100,
             "allowed_domains": ["example.com"],
             "exclude_paths": ["/private/*"],
-            "include_paths": ["/blog/*"],
-            "ignore_rendering": False,
+            "include_paths": ["/blog/*"]
         },
         "page_options": {
             "exclude_tags": ["nav", "footer", "aside"],
@@ -107,7 +106,8 @@ console.log(`Documents Found: ${crawl.number_of_documents}`);
             "wait_time": 100,
             "include_html": false,
             "only_main_content": true,
-            "include_links": false
+            "include_links": false,
+            "ignore_rendering": False
         },
         "plugin_options": {
             // Optional plugin-specific configuration
@@ -131,8 +131,7 @@ console.log(`Documents Found: ${crawl.number_of_documents}`);
             page_limit: 100,
             allowed_domains: ['example.com'],
             exclude_paths: ['/private/*'],
-            include_paths: ['/blog/*'],
-            ignore_rendering: false,
+            include_paths: ['/blog/*']
         },
         page_options: {
             exclude_tags: ['nav', 'footer', 'aside'],
@@ -140,7 +139,8 @@ console.log(`Documents Found: ${crawl.number_of_documents}`);
             wait_time: 100,
             include_html: false,
             only_main_content: true,
-            include_links: false
+            include_links: false,
+            ignore_rendering: false
         },
         plugin_options: {
             // Optional plugin-specific configuration
