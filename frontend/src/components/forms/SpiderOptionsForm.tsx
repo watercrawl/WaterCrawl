@@ -8,7 +8,6 @@ import { UsableProxy } from '../../types/proxy';
 import ComboboxComponent from '../shared/ComboboxComponent';
 import { useTeam } from '../../contexts/TeamContext';
 import { capFirst } from '../../utils/formatters';
-
 export interface SpiderOptions {
   maxDepth: string;
   pageLimit: string;
@@ -324,7 +323,6 @@ export const SpiderOptionsForm: React.FC<SpiderOptionsFormProps> = ({ options, o
             </div>
           </OptionGroup>
         </div>
-
         <div>
           <OptionGroup
             title="Proxy Settings"

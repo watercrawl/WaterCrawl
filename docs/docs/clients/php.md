@@ -96,7 +96,9 @@ $request = $client->createCrawlRequest(
         'accept_cookies_selector' => null, // accept cookies selector
         'locale' => "en-US", // locale
         'extra_headers' => [], // extra headers
-        'actions' => [] // actions to perform
+        'actions' => [], // actions to perform
+        'ignore_rendering' => false // ignore rendering
+
     ],
     [] // plugin options
 );

@@ -56,7 +56,8 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ initialRequest, onCrawlEve
     accept_cookies_selector: '',
     locale: '',
     extra_headers: {},
-    actions: []
+    actions: [],
+    ignore_rendering: false,
   });
 
   const [spiderOptions, setSpiderOptions] = useState<SpiderOptions>({
@@ -114,7 +115,8 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ initialRequest, onCrawlEve
           accept_cookies_selector: page_options.accept_cookies_selector || '',
           locale: page_options.locale || '',
           extra_headers: page_options.extra_headers || {},
-          actions: page_options.actions || []
+          actions: page_options.actions || [],
+          ignore_rendering: page_options.ignore_rendering ?? false
         });
       }
 
@@ -162,7 +164,8 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ initialRequest, onCrawlEve
           accept_cookies_selector: pageOptions.accept_cookies_selector || undefined,
           locale: pageOptions.locale || undefined,
           extra_headers: pageOptions.extra_headers,
-          actions: pageOptions.actions || []
+          actions: pageOptions.actions || [],
+          ignore_rendering: pageOptions.ignore_rendering ?? false
         },
         plugin_options: getActivePlugins(pluginOptions)
       }

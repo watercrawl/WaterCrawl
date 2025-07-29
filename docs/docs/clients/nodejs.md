@@ -101,7 +101,8 @@ const request = await client.createCrawlRequest(
         accept_cookies_selector: null, // accept cookies selector e.g. "#accept-cookies"
         locale: "en-US", // locale
         extra_headers: {}, // extra headers e.g. {"Authorization": "Bearer your_token"}
-        actions: [] // actions to perform {"type": "screenshot"} or {"type": "pdf"}
+        actions: [], // actions to perform {"type": "screenshot"} or {"type": "pdf"}
+        ignore_rendering: false // ignore rendering
     },
     {}
 );
