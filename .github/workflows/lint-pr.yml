@@ -18,8 +18,7 @@ jobs:
       - name: Checkout PR branch safely
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.head_ref || github.ref }}
-          fetch-depth: 1
+          persist-credentials: false
       
       - name: Set up Python
         uses: actions/setup-python@v4
