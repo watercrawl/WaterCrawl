@@ -2,7 +2,7 @@ import os
 import sys
 import django
 from django.conf import settings
-
+import requests
 from core.utils import get_active_plugins
 
 sys.path.append(os.path.dirname(os.path.abspath(".")))

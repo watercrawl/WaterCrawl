@@ -5,6 +5,8 @@ import { useCallback } from 'react';
 import { InstallPage } from '../pages/custom/InstallPage';
 import { ErrorPage } from '../pages/custom/ErrorPage';
 import { LoadingPage } from '../pages/custom/LoadingPage';
+src/contexts/SettingsProvider.tsx
+src/contexts/SettingsProvider.tsx
 
 interface SettingsContextType {
     settings: Settings | null;
