@@ -15,11 +15,17 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout PR branch safely
+      - name: Checkout PR branch (local repo)
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Checkout PR branch (external fork)
+        if: github.event.pull_request.head.repo.full_name != github.repository
         uses: actions/checkout@v4
         with:
           persist-credentials: false
-          token: ${{ github.event.pull_request.head.repo.full_name == github.repository && secrets.GITHUB_TOKEN || '' }}
       
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -91,11 +97,17 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout PR branch safely
+      - name: Checkout PR branch (local repo)
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Checkout PR branch (external fork)
+        if: github.event.pull_request.head.repo.full_name != github.repository
         uses: actions/checkout@v4
         with:
           persist-credentials: false
-          token: ${{ github.event.pull_request.head.repo.full_name == github.repository && secrets.GITHUB_TOKEN || '' }}
       
       - name: Install pnpm
         uses: pnpm/action-setup@v2
