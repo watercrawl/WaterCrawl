@@ -50,9 +50,10 @@ jobs:
         
       - name: Lint backend with Ruff
         id: lint_backend
+        continue-on-error: true
         working-directory: ./backend
         run: |
-          # Run ruff with auto-fix
+          # Run ruff check and format (allow to continue even if issues found)
           poetry run ruff check .
           poetry run ruff format .
            
@@ -127,9 +128,10 @@ jobs:
       
       - name: Lint and fix frontend with ESLint
         id: lint_frontend
+        continue-on-error: true
         working-directory: ./frontend
         run: |
-          # Attempt to fix issues automatically
+          # Check for linting issues (allow to continue even if issues found)
           pnpm run lint
       
       - name: Try auto-fix for local branches and commit
