@@ -52,6 +52,7 @@ class SiteScrapper(Spider):
                 errback=self.crawl_error,
                 meta={
                     "proxy_object": self.crawler_service.proxy_object,
+                    "skip_playwright": self.helpers.ignore_rendering,
                 },
             )
 
@@ -89,6 +90,7 @@ class SiteScrapper(Spider):
                     errback=self.crawl_error,
                     meta={
                         "proxy_object": self.crawler_service.proxy_object,
+                        "skip_playwright": self.helpers.ignore_rendering,
                     },
                 )
 

@@ -73,7 +73,8 @@ console.log(`Documents Found: ${crawl.number_of_documents}`);
             'wait_time': 100,
             'include_html': False,
             'only_main_content': True,
-            'include_links': False
+            'include_links': False,
+            'ignore_rendering': False,
         },
         'plugin_options': {
             // Optional plugin-specific configuration
@@ -105,7 +106,8 @@ console.log(`Documents Found: ${crawl.number_of_documents}`);
             "wait_time": 100,
             "include_html": false,
             "only_main_content": true,
-            "include_links": false
+            "include_links": false,
+            "ignore_rendering": False
         },
         "plugin_options": {
             // Optional plugin-specific configuration
@@ -137,7 +139,8 @@ console.log(`Documents Found: ${crawl.number_of_documents}`);
             wait_time: 100,
             include_html: false,
             only_main_content: true,
-            include_links: false
+            include_links: false,
+            ignore_rendering: false
         },
         plugin_options: {
             // Optional plugin-specific configuration

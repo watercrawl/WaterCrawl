@@ -13,6 +13,7 @@ OPTIONS_SCHEMA = {
                 "include_html": {"type": "boolean"},
                 "only_main_content": {"type": "boolean"},
                 "include_links": {"type": "boolean"},
+                "ignore_rendering": {"type": "boolean"},
             },
         },
         "spider_options": {

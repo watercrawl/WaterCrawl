@@ -233,6 +233,12 @@ class CrawlHelpers(BaseHelpers):
             plugin = load_class_by_name(item)
             yield plugin
 
+    @cached_property
+    def ignore_rendering(self):
+        return self.crawl_request.options.get("page_options", {}).get(
+            "ignore_rendering", False
+        )
+
 
 class SearchHelpers(BaseHelpers):
     def __init__(self, search_request: SearchRequest):
@@ -726,6 +732,7 @@ class CrawlerService:
             "locale": "en-US",
             "extra_headers": {},
             "actions": [],
+            "ignore_rendering": False,
         }
 
         # Merge with provided options (user overrides default)

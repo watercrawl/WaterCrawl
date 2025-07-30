@@ -103,3 +103,5 @@ Search requests have the same status values:
 3. **Error Handling**: Always check the status of your crawl requests and implement proper error handling.
 4. **Content Extraction**: Use `exclude_tags` and `include_tags` to precisely target the content you need.
 5. **Domain Restrictions**: Use `allowed_domains` to prevent the crawler from accessing unintended domains.
+6. **Ignore Rendering**: Use `ignore_rendering` to prevent the crawler from rendering a JS-heavy page.
+

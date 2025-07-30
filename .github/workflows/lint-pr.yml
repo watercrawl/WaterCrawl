@@ -15,11 +15,17 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout PR branch (local repo)
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        uses: actions/checkout@v4
         with:
-          ref: ${{ github.head_ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Checkout PR branch (external fork)
+        if: github.event.pull_request.head.repo.full_name != github.repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -43,29 +49,44 @@ jobs:
           poetry install --no-root --sync --no-cache
         
       - name: Lint backend with Ruff
+        id: lint_backend
+        continue-on-error: true
         working-directory: ./backend
         run: |
-          # Run ruff with auto-fix
-          poetry run ruff check --fix .
-          
-      - name: Check for changes and commit
+          # Run ruff check and format (allow to continue even if issues found)
+          poetry run ruff check .
+          poetry run ruff format .
+           
+      - name: Try auto-fix for local branches and commit
+        if: github.event.pull_request.head.repo.full_name == github.repository && steps.lint_backend.outcome != 'success'
+        working-directory: ./backend
         run: |
+          poetry run ruff check --fix .
           git config --global user.name "GitHub Actions Bot"
           git config --global user.email "actions@github.com"
           
-          # Exclude lockfiles from being committed
-          git restore --staged **/pnpm-lock.yaml
+          # Exclude lockfiles from being committed (if they exist)
+          git restore --staged **/pnpm-lock.yaml 2>/dev/null || true
           
           # Check if there are any changes
           if [[ -n "$(git status --porcelain)" ]]; then
             git add .
             git commit -m "Auto-fix: Backend linting issues"
-            git push
+            git push origin HEAD
             echo "Changes committed and pushed to source branch"
           else
             echo "No changes to commit"
           fi
-          
+      
+      - name: Fail if linting issues for remote branches
+        if: github.event.pull_request.head.repo.full_name != github.repository && steps.lint_backend.outcome != 'success'
+        run: |
+          echo "Linting issues found in remote branch"
+          echo "Please fix the linting issues and push the changes to the source branch with following command:"
+          echo "cd backend && poetry run ruff check --fix . && poetry run ruff format ."
+          exit 1
+        
+      
       - name: Verify all issues are fixed
         working-directory: ./backend
         run: |
@@ -77,11 +98,17 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout PR branch (local repo)
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        uses: actions/checkout@v4
         with:
-          ref: ${{ github.head_ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Checkout PR branch (external fork)
+        if: github.event.pull_request.head.repo.full_name != github.repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       
       - name: Install pnpm
         uses: pnpm/action-setup@v2
@@ -100,28 +127,42 @@ jobs:
         run: pnpm install
       
       - name: Lint and fix frontend with ESLint
+        id: lint_frontend
+        continue-on-error: true
         working-directory: ./frontend
         run: |
-          # Attempt to fix issues automatically
-          pnpm run lint:fix
+          # Check for linting issues (allow to continue even if issues found)
+          pnpm run lint
       
-      - name: Check for changes and commit
+      - name: Try auto-fix for local branches and commit
+        if: github.event.pull_request.head.repo.full_name == github.repository && steps.lint_frontend.outcome != 'success'
+        working-directory: ./frontend
         run: |
+          pnpm run lint:fix
           git config --global user.name "GitHub Actions Bot"
           git config --global user.email "actions@github.com"
           
-          # Exclude lockfiles from being committed
-          git restore --staged **/pnpm-lock.yaml
+          # Exclude lockfiles from being committed (if they exist)
+          git restore --staged **/pnpm-lock.yaml 2>/dev/null || true
           
           # Check if there are any changes
           if [[ -n "$(git status --porcelain)" ]]; then
             git add .
             git commit -m "Auto-fix: Frontend linting issues"
-            git push
+            git push origin HEAD
             echo "Changes committed and pushed to source branch"
           else
             echo "No changes to commit"
           fi
+      
+      - name: Fail if linting issues for remote branches
+        if: github.event.pull_request.head.repo.full_name != github.repository && steps.lint_frontend.outcome != 'success'
+        run: |
+          echo "Linting issues found in remote branch"
+          echo "Please fix the linting issues and push the changes to the source branch with following command:"
+          echo "cd frontend && pnpm run lint:fix"
+          exit 1
+        
       
       - name: Verify all issues are fixed
         working-directory: ./frontend

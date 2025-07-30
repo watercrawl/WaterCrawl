@@ -69,6 +69,7 @@ export interface PageOptions {
   locale?: string;
   extra_headers?: Record<string, string>;
   actions?: Action[]
+  ignore_rendering?: boolean;
 }
 
 export interface SpiderOptions {

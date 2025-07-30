@@ -47,6 +47,7 @@ class PageOptionSerializer(serializers.Serializer):
     )
     extra_headers = serializers.JSONField(required=False, default=dict)
     actions = ActionSerializer(required=False, many=True, default=[])
+    ignore_rendering = serializers.BooleanField(required=False, default=False)
 
 
 class SpiderOptionSerializer(serializers.Serializer):
