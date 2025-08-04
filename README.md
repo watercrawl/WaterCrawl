@@ -1,4 +1,4 @@
-![Water Crawl](https://raw.githubusercontent.com/watercrawl/WaterCrawl/refs/heads/main/assets/banner.png)
+![Water Crawl](https://raw.githubusercontent.com/watercrawl/WaterCrawl/5bb91dcb07a619469688372444e27dc3deab185b/assets/banner.png)
 
 <div align="center">
 
