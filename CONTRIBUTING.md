@@ -61,9 +61,6 @@ Thank you for your interest in contributing to WaterCrawl! This document provide
     
     # Create a superuser (if needed)
     python manage.py createsuperuser
-    
-    # Start development server
-    python manage.py runserver
     ```
 
 5. Set up frontend:
@@ -78,12 +75,29 @@ Thank you for your interest in contributing to WaterCrawl! This document provide
     cp .env.example .env
     # Edit .env to point to your local backend
     # Example: API_BASE_URL=http://localhost:8000/api
-    
-    # Start development server
+    ```
+
+6. Start the development servers (in separate terminal windows):
+
+    - Backend:
+    ```bash
+    cd ../backend
+    poetry run python manage.py runserver
+    ```
+
+    - Backend Celery:
+    ```bash
+    cd ../backend
+    poetry run celery -A watercrawl worker -B -l info
+    ```
+
+    - Frontend:
+    ```bash
+    cd ../frontend
     pnpm run dev
     ```
 
-6. Access the application:
+7. Access the application:
     - Frontend: http://localhost:5173
     - Backend API: http://localhost:8000/api
     - API Documentation: http://localhost:8000/api/schema/swagger-ui/
