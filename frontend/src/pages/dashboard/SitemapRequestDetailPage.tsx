@@ -17,6 +17,7 @@ import { CrawlStatus } from '../../types/crawl';
 import { SitemapEvent, SitemapRequest } from '../../types/sitemap';
 import { SitemapResultDisplay } from '../../components/sitemap/SitemapResultDisplay';
 import { SitemapDownloadFormatSelector } from '../../components/shared/SitemapDownloadFormatSelector';
+import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
 
 const SitemapRequestDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -25,6 +26,15 @@ const SitemapRequestDetailPage: React.FC = () => {
   const [sitemapRequest, setSitemapRequest] = useState<SitemapRequest | null>(null);
   const [showParameters, setShowParameters] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const { setItems } = useBreadcrumbs();
+
+  useEffect(() => {
+    setItems([
+      { label: 'Dashboard', href: '/dashboard'},
+      { label: 'Sitemap Logs', href: '/dashboard/logs/sitemaps' },
+      { label: 'Sitemap Request', href: `/dashboard/logs/sitemaps/${id}`, current: true },
+    ]);
+  }, [setItems, id]);
 
   useEffect(() => {
     const fetchSitemapRequest = async () => {

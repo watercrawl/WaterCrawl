@@ -1,7 +1,8 @@
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
-from plan.models import Plan, PlanFeature, Subscription
+from plan.models import Plan, PlanFeature, Subscription, UsageHistory
+from user.models import TeamAPIKey
 
 
 class PlanFeatureSerializer(serializers.ModelSerializer):
@@ -87,8 +88,38 @@ class TeamPlanSerializer(serializers.Serializer):
     remaining_daily_page_credit = serializers.IntegerField()
     max_depth = serializers.IntegerField()
     max_concurrent_crawl = serializers.IntegerField()
+    number_of_knowledge_bases = serializers.IntegerField()
+    number_of_each_knowledge_base_documents = serializers.IntegerField()
+    knowledge_base_retrival_rate_limit = serializers.CharField()
     start_at = serializers.DateTimeField()
     current_period_start_at = serializers.DateTimeField()
     current_period_end_at = serializers.DateTimeField()
     cancel_at = serializers.DateTimeField()
     is_default = serializers.BooleanField()
+
+
+class TeamAPIKeySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TeamAPIKey
+        fields = ["uuid", "name"]
+
+
+class UsageHistorySerializer(serializers.ModelSerializer):
+    content_type = serializers.SerializerMethodField()
+    team_api_key = TeamAPIKeySerializer()
+
+    class Meta:
+        model = UsageHistory
+        fields = [
+            "uuid",
+            "content_type",
+            "content_id",
+            "requested_page_credit",
+            "used_page_credit",
+            "team_api_key",
+            "created_at",
+            "updated_at",
+        ]
+
+    def get_content_type(self, obj: UsageHistory):
+        return "{}.{}".format(obj.content_type.app_label, obj.content_type.model)

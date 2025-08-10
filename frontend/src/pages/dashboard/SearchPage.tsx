@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { SearchForm } from '../../components/search/SearchForm';
 import { SearchOptions } from '../../types/search';
 import { useSettings } from '../../contexts/SettingsProvider';
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
+import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
 
 interface LocationState {
   initialQuery?: string;
@@ -16,6 +17,13 @@ const SearchPage: React.FC = () => {
   const { initialQuery, initialNumResults, initialSearchOptions } = (location.state as LocationState) || {};
 
   const { settings } = useSettings();
+  const { setItems } = useBreadcrumbs();
+  useEffect(() => {
+    setItems([
+      { label: 'Dashboard', href: '/dashboard'},
+      { label: 'Search Playground', href: '/dashboard/search', current: true },
+    ]);
+  }, [setItems]);
 
   return (
     <div className="px-8 py-6 space-y-6">

@@ -11,6 +11,7 @@ import { formatDuration } from '../../utils/formatters';
 import { SitemapRequest, SitemapStatus } from '../../types/sitemap';
 import { SitemapRequestCard, SitemapStatusBadge } from '../../components/shared/SitemapRequestCard';
 import { SitemapDownloadFormatSelector } from '../../components/shared/SitemapDownloadFormatSelector';
+import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
 
 // Status options for filtering
 const STATUS_OPTIONS = [
@@ -30,6 +31,15 @@ const SitemapLogsPage: React.FC = () => {
   const [selectedStatus, setSelectedStatus] = useState<string>('');
 
   const isTabletOrMobile = useIsTabletOrMobile();
+
+  const { setItems } = useBreadcrumbs();
+
+  useEffect(() => {
+    setItems([
+      { label: 'Dashboard', href: '/dashboard'},
+      { label: 'Sitemap Logs', href: '/dashboard/logs/sitemaps', current: true },
+    ]);
+  }, [setItems]);
 
   // Initialize selectedStatus from URL params
   useEffect(() => {

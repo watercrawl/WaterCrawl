@@ -1,24 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronRightIcon, HomeIcon } from '@heroicons/react/24/outline';
-
-export interface BreadcrumbItem {
-  label: string;
-  href?: string;
-  current?: boolean;
-}
+import { ChevronRightIcon, HomeIcon } from '@heroicons/react/20/solid';
+import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
 
 interface BreadcrumbsProps {
-  items: BreadcrumbItem[];
   homeHref?: string;
   className?: string;
 }
 
 const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ 
-  items, 
   homeHref = '/dashboard', 
   className = '' 
 }) => {
+  const { items } = useBreadcrumbs();
   // Function to render breadcrumb items with responsive design
   const renderItems = () => {
     // For very small screens, only show the last two breadcrumbs
