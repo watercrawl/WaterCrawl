@@ -24,9 +24,11 @@ from drf_spectacular.views import (
     SpectacularRedocView,
 )
 
-from common.views import TeamSchemaView
+from common.views import TeamSchemaView, home_page
 
 urlpatterns = [
+
+    path("", home_page),
     path("admin/", admin.site.urls),
     # YOUR PATTERNS
     path("api/schema/team/", TeamSchemaView.as_view(), name="team_schema"),

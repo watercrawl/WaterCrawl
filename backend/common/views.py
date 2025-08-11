@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
 from drf_spectacular.utils import extend_schema_view, extend_schema
 from drf_spectacular.views import SpectacularAPIView
@@ -85,3 +86,7 @@ class TeamSchemaView(SpectacularAPIView):
                 }
             }
         }
+
+
+def home_page(request):
+    return render(request, "common/home.html")
