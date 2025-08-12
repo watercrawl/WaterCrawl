@@ -18,6 +18,7 @@ import {
 } from '@heroicons/react/24/outline';
 import SpiderIcon from '../../components/icons/SpiderIcon';
 import toast from 'react-hot-toast';
+import { useSettings } from '../../contexts/SettingsProvider';
 
 // Content type options for filtering
 const CONTENT_TYPE_OPTIONS = [
@@ -145,6 +146,7 @@ const UsageHistoryPage: React.FC = () => {
     const [selectedContentType, setSelectedContentType] = useState<string>('');
     const [selectedApiKey, setSelectedApiKey] = useState<string>('');
     const { setItems } = useBreadcrumbs();
+    const { settings } = useSettings();
 
     const isTabletOrMobile = useIsTabletOrMobile();
 
@@ -370,17 +372,21 @@ const UsageHistoryPage: React.FC = () => {
                                                                 <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
                                                                     Content ID
                                                                 </th>
-                                                                <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
-                                                                    Requested Credits
-                                                                </th>
-                                                                <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
-                                                                    Used Credits
-                                                                </th>
+                                                                {settings?.is_enterprise_mode_active && (
+                                                                    <>
+                                                                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
+                                                                            Requested Credits
+                                                                        </th>
+                                                                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
+                                                                            Used Credits
+                                                                        </th>
+                                                                    </>
+                                                                )}
                                                                 <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
                                                                     API Key
                                                                 </th>
                                                                 <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
-                                                                    Created
+                                                                    Requested At
                                                                 </th>
                                                             </tr>
                                                         </thead>
@@ -411,12 +417,17 @@ const UsageHistoryPage: React.FC = () => {
                                                                             </span>
                                                                         </div>
                                                                     </td>
-                                                                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-900 dark:text-white">
-                                                                        {usage.requested_page_credit}
-                                                                    </td>
-                                                                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-900 dark:text-white">
-                                                                        {usage.used_page_credit}
-                                                                    </td>
+                                                                    {settings?.is_enterprise_mode_active && (
+                                                                        <>
+                                                                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-900 dark:text-white">
+                                                                                {usage.requested_page_credit}
+                                                                            </td>
+                                                                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-900 dark:text-white">
+                                                                                {usage.used_page_credit}
+                                                                            </td>
+                                                                        </>
+                                                                    )}
+
                                                                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
                                                                         {usage.team_api_key?.name || 'Web Interface'}
                                                                     </td>

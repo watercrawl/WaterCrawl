@@ -20,6 +20,7 @@ from langchain_core.vectorstores import VectorStore
 from langchain_text_splitters import TextSplitter
 from opensearchpy import OpenSearch
 
+from common.encryption import decrypt_key
 from knowledge_base.interfaces import (
     BaseSummarizer,
     BaseKeywordExtractor,
@@ -90,7 +91,9 @@ class EmbedderFactory(BaseFactory):
     def create_openai_embedding(self, knowledge_base: KnowledgeBase) -> Embeddings:
         return OpenAIEmbeddings(
             model=knowledge_base.embedding_model.key,
-            openai_api_key=knowledge_base.embedding_provider_config.api_key,
+            openai_api_key=decrypt_key(
+                knowledge_base.embedding_provider_config.api_key
+            ),
             openai_api_base=knowledge_base.embedding_provider_config.base_url
             or "https://api.openai.com/v1",
         )
@@ -105,7 +108,7 @@ class EmbedderFactory(BaseFactory):
             )
         return WaterCrawlEmbeddings(
             model=knowledge_base.embedding_model.key,
-            api_key=knowledge_base.embedding_provider_config.api_key,
+            api_key=decrypt_key(knowledge_base.embedding_provider_config.api_key),
             base_url=knowledge_base.embedding_provider_config.base_url,
         )
 
@@ -124,13 +127,21 @@ class VectorStoreFactory(BaseFactory):
     """Factory for creating vector stores."""
 
     @classmethod
+    def create_opensearch_client(cls) -> OpenSearch:
+        # Create OpenSearch connection
+        opensearch_url = settings.KB_OPENSEARCH_URL
+        return OpenSearch(
+            hosts=opensearch_url,
+            http_compress=True,
+            use_ssl=False,
+            verify_certs=False,
+        )
+
+    @classmethod
     def create_opensearch_store(
         cls, knowledge_base: KnowledgeBase, embedder: Embeddings = None
     ) -> VectorStore:
         """Create OpenSearch vector store."""
-
-        # Create OpenSearch connection
-        opensearch_url = settings.KB_OPENSEARCH_URL
 
         # Create index name from knowledge base ID
         index_name = f"kb_chunks_{knowledge_base.uuid}"
@@ -143,12 +154,7 @@ class VectorStoreFactory(BaseFactory):
             strategy = ContentRetrievalStrategy(keyword_importance=1.5)
 
         return WaterCrawlOpenSearchVectorStore(
-            opensearch_client=OpenSearch(
-                hosts=opensearch_url,
-                http_compress=True,
-                use_ssl=False,
-                verify_certs=False,
-            ),
+            opensearch_client=cls.create_opensearch_client(),
             index_name=index_name,
             embedding=embedder,
             retrieval_strategy=strategy,

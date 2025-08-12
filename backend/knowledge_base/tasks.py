@@ -1,9 +1,12 @@
 from celery import shared_task
+from celery.signals import worker_ready
+from django.conf import settings
 from django.db.models.functions import Lower
 
 from core.services import CrawlerService
 from core.tasks import run_spider
 from knowledge_base import consts
+from knowledge_base.factories import VectorStoreFactory
 from knowledge_base.models import KnowledgeBaseDocument
 from knowledge_base.services import KnowledgeBaseDocumentService, KnowledgeBaseService
 
@@ -82,3 +85,42 @@ def process_document(document_id):
 
         traceback.print_exc()
         service.set_failed(str(e))
+
+
+@shared_task
+def initializer():
+    vector_store_type = getattr(settings, "KB_VECTOR_STORE_TYPE", "opensearch")
+    if vector_store_type == "opensearch":
+        client = VectorStoreFactory.create_opensearch_client()
+        if settings.DEBUG:
+            # Set low watermark to 99%
+            client.cluster.put_settings(
+                body={
+                    "persistent": {
+                        "cluster.routing.allocation.disk.watermark.low": "99%",
+                        "cluster.routing.allocation.disk.watermark.high": "99%",
+                        "cluster.routing.allocation.disk.watermark.flood_stage": "99%",
+                    }
+                }
+            )
+
+        # Create or update the search pipeline
+        client.transport.perform_request(
+            "PUT",
+            "/_search/pipeline/rrf-pipeline",
+            body={
+                "description": "Reciprocal Rank Fusion pipeline",
+                "phase_results_processors": [
+                    {
+                        "score-ranker-processor": {
+                            "combination": {"technique": "rrf", "rank_constant": 60}
+                        }
+                    }
+                ],
+            },
+        )
+
+
+@worker_ready.connect
+def initializer_on_worker_ready(sender, **kwargs):
+    initializer()

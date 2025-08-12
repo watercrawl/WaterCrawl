@@ -15,6 +15,7 @@ import { AxiosError } from 'axios';
 interface IFormInput {
   query: string;
   top_k: number;
+  search_type: "similarity" | "similarity_score_threshold" | "mmr";
 }
 
 interface KnowledgeBaseQueryFormProps {
@@ -116,7 +117,7 @@ const KnowledgeBaseQueryForm: React.FC<KnowledgeBaseQueryFormProps> = ({ knowled
                       valueAsNumber: true,
                       required: 'Number of results is required',
                       min: { value: 1, message: 'Must be at least 1' },
-                      max: { value: 10, message: 'Must be at most 10' },
+                      max: { value: 50, message: 'Must be at most 50' },
                     })}
                     className="mt-1 block w-full sm:w-1/4 rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm"
                   />

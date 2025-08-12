@@ -129,22 +129,22 @@ class KnowledgeBaseDocumentService:
             return
         self.document.status = consts.DOCUMENT_STATUS_PROCESSING
         self.document.error = None
-        self.document.save(update_fields=["status"])
+        self.document.save(update_fields=["status", "error"])
 
     def set_ready(self):
         self.document.status = consts.DOCUMENT_STATUS_READY
         self.document.error = None
-        self.document.save(update_fields=["status"])
+        self.document.save(update_fields=["status", "error"])
 
     def set_failed(self, error: str):
         self.document.status = consts.DOCUMENT_STATUS_FAILED
         self.document.error = error
-        self.document.save(update_fields=["status"])
+        self.document.save(update_fields=["status", "error"])
 
     def set_reindexing(self):
         self.document.status = consts.DOCUMENT_STATUS_REINDEXING
         self.document.error = None
-        self.document.save(update_fields=["status"])
+        self.document.save(update_fields=["status", "error"])
 
     def fill_from_crawl_result(self):
         crawl_result = CrawlResult.objects.get(

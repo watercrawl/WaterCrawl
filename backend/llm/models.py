@@ -45,7 +45,7 @@ class ProviderConfig(BaseModel):
         choices=consts.LLM_PROVIDER_CHOICES,
         default=consts.LLM_PROVIDER_OPENAI,
     )
-    api_key = models.CharField(_("API Key"), max_length=255)
+    api_key = models.TextField(_("API Key"))
     base_url = models.CharField(
         _("API Base URL"), max_length=255, blank=True, null=True
     )

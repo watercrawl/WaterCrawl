@@ -32,3 +32,4 @@ VERSION
 
 watercrawl_llm/*
 .qola/*
+celerybeat-schedule*

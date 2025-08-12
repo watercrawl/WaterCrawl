@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import { PlusIcon, PencilSquareIcon, TrashIcon, ArrowLeftIcon, ExclamationTriangleIcon, ArrowPathIcon, BeakerIcon, EyeIcon } from '@heroicons/react/24/outline';
+import { PlusIcon, PencilSquareIcon, TrashIcon, ExclamationTriangleIcon, ArrowPathIcon, BeakerIcon, EyeIcon } from '@heroicons/react/24/outline';
 import Modal from '../../../components/shared/Modal';
 import toast from 'react-hot-toast';
 import { knowledgeBaseApi } from '../../../services/api/knowledgeBase';
@@ -208,9 +208,6 @@ const KnowledgeBaseDetailPage: React.FC = () => {
       <div className="sm:flex sm:items-center sm:justify-between mb-4">
         <div className="sm:flex-auto">
           <div className="flex items-center mb-2">
-            <Link to="/dashboard/knowledge-base" className="mr-2 text-primary-600 hover:text-primary-700">
-              <ArrowLeftIcon className="h-5 w-5" />
-            </Link>
             <h1 className="text-xl font-semibold text-gray-900 dark:text-white">{knowledgeBase?.title}</h1>
             <Link to={`/dashboard/knowledge-base/${knowledgeBase?.uuid}/edit`} className="ml-4 text-primary-600 hover:text-primary-700">
               <PencilSquareIcon className="h-5 w-5" />
@@ -302,7 +299,7 @@ const KnowledgeBaseDetailPage: React.FC = () => {
                         scope="col"
                         className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-200"
                       >
-                        Created At
+                        Updated At
                       </th>
                       <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
                         <span className="sr-only">Actions</span>
@@ -368,7 +365,7 @@ const KnowledgeBaseDetailPage: React.FC = () => {
                             </div>
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
-                            {new Date(document.created_at).toLocaleDateString()}
+                            {formatDistanceToNow(new Date(document.updated_at))}
                           </td>
                           <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                             <div className="flex items-center justify-end space-x-4">

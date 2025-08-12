@@ -149,6 +149,7 @@ class KnowledgeBaseDocumentSerializer(serializers.ModelSerializer):
             "uuid",
             "title",
             "source",
+            "error",
             "status",
             "metadata",
             "created_at",
@@ -185,11 +186,8 @@ class KnowledgeBaseChunkSerializer(serializers.ModelSerializer):
 
 class QueryKnowledgeBaseSerializer(serializers.Serializer):
     query = serializers.CharField(required=True)
-    top_k = serializers.IntegerField(required=False, default=5)
-    search_type = serializers.ChoiceField(
-        required=False,
-        default="semantic",
-        choices=["similarity", "similarity_score_threshold", "mmr"],
+    top_k = serializers.IntegerField(
+        required=False, default=10, min_value=1, max_value=50
     )
 
 

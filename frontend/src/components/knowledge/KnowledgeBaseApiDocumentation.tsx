@@ -113,11 +113,11 @@ const client = new WaterCrawlAPIClient('${apiKey}', '${baseUrl}');
 
 const queryKnowledgeBase = async () => {
   try {
-    const results = await client.queryKnowledgeBase({
-      knowledgeBaseId: '${knowledgeBaseId}',
-      query: '${query || 'your query here'}',
-      topK: ${top_k}
-    });
+    const results = await client.queryKnowledgeBase(
+    '${knowledgeBaseId}', // Knowledge base ID
+    '${query || 'your query here'}', // Query
+    ${top_k} // Number of results
+    );
 
     console.log(\`Found \${results.length} relevant chunks:\`);
     results.forEach((chunk, index) => {

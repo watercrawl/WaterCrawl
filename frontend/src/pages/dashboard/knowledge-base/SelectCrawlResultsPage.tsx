@@ -5,8 +5,6 @@ import {
   LinkIcon,
   DocumentTextIcon,
   CalendarIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
   ArrowPathIcon
 } from '@heroicons/react/24/outline';
 import { CrawlRequest, CrawlResult } from '../../../types/crawl';
@@ -18,6 +16,8 @@ import { formatDistanceToNow } from 'date-fns';
 import Button from '../../../components/shared/Button';
 import { useBreadcrumbs } from '../../../contexts/BreadcrumbContext';
 import { AxiosError } from 'axios';
+import { Pagination } from '../../../components/shared/Pagination';
+import { KnowledgeBaseDetail } from '../../../types/knowledge';
 
 const RESULTS_PER_PAGE = 100;
 
@@ -34,10 +34,8 @@ const SelectCrawlResultsPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isImporting, setIsImporting] = useState(false);
   
-  // State for selection
-  const [selectedResults, setSelectedResults] = useState<Set<string>>(new Set());
-  const [persistedSelections, setPersistedSelections] = useState<{[page: number]: Set<string>}>({});
-  const [selectAllOnPage, setSelectAllOnPage] = useState(false);
+  // State for selection - maintain all selections across pages
+  const [allSelectedResults, setAllSelectedResults] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     if(!knowledgeBase) return;
@@ -93,9 +91,6 @@ const SelectCrawlResultsPage: React.FC = () => {
         true
       );
       setResultsData(data);
-      
-      // Reset select all checkbox when page changes
-      setSelectAllOnPage(false);
     } catch (error) {
       console.error('Failed to load crawl results:', error);
       toast.error('Failed to load crawl results');
@@ -104,34 +99,20 @@ const SelectCrawlResultsPage: React.FC = () => {
     }
   }, [crawlRequestId]);
 
-  // When page changes, fetch new data and restore any persisted selections
+  // When page changes, fetch new data 
   useEffect(() => {
     fetchCrawlResults(currentPage);
-    
-    // When changing pages, restore any previously selected items on this page
-    if (persistedSelections[currentPage]) {
-      setSelectedResults(persistedSelections[currentPage]);
-    } else {
-      setSelectedResults(new Set());
-    }
-  }, [currentPage, fetchCrawlResults, persistedSelections]);
+  }, [currentPage, fetchCrawlResults]);
 
   // Handle toggling individual result selection
   const toggleResultSelection = (resultId: string) => {
-    setSelectedResults(prev => {
+    setAllSelectedResults(prev => {
       const newSelection = new Set(prev);
       if (newSelection.has(resultId)) {
         newSelection.delete(resultId);
       } else {
         newSelection.add(resultId);
       }
-      
-      // Persist selections for the current page
-      setPersistedSelections(prevState => ({
-        ...prevState,
-        [currentPage]: newSelection
-      }));
-      
       return newSelection;
     });
   };
@@ -140,45 +121,33 @@ const SelectCrawlResultsPage: React.FC = () => {
   const handleSelectAllOnPage = () => {
     if (!resultsData?.results) return;
     
-    const newSelectAll = !selectAllOnPage;
-    setSelectAllOnPage(newSelectAll);
+    const currentPageResultIds = resultsData.results
+      .filter(result => result.uuid)
+      .map(result => result.uuid!);
     
-    if (newSelectAll) {
-      // Select all items on current page
-      const newSelection = new Set<string>();
-      resultsData.results.forEach(result => {
-        if (result.uuid) {
-          newSelection.add(result.uuid);
-        }
-      });
-      setSelectedResults(newSelection);
+    // Check if all current page items are selected
+    const allCurrentPageSelected = currentPageResultIds.every(id => allSelectedResults.has(id));
+    
+    setAllSelectedResults(prev => {
+      const newSelection = new Set(prev);
       
-      // Persist selections for the current page
-      setPersistedSelections(prevState => ({
-        ...prevState,
-        [currentPage]: newSelection
-      }));
-    } else {
-      // Deselect all items on current page
-      setSelectedResults(new Set());
+      if (allCurrentPageSelected) {
+        // Deselect all items on current page
+        currentPageResultIds.forEach(id => newSelection.delete(id));
+      } else {
+        // Select all items on current page
+        currentPageResultIds.forEach(id => newSelection.add(id));
+      }
       
-      // Remove persisted selections for this page
-      setPersistedSelections(prevState => {
-        const newState = { ...prevState };
-        delete newState[currentPage];
-        return newState;
-      });
-    }
+      return newSelection;
+    });
   };
 
   // Function to get total selected count across all pages
   const getTotalSelectedCount = () => {
-    return Object.values(persistedSelections).reduce(
-      (total, selections) => total + selections.size,
-      0
-    );
+    return allSelectedResults.size;
   };
-  
+
   // Get selected count as formatted string with commas for thousands
   const getFormattedSelectedCount = () => {
     const count = getTotalSelectedCount();
@@ -187,37 +156,29 @@ const SelectCrawlResultsPage: React.FC = () => {
 
   // Import selected results
   const handleImportSelected = async () => {
-    const totalSelected = getTotalSelectedCount();
-    if (totalSelected === 0) {
-      toast.error('Please select at least one result to import');
+    if (!knowledgeBaseId || !crawlRequestId) return;
+    
+    // Collect all selected UUIDs
+    const selectedUuids = Array.from(allSelectedResults);
+    
+    if (selectedUuids.length === 0) {
+      toast.error('No results selected');
       return;
     }
-
-    if (!knowledgeBaseId) {
-      toast.error('Knowledge base ID is missing');
-      return;
-    }
-
+    
+    setIsImporting(true);
     try {
-      setIsImporting(true);
+      await knowledgeBaseApi.importFromCrawlResults(knowledgeBaseId, selectedUuids);
       
-      // Flatten all selected UUIDs across pages into a single array
-      const allSelectedUuids: string[] = [];
-      Object.values(persistedSelections).forEach(selections => {
-        selections.forEach(uuid => {
-          allSelectedUuids.push(uuid);
-        });
-      });
-
-      await knowledgeBaseApi.importFromCrawlResults(knowledgeBaseId, allSelectedUuids);
-      
-      toast.success(`Successfully imported ${totalSelected} results`);
+      toast.success(`Successfully imported ${selectedUuids.length} result(s)`);
       navigate(`/dashboard/knowledge-base/${knowledgeBaseId}`);
     } catch (error) {
-      if(error instanceof AxiosError){
-        toast.error(error?.response?.data?.message || 'Failed to import selected results');
+      const axiosError = error as AxiosError;
+      console.error('Failed to import selected results:', error);
+      
+      if (axiosError.response?.status === 400) {
+        toast.error('Invalid request. Please check your selections and try again.');
       } else {
-        console.error('Failed to import selected results:', error);
         toast.error('Failed to import selected results');
       }
     } finally {
@@ -248,11 +209,6 @@ const SelectCrawlResultsPage: React.FC = () => {
     } finally {
       setIsImporting(false);
     }
-  };
-
-  // Handle navigation
-  const handleGoBack = () => {
-    navigate(`/dashboard/knowledge-base/${knowledgeBaseId}/import/select-crawl`);
   };
 
   if (isLoading && !resultsData) {
@@ -289,17 +245,6 @@ const SelectCrawlResultsPage: React.FC = () => {
               )}
             </p>
           </div>
-          <div>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleGoBack}
-              className="mr-2"
-            >
-              <ChevronLeftIcon className="h-4 w-4 mr-1" />
-              Back
-            </Button>
-          </div>
         </div>
       </div>
 
@@ -334,38 +279,19 @@ const SelectCrawlResultsPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Results list */}
-      <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg overflow-hidden mb-6">
-        <div className="rounded-md border border-gray-200 dark:border-gray-700 overflow-hidden bg-white dark:bg-gray-800">
-          <div className="p-4 flex items-center">
-            <div className="flex-shrink-0 w-8">
-              <input
-                type="checkbox"
-                checked={selectAllOnPage}
-                onChange={handleSelectAllOnPage}
-                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded dark:border-gray-700"
-              />
-            </div>
-            <div className="flex-1 font-medium text-sm text-gray-700 dark:text-gray-300">
-              Select all on this page
-            </div>
-            <div className="flex-shrink-0">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => fetchCrawlResults(currentPage)}
-                disabled={isLoading}
-              >
-                <ArrowPathIcon className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
-              </Button>
+      {/* Results table */}
+      <div className="mt-8 overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+        {isLoading ? (
+          <div className="p-6 text-center">
+            <div className="animate-pulse flex flex-col items-center">
+              <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/4 mb-4"></div>
+              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
             </div>
           </div>
-        </div>
-
-        {!resultsData || resultsData.results.length === 0 ? (
-          <div className="text-center py-12">
+        ) : !resultsData || resultsData.results.length === 0 ? (
+          <div className="text-center py-12 bg-white dark:bg-gray-800">
             <DocumentTextIcon className="mx-auto h-12 w-12 text-gray-400" />
-            <h3 className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+            <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-gray-200">
               No results found
             </h3>
             <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
@@ -373,107 +299,91 @@ const SelectCrawlResultsPage: React.FC = () => {
             </p>
           </div>
         ) : (
-          <div className="divide-y divide-gray-200 dark:divide-gray-700">
-            {resultsData.results.map((result) => (
-              <div key={result.uuid} className="hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors">
-                <div
-                  id={`result-${result.uuid}`}
-                  className={`flex items-center p-4 border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 ${selectedResults.has(result.uuid || '') ? 'bg-blue-50 dark:bg-blue-900/20' : ''}`}
+          <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
+            <thead className="bg-gray-50 dark:bg-gray-700">
+              <tr>
+                <th scope="col" className="relative px-7 sm:w-12 sm:px-6">
+                  <input
+                    type="checkbox"
+                    checked={resultsData.results.some(r => r.uuid) ? resultsData.results.filter(r => r.uuid).every(r => allSelectedResults.has(r.uuid!)) : false}
+                    onChange={handleSelectAllOnPage}
+                    className="absolute left-4 top-1/2 -mt-2 h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded dark:border-gray-700"
+                  />
+                </th>
+                <th
+                  scope="col"
+                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-200"
                 >
-                  <div className="flex-shrink-0 w-8">
+                  URL
+                </th>
+                <th
+                  scope="col"
+                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-200"
+                >
+                  Created
+                </th>
+                <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => fetchCrawlResults(currentPage)}
+                    disabled={isLoading}
+                    className="text-xs"
+                  >
+                    <ArrowPathIcon className={`h-3 w-3 ${isLoading ? 'animate-spin' : ''}`} />
+                  </Button>
+                  <span className="sr-only">Actions</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800">
+              {resultsData.results.map((result) => (
+                <tr
+                  key={result.uuid}
+                  className={allSelectedResults.has(result.uuid || '') ? 'bg-blue-50 dark:bg-blue-900/20' : undefined}
+                >
+                  <td className="relative px-7 sm:w-12 sm:px-6">
                     <input
                       type="checkbox"
-                      checked={selectedResults.has(result.uuid || '')}
+                      checked={allSelectedResults.has(result.uuid || '')}
                       onChange={() => result.uuid && toggleResultSelection(result.uuid)}
-                      className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded dark:border-gray-700"
+                      className="absolute left-4 top-1/2 -mt-2 h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded dark:border-gray-700"
                       disabled={!result.uuid}
                     />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex flex-col">
-                      <div className="text-sm font-medium text-gray-900 dark:text-white truncate">
-                        {result.title || result.url}
-                      </div>
-                      <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 gap-4">
-                        <div className="flex items-center">
-                          <LinkIcon className="h-3 w-3 mr-1 flex-shrink-0" />
-                          <span className="truncate">{result.url}</span>
-                        </div>
-                        <div className="flex items-center">
-                          <CalendarIcon className="mr-1.5 h-4 w-4 flex-shrink-0 text-gray-400" aria-hidden="true" />
-                          <span>
-                            {formatDistanceToNow(new Date(result.created_at), { addSuffix: true })}
-                          </span>
-                        </div>
-                      </div>
+                  </td>
+                  <td className="px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
+                    <div className="flex items-center">
+                      <LinkIcon className="h-4 w-4 mr-2 flex-shrink-0" />
+                      <span className="truncate max-w-md" title={result.url}>{result.url}</span>
                     </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
+                    <div className="flex items-center">
+                      <CalendarIcon className="h-4 w-4 mr-2 flex-shrink-0" />
+                      {formatDistanceToNow(new Date(result.created_at), { addSuffix: true })}
+                    </div>
+                  </td>
+                  <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                    {/* Future: Add individual result actions here if needed */}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         )}
       </div>
 
       {/* Pagination */}
       {resultsData && resultsData.count > 0 && (
-        <div className="bg-white dark:bg-gray-800 px-4 py-3 flex items-center justify-between border border-gray-200 dark:border-gray-700 sm:px-6 rounded-lg">
-          <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
-            <div>
-              <p className="text-sm text-gray-700 dark:text-gray-300">
-                Showing <span className="font-medium">{(currentPage - 1) * RESULTS_PER_PAGE + 1}</span> to{' '}
-                <span className="font-medium">
-                  {Math.min(currentPage * RESULTS_PER_PAGE, resultsData.count)}
-                </span>{' '}
-                of <span className="font-medium">{resultsData.count}</span> results
-              </p>
-            </div>
-            <div>
-              <nav className="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
-                <button
-                  onClick={() => setCurrentPage(page => Math.max(page - 1, 1))}
-                  disabled={!resultsData.previous || isLoading}
-                  className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 dark:text-gray-500 ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-offset-0 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <span className="sr-only">Previous</span>
-                  <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
-                </button>
-
-                {/* Page number display */}
-                <span className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-300 ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:outline-offset-0">
-                  {currentPage} / {Math.ceil(resultsData.count / RESULTS_PER_PAGE)}
-                </span>
-
-                <button
-                  onClick={() => setCurrentPage(page => page + 1)}
-                  disabled={!resultsData.next || isLoading}
-                  className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 dark:text-gray-500 ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-offset-0 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <span className="sr-only">Next</span>
-                  <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
-                </button>
-              </nav>
-            </div>
-          </div>
-
-          {/* Mobile pagination */}
-          <div className="flex flex-1 justify-between sm:hidden">
-            <button
-              onClick={() => setCurrentPage(page => Math.max(page - 1, 1))}
-              disabled={!resultsData.previous || isLoading}
-              className="relative inline-flex items-center rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Previous
-            </button>
-            <button
-              onClick={() => setCurrentPage(page => page + 1)}
-              disabled={!resultsData.next || isLoading}
-              className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Next
-            </button>
-          </div>
-        </div>
+        <Pagination
+          currentPage={currentPage}
+          totalItems={resultsData.count}
+          itemsPerPage={RESULTS_PER_PAGE}
+          hasNextPage={!!resultsData.next}
+          hasPreviousPage={!!resultsData.previous}
+          onPageChange={setCurrentPage}
+          loading={isLoading}
+        />
       )}
     </div>
   );

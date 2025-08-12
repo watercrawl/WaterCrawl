@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { 
   ChevronRightIcon, 
-  MapIcon
+  MapIcon,
+  CalendarIcon,
+  ClockIcon
 } from '@heroicons/react/24/outline';
 import { SitemapRequest } from '../../../types/sitemap';
 import { sitemapApi } from '../../../services/api/sitemap';
@@ -12,6 +14,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { useBreadcrumbs } from '../../../contexts/BreadcrumbContext';
 import { knowledgeBaseApi } from '../../../services/api/knowledgeBase';
 import { KnowledgeBaseDetail } from '../../../types/knowledge';
+import { Pagination } from '../../../components/shared/Pagination';
 
 const SelectSitemapPage: React.FC = () => {
   const { knowledgeBaseId } = useParams<{ knowledgeBaseId: string }>();
@@ -100,87 +103,106 @@ const SelectSitemapPage: React.FC = () => {
         </p>
       </div>
 
-      <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-        {!sitemapData || sitemapData.results.length === 0 ? (
-          <div className="text-center py-8 bg-white dark:bg-gray-800">
-            <p className="text-gray-500 dark:text-gray-400">
-              No sitemaps available. Please generate a sitemap first.
+      <div className="mt-8 overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+        {isLoading ? (
+          <div className="p-6 text-center">
+            <div className="animate-pulse flex flex-col items-center">
+              <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/4 mb-4"></div>
+              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+            </div>
+          </div>
+        ) : !sitemapData || sitemapData.results.length === 0 ? (
+          <div className="text-center py-12 bg-white dark:bg-gray-800">
+            <MapIcon className="mx-auto h-12 w-12 text-gray-400" />
+            <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-gray-200">
+              No sitemaps available
+            </h3>
+            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+              Please generate a sitemap first.
             </p>
           </div>
         ) : (
-          <ul className="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800">
-            {sitemapData.results.map((sitemap) => (
-              <li key={sitemap.uuid}>
-                <button
-                  type="button"
-                  onClick={() => handleSitemapSelect(sitemap.uuid as string)}
-                  className="w-full text-left px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+          <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
+            <thead className="bg-gray-50 dark:bg-gray-700">
+              <tr>
+                <th
+                  scope="col"
+                  className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-200 sm:pl-6"
                 >
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-gray-900 dark:text-white">
+                  URL
+                </th>
+                <th
+                  scope="col"
+                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-200"
+                >
+                  Created
+                </th>
+                <th
+                  scope="col"
+                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-200"
+                >
+                  Duration
+                </th>
+                <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                  <span className="sr-only">Select</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800">
+              {sitemapData.results.map((sitemap) => (
+                <tr key={sitemap.uuid} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                  <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 dark:text-gray-200 sm:pl-6">
+                    <div className="flex items-center">
+                      <MapIcon className="h-5 w-5 text-gray-400 mr-3 flex-shrink-0" />
+                      <div className="truncate max-w-md" title={sitemap.url}>
                         {sitemap.url}
-                      </p>
-                      <div className="flex items-center mt-1">
-                        <MapIcon className="h-4 w-4 text-gray-400 mr-1" />
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                          {sitemap.url}
-                        </p>
-                      </div>
-                      <div className="flex space-x-4 mt-2">
-                        {sitemap.created_at && (
-                          <p className="text-xs text-gray-500 dark:text-gray-400">
-                            {formatDistanceToNow(new Date(sitemap.created_at), { addSuffix: true })}
-                          </p>
-                        )}
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                          From {sitemap.url}
-                        </p>
-                        {sitemap.duration && (
-                          <p className="text-xs text-gray-500 dark:text-gray-400">
-                            Duration: {sitemap.duration}s
-                          </p>
-                        )}
                       </div>
                     </div>
-                    <ChevronRightIcon className="h-5 w-5 text-gray-400" />
-                  </div>
-                </button>
-              </li>
-            ))}
-          </ul>
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
+                    {sitemap.created_at && (
+                      <div className="flex items-center">
+                        <CalendarIcon className="h-4 w-4 mr-2 flex-shrink-0" />
+                        {formatDistanceToNow(new Date(sitemap.created_at), { addSuffix: true })}
+                      </div>
+                    )}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
+                    {sitemap.duration && (
+                      <div className="flex items-center">
+                        <ClockIcon className="h-4 w-4 mr-2 flex-shrink-0" />
+                        {sitemap.duration}s
+                      </div>
+                    )}
+                  </td>
+                  <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                    <button
+                      type="button"
+                      onClick={() => handleSitemapSelect(sitemap.uuid as string)}
+                      className="text-primary-600 hover:text-primary-900 dark:text-primary-400 dark:hover:text-primary-300 flex items-center"
+                    >
+                      Select
+                      <ChevronRightIcon className="h-4 w-4 ml-1" />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         )}
       </div>
       
-      {/* Pagination - separated from the list container */}
+      {/* Pagination */}
       {sitemapData && sitemapData.count > 0 && (
-        <div className="bg-white dark:bg-gray-800 px-4 py-3 flex items-center justify-center border-t border-gray-200 dark:border-gray-700 sm:px-6 mt-4 rounded-lg shadow">
-          <nav className="flex items-center justify-between w-full max-w-md" aria-label="Pagination">
-            <div className="flex-1 flex justify-start">
-              <button
-                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                disabled={!sitemapData.previous || isLoading}
-                className="px-3 py-1 text-sm font-medium rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Previous
-              </button>
-            </div>
-            <div className="flex-1 flex justify-center">
-              <span className="text-sm text-gray-700 dark:text-gray-300">
-                Page {currentPage} of {Math.ceil(sitemapData.count / 10)}
-              </span>
-            </div>
-            <div className="flex-1 flex justify-end">
-              <button
-                onClick={() => setCurrentPage(prev => prev + 1)}
-                disabled={!sitemapData.next || isLoading}
-                className="px-3 py-1 text-sm font-medium rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Next
-              </button>
-            </div>
-          </nav>
-        </div>
+        <Pagination
+          currentPage={currentPage}
+          totalItems={sitemapData.count}
+          itemsPerPage={10}
+          hasNextPage={!!sitemapData.next}
+          hasPreviousPage={!!sitemapData.previous}
+          onPageChange={setCurrentPage}
+          loading={isLoading}
+        />
       )}
       
       <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">

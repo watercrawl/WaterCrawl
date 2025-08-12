@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { EyeIcon, PencilIcon, PlusIcon } from '@heroicons/react/24/outline';
+import { EyeIcon, PencilIcon, PlusIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import { KnowledgeBaseDetail } from '../../../types/knowledge';
 import { knowledgeBaseApi } from '../../../services/api/knowledgeBase';
 import toast from 'react-hot-toast';
@@ -79,6 +79,30 @@ const KnowledgeBasePage: React.FC = () => {
             <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
             New Knowledge Base
           </Link>
+        </div>
+      </div>
+
+      {/* Beta Notice Box */}
+      <div className="mt-6 rounded-md border border-yellow-200 bg-yellow-50 p-4 dark:border-yellow-800 dark:bg-yellow-900/20">
+        <div className="flex">
+          <div className="flex-shrink-0">
+            <ExclamationTriangleIcon className="h-5 w-5 text-yellow-400" aria-hidden="true" />
+          </div>
+          <div className="ml-3">
+            <h3 className="text-sm font-medium text-yellow-800 dark:text-yellow-200">
+              Beta Feature
+            </h3>
+            <div className="mt-2 text-sm text-yellow-700 dark:text-yellow-300">
+              <p>
+                The Knowledge Base feature is currently in beta. We may introduce changes, improvements, or modifications to functionality, 
+                data structures, or API endpoints in future updates. While we strive to maintain backward compatibility, 
+                please be aware that some changes might affect existing knowledge bases or require migration steps.
+              </p>
+              <p className="mt-2">
+                We appreciate your feedback and testing during this beta period to help us improve the feature.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -161,7 +185,7 @@ const KnowledgeBasePage: React.FC = () => {
                     </Link>
                   </td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
-                    Embedding: <strong>{kb.embedding_model?.name || '-'}</strong> <br />Summarization: <strong>{kb.summarization_model?.name || '-'}</strong>
+                    Embedding: <strong>{kb.embedding_model?.name || 'N/A'}</strong> <br />Summarization: <strong>{kb.summarization_model?.name || 'N/A'}</strong>
                   </td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
                     {kb.document_count}

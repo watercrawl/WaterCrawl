@@ -177,7 +177,7 @@ class KnowledgeBaseViewSet(
         results = processor.search(
             serializer.validated_data["query"],
             top_k=serializer.validated_data["top_k"],
-            search_type="similarity_score_threshold",
+            # search_type=serializer.validated_data["search_type"],
         )
         return Response(results)
 
