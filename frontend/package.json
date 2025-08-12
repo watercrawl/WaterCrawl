@@ -49,5 +49,11 @@
     "typescript": "~5.6.3",
     "typescript-eslint": "^8.34.1",
     "vite": "^6.3.5"
+  },
+  "pnpm": {
+    "overrides": {
+      "form-data@>=4.0.0 <4.0.4": ">=4.0.4",
+      "@eslint/plugin-kit@<0.3.4": ">=0.3.4"
+    }
   }
 }
