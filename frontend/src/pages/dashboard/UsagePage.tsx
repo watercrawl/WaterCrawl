@@ -6,11 +6,20 @@ import SubscriptionStatusCard from '../../components/shared/SubscriptionStatusCa
 import UsageStatsGrid from '../../components/shared/UsageStatsGrid';
 import UsageCharts from '../../components/shared/UsageCharts';
 import { useTeam } from '../../contexts/TeamContext';
+import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
 
 const UsagePage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<UsageResponse | null>(null);
   const { refreshCurrentSubscription } = useTeam();
+  const { setItems } = useBreadcrumbs();
+
+  useEffect(() => {
+    setItems([
+      { label: 'Dashboard', href: '/dashboard'},
+      { label: 'Usage', href: '/dashboard/usage', current: true },
+    ]);
+  }, [setItems]);
 
   const fetchData = useCallback(async () => {
     try {

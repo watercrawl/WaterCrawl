@@ -1,4 +1,5 @@
 from django.utils.translation import gettext_lazy as _
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
@@ -9,8 +10,8 @@ from drf_spectacular.utils import extend_schema_view, extend_schema, OpenApiResp
 
 from common.permissions import IsEnterpriseMode
 from plan.authentication import StripeSignatureAuthentication
-from plan import serializers
-from plan.models import Plan
+from plan import serializers, filters
+from plan.models import Plan, UsageHistory, Subscription
 from plan.services import StripeService, TeamPlanService
 from user.decorators import setup_current_team
 from user.permissions import IsAuthenticatedTeam
@@ -37,6 +38,7 @@ class PlanViewSet(viewsets.ReadOnlyModelViewSet):
     authentication_classes = ()
     permission_classes = ()
     pagination_class = None
+    queryset = Plan.objects.none()
 
     def get_queryset(self):
         return Plan.objects.filter(is_active=True)
@@ -127,6 +129,7 @@ class SubscriptionViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.SubscriptionSerializer
     permission_classes = (IsAuthenticatedTeam,)
     pagination_class = None
+    queryset = Subscription.objects.none()
 
     def get_queryset(self):
         return self.request.current_team.subscriptions.order_by("-created_at")
@@ -233,3 +236,29 @@ class StripeWebhookView(APIView):
         stripe_service = StripeService()
         stripe_service.handle_webhook_event(request.data)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@extend_schema_view(
+    list=extend_schema(
+        summary=_("List usage history"),
+        description=_("List usage history for the team."),
+        tags=["Usage History"],
+    ),
+    retrieve=extend_schema(
+        summary=_("Get usage history"),
+        description=_("Get usage history for the team."),
+        tags=["Usage History"],
+    ),
+)
+@setup_current_team
+class CreditUsageHistoryView(viewsets.ReadOnlyModelViewSet):
+    serializer_class = serializers.UsageHistorySerializer
+    permission_classes = (IsAuthenticatedTeam, IsAuthenticated)
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = filters.UsageHistoryFilter
+    queryset = UsageHistory.objects.none()
+
+    def get_queryset(self):
+        return self.request.current_team.usage_histories.select_related(
+            "team_api_key"
+        ).order_by("-created_at")

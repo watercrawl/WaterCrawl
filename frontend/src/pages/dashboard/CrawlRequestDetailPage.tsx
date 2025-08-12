@@ -15,6 +15,7 @@ import { StatusBadge } from '../../components/shared/StatusBadge';
 import { DownloadFormatSelector } from '../../components/shared/DownloadFormatSelector';
 import { SitemapModalSelector } from '../../components/shared/SitemapModalSelector';
 import { CrawlTypeBadge } from '../../components/crawl/CrawlTypeBadge';
+import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
 
 const CrawlRequestDetailPage: React.FC = () => {
   const { requestId } = useParams<{ requestId: string }>();
@@ -31,6 +32,15 @@ const CrawlRequestDetailPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [wasRunning, setWasRunning] = useState(false);
+  const { setItems } = useBreadcrumbs();
+
+  useEffect(() => {
+    setItems([
+      { label: 'Dashboard', href: '/dashboard'},
+      { label: 'Crawl Logs', href: '/dashboard/logs/crawls' },
+      { label: 'Crawl Request', href: `/dashboard/logs/crawls/${requestId}`, current: true },
+    ]);
+  }, [setItems, requestId]);
 
   const handleCrawlEvent = (event: CrawlEvent) => {
     if (event.type === 'state') {
