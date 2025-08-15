@@ -160,11 +160,11 @@ STORAGES = {
     },
     "media": {
         "BACKEND": env(
-            "DEFAULT_FILE_STORAGE",
+            "MEDIA_FILE_STORAGE",
             cast=str,
             default="django_minio_backend.models.MinioBackend",
         ),
-        "OPTIONS": env.json("DEFAULT_FILE_STORAGE_OPTIONS", default={}),
+        "OPTIONS": env.json("MEDIA_FILE_STORAGE_OPTIONS", default={}),
     },
 }
 STATIC_URL = "/static/"
