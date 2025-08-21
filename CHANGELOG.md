@@ -5,6 +5,58 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.10.0] - 2025-08-21
+
+### Added
+- **Configurable concurrent requests setting for crawls** - Added support for custom concurrency limits per crawl request
+  - Backend: New `concurrent_requests` field in crawl serializers and services
+  - Introduced `LimitRequestsMiddleware` to enforce per-crawl request limits
+  - Exposed `max_crawl_concurrency` via settings API
+  - Frontend: Added "Concurrent Requests" field to SpiderOptions form with dynamic max value from settings
+  - Updated all API documentation and client examples
+- **Ignore rendering option** - Added ability to skip JavaScript rendering for faster crawls
+  - New `ignore_rendering` field to bypass Playwright rendering when JavaScript execution is not needed
+  - Consistent handling across crawl and sitemap spiders
+  - UI toggle in PageOptions form for easy control
+- **Storage options configuration** - Enhanced file storage configuration
+  - Added `STATIC_FILE_STORAGE_OPTIONS` and `MEDIA_FILE_STORAGE_OPTIONS` for flexible storage backends
+  - Updated media storage to use `MEDIA_FILE_STORAGE` configuration
+- **GitHub Actions improvements** - Enhanced PR linting workflow
+  - Auto-fix linting issues for both backend (Ruff) and frontend (ESLint)
+  - Safer PR branch checkout for local and external forks
+  - Better handling of credential persistence and fetch options
+  - Allow continuation on linting errors for better visibility
+- **New tutorials** - Added comprehensive tutorials for advanced use cases
+  - Claude 3.7 & WaterCrawl stock analyzer tutorial
+  - DeepSeek R1 & WaterCrawl live chat with webpage tutorial
+  - Company name and objective crawler with search filters
+  - Deep Search implementation with Langgraph, WaterCrawl, and LiteLLM
+- **API documentation enhancements**
+  - Added documentation for test proxy server endpoint
+  - Batch create endpoint documentation for crawl requests
+
+### Changed
+- **Repository branding** - Updated banner image URL to specific commit for consistency
+- **Documentation improvements**
+  - Updated CONTRIBUTING.md with clearer development server setup instructions
+  - Added shell plugin installation guidance
+  - Improved Poetry documentation for backend setup
+- **Dependencies updates**
+  - Updated frontend and documentation package dependencies for compatibility
+  - Added package overrides to resolve dependency conflicts
+  - Security updates across multiple packages
+
+### Fixed
+- **Search request handling** - Fixed `perform_destroy` method to properly handle SearchRequest objects
+  - Changed summary from generic "Stop crawl request" to specific "Stop search request"
+- **Batch crawl endpoint** - Added missing batch create endpoint for crawl requests in serializers and views
+
+### Infrastructure
+- **CI/CD Improvements**
+  - Enhanced GitHub Actions workflows for better PR handling
+  - Improved linting automation with auto-fix capabilities
+  - Better support for external contributor PRs
+
 ## [0.9.2] - 2025-06-28
 
 ### Fixed
