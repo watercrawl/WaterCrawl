@@ -10,6 +10,11 @@ class IsAuthenticatedTeam(permissions.BasePermission):
         return self.has_permission(request, view)
 
 
+class IsSuperUser(permissions.BasePermission):
+    def has_permission(self, request, view):
+        return request.user and request.user.is_superuser
+
+
 class CanLogin(permissions.BasePermission):
     def has_permission(self, request, view):
         return settings.IS_LOGIN_ACTIVE

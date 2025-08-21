@@ -56,6 +56,7 @@ export interface Profile {
   privacy_confirmed_at: string | null;
   terms_confirmed_at: string | null;
   newsletter_confirmed: boolean;
+  is_superuser: boolean;
 }
 
 export interface TokenPayload {

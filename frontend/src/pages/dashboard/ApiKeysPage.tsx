@@ -15,6 +15,7 @@ import { toast } from 'react-hot-toast';
 import { Pagination } from '../../components/shared/Pagination';
 import { useIsTabletOrMobile } from '../../hooks/useMediaQuery';
 import { ApiKeyCard } from '../../components/shared/ApiKeyCard';
+import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
 
 const ApiKeysPage: React.FC = () => {
   const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
@@ -27,6 +28,14 @@ const ApiKeysPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [deletingKey, setDeletingKey] = useState<string | null>(null);
   const isTabletOrMobile = useIsTabletOrMobile();
+  const { setItems } = useBreadcrumbs();
+
+  useEffect(() => {
+    setItems([
+      { label: 'Dashboard', href: '/dashboard'},
+      { label: 'API Keys', href: '/dashboard/api-keys', current: true },
+    ]);
+  }, [setItems]);
 
   const fetchApiKeys = async (page: number) => {
     try {

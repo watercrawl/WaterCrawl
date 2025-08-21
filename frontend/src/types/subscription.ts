@@ -71,6 +71,9 @@ export interface CurrentSubscription {
   remaining_daily_page_credit: number;
   max_depth: number;
   max_concurrent_crawl: number;
+  number_of_knowledge_bases: number;
+  number_of_each_knowledge_base_documents: number;
+  knowledge_base_retrival_rate_limit: string;
   start_at: string;
   current_period_start_at: string;
   current_period_end_at: string;

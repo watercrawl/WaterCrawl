@@ -21,7 +21,6 @@ interface SearchFormProps {
   initialQuery?: string;
   initialSearchOptions?: SearchOptions;
   initialNumResults?: number;
-  beta?: boolean;
 }
 
 // List of available languages for search

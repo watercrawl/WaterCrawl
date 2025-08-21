@@ -14,7 +14,13 @@ from rest_framework.viewsets import GenericViewSet, ReadOnlyModelViewSet, ModelV
 
 from common.services import EventStreamResponse
 from core import serializers, consts, docs
-from core.models import CrawlRequest, SearchRequest
+from core.models import (
+    CrawlRequest,
+    SearchRequest,
+    CrawlResult,
+    ProxyServer,
+    SitemapRequest,
+)
 from core.services import (
     CrawlerService,
     ReportService,
@@ -104,6 +110,7 @@ class CrawlRequestView(
 ):
     permission_classes = [IsAuthenticatedTeam]
     serializer_class = serializers.CrawlRequestSerializer
+    queryset = CrawlRequest.objects.none()
     filterset_fields = [
         "uuid",
         "status",
@@ -218,6 +225,7 @@ class CrawlRequestView(
 class CrawlResultView(ReadOnlyModelViewSet):
     permission_classes = [IsAuthenticatedTeam]
     serializer_class = serializers.CrawlResultSerializer
+    queryset = CrawlResult.objects.none()
     filterset_fields = ["url", "created_at"]
 
     def get_queryset(self):
@@ -307,6 +315,7 @@ class SearchRequestAPIView(
 ):
     permission_classes = [IsAuthenticatedTeam]
     serializer_class = serializers.SearchRequestSerializer
+    queryset = SearchRequest.objects.none()
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
@@ -399,6 +408,7 @@ class SearchRequestAPIView(
 class ProxyServerView(ModelViewSet):
     permission_classes = [IsAuthenticated, IsAuthenticatedTeam]
     serializer_class = serializers.ProxyServerSerializer
+    queryset = ProxyServer.objects.none()
     lookup_field = "slug"
     lookup_url_kwarg = "slug"
 
@@ -442,7 +452,6 @@ class ProxyServerView(ModelViewSet):
             response = ProxyService.test_proxy(**serializer.validated_data)
             return Response(response)
         except Exception as e:
-            print(type(e))
             raise ValidationError({"non_field_errors": [str(e)]})
 
 
@@ -502,6 +511,7 @@ class SitemapRequestView(
 ):
     permission_classes = [IsAuthenticatedTeam]
     serializer_class = serializers.SitemapRequestSerializer
+    queryset = SitemapRequest.objects.none()
     filterset_fields = ["uuid", "status", "created_at"]
 
     def get_queryset(self):

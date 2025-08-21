@@ -1,8 +1,19 @@
+import { useEffect } from 'react';
 import { ProfileForm } from '../../components/profile/ProfileForm';
 import { InvitationsList } from '../../components/profile/InvitationsList';
 import { LogoutButton } from '../../components/profile/LogoutButton';
+import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
 
 export default function ProfilePage() {
+  const { setItems } = useBreadcrumbs();
+
+  useEffect(() => {
+    setItems([
+      { label: 'Dashboard', href: '/dashboard'},
+      { label: 'Profile', href: '/dashboard/profile', current: true },
+    ]);
+  }, [setItems]);
+
   return (
     <div className="px-8 py-6">
       <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Profile</h1>

@@ -61,6 +61,8 @@ INSTALLED_APPS = [
     "core",
     "user",
     "plan",
+    "llm",
+    "knowledge_base",
 ]
 
 MIDDLEWARE = [
@@ -390,3 +392,7 @@ API_ENCRYPTION_KEY = env(
     cast=str,
     default="8zSd6JIuC7ovfZ4AoxG_XmhubW6CPnQWW7Qe_4TD1TQ=",
 )
+
+KB_KEYWORD_COUNT = env("KB_KEYWORD_COUNT", cast=int, default=10)
+
+KB_OPENSEARCH_URL = env.list("KB_OPENSEARCH_URL", cast=str, default=[])

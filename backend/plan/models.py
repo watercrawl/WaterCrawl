@@ -1,3 +1,4 @@
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -50,6 +51,20 @@ class Plan(BaseModel):
         _("Max concurrent crawl"),
         help_text=_("Max Number of concurrent crawling."),
         default=1,
+    )
+    number_of_knowledge_bases = models.IntegerField(
+        _("Number of knowledge bases"), default=1
+    )
+    number_of_each_knowledge_base_documents = models.IntegerField(
+        _("Number of each knowledge base documents"), default=100
+    )
+    knowledge_base_retrival_rate_limit = models.CharField(
+        _("Knowledge base retrival rate limit"),
+        help_text=_("DRF-style rate string, e.g. '100/min', '500/day'"),
+        max_length=100,
+        default=None,
+        null=True,
+        blank=True,
     )
     is_default = models.BooleanField(_("Is default"), default=False)
     order = models.PositiveIntegerField(_("Order"), default=0)
@@ -180,25 +195,28 @@ class UsageHistory(BaseModel):
         on_delete=models.RESTRICT,
         related_name="usage_histories",
     )
-    crawl_request = models.OneToOneField(
-        "core.CrawlRequest",
-        verbose_name=_("Crawl request"),
+    content_type = models.ForeignKey(
+        "contenttypes.ContentType",
+        verbose_name=_("Content type"),
         on_delete=models.RESTRICT,
-        related_name="usage_history",
+        related_name="usage_histories",
         null=True,
+        blank=True,
     )
-    search_request = models.OneToOneField(
-        "core.SearchRequest",
-        verbose_name=_("Search request"),
-        on_delete=models.RESTRICT,
-        related_name="usage_history",
+    content_id = models.UUIDField(
+        _("Content id"),
         null=True,
+        blank=True,
     )
-    sitemap_request = models.OneToOneField(
-        "core.SitemapRequest",
-        verbose_name=_("Sitemap request"),
-        on_delete=models.RESTRICT,
-        related_name="usage_history",
+    content = GenericForeignKey(
+        ct_field="content_type",
+        fk_field="content_id",
+    )
+    team_api_key = models.ForeignKey(
+        "user.TeamAPIKey",
+        verbose_name=_("API key"),
+        on_delete=models.SET_NULL,
+        related_name="usage_histories",
         null=True,
     )
     requested_page_credit = models.PositiveIntegerField(
@@ -213,10 +231,16 @@ class UsageHistory(BaseModel):
         verbose_name_plural = _("Usage Histories")
         ordering = ["-created_at"]
 
+    def save(self, *args, **kwargs):
+        # Runtime check: Only allow UUID primary key models for content_id
+        if self.content_type and self.content_id:
+            model_class = self.content_type.model_class()
+            pk_field = getattr(model_class, "_meta").pk
+            if not isinstance(pk_field, models.UUIDField):
+                raise ValueError(
+                    "UsageHistory.content_id only supports models with UUID primary keys."
+                )
+        super().save(*args, **kwargs)
+
     def __str__(self):
-        if self.crawl_request:
-            return f"{self.team.name} -CRAWL- {self.crawl_request.url}"
-        if self.search_request:
-            return f"{self.team.name} -SEARCH- {self.search_request.query}"
-        if self.sitemap_request:
-            return f"{self.team.name} -MAP- {self.sitemap_request.url}"
+        return type(self.content).__name__ + " - " + str(self.content_id)

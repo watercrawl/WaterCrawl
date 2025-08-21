@@ -1,9 +1,25 @@
 import React from 'react';
 import { CrawlStatus } from '../../types/crawl';
+import { PlusIcon, ArrowPathIcon, XMarkIcon, CheckIcon, BeakerIcon, ArchiveBoxIcon, TrashIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
 interface StatusBadgeProps {
   status: CrawlStatus | string;
+  showIcon?: boolean;
 }
+
+const STATUS_ICONS = {
+  new: <PlusIcon className="h-4 w-4" />,
+  running: <ArrowPathIcon className="h-4 w-4" />,
+  canceled: <XMarkIcon className="h-4 w-4" />,
+  canceling: <ArrowPathIcon className="h-4 w-4" />,
+  failed: <ExclamationTriangleIcon className="h-4 w-4" />,
+  finished: <CheckIcon className="h-4 w-4" />,
+  ready: <CheckIcon className="h-4 w-4" />,
+  processing: <BeakerIcon className="h-4 w-4" />,
+  active: <CheckIcon className="h-4 w-4" />,
+  archived: <ArchiveBoxIcon className="h-4 w-4" />,
+  deleted: <TrashIcon className="h-4 w-4" />,
+};
 
 const STATUS_COLORS = {
   new: {
@@ -38,6 +54,18 @@ const STATUS_COLORS = {
     light: { bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-200' },
     dark: { bg: 'dark:bg-blue-900/10', text: 'dark:text-blue-400', border: 'dark:border-blue-900/30' },
   },
+  active: {
+    light: { bg: 'bg-green-50', text: 'text-green-700', border: 'border-green-200' },
+    dark: { bg: 'dark:bg-green-900/10', text: 'dark:text-green-400', border: 'dark:border-green-900/30' },
+  },
+  archived: {
+    light: { bg: 'bg-yellow-50', text: 'text-yellow-700', border: 'border-yellow-200' },
+    dark: { bg: 'dark:bg-yellow-900/10', text: 'dark:text-yellow-400', border: 'dark:border-yellow-900/30' },
+  },
+  deleted: {
+    light: { bg: 'bg-red-50', text: 'text-red-700', border: 'border-red-200' },
+    dark: { bg: 'dark:bg-red-900/10', text: 'dark:text-red-400', border: 'dark:border-red-900/30' },
+  },
 } as const;
 
 const getStatusColor = (status: string) => {
@@ -45,14 +73,22 @@ const getStatusColor = (status: string) => {
   return `${colors.light.bg} ${colors.light.text} ${colors.light.border} ${colors.dark.bg} ${colors.dark.text} ${colors.dark.border}`;
 };
 
-export const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
+const getStatusIcon = (status: string) => {
+  const icon = STATUS_ICONS[status as keyof typeof STATUS_ICONS] || STATUS_ICONS.canceling;
+  return icon;
+};
+
+export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, showIcon = false }) => {
   return (
-    <span
-      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(
-        status
-      )}`}
-    >
-      {status}
-    </span>
+    <>
+      <span
+        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(
+          status
+        )}`}
+        >
+        {status}
+        {showIcon && <span className="ml-0.5">{getStatusIcon(status)}</span>}
+      </span>
+    </>
   );
 };

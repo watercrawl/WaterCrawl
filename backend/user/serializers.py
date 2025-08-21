@@ -48,6 +48,7 @@ class ProfileSerializer(RegisterSerializer):
             "privacy_confirmed_at",
             "terms_confirmed_at",
             "newsletter_confirmed",
+            "is_superuser",
         ]
         read_only_fields = ["email", "privacy_confirmed_at", "terms_confirmed_at"]
 

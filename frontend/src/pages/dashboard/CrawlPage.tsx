@@ -2,10 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { CrawlForm } from '../../components/crawl/CrawlForm';
 import { CrawlRequest } from '../../types/crawl';
+import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
 
 const CrawlPage: React.FC = () => {
   const location = useLocation();
   const [initialRequest, setInitialRequest] = useState<CrawlRequest | null>(null);
+  const {setItems} = useBreadcrumbs();
+  useEffect(() => {
+    setItems([
+      { label: 'Dashboard', href: '/dashboard'},
+      { label: 'Crawl Playground', href: '/dashboard/crawl', current: true },
+    ]);
+  }, [setItems]);
 
   useEffect(() => {
     // Load request from navigation state if available

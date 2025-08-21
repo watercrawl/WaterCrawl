@@ -58,3 +58,32 @@ services:
       - HOST=${PLAYWRIGHT_HOST:-0.0.0.0}
     ports:
       - "${PLAYWRIGHT_PORT:-8800}:${PLAYWRIGHT_PORT:-8800}"
+
+  opensearch:
+    image: opensearchproject/opensearch:3.1.0
+    restart: always
+    environment:
+      - cluster.name=opensearch-cluster
+      - node.name=opensearch-node
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=${OPENSEARCH_PASSWORD:-someStrongPAssw0rd}
+      - plugins.security.disabled=false
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - "${OPENSEARCH_HOST_PORT:-9200}:9200"
+    volumes:
+      - ./volumes/opensearch-data:/usr/share/opensearch/data
+
+  dashboards:
+    image: opensearchproject/opensearch-dashboards:3.1.0
+    restart: always
+    environment:
+      - OPENSEARCH_HOSTS=["https://opensearch:9200"]
+    ports:
+      - "${DASHBOARDS_HOST_PORT:-5601}:5601"
+    depends_on:
+      - opensearch
