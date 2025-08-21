@@ -17,6 +17,7 @@ import TabItem from '@theme/TabItem';
 
 <Tabs groupId="client-examples">
   <TabItem value="python" label="Python" default>
+
 ```python
 from watercrawl import WaterCrawlAPIClient
 
@@ -44,6 +45,7 @@ print(result['result']['markdown'])
 ```
   </TabItem>
   <TabItem value="node" label="Node.js">
+  
 ```typescript
 import { WaterCrawlAPIClient } from '@watercrawl/nodejs';
 

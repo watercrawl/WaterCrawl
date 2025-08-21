@@ -33,6 +33,7 @@ Start a new web crawling operation with specified options.
     "spider_options": {
       "max_depth": 2,
       "page_limit": 100,
+      "concurrent_requests": null,
       "allowed_domains": ["example.com"],
       "exclude_paths": ["/private/*"],
       "include_paths": ["/blog/*"],
@@ -66,6 +67,7 @@ Start a new web crawling operation with specified options.
 |--------|------|-------------|---------|
 | max_depth | integer | Maximum depth to crawl | 1 |
 | page_limit | integer | Maximum number of pages to crawl | 1 |
+| concurrent_requests | integer | Maximum number of concurrent requests | null (Default use the max allowed by the server) |
 | allowed_domains | array | List of allowed domains to crawl | [] |
 | exclude_paths | array | List of paths to exclude | [] |
 | include_paths | array | List of paths to include | [] |
@@ -146,6 +148,7 @@ Retrieve details of a specific crawl request.
     "spider_options": {
       "max_depth": 2,
       "page_limit": 100,
+      "concurrent_requests": null,
       "allowed_domains": ["example.com"],
       "exclude_paths": ["/private/*"],
       "include_paths": ["/blog/*"]

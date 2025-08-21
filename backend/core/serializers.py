@@ -1,6 +1,7 @@
 import json
 from urllib.parse import urlparse
 
+from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
@@ -53,6 +54,13 @@ class PageOptionSerializer(serializers.Serializer):
 class SpiderOptionSerializer(serializers.Serializer):
     max_depth = serializers.IntegerField(default=1, required=False)
     page_limit = serializers.IntegerField(default=1, required=False)
+    concurrent_requests = serializers.IntegerField(
+        default=settings.SCRAPY_CONCURRENT_REQUESTS,
+        required=False,
+        allow_null=True,
+        min_value=1,
+        max_value=settings.SCRAPY_CONCURRENT_REQUESTS,
+    )
     allowed_domains = serializers.ListField(
         child=serializers.CharField(), required=False, default=[]
     )

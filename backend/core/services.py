@@ -93,13 +93,20 @@ class CrawlHelpers(BaseHelpers):
             "page_limit", 1
         )
 
+        concurrent_requests = (
+            self.crawl_request.options.get("spider_options", {}).get(
+                "concurrent_requests", None
+            )
+            or settings.SCRAPY_CONCURRENT_REQUESTS
+        )
+
         return [
             "-s",
             "DEPTH_LIMIT={}".format(max_depth),
             "-s",
             "MAX_REQUESTS={}".format(page_limit),  # +2 for the robots.txt
             "-s",
-            "CONCURRENT_REQUESTS={}".format(str(settings.SCRAPY_CONCURRENT_REQUESTS)),
+            "CONCURRENT_REQUESTS={}".format(str(concurrent_requests)),
             "-s",
             "CONCURRENT_REQUESTS_PER_DOMAIN={}".format(
                 str(settings.SCRAPY_CONCURRENT_REQUESTS_PER_DOMAIN)

@@ -22,7 +22,7 @@ export const PageOptionsForm: React.FC<PageOptionsFormProps> = ({ options, onCha
         onChange({ actions: updatedActions });
       }
     }
-  }, [options.actions, onChange]);
+  }, [options.actions, onChange, options.ignore_rendering]);
 
   const [newHeaderKey, setNewHeaderKey] = useState('');
   const [newHeaderValue, setNewHeaderValue] = useState('');

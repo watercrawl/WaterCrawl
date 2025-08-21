@@ -8,9 +8,11 @@ import { UsableProxy } from '../../types/proxy';
 import ComboboxComponent from '../shared/ComboboxComponent';
 import { useTeam } from '../../contexts/TeamContext';
 import { capFirst } from '../../utils/formatters';
+import { useSettings } from '../../contexts/SettingsProvider';
 export interface SpiderOptions {
   maxDepth: string;
   pageLimit: string;
+  concurrentRequests: string | null;
   allowedDomains: string[];
   excludePaths: string[];
   includePaths: string[];
@@ -34,6 +36,7 @@ export const SpiderOptionsForm: React.FC<SpiderOptionsFormProps> = ({ options, o
   const [availableProxies, setAvailableProxies] = useState<UsableProxy[]>([]);
   const [isLoadingProxies, setIsLoadingProxies] = useState(false);
   const { currentSubscription } = useTeam();
+  const { settings } = useSettings();
 
   // Fetch available proxies
   useEffect(() => {
@@ -112,7 +115,6 @@ export const SpiderOptionsForm: React.FC<SpiderOptionsFormProps> = ({ options, o
       {/* Two column section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
         {/* Left Column - Crawler Settings */}
-        <div>
           <OptionGroup
             title="Crawler Settings"
             subtitle={isBatchMode ? (<small className="text-red-500 dark:text-red-400">(This option is not available in batch mode)</small>) : ''}
@@ -156,63 +158,28 @@ export const SpiderOptionsForm: React.FC<SpiderOptionsFormProps> = ({ options, o
               </div>
 
 
-
               <div>
                 <div className="flex items-center space-x-1 mb-1">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Allowed Domains
+                    Concurrent Requests
                   </label>
-                  <InfoTooltip content="Specify domains to crawl (e.g., example.com, sub.example.com). Leave empty to crawl all domains." />
+                  <InfoTooltip content="Maximum number of concurrent requests." />
                 </div>
-                <div className="space-y-2">
-                  <div className="grid grid-cols-2 gap-2">
-                    <div className="col-span-2 flex space-x-2">
-                      <FormInput
-                        label=""
-                        value={newAllowedDomain}
-                        onChange={setNewAllowedDomain}
-                        placeholder={isBatchMode ? 'Auto' : 'eg. example.com'}
-                        disabled={isBatchMode}
-                        className="flex-grow"
-                      />
-                      <Button
-                        type="button"
-                        onClick={handleAddAllowedDomain}
-                        disabled={!newAllowedDomain.trim()}
-                        variant="outline"
-                        size="sm"
-                        className="!px-3 !py-2 h-[40px] mt-1"
-                      >
-                        <PlusIcon className="h-5 w-5" />
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-                {allowedDomains.length > 0 && (
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    {allowedDomains.map((domain) => (
-                      <span
-                        key={domain}
-                        className="inline-flex items-center bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded-full text-xs"
-                      >
-                        {domain}
-                        <button
-                          onClick={() => handleRemoveAllowedDomain(domain)}
-                          className="ml-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                        >
-                          <XMarkIcon className="h-3 w-3" />
-                        </button>
-                      </span>
-                    ))}
-                  </div>
-                )}
+                <FormInput
+                  label=""
+                  type="number"
+                  value={(options as SpiderOptions).concurrentRequests || ''}
+                  onChange={(value) => handleInputChange('concurrentRequests', value)}
+                  placeholder={`Auto - Maximum(${settings?.max_crawl_concurrency})`}
+                />
+                <small className="text-xs text-gray-500 dark:text-gray-400">
+                The number of concurrent requests to make. Higher numbers will make the crawl faster but may increase the risk of getting blocked.
+                </small>
               </div>
+
             </div>
           </OptionGroup>
-        </div>
 
-        {/* Right Column - Path Filters */}
-        <div className="space-y-6">
           <OptionGroup
             title="Path Filters"
             subtitle={isBatchMode ? (<small className="text-red-500 dark:text-red-400">(This option is not available in batch mode)</small>) : ''}
@@ -320,10 +287,60 @@ export const SpiderOptionsForm: React.FC<SpiderOptionsFormProps> = ({ options, o
                   </div>
                 )}
               </div>
+
+              <div>
+                <div className="flex items-center space-x-1 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Allowed Domains
+                  </label>
+                  <InfoTooltip content="Specify domains to crawl (e.g., example.com, sub.example.com). Leave empty to crawl all domains." />
+                </div>
+                <div className="space-y-2">
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="col-span-2 flex space-x-2">
+                      <FormInput
+                        label=""
+                        value={newAllowedDomain}
+                        onChange={setNewAllowedDomain}
+                        placeholder={isBatchMode ? 'Auto' : 'eg. example.com'}
+                        disabled={isBatchMode}
+                        className="flex-grow"
+                      />
+                      <Button
+                        type="button"
+                        onClick={handleAddAllowedDomain}
+                        disabled={!newAllowedDomain.trim()}
+                        variant="outline"
+                        size="sm"
+                        className="!px-3 !py-2 h-[40px] mt-1"
+                      >
+                        <PlusIcon className="h-5 w-5" />
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+                {allowedDomains.length > 0 && (
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {allowedDomains.map((domain) => (
+                      <span
+                        key={domain}
+                        className="inline-flex items-center bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded-full text-xs"
+                      >
+                        {domain}
+                        <button
+                          onClick={() => handleRemoveAllowedDomain(domain)}
+                          className="ml-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                        >
+                          <XMarkIcon className="h-3 w-3" />
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </OptionGroup>
-        </div>
-        <div>
+
           <OptionGroup
             title="Proxy Settings"
             description="Configure proxy servers for your crawl requests"
@@ -389,7 +406,6 @@ export const SpiderOptionsForm: React.FC<SpiderOptionsFormProps> = ({ options, o
               </div>
             </div>
           </OptionGroup>
-        </div>
       </div>
 
     </div>

@@ -17,3 +17,4 @@ class SettingSerializer(serializers.Serializer):
     google_analytics_id = serializers.CharField()
     is_installed = serializers.BooleanField()
     is_search_configured = serializers.BooleanField()
+    max_crawl_concurrency = serializers.IntegerField()

@@ -1,6 +1,8 @@
 import traceback
 
 import httpx
+from scrapy import signals
+from scrapy.exceptions import IgnoreRequest
 from scrapy.http import HtmlResponse
 
 from core.services import CrawlHelpers, BasePubSupService
@@ -124,3 +126,34 @@ class PlaywrightMiddleware:
                 )
 
                 return None
+
+
+class LimitRequestsMiddleware:
+    def __init__(self, max_requests):
+        self.max_requests = max_requests
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        # you can set in settings.py: MAX_REQUESTS = 20
+        max_requests = crawler.settings.getint("MAX_REQUESTS", 20)
+        mw = cls(max_requests=max_requests)
+
+        # connect to spider_opened so we can reset counter per spider
+        crawler.signals.connect(mw.spider_opened, signal=signals.spider_opened)
+        return mw
+
+    def spider_opened(self, spider):
+        self.dispatched = 0
+
+    def process_request(self, request, spider):
+        if self.dispatched >= self.max_requests:
+            raise IgnoreRequest("Maximum requests reached")
+
+        self.dispatched += 1
+        return None  # let it continue
+
+    def process_response(self, request, response, spider):
+        return response
+
+    def process_exception(self, request, exception, spider):
+        return None
