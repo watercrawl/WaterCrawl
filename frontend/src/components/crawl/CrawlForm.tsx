@@ -63,6 +63,7 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ initialRequest, onCrawlEve
   const [spiderOptions, setSpiderOptions] = useState<SpiderOptions>({
     maxDepth: '1',
     pageLimit: '1',
+    concurrentRequests: null,
     allowedDomains: [],
     excludePaths: [],
     includePaths: [],
@@ -95,6 +96,7 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ initialRequest, onCrawlEve
         setSpiderOptions({
           maxDepth: spider_options.max_depth?.toString() || '1',
           pageLimit: spider_options.page_limit?.toString() || '1',
+          concurrentRequests: spider_options.concurrent_requests?.toString() || null,
           allowedDomains: spider_options.allowed_domains || [],
           excludePaths: spider_options.exclude_paths || [],
           includePaths: spider_options.include_paths || [],
@@ -147,6 +149,7 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ initialRequest, onCrawlEve
           ...(isBatch ? { proxy_server: spiderOptions.proxy_server } : {
             max_depth: parseInt(spiderOptions.maxDepth),
             page_limit: parseInt(spiderOptions.pageLimit),
+            concurrent_requests: spiderOptions.concurrentRequests ? parseInt(spiderOptions.concurrentRequests) : null,
             allowed_domains: spiderOptions.allowedDomains,
             exclude_paths: spiderOptions.excludePaths,
             include_paths: spiderOptions.includePaths,

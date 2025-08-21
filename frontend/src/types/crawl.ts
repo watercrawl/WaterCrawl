@@ -75,6 +75,7 @@ export interface PageOptions {
 export interface SpiderOptions {
   max_depth?: number;
   page_limit?: number;
+  concurrent_requests?: number;
   allowed_domains?: string[];
   exclude_paths?: string[];
   include_paths?: string[];

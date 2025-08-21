@@ -1,6 +1,7 @@
 from typing import Iterable
 
 from scrapy import Request, Spider, signals
+from scrapy.exceptions import IgnoreRequest
 
 from core.services import CrawlerService, CrawlHelpers, BasePubSupService
 from spider import settings
@@ -58,6 +59,8 @@ class SiteScrapper(Spider):
 
     def crawl_error(self, failure):
         """Handle errors during the crawl."""
+        if isinstance(failure.value, IgnoreRequest):
+            return
         self.pubsub_service.send_feed(
             f"Error occurred while crawling: {failure.value}", feed_type="error"
         )

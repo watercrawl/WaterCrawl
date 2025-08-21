@@ -81,6 +81,7 @@ $request = $client->createCrawlRequest(
     [
         'max_depth' => 1, // maximum depth to crawl
         'page_limit' => 1, // maximum number of pages to crawl
+        'concurrent_requests' => null, // maximum number of concurrent requests (default use the max allowed by the server)
         'allowed_domains' => [], // allowed domains to crawl
         'exclude_paths' => [], // exclude paths
         'include_paths' => [] // include paths

@@ -13,6 +13,7 @@ import TabItem from '@theme/TabItem';
 
 <Tabs groupId="client-examples">
   <TabItem value="python" label="Python" default>
+
 ```bash
 pip install watercrawl-py
 ```
@@ -22,6 +23,7 @@ from watercrawl import WaterCrawlAPIClient
 ```
   </TabItem>
   <TabItem value="node" label="Node.js">
+
 ```bash
 npm install @watercrawl/nodejs
 ```
@@ -38,6 +40,7 @@ All API requests require authentication using a JWT token. Include the token in 
 
 <Tabs groupId="client-examples">
   <TabItem value="python" label="Python" default>
+
 ```python
 from watercrawl import WaterCrawlAPIClient
 
@@ -46,12 +49,14 @@ client = WaterCrawlAPIClient('your_api_key')
 ```
   </TabItem>
   <TabItem value="curl" label="cURL">
+
 ```bash
 curl -H "Authorization: Bearer YOUR_API_KEY" \
      https://api.watercrawl.dev/api/v1/...
 ```
   </TabItem>
   <TabItem value="node" label="Node.js">
+  
 ```javascript
 import { WaterCrawlAPIClient } from '@watercrawl/nodejs';
 

@@ -86,6 +86,10 @@ class FrontendSettingService:
     def is_search_configured(self):
         return bool(settings.SCRAPY_GOOGLE_CSE_ID and settings.SCRAPY_GOOGLE_API_KEY)
 
+    @cached_property
+    def max_crawl_concurrency(self):
+        return settings.SCRAPY_CONCURRENT_REQUESTS
+
 
 class EmailService:
     def __init__(self):
