@@ -1,4 +1,4 @@
-![Water Crawl](https://raw.githubusercontent.com/watercrawl/WaterCrawl/0d60be2a79e8d4ce62ae5c7c77f4f8bdf0113dc9/assets/banner.png)
+![Water Crawl](https://raw.githubusercontent.com/watercrawl/WaterCrawl/5bb91dcb07a619469688372444e27dc3deab185b/assets/banner.png)
 
 <div align="center">
 
@@ -13,59 +13,83 @@
 
 </div>
 
+
 🕷️ WaterCrawl is a powerful web application that uses Python, Django, Scrapy, and Celery to crawl web pages and extract relevant data.
 
 ## 🚀 Quick Start
 
-You have 3 options to install WaterCrawl:
-
-1. 🐳 [Build and Run **(Running on Docker locally)**](#build-and-run-running-on-docker-locally)
+1. 🐳 [Quick start](#-quick-start)
 2. 💻 [Development **(For Contributing)**](./CONTRIBUTING.md)
-3. 🌐 [Self-Hosted **(For Production)**](https://github.com/watercrawl/self-hosted)
 
-### 🐳 Build and Run (Running on Docker locally)
+### 🐳 Quick start
 
 To build and run WaterCrawl on Docker locally, please follow these steps:
 
 1. Clone the repository:
     ```bash
     git clone https://github.com/watercrawl/watercrawl.git
+    cd watercrawl
     ```
 
 2. Build and run the Docker containers:
     ```bash
-    cp backend/.env.example backend/.env
     cd docker
     cp .env.example .env
-    docker compose up -d --build
+    docker compose up -d
     ```
 
-3. Access the application with open [http://localhost:3000](http://localhost:3000)
+3. Access the application with open [http://localhost](http://localhost)
+
+> **⚠️ IMPORTANT**: If you're deploying on a domain or IP address other than localhost, you MUST update the MinIO configuration in your .env file:
+> ```bash
+> # Change this from 'localhost' to your actual domain or IP
+> MINIO_EXTERNAL_ENDPOINT=your-domain.com
+> 
+> # Also update these URLs accordingly
+> MINIO_BROWSER_REDIRECT_URL=http://your-domain.com/minio-console/
+> MINIO_SERVER_URL=http://your-domain.com/
+> ```
+> Failure to update these settings will result in broken file uploads and downloads. For more details, see [DEPLOYMENT.md](./DEPLOYMENT.md).
+
+> **Important:** Before deploying to production, ensure that you update the `.env` file with the appropriate configuration values. Additionally, make sure to set up and configure the database, MinIO, and any other required services. for more information, please read the [Deployment Guide](./DEPLOYMENT.md).
+
 
 ### 💻 Development (For Contributing)
 
 For local development and contribution, please follow our [Contributing Guide](./CONTRIBUTING.md) 🤝
 
-### 🌐 Production Deployment
-
-For production deployment with Docker and complete infrastructure setup, please refer to our dedicated [self-hosted repository](https://github.com/watercrawl/self-hosted) 🚀
+<div align="">
+   <a href="https://watercrawl.dev/jobs">
+      <img src="https://img.shields.io/badge/🚀_We're_Hiring!-Join_Our_Team-F59E0B?style=for-the-badge" alt="We're Hiring" />
+   </a>
+</div>
 
 ## ✨ Features
 
-- 🕷️ Crawl web pages using Scrapy
-- 📊 Extract data from crawled pages using Scrapy
-- 💾 Store extracted data in a database using Django
-- ⚡ Use Celery to run tasks asynchronously
-- 📁 File storage support (MinIO/S3/Local)
-- 🔄 REST API with OpenAPI documentation
-- 🔐 User authentication and authorization
-- ⏰ Task scheduling with Celery Beat
+- **🕸️ Advanced Web Crawling & Scraping** - Crawl websites with highly customizable options for depth, speed, and targeting specific content
+- **🔍 Powerful Search Engine** - Find relevant content across the web with multiple search depths (basic, advanced, ultimate)
+- **🌐 Multi-language Support** - Search and crawl content in different languages with country-specific targeting
+- **⚡ Asynchronous Processing** - Monitor real-time progress of crawls and searches via Server-Sent Events (SSE)
+- **🔄 REST API with OpenAPI** - Comprehensive API with detailed documentation and client libraries
+- **🔌 Rich Ecosystem** - Integrations with Dify, N8N, and other AI/automation platforms
+- **🏠 Self-hosted & Open Source** - Full control over your data with easy deployment options
+- **📊 Advanced Results Handling** - Download and process search results with customizable parameters
+
+Check our [API Overview](https://docs.watercrawl.dev/intro) to learn more about these features.
+
+## 🛠️ Client SDKs
+
+- ✅ [**Python Client**](https://docs.watercrawl.dev/clients/python) - Full-featured SDK with support for all API endpoints
+- ✅ [**Node.js Client**](https://docs.watercrawl.dev/clients/nodejs) - Complete JavaScript/TypeScript integration
+- ✅ [**Go Client**](https://docs.watercrawl.dev/clients/go) - Full-featured SDK with support for all API endpoints
+- ✅ [**PHP Client**](https://docs.watercrawl.dev/clients/php) - Full-featured SDK with support for all API endpoints
+- 🔜 [**Rust Client**](https://docs.watercrawl.dev/clients/rust) - Coming soon
 
 ## 🔌 Integrations
 
 - ✅ [Dify Plugin](https://marketplace.dify.ai/plugins/watercrawl/watercrawl) ([source code](https://github.com/watercrawl/watercrawl-dify-plugin))
 - ✅ [N8N workflow node](https://www.npmjs.com/package/@watercrawl/n8n-nodes-watercrawl) ([source code](https://github.com/watercrawl/n8n-nodes-watercrawl))
-- 🔄 Dify Knowledge Base (Pull Request - Not Merged yet)
+- ✅ [Dify Knowledge Base](https://dify.ai/)
 - 🔄 Langflow (Pull Request - Not Merged yet)
 - 🔜 Flowise (Coming soon)
 

@@ -61,7 +61,10 @@ SPIDER_MIDDLEWARES = {
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-DOWNLOADER_MIDDLEWARES = {"spider.middlewares.PlaywrightMiddleware": 560}
+DOWNLOADER_MIDDLEWARES = {
+    "spider.middlewares.LimitRequestsMiddleware": 543,
+    "spider.middlewares.PlaywrightMiddleware": 560,
+}
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
@@ -73,6 +76,7 @@ EXTENSIONS = {
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
+    "spider.pipelines.SiteScrapperPipeline": 50,
     "spider.pipelines.HTMLFilterPipeline": 100,
     "spider.pipelines.MarkdownPipeline": 200,
     "spider.pipelines.SpiderPipeline": 999,
@@ -118,9 +122,17 @@ LOG_LEVEL = settings.SCRAPY_LOG_LEVEL
 PLAYWRIGHT_SERVER = settings.PLAYWRIGHT_SERVER
 PLAYWRIGHT_API_KEY = settings.PLAYWRIGHT_API_KEY
 
+DEPTH_STATS_VERBOSE = True
+
 ##### RUN PLUGINS #####
 PLUGINS = get_active_plugins()
 for plugin in PLUGINS:
     SPIDER_MIDDLEWARES.update(**plugin.get_spider_middleware_classes())
     DOWNLOADER_MIDDLEWARES.update(**plugin.get_downloader_middleware_classes())
     ITEM_PIPELINES.update(**plugin.get_pipeline_classes())
+
+GOOGLE_API_KEY = settings.SCRAPY_GOOGLE_API_KEY
+GOOGLE_CSE_ID = settings.SCRAPY_GOOGLE_CSE_ID
+
+MAX_NUMBER_OF_SITEMAP_URLS = settings.SCRAPY_MAX_NUMBER_OF_SITEMAP_URLS
+SITEMAP_CRAWL_PAGE_LIMIT = settings.SCRAPY_SITEMAP_CRAWL_PAGE_LIMIT

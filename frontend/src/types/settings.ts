@@ -12,4 +12,7 @@ export interface Settings {
     terms_url: string;
     policy_update_at: string;
     terms_update_at: string;
+    is_installed: boolean;
+    is_search_configured: boolean;
+    max_crawl_concurrency: number;
 }

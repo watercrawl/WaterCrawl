@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:17.2-alpine3.21
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_DB=${POSTGRES_DB:-postgres}
+    volumes:
+      - ./volumes/postgres-db:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_HOST_PORT:-5432}:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - "${REDIS_HOST_PORT:-6379}:6379"
+    volumes:
+      - ./volumes/redis-data:/data
+
+  minio:
+    image: minio/minio:RELEASE.2024-11-07T00-52-20Z
+    restart: always
+    volumes:
+      - ./volumes/minio-data:/data
+    command: server /data --console-address ":9001"
+    environment:
+      - MINIO_BROWSER_REDIRECT_URL=${MINIO_BROWSER_REDIRECT_URL:-http://localhost:9001}
+      - MINIO_SERVER_URL=${MINIO_SERVER_URL:-http://localhost:9000}
+      - MINIO_ROOT_USER=${MINIO_ACCESS_KEY:-minio}
+      - MINIO_ROOT_PASSWORD=${MINIO_SECRET_KEY:-minio123}
+    ports:
+      - "${MINIO_HOST_PORT:-9000}:9000"
+      - "${MINIO_CONSOLE_HOST_PORT:-9001}:9001"
+
+  mailpit:
+    image: axllent/mailpit
+    restart: always
+    ports:
+      - "${MAILPIT_SMTP_PORT:-1025}:1025"
+      - "${MAILPIT_UI_PORT:-8025}:8025"
+
+  playwright:
+    image: watercrawl/playwright:1.1
+    restart: always
+    user: root
+    environment:
+      - AUTH_API_KEY=${PLAYWRIGHT_API_KEY:-your-secret-api-key}
+      - PORT=${PLAYWRIGHT_PORT:-8800}
+      - HOST=${PLAYWRIGHT_HOST:-0.0.0.0}
+    ports:
+      - "${PLAYWRIGHT_PORT:-8800}:${PLAYWRIGHT_PORT:-8800}"

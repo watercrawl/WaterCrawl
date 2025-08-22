@@ -6,4 +6,4 @@ class PlanConfig(AppConfig):
     name = "plan"
 
     def ready(self):
-        pass
+        from . import signals  # noqa: F401

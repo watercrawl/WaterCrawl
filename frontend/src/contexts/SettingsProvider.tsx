@@ -1,75 +1,60 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { settingsApi } from '../services/api/settings';
 import { Settings } from '../types/settings';
-
-const COMPATIBLE_BACKEND_VERSION = '0.4.0';
+import { useCallback } from 'react';
+import { InstallPage } from '../pages/custom/InstallPage';
+import { ErrorPage } from '../pages/custom/ErrorPage';
+import { LoadingPage } from '../pages/custom/LoadingPage';
 
 interface SettingsContextType {
     settings: Settings | null;
     loading: boolean;
     error: Error | null;
-    isCompatibleBackend: boolean;
-    compatibleBackendVersion: string;
+    reloadSettings: () => void;
 }
 
 const SettingsContext = createContext<SettingsContextType>({
     settings: null,
     loading: true,
-    isCompatibleBackend: true,
-    compatibleBackendVersion: COMPATIBLE_BACKEND_VERSION,
     error: null,
+    reloadSettings: () => { },
 });
 
 export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [settings, setSettings] = useState<Settings | null>(null);
-    const [isCompatibleBackend, setIsCompatibleBackend] = useState<boolean>(true)
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<Error | null>(null);
 
-    useEffect(() => {
-        const fetchSettings = async () => {
-            try {
-                const data = await settingsApi.getSettings();
-                setSettings(data);
-            } catch (err) {
-                setError(err instanceof Error ? err : new Error('Unknown error occurred'));
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchSettings();
+    const fetchSettings = useCallback(() => {
+        setLoading(true);
+        setError(null);
+        settingsApi.getSettings().then((data) => {
+            setSettings(data);
+        }).catch((err) => {
+            setError(err instanceof Error ? err : new Error('Unknown error occurred'));
+        }).finally(() => {
+            setLoading(false);
+        });
     }, []);
-
     useEffect(() => {
-        if (!settings) return;
-        if (!settings.api_version || settings.api_version === 'development') {
-            setIsCompatibleBackend(true);
-            return;
-        }
+        fetchSettings();
+    }, [fetchSettings]);
 
-        const extractVersionNumbers = (text: string) => {
-            const match = text.match(/[vV]?(\d+)\.(\d+)\.(\d+)/);
-            if (match) {
-                return [match[1], match[2], match[3]];
-            }
-            return ["0", "0", "0"];
-        };
 
-        const [major, minor, patch]: string[] = COMPATIBLE_BACKEND_VERSION.split('.');
-        const [majorBackend, minorBackend, patchBackend]: string[] = extractVersionNumbers(settings.api_version);
+    // Show a loading spinner while fetching settings
+    if (loading) {
+        return <LoadingPage />;
+    }
 
-        // it is not compatible less than 0.3.0
-        setIsCompatibleBackend(
-            (major == '*' || major == majorBackend) &&
-            (minor == '*' || parseInt(minor) <= parseInt(minorBackend)) &&
-            (patch == '*' || parseInt(patch) <= parseInt(patchBackend))
-        );
-    }, [settings])
+    // Show an error message if settings failed to load
+    if (error) {
+        return <ErrorPage error={error} onRetry={fetchSettings} />;
+    }
 
+    // Render children only when settings are loaded successfully
     return (
-        <SettingsContext.Provider value={{ settings, loading, error, isCompatibleBackend, compatibleBackendVersion: COMPATIBLE_BACKEND_VERSION }}>
-            {children}
+        <SettingsContext.Provider value={{ settings, loading, error, reloadSettings: fetchSettings }}>
+            {settings?.is_installed ? children : <InstallPage />}
         </SettingsContext.Provider>
     );
 };

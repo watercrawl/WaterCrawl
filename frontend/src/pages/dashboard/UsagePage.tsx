@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import { usageApi } from '../../services/api/usage';
 import { UsageResponse } from '../../types/common';
@@ -12,7 +12,7 @@ const UsagePage: React.FC = () => {
   const [data, setData] = useState<UsageResponse | null>(null);
   const { refreshCurrentSubscription } = useTeam();
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       setLoading(true);
       // rewrite with promiss  all
@@ -26,11 +26,11 @@ const UsagePage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [refreshCurrentSubscription]);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   if (!loading && !data) {
     return (

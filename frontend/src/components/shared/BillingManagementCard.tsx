@@ -185,7 +185,7 @@ export const BillingManagementCard: React.FC = () => {
                   Billing Details
                 </h4>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Next billing: {currentSubscription.cancel_at ? 'Cancelled' : formatDate(currentSubscription.current_period_end_at)}
+                  Next billing: {currentSubscription.cancel_at ? 'Canceled' : formatDate(currentSubscription.current_period_end_at)}
                 </p>
               </div>
               <div className="flex space-x-2">
@@ -258,7 +258,7 @@ export const BillingManagementCard: React.FC = () => {
                 disabled={isLoading}
                 className="px-4 py-2 text-sm bg-red-600 text-white hover:bg-red-700 rounded-md disabled:opacity-50"
               >
-                {isLoading ? 'Cancelling...' : 'Cancel Subscription'}
+                {isLoading ? 'Canceling...' : 'Cancel Subscription'}
               </button>
             </div>
           </div>

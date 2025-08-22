@@ -15,6 +15,7 @@ import TabItem from '@theme/TabItem';
 
 <Tabs groupId="client-examples">
   <TabItem value="python" label="Python" default>
+  
 ```python
 from watercrawl import WaterCrawlAPIClient
 
@@ -29,12 +30,14 @@ print(f"Documents Found: {crawl['number_of_documents']}")
 ```
   </TabItem>
   <TabItem value="curl" label="cURL">
+
 ```bash
 curl "https://api.watercrawl.dev/api/v1/core/crawl-requests/123e4567-e89b-12d3-a456-426614174000/" \
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
   </TabItem>
   <TabItem value="node" label="Node.js">
+
 ```javascript
 import { WaterCrawlAPIClient } from '@watercrawl/nodejs';
 
@@ -54,6 +57,7 @@ console.log(`Documents Found: ${crawl.number_of_documents}`);
 
 <Tabs groupId="client-examples">
   <TabItem value="python" label="Python" default>
+
 ```python
 {
     'uuid': '123e4567-e89b-12d3-a456-426614174000',
@@ -63,6 +67,7 @@ console.log(`Documents Found: ${crawl.number_of_documents}`);
         'spider_options': {
             'max_depth': 2,
             'page_limit': 100,
+            'concurrent_requests': null,
             'allowed_domains': ['example.com'],
             'exclude_paths': ['/private/*'],
             'include_paths': ['/blog/*']
@@ -73,7 +78,8 @@ console.log(`Documents Found: ${crawl.number_of_documents}`);
             'wait_time': 100,
             'include_html': False,
             'only_main_content': True,
-            'include_links': False
+            'include_links': False,
+            'ignore_rendering': False,
         },
         'plugin_options': {
             // Optional plugin-specific configuration
@@ -86,6 +92,7 @@ console.log(`Documents Found: ${crawl.number_of_documents}`);
 ```
   </TabItem>
   <TabItem value="curl" label="cURL">
+
 ```json
 {
     "uuid": "123e4567-e89b-12d3-a456-426614174000",
@@ -95,6 +102,7 @@ console.log(`Documents Found: ${crawl.number_of_documents}`);
         "spider_options": {
             "max_depth": 2,
             "page_limit": 100,
+            "concurrent_requests": null,
             "allowed_domains": ["example.com"],
             "exclude_paths": ["/private/*"],
             "include_paths": ["/blog/*"]
@@ -105,7 +113,8 @@ console.log(`Documents Found: ${crawl.number_of_documents}`);
             "wait_time": 100,
             "include_html": false,
             "only_main_content": true,
-            "include_links": false
+            "include_links": false,
+            "ignore_rendering": False
         },
         "plugin_options": {
             // Optional plugin-specific configuration
@@ -118,6 +127,7 @@ console.log(`Documents Found: ${crawl.number_of_documents}`);
 ```
   </TabItem>
   <TabItem value="node" label="Node.js">
+
 ```javascript
 {
     uuid: '123e4567-e89b-12d3-a456-426614174000',
@@ -127,6 +137,7 @@ console.log(`Documents Found: ${crawl.number_of_documents}`);
         spider_options: {
             max_depth: 2,
             page_limit: 100,
+            concurrent_requests: null,
             allowed_domains: ['example.com'],
             exclude_paths: ['/private/*'],
             include_paths: ['/blog/*']
@@ -137,7 +148,8 @@ console.log(`Documents Found: ${crawl.number_of_documents}`);
             wait_time: 100,
             include_html: false,
             only_main_content: true,
-            include_links: false
+            include_links: false,
+            ignore_rendering: false
         },
         plugin_options: {
             // Optional plugin-specific configuration

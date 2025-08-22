@@ -15,7 +15,8 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["email", "password", "first_name", "last_name"]
+        fields = ["email", "password", "first_name", "last_name", "email_verified"]
+        read_only_fields = ["email_verified"]
 
     def validate_email(self, value):
         if User.objects.filter(email__iexact=value).exists():
@@ -151,3 +152,10 @@ class MyTeamInvitationSerializer(serializers.ModelSerializer):
 
 class RequestEmailVerificationSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
+
+
+class InstallSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+    password = serializers.CharField(required=True, validators=[validate_password])
+    newsletter_confirmed = serializers.BooleanField(required=False, default=False)
+    analytics_confirmed = serializers.BooleanField(required=False, default=False)

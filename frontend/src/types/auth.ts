@@ -10,6 +10,13 @@ export interface RegisterRequest {
   last_name: string;
 }
 
+export interface InstallRequest {
+  email: string;
+  password: string;
+  newsletter_confirmed: boolean;
+  analytics_confirmed: boolean;
+}
+
 export interface User {
   uuid: string;
   email: string;
@@ -27,4 +34,18 @@ export interface AuthResponse {
 
 export interface TokenPayload {
   exp: number;
+}
+
+
+export interface VerifyInvitationResponse {
+  invitation_code: string;
+  new_user: boolean;
+  email: string;
+}
+
+export interface RegisterResponse {
+  first_name: string;
+  last_name: string;
+  email: string;
+  email_verified: boolean;
 }

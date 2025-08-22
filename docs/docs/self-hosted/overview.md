@@ -1,6 +1,6 @@
 # WaterCrawl Self-Hosted
 
-A self-hosted version of WaterCrawl, a powerful web crawling and data extraction platform.
+WaterCrawl can be self-hosted using Docker directly from the main repository, providing a powerful web crawling and data extraction platform on your own infrastructure.
 
 ## Prerequisites
 

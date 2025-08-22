@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { Team } from '../types/team';
 import { teamApi } from '../services/api/team';
 import { TeamService } from '../services/teamService';
@@ -45,7 +45,7 @@ export const TeamProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const refreshCurrentSubscription = async () => {
+  const refreshCurrentSubscription = useCallback(async () => {
     try {
       setShowSubscriptionBanner(false);
       const data = await subscriptionApi.currentSubscription();
@@ -59,7 +59,7 @@ export const TeamProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       setError(err as Error);
     }
-  }
+  }, []);
 
   const setCurrentTeam = async (team: Team) => {
     try {
@@ -91,7 +91,7 @@ export const TeamProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setCurrentSubscription(null);
     setShowSubscriptionBanner(false);
     refreshCurrentSubscription();
-  }, [currentTeam]);
+  }, [currentTeam, refreshCurrentSubscription]);
 
   return (
     <TeamContext.Provider

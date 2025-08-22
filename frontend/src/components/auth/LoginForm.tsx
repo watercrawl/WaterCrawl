@@ -11,7 +11,6 @@ import { authApi } from '../../services/api/auth';
 import type { ApiError } from '../../types/common';
 import { AuthService } from '../../services/authService';
 import { useSettings } from '../../contexts/SettingsProvider';
-import Loading from '../shared/Loading';
 import { TeamService } from '../../services/teamService';
 import { AxiosError } from 'axios';
 import { EmailVerificationPopup } from '../EmailVerificationPopup';
@@ -45,7 +44,7 @@ export const LoginForm: React.FC = () => {
 
   const { handleSubmit, formState: { errors } } = methods;
 
-  const { settings, loading } = useSettings();
+  const { settings } = useSettings();
 
   const onSubmitHandler = handleSubmit((data: LoginFormData) => {
     setIsLoading(true);
@@ -70,24 +69,6 @@ export const LoginForm: React.FC = () => {
         setIsLoading(false);
       });
   });
-
-  if (!settings) {
-    return (
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white dark:bg-gray-800 py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          {loading ?
-            (<div className="flex items-center justify-center">
-              <Loading />
-            </div>)
-            : (
-              <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-                There is a problem with load settings. Please try again later.
-              </p>
-            )}
-        </div>
-      </div>
-    )
-  }
 
   return (
     <FormProvider {...methods}>
@@ -159,7 +140,7 @@ export const LoginForm: React.FC = () => {
               </button>
             </form>
           }
-          {(settings.is_github_login_active || settings.is_google_login_active) &&
+          {(settings?.is_github_login_active || settings?.is_google_login_active) &&
             <div className="mt-6">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
@@ -179,9 +160,9 @@ export const LoginForm: React.FC = () => {
         </div>
       </div>
       {showEmailVerificationPopup && (
-        <EmailVerificationPopup 
-          email={userEmail} 
-          onClose={() => setShowEmailVerificationPopup(false)} 
+        <EmailVerificationPopup
+          email={userEmail}
+          onClose={() => setShowEmailVerificationPopup(false)}
         />
       )}
     </FormProvider>

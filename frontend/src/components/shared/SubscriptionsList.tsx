@@ -36,7 +36,6 @@ export const SubscriptionsList: React.FC = () => {
         return <CheckCircleIcon className="h-5 w-5 text-green-500" />;
       case 'pending':
         return <ClockIcon className="h-5 w-5 text-yellow-500" />;
-      case 'cancelled':
       case 'canceled':
         return <XCircleIcon className="h-5 w-5 text-red-500" />;
       default:

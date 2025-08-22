@@ -9,6 +9,7 @@ from django.http import StreamingHttpResponse
 from django.template.loader import render_to_string
 
 import watercrawl
+from user.models import User
 
 
 class EventStreamResponse(StreamingHttpResponse):
@@ -76,6 +77,18 @@ class FrontendSettingService:
     @cached_property
     def google_analytics_id(self):
         return settings.GOOGLE_ANALYTICS_ID
+
+    @cached_property
+    def is_installed(self):
+        return User.objects.exists()
+
+    @cached_property
+    def is_search_configured(self):
+        return bool(settings.SCRAPY_GOOGLE_CSE_ID and settings.SCRAPY_GOOGLE_API_KEY)
+
+    @cached_property
+    def max_crawl_concurrency(self):
+        return settings.SCRAPY_CONCURRENT_REQUESTS
 
 
 class EmailService:

@@ -13,6 +13,7 @@ import TabItem from '@theme/TabItem';
 
 <Tabs groupId="client-examples">
   <TabItem value="python" label="Python" default>
+
 ```bash
 pip install watercrawl-py
 ```
@@ -22,6 +23,7 @@ from watercrawl import WaterCrawlAPIClient
 ```
   </TabItem>
   <TabItem value="node" label="Node.js">
+
 ```bash
 npm install @watercrawl/nodejs
 ```
@@ -38,6 +40,7 @@ All API requests require authentication using a JWT token. Include the token in 
 
 <Tabs groupId="client-examples">
   <TabItem value="python" label="Python" default>
+
 ```python
 from watercrawl import WaterCrawlAPIClient
 
@@ -46,12 +49,14 @@ client = WaterCrawlAPIClient('your_api_key')
 ```
   </TabItem>
   <TabItem value="curl" label="cURL">
+
 ```bash
 curl -H "Authorization: Bearer YOUR_API_KEY" \
      https://api.watercrawl.dev/api/v1/...
 ```
   </TabItem>
   <TabItem value="node" label="Node.js">
+  
 ```javascript
 import { WaterCrawlAPIClient } from '@watercrawl/nodejs';
 
@@ -72,6 +77,17 @@ Crawl requests can have the following status values:
 - `canceled`: Crawl was cancelled
 - `failed`: Crawl failed due to an error
 
+### Search Status Values
+
+Search requests have the same status values:
+
+- `new`: Search request created but not started
+- `running`: Search is in progress
+- `finished`: Search completed successfully
+- `cancelling`: Search is being cancelled
+- `canceled`: Search was cancelled
+- `failed`: Search failed due to an error
+
 ## API Endpoints
 1. [Scrape URL](./scrape-url): Start a new crawl
 2. [Create Crawl Request](./create-crawl): Start a new crawl
@@ -80,6 +96,10 @@ Crawl requests can have the following status values:
 5. [Cancel Crawl Request](./cancel-crawl): Stop a crawl
 6. [Monitor Crawl Status](./monitor-crawl): Track progress
 7. [List Crawl Results](./list-results): Get results
+8. [Create Search Request](./create-search): Create a new search
+9. [Monitor Search Status](./monitor-search): Track search progress
+10. [Get Search Request](./get-search): Get search details
+11. [Cancel Search Request](./cancel-search): Stop a search
 
 ## Best Practices
 
@@ -88,3 +108,5 @@ Crawl requests can have the following status values:
 3. **Error Handling**: Always check the status of your crawl requests and implement proper error handling.
 4. **Content Extraction**: Use `exclude_tags` and `include_tags` to precisely target the content you need.
 5. **Domain Restrictions**: Use `allowed_domains` to prevent the crawler from accessing unintended domains.
+6. **Ignore Rendering**: Use `ignore_rendering` to prevent the crawler from rendering a JS-heavy page.
+

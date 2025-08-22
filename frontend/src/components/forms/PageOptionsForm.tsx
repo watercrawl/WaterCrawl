@@ -1,53 +1,29 @@
 import React, { useState } from 'react';
 import { PlusIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import { Switch } from '@headlessui/react';
 import { PageOptions } from '../../types/crawl';
 import { OptionGroup, FormInput, InfoTooltip } from '../shared/FormComponents';
 import { Button } from '../shared/Button';
+import { Switch } from '../shared/Switch';
 
 interface PageOptionsFormProps {
   options: PageOptions;
   onChange: (options: Partial<PageOptions>) => void;
 }
 
-interface ToggleOptionProps {
-  label: string;
-  description?: string;
-  checked: boolean;
-  onChange: (checked: boolean) => void;
-}
-
-const ToggleOption: React.FC<ToggleOptionProps> = ({ label, description, checked, onChange }) => {
-  return (
-    <Switch.Group>
-      <div className="flex items-center space-x-3">
-        <Switch
-          checked={checked}
-          onChange={onChange}
-          className={`${
-            checked ? 'bg-primary-600' : 'bg-gray-200 dark:bg-gray-700'
-          } relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2`}
-        >
-          <span
-            className={`${
-              checked ? 'translate-x-5' : 'translate-x-0'
-            } pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out`}
-          />
-        </Switch>
-        <div className="flex-1">
-          <div className="flex items-center space-x-1">
-            <Switch.Label className="text-sm font-medium text-gray-900 dark:text-white cursor-pointer">
-              {label}
-            </Switch.Label>
-            {description && <InfoTooltip content={description} />}
-          </div>
-        </div>
-      </div>
-    </Switch.Group>
-  );
-};
 
 export const PageOptionsForm: React.FC<PageOptionsFormProps> = ({ options, onChange }) => {
+  React.useEffect(() => {
+    if (options.ignore_rendering && options.actions && options.actions.length > 0) {
+      const actionsToRemove = ['pdf', 'screenshot'];
+      const hasActionsToRemove = options.actions.some(action => action && actionsToRemove.includes(action.type));
+
+      if (hasActionsToRemove) {
+        const updatedActions = options.actions.filter(action => action && !actionsToRemove.includes(action.type));
+        onChange({ actions: updatedActions });
+      }
+    }
+  }, [options.actions, onChange, options.ignore_rendering]);
+
   const [newHeaderKey, setNewHeaderKey] = useState('');
   const [newHeaderValue, setNewHeaderValue] = useState('');
   const [newExcludeTag, setNewExcludeTag] = useState('');
@@ -118,23 +94,29 @@ export const PageOptionsForm: React.FC<PageOptionsFormProps> = ({ options, onCha
           description="Configure how content should be extracted from web pages"
         >
           <div className="space-y-4">
-            <ToggleOption
+            <Switch
               label="Extract Main Content"
               description="Automatically detect and extract the main content area of the page, removing navigation, ads, and other irrelevant content"
               checked={options.only_main_content}
               onChange={(checked) => handleInputChange('only_main_content', checked)}
             />
-            <ToggleOption
+            <Switch
               label="Include HTML"
               description="Include the raw HTML content in addition to the extracted text"
               checked={options.include_html}
               onChange={(checked) => handleInputChange('include_html', checked)}
             />
-            <ToggleOption
+            <Switch
               label="Include Links"
               description="Extract and include all links found in the content"
               checked={options.include_links}
               onChange={(checked) => handleInputChange('include_links', checked)}
+            />
+            <Switch
+              label="Ignore Rendering"
+              description="When enabled, uses faster HTTP requests without JavaScript rendering. Disable for SSR sites."
+              checked={options.ignore_rendering || false}
+              onChange={(checked) => handleInputChange('ignore_rendering', checked)}
             />
           </div>
         </OptionGroup>
@@ -177,12 +159,12 @@ export const PageOptionsForm: React.FC<PageOptionsFormProps> = ({ options, onCha
               {options.exclude_tags.length > 0 && (
                 <div className="mt-2 flex flex-wrap gap-2">
                   {options.exclude_tags.map((tag) => (
-                    <span 
-                      key={tag} 
+                    <span
+                      key={tag}
                       className="inline-flex items-center bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded-full text-xs"
                     >
                       {tag}
-                      <button 
+                      <button
                         onClick={() => handleRemoveExcludeTag(tag)}
                         className="ml-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                       >
@@ -227,12 +209,12 @@ export const PageOptionsForm: React.FC<PageOptionsFormProps> = ({ options, onCha
               {options.include_tags.length > 0 && (
                 <div className="mt-2 flex flex-wrap gap-2">
                   {options.include_tags.map((tag) => (
-                    <span 
-                      key={tag} 
+                    <span
+                      key={tag}
                       className="inline-flex items-center bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded-full text-xs"
                     >
                       {tag}
-                      <button 
+                      <button
                         onClick={() => handleRemoveIncludeTag(tag)}
                         className="ml-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                       >
@@ -258,15 +240,21 @@ export const PageOptionsForm: React.FC<PageOptionsFormProps> = ({ options, onCha
               <div className="flex items-center space-x-1 mb-1">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Wait Time
+                  {options.ignore_rendering && (
+                    <span className="ml-1 text-xs text-red-500 dark:text-gray-400">
+                      (not available when ignore rendering is on)
+                    </span>
+                  )}
                 </label>
                 <InfoTooltip content="Time to wait in milliseconds for dynamic content to load before extracting content" />
               </div>
               <FormInput
                 label=""
-                value={options.wait_time.toString()}
+                value={options.ignore_rendering ? '' : options.wait_time.toString()}
                 onChange={(value) => handleInputChange('wait_time', value)}
                 type="number"
-                placeholder="1000"
+                placeholder={options.ignore_rendering ? 'Auto' : '1000'}
+                disabled={options.ignore_rendering}
               />
             </div>
 
@@ -289,11 +277,20 @@ export const PageOptionsForm: React.FC<PageOptionsFormProps> = ({ options, onCha
         </OptionGroup>
 
         <OptionGroup
-          title="Actions"
+          title={
+            <div className="flex items-center space-x-1">
+              <span>Actions</span>
+              {options.ignore_rendering && (
+                <span className="text-xs text-red-500 dark:text-gray-400">
+                  (not available when ignore rendering is on)
+                </span>
+              )}
+            </div>
+          }
           description="Additional actions to perform on each page"
         >
           <div className="space-y-4">
-            <ToggleOption
+            <Switch
               label="Generate PDF"
               description="Save the page as a PDF file for offline viewing or archiving"
               checked={options.actions?.some(action => action.type === 'pdf') ?? false}
@@ -309,8 +306,9 @@ export const PageOptionsForm: React.FC<PageOptionsFormProps> = ({ options, onCha
                   });
                 }
               }}
+              disabled={options.ignore_rendering}
             />
-            <ToggleOption
+            <Switch
               label="Take Screenshot"
               description="Capture a screenshot of the page for visual reference"
               checked={options.actions?.some(action => action.type === 'screenshot') ?? false}
@@ -326,6 +324,7 @@ export const PageOptionsForm: React.FC<PageOptionsFormProps> = ({ options, onCha
                   });
                 }
               }}
+              disabled={options.ignore_rendering}
             />
           </div>
         </OptionGroup>
@@ -342,14 +341,20 @@ export const PageOptionsForm: React.FC<PageOptionsFormProps> = ({ options, onCha
               <div className="flex items-center space-x-1 mb-1">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Accept Cookies Selector
+                  {options.ignore_rendering && (
+                    <span className="ml-1 text-xs text-red-500 dark:text-gray-400">
+                      (not available when ignore rendering is on)
+                    </span>
+                  )}
                 </label>
                 <InfoTooltip content="CSS selector for the accept cookies button (e.g., #accept-cookies-btn, .cookie-accept)" />
               </div>
               <FormInput
                 label=""
-                value={options.accept_cookies_selector || ''}
+                value={options.ignore_rendering ? '' : options.accept_cookies_selector || ''}
                 onChange={(value) => handleInputChange('accept_cookies_selector', value)}
-                placeholder="#accept-cookies-btn"
+                placeholder={options.ignore_rendering ? "-" : "#accept-cookies-btn"}
+                disabled={options.ignore_rendering}
               />
             </div>
 

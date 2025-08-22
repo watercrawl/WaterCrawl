@@ -174,15 +174,7 @@ def sort_operations(endpoint):
 
     # Get method order (default to 999 if method not in predefined order)
     method_priority = method_order.get(method, 999)
-    print(
-        (
-            tags,
-            tag_priority,  # First sort by tag priority
-            method,
-            method_priority,  # Then by HTTP method priority
-            path,  # Finally by path
-        )
-    )
+
     return (
         tag_priority,  # First sort by tag priority
         method_priority,  # Then by HTTP method priority

@@ -28,94 +28,144 @@ Thank you for your interest in contributing to WaterCrawl! This document provide
     git clone https://github.com/USERNAME/watercrawl.git
     ```
 
-3. Setup git upstream:
-    ```bash
-    cd watercrawl
-    git remote add upstream https://github.com/watercrawl/watercrawl.git
-    ```
+3. Set up external dependencies using Docker:
 
-4. Install frontend and backend dependencies:
     ```bash
-    make install
-    ```
-
-5. Start the development requirements containers:
-    ```bash
-    cd docker
+    cd watercrawl/docker
     cp .env.local .env
-    docker compose up -d
+    docker-compose -f docker-compose.local.yml up -d
     ```
 
-6. Start backend development server (run in separate terminals):
-    ```bash
-    cd backend
-    cp app.env.example app.env
-    poetry run python manage.py runserver
-    poetry run celery -A watercrawl --beat worker -l info
-    ```
+    This will start PostgreSQL, Redis, MinIO, and Mailpit services needed for development.
 
-7. Start frontend development server:
+4. Set up backend:
+
     ```bash
-    cd frontend
+    cd ../backend
+    
+    # Setup Poetry environment
+    poetry env use python3.13
+    poetry self add poetry-plugin-shell
+    poetry shell
+    
+    # Install dependencies
+    poetry install
+    
+    # Configure environment
     cp .env.example .env
-    npm run dev
+    # Edit .env to point to the Docker services
+    # Example: DATABASE_URL=postgres://postgres:postgres@localhost:5432/postgres
+    
+    # Run migrations
+    python manage.py migrate
+    
+    # Create a superuser (if needed)
+    python manage.py createsuperuser
     ```
 
-### Setting up Pre-commit Hooks
+5. Set up frontend:
 
-We use pre-commit hooks to ensure code quality. Install them after setting up your development environment:
+    ```bash
+    cd ../frontend
+    
+    # Install dependencies
+    pnpm install
+    
+    # Configure environment
+    cp .env.example .env
+    # Edit .env to point to your local backend
+    # Example: API_BASE_URL=http://localhost:8000/api
+    ```
+
+6. Start the development servers (in separate terminal windows):
+
+    - Backend:
+    ```bash
+    cd ../backend
+    poetry run python manage.py runserver
+    ```
+
+    - Backend Celery:
+    ```bash
+    cd ../backend
+    poetry run celery -A watercrawl worker -B -l info
+    ```
+
+    - Frontend:
+    ```bash
+    cd ../frontend
+    pnpm run dev
+    ```
+
+7. Access the application:
+    - Frontend: http://localhost:5173
+    - Backend API: http://localhost:8000/api
+    - API Documentation: http://localhost:8000/api/schema/swagger-ui/
+    - MinIO Console: http://localhost:9001
+    - Mailpit (Email Testing): http://localhost:8025
+
+
+## Code Quality
+
+### Linting
+
+We use the following tools for linting:
+
+- Backend (Python): [Ruff](https://github.com/astral-sh/ruff)
+- Frontend (TypeScript/React): [ESLint](https://eslint.org/) with TypeScript and React plugins
+
+To run linting checks:
 
 ```bash
-pre-commit install
+# Backend
+cd backend
+poetry run ruff check
+
+# Frontend
+cd frontend
+pnpm run lint
 ```
 
-This will set up:
-- Ruff for Python code linting and formatting
-- ESLint for TypeScript/React code linting
-- Additional code quality checks
+For automatic fixes where possible:
 
-## Development Workflow
+```bash
+# Backend
+cd backend
+poetry run ruff check --fix
 
-1. **Create an Issue First**
+# Frontend
+cd frontend
+pnpm run lint:fix
+```
+
+Our CI pipeline automatically runs linting checks on pull requests. Please ensure your code passes these checks before submitting a PR.
+
+## Submitting Changes
+
+1. **Create an issue first**:
    - All pull requests must be associated with an issue
    - Create a new issue describing the bug or feature before starting work
-   - Wait for issue to be triaged and approved
+   - You can begin development immediately after creating the issue
 
-2. **Code Quality**
-   - Follow the linting rules configured in:
-     - Backend: `backend/pyproject.toml` (Ruff)
-     - Frontend: `.eslintrc.js` and `eslint.config.js`
-   - Run linting checks locally:
-     ```bash
-     ./lint.sh
-     ```
-   - Fix any linting issues before committing
+2. Create a new branch for your changes:
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
 
-3. **Making Changes**
-   - Create a new branch from `main`
-   - Make your changes
-   - Write or update tests as needed
-   - Commit your changes using conventional commit messages
+3. Make your changes and commit them with clear, descriptive commit messages.
 
-4. **Creating Pull Requests**
-   - Link the related issue in your PR description
-   - Include screenshots for UI changes
-   - Ensure all checks pass
-   - Request review from maintainers
+4. Push your branch to your fork:
+   ```bash
+   git push origin feature/your-feature-name
+   ```
 
-## Pull Request Guidelines
+5. Open a pull request from your branch to the main repository.
 
-- Keep PRs focused and atomic
-- Update documentation as needed
-- Include tests for new features
-- Follow our code style guidelines
-- Squash commits before merging
+6. In your pull request description:
+   - Reference the issue number (e.g., "Fixes #123" or "Relates to #123")
+   - Clearly explain the changes you've made
+   - Include screenshots for UI changes if applicable
 
-## Need Help?
+## License
 
-Feel free to ask questions in:
-- GitHub Discussions
-- Issue comments
-- Our community channels
-
-Thank you for contributing to WaterCrawl! 🚀
+By contributing to WaterCrawl, you agree that your contributions will be licensed under the project's license.

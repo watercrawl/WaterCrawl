@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Tab } from '@headlessui/react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
 import { teamApi } from '../../services/api/team';
 import { UserCircleIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { Team, TeamMember } from '../../types/team';
@@ -10,6 +10,7 @@ import { useSettings } from '../../contexts/SettingsProvider';
 import { SubscriptionStatusCard } from '../../components/shared/SubscriptionStatusCard';
 import { BillingManagementCard } from '../../components/shared/BillingManagementCard';
 import { SubscriptionsList } from '../../components/shared/SubscriptionsList';
+import ProxySettings from '../../components/settings/ProxySettings';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -34,10 +35,14 @@ const SettingsPage: React.FC = () => {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
 
   useEffect(() => {
-    // Check for #billing hash on initial load
+    // Check for hash on initial load
     const handleHashChange = () => {
-      if (window.location.hash === '#billing') {
+      if (window.location.hash === '#proxy') {
         setSelectedTabIndex(1);
+      } else if (window.location.hash === '#billing') {
+        setSelectedTabIndex(2);
+      } else {
+        setSelectedTabIndex(0);
       }
     };
 
@@ -53,15 +58,8 @@ const SettingsPage: React.FC = () => {
     };
   }, []);
 
-  useEffect(() => {
-    fetchTeam();
-  }, []);
 
-  useEffect(() => {
-    fetchMembers();
-  }, [currentPage]);
-
-  const fetchTeam = async () => {
+  const fetchTeam = useCallback(async () => {
     try {
       setLoading(true);
       const data = await teamApi.getCurrentTeam();
@@ -72,9 +70,9 @@ const SettingsPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const fetchMembers = async () => {
+  const fetchMembers = useCallback(async () => {
     try {
       setLoading(true);
       const data = await teamApi.listMembers(currentPage);
@@ -85,7 +83,16 @@ const SettingsPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentPage]);
+
+  useEffect(() => {
+    fetchTeam();
+  }, [fetchTeam]);
+
+  useEffect(() => {
+    fetchMembers();
+  }, [currentPage, fetchMembers]);
+
 
   const handleUpdateTeamName = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -155,10 +162,10 @@ const SettingsPage: React.FC = () => {
         <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Settings</h1>
         <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">Manage your team and account settings.</p>
 
-        <Tab.Group selectedIndex={selectedTabIndex} onChange={setSelectedTabIndex}>
-          <Tab.List className="flex space-x-1 mt-8 border-b border-gray-200 dark:border-gray-700">
+        <TabGroup selectedIndex={selectedTabIndex} onChange={setSelectedTabIndex}>
+          <TabList className="flex space-x-1 mt-8 border-b border-gray-200 dark:border-gray-700">
             <Tab
-              className={({ selected }) =>
+              className={({ selected }: { selected: boolean }) =>
                 classNames(
                   'px-4 py-2.5 text-sm font-medium leading-5 transition-all duration-200',
                   'focus:outline-none',
@@ -170,9 +177,22 @@ const SettingsPage: React.FC = () => {
             >
               Team
             </Tab>
+            <Tab
+              className={({ selected }: { selected: boolean }) =>
+                classNames(
+                  'px-4 py-2.5 text-sm font-medium leading-5 transition-all duration-200',
+                  'focus:outline-none',
+                  selected
+                    ? 'text-gray-900 dark:text-white border-b-2 border-gray-900 dark:border-white'
+                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                )
+              }
+            >
+              Proxy Settings
+            </Tab>
             {settings?.is_enterprise_mode_active && (
               <Tab
-                className={({ selected }) =>
+                className={({ selected }: { selected: boolean }) =>
                   classNames(
                     'px-4 py-2.5 text-sm font-medium leading-5 transition-all duration-200',
                     'focus:outline-none',
@@ -185,10 +205,10 @@ const SettingsPage: React.FC = () => {
                 Billing
               </Tab>
             )}
-          </Tab.List>
+          </TabList>
 
-          <Tab.Panels className="mt-8">
-            <Tab.Panel className="space-y-8">
+          <TabPanels className="mt-8">
+            <TabPanel className="space-y-8">
               {/* Team Name Section */}
               <div>
                 <h3 className="text-base font-medium text-gray-900 dark:text-white mb-4">Team Name</h3>
@@ -333,19 +353,21 @@ const SettingsPage: React.FC = () => {
                   )}
                 </div>
               </div>
-            </Tab.Panel>
-
+            </TabPanel>
+            <TabPanel>
+              <ProxySettings />
+            </TabPanel>
             {settings?.is_enterprise_mode_active && (
-              <Tab.Panel>
+              <TabPanel>
                 <div className="space-y-6">
                   <SubscriptionStatusCard />
                   <BillingManagementCard />
                   <SubscriptionsList />
                 </div>
-              </Tab.Panel>
+              </TabPanel>
             )}
-          </Tab.Panels>
-        </Tab.Group>
+          </TabPanels>
+        </TabGroup>
       </div>
     </div>
   );

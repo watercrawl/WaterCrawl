@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { TeamProvider } from './contexts/TeamContext';
 import { UserProvider } from './contexts/UserContext';
@@ -20,13 +20,19 @@ const ForgotPasswordPage = React.lazy(() => import('./pages/auth/ForgotPasswordP
 const ResetPasswordPage = React.lazy(() => import('./pages/auth/ResetPasswordPage'));
 const VerifyEmailPage = React.lazy(() => import('./pages/auth/VerifyEmailPage'));
 const DashboardPage = React.lazy(() => import('./pages/dashboard/DashboardPage'));
-const ActivityLogsPage = React.lazy(() => import('./pages/dashboard/ActivityLogsPage'));
+const ActivityLogsPage = React.lazy(() => import('./pages/dashboard/CrawlLogsPage'));
 const ApiKeysPage = React.lazy(() => import('./pages/dashboard/ApiKeysPage'));
 const SettingsPage = React.lazy(() => import('./pages/dashboard/SettingsPage'));
-const PlaygroundPage = React.lazy(() => import('./pages/dashboard/PlaygroundPage'));
+const CrawlPage = React.lazy(() => import('./pages/dashboard/CrawlPage'));
 const UsagePage = React.lazy(() => import('./pages/dashboard/UsagePage'));
 const ProfilePage = React.lazy(() => import('./pages/dashboard/ProfilePage'));
 const CrawlRequestDetailPage = React.lazy(() => import('./pages/dashboard/CrawlRequestDetailPage'));
+const SearchPage = React.lazy(() => import('./pages/dashboard/SearchPage'));
+const SearchLogsPage = React.lazy(() => import('./pages/dashboard/SearchLogsPage'));
+const SearchRequestDetailPage = React.lazy(() => import('./pages/dashboard/SearchRequestDetailPage'));
+const SitemapPage = React.lazy(() => import('./pages/dashboard/SitemapPage'));
+const SitemapLogsPage = React.lazy(() => import('./pages/dashboard/SitemapLogsPage'));
+const SitemapRequestDetailPage = React.lazy(() => import('./pages/dashboard/SitemapRequestDetailPage'));
 
 const App: React.FC = () => {
   return (
@@ -80,9 +86,16 @@ const App: React.FC = () => {
                 }>
                   <Route path="/dashboard">
                     <Route index element={<DashboardPage />} />
-                    <Route path="playground" element={<PlaygroundPage />} />
-                    <Route path="logs" element={<ActivityLogsPage />} />
-                    <Route path="logs/:requestId" element={<CrawlRequestDetailPage />} />
+                    <Route path="playground" element={<Navigate to="/dashboard/crawl" replace />} />
+                    <Route path="crawl" element={<CrawlPage />} />
+                    <Route path="search" element={<SearchPage />} />
+                    <Route path="sitemap" element={<SitemapPage />} />
+                    <Route path="logs/crawls" element={<ActivityLogsPage />} />
+                    <Route path="logs/crawls/:requestId" element={<CrawlRequestDetailPage />} />
+                    <Route path="logs/searches" element={<SearchLogsPage />} />
+                    <Route path="logs/searches/:id" element={<SearchRequestDetailPage />} />
+                    <Route path="logs/sitemaps" element={<SitemapLogsPage />} />
+                    <Route path="logs/sitemaps/:id" element={<SitemapRequestDetailPage />} />
                     <Route path="usage" element={<UsagePage />} />
                     <Route path="api-keys" element={<ApiKeysPage />} />
                     <Route path="settings" element={<SettingsPage />} />

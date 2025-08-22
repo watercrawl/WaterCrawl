@@ -13,6 +13,7 @@ OPTIONS_SCHEMA = {
                 "include_html": {"type": "boolean"},
                 "only_main_content": {"type": "boolean"},
                 "include_links": {"type": "boolean"},
+                "ignore_rendering": {"type": "boolean"},
             },
         },
         "spider_options": {
@@ -32,7 +33,7 @@ OPTIONS_SCHEMA = {
 CRAWL_STATUS_NEW = "new"
 CRAWL_STATUS_RUNNING = "running"
 CRAWL_STATUS_FINISHED = "finished"
-CRAWL_STATUS_CANCELING = "cancelling"
+CRAWL_STATUS_CANCELING = "canceling"
 CRAWL_STATUS_CANCELED = "canceled"
 CRAWL_STATUS_FAILED = "failed"
 
@@ -152,4 +153,60 @@ CRAWL_RESULT_ATTACHMENT_TYPE_SCREENSHOT = "screenshot"
 CRAWL_RESULT_ATTACHMENT_TYPE_CHOICES = (
     (CRAWL_RESULT_ATTACHMENT_TYPE_PDF, _("PDF")),
     (CRAWL_RESULT_ATTACHMENT_TYPE_SCREENSHOT, _("Screenshot")),
+)
+
+SEARCH_TYPE_WEB = "web"
+
+SEARCH_TYPE_CHOICES = ((SEARCH_TYPE_WEB, _("Web")),)
+
+SEARCH_DEPTH_BASIC = "basic"
+SEARCH_DEPTH_ADVANCED = "advanced"
+SEARCH_DEPTH_ULTIMATE = "ultimate"
+
+SEARCH_DEPTH_CHOICES = (
+    (SEARCH_DEPTH_BASIC, _("Basic")),
+    (SEARCH_DEPTH_ADVANCED, _("Advanced")),
+    (SEARCH_DEPTH_ULTIMATE, _("Ultimate")),
+)
+
+SEARCH_TIME_RENGE_ANY = "any"
+SEARCH_TIME_RENGE_DAY = "day"
+SEARCH_TIME_RENGE_WEEK = "week"
+SEARCH_TIME_RENGE_MONTH = "month"
+SEARCH_TIME_RENGE_YEAR = "year"
+
+SEARCH_TIME_RENGE_CHOICES = (
+    (SEARCH_TIME_RENGE_ANY, _("Any")),
+    (SEARCH_TIME_RENGE_DAY, _("Day")),
+    (SEARCH_TIME_RENGE_WEEK, _("Week")),
+    (SEARCH_TIME_RENGE_MONTH, _("Month")),
+    (SEARCH_TIME_RENGE_YEAR, _("Year")),
+)
+
+PROXY_TYPE_HTTP = "http"
+PROXY_TYPE_SOCKS4 = "socks4"
+PROXY_TYPE_SOCKS5 = "socks5"
+
+PROXY_TYPE_CHOICES = (
+    ("http", _("HTTP")),
+    ("socks4", _("SOCKS4")),
+    ("socks5", _("SOCKS5")),
+)
+
+PROXY_CATEGORY_GENERAL = "general"
+PROXY_CATEGORY_PREMIUM = "premium"
+PROXY_CATEGORY_TEAM = "team"
+
+PROXY_CATEGORY_CHOICES = (
+    (PROXY_CATEGORY_GENERAL, _("General")),
+    (PROXY_CATEGORY_PREMIUM, _("Premium")),
+    (PROXY_CATEGORY_TEAM, _("Team")),
+)
+
+CRAWL_TYPE_SINGLE = "single"
+CRAWL_TYPE_BATCH = "batch"
+
+CRAWL_TYPE_CHOICES = (
+    (CRAWL_TYPE_SINGLE, _("Single")),
+    (CRAWL_TYPE_BATCH, _("Batch")),
 )

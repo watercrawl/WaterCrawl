@@ -17,12 +17,22 @@ The crawl request will be processed asynchronously.
 you will receive a task ID that you can use to track the progress of the crawl.
 """
 
+CRAWL_REQUEST_BATCH_CREATE = """
+Start multiple urls crawling tasks in a single request.
+This endpoint allows you to:
+- Submit a batch of crawl requests
+- The other parameters are the same as the single crawl request creation endpoint.
+
+The crawl request will be processed asynchronously.
+you will receive a task ID that you can use to track the progress of the crawl.
+"""
+
 CRAWL_REQUEST_LIST = """
 Retrieve a list of all crawl requests for your team.
 
 The response includes:
 - A list of crawl requests
-- Request status (new, running, paused, finished, cancelling, canceled, failed)
+- Request status (new, running, paused, finished, canceling, canceled, failed)
 - Creation and completion timestamps
 - Crawling configuration details
 - Progress statistics
@@ -59,9 +69,9 @@ This will:
 - Stop the crawler immediately
 - Save any data collected so far
 - Free up crawling resources
-- Mark the request as cancelled
+- Mark the request as canceled
 
-Note: Cancelled requests cannot be resumed.
+Note: Canceled requests cannot be resumed.
 """
 
 CRAWL_REQUEST_DOWNLOAD = """
@@ -150,6 +160,88 @@ Each plugin includes:
 - Usage examples
 
 Use these schemas to configure your crawl requests.
+"""
+
+CRAWL_REQUEST_GRAPH = """
+Get a graph representation of a crawl request.
+"""
+
+CRAWL_REQUEST_MARKDOWN = """
+Get a markdown representation of a crawl request.
+"""
+
+SEARCH_REQUEST_LIST = """
+Get a list of all search requests for your team.
+"""
+SEARCH_REQUEST_RETRIEVE = """
+Get detailed information about a specific search request.
+"""
+SEARCH_REQUEST_CREATE = """
+Create a new search request.
+"""
+SEARCH_REQUEST_DELETE = """
+Stop a running search request.
+"""
+SEARCH_REQUEST_CHECK_STATUS = """
+Real-time status monitoring using Server-Sent Events (SSE).
+
+The endpoint streams updates every second with:
+- Current search request status
+- Data extracted
+"""
+
+PROXY_SERVER_LIST = """
+Get a list of all proxy servers for your team.
+"""
+PROXY_SERVER_CREATE = """
+Create a new proxy server.    
+"""
+PROXY_SERVER_RETRIEVE = """
+Get detailed information about a specific proxy server.
+"""
+PROXY_SERVER_DELETE = """
+Delete a proxy server.
+"""
+PROXY_SERVER_UPDATE = """
+Update a proxy server.
+"""
+
+PROXY_SERVER_LIST_ALL = """
+Get a list of all proxy servers. This list includes all Global and Team proxy servers.
+"""
+
+PROXY_SERVER_TEST_PROXY = """
+Test a proxy server.
+"""
+
+SITEMAP_REQUEST_LIST = """
+Get a list of all sitemap requests for your team.
+"""
+
+SITEMAP_REQUEST_CREATE = """
+Create a new sitemap request.
+"""
+
+SITEMAP_REQUEST_RETRIEVE = """
+Get detailed information about a specific sitemap request.
+"""
+
+SITEMAP_REQUEST_DELETE = """
+Delete a sitemap request.
+"""
+
+SITEMAP_REQUEST_CHECK_STATUS = """
+Real-time status monitoring using Server-Sent Events (SSE).
+The endpoint streams updates every second with:
+- Current sitemap request status
+"""
+
+SITEMAP_REQUEST_GRAPH = """
+Get a graph representation of a sitemap request.
+"""
+
+SITEMAP_REQUEST_MARKDOWN = """
+Get a markdown representation of a sitemap request.
 """
 
 ####### PARAMETERS #######

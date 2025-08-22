@@ -13,6 +13,7 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView as BaseTokenVerifyView,
 )
 
+from common.permissions import CanInstall
 from user import serializers
 from .decorators import setup_current_team
 from user.services import (
@@ -29,7 +30,37 @@ from .tasks import (
     send_forget_password_email,
     send_invitation_email,
     send_verification_email,
+    send_newsletter_confirmation,
+    send_analytics_confirmation,
 )
+
+
+@extend_schema_view(
+    post=extend_schema(
+        summary=_("Install WaterCrawl"),
+        description=_("Install WaterCrawl"),
+        tags=["Auth"],
+        request=serializers.InstallSerializer,
+        responses={204: None},
+    )
+)
+class InstallView(APIView):
+    permission_classes = [CanInstall]
+    serializer_class = serializers.InstallSerializer
+
+    def post(self, request):
+        serializer = serializers.InstallSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        UserService.install(
+            email=serializer.validated_data["email"],
+            password=serializer.validated_data["password"],
+        )
+        if serializer.validated_data["newsletter_confirmed"]:
+            send_newsletter_confirmation.delay(serializer.validated_data["email"])
+        if serializer.validated_data["analytics_confirmed"]:
+            send_analytics_confirmation.delay()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 @extend_schema_view(
@@ -51,7 +82,75 @@ class RegisterView(APIView):
         serializer.is_valid(raise_exception=True)
         user_service = UserService.create_user(**serializer.validated_data)
         send_verification_email.delay(user_service.user.pk)
-        return Response(status=status.HTTP_201_CREATED, data=serializer.data)
+        return Response(
+            status=status.HTTP_201_CREATED,
+            data=serializers.RegisterSerializer(user_service.user).data,
+        )
+
+
+@extend_schema_view(
+    get=extend_schema(
+        summary=_("Verify invitation"),
+        description=_("Verify invitation"),
+        tags=["Auth"],
+        responses={
+            200: {
+                "type": "object",
+                "properties": {
+                    "new_user": {"type": "boolean"},
+                    "email": {"type": "string"},
+                    "invitation_code": {"type": "string"},
+                },
+            }
+        },
+    ),
+    post=extend_schema(
+        summary=_("Register a new user"),
+        description=_("Register a new user"),
+        tags=["Auth"],
+        request=serializers.RegisterSerializer,
+        responses={201: serializers.RegisterSerializer},
+    ),
+)
+class VerifyInvitation(APIView):
+    permission_classes = []
+    serializer_class = None
+    authentication_classes = []
+
+    def get(self, request, invitation_code):
+        invitation_service = TeamInvitationService.make_with_invitation_token(
+            invitation_code
+        )
+        return Response(
+            {
+                "new_user": invitation_service.is_new_user(),
+                "email": invitation_service.invitation.email,
+                "invitation_code": invitation_code,
+            }
+        )
+
+    def post(self, request, invitation_code):
+        invitation_service = TeamInvitationService.make_with_invitation_token(
+            invitation_code
+        )
+        if not invitation_service.is_new_user():
+            raise ValidationError(_("You can not register you already have an account"))
+
+        serializer = serializers.RegisterSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        if serializer.validated_data["email"] != invitation_service.invitation.email:
+            raise ValidationError(_("Emails do not match"))
+
+        user_service = UserService.create_user(**serializer.validated_data)
+        TeamInvitationService(invitation_service.invitation).accept_invitation(
+            user_service.user
+        )
+        VerificationService(user_service.user).verify_email()
+        return Response(
+            status=status.HTTP_201_CREATED,
+            data=serializers.RegisterSerializer(user_service.user).data,
+        )
 
 
 @extend_schema_view(

@@ -33,9 +33,10 @@ Start a new web crawling operation with specified options.
     "spider_options": {
       "max_depth": 2,
       "page_limit": 100,
+      "concurrent_requests": null,
       "allowed_domains": ["example.com"],
       "exclude_paths": ["/private/*"],
-      "include_paths": ["/blog/*"]
+      "include_paths": ["/blog/*"],
     },
     "page_options": {
       "exclude_tags": ["nav", "footer", "aside"],
@@ -43,7 +44,8 @@ Start a new web crawling operation with specified options.
       "wait_time": 100,
       "include_html": false,
       "only_main_content": true,
-      "include_links": false
+      "include_links": false,
+      "ignore_rendering": false
     },
     "plugin_options": {
       // Optional plugin-specific configuration
@@ -65,6 +67,7 @@ Start a new web crawling operation with specified options.
 |--------|------|-------------|---------|
 | max_depth | integer | Maximum depth to crawl | 1 |
 | page_limit | integer | Maximum number of pages to crawl | 1 |
+| concurrent_requests | integer | Maximum number of concurrent requests | null (Default use the max allowed by the server) |
 | allowed_domains | array | List of allowed domains to crawl | [] |
 | exclude_paths | array | List of paths to exclude | [] |
 | include_paths | array | List of paths to include | [] |
@@ -79,6 +82,8 @@ Start a new web crawling operation with specified options.
 | include_html | boolean | Include HTML in the extracted content |
 | only_main_content | boolean | Extract only the main content |
 | include_links | boolean | Include links in the extracted content |
+| ignore_rendering | boolean | Ignore rendering | false |
+
 
 ### 2. List Crawl Requests
 
@@ -143,6 +148,7 @@ Retrieve details of a specific crawl request.
     "spider_options": {
       "max_depth": 2,
       "page_limit": 100,
+      "concurrent_requests": null,
       "allowed_domains": ["example.com"],
       "exclude_paths": ["/private/*"],
       "include_paths": ["/blog/*"]
@@ -153,7 +159,8 @@ Retrieve details of a specific crawl request.
       "wait_time": 100,
       "include_html": false,
       "only_main_content": true,
-      "include_links": false
+      "include_links": false,
+      "ignore_rendering": false
     },
     "plugin_options": {
       // Optional plugin-specific configuration
@@ -335,3 +342,5 @@ All endpoints may return the following error responses:
 3. **Error Handling**: Always check the status of your crawl requests and implement proper error handling.
 4. **Content Extraction**: Use `exclude_tags` and `include_tags` to precisely target the content you need.
 5. **Domain Restrictions**: Use `allowed_domains` to prevent the crawler from accessing unintended domains.
+6. **Ignore Rendering**: Use `ignore_rendering` to prevent the crawler from rendering a JS-heavy page.
+

@@ -1,0 +1,116 @@
+name: Build and Push Docker Images
+
+on:
+  push:
+    branches:
+      - development
+      - main
+    tags:
+      - '*'
+
+jobs:
+  build-and-push-backend:
+    name: Build and Push Backend Docker Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Set Environment Variables
+        id: vars-backend
+        run: |
+          DATE=$(date +'%Y%m%d')
+          if [[ ${{ github.ref }} == refs/heads/development ]]; then
+            VERSION="alpha-${DATE}"
+            echo "TAG=$VERSION" >> $GITHUB_ENV
+            echo "DOCKER_TAGS=${{ secrets.DOCKER_USERNAME }}/watercrawl:$VERSION,${{ secrets.DOCKER_USERNAME }}/watercrawl:$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          elif [[ ${{ github.ref }} == refs/heads/main ]]; then
+            VERSION="beta-${DATE}"
+            echo "TAG=$VERSION" >> $GITHUB_ENV
+            echo "DOCKER_TAGS=${{ secrets.DOCKER_USERNAME }}/watercrawl:$VERSION,${{ secrets.DOCKER_USERNAME }}/watercrawl:$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          elif [[ ${{ github.ref }} == refs/tags/* ]]; then
+            VERSION=${GITHUB_REF#refs/tags/}
+            echo "TAG=$VERSION" >> $GITHUB_ENV
+            echo "DOCKER_TAGS=${{ secrets.DOCKER_USERNAME }}/watercrawl:$VERSION,${{ secrets.DOCKER_USERNAME }}/watercrawl:$(git rev-parse --short HEAD),${{ secrets.DOCKER_USERNAME }}/watercrawl:latest" >> $GITHUB_ENV
+          fi
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          echo "BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_ENV
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./backend
+          push: true
+          platforms: linux/amd64,linux/arm64
+          build-args: |
+            APP_VERSION=${{ env.VERSION }}
+          cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/watercrawl:buildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/watercrawl:buildcache,mode=max
+          tags: ${{ env.DOCKER_TAGS }}
+          labels: |
+            org.opencontainers.image.created=${{ env.BUILD_DATE }}
+            org.opencontainers.image.revision=${{ env.COMMIT_HASH }}
+            org.opencontainers.image.version=${{ env.TAG }}
+
+  build-and-push-frontend:
+    name: Build and Push Frontend Docker Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Set Environment Variables
+        id: vars-frontend
+        run: |
+          DATE=$(date +'%Y%m%d')
+          if [[ ${{ github.ref }} == refs/heads/development ]]; then
+            VERSION="alpha-${DATE}"
+            echo "TAG=$VERSION" >> $GITHUB_ENV
+            echo "DOCKER_TAGS=${{ secrets.DOCKER_USERNAME }}/frontend:$VERSION,${{ secrets.DOCKER_USERNAME }}/frontend:$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          elif [[ ${{ github.ref }} == refs/heads/main ]]; then
+            VERSION="beta-${DATE}"
+            echo "TAG=$VERSION" >> $GITHUB_ENV
+            echo "DOCKER_TAGS=${{ secrets.DOCKER_USERNAME }}/frontend:$VERSION,${{ secrets.DOCKER_USERNAME }}/frontend:$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          elif [[ ${{ github.ref }} == refs/tags/* ]]; then
+            VERSION=${GITHUB_REF#refs/tags/}
+            echo "TAG=$VERSION" >> $GITHUB_ENV
+            echo "DOCKER_TAGS=${{ secrets.DOCKER_USERNAME }}/frontend:$VERSION,${{ secrets.DOCKER_USERNAME }}/frontend:$(git rev-parse --short HEAD),${{ secrets.DOCKER_USERNAME }}/frontend:latest" >> $GITHUB_ENV
+          fi
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          echo "BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_ENV
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./frontend
+          push: true
+          platforms: linux/amd64,linux/arm64
+          build-args: |
+            APP_VERSION=${{ env.VERSION }}
+          cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/frontend:buildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/frontend:buildcache,mode=max
+          tags: ${{ env.DOCKER_TAGS }}
+          labels: |
+            org.opencontainers.image.created=${{ env.BUILD_DATE }}
+            org.opencontainers.image.revision=${{ env.COMMIT_HASH }}
+            org.opencontainers.image.version=${{ env.TAG }}

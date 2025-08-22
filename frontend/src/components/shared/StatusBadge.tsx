@@ -2,7 +2,7 @@ import React from 'react';
 import { CrawlStatus } from '../../types/crawl';
 
 interface StatusBadgeProps {
-  status: CrawlStatus;
+  status: CrawlStatus | string;
 }
 
 const STATUS_COLORS = {
@@ -14,7 +14,7 @@ const STATUS_COLORS = {
     light: { bg: 'bg-sky-50', text: 'text-sky-700', border: 'border-sky-200' },
     dark: { bg: 'dark:bg-sky-900/10', text: 'dark:text-sky-400', border: 'dark:border-sky-900/30' },
   },
-  cancelled: {
+  canceled: {
     light: { bg: 'bg-slate-50', text: 'text-slate-700', border: 'border-slate-200' },
     dark: { bg: 'dark:bg-slate-900/10', text: 'dark:text-slate-400', border: 'dark:border-slate-900/30' },
   },
@@ -29,11 +29,19 @@ const STATUS_COLORS = {
   finished: {
     light: { bg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-200' },
     dark: { bg: 'dark:bg-emerald-900/10', text: 'dark:text-emerald-400', border: 'dark:border-emerald-900/30' },
-  }
+  },
+  ready: {
+    light: { bg: 'bg-green-50', text: 'text-green-700', border: 'border-green-200' },
+    dark: { bg: 'dark:bg-green-900/10', text: 'dark:text-green-400', border: 'dark:border-green-900/30' },
+  },
+  processing: {
+    light: { bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-200' },
+    dark: { bg: 'dark:bg-blue-900/10', text: 'dark:text-blue-400', border: 'dark:border-blue-900/30' },
+  },
 } as const;
 
-const getStatusColor = (status: CrawlStatus) => {
-  const colors = STATUS_COLORS[status] || STATUS_COLORS.canceling;
+const getStatusColor = (status: string) => {
+  const colors = STATUS_COLORS[status as keyof typeof STATUS_COLORS] || STATUS_COLORS.canceling;
   return `${colors.light.bg} ${colors.light.text} ${colors.light.border} ${colors.dark.bg} ${colors.dark.text} ${colors.dark.border}`;
 };
 

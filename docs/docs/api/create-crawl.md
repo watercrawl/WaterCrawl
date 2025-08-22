@@ -15,6 +15,7 @@ import TabItem from '@theme/TabItem';
 
 <Tabs groupId="client-examples">
   <TabItem value="python" label="Python" default>
+
 ```python
 from watercrawl import WaterCrawlAPIClient
 
@@ -27,6 +28,7 @@ crawl = client.create_crawl_request(
     spider_options={
         "max_depth": 2,
         "page_limit": 100,
+        "concurrent_requests": null,
         "allowed_domains": ["example.com"],
         "exclude_paths": ["/private/*"],
         "include_paths": ["/blog/*"]
@@ -37,7 +39,8 @@ crawl = client.create_crawl_request(
         "wait_time": 100,
         "include_html": False,
         "only_main_content": True,
-        "include_links": False
+        "include_links": False,
+        "ignore_rendering": False,
     }
 )
 
@@ -45,6 +48,7 @@ print(f"Crawl started with ID: {crawl['uuid']}")
 ```
   </TabItem>
   <TabItem value="curl" label="cURL">
+
 ```bash
 curl -X POST "https://api.watercrawl.dev/api/v1/core/crawl-requests/" \
   -H "Authorization: Bearer YOUR_API_KEY" \
@@ -55,6 +59,7 @@ curl -X POST "https://api.watercrawl.dev/api/v1/core/crawl-requests/" \
       "spider_options": {
         "max_depth": 2,
         "page_limit": 100,
+        "concurrent_requests": null,
         "allowed_domains": ["example.com"],
         "exclude_paths": ["/private/*"],
         "include_paths": ["/blog/*"]
@@ -65,13 +70,15 @@ curl -X POST "https://api.watercrawl.dev/api/v1/core/crawl-requests/" \
         "wait_time": 100,
         "include_html": false,
         "only_main_content": true,
-        "include_links": false
+        "include_links": false,
+        "ignore_rendering": false
       }
     }
   }'
 ```
   </TabItem>
   <TabItem value="node" label="Node.js">
+
 ```javascript
 import { WaterCrawlAPIClient } from '@watercrawl/nodejs';
 
@@ -84,6 +91,7 @@ const crawl = await client.createCrawlRequest({
     spiderOptions: {
         maxDepth: 2,
         pageLimit: 100,
+        concurrentRequests: null,
         allowedDomains: ['example.com'],
         excludePaths: ['/private/*'],
         includePaths: ['/blog/*']
@@ -111,6 +119,7 @@ console.log(`Crawl started with ID: ${crawl.uuid}`);
 |--------|------|-------------|
 | max_depth | integer | Maximum depth to crawl (default: 1) |
 | page_limit | integer | Maximum number of pages to crawl (default: 1) |
+| concurrent_requests | integer | Maximum number of concurrent requests (default: null - use the max allowed by the server) |
 | allowed_domains | array | List of domains to crawl (support star pattern `*.example.com`) |
 | exclude_paths | array | URL patterns to exclude (support star pattern `blog/*`) |
 | include_paths | array | URL patterns to include (support star pattern `blog/*`) |
@@ -125,11 +134,13 @@ console.log(`Crawl started with ID: ${crawl.uuid}`);
 | include_html | boolean | Include HTML in the extracted content |
 | only_main_content | boolean | Extract only the main content |
 | include_links | boolean | Include links in the extracted content |
+| ignore_rendering | boolean | Ignore rendering | false |
 
 ## Response Examples
 
 <Tabs groupId="client-examples">
   <TabItem value="python" label="Python" default>
+
 ```python
 {
   'uuid': '123e4567-e89b-12d3-a456-426614174000',
@@ -139,6 +150,7 @@ console.log(`Crawl started with ID: ${crawl.uuid}`);
       'spider_options': {
           'max_depth': 2,
           'page_limit': 100,
+          'concurrent_requests': null,
           'allowed_domains': ['example.com'],
           'exclude_paths': ['/private/*'],
           'include_paths': ['/blog/*']
@@ -149,7 +161,8 @@ console.log(`Crawl started with ID: ${crawl.uuid}`);
           'wait_time': 100,
           'include_html': False,
           'only_main_content': True,
-          'include_links': False
+          'include_links': False,
+          'ignore_rendering': False
       }
   },
   'created_at': '2024-01-01T00:00:00Z',
@@ -159,7 +172,9 @@ console.log(`Crawl started with ID: ${crawl.uuid}`);
 ```
   </TabItem>
   <TabItem value="curl" label="cURL">
+
 ```json
+
 {
   "uuid": "123e4567-e89b-12d3-a456-426614174000",
   "url": "https://example.com",
@@ -168,6 +183,7 @@ console.log(`Crawl started with ID: ${crawl.uuid}`);
     "spider_options": {
       "max_depth": 2,
       "page_limit": 100,
+      "concurrent_requests": null,
       "allowed_domains": ["example.com"],
       "exclude_paths": ["/private/*"],
       "include_paths": ["/blog/*"]
@@ -178,7 +194,8 @@ console.log(`Crawl started with ID: ${crawl.uuid}`);
       "wait_time": 100,
       "include_html": false,
       "only_main_content": true,
-      "include_links": false
+      "include_links": false,
+      "ignore_rendering": false,
     }
   },
   "created_at": "2024-01-01T00:00:00Z",
@@ -188,6 +205,7 @@ console.log(`Crawl started with ID: ${crawl.uuid}`);
 ```
   </TabItem>
   <TabItem value="node" label="Node.js">
+  
 ```javascript
 {
   'uuid': '123e4567-e89b-12d3-a456-426614174000',
@@ -197,9 +215,11 @@ console.log(`Crawl started with ID: ${crawl.uuid}`);
       'spider_options': {
           'max_depth': 2,
           'page_limit': 100,
+          'concurrent_requests': null,
           'allowed_domains': ['example.com'],
           'exclude_paths': ['/private/*'],
-          'include_paths': ['/blog/*']
+          'include_paths': ['/blog/*'],
+          'ignore_rendering': false,
       },
       'page_options': {
           'exclude_tags': ['nav', 'footer', 'aside'],

@@ -1,16 +1,19 @@
-import axios from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
 import { AuthService } from '../authService';
 import { TeamService } from '../teamService';
 import { API_URL } from '../../utils/env';
 
+interface CustomAxiosInstance extends AxiosInstance {
+  subscribeToSSE: <T>(url: string, config: AxiosRequestConfig, onEvent: (data: T) => void, onEnd?: () => void) => Promise<boolean>;
+}
 
 const api = axios.create({
   baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json',
   }
-});
+}) as CustomAxiosInstance;
 
 // Add a request interceptor to add the token and team ID to all requests
 api.interceptors.request.use(
@@ -18,7 +21,7 @@ api.interceptors.request.use(
     const token = AuthService.getInstance().getToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
-      
+
       // Add team ID to header if available
       const teamId = TeamService.getInstance().getCurrentTeamId();
       if (teamId) {
@@ -52,4 +55,108 @@ api.interceptors.response.use(
   }
 );
 
+api.subscribeToSSE = async <T>(url: string, config: AxiosRequestConfig, onEvent: (data: T) => void, onEnd?: () => void) => {
+  // Handle case when baseURL is empty by using the current location as fallback
+  let apiUrl: URL;
+  if (!url.startsWith('http') && (!api.defaults.baseURL || api.defaults.baseURL === '')) {
+    // If URL is relative and no baseURL is set, use current location
+    apiUrl = new URL(url, window.location.origin);
+  } else {
+    // Otherwise use the provided baseURL or treat URL as absolute
+    try {
+      apiUrl = new URL(url, api.defaults.baseURL);
+    } catch (_error) {
+      // Fallback to absolute URL if construction fails
+      apiUrl = new URL(url.startsWith('http') ? url : `${window.location.origin}${url.startsWith('/') ? '' : '/'}${url}`);
+    }
+  }
+  // set query param from config
+  for (const [key, value] of Object.entries(config.params || {})) {
+    apiUrl.searchParams.append(key, value as string);
+  }
+
+  try {
+    // Create a fetch request with the correct headers for SSE
+    const headers = new Headers();
+    headers.set('Connection', 'keep-alive');
+    const token = AuthService.getInstance().getToken();
+    if (token) {
+      headers.set('Authorization', "Bearer " + token);
+    }
+    const teamId = TeamService.getInstance().getCurrentTeamId();
+    if (teamId) {
+      headers.set('x-team-id', teamId);
+    }
+    const response = await fetch(apiUrl.toString(), {
+      method: 'GET',
+      headers,
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    if (!response.body) {
+      throw new Error('ReadableStream not supported');
+    }
+
+    // Create a reader to process the stream
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    // Process the stream
+    const processStream = async () => {
+      while (true) {
+        const { done, value } = await reader.read();
+
+        if (done) {
+          // Stream is complete
+          if (onEnd) {
+            onEnd();
+          }
+          break;
+        }
+
+        // Decode the chunk and add to buffer
+        const chunk = decoder.decode(value, { stream: true });
+        buffer += chunk;
+
+        // Process complete lines in the buffer
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || ''; // Keep the last incomplete line in the buffer
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            try {
+              const jsonStr = line.slice(6).trim();
+              if (jsonStr) {
+                const data = JSON.parse(jsonStr);
+                onEvent(data);
+              }
+            } catch (error) {
+              console.error('Error parsing SSE data:', error);
+            }
+          }
+        }
+      }
+    };
+
+    // Start processing the stream in the background
+    processStream().catch(error => {
+      console.error('Stream processing error:', error);
+      if (onEnd) {
+        onEnd();
+      }
+    });
+
+    return true; // Indicate successful subscription
+  } catch (error) {
+    console.error('Error setting up SSE connection:', error);
+    if (onEnd) {
+      onEnd();
+    }
+    throw error;
+  }
+};
 export default api;

@@ -1,37 +1,149 @@
 x-app: &app
   build:
     context: ../backend
-    dockerfile: ../backend/Dockerfile
-  env_file:
-    - ../backend/.env
-  profiles:
-    - dev
+    dockerfile: Dockerfile
+    args:
+      - VERSION=${VERSION:-v0.10.0}
+  depends_on:
+    db:
+      condition: service_healthy
+  environment:
+    # Django Core
+    - SECRET_KEY=${SECRET_KEY:-django-insecure-el4wo4a4--=f0+ag#omp@^w4eq^8v4(scda&1a(td_y2@=sh6&}
+    - API_ENCRYPTION_KEY=${API_ENCRYPTION_KEY:-8zSd6JIuC7ovfZ4AoxG_XmhubW6CPnQWW7Qe_4TD1TQ=}
+    - DEBUG=${DEBUG:-True}
+    - ALLOWED_HOSTS=${ALLOWED_HOSTS:-*}
+    - LANGUAGE_CODE=${LANGUAGE_CODE:-en-us}
+    - TIME_ZONE=${TIME_ZONE:-UTC}
+    - USE_I18N=${USE_I18N:-True}
+    - USE_TZ=${USE_TZ:-True}
+    - STATIC_ROOT=${STATIC_ROOT:-storage/static/}
+    - MEDIA_ROOT=${MEDIA_ROOT:-storage/media/}
+    - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    - REDIS_URL=${REDIS_URL:-redis://redis:6379/1}
+    
+    # Database
+    - DATABASE_URL=postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-db}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-postgres}
+    
+    # Redis & Celery
+    - CELERY_BROKER_URL=${CELERY_BROKER_URL:-redis://redis:6379/0}
+    - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND:-django-db}
+    - REDIS_LOCKER_URL=${REDIS_LOCKER_URL:-redis://redis:6379/3}
+    
+    # MinIO
+    - MINIO_ENDPOINT=${MINIO_ENDPOINT:-minio:9000}
+    - MINIO_EXTERNAL_ENDPOINT=${MINIO_EXTERNAL_ENDPOINT:-minio:9000}
+    - MINIO_REGION=${MINIO_REGION:-}
+    - MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY:-minio}
+    - MINIO_SECRET_KEY=${MINIO_SECRET_KEY:-minio123}
+    - MINIO_USE_HTTPS=${MINIO_USE_HTTPS:-False}
+    - MINIO_EXTERNAL_ENDPOINT_USE_HTTPS=${MINIO_EXTERNAL_ENDPOINT_USE_HTTPS:-False}
+    - MINIO_URL_EXPIRY_HOURS=${MINIO_URL_EXPIRY_HOURS:-7}
+    - MINIO_CONSISTENCY_CHECK_ON_START=${MINIO_CONSISTENCY_CHECK_ON_START:-False}
+    - MINIO_PRIVATE_BUCKET=${MINIO_PRIVATE_BUCKET:-private}
+    - MINIO_PUBLIC_BUCKET=${MINIO_PUBLIC_BUCKET:-public}
+    - MINIO_BUCKET_CHECK_ON_SAVE=${MINIO_BUCKET_CHECK_ON_SAVE:-False}
+    
+    # CORS
+    - CSRF_TRUSTED_ORIGINS=${CSRF_TRUSTED_ORIGINS:-}
+    - CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS:-}
+    - CORS_ALLOWED_ORIGIN_REGEXES=${CORS_ALLOWED_ORIGIN_REGEXES:-}
+    - CORS_ALLOW_ALL_ORIGINS=${CORS_ALLOW_ALL_ORIGINS:-False}
+    
+    # Authentication
+    - FRONTEND_URL=${FRONTEND_URL:-http://localhost}
+    - IS_LOGIN_ACTIVE=${IS_LOGIN_ACTIVE:-True}
+    - IS_SIGNUP_ACTIVE=${IS_SIGNUP_ACTIVE:-True}
+    - IS_GITHUB_LOGIN_ACTIVE=${IS_GITHUB_LOGIN_ACTIVE:-True}
+    - IS_GOOGLE_LOGIN_ACTIVE=${IS_GOOGLE_LOGIN_ACTIVE:-True}
+    - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID:-}
+    - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET:-}
+    - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID:-}
+    - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET:-}
+    - ACCESS_TOKEN_LIFETIME_MINUTES=${ACCESS_TOKEN_LIFETIME_MINUTES:-5}
+    - REFRESH_TOKEN_LIFETIME_DAYS=${REFRESH_TOKEN_LIFETIME_DAYS:-30}
+    
+    # Email
+    - EMAIL_BACKEND=${EMAIL_BACKEND:-django.core.mail.backends.smtp.EmailBackend}
+    - EMAIL_HOST=${EMAIL_HOST:-}
+    - EMAIL_PORT=${EMAIL_PORT:-587}
+    - EMAIL_USE_TLS=${EMAIL_USE_TLS:-True}
+    - EMAIL_HOST_USER=${EMAIL_HOST_USER:-}
+    - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD:-}
+    - DEFAULT_FROM_EMAIL=${DEFAULT_FROM_EMAIL:-}
+    
+    # Scrapy
+    - SCRAPY_USER_AGENT=${SCRAPY_USER_AGENT:-WaterCrawl/0.1 (+https://github.com/watercrawl/watercrawl)}
+    - SCRAPY_ROBOTSTXT_OBEY=${SCRAPY_ROBOTSTXT_OBEY:-True}
+    - SCRAPY_CONCURRENT_REQUESTS=${SCRAPY_CONCURRENT_REQUESTS:-16}
+    - SCRAPY_DOWNLOAD_DELAY=${SCRAPY_DOWNLOAD_DELAY:-0}
+    - SCRAPY_CONCURRENT_REQUESTS_PER_DOMAIN=${SCRAPY_CONCURRENT_REQUESTS_PER_DOMAIN:-4}
+    - SCRAPY_CONCURRENT_REQUESTS_PER_IP=${SCRAPY_CONCURRENT_REQUESTS_PER_IP:-4}
+    - SCRAPY_COOKIES_ENABLED=${SCRAPY_COOKIES_ENABLED:-False}
+    - SCRAPY_HTTPCACHE_ENABLED=${SCRAPY_HTTPCACHE_ENABLED:-True}
+    - SCRAPY_HTTPCACHE_EXPIRATION_SECS=${SCRAPY_HTTPCACHE_EXPIRATION_SECS:-3600}
+    - SCRAPY_HTTPCACHE_DIR=${SCRAPY_HTTPCACHE_DIR:-httpcache}
+    - SCRAPY_LOG_LEVEL=${SCRAPY_LOG_LEVEL:-ERROR}
+    - SCRAPY_GOOGLE_API_KEY=${SCRAPY_GOOGLE_API_KEY:-}
+    - SCRAPY_GOOGLE_CSE_ID=${SCRAPY_GOOGLE_CSE_ID:-}
+    - SCRAPY_MAX_NUMBER_OF_SITEMAP_URLS=${SCRAPY_MAX_NUMBER_OF_SITEMAP_URLS:-20000}
+    - SCRAPY_SITEMAP_CRAWL_PAGE_LIMIT=${SCRAPY_SITEMAP_CRAWL_PAGE_LIMIT:-100}
+
+    # Playwright
+    - PLAYWRIGHT_SERVER=${PLAYWRIGHT_SERVER:-http://playwright:8000}
+    - PLAYWRIGHT_API_KEY=${PLAYWRIGHT_API_KEY:-your-secret-api-key}
+    
+    # Integrations
+    - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+    - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY:-}
+    - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET:-}
+    - GOOGLE_ANALYTICS_ID=${GOOGLE_ANALYTICS_ID:-}
+    
+    # Feature flags
+    - IS_ENTERPRISE_MODE_ACTIVE=${IS_ENTERPRISE_MODE_ACTIVE:-False}
+    - MAX_CRAWL_DEPTH=${MAX_CRAWL_DEPTH:--1}
+    - CAPTURE_USAGE_HISTORY=${CAPTURE_USAGE_HISTORY:-True}
 
 x-frontend: &frontend
-  build:
-    context: ../frontend
-    dockerfile: ../frontend/Dockerfile
-  env_file:
-    - ../frontend/.env
-  profiles:
-    - dev
+  image: watercrawl/frontend:${VERSION:-v0.10.0}
+  environment:
+    - VITE_API_BASE_URL=${API_BASE_URL:-http://localhost/api}
+  depends_on:
+    - app
 
 services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "${NGINX_PORT:-80}:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf.template
+      - ./nginx/entrypoint.sh:/entrypoint.sh
+    environment:
+      - MINIO_PRIVATE_BUCKET=${MINIO_PRIVATE_BUCKET:-private}
+      - MINIO_PUBLIC_BUCKET=${MINIO_PUBLIC_BUCKET:-public}
+    command: ["/bin/sh", "/entrypoint.sh"]
+    depends_on:
+      - app
+      - frontend
+      - minio
+    restart: always
+
   app:
     <<: *app
-    command: [ "gunicorn","-b", "0.0.0.0:9000", "-w",  "2", "watercrawl.wsgi:application", "--access-logfile", "-", "--error-logfile", "-", "--timeout", "60" ]
-    ports:
-      - "127.0.0.1:8000:9000"
+    command: [ "gunicorn", "-b", "0.0.0.0:9000", "-w", "2", "watercrawl.wsgi:application", "--access-logfile", "-", "--error-logfile", "-", "--timeout", "60" ]
 
   celery:
     <<: *app
-    command: [ "celery", "-A", "watercrawl", "worker", "-l", "info", "-B", "-S", "django" ]
+    command: [ "celery", "-A", "watercrawl", "worker", "-l", "info", "-S", "django" ]
+
+  celery-beat:
+    <<: *app
+    command: [ "celery", "-A", "watercrawl", "beat", "-l", "info", "-S", "django" ]
 
   frontend:
     <<: *frontend
     command: [ "npm", "run", "serve" ]
-    ports:
-      - "127.0.0.1:3000:80"
 
   minio:
     image: minio/minio:RELEASE.2024-11-07T00-52-20Z
@@ -39,43 +151,36 @@ services:
     volumes:
       - ./volumes/minio-data:/data
     command: server /data --console-address ":9001"
-    env_file:
-      - minio.env
-    ports:
-      - "127.0.0.1:9000:9000"
-      - "127.0.0.1:9001:9001"
-
+    environment:
+      - MINIO_BROWSER_REDIRECT_URL=${MINIO_BROWSER_REDIRECT_URL:-http://localhost/minio-console/}
+      - MINIO_SERVER_URL=${MINIO_SERVER_URL:-http://localhost/}
+      - MINIO_ROOT_USER=${MINIO_ACCESS_KEY:-minio}
+      - MINIO_ROOT_PASSWORD=${MINIO_SECRET_KEY:-minio123}
+    
   playwright:
     image: watercrawl/playwright:1.1
     restart: always
     user: root
-    env_file:
-      - playwright.env
-    ports:
-      - "127.0.0.1:8800:8000"
+    environment:
+      - AUTH_API_KEY=${PLAYWRIGHT_API_KEY:-your-secret-api-key}
+      - PORT=${PLAYWRIGHT_PORT:-8000}
+      - HOST=${PLAYWRIGHT_HOST:-0.0.0.0}
 
   db:
     image: postgres:17.2-alpine3.21
     restart: always
-    env_file:
-      - db.env
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_DB=${POSTGRES_DB:-postgres}
     volumes:
       - ./volumes/postgres-db:/var/lib/postgresql/data
-    ports:
-      - "127.0.0.1:5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   redis:
     image: redis:latest
     restart: always
-    ports:
-      - "127.0.0.1:6379:6379"
-
-  mailpit:
-    image: axllent/mailpit
-    platform: linux/amd64
-    ports:
-      - "2525:1025"
-      - "8025:8025"
-    profiles:
-      - dev
-      - local

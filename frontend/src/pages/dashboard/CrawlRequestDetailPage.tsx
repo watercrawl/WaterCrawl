@@ -6,13 +6,15 @@ import { CrawlRequest, CrawlResult, CrawlEvent } from '../../types/crawl';
 import { PaginatedResponse } from '../../types/common';
 import { activityLogsApi } from '../../services/api/activityLogs';
 import { crawlRequestApi } from '../../services/api/crawl';
-import { ActivityLogResultCard } from '../../components/activity-logs/ActivityLogResultCard';
-import ResultModal from '../../components/ResultModal';
+import { CrawlResultCard } from '../../components/activity-logs/CrawlResultCard';
+import CrawlResultModal from '../../components/ResultModal';
 import { toast } from 'react-hot-toast';
 import { AnimatedProcessing } from '../../components/shared/AnimatedProcessing';
 import { formatDuration } from '../../utils/formatters';
 import { StatusBadge } from '../../components/shared/StatusBadge';
 import { DownloadFormatSelector } from '../../components/shared/DownloadFormatSelector';
+import { SitemapModalSelector } from '../../components/shared/SitemapModalSelector';
+import { CrawlTypeBadge } from '../../components/crawl/CrawlTypeBadge';
 
 const CrawlRequestDetailPage: React.FC = () => {
   const { requestId } = useParams<{ requestId: string }>();
@@ -116,7 +118,7 @@ const CrawlRequestDetailPage: React.FC = () => {
     };
 
     fetchResults();
-  }, [request]);
+  }, [request, requestId, navigate, wasRunning]);
 
   const loadMore = async () => {
     if (!requestId || !results?.next || loadingMore ) return;
@@ -142,17 +144,17 @@ const CrawlRequestDetailPage: React.FC = () => {
 
     try {
       await crawlRequestApi.cancelCrawl(request.uuid);
-      toast.success('Crawl cancelled successfully');
-      setRequest(prev => prev ? { ...prev, status: 'cancelled' } : null);
+      toast.success('Crawl canceled successfully');
+      setRequest(prev => prev ? { ...prev, status: 'canceled' } : null);
     } catch (error) {
-      console.error('Error cancelling crawl:', error);
+      console.error('Error canceling crawl:', error);
       toast.error('Failed to cancel crawl');
     }
   };
 
-  const handleTryInPlayground = () => {
+  const handleTryInCrawl = () => {
     if (!request) return;
-    navigate('/dashboard/playground', { state: { request } });
+    navigate('/dashboard/crawl', { state: { request } });
   };
 
   if (loading && !request) {
@@ -184,7 +186,7 @@ const CrawlRequestDetailPage: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
           <div className="flex items-center space-x-3">
             <button
-              onClick={() => navigate('/dashboard/logs')}
+              onClick={() => navigate('/dashboard/logs/crawls')}
               className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
             >
               <ArrowLeftIcon className="h-5 w-5" />
@@ -205,13 +207,14 @@ const CrawlRequestDetailPage: React.FC = () => {
                 </div>
               </button>
             )}
-            {requestId && <DownloadFormatSelector requestId={requestId} buttonWithText/>}
+            {request && <DownloadFormatSelector request={request} buttonWithText/>}
+            {request && <SitemapModalSelector request={request} buttonWithText/>}
             <button
-              onClick={handleTryInPlayground}
+              onClick={handleTryInCrawl}
               className="inline-flex items-center px-3 py-1.5 text-sm border border-primary-300 dark:border-primary-600 rounded-md shadow-sm font-medium text-primary-700 dark:text-primary-200 bg-white dark:bg-gray-800 hover:bg-primary-50 dark:hover:bg-primary-900/20 focus:outline-none focus:ring-primary-500 focus:ring-offset-2 transition-colors"
             >
               <ArrowRightIcon className="h-4 w-4 mr-1.5" />
-              Try in Playground
+              Try in Crawl Playground
             </button>
           </div>
         </div>
@@ -234,6 +237,12 @@ const CrawlRequestDetailPage: React.FC = () => {
                     <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">Status</dt>
                     <dd className="mt-1">
                       <StatusBadge status={request.status} />
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">Crawl Type</dt>
+                    <dd className="mt-1">
+                      <CrawlTypeBadge type={request.crawl_type || 'single'} />
                     </dd>
                   </div>
                   <div>
@@ -307,7 +316,7 @@ const CrawlRequestDetailPage: React.FC = () => {
                   <>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {allResults.map((result) => (
-                        <ActivityLogResultCard
+                        <CrawlResultCard
                           key={result.uuid}
                           result={result}
                           onPreviewClick={() => {
@@ -354,7 +363,7 @@ const CrawlRequestDetailPage: React.FC = () => {
 
       {/* Result Modal */}
       {selectedResult && (
-        <ResultModal
+        <CrawlResultModal
           isOpen={isModalOpen}
           onClose={() => {
             setIsModalOpen(false);

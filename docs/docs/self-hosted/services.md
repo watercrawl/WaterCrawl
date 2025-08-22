@@ -1,13 +1,14 @@
 # Services Documentation
 
-WaterCrawl consists of several microservices working together. Here's a detailed overview of each service:
+WaterCrawl consists of several services working together in a Docker Compose environment. Here's a detailed overview of each service:
 
 ## Core Services
 
-### Core (Django Application)
+### App (Django Application)
+- **Image**: `watercrawl/watercrawl:v0.10.0`
 - **Purpose**: Main application server
 - **Tech Stack**: Django with Gunicorn
-- **Default Port**: 9000
+- **Default Port**: 9000 (internal)
 - **Dependencies**: PostgreSQL, Redis
 - **Key Features**:
   - REST API endpoints
@@ -15,141 +16,140 @@ WaterCrawl consists of several microservices working together. Here's a detailed
   - Crawl job management
   - Plugin system
   - Data processing
-- **Configuration**: Uses `app.env`
-- **Storage**: Mounts `/var/www/storage` (If you setup without MinIO it will be requied)
+- **Command**: `gunicorn -b 0.0.0.0:9000 -w 2 watercrawl.wsgi:application --access-logfile - --error-logfile - --timeout 60`
 
 ### Frontend
+- **Image**: `watercrawl/frontend:v0.10.0`
 - **Purpose**: Web interface
-- **Tech Stack**: React
-- **Configuration**: Uses `frontend.env`
-- **Dependencies**: Core API
+- **Tech Stack**: React/Vite
+- **Dependencies**: App (Core API)
 - **Key Features**:
   - User interface
   - Interactive dashboard
   - Job management interface
+- **Environment Variables**:
+  - `VITE_API_BASE_URL`: API endpoint URL
+- **Command**: `npm run serve`
 
 ### Nginx
+- **Image**: `nginx:alpine`
 - **Purpose**: Web server and reverse proxy
-- **Tech Stack**: Nginx Alpine 1.25
-- **Default Port**: 80
-- **Dependencies**: Frontend, Core
+- **Default Port**: 80 (configurable via `NGINX_PORT`)
+- **Dependencies**: App, Frontend, MinIO
 - **Volumes**:
-  - Configuration: `./nginx:/etc/nginx/conf.d:ro`
-  - Storage: `/var/www/storage`
+  - `./nginx/nginx.conf:/etc/nginx/conf.d/default.conf.template`
+  - `./nginx/entrypoint.sh:/entrypoint.sh`
+- **Command**: Runs an entrypoint script that configures and starts Nginx
 
 ### Celery (Task Queue)
+- **Image**: Same as App (`watercrawl/watercrawl:v0.10.0`)
 - **Purpose**: Background task processing
-- **Tech Stack**: Celery
-- **Dependencies**: Redis
-- **Configuration**: Uses `app.env`
-- **State Directory**: `.celery/worker.state`
+- **Dependencies**: Redis, App
 - **Key Features**:
   - Asynchronous task execution
   - Crawl job scheduling
   - Data processing tasks
   - Plugin execution
-  - Periodic tasks (beat)
+- **Command**: `celery -A watercrawl worker -l info -S django`
 
-## Database Services
+### Celery Beat (Scheduler)
+- **Image**: Same as App (`watercrawl/watercrawl:v0.10.0`)
+- **Purpose**: Periodic task scheduler
+- **Dependencies**: Redis, App, Celery
+- **Key Features**:
+  - Schedule periodic tasks
+  - Run recurring jobs
+- **Command**: `celery -A watercrawl beat -l info -S django`
+
+## Supporting Services
 
 ### PostgreSQL
-- **Purpose**: Primary database
-- **Version**: 17.2 Alpine
-- **Default Port**: 5432
-- **Configuration**: Uses `db.env`
-- **Data Location**: `/var/lib/postgresql/data`
-- **Health Check**: 
-  - Command: `pg_isready -U postgres`
-  - Interval: 5s
-- **Key Features**:
-  - User data storage
-  - Crawl job metadata
-  - Plugin configurations
-  - System settings
+- **Image**: `postgres:17.2-alpine3.21`
+- **Purpose**: Main database
+- **Default Port**: 5432 (internal)
+- **Volumes**: `./volumes/postgres-db:/var/lib/postgresql/data`
+- **Environment Variables**:
+  - `POSTGRES_PASSWORD`: Database password
+  - `POSTGRES_USER`: Database username
+  - `POSTGRES_DB`: Database name
+- **Health Check**: Ensures database is ready before dependent services start
 
 ### Redis
-- **Purpose**: Message broker and caching
-- **Version**: Latest
-- **Default Port**: 6379
-- **Key Features**:
-  - Celery message broker
-  - Cache storage
-  - Real-time updates
-  - Session management
+- **Image**: `redis:latest`
+- **Purpose**: Cache and message broker
+- **Used For**:
+  - Celery task queue
+  - Django cache
+  - Rate limiting
+  - Locks
 
-## Optional Services
+### MinIO
+- **Image**: `minio/minio:RELEASE.2024-11-07T00-52-20Z`
+- **Purpose**: Object storage (S3-compatible)
+- **Volumes**: `./volumes/minio-data:/data`
+- **Environment Variables**:
+  - `MINIO_BROWSER_REDIRECT_URL`: URL for MinIO console
+  - `MINIO_SERVER_URL`: URL for MinIO server
+  - `MINIO_ROOT_USER`: MinIO username (same as `MINIO_ACCESS_KEY`)
+  - `MINIO_ROOT_PASSWORD`: MinIO password (same as `MINIO_SECRET_KEY`)
+- **Command**: `server /data --console-address ":9001"`
 
-### MinIO (Optional)
-- **Purpose**: Object storage
-- **Version**: RELEASE.2024-11-07T00-52-20Z
-- **Default Ports**: 
-  - API: 9000
-  - Console: 9001
-- **Configuration**: Uses `minio.env`
-- **Data Location**: `/data`
-- **Health Check**:
-  - Command: `curl -f http://localhost:9001/minio/health/live`
-  - Interval: 30s
-- **Key Features**:
-  - File storage
-  - Media storage
-  - Crawl data storage
-  - Plugin storage
+### Playwright
+- **Image**: `watercrawl/playwright:1.1`
+- **Purpose**: Headless browser for JavaScript rendering
+- **Default Port**: 8000 (internal)
+- **Environment Variables**:
+  - `AUTH_API_KEY`: API key for authentication
+  - `PORT`: Service port
+  - `HOST`: Service host
 
-## Volumes
+## Service Interaction
 
-The following persistent volumes are used:
-- `postgres-db`: PostgreSQL data
-- `storage_volume`: Shared storage for app and nginx
-- `redis-data`: Redis data
-- `minio-data`: MinIO data (optional)
+The services interact as follows:
 
-## Service Management
+1. **User Flow**:
+   - Users access the application through Nginx (port 80)
+   - Nginx routes requests to Frontend or App based on the URL path
+   - API requests are sent to the App
+   - Static assets are served by Frontend
 
-### Starting Services
-```bash
-# Start all services
-docker compose up -d
+2. **Crawl Job Flow**:
+   - App receives crawl/search requests from users
+   - App enqueues jobs to Celery via Redis
+   - Celery processes jobs using Scrapy or Playwright as needed
+   - Results are stored in PostgreSQL and file assets in MinIO
+   - Users can monitor job status through the Frontend
 
-# Start specific service
-docker compose up -d [service_name]
-```
+3. **Storage Flow**:
+   - Media files are stored in MinIO
+   - MinIO provides S3-compatible API for file operations
+   - Nginx proxies MinIO requests for simplified access
 
-### Stopping Services
-```bash
-# Stop all services
-docker compose down
+## Scaling Considerations
 
-# Stop specific service
-docker compose stop [service_name]
-```
+When scaling the application, consider:
 
-### Viewing Logs
-```bash
-# View all logs
-docker compose logs
+1. **Celery Workers**: Add more workers for increased crawl job throughput
+2. **PostgreSQL**: Consider using a managed database service for production
+3. **Redis**: May need to scale for high-volume queues
+4. **Storage**: MinIO can be configured for cluster mode or replaced with S3
 
-# View specific service logs
-docker compose logs [service_name]
+## Monitoring
 
-# Follow logs
-docker compose logs -f [service_name]
-```
+Monitor your services using:
 
-### Service Health Checks
 ```bash
 # Check service status
 docker compose ps
 
-# Check service health
-docker compose ps --format "table {{.Name}}\t{{.Status}}\t{{.Health}}"
-```
+# View logs for all services
+docker compose logs
 
-## Scaling Services
+# View logs for a specific service
+docker compose logs app
 
-### Horizontal Scaling
+# Follow logs in real-time
+docker compose logs -f
 
-Celery workers can be scaled as needed:
-```bash
-# Scale celery workers
-docker compose up -d --scale celery=3
+# View resource usage
+docker stats

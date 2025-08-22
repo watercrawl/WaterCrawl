@@ -101,6 +101,10 @@ DATABASES = {
     "default": env.db("DATABASE_URL", default="sqlite:///db.sqlite3"),
 }
 
+CACHES = {
+    "default": env.cache_url("REDIS_URL", default="redis://localhost:6379/1"),
+}
+
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -144,6 +148,7 @@ STORAGES = {
             cast=str,
             default="django_minio_backend.models.MinioBackendStatic",
         ),
+        "OPTIONS": env.json("STATICFILES_STORAGE_OPTIONS", default={}),
     },
     "default": {
         "BACKEND": env(
@@ -151,27 +156,21 @@ STORAGES = {
             cast=str,
             default="django_minio_backend.models.MinioBackend",
         ),
+        "OPTIONS": env.json("DEFAULT_FILE_STORAGE_OPTIONS", default={}),
     },
     "media": {
         "BACKEND": env(
-            "DEFAULT_FILE_STORAGE",
+            "MEDIA_FILE_STORAGE",
             cast=str,
             default="django_minio_backend.models.MinioBackend",
         ),
+        "OPTIONS": env.json("MEDIA_FILE_STORAGE_OPTIONS", default={}),
     },
 }
 STATIC_URL = "/static/"
 STATIC_ROOT = env("STATIC_ROOT", cast=str, default="storage/static/")
 MEDIA_URL = "/media/"
 MEDIA_ROOT = env("MEDIA_ROOT", cast=str, default="storage/media/")
-STATICFILES_STORAGE = env(
-    "STATICFILES_STORAGE",
-    cast=str,
-    default="django_minio_backend.models.MinioBackendStatic",
-)
-DEFAULT_FILE_STORAGE = env(
-    "DEFAULT_FILE_STORAGE", cast=str, default="django_minio_backend.models.MinioBackend"
-)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -290,7 +289,7 @@ EMAIL_HOST_USER = env("EMAIL_HOST_USER", cast=str, default="")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", cast=str, default="")
 DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", cast=str, default="")
 
-LOG_LEVEL = env("LOG_LEVEL", cast=str, default="INFO")
+LOG_LEVEL = env("LOG_LEVEL", cast=str, default="DEBUG")
 MINIO_ENDPOINT = env("MINIO_ENDPOINT", cast=str, default="localhost:9000")
 MINIO_EXTERNAL_ENDPOINT = env(
     "MINIO_EXTERNAL_ENDPOINT", cast=str, default="localhost:9000"
@@ -363,6 +362,14 @@ SCRAPY_HTTPCACHE_EXPIRATION_SECS = env(
 )
 SCRAPY_HTTPCACHE_DIR = env("SCRAPY_HTTPCACHE_DIR", cast=str, default="httpcache")
 SCRAPY_LOG_LEVEL = env("SCRAPY_LOG_LEVEL", cast=str, default="ERROR")
+SCRAPY_GOOGLE_API_KEY = env("SCRAPY_GOOGLE_API_KEY", cast=str, default="")
+SCRAPY_GOOGLE_CSE_ID = env("SCRAPY_GOOGLE_CSE_ID", cast=str, default="")
+SCRAPY_MAX_NUMBER_OF_SITEMAP_URLS = env(
+    "SCRAPY_MAX_NUMBER_OF_SITEMAP_URLS", cast=int, default=20000
+)
+SCRAPY_SITEMAP_CRAWL_PAGE_LIMIT = env(
+    "SCRAPY_SITEMAP_CRAWL_PAGE_LIMIT", cast=int, default=100
+)
 
 PLAYWRIGHT_SERVER = env("PLAYWRIGHT_SERVER", cast=str, default=None)
 PLAYWRIGHT_API_KEY = env("PLAYWRIGHT_API_KEY", cast=str, default=None)
@@ -377,3 +384,9 @@ CAPTURE_USAGE_HISTORY = (
 )
 
 GOOGLE_ANALYTICS_ID = env("GOOGLE_ANALYTICS_ID", cast=str, default="")
+
+API_ENCRYPTION_KEY = env(
+    "API_ENCRYPTION_KEY",
+    cast=str,
+    default="8zSd6JIuC7ovfZ4AoxG_XmhubW6CPnQWW7Qe_4TD1TQ=",
+)

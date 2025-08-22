@@ -1,0 +1,5 @@
+litellm
+rank-bm25
+python-dotenv
+openai
+watercrawl-py
