@@ -13,6 +13,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { formatDuration } from '../../utils/formatters';
 import { DownloadFormatSelector } from '../../components/shared/DownloadFormatSelector';
 import { SitemapModalSelector } from '../../components/shared/SitemapModalSelector';
+import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
 
 // Status options for filtering
 const STATUS_OPTIONS = [
@@ -31,8 +32,16 @@ const CrawlLogsPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState<string>('');
+  const { setItems } = useBreadcrumbs();
 
   const isTabletOrMobile = useIsTabletOrMobile();
+
+  useEffect(() => {
+    setItems([
+      { label: 'Dashboard', href: '/dashboard'},
+      { label: 'Crawl Logs', href: '/dashboard/logs/crawls', current: true },
+    ]);
+  }, [setItems]);
 
   // Initialize selectedStatus from URL params
   useEffect(() => {
@@ -83,7 +92,7 @@ const CrawlLogsPage: React.FC = () => {
       <div className="h-full flex items-center justify-center">
         <div className="flex flex-col items-center space-y-4">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Loading activity logs...</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Loading crawl logs...</p>
         </div>
       </div>
     );
@@ -94,7 +103,7 @@ const CrawlLogsPage: React.FC = () => {
   return (
     <div className="h-full">
       <div className="px-4 sm:px-8 py-6">
-        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Activity Logs</h1>
+        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Crawl Logs</h1>
         <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
           View your recent crawl requests and their results
         </p>

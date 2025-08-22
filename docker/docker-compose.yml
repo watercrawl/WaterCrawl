@@ -21,15 +21,15 @@ x-app: &app
     - MEDIA_ROOT=${MEDIA_ROOT:-storage/media/}
     - LOG_LEVEL=${LOG_LEVEL:-INFO}
     - REDIS_URL=${REDIS_URL:-redis://redis:6379/1}
-    
+
     # Database
     - DATABASE_URL=postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-db}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-postgres}
-    
+
     # Redis & Celery
     - CELERY_BROKER_URL=${CELERY_BROKER_URL:-redis://redis:6379/0}
     - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND:-django-db}
     - REDIS_LOCKER_URL=${REDIS_LOCKER_URL:-redis://redis:6379/3}
-    
+
     # MinIO
     - MINIO_ENDPOINT=${MINIO_ENDPOINT:-minio:9000}
     - MINIO_EXTERNAL_ENDPOINT=${MINIO_EXTERNAL_ENDPOINT:-minio:9000}
@@ -43,13 +43,13 @@ x-app: &app
     - MINIO_PRIVATE_BUCKET=${MINIO_PRIVATE_BUCKET:-private}
     - MINIO_PUBLIC_BUCKET=${MINIO_PUBLIC_BUCKET:-public}
     - MINIO_BUCKET_CHECK_ON_SAVE=${MINIO_BUCKET_CHECK_ON_SAVE:-False}
-    
+
     # CORS
     - CSRF_TRUSTED_ORIGINS=${CSRF_TRUSTED_ORIGINS:-}
     - CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS:-}
     - CORS_ALLOWED_ORIGIN_REGEXES=${CORS_ALLOWED_ORIGIN_REGEXES:-}
     - CORS_ALLOW_ALL_ORIGINS=${CORS_ALLOW_ALL_ORIGINS:-False}
-    
+
     # Authentication
     - FRONTEND_URL=${FRONTEND_URL:-http://localhost}
     - IS_LOGIN_ACTIVE=${IS_LOGIN_ACTIVE:-True}
@@ -62,7 +62,7 @@ x-app: &app
     - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET:-}
     - ACCESS_TOKEN_LIFETIME_MINUTES=${ACCESS_TOKEN_LIFETIME_MINUTES:-5}
     - REFRESH_TOKEN_LIFETIME_DAYS=${REFRESH_TOKEN_LIFETIME_DAYS:-30}
-    
+
     # Email
     - EMAIL_BACKEND=${EMAIL_BACKEND:-django.core.mail.backends.smtp.EmailBackend}
     - EMAIL_HOST=${EMAIL_HOST:-}
@@ -71,7 +71,7 @@ x-app: &app
     - EMAIL_HOST_USER=${EMAIL_HOST_USER:-}
     - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD:-}
     - DEFAULT_FROM_EMAIL=${DEFAULT_FROM_EMAIL:-}
-    
+
     # Scrapy
     - SCRAPY_USER_AGENT=${SCRAPY_USER_AGENT:-WaterCrawl/0.1 (+https://github.com/watercrawl/watercrawl)}
     - SCRAPY_ROBOTSTXT_OBEY=${SCRAPY_ROBOTSTXT_OBEY:-True}
@@ -92,13 +92,13 @@ x-app: &app
     # Playwright
     - PLAYWRIGHT_SERVER=${PLAYWRIGHT_SERVER:-http://playwright:8000}
     - PLAYWRIGHT_API_KEY=${PLAYWRIGHT_API_KEY:-your-secret-api-key}
-    
+
     # Integrations
     - OPENAI_API_KEY=${OPENAI_API_KEY:-}
     - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY:-}
     - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET:-}
     - GOOGLE_ANALYTICS_ID=${GOOGLE_ANALYTICS_ID:-}
-    
+
     # Feature flags
     - IS_ENTERPRISE_MODE_ACTIVE=${IS_ENTERPRISE_MODE_ACTIVE:-False}
     - MAX_CRAWL_DEPTH=${MAX_CRAWL_DEPTH:--1}
@@ -122,7 +122,7 @@ services:
     environment:
       - MINIO_PRIVATE_BUCKET=${MINIO_PRIVATE_BUCKET:-private}
       - MINIO_PUBLIC_BUCKET=${MINIO_PUBLIC_BUCKET:-public}
-    command: ["/bin/sh", "/entrypoint.sh"]
+    command: [ "/bin/sh", "/entrypoint.sh" ]
     depends_on:
       - app
       - frontend
@@ -156,7 +156,7 @@ services:
       - MINIO_SERVER_URL=${MINIO_SERVER_URL:-http://localhost/}
       - MINIO_ROOT_USER=${MINIO_ACCESS_KEY:-minio}
       - MINIO_ROOT_PASSWORD=${MINIO_SECRET_KEY:-minio123}
-    
+
   playwright:
     image: watercrawl/playwright:1.1
     restart: always
@@ -184,3 +184,4 @@ services:
   redis:
     image: redis:latest
     restart: always
+

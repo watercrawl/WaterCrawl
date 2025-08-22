@@ -90,6 +90,10 @@ class FrontendSettingService:
     def max_crawl_concurrency(self):
         return settings.SCRAPY_CONCURRENT_REQUESTS
 
+    @cached_property
+    def is_knowledge_base_enabled(self):
+        return settings.KNOWLEDGE_BASE_ENABLED
+
 
 class EmailService:
     def __init__(self):

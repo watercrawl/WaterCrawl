@@ -11,6 +11,7 @@ import { useIsTabletOrMobile } from '../../hooks/useMediaQuery';
 import { formatDistanceToNow } from 'date-fns';
 import { formatDuration } from '../../utils/formatters';
 import { SearchStatusBadge } from '../../components/shared/SearchRequestCard';
+import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
 
 // Status options for filtering
 const STATUS_OPTIONS = [
@@ -28,8 +29,16 @@ const SearchLogsPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState<string>('');
+  const { setItems } = useBreadcrumbs();
 
   const isTabletOrMobile = useIsTabletOrMobile();
+
+  useEffect(() => {
+    setItems([
+      { label: 'Dashboard', href: '/dashboard'},
+      { label: 'Search Logs', href: '/dashboard/logs/searches', current: true },
+    ]);
+  }, [setItems]);
 
   // Initialize selectedStatus from URL params
   useEffect(() => {
