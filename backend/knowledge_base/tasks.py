@@ -7,6 +7,7 @@ from core.services import CrawlerService
 from core.tasks import run_spider
 from knowledge_base import consts
 from knowledge_base.factories import VectorStoreFactory
+from knowledge_base.feature import is_knowledge_base_enabled
 from knowledge_base.models import KnowledgeBaseDocument
 from knowledge_base.services import KnowledgeBaseDocumentService, KnowledgeBaseService
 
@@ -123,4 +124,5 @@ def initializer():
 
 @worker_ready.connect
 def initializer_on_worker_ready(sender, **kwargs):
-    initializer()
+    if is_knowledge_base_enabled():
+        initializer()

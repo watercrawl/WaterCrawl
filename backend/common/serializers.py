@@ -18,3 +18,4 @@ class SettingSerializer(serializers.Serializer):
     is_installed = serializers.BooleanField()
     is_search_configured = serializers.BooleanField()
     max_crawl_concurrency = serializers.IntegerField()
+    is_knowledge_base_enabled = serializers.BooleanField()

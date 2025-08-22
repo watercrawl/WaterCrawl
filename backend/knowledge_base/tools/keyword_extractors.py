@@ -32,7 +32,9 @@ class JiebaKeywordExtractor(BaseKeywordExtractor):
     def extract_keywords(self, text: str) -> List[str]:
         result = []
         check_list = []
-        for word in jieba.analyse.extract_tags(text, topK=settings.KB_KEYWORD_COUNT):
+        for word in jieba.analyse.extract_tags(
+            text, topK=settings.KNOWLEDGE_BASE_KEYWORD_COUNT
+        ):
             word = word.replace("#", "").replace("@", "").replace(".", "").strip()
             if len(word) < 2:
                 continue
@@ -80,7 +82,7 @@ Document:
         )
 
         prompt = prompt_template.format(
-            count=settings.KB_KEYWORD_COUNT,
+            count=settings.KNOWLEDGE_BASE_KEYWORD_COUNT,
             content=text,
             format_instructions=parser.get_format_instructions(),
         )

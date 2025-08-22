@@ -129,7 +129,7 @@ class VectorStoreFactory(BaseFactory):
     @classmethod
     def create_opensearch_client(cls) -> OpenSearch:
         # Create OpenSearch connection
-        opensearch_url = settings.KB_OPENSEARCH_URL
+        opensearch_url = settings.KNOWLEDGE_BASE_OPENSEARCH_URL
         return OpenSearch(
             hosts=opensearch_url,
             http_compress=True,

@@ -31,31 +31,7 @@ import SpiderIcon from '../components/icons/SpiderIcon';
 import Breadcrumbs from '../components/shared/Breadcrumbs';
 
 
-const navigation = [
-  { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, end: true },
-  { name: 'Crawl', href: '/dashboard/crawl', icon: SpiderIcon },
-  { name: 'Search', href: '/dashboard/search', icon: MagnifyingGlassIcon },
-  { name: 'Sitemap', href: '/dashboard/sitemap', icon: MapIcon },
-  {
-    name: 'Knowledge Base',
-    href: '/dashboard/knowledge-base',
-    icon: BookOpenIcon,
-  },
-  {
-    name: 'Activity Logs',
-    icon: ClockIcon,
-    children: [
-      { name: 'Crawls', href: '/dashboard/logs/crawls', icon: SpiderIcon },
-      { name: 'Searches', href: '/dashboard/logs/searches', icon: MagnifyingGlassIcon },
-      { name: 'Sitemaps', href: '/dashboard/logs/sitemaps', icon: MapIcon },
-      { name: 'Usage History', href: '/dashboard/logs/usage', icon: DocumentTextIcon },
-    ]
-  },
-  { name: 'Usage', href: '/dashboard/usage', icon: ChartBarIcon },
-  { name: 'API Keys', href: '/dashboard/api-keys', icon: KeyIcon },
-  { name: 'Settings', href: '/dashboard/settings', icon: Cog6ToothIcon },
-  { name: 'Profile', href: '/dashboard/profile', icon: UserIcon },
-];
+
 
 // Reusable Navigation component
 interface NavigationMenuProps {
@@ -76,6 +52,32 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
   closeSidebar
 }) => {
   const { user } = useUser();
+  const { settings } = useSettings();
+  const navigation = [
+      { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, end: true },
+      { name: 'Crawl', href: '/dashboard/crawl', icon: SpiderIcon },
+      { name: 'Search', href: '/dashboard/search', icon: MagnifyingGlassIcon },
+      { name: 'Sitemap', href: '/dashboard/sitemap', icon: MapIcon },
+      ...(settings?.is_knowledge_base_enabled ? [{
+        name: 'Knowledge Base',
+        href: '/dashboard/knowledge-base',
+        icon: BookOpenIcon,
+      }] : []),
+      {
+        name: 'Activity Logs',
+        icon: ClockIcon,
+        children: [
+          { name: 'Crawls', href: '/dashboard/logs/crawls', icon: SpiderIcon },
+          { name: 'Searches', href: '/dashboard/logs/searches', icon: MagnifyingGlassIcon },
+          { name: 'Sitemaps', href: '/dashboard/logs/sitemaps', icon: MapIcon },
+          { name: 'Usage History', href: '/dashboard/logs/usage', icon: DocumentTextIcon },
+        ]
+      },
+      { name: 'Usage', href: '/dashboard/usage', icon: ChartBarIcon },
+      { name: 'API Keys', href: '/dashboard/api-keys', icon: KeyIcon },
+      { name: 'Settings', href: '/dashboard/settings', icon: Cog6ToothIcon },
+      { name: 'Profile', href: '/dashboard/profile', icon: UserIcon },
+    ];
   return (
     <ul role="list" className="-mx-2 space-y-1">
       {navigation.map((item) => (

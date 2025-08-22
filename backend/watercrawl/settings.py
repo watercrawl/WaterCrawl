@@ -393,6 +393,9 @@ API_ENCRYPTION_KEY = env(
     default="8zSd6JIuC7ovfZ4AoxG_XmhubW6CPnQWW7Qe_4TD1TQ=",
 )
 
-KB_KEYWORD_COUNT = env("KB_KEYWORD_COUNT", cast=int, default=10)
-
-KB_OPENSEARCH_URL = env.list("KB_OPENSEARCH_URL", cast=str, default=[])
+# Knowledge Base settings
+KNOWLEDGE_BASE_ENABLED = env.bool("KNOWLEDGE_BASE_ENABLED", default=False)
+KNOWLEDGE_BASE_KEYWORD_COUNT = env("KNOWLEDGE_BASE_KEYWORD_COUNT", cast=int, default=10)
+KNOWLEDGE_BASE_OPENSEARCH_URL = env.list(
+    "KNOWLEDGE_BASE_OPENSEARCH_URL", cast=str, default=[]
+)
