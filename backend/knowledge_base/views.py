@@ -32,6 +32,7 @@ from knowledge_base.tasks import (
 from knowledge_base.tools.summarizers import ContextAwareEnhancerService
 from plan.throttle import (
     KnowledgeBaseRetrivalRateThrottle,
+    SummaryEnhancementRateThrottle,
 )
 
 from user.decorators import setup_current_team
@@ -141,7 +142,7 @@ class KnowledgeBaseViewSet(
         methods=["post"],
         url_path="context-aware-enhancer",
         name="context-aware-enhancer",
-        # throttle_classes=[SummaryEnhancementRateThrottle],
+        throttle_classes=[SummaryEnhancementRateThrottle],
     )
     def context_aware_enhancer(self, request):
         """Enhance documents using context-aware summarization."""
