@@ -13,7 +13,10 @@ import {
   InformationCircleIcon,
   ChevronDownIcon,
   MagnifyingGlassIcon,
-  MapIcon
+  BookOpenIcon,
+  MapIcon,
+  ServerIcon,
+  DocumentTextIcon
 } from '@heroicons/react/24/outline';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { TeamSelector } from '../components/dashboard/TeamSelector';
@@ -26,28 +29,9 @@ import { PrivacyTermsModal } from '../components/shared/PrivacyTermsModal';
 import { GitHubStars } from '../components/shared/GitHubStars';
 import SpiderIcon from '../components/icons/SpiderIcon';
 import Breadcrumbs from '../components/shared/Breadcrumbs';
-import { getBreadcrumbs } from '../utils/breadcrumbs';
 
 
-const navigation = [
-  { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, end: true },
-  { name: 'Crawl', href: '/dashboard/crawl', icon: SpiderIcon },
-  { name: 'Search', href: '/dashboard/search', icon: MagnifyingGlassIcon },
-  { name: 'Sitemap', href: '/dashboard/sitemap', icon: MapIcon },
-  {
-    name: 'Activity Logs',
-    icon: ClockIcon,
-    children: [
-      { name: 'Crawls', href: '/dashboard/logs/crawls', icon: SpiderIcon },
-      { name: 'Searches', href: '/dashboard/logs/searches', icon: MagnifyingGlassIcon },
-      { name: 'Sitemaps', href: '/dashboard/logs/sitemaps', icon: MapIcon },
-    ]
-  },
-  { name: 'Usage', href: '/dashboard/usage', icon: ChartBarIcon },
-  { name: 'API Keys', href: '/dashboard/api-keys', icon: KeyIcon },
-  { name: 'Settings', href: '/dashboard/settings', icon: Cog6ToothIcon },
-  { name: 'Profile', href: '/dashboard/profile', icon: UserIcon },
-];
+
 
 // Reusable Navigation component
 interface NavigationMenuProps {
@@ -67,6 +51,33 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
   isMenuActive,
   closeSidebar
 }) => {
+  const { user } = useUser();
+  const { settings } = useSettings();
+  const navigation = [
+      { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, end: true },
+      { name: 'Crawl', href: '/dashboard/crawl', icon: SpiderIcon },
+      { name: 'Search', href: '/dashboard/search', icon: MagnifyingGlassIcon },
+      { name: 'Sitemap', href: '/dashboard/sitemap', icon: MapIcon },
+      ...(settings?.is_knowledge_base_enabled ? [{
+        name: 'Knowledge Base',
+        href: '/dashboard/knowledge-base',
+        icon: BookOpenIcon,
+      }] : []),
+      {
+        name: 'Activity Logs',
+        icon: ClockIcon,
+        children: [
+          { name: 'Crawls', href: '/dashboard/logs/crawls', icon: SpiderIcon },
+          { name: 'Searches', href: '/dashboard/logs/searches', icon: MagnifyingGlassIcon },
+          { name: 'Sitemaps', href: '/dashboard/logs/sitemaps', icon: MapIcon },
+          { name: 'Usage History', href: '/dashboard/logs/usage', icon: DocumentTextIcon },
+        ]
+      },
+      { name: 'Usage', href: '/dashboard/usage', icon: ChartBarIcon },
+      { name: 'API Keys', href: '/dashboard/api-keys', icon: KeyIcon },
+      { name: 'Settings', href: '/dashboard/settings', icon: Cog6ToothIcon },
+      { name: 'Profile', href: '/dashboard/profile', icon: UserIcon },
+    ];
   return (
     <ul role="list" className="-mx-2 space-y-1">
       {navigation.map((item) => (
@@ -93,7 +104,7 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
                 />
               </button>
 
-              <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isMenuExpanded(item.name) ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'}`}>
+              <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isMenuExpanded(item.name) ? 'max-h-52 opacity-100' : 'max-h-0 opacity-0'}`}>
                 <ul className="ml-6 mt-2 space-y-2 pl-3 border-l border-blue-700/60">
                   {item.children.map((child: any) => (
                     <li key={child.name} className="relative">
@@ -143,6 +154,26 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
           )}
         </li>
       ))}
+      {user?.is_superuser && (
+        <li key="admin">
+          <NavLink
+            to="/admin"
+            onClick={isMobile && closeSidebar ? closeSidebar : undefined}
+            className={({ isActive }) =>
+              `group flex gap-x-3 rounded-md p-2 text-sm font-medium leading-6 ${isActive
+                ? 'bg-blue-800/50 text-blue-100'
+                : 'text-blue-200 hover:text-blue-100 hover:bg-blue-800/30'
+                }`
+            }
+          >
+            <ServerIcon
+              className="h-5 w-5 shrink-0"
+              aria-hidden="true"
+            />
+            {"Admin Panel ->"}
+          </NavLink>
+        </li>
+      )}
     </ul>
   );
 };
@@ -155,9 +186,8 @@ export const DashboardLayout = () => {
   const location = useLocation();
   const { showSubscriptionBanner } = useTeam();
   const { showPrivacyTermsModal } = useUser();
+  // Set breadcrumbs based on current path
 
-  // Get breadcrumbs based on current path
-  const breadcrumbItems = getBreadcrumbs(location.pathname);
 
   const toggleMenu = (menuName: string) => {
     setExpandedMenus(prev => ({
@@ -367,7 +397,7 @@ export const DashboardLayout = () => {
           </div>
 
           <div className="px-4 sm:px-6 lg:px-8 pt-6">
-            <Breadcrumbs items={breadcrumbItems} />
+            <Breadcrumbs />
             <Outlet />
           </div>
         </main>

@@ -17,6 +17,7 @@ import { StatusBadge } from '../../components/shared/StatusBadge';
 import { searchApi } from '../../services/api/search';
 import { AnimatedProcessing } from '../../components/shared/AnimatedProcessing';
 import { CrawlStatus } from '../../types/crawl';
+import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
 
 const SearchRequestDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -26,6 +27,14 @@ const SearchRequestDetailPage: React.FC = () => {
   const [results, setResults] = useState<SearchResult[]>([]);
   const [showParameters, setShowParameters] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const { setItems } = useBreadcrumbs();
+  useEffect(() => {
+    setItems([
+      { label: 'Dashboard', href: '/dashboard'},
+      { label: 'Search Logs', href: '/dashboard/logs/searches' },
+      { label: 'Search Request', href: `/dashboard/logs/searches/${id}`, current: true },
+    ]);
+  }, [setItems, id]);
 
   useEffect(() => {
     const fetchSearchRequest = async () => {
@@ -69,7 +78,7 @@ const SearchRequestDetailPage: React.FC = () => {
     };
 
     pollStatus();
-  
+
   }, [id, isSubscribed]);
 
   const handleSearchEvent = async (event: SearchEvent) => {

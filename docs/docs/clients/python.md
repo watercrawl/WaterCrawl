@@ -107,6 +107,32 @@ request = client.create_crawl_request(
 )
 ```
 
+#### Create a batch crawl request
+
+```python
+# Batch crawl multiple URLs at once
+request = client.create_batch_crawl_request(
+    urls=['https://example.com', 'https://example.org'],
+    spider_options={
+        "proxy_server": None,
+    },
+    page_options={
+        "exclude_tags": [],
+        "include_tags": [],
+        "wait_time": 1000,
+        "only_main_content": True,
+        "include_html": False,
+        "include_links": True,
+        "timeout": 15000,
+        "accept_cookies_selector": None,
+        "locale": None,
+        "extra_headers": {},
+        "actions": []
+    },
+    plugin_options={}
+)
+```
+
 #### Stop a crawl request
 
 ```python
@@ -133,6 +159,7 @@ for event in client.monitor_crawl_request('request-uuid'):
         print(f"Crawl state: {event['data']['status']}")
     elif event['type'] == 'result':
         print(f"Received result for: {event['data']['url']}")
+    # you will get also engine feedbacks with type feed here
 
 # Monitor without downloading results will return result as url instead of result object
 for event in client.monitor_crawl_request('request-uuid', download=False):
@@ -147,6 +174,9 @@ results = client.get_crawl_request_results('request-uuid')
 
 # Specify page number and size
 results = client.get_crawl_request_results('request-uuid', page=2, page_size=20)
+
+# Download results directly (instead of just getting URLs)
+results = client.get_crawl_request_results('request-uuid', download=True)
 ```
 
 #### Quick URL scraping
@@ -168,32 +198,88 @@ request = client.scrape_url('https://example.com', sync=False)
 
 ### Sitemap Operations
 
-#### Download a sitemap
+#### Get sitemap from a crawl request
 
 ```python
-# Download using a crawl request object
+# Get sitemap in different formats from a crawl request
+sitemap_json = client.get_crawl_request_sitemap('request-uuid', output_format='json')
+sitemap_graph = client.get_crawl_request_sitemap('request-uuid', output_format='graph')
+sitemap_markdown = client.get_crawl_request_sitemap('request-uuid', output_format='markdown')
+
+# Or use a crawl request object
 crawl_request = client.get_crawl_request('request-uuid')
-sitemap = client.download_sitemap(crawl_request)
+sitemap_json = client.get_crawl_request_sitemap(crawl_request, output_format='json')
+```
 
-# you need to give crawl request uuid or crawl request object
+#### Create a dedicated sitemap request
+
+```python
+sitemap_request = client.create_sitemap_request(
+    url='https://example.com',
+    options={
+        "include_subdomains": True,
+        "ignore_sitemap_xml": False,
+        "search": None,
+        "include_paths": [],
+        "exclude_paths": []
+    }
+)
+```
+
+#### List sitemap requests
+
+```python
+# Get the first page of sitemap requests
+requests = client.get_sitemap_requests_list()
+
+# Specify page number and size
+requests = client.get_sitemap_requests_list(page=2, page_size=20)
+```
+
+#### Get a specific sitemap request
+
+```python
+sitemap_request = client.get_sitemap_request('sitemap-uuid')
+```
+
+#### Monitor a sitemap request
+
+```python
+# Monitor sitemap generation with automatic result download
+for event in client.monitor_sitemap_request('sitemap-uuid'):
+    if event['type'] == 'state':
+        print(f"Sitemap state: {event['data']['status']}")
+    elif event['type'] == 'feed':
+        print(f"Feed: {event['data']['message']}")
+```
+
+#### Get sitemap results
+
+```python
+# Get sitemap in different formats
+sitemap_json = client.get_sitemap_results('sitemap-uuid', output_format='json')
+sitemap_graph = client.get_sitemap_results('sitemap-uuid', output_format='graph')
+sitemap_markdown = client.get_sitemap_results('sitemap-uuid', output_format='markdown')
+
+# You can also use the sitemap request object
+sitemap_request = client.get_sitemap_request('sitemap-uuid')
+sitemap_json = client.get_sitemap_results(sitemap_request, output_format='json')
+```
+
+#### Stop a sitemap request
+
+```python
+client.stop_sitemap_request('sitemap-uuid')
+```
+
+#### Deprecated sitemap functions
+
+The following functions are deprecated and will be removed in a future version:
+
+```python
+# Use get_crawl_request_sitemap instead
 sitemap = client.download_sitemap('request-uuid')
-
-# Process sitemap entries
-for entry in sitemap:
-    print(f"URL: {entry['url']}, Title: {entry['title']}")
-```
-
-#### Download sitemap as graph data
-
-```python
-# you need to give crawl request uuid or crawl request object
 graph_data = client.download_sitemap_graph('request-uuid')
-```
-
-#### Download sitemap as markdown
-
-```python
-# you need to give crawl request uuid or crawl request object
 markdown = client.download_sitemap_markdown('request-uuid')
 ```
 
@@ -246,7 +332,7 @@ for event in client.monitor_search_request('search-uuid', download=False):
 #### Get search request details
 
 ```python
-search = client.get_search_request('search-uuid')
+search = client.get_search_request('search-uuid', download=True)
 ```
 
 #### Stop a search request
@@ -264,18 +350,18 @@ client.stop_search_request('search-uuid')
 - Efficient session management and request handling
 - Support for sitemaps and search operations
 
+## Documentation
+
+For detailed documentation and examples, visit [WaterCrawl Documentation](https://docs.watercrawl.dev/).
+
 
 ## Compatibility
 
-- WaterCrawl API >= 0.7.1
-
-## Changelog
-
-Please see [CHANGELOG.md](https://github.com/watercrawl/watercrawl-py/blob/main/CHANGELOG.md) for more information on what has changed recently.
+- WaterCrawl API >= 0.9.2
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/watercrawl/watercrawl-py/blob/main/LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Support
 

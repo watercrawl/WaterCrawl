@@ -1,29 +1,87 @@
 import datetime
+from typing import Protocol
 
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from rest_framework.exceptions import PermissionDenied
 
+from core.models import CrawlRequest
 from core.services import ProxyService
+from knowledge_base.models import KnowledgeBase
 from plan.services import TeamPlanService
 from plan.utils import (
     calculate_number_of_search_credits,
     calculate_number_of_sitemap_credits,
+    calculate_number_of_knowledge_base_documents_credits,
 )
 from user.models import Team
 import core.consts as core_consts
 
 
-class PlanLimitValidator:
+class PlanValidatorInterface(Protocol):
     def __init__(self, team: Team):
         self.team = team
         self.team_plan_service = TeamPlanService(team=team)
 
+    def validate_daily_credit(self, requested_credit=1): ...
+
+    def validate_credit(self, requested_credit=1): ...
+
+
+class PlanValidator(PlanValidatorInterface):
+    def validate_daily_credit(self, requested_credit=1):
+        if (
+            self.team_plan_service.remaining_daily_page_credit == -1
+            or requested_credit == 0
+        ):
+            return
+
+        if self.team_plan_service.remaining_daily_page_credit <= 0:
+            raise PermissionDenied(
+                _(
+                    "You have no more daily credit left in your plan. for current request you need {} credits."
+                ).format(requested_credit)
+            )
+
+        if requested_credit > self.team_plan_service.remaining_daily_page_credit:
+            raise PermissionDenied(
+                _(
+                    "You just have {} daily credit left in your plan. for current request you need {} credits."
+                ).format(
+                    self.team_plan_service.remaining_daily_page_credit, requested_credit
+                )
+            )
+
+    def validate_credit(self, requested_credit=1):
+        if self.team_plan_service.remaining_page_credit == -1 or requested_credit == 0:
+            return
+
+        if self.team_plan_service.remaining_page_credit <= 0:
+            raise PermissionDenied(
+                _(
+                    "You have no more pages left in your plan. for current request you need {} credits."
+                ).format(requested_credit)
+            )
+
+        if requested_credit > self.team_plan_service.remaining_page_credit:
+            raise PermissionDenied(
+                _(
+                    "You just have {} credits left in your plan. for current request you need {} credits."
+                ).format(self.team_plan_service.remaining_page_credit, requested_credit)
+            )
+
+
+class CrawlRequestValidatorMixin(PlanValidatorInterface):
     def validate_batch_crawl_request(self, data):
         return self.validate_crawl_request(data)
 
     def validate_crawl_request(self, data: dict):
-        self._validate_remaining_pages(data)
+        requested_credit = (
+            data.get("options", {}).get("spider_options", {}).get("page_limit", 1)
+        )
+        self.validate_daily_credit(requested_credit)
+        self.validate_credit(requested_credit)
+
         self._validate_proxy(data)
         self._validate_max_depth(data)
         self._validate_max_limit(data)
@@ -31,36 +89,6 @@ class PlanLimitValidator:
         self._validate_concurrent_crawl(data)
 
         return data
-
-    def _validate_remaining_pages(self, data: dict):
-        if self.team_plan_service.remaining_page_credit == -1:
-            return
-
-        if self.team_plan_service.remaining_page_credit <= 0:
-            raise PermissionDenied(_("You have no more pages left in your plan"))
-
-        page_limit = (
-            data.get("options", {}).get("spider_options", {}).get("page_limit", 1)
-        )
-        if page_limit > self.team_plan_service.remaining_page_credit:
-            raise PermissionDenied(
-                _(
-                    "You just have {} page credits left in your plan. change the page limit in spider options."
-                ).format(self.team_plan_service.remaining_page_credit)
-            )
-
-        if self.team_plan_service.remaining_daily_page_credit == -1:
-            return
-
-        if self.team_plan_service.remaining_daily_page_credit <= 0:
-            raise PermissionDenied(_("You have no more daily pages left in your plan"))
-
-        if page_limit > self.team_plan_service.remaining_daily_page_credit:
-            raise PermissionDenied(
-                _(
-                    "You just have {} daily pages left in your plan. change the page limit in spider options."
-                ).format(self.team_plan_service.remaining_daily_page_credit)
-            )
 
     def _validate_proxy(self, data):
         proxy_server_slug = (
@@ -133,46 +161,21 @@ class PlanLimitValidator:
                 ).format(self.team_plan_service.max_concurrent_crawl)
             )
 
+
+class SearchRequestValidatorMixin(PlanValidatorInterface):
     def validate_search_request(self, data: dict):
-        self._validate_remaining_pages_for_search(data)
-        self._validate_current_search(data)
-
-        return data
-
-    def _validate_remaining_pages_for_search(self, data: dict):
-        if self.team_plan_service.remaining_page_credit == -1:
-            return
-
-        if self.team_plan_service.remaining_page_credit <= 0:
-            raise PermissionDenied(_("You have no more pages left in your plan"))
-
         number_of_results = data.get("result_limit", 5)
         depth = data.get("search_options", {}).get(
             "depth", core_consts.SEARCH_DEPTH_BASIC
         )
         number_of_credit = calculate_number_of_search_credits(number_of_results, depth)
 
-        if number_of_credit > self.team_plan_service.remaining_page_credit:
-            raise PermissionDenied(
-                _(
-                    "You just have {} credits left in your plan. for current search you need {} credits."
-                ).format(self.team_plan_service.remaining_page_credit, number_of_credit)
-            )
+        self.validate_daily_credit(number_of_credit)
+        self.validate_credit(number_of_credit)
 
-        if self.team_plan_service.remaining_daily_page_credit == -1:
-            return
+        self._validate_current_search(data)
 
-        if self.team_plan_service.remaining_daily_page_credit <= 0:
-            raise PermissionDenied(_("You have no more daily credit left in your plan"))
-
-        if number_of_credit > self.team_plan_service.remaining_daily_page_credit:
-            raise PermissionDenied(
-                _(
-                    "You just have {} daily credit left in your plan. for current search you need {} credits."
-                ).format(
-                    self.team_plan_service.remaining_daily_page_credit, number_of_credit
-                )
-            )
+        return data
 
     def _validate_current_search(self, data: dict):
         if self.team_plan_service.max_concurrent_crawl == -1:
@@ -194,44 +197,18 @@ class PlanLimitValidator:
                 ).format(self.team_plan_service.max_concurrent_crawl)
             )
 
+
+class SitemapRequestValidatorMixin(PlanValidatorInterface):
     def validate_sitemap_request(self, data: dict):
-        self._validate_remaining_pages_for_sitemap(data)
-        self._validate_current_sitemap(data)
-
-        return data
-
-    def _validate_remaining_pages_for_sitemap(self, data: dict):
-        if self.team_plan_service.remaining_page_credit == -1:
-            return
-
-        if self.team_plan_service.remaining_page_credit <= 0:
-            raise PermissionDenied(_("You have no more pages left in your plan"))
-
         number_of_credit = calculate_number_of_sitemap_credits(
             data.get("options", {}).get("ignore_sitemap_xml", False)
         )
+        self.validate_daily_credit(number_of_credit)
+        self.validate_credit(number_of_credit)
 
-        if number_of_credit > self.team_plan_service.remaining_page_credit:
-            raise PermissionDenied(
-                _(
-                    "You just have {} credits left in your plan. for current sitemap you need {} credits."
-                ).format(self.team_plan_service.remaining_page_credit, number_of_credit)
-            )
+        self._validate_current_sitemap(data)
 
-        if self.team_plan_service.remaining_daily_page_credit == -1:
-            return
-
-        if self.team_plan_service.remaining_daily_page_credit <= 0:
-            raise PermissionDenied(_("You have no more daily credit left in your plan"))
-
-        if number_of_credit > self.team_plan_service.remaining_daily_page_credit:
-            raise PermissionDenied(
-                _(
-                    "You just have {} daily credit left in your plan. for current sitemap you need {} credits."
-                ).format(
-                    self.team_plan_service.remaining_daily_page_credit, number_of_credit
-                )
-            )
+        return data
 
     def _validate_current_sitemap(self, data: dict):
         if self.team_plan_service.max_concurrent_crawl == -1:
@@ -252,3 +229,151 @@ class PlanLimitValidator:
                     "Your plan does not support more than {} concurrent sitemaps. Wait for them to finish."
                 ).format(self.team_plan_service.max_concurrent_crawl)
             )
+
+
+class KnowledgeBaseRequestValidatorMixin(PlanValidatorInterface):
+    def validate_create_knowledge_base(self, data: dict):
+        self._validate_number_of_knowledge_bases()
+
+        data["knowledge_base_each_document_cost"] = 0
+
+        embedding_provider_config = data["embedding_provider_config"]
+        if embedding_provider_config and embedding_provider_config.team != self.team:
+            data["knowledge_base_each_document_cost"] += 1
+
+        summary_provider_config = data["summarization_provider_config"]
+        if summary_provider_config and summary_provider_config.team != self.team:
+            data["knowledge_base_each_document_cost"] += 1
+
+        return data
+
+    def _validate_number_of_knowledge_bases(self):
+        if self.team_plan_service.number_of_knowledge_bases == -1:
+            return
+        number_of_knowledge_used = self.team.knowledge_bases.count()
+
+        if number_of_knowledge_used >= self.team_plan_service.number_of_knowledge_bases:
+            raise PermissionDenied(
+                _(
+                    "Your plan does not support more than {} knowledge bases. You can not create more."
+                ).format(self.team_plan_service.number_of_knowledge_bases)
+            )
+
+    def validate_create_knowledge_base_document_from_manual(
+        self, knowledge_base: KnowledgeBase, attrs
+    ):
+        self._validate_number_of_knowledge_base_documents(knowledge_base)
+
+        number_of_credit = calculate_number_of_knowledge_base_documents_credits(
+            knowledge_base
+        )
+        self.validate_daily_credit(number_of_credit)
+        self.validate_credit(number_of_credit)
+
+        return attrs
+
+    def _validate_number_of_knowledge_base_documents(
+        self, knowledge_base: KnowledgeBase, new_document_count=1
+    ):
+        if self.team_plan_service.number_of_knowledge_bases == -1:
+            return
+
+        total_number_of_documents = (
+            knowledge_base.documents.count() + new_document_count
+        )
+
+        if (
+            total_number_of_documents
+            >= self.team_plan_service.number_of_each_knowledge_base_documents
+        ):
+            raise PermissionDenied(
+                _(
+                    "Your current plan does not support more than {} documents per knowledge base. "
+                    "This knowledge base has {} documents left. "
+                    "Your request will add {} documents."
+                ).format(
+                    self.team_plan_service.number_of_each_knowledge_base_documents,
+                    self.team_plan_service.number_of_each_knowledge_base_documents
+                    - knowledge_base.documents.count(),
+                    new_document_count,
+                )
+            )
+
+    def validate_create_knowledge_base_document_from_urls(
+        self, knowledge_base: KnowledgeBase, attrs
+    ):
+        attrs["urls"] = list(set(attrs["urls"]))
+        # number of urls needed to crawl
+        number_of_credit = number_of_documents = len(attrs["urls"])
+
+        self._validate_number_of_knowledge_base_documents(
+            knowledge_base, number_of_documents
+        )
+
+        # number of urls needed to crawl + total credit for importing to knowledge base
+        number_of_credit += calculate_number_of_knowledge_base_documents_credits(
+            knowledge_base, number_of_documents
+        )
+        self.validate_daily_credit(number_of_credit)
+        self.validate_credit(number_of_credit)
+
+        return attrs
+
+    def validate_create_knowledge_base_document_from_crawl_results(
+        self, knowledge_base: KnowledgeBase, number_of_documents: int, attrs
+    ):
+        self._validate_number_of_knowledge_base_documents(
+            knowledge_base, number_of_documents
+        )
+
+        # no extra credit needed for crawl just credits for importing to knowledge base
+        number_of_credit = calculate_number_of_knowledge_base_documents_credits(
+            knowledge_base, number_of_documents
+        )
+        self.validate_daily_credit(number_of_credit)
+        self.validate_credit(number_of_credit)
+
+        return attrs
+
+    def validate_create_knowledge_base_document_from_crawl_requests(
+        self, knowledge_base: KnowledgeBase, crawl_request: CrawlRequest, attrs
+    ):
+        number_of_documents = crawl_request.number_of_documents()
+        self._validate_number_of_knowledge_base_documents(
+            knowledge_base, number_of_documents
+        )
+
+        # no extra credit needed for crawl just credits for importing to knowledge base
+        number_of_credit = calculate_number_of_knowledge_base_documents_credits(
+            knowledge_base, number_of_documents
+        )
+        self.validate_daily_credit(number_of_credit)
+        self.validate_credit(number_of_credit)
+
+        return attrs
+
+    def validate_create_knowledge_base_document_from_file(
+        self, knowledge_base: KnowledgeBase, attrs
+    ):
+        number_of_documents = len(attrs["files"])
+        self._validate_number_of_knowledge_base_documents(
+            knowledge_base, number_of_documents
+        )
+
+        number_of_credit = calculate_number_of_knowledge_base_documents_credits(
+            knowledge_base, number_of_documents
+        )
+        self.validate_daily_credit(number_of_credit)
+        self.validate_credit(number_of_credit)
+
+        return attrs
+
+
+class PlanLimitValidator(
+    CrawlRequestValidatorMixin,
+    SearchRequestValidatorMixin,
+    SitemapRequestValidatorMixin,
+    KnowledgeBaseRequestValidatorMixin,
+    PlanValidator,
+):
+    pass

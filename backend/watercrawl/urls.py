@@ -38,4 +38,14 @@ urlpatterns = [
     path("api/v1/common/", include("common.urls")),
     path("api/v1/core/", include("core.urls")),
     path("api/v1/plan/", include("plan.urls")),
+    path("api/v1/knowledge-base/", include("knowledge_base.urls")),
+    path("api/v1/llm/", include("llm.urls")),
+    path(
+        "api/v1/admin/",
+        include(
+            [
+                path("llm/", include("llm.admin_api.urls")),
+            ]
+        ),
+    ),
 ]
