@@ -24,12 +24,20 @@ export interface ProviderEmbedding {
   truncate: boolean;
 }
 
+export enum OPTIONS {
+    REQUIRED = 'required',
+    OPTIONAL = 'optional',
+    NOT_AVAILABLE = 'not_available',
+}
 /**
  * Provider schema from the API
  */
 export interface Provider {
   key: string;
   title: string;
+  api_key: OPTIONS;
+  base_url: OPTIONS;
+  default_base_url: string | null;
 }
 
 /**
@@ -51,7 +59,7 @@ export interface ProviderConfig {
 export interface ProviderConfigFormData {
   title: string;
   provider_name: string;
-  api_key: string;
+  api_key?: string;
   base_url?: string;
 }
 

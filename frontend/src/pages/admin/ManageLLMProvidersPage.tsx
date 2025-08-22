@@ -126,7 +126,7 @@ const ManageLLMProvidersPage: React.FC = () => {
   };
 
   // Function to open the edit modal
-  const handleEditProviderConfig = async (providerConfig: ListProviderConfig) => {
+  const handleEditProviderConfig = async (providerConfig: AdminProviderConfig) => {
     try {
       // We can use the providerConfig directly since it already has the fields we need
       setEditingProviderConfig(providerConfig);
@@ -177,19 +177,19 @@ const ManageLLMProvidersPage: React.FC = () => {
         deletingUuid={deletingUuid}
         isTabletOrMobile={isTabletOrMobile}
         onPageChange={setCurrentPage}
-        onEdit={handleEditProviderConfig}
+        onEdit={(providerConfig) => handleEditProviderConfig(providerConfig as AdminProviderConfig)}
         onDelete={handleDeleteProviderConfig}
-        onView={handleViewDetails}
+        onView={(providerConfig) => handleViewDetails(providerConfig as ListProviderConfig)}
       />
 
-      <ProviderConfigForm
+      {isModalOpen && <ProviderConfigForm
         isOpen={isModalOpen}
         initialData={editingProviderConfig || undefined}
         onClose={handleCloseModal}
         onSubmit={editingProviderConfig ? handleUpdateProviderConfig : handleCreateProviderConfig}
         onTest={handleTestProviderConfig}
         availableProviders={availableProviders}
-      />
+      />}
     </div>
   );
 };

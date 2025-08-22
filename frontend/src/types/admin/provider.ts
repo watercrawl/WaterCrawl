@@ -7,14 +7,16 @@ export interface AdminProvider {
 export interface AdminProviderConfigRequest {
     title: string;
     provider_name: string;
-    api_key: string | null;
-    base_url: string | null;
+    api_key?: string | null;
+    base_url?: string | null;
 }
 
 export interface AdminProviderConfig {
     uuid: string;
     title: string;
     provider_name: string;
+    api_key?: string | null;
+    base_url?: string | null;
     created_at: string;
     updated_at: string;
 }

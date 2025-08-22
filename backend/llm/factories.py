@@ -7,6 +7,7 @@ from common.encryption import decrypt_key
 from llm.interfaces import BaseProvider
 from llm.models import LLMModel, ProviderConfig
 from llm.providers import OpenAIProvider, WaterCrawlProvider
+from llm.services import LLMModelService
 
 
 class ChatModelFactory:
@@ -19,7 +20,7 @@ class ChatModelFactory:
     @classmethod
     def create_chat_model_from_provider_config(
         cls,
-        model: LLMModel,
+        llm_model: LLMModel,
         provider_config: Optional[ProviderConfig] = None,
         temperature=None,
     ) -> BaseChatModel:
@@ -27,7 +28,7 @@ class ChatModelFactory:
         Create a chat model from a Model and ProviderConfig.
 
         Args:
-            model: The Model instance containing provider and model information
+            llm_model: The Model instance containing provider and model information
             provider_config: The provider configuration with API key and settings
 
         Returns:
@@ -36,21 +37,19 @@ class ChatModelFactory:
         if not provider_config:
             raise ValueError("Provider config is required")
 
-        provider_name = model.provider_name
-        model_name = model.key  # Use key as it's the actual API model name
+        provider_name = llm_model.provider_name
+        model_name = llm_model.key  # Use key as it's the actual API model name
         api_key = decrypt_key(provider_config.api_key)
         api_base = provider_config.base_url
 
         if provider_name == "openai":
-            kwargs = {}
-            if temperature is not None:
-                kwargs["temperature"] = temperature
-
             return ChatOpenAI(
                 model=model_name,
                 openai_api_key=api_key,
                 openai_api_base=api_base or "https://api.openai.com/v1",
-                **kwargs,
+                temperature=LLMModelService(llm_model).get_valid_temperature(
+                    temperature
+                ),
             )
 
         elif provider_name == "watercrawl":

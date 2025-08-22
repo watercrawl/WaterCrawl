@@ -1,6 +1,7 @@
 from rest_framework import serializers
+from django.utils.translation import gettext_lazy as _
 
-from common.encryption import encrypt_key
+from common.encryption import encrypt_key, decrypt_key
 from llm import consts
 from llm.models import LLMModel, ProviderConfig, EmbeddingModel
 from llm.services import ProviderConfigService
@@ -22,6 +23,18 @@ class LLMModelSerializer(serializers.ModelSerializer):
 
 
 class ProviderConfigSerializer(serializers.ModelSerializer):
+    """Serializer for provider configuration."""
+
+    is_global = serializers.SerializerMethodField()
+    provider_name = serializers.ChoiceField(
+        choices=consts.LLM_PROVIDER_WITHOUT_WATERCRAWL_CHOICES,
+    )
+    api_key = serializers.CharField(
+        write_only=True,
+        required=False,
+        allow_null=True,
+    )
+
     class Meta:
         model = ProviderConfig
         fields = [
@@ -30,28 +43,37 @@ class ProviderConfigSerializer(serializers.ModelSerializer):
             "provider_name",
             "api_key",
             "base_url",
-            "created_at",
-            "updated_at",
+            "is_global",
         ]
-        read_only_fields = ["uuid", "created_at", "updated_at"]
-        extra_kwargs = {
-            "api_key": {"write_only": True},
-            "base_url": {"write_only": True},
-        }
+        read_only_fields = ["uuid", "is_global"]
 
     def validate(self, attrs):
-        if not self.instance or "api_key" in attrs:
-            if not ProviderConfigService.test_provider_config(
-                provider_name=attrs["provider_name"]
-                if "provider_name" in attrs
-                else self.instance.provider_name,
-                api_key=attrs["api_key"],
-                base_url=attrs["base_url"]
-                if "base_url" in attrs
-                else self.instance.base_url,
-            ):
-                raise serializers.ValidationError("Test failed")
+        provider_name = attrs.get("provider_name")
+        config = consts.LLM_PROVIDER_INFORMATION[provider_name]
+        if config["api_key"] == consts.OPTION_REQUIRED and not attrs.get("api_key"):
+            raise serializers.ValidationError({"api_key": _("API key is required")})
+        if config["base_url"] == consts.OPTION_REQUIRED and not attrs.get("base_url"):
+            raise serializers.ValidationError({"base_url": _("Base URL is required")})
+        self.test_provider_config(
+            provider_name=provider_name,
+            api_key=attrs.get("api_key"),
+            base_url=attrs.get("base_url"),
+        )
         return attrs
+
+    def get_is_global(self, obj):
+        return obj.is_global
+
+    def test_provider_config(self, provider_name, api_key, base_url):
+        if not ProviderConfigService.test_provider_config(
+            provider_name=provider_name, api_key=api_key, base_url=base_url
+        ):
+            raise serializers.ValidationError(
+                {
+                    "api_key": _("Invalid API key or base URL. Test failed"),
+                    "base_url": _("Invalid API key or base URL. Test failed"),
+                }
+            )
 
     def save(self, **kwargs):
         if "api_key" in self.validated_data:
@@ -62,6 +84,28 @@ class ProviderConfigSerializer(serializers.ModelSerializer):
                     self.validated_data["api_key"]
                 )
         return super().save(**kwargs)
+
+
+class UpdateProviderConfigSerializer(ProviderConfigSerializer):
+    provider_name = serializers.CharField(read_only=True)
+
+    def validate(self, attrs):
+        if "api_key" in attrs or "base_url" in attrs:
+            base_url = (
+                self.instance.base_url if "base_url" not in attrs else attrs["base_url"]
+            )
+            api_key = (
+                decrypt_key(self.instance.api_key)
+                if "api_key" not in attrs
+                else attrs["api_key"]
+            )
+            print(api_key)
+            self.test_provider_config(
+                provider_name=self.instance.provider_name,
+                api_key=api_key,
+                base_url=base_url,
+            )
+        return attrs
 
 
 class EmbeddingModelSerializer(serializers.ModelSerializer):

@@ -20,7 +20,7 @@ import {
   calculateChunkOverlap,
   SummarizerType
 } from '../../../types/knowledge';
-import { ListProviderConfig } from '../../../types/provider';
+import { ListProviderConfig, Model } from '../../../types/provider';
 import { useBreadcrumbs } from '../../../contexts/BreadcrumbContext';
 import { useTeam } from '../../../contexts/TeamContext';
 
@@ -63,6 +63,8 @@ const KnowledgeBaseNewPage: React.FC = () => {
   const [providerConfigs, setProviderConfigs] = useState<ListProviderConfig[]>([]);
   const [selectedEmbeddingProviderConfig, setSelectedEmbeddingProviderConfig] = useState<ListProviderConfig | null>(null);
   const [selectedSummarizationProviderConfig, setSelectedSummarizationProviderConfig] = useState<ListProviderConfig | null>(null);
+  const [selectedSummarizationModel, setSelectedSummarizationModel] = useState<Model | null>(null);
+  const [isTemperatureConfigurable, setIsTemperatureConfigurable] = useState(false);
   const [isLoadingProviders, setIsLoadingProviders] = useState(true);
   const [isEnhanceModalOpen, setIsEnhanceModalOpen] = useState(false);
   const { setItems } = useBreadcrumbs();
@@ -156,6 +158,15 @@ const KnowledgeBaseNewPage: React.FC = () => {
     return () => subscription.unsubscribe();
   }, [watch, setValue]);
 
+  useEffect(() => {
+    if (!watchSummarizationModelId) return;
+    const selectedModel = selectedSummarizationProviderConfig?.available_llm_models.find(
+      (model) => model.uuid === watchSummarizationModelId
+    ) || null
+    setIsTemperatureConfigurable(selectedModel?.min_temperature !== null && selectedModel?.max_temperature !== null);
+    setSelectedSummarizationModel(selectedModel);
+  }, [watchSummarizationModelId, selectedSummarizationProviderConfig]);
+
   const onSubmit = async (formData: FormData) => {
     setIsSubmitting(true);
     try {
@@ -175,7 +186,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
             ? formData.summarizer_context
             : undefined,
         summarizer_temperature:
-          formData.enhancementEnabled
+          formData.enhancementEnabled && isTemperatureConfigurable
             ? formData.summarizer_temperature
             : undefined,
       };
@@ -668,21 +679,15 @@ const KnowledgeBaseNewPage: React.FC = () => {
                             name="summarizer_temperature"
                             control={control}
                             render={({ field }) => {
-                              const selectedModel = selectedSummarizationProviderConfig?.available_llm_models.find(
-                                (model) => model.uuid === watchSummarizationModelId
-                              );
-
-                              // If min_temperature or max_temperature is null, the model handles temperature internally
-                              const isTemperatureConfigurable = selectedModel?.min_temperature !== null && selectedModel?.max_temperature !== null;
-
-                              if (!watchEnhancementEnabled || !watchSummarizationModelId || !selectedModel || !isTemperatureConfigurable) {
+                              console.log("isTemperatureConfigurable", isTemperatureConfigurable);
+                              if (!watchEnhancementEnabled || !watchSummarizationModelId || !selectedSummarizationModel || !isTemperatureConfigurable) {
                                 return (
                                   <div className="opacity-50">
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                       Temperature
                                     </label>
                                     <div className="text-sm text-gray-500 dark:text-gray-400">
-                                      {!isTemperatureConfigurable && selectedModel
+                                      {!isTemperatureConfigurable && selectedSummarizationModel
                                         ? "Temperature is handled internally by this model"
                                         : "Select a model to configure temperature"
                                       }
@@ -694,10 +699,10 @@ const KnowledgeBaseNewPage: React.FC = () => {
                               return (
                                 <Slider
                                   label="Temperature"
-                                  value={field.value !== undefined && field.value !== null ? field.value : (selectedModel?.default_temperature ?? 0.7)}
+                                  value={field.value !== undefined && field.value !== null ? field.value : (selectedSummarizationModel?.default_temperature ?? 0.7)}
                                   onChange={field.onChange}
-                                  min={selectedModel.min_temperature!}
-                                  max={selectedModel.max_temperature!}
+                                  min={selectedSummarizationModel.min_temperature!}
+                                  max={selectedSummarizationModel.max_temperature!}
                                   step={0.1}
                                   formatValue={(val) => val.toFixed(1)}
                                   description="Controls randomness in the model's output. Lower values make the output more focused and deterministic, higher values make it more random and creative."
@@ -709,38 +714,51 @@ const KnowledgeBaseNewPage: React.FC = () => {
                       </div>
 
                       {watchSummarizerType === 'context_aware' && (
-                        <div className="grid grid-cols-12 gap-6 mt-6">
-                          <div className="col-span-12">
-                            <div className="flex justify-between items-center">
-                              <label htmlFor="summarizer_context" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                Summarizer Context
-                              </label>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => setIsEnhanceModalOpen(true)}
-                                disabled={!watchSummarizationProviderConfig || !watchSummarizationModelId}
-                              >
-                                Enhance
-                              </Button>
+                        <>
+                          <div className="grid grid-cols-12 gap-6 mt-6">
+                            <div className="col-span-12">
+                              <div className="flex justify-between items-center">
+                                <label htmlFor="summarizer_context" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                  Summarizer Context
+                                </label>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => setIsEnhanceModalOpen(true)}
+                                  disabled={!watchSummarizationProviderConfig || !watchSummarizationModelId}
+                                >
+                                  Enhance
+                                </Button>
+                              </div>
+                              <div className="mt-2">
+                                <textarea
+                                  id="summarizer_context"
+                                  {...register('summarizer_context')}
+                                  rows={4}
+                                  className={`shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-md ${errors.summarizer_context ? 'border-red-500' : ''}`}
+                                  placeholder="Provide context for the summarizer, e.g., 'This knowledge base will be used to answer customer support questions about our products.'"
+                                />
+                                {errors.summarizer_context && (
+                                  <p className="mt-1 text-sm text-red-600">{errors.summarizer_context.message}</p>
+                                )}
+                              </div>
+                              <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                                Provide instructions or context to guide the summarization process. This is required for context-aware summarization.
+                              </p>
                             </div>
-                            <div className="mt-2">
-                              <textarea
-                                id="summarizer_context"
-                                {...register('summarizer_context')}
-                                rows={4}
-                                className={`shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-md ${errors.summarizer_context ? 'border-red-500' : ''}`}
-                                placeholder="Provide context for the summarizer, e.g., 'This knowledge base will be used to answer customer support questions about our products.'"
-                              />
-                              {errors.summarizer_context && (
-                                <p className="mt-1 text-sm text-red-600">{errors.summarizer_context.message}</p>
-                              )}
-                            </div>
-                            <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                              Provide instructions or context to guide the summarization process. This is required for context-aware summarization.
-                            </p>
                           </div>
-                        </div>
+                          {isEnhanceModalOpen && <EnhanceContextModal
+                            isOpen={isEnhanceModalOpen}
+                            onClose={() => setIsEnhanceModalOpen(false)}
+                            onEnhance={(enhancedText) => {
+                              setValue('summarizer_context', enhancedText, { shouldValidate: true });
+                            }}
+                            initialContext={watchSummarizerContext || ''}
+                            providerConfigId={watchSummarizationProviderConfig || ''}
+                            modelId={watchSummarizationModelId || ''}
+                            temperature={isTemperatureConfigurable ? (watchSummarizerTemperature ?? null) : null}
+                          />}
+                        </>
                       )}
                     </>
                   )}
@@ -789,17 +807,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
           </div>
         </div>
       )}
-      <EnhanceContextModal
-        isOpen={isEnhanceModalOpen}
-        onClose={() => setIsEnhanceModalOpen(false)}
-        onEnhance={(enhancedText) => {
-          setValue('summarizer_context', enhancedText, { shouldValidate: true });
-        }}
-        initialContext={watchSummarizerContext || ''}
-        providerConfigId={watchSummarizationProviderConfig || ''}
-        modelId={watchSummarizationModelId || ''}
-        temperature={watchSummarizerTemperature || 0.7}
-      />
+
     </div>
   );
 };

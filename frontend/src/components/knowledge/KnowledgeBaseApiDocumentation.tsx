@@ -6,7 +6,7 @@ import { apiKeysApi } from '../../services/api/apiKeys';
 import { ApiKey } from '../../types/apiKeys';
 import DocumentItem from '../crawl/DocumentItem';
 import { API_URL } from '../../utils/env';
-import { classNames } from '../../utils/classNames';
+import { classnames } from '../../lib/utils';
 
 interface KnowledgeBaseApiDocumentationProps {
     knowledgeBaseId: string;
@@ -159,12 +159,11 @@ queryKnowledgeBase();`;
                                 <Tab
                                     key={tab.name}
                                     className={({ selected }) =>
-                                        classNames(
-                                            'px-4 py-2.5 text-sm font-medium leading-5 focus:outline-none',
-                                            selected
-                                                ? 'text-gray-900 dark:text-white border-b-2 border-gray-900 dark:border-white'
-                                                : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
-                                        )
+                                        classnames({
+                                            'px-4 py-2.5 text-sm font-medium leading-5 focus:outline-none': true,
+                                            'text-gray-900 dark:text-white border-b-2 border-gray-900 dark:border-white': selected,
+                                            'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300': !selected
+                                        })
                                     }
                                 >
                                     {tab.name}

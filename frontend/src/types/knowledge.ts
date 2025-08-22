@@ -77,7 +77,7 @@ export interface KnowledgeBaseContextAwareEnhanceData {
   provider_config_id: string;
   llm_model_id: string;
   content: string;
-  temperature?: number;
+  temperature: number | null;
 }
 
 export interface KnowledgeBaseContextAwareEnhanceResponse {

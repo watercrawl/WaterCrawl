@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.utils.translation import gettext_lazy as _
 
 from core.models import CrawlResult
 from knowledge_base.models import (
@@ -8,7 +9,7 @@ from knowledge_base.models import (
 )
 from llm.models import ProviderConfig
 from llm.serializers import LLMModelSerializer, EmbeddingModelSerializer
-from llm.services import ProviderConfigService
+from llm.services import ProviderConfigService, LLMModelService
 from plan.validators import PlanLimitValidator
 
 
@@ -81,7 +82,9 @@ class KnowledgeBaseDetailSerializer(serializers.ModelSerializer):
             .first()
         )
         if not provider_config:
-            raise serializers.ValidationError("Invalid embedding provider config id.")
+            raise serializers.ValidationError(
+                _("Invalid embedding provider config id.")
+            )
         return provider_config
 
     def validate_summarization_provider_config_id(self, value):
@@ -95,7 +98,7 @@ class KnowledgeBaseDetailSerializer(serializers.ModelSerializer):
 
         if not provider_config:
             raise serializers.ValidationError(
-                "Invalid summarization provider config id."
+                _("Invalid summarization provider config id.")
             )
         return provider_config
 
@@ -112,18 +115,29 @@ class KnowledgeBaseDetailSerializer(serializers.ModelSerializer):
             ).exists()
         ):
             raise serializers.ValidationError(
-                {"embedding_model_id": "Invalid embedding model id."}
+                {"embedding_model_id": _("Invalid embedding model id.")}
             )
 
-        if summarization_provider_config and (
-            "summarization_model_id" not in attrs
-            or not summarization_provider_config.available_llm_models.filter(
+        if summarization_provider_config:
+            if "summarization_model_id" not in attrs:
+                raise serializers.ValidationError(
+                    {"summarization_model_id": _("Summarization model id is required.")}
+                )
+
+            llm_model = summarization_provider_config.available_llm_models.filter(
                 pk=attrs["summarization_model_id"]
-            ).exists()
-        ):
-            raise serializers.ValidationError(
-                {"summarization_model_id": "Invalid summarization model id."}
-            )
+            ).first()
+            if not llm_model:
+                raise serializers.ValidationError(
+                    {"summarization_model_id": _("Invalid summarization model id.")}
+                )
+
+            if not LLMModelService(llm_model).validate_temperature(
+                attrs.get("summarizer_temperature")
+            ):
+                raise serializers.ValidationError(
+                    {"summarizer_temperature": _("Invalid summarizer temperature.")}
+                )
 
         attrs["embedding_provider_config"] = embedding_provider_config
         attrs["summarization_provider_config"] = summarization_provider_config
@@ -215,14 +229,14 @@ class FillKnowledgeBaseFromCrawlResultsSerializer(serializers.Serializer):
 
     def validate_crawl_result_uuids(self, value):
         if not value:
-            raise serializers.ValidationError("crawl_result_uuids cannot be empty.")
+            raise serializers.ValidationError(_("crawl_result_uuids cannot be empty."))
 
         team = self.context["team"]  # type: Team
 
         results = CrawlResult.objects.filter(request__team=team, uuid__in=value)
         if not results.exists():
             raise serializers.ValidationError(
-                "No valid crawl results found for the provided UUIDs."
+                _("No valid crawl results found for the provided UUIDs.")
             )
 
         return results
@@ -242,7 +256,7 @@ class FillKnowledgeBaseFromCrawlRequestsSerializer(serializers.Serializer):
         team = self.context["team"]
         crawl_request = team.crawl_requests.filter(uuid=value).first()
         if not crawl_request:
-            raise serializers.ValidationError("Invalid crawl request UUID.")
+            raise serializers.ValidationError(_("Invalid crawl request UUID."))
         return crawl_request
 
     def validate(self, attrs):
@@ -260,13 +274,13 @@ class FillKnowledgeBaseFromFileSerializer(serializers.Serializer):
 
     def validate_files(self, value):
         if not value:
-            raise serializers.ValidationError("Files cannot be empty.")
+            raise serializers.ValidationError(_("Files cannot be empty."))
         for file in value:
             if not file.name.lower().endswith(
                 (".md", ".txt", ".text", ".html", ".docx", ".csv")
             ):
                 raise serializers.ValidationError(
-                    "File must be a pdf, docx, image, or text."
+                    _("File must be a pdf, docx, image, or text.")
                 )
         return value
 
@@ -293,7 +307,7 @@ class ContextAwareEnhancerSerializer(serializers.Serializer):
             .first()
         )
         if not provider_config:
-            raise serializers.ValidationError("Invalid provider config id.")
+            raise serializers.ValidationError(_("Invalid provider config id."))
         return provider_config
 
     def validate(self, attrs):
@@ -302,8 +316,15 @@ class ContextAwareEnhancerSerializer(serializers.Serializer):
             pk=attrs["llm_model_id"]
         ).first()
 
+        if not LLMModelService(llm_model).validate_temperature(attrs["temperature"]):
+            raise serializers.ValidationError(
+                {"temperature": _("Invalid temperature.")}
+            )
+
         if not llm_model:
-            raise serializers.ValidationError({"llm_model_id": "Invalid llm model id."})
+            raise serializers.ValidationError(
+                {"llm_model_id": _("Invalid llm model id.")}
+            )
         return {
             "provider_config": provider_config,
             "llm_model": llm_model,

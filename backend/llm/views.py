@@ -1,5 +1,5 @@
 from django.utils.translation import gettext_lazy as _
-from drf_spectacular.utils import extend_schema, extend_schema_view
+from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiResponse
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
@@ -65,6 +65,10 @@ from user.permissions import IsAuthenticatedTeam
         summary=_("Test provider config"),
         description=_("Test a provider configuration without saving it."),
         tags=["Provider Configurations"],
+        request=serializers.TestProviderConfigSerializer,
+        responses={
+            "204": None,
+        },
     ),
     get_models=extend_schema(
         summary=_("Get provider models"),
@@ -75,6 +79,30 @@ from user.permissions import IsAuthenticatedTeam
         summary=_("Get provider embedding models"),
         description=_("Get all embedding models supported by a specific provider."),
         tags=["Providers"],
+    ),
+    providers=extend_schema(
+        summary=_("List available providers"),
+        description=_("Get a list of available LLM providers."),
+        tags=["Provider Configurations"],
+        responses={
+            200: OpenApiResponse(
+                description=_("List of available providers"),
+                response={
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "key": {"type": "string"},
+                            "title": {"type": "string"},
+                            "api_key": {"type": "string"},
+                            "base_url": {"type": "string"},
+                            "default_base_url": {"type": "string"},
+                        },
+                        "required": ["key", "title", "api_key", "base_url"],
+                    },
+                },
+            )
+        },
     ),
 )
 @setup_current_team
@@ -87,6 +115,11 @@ class ProviderConfigViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated, IsAuthenticatedTeam]
     serializer_class = serializers.ProviderConfigSerializer
     queryset = ProviderConfig.objects.none()
+
+    def get_serializer_class(self):
+        if self.action in ["update", "partial_update"]:
+            return serializers.UpdateProviderConfigSerializer
+        return super().get_serializer_class()
 
     def get_queryset(self):
         return self.request.current_team.provider_configs.order_by("created_at").all()
@@ -130,6 +163,7 @@ class ProviderConfigViewSet(ModelViewSet):
         methods=["post"],
         url_path="test-config",
         url_name="test-config",
+        serializer_class=serializers.TestProviderConfigSerializer,
     )
     def test_config(self, request, **kwargs):
         """Test a provider configuration without saving it."""

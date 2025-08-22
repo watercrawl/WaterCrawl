@@ -16,7 +16,7 @@ class LLMSummarizer(BaseSummarizer):
         """Generate a summary from documents."""
 
         llm = ChatModelFactory.create_chat_model_from_provider_config(
-            model=self.language_model,
+            llm_model=self.language_model,
             provider_config=self.provider_config,
             temperature=self.knowledge_base.summarizer_temperature,
         )
@@ -38,7 +38,7 @@ class ContextAwareSummarizer(BaseSummarizer):
 
         # Create LLM instance with provider_config
         llm = ChatModelFactory.create_chat_model_from_provider_config(
-            model=self.language_model,
+            llm_model=self.language_model,
             provider_config=self.provider_config,
             temperature=self.knowledge_base.summarizer_temperature,
         )
@@ -64,7 +64,7 @@ class ContextAwareEnhancerService:
         self,
         llm_model: LLMModel,
         provider_config: ProviderConfig,
-        temperature: float = 0.7,
+        temperature: float = None,
     ):
         self.llm_model: LLMModel = llm_model
         self.provider_config: ProviderConfig = provider_config
@@ -72,7 +72,7 @@ class ContextAwareEnhancerService:
 
     def enhance_context(self, context: str) -> str:
         llm = ChatModelFactory.create_chat_model_from_provider_config(
-            model=self.llm_model,
+            llm_model=self.llm_model,
             provider_config=self.provider_config,
             temperature=self.temperature,
         )
@@ -86,7 +86,7 @@ Enhance the following goal:
 
 "{user_goal}"
 
-Respond with only the enhanced goal.
+Respond with only the enhanced goal. The given text must be short and to the point.
 """,
         )
         result = llm.invoke(enhancer_prompt.format(user_goal=context))

@@ -3,7 +3,7 @@ import requests
 from django.db.models import Q
 
 from llm import consts
-from llm.models import ProviderConfig
+from llm.models import ProviderConfig, LLMModel
 from user.models import Team
 
 
@@ -11,8 +11,8 @@ class ProviderService:
     @classmethod
     def get_available_providers(cls):
         return [
-            {"key": key, "title": value}
-            for key, value in consts.LLM_PROVIDER_WITHOUT_WATERCRAWL_CHOICES
+            {"key": key, **value}
+            for key, value in consts.LLM_PROVIDER_INFORMATION.items()
         ]
 
 
@@ -43,6 +43,8 @@ class ProviderConfigService:
             # Different validation logic depending on provider
             if provider_name == "openai":
                 return cls._test_openai_provider(api_key, base_url)
+            if provider_name == "watercrawl":
+                return True
             return False
         except Exception:
             pass
@@ -71,3 +73,36 @@ class ProviderConfigService:
             return True
 
         return False
+
+
+class LLMModelService:
+    def __init__(self, llm_model: LLMModel):
+        self.llm_model = llm_model
+
+    def validate_temperature(self, temperature: float):
+        if temperature is None and self.llm_model.default_temperature is not None:
+            return True
+        try:
+            if (
+                self.llm_model.min_temperature
+                <= temperature
+                <= self.llm_model.max_temperature
+            ):
+                return True
+        except TypeError:
+            # min_temperature or max_temperature is None
+            # that means that the model is not temperature-sensitive so temperature must be None
+            if temperature is None:
+                return True
+
+        return False
+
+    def get_valid_temperature(self, temperature: float):
+        print(temperature, self.llm_model.default_temperature)
+        if temperature is None:
+            return self.llm_model.default_temperature
+
+        if self.validate_temperature(temperature):
+            return temperature
+
+        return self.llm_model.default_temperature

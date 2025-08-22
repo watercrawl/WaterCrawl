@@ -60,7 +60,7 @@ class LLMKeywordExtractor(BaseKeywordExtractor):
     @cached_property
     def llm(self) -> BaseChatModel:
         return ChatModelFactory.create_chat_model_from_provider_config(
-            model=self.language_model,
+            llm_model=self.language_model,
             provider_config=self.provider_config,
             temperature=0,
         )

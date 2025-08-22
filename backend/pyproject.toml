@@ -26,7 +26,6 @@ dependencies = [
     "djangorestframework-simplejwt (==5.4.0)",
     "django-cors-headers (==4.6.0)",
     "watercrawl-plugin (==0.1.0)",
-#    "watercrawl-openai (==0.1.0)",
     "httpx (==0.28.1)",
     "stripe (==11.5.0)",
     "django-filter (==25.1)",
@@ -40,6 +39,7 @@ dependencies = [
     "jieba (>=0.42.1,<0.43.0)",
     "pypandoc-binary (>=1.15,<2.0)",
     "opensearch-py (>=3.0.0,<4.0.0)",
+    "watercrawl-openai (>=0.1.1,<0.2.0)",
 ]
 
 
@@ -51,5 +51,7 @@ build-backend = "poetry.core.masonry.api"
 pre-commit = "^4.2.0"
 ruff = "^0.11.2"
 
+
+[tool.poetry.dependencies]
 [tool.ruff]
 exclude = ["migrations", "__pycache__", "venv"]

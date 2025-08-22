@@ -9,8 +9,8 @@ import Loading from '../shared/Loading';
 import { FormInput } from '../shared/FormComponents';
 import Card from '../shared/Card';
 import Editor from '@monaco-editor/react';
-import { classNames } from '../../utils/classNames';
 import { AxiosError } from 'axios';
+import { classnames } from '../../lib/utils';
 
 interface IFormInput {
   query: string;
@@ -98,9 +98,21 @@ const KnowledgeBaseQueryForm: React.FC<KnowledgeBaseQueryFormProps> = ({ knowled
       <div className="mt-8">
         <TabGroup selectedIndex={selectedTab} onChange={setSelectedTab}>
           <TabList className="flex space-x-1 border-b border-gray-200 dark:border-gray-700 min-w-max">
-            <Tab className={({ selected }) => classNames('px-4 py-2.5 text-sm font-medium leading-5 focus:outline-none', selected ? 'text-gray-900 dark:text-white border-b-2 border-gray-900 dark:border-white' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300')}>Options</Tab>
-            <Tab className={({ selected }) => classNames('px-4 py-2.5 text-sm font-medium leading-5 focus:outline-none', selected ? 'text-gray-900 dark:text-white border-b-2 border-gray-900 dark:border-white' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300')}>Results</Tab>
-            <Tab className={({ selected }) => classNames('px-4 py-2.5 text-sm font-medium leading-5 focus:outline-none', selected ? 'text-gray-900 dark:text-white border-b-2 border-gray-900 dark:border-white' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300')}>API</Tab>
+            <Tab className={({ selected }) => classnames({
+              'px-4 py-2.5 text-sm font-medium leading-5 focus:outline-none': true,
+              'text-gray-900 dark:text-white border-b-2 border-gray-900 dark:border-white': selected,
+              'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300': !selected
+            })}>Options</Tab>
+            <Tab className={({ selected }) => classnames({
+              'px-4 py-2.5 text-sm font-medium leading-5 focus:outline-none': true,
+              'text-gray-900 dark:text-white border-b-2 border-gray-900 dark:border-white': selected,
+              'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300': !selected
+            })}>Results</Tab>
+            <Tab className={({ selected }) => classnames({
+              'px-4 py-2.5 text-sm font-medium leading-5 focus:outline-none': true,
+              'text-gray-900 dark:text-white border-b-2 border-gray-900 dark:border-white': selected,
+              'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300': !selected
+            })}>API</Tab>
           </TabList>
           <TabPanels className="mt-4">
             <TabPanel>

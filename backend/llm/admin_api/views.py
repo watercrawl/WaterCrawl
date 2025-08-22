@@ -79,8 +79,11 @@ from user.permissions import IsSuperUser
                         "properties": {
                             "key": {"type": "string"},
                             "title": {"type": "string"},
+                            "api_key": {"type": "string"},
+                            "base_url": {"type": "string"},
+                            "default_base_url": {"type": "string"},
                         },
-                        "required": ["key", "title"],
+                        "required": ["key", "title", "api_key", "base_url"],
                     },
                 },
             )
@@ -91,6 +94,11 @@ class ProviderConfigAdminApiView(ModelViewSet):
     permission_classes = (IsSuperUser,)
     serializer_class = serializers.ProviderConfigSerializer
     queryset = ProviderConfig.objects.none()
+
+    def get_serializer_class(self):
+        if self.action in ["update", "partial_update"]:
+            return serializers.UpdateProviderConfigSerializer
+        return super().get_serializer_class()
 
     def get_queryset(self):
         return ProviderConfig.objects.filter(team=None)

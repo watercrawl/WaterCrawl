@@ -13,7 +13,7 @@ interface EnhanceContextModalProps {
   initialContext: string;
   providerConfigId: string;
   modelId: string;
-  temperature?: number;
+  temperature: number | null;
 }
 
 export const EnhanceContextModal: React.FC<EnhanceContextModalProps> = ({ 
@@ -23,7 +23,7 @@ export const EnhanceContextModal: React.FC<EnhanceContextModalProps> = ({
   initialContext, 
   providerConfigId,
   modelId,
-  temperature
+  temperature,
 }) => {
   const [context, setContext] = useState(initialContext);
   const [isLoading, setIsLoading] = useState(false);
@@ -50,7 +50,7 @@ export const EnhanceContextModal: React.FC<EnhanceContextModalProps> = ({
         provider_config_id: providerConfigId,
         llm_model_id: modelId,
         content: context,
-        temperature: temperature || 0.7
+        temperature: temperature
       };
       const response = await knowledgeBaseApi.enhanceContextAware(data);
       toast.dismiss();

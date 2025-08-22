@@ -2276,14 +2276,14 @@ files = [
 
 [[package]]
 name = "openai"
-version = "1.91.0"
+version = "1.101.0"
 description = "The official Python library for the openai API"
 optional = false
 python-versions = ">=3.8"
 groups = ["main"]
 files = [
-    {file = "openai-1.91.0-py3-none-any.whl", hash = "sha256:207f87aa3bc49365e014fac2f7e291b99929f4fe126c4654143440e0ad446a5f"},
-    {file = "openai-1.91.0.tar.gz", hash = "sha256:d6b07730d2f7c6745d0991997c16f85cddfc90ddcde8d569c862c30716b9fc90"},
+    {file = "openai-1.101.0-py3-none-any.whl", hash = "sha256:6539a446cce154f8d9fb42757acdfd3ed9357ab0d34fcac11096c461da87133b"},
+    {file = "openai-1.101.0.tar.gz", hash = "sha256:29f56df2236069686e64aca0e13c24a4ec310545afb25ef7da2ab1a18523f22d"},
 ]
 
 [package.dependencies]
@@ -2297,7 +2297,7 @@ tqdm = ">4"
 typing-extensions = ">=4.11,<5"
 
 [package.extras]
-aiohttp = ["aiohttp", "httpx-aiohttp (>=0.1.6)"]
+aiohttp = ["aiohttp", "httpx-aiohttp (>=0.1.8)"]
 datalib = ["numpy (>=1)", "pandas (>=1.2.3)", "pandas-stubs (>=1.1.0.11)"]
 realtime = ["websockets (>=13,<16)"]
 voice-helpers = ["numpy (>=2.0.2)", "sounddevice (>=0.5.1)"]
@@ -4127,6 +4127,22 @@ files = [
 ]
 
 [[package]]
+name = "watercrawl-openai"
+version = "0.1.1"
+description = "WaterCrawl OpenAI Plugin"
+optional = false
+python-versions = ">=3.11"
+groups = ["main"]
+files = [
+    {file = "watercrawl_openai-0.1.1-py3-none-any.whl", hash = "sha256:44b339e51a310737c9980b94bab1400fa483f96e0e27ed23e02d3c23199de7f8"},
+    {file = "watercrawl_openai-0.1.1.tar.gz", hash = "sha256:a4a10160f70d76d519759aa69f75ca2c344716e2479edb6b6f937bec2296165a"},
+]
+
+[package.dependencies]
+openai = ">=1.101.0,<2.0.0"
+watercrawl-plugin = ">=0.1.0"
+
+[[package]]
 name = "watercrawl-plugin"
 version = "0.1.0"
 description = "This project used for writing WaterCrawl plugins"
@@ -4463,4 +4479,4 @@ cffi = ["cffi (>=1.11)"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.13,<4"
-content-hash = "715c05109398a7a7da6aa49eae2486ecaaf01f2408c23056f8c0c6565ed00cda"
+content-hash = "0f71fb7af1883ce4370de6cf617205a7911678eb339ed595e5ed86e7a92cce5c"

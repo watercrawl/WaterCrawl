@@ -164,14 +164,14 @@ const ProviderConfigSettings: React.FC = () => {
         onDelete={handleDeleteProviderConfig}
       />
 
-      <ProviderConfigForm
+      {isModalOpen && <ProviderConfigForm
         isOpen={isModalOpen}
         initialData={editingProviderConfig || undefined}
         onClose={handleCloseModal}
         onSubmit={editingProviderConfig ? handleUpdateProviderConfig : handleCreateProviderConfig}
         onTest={handleTestProviderConfig}
         availableProviders={availableProviders}
-      />
+      />}
     </div>
   );
 };

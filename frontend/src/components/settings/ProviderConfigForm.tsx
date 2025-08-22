@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Dialog } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import { ProviderConfigFormData, Provider, ProviderConfig } from '../../types/provider';
+import { ProviderConfigFormData, Provider, ProviderConfig, OPTIONS } from '../../types/provider';
 import Button from '../shared/Button';
+import { classnames } from '../../lib/utils';
+import { AdminProviderConfig } from '../../types/admin/provider';
 
 interface ProviderConfigFormProps {
   isOpen: boolean;
-  initialData?: ProviderConfig | null;
+  initialData?: ProviderConfig | AdminProviderConfig | null;
   onClose: () => void;
   onSubmit: (data: ProviderConfigFormData) => Promise<void>;
   onTest: (data: ProviderConfigFormData) => Promise<void>;
@@ -27,6 +29,33 @@ export const ProviderConfigForm: React.FC<ProviderConfigFormProps> = ({
     api_key: '',
     base_url: initialData?.base_url || '',
   });
+
+  // Get the currently selected provider configuration
+  const selectedProvider = useMemo(() => {
+    return availableProviders.find(provider => provider.key === formData.provider_name);
+  }, [availableProviders, formData.provider_name]);
+
+  // Check if we're in edit mode
+  const isEditMode = Boolean(initialData);
+  
+  // Check if fields should be shown based on provider configuration
+  const shouldShowApiKey = formData.provider_name && selectedProvider?.api_key !== OPTIONS.NOT_AVAILABLE;
+  const shouldShowBaseUrl = formData.provider_name && selectedProvider?.base_url !== OPTIONS.NOT_AVAILABLE;
+  const isApiKeyRequired = selectedProvider?.api_key === OPTIONS.REQUIRED;
+  const isBaseUrlRequired = selectedProvider?.base_url === OPTIONS.REQUIRED;
+
+  // In edit mode, check if user has made changes to test connection
+  const hasChangesToTest = useMemo(() => {
+    if (!isEditMode) return true; // Always allow testing in create mode
+    
+    // Check if API key has been changed (user entered a new value)
+    const hasApiKeyChange = formData.api_key && formData.api_key.trim() !== '';
+    
+    // Check if base URL has been changed from initial value
+    const hasBaseUrlChange = shouldShowBaseUrl && formData.base_url !== (initialData?.base_url || '');
+    
+    return hasApiKeyChange || hasBaseUrlChange;
+  }, [isEditMode, formData.api_key, formData.base_url, shouldShowBaseUrl, initialData?.base_url]);
 
 
   const [loading, setLoading] = useState(false);
@@ -56,15 +85,25 @@ export const ProviderConfigForm: React.FC<ProviderConfigFormProps> = ({
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
+    
     if (!formData.title.trim()) {
       newErrors.title = 'Title is required';
     }
+    
     if (!formData.provider_name || formData.provider_name.trim() === '') {
       newErrors.provider_name = 'Provider is required';
     }
-    if (!initialData && !formData.api_key.trim()) {
+    
+    // Only validate API key if it should be shown and is required
+    if (shouldShowApiKey && isApiKeyRequired && !formData.api_key?.trim() && !isEditMode) {
       newErrors.api_key = 'API key is required';
     }
+    
+    // Only validate base URL if it should be shown and is required
+    if (shouldShowBaseUrl && isBaseUrlRequired && !formData.base_url?.trim()) {
+      newErrors.base_url = 'Base URL is required';
+    }
+    
     setErrors(newErrors);
     console.log('Form validation result:', newErrors);
     return Object.keys(newErrors).length === 0;
@@ -79,7 +118,25 @@ export const ProviderConfigForm: React.FC<ProviderConfigFormProps> = ({
 
     try {
       setLoading(true);
-      await onSubmit(formData);
+      
+      // Create a filtered form data object that excludes unavailable fields
+      const filteredFormData: ProviderConfigFormData = {
+        title: formData.title,
+        provider_name: formData.provider_name,
+      };
+      
+      // Only include api_key if it should be shown and has a value
+      // In edit mode, only send if user actually entered a new value
+      if (shouldShowApiKey && formData.api_key && formData.api_key.trim()) {
+        filteredFormData.api_key = formData.api_key;
+      }
+      
+      // Only include base_url if it should be shown
+      if (shouldShowBaseUrl) {
+        filteredFormData.base_url = formData.base_url || '';
+      }
+      
+      await onSubmit(filteredFormData);
       onClose();
     } catch (error: any) {
       console.error('Error submitting form:', error);
@@ -87,7 +144,7 @@ export const ProviderConfigForm: React.FC<ProviderConfigFormProps> = ({
       // Handle API validation errors
       if (error.response?.data) {
         const apiErrors: Record<string, string> = {};
-        Object.entries(error.response.data).forEach(([key, value]) => {
+        Object.entries(error.response.data.errors).forEach(([key, value]) => {
           if (Array.isArray(value)) {
             apiErrors[key] = value[0] as string;
           } else if (typeof value === 'string') {
@@ -108,7 +165,25 @@ export const ProviderConfigForm: React.FC<ProviderConfigFormProps> = ({
 
     try {
       setTesting(true);
-      await onTest(formData);
+      
+      // Create a filtered form data object for testing
+      const filteredFormData: ProviderConfigFormData = {
+        title: formData.title,
+        provider_name: formData.provider_name,
+      };
+      
+      // Only include api_key if it should be shown and has a value
+      // In edit mode, only send if user actually entered a new value
+      if (shouldShowApiKey && formData.api_key && formData.api_key.trim()) {
+        filteredFormData.api_key = formData.api_key;
+      }
+      
+      // Only include base_url if it should be shown
+      if (shouldShowBaseUrl) {
+        filteredFormData.base_url = formData.base_url || '';
+      }
+      
+      await onTest(filteredFormData);
     } catch (error) {
       console.error('Test failed:', error);
     } finally {
@@ -146,10 +221,11 @@ export const ProviderConfigForm: React.FC<ProviderConfigFormProps> = ({
                 onChange={handleChange}
                 disabled={loading}
                 placeholder="Configuration Title"
-                className={`mt-1 block w-full rounded-md ${errors.title
-                    ? 'border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500'
-                    : 'border-gray-300 dark:border-gray-700 focus:border-indigo-500 focus:ring-indigo-500'
-                  } shadow-sm dark:bg-gray-800 dark:text-white sm:text-sm`}
+                className={classnames({
+                  'mt-1 block w-full rounded-md shadow-sm dark:bg-gray-800 dark:text-white sm:text-sm': true,
+                  'border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500': !!errors.title,
+                  'border-gray-300 dark:border-gray-700 focus:border-indigo-500 focus:ring-indigo-500': !errors.title,
+                })}
               />
               {errors.title && (
                 <p className="mt-1 text-sm text-red-600 dark:text-red-500">{errors.title}</p>
@@ -165,8 +241,13 @@ export const ProviderConfigForm: React.FC<ProviderConfigFormProps> = ({
                 name="provider_name"
                 value={formData.provider_name || ""}
                 onChange={handleChange}
-                disabled={loading || Boolean(initialData)}
-                className={`mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm ${errors.provider_name ? 'border-red-500' : ''}`}
+                disabled={loading || isEditMode}
+                className={classnames({
+                  'mt-1 block w-full rounded-md shadow-sm dark:bg-gray-800 dark:text-white sm:text-sm': true,
+                  'border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500': !!errors.provider_name,
+                  'border-gray-300 dark:border-gray-700 focus:border-indigo-500 focus:ring-indigo-500': !errors.provider_name,
+                  'border-gray-300 dark:border-gray-700 focus:border-indigo-500 focus:ring-indigo-500 cursor-not-allowed opacity-50': isEditMode,
+                })}
                 required
               >
                 <option value="">Select a provider</option>
@@ -185,55 +266,65 @@ export const ProviderConfigForm: React.FC<ProviderConfigFormProps> = ({
               )}
             </div>
 
-            <div>
-              <label htmlFor="api_key" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                API Key {initialData && <span className="text-xs text-gray-500">(leave empty to keep current)</span>}
-              </label>
-              <input
-                type="password"
-                id="api_key"
-                name="api_key"
-                value={formData.api_key}
-                onChange={handleChange}
-                disabled={loading}
-                placeholder={initialData ? '••••••••••••••••' : 'Enter API Key'}
-                className={`mt-1 block w-full rounded-md ${errors.api_key
-                    ? 'border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500'
-                    : 'border-gray-300 dark:border-gray-700 focus:border-indigo-500 focus:ring-indigo-500'
-                  } shadow-sm dark:bg-gray-800 dark:text-white sm:text-sm`}
-              />
-              {errors.api_key && (
-                <p className="mt-1 text-sm text-red-600 dark:text-red-500">{errors.api_key}</p>
-              )}
-            </div>
+            {shouldShowApiKey && (
+              <div>
+                <label htmlFor="api_key" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  API Key
+                  {!isApiKeyRequired && !isEditMode && <span className="text-xs text-gray-500 ml-1">(optional)</span>}
+                  {isEditMode && <span className="text-xs text-gray-500 ml-1">(leave empty to keep current)</span>}
+                </label>
+                <input
+                  type="password"
+                  id="api_key"
+                  name="api_key"
+                  value={formData.api_key}
+                  onChange={handleChange}
+                  disabled={loading}
+                  placeholder={isEditMode ? '••••••••••••••••' : 'Enter API Key'}
+                  className={classnames({
+                    'mt-1 block w-full rounded-md shadow-sm dark:bg-gray-800 dark:text-white sm:text-sm': true,
+                    'border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500': !!errors.api_key,
+                    'border-gray-300 dark:border-gray-700 focus:border-indigo-500 focus:ring-indigo-500': !errors.api_key,
+                  })}
+                />
+                {errors.api_key && (
+                  <p className="mt-1 text-sm text-red-600 dark:text-red-500">{errors.api_key}</p>
+                )}
+              </div>
+            )}
 
-            <div>
-              <label htmlFor="base_url" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                Base URL <span className="text-xs text-gray-500">(optional)</span>
-              </label>
-              <input
-                type="text"
-                id="base_url"
-                name="base_url"
-                value={formData.base_url || ''}
-                onChange={handleChange}
-                disabled={loading}
-                placeholder="https://api.example.com"
-                className={`mt-1 block w-full rounded-md ${errors.base_url
-                    ? 'border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500'
-                    : 'border-gray-300 dark:border-gray-700 focus:border-indigo-500 focus:ring-indigo-500'
-                  } shadow-sm dark:bg-gray-800 dark:text-white sm:text-sm`}
-              />
-              {errors.base_url && (
-                <p className="mt-1 text-sm text-red-600 dark:text-red-500">{errors.base_url}</p>
-              )}
-            </div>
+            {shouldShowBaseUrl && (
+              <div>
+                <label htmlFor="base_url" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Base URL
+                  {!isBaseUrlRequired && <span className="text-xs text-gray-500 ml-1">(optional)</span>}
+                  {isBaseUrlRequired && <span className="text-xs text-red-500 ml-1">*</span>}
+                </label>
+                <input
+                  type="text"
+                  id="base_url"
+                  name="base_url"
+                  value={formData.base_url || ''}
+                  onChange={handleChange}
+                  disabled={loading}
+                  placeholder={selectedProvider?.default_base_url || "https://api.example.com"}
+                  className={classnames({
+                    'mt-1 block w-full rounded-md shadow-sm dark:bg-gray-800 dark:text-white sm:text-sm': true,
+                    'border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500': !!errors.base_url,
+                    'border-gray-300 dark:border-gray-700 focus:border-indigo-500 focus:ring-indigo-500': !errors.base_url
+                  })}
+                />
+                {errors.base_url && (
+                  <p className="mt-1 text-sm text-red-600 dark:text-red-500">{errors.base_url}</p>
+                )}
+              </div>
+            )}
 
             <div className="flex justify-between space-x-3 mt-5">
               <Button
                 type="button"
                 onClick={handleTest}
-                disabled={loading || testing}
+                disabled={loading || testing || !hasChangesToTest}
                 variant="secondary"
                 className="flex-1"
               >

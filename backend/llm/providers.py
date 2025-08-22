@@ -29,7 +29,7 @@ class OpenAIProvider(BaseProvider):
             return {
                 "min_temperature": None,
                 "max_temperature": None,
-                "default_temperature": None,
+                "default_temperature": 1,
             }
         return {
             "min_temperature": 0.0,
