@@ -158,7 +158,7 @@ const SelectCrawlPage: React.FC = () => {
                   <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 dark:text-gray-200 sm:pl-6">
                     <div className="flex items-center">
                       <LinkIcon className="h-5 w-5 text-gray-400 mr-3 flex-shrink-0" />
-                      <div className="truncate max-w-md" title={crawl.url}>
+                      <div className="truncate max-w-md" title={crawl.url || ''}>
                         {crawl.url}
                       </div>
                     </div>
