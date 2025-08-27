@@ -718,9 +718,11 @@ class CrawlerService:
             if parsed_url.netloc not in allowed_domains:
                 allowed_domains.append(parsed_url.netloc)
 
+        url_count = len(urls)
+
         default_spider_options = {
             "max_depth": 0,
-            "page_limit": len(urls),
+            "page_limit": url_count,
             "allowed_domains": allowed_domains,
             "exclude_paths": [],
             "include_paths": [],
@@ -749,6 +751,9 @@ class CrawlerService:
         crawl_request = CrawlRequest.objects.create(
             team=team,
             urls=urls,
+            crawl_type=consts.CRAWL_TYPE_BATCH
+            if url_count > 1
+            else consts.CRAWL_TYPE_SINGLE,
             options={
                 "spider_options": spider_options,
                 "page_options": page_options,
