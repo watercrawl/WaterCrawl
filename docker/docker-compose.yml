@@ -3,7 +3,7 @@ x-app: &app
     context: ../backend
     dockerfile: Dockerfile
     args:
-      - VERSION=${VERSION:-v0.10.0}
+      - VERSION=${VERSION:-v0.10.1}
   depends_on:
     db:
       condition: service_healthy
@@ -105,7 +105,7 @@ x-app: &app
     - CAPTURE_USAGE_HISTORY=${CAPTURE_USAGE_HISTORY:-True}
 
 x-frontend: &frontend
-  image: watercrawl/frontend:${VERSION:-v0.10.0}
+  image: watercrawl/frontend:${VERSION:-v0.10.1}
   environment:
     - VITE_API_BASE_URL=${API_BASE_URL:-http://localhost/api}
   depends_on:

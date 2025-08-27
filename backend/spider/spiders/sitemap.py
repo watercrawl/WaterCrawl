@@ -26,7 +26,8 @@ class SitemapScrapper(Spider):
         "USER_AGENT": "WaterCrawlBot/1.0 (+http://www.watercrawl.dev/bot)",
         "PAGE_LIMIT": settings.SITEMAP_CRAWL_PAGE_LIMIT,
         "HTTPCACHE_ENABLED": True,
-        "HTTPCACHE_EXPIRATION_SECS": 86400,  # 1 day
+        "HTTPCACHE_EXPIRATION_SECS": 86400,  # 1 day,
+        "MAX_REQUESTS": settings.SITEMAP_CRAWL_PAGE_LIMIT,
     }
 
     def __init__(self, sitemap_request_uuid, *args, **kwargs):
@@ -220,7 +221,7 @@ class SitemapScrapper(Spider):
 
         # Handle gzipped content
         if (
-            response.url.endswith(".xml.gz")
+            response.url.endswith(".gz")
             or "application/x-gzip" in content_type
             or "application/gzip" in content_type
         ):
@@ -255,6 +256,10 @@ class SitemapScrapper(Spider):
                 urls_found = 0
                 page_urls = tree.xpath("//sm:url/sm:loc/text()", namespaces=nsmap)
                 for loc in page_urls:
+                    if loc.endswith(".xml"):
+                        self.log(f"Found nested sitemap: {loc}")
+                        yield from self.add_to_sitemap_queue(loc)
+                        continue
                     page_url = loc.strip()
                     normalized_url = self.normalize_url(page_url)
                     if self.append_result(normalized_url):
