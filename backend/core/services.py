@@ -1183,7 +1183,15 @@ class SitemapRequestService:
             "-a",
             f"sitemap_request_uuid={self.sitemap.pk}",
         ]
-        subprocess.run(params, check=True)
+        try:
+            subprocess.run(params, check=True)
+        except subprocess.CalledProcessError as e:
+            print(e)
+            self.sitemap.duration = timezone.now() - self.sitemap.created_at
+            self.sitemap.status = consts.CRAWL_STATUS_FAILED
+            self.sitemap.save(update_fields=["status", "duration"])
+            self.pubsub_service.send_status("state")
+            raise
 
         self.sitemap.refresh_from_db()
         self.sitemap.duration = timezone.now() - self.sitemap.created_at
