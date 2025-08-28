@@ -33,6 +33,7 @@ const SearchRequestDetailPage = React.lazy(() => import('./pages/dashboard/Searc
 const SitemapPage = React.lazy(() => import('./pages/dashboard/SitemapPage'));
 const SitemapLogsPage = React.lazy(() => import('./pages/dashboard/SitemapLogsPage'));
 const SitemapRequestDetailPage = React.lazy(() => import('./pages/dashboard/SitemapRequestDetailPage'));
+const ApiReferencePage = React.lazy(() => import('./pages/dashboard/ApiReferencePage'));
 
 const App: React.FC = () => {
   return (
@@ -101,6 +102,7 @@ const App: React.FC = () => {
                     <Route path="settings" element={<SettingsPage />} />
                     <Route path="profile" element={<ProfilePage />} />
                     <Route path="plans" element={<PlansPage />} />
+                    <Route path='api-reference' element={<ApiReferencePage />} />
                   </Route>
                 </Route>
                 <Route path="stripe-callback/" element={<StripeCallbackPage />} />

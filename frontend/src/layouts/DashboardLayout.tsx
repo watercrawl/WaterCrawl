@@ -13,7 +13,8 @@ import {
   InformationCircleIcon,
   ChevronDownIcon,
   MagnifyingGlassIcon,
-  MapIcon
+  MapIcon,
+  DocumentTextIcon
 } from '@heroicons/react/24/outline';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { TeamSelector } from '../components/dashboard/TeamSelector';
@@ -47,6 +48,7 @@ const navigation = [
   { name: 'API Keys', href: '/dashboard/api-keys', icon: KeyIcon },
   { name: 'Settings', href: '/dashboard/settings', icon: Cog6ToothIcon },
   { name: 'Profile', href: '/dashboard/profile', icon: UserIcon },
+  { name: 'API Reference', href: '/dashboard/api-reference', icon: DocumentTextIcon },
 ];
 
 // Reusable Navigation component
@@ -366,10 +368,10 @@ export const DashboardLayout = () => {
             </div>
           </div>
 
-          <div className="px-4 sm:px-6 lg:px-8 pt-6">
+          <div className="">
             <Breadcrumbs items={breadcrumbItems} />
-            <Outlet />
           </div>
+          <Outlet />
         </main>
       </div>
     </div>

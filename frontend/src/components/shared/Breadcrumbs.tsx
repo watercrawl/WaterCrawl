@@ -166,12 +166,18 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
     }
   };
 
+  if(items.length === 0) {
+    return null;
+  }
+
   return (
+    <div className="px-4 py-2 sm:px-6 sm:py-3">
     <nav className={`flex ${className}`} aria-label="Breadcrumb">
       <ol className="flex items-center space-x-1 sm:space-x-2">
         {renderItems()}
       </ol>
     </nav>
+    </div>
   );
 };
 
