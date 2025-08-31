@@ -23,6 +23,7 @@
     "autoprefixer": "^10.4.21",
     "axios": "^1.10.0",
     "clsx": "^2.1.1",
+    "core-js": "^3.45.1",
     "date-fns": "^4.1.0",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.468.0",
@@ -37,6 +38,8 @@
     "rehype-highlight": "^7.0.2",
     "rehype-raw": "^7.0.0",
     "remark-gfm": "^4.0.1",
+    "redoc": "^2.5.0",
+    "styled-components": "^6.1.19",
     "tailwind-merge": "^2.6.0",
     "tailwindcss": "^3.4.17",
     "yup": "^1.6.1"
