@@ -410,7 +410,8 @@ class SitemapHelpers(BaseHelpers):
         b = 0.75
 
         # Tokenize path for analysis
-        path_lower = path.lower()
+        # Decode percent-encoded characters before tokenizing
+        path_lower = urllib.parse.unquote(path).lower()
         # Split path into tokens (by common URL separators)
         path_tokens = []
         for separator in ["/", "-", "_", ".", "?", "&", "="]:
