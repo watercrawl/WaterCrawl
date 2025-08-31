@@ -10,7 +10,6 @@ import {
   UserIcon,
   SunIcon,
   MoonIcon,
-  InformationCircleIcon,
   ChevronDownIcon,
   MagnifyingGlassIcon,
   MapIcon,
@@ -19,7 +18,6 @@ import {
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { TeamSelector } from '../components/dashboard/TeamSelector';
 import { useTheme } from '../contexts/ThemeContext';
-import { NotificationBanner } from '../components/common/NotificationBanner';
 import { useSettings } from '../contexts/SettingsProvider';
 import { useTeam } from '../contexts/TeamContext';
 import { useUser } from '../contexts/UserContext';
@@ -28,6 +26,7 @@ import { GitHubStars } from '../components/shared/GitHubStars';
 import SpiderIcon from '../components/icons/SpiderIcon';
 import Breadcrumbs from '../components/shared/Breadcrumbs';
 import { getBreadcrumbs } from '../utils/breadcrumbs';
+import { PlansModal } from '../components/plans/PlansModal';
 
 
 const navigation = [
@@ -188,22 +187,11 @@ export const DashboardLayout = () => {
 
   return (
     <div>
-      {/* Global Notification Area */}
-      <NotificationBanner
-        show={showSubscriptionBanner}
-        onClose={() => { }}
-        closeable={false}
-        variant="warning"
-        icon={<InformationCircleIcon className="h-6 w-6" aria-hidden="true" />}
-      >
-        You are not activate your Freemium plan. Lets upgrade now to unlock the features.{' '}
-        <Link to="/dashboard/plans" className="underline">
-          Upgrade now
-        </Link>
-      </NotificationBanner>
-
       {/* Privicy and Terms confirmation Modal */}
       <PrivacyTermsModal show={showPrivacyTermsModal} />
+
+      {/* Subscription Modal */}
+      <PlansModal show={!showPrivacyTermsModal && showSubscriptionBanner} showEnterprisePlan={false}/>
 
       {/* Mobile menu */}
       <div
