@@ -389,16 +389,71 @@ class SitemapHelpers(BaseHelpers):
     def is_allowed_search(self, url):
         parsed_url = urlparse(url)
         uri = parsed_url.path
-        if self.search_value and not self.__check_search_value(uri):
-            # If search value is provided, we need to check if the path contains it
-            return False
+        if self.search_value:
+            # Use BM25 score with threshold for filtering
+            bm25_score = self.__check_search_value(uri)
+            # Minimum threshold for relevance (configurable)
+            min_threshold = 0.5
+            return bm25_score >= min_threshold
         return True
 
-    def __check_search_value(self, path: str) -> bool:
-        for split_value in self.__split_search_value:
-            if split_value in path.lower():
-                return True
-        return False
+    def __check_search_value(self, path: str) -> float:
+        """
+        BM25 scoring for search terms in URL path.
+        Returns a relevance score instead of boolean match.
+        """
+        if not self.__split_search_value:
+            return 1.0
+
+        # BM25 parameters
+        k1 = 1.2
+        b = 0.75
+
+        # Tokenize path for analysis
+        # Decode percent-encoded characters before tokenizing
+        path_lower = urllib.parse.unquote(path).lower()
+        # Split path into tokens (by common URL separators)
+        path_tokens = []
+        for separator in ["/", "-", "_", ".", "?", "&", "="]:
+            path_lower = path_lower.replace(separator, " ")
+        path_tokens = [token for token in path_lower.split() if token]
+
+        if not path_tokens:
+            return 0.0
+
+        doc_length = len(path_tokens)
+        # Use average URL path length as baseline (typically 3-5 segments)
+        avg_doc_length = 4.0
+
+        total_score = 0.0
+
+        for search_term in self.__split_search_value:
+            search_term = search_term.lower().strip()
+            if not search_term:
+                continue
+
+            # Calculate term frequency in path
+            tf = 0
+            for token in path_tokens:
+                if search_term in token:
+                    # Full match gets higher score than partial match
+                    if token == search_term:
+                        tf += 2
+                    else:
+                        tf += 1
+
+            if tf > 0:
+                # Simplified IDF (assuming moderate term frequency in collection)
+                idf = 2.0  # Static IDF for URL path matching
+
+                # BM25 formula
+                numerator = tf * (k1 + 1)
+                denominator = tf + k1 * (1 - b + b * (doc_length / avg_doc_length))
+
+                term_score = idf * (numerator / denominator)
+                total_score += term_score
+
+        return total_score
 
 
 class BasePubSupService:
