@@ -45,6 +45,7 @@ from .tasks import (
     )
 )
 class InstallView(APIView):
+    authentication_classes = []
     permission_classes = [CanInstall]
     serializer_class = serializers.InstallSerializer
 

@@ -135,6 +135,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
           </Link>
         </div>
       ) : (
+        <div className="text-center">
         <Button
           fullWidth
           loading={loading}
@@ -143,6 +144,8 @@ export const PlanCard: React.FC<PlanCardProps> = ({
         >
           {plan.is_default ? 'Activate Free plan' : 'Activate plan'}
         </Button>
+        {plan.is_default && <label className="text-sm font-medium text-green-500 dark:text-green-400">No credit card required</label>}
+      </div>
       )}
     </div>
   );
