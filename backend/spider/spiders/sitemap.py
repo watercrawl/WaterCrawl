@@ -82,6 +82,10 @@ class SitemapScrapper(Spider):
             self.log(f"Skipping URL not in allowed domain: {url}")
             return False
 
+        if not self.helpers.is_allowed_path(url):
+            self.log(f"Skipping URL not in allowed path: {url}")
+            return False
+
         if not searched and not self.helpers.is_allowed_search(url):
             self.log(f"Skipping URL not in allowed with search query: {url}")
             return False
