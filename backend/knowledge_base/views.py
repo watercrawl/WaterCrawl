@@ -234,6 +234,24 @@ class KnowledgeBaseViewSet(
         },
         tags=["Knowledge Bases"],
     ),
+    from_crawl_request=extend_schema(
+        summary=_("Process crawl request"),
+        description=_("Process a crawl request and add it to the knowledge base."),
+        request=serializers.FillKnowledgeBaseFromCrawlRequestsSerializer,
+        responses={
+            204: None,
+        },
+        tags=["Knowledge Bases"],
+    ),
+    from_files=extend_schema(
+        summary=_("Process files"),
+        description=_("Process a list of files and add them to the knowledge base."),
+        request=serializers.FillKnowledgeBaseFromFileSerializer,
+        responses={
+            204: None,
+        },
+        tags=["Knowledge Bases"],
+    ),
     retry_indexing=extend_schema(
         summary=_("Retry document"),
         description=_("Retry a failed document. to index it again."),
@@ -339,7 +357,6 @@ class KnowledgeBaseDocumentViewSet(
         methods=["post"],
         url_path="from-crawl-results",
         name="from-crawl-results",
-        serializer_class=serializers.FillKnowledgeBaseFromCrawlResultsSerializer,
     )
     def from_crawl_results(self, request, **kwargs):
         service = self.get_knowledge_base_service()

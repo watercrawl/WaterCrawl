@@ -36,6 +36,7 @@ const SearchRequestDetailPage = React.lazy(() => import('./pages/dashboard/Searc
 const SitemapPage = React.lazy(() => import('./pages/dashboard/SitemapPage'));
 const SitemapLogsPage = React.lazy(() => import('./pages/dashboard/SitemapLogsPage'));
 const SitemapRequestDetailPage = React.lazy(() => import('./pages/dashboard/SitemapRequestDetailPage'));
+const ApiReferencePage = React.lazy(() => import('./pages/dashboard/ApiReferencePage'));
 const UsageHistoryPage = React.lazy(() => import('./pages/dashboard/UsageHistoryPage'));
 
 
@@ -110,6 +111,7 @@ const AppContent: React.FC = () => {
               <Route path="settings" element={<SettingsPage />} />
               <Route path="profile" element={<ProfilePage />} />
               <Route path="plans" element={<PlansPage />} />
+              <Route path="api-reference" element={<ApiReferencePage />} />
 
               {/* Knowledge Base Routes - Conditionally rendered */}
               {settings?.is_knowledge_base_enabled && (
@@ -137,7 +139,7 @@ const AppContent: React.FC = () => {
               )}
             </Route>
           </Route>
-          
+
           {/* Admin Routes */}
           <Route element={
             <AuthGuard>
@@ -153,7 +155,7 @@ const AppContent: React.FC = () => {
               <Route path="llm-providers/:providerConfigId" element={<ProviderConfigDetailPage />} />
             </Route>
           </Route>
-          
+
           <Route path="stripe-callback/" element={<StripeCallbackPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
