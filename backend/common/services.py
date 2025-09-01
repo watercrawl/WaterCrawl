@@ -90,6 +90,10 @@ class FrontendSettingService:
     def max_crawl_concurrency(self):
         return settings.SCRAPY_CONCURRENT_REQUESTS
 
+    @cached_property
+    def mcp_server(self):
+        return settings.MCP_SERVER
+
 
 class EmailService:
     def __init__(self):

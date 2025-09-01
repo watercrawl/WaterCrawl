@@ -390,3 +390,5 @@ API_ENCRYPTION_KEY = env(
     cast=str,
     default="8zSd6JIuC7ovfZ4AoxG_XmhubW6CPnQWW7Qe_4TD1TQ=",
 )
+
+MCP_SERVER = env("MCP_SERVER", cast=str, default="/sse")
