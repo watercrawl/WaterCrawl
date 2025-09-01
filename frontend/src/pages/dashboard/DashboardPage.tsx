@@ -1,18 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { MCPServerAccess } from '../../components/dashboard/MCPServerAccess';
 import { ResourcesShortcuts } from '../../components/dashboard/ResourcesShortcuts';
 import { QuickNavigation } from '../../components/dashboard/QuickNavigation';
 import { SparklesIcon } from '@heroicons/react/24/outline';
-import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
 
 const DashboardPage: React.FC = () => {
-  const {setItems} = useBreadcrumbs();
-  useEffect(() => {
-    setItems([
-      { label: 'Dashboard', href: '/dashboard', current: true },
-    ]);
-  }, [setItems]);
-
   return (
     <div className="h-full">
       <div className="px-8 py-6">
@@ -22,16 +14,12 @@ const DashboardPage: React.FC = () => {
             <div className="p-2 bg-gradient-to-r from-primary-500 to-primary-600 rounded-lg">
               <SparklesIcon className="h-6 w-6 text-white" />
             </div>
-            <div className="flex justify-between items-start">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Welcome to WaterCrawl</h1>
+            <h1 className="text-xl sm:text-3xl font-bold text-gray-900 dark:text-white">Welcome to WaterCrawl</h1>
           </div>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl">
-              Your intelligent web crawling platform. Get started with API keys, connect AI assistants via MCP,
+          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl">
+            Your intelligent web crawling platform. Get started with API keys, connect AI assistants via MCP,
             or explore our comprehensive documentation.
-            </p>
-          </div>
-        </div>
+          </p>
         </div>
 
         {/* Quick Navigation */}
