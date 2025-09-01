@@ -60,9 +60,8 @@ services:
       - "${PLAYWRIGHT_PORT:-8800}:${PLAYWRIGHT_PORT:-8800}"
 
   mcp:
-    image: watercrawl/mcp:v1.1.0
+    image: watercrawl/mcp:v1.2.0
     restart: always
-    platform: linux/amd64
     command: [ "sse", "--base-url", "${MCP_BACKEND_BASE_URL:-http://host.docker.internal:8000}", '--port', "${MCP_PORT:-8801}", '--endpoint', '/sse' ]
     ports:
       - "${MCP_PORT:-8801}:${MCP_PORT:-8801}"
