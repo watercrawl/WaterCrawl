@@ -14,7 +14,7 @@ const DashboardPage: React.FC = () => {
             <div className="p-2 bg-gradient-to-r from-primary-500 to-primary-600 rounded-lg">
               <SparklesIcon className="h-6 w-6 text-white" />
             </div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Welcome to WaterCrawl</h1>
+            <h1 className="text-xl sm:text-3xl font-bold text-gray-900 dark:text-white">Welcome to WaterCrawl</h1>
           </div>
           <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl">
             Your intelligent web crawling platform. Get started with API keys, connect AI assistants via MCP,
