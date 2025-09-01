@@ -15,4 +15,5 @@ export interface Settings {
     is_installed: boolean;
     is_search_configured: boolean;
     max_crawl_concurrency: number;
+    mcp_server: string;
 }
