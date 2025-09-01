@@ -104,6 +104,9 @@ x-app: &app
     - MAX_CRAWL_DEPTH=${MAX_CRAWL_DEPTH:--1}
     - CAPTURE_USAGE_HISTORY=${CAPTURE_USAGE_HISTORY:-True}
 
+    # MCP
+    - MCP_SERVER=${MCP_SERVER:-http://localhost/sse}
+
 x-frontend: &frontend
   image: watercrawl/frontend:${VERSION:-v0.10.1}
   environment:
@@ -180,6 +183,11 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  mcp:
+    image: watercrawl/mcp:v1.1.0
+    restart: always
+    command: [ "sse", "--base-url", "http://app", '--port', '3000', '--endpoint', '/sse' ]
 
   redis:
     image: redis:latest

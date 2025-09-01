@@ -393,6 +393,8 @@ API_ENCRYPTION_KEY = env(
     default="8zSd6JIuC7ovfZ4AoxG_XmhubW6CPnQWW7Qe_4TD1TQ=",
 )
 
+MCP_SERVER = env("MCP_SERVER", cast=str, default="/sse")
+
 # Knowledge Base settings
 KNOWLEDGE_BASE_ENABLED = env.bool("KNOWLEDGE_BASE_ENABLED", default=False)
 KNOWLEDGE_BASE_KEYWORD_COUNT = env("KNOWLEDGE_BASE_KEYWORD_COUNT", cast=int, default=10)
