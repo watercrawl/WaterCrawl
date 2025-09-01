@@ -24,7 +24,7 @@ from user.services import (
     TeamInvitationService,
     VerificationService,
 )
-from .models import TeamMember, TeamInvitation
+from .models import TeamMember, TeamInvitation, Team, TeamAPIKey
 from .permissions import IsAuthenticatedTeam, CanSignup, CanLogin
 from .tasks import (
     send_forget_password_email,
@@ -389,6 +389,7 @@ class MyInvitationsView(mixins.ListModelMixin, GenericViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = serializers.MyTeamInvitationSerializer
     pagination_class = None
+    queryset = TeamInvitation.objects.none()
 
     def get_queryset(self):
         return TeamInvitation.objects.filter(
@@ -453,6 +454,7 @@ class TeamViewSet(
     permission_classes = [IsAuthenticated, IsAuthenticatedTeam]
     serializer_class = serializers.TeamSerializer
     pagination_class = None
+    queryset = Team.objects.none()
 
     def get_queryset(self):
         return self.request.user.teams.all()
@@ -531,6 +533,7 @@ class APIKeyViewSet(
 ):
     permission_classes = [IsAuthenticated, IsAuthenticatedTeam]
     serializer_class = serializers.APIKeySerializer
+    queryset = TeamAPIKey.objects.none()
 
     def get_queryset(self):
         return self.request.current_team.api_keys.all()
@@ -560,6 +563,7 @@ class CurrentTeamMembersView(
 ):
     permission_classes = [IsAuthenticated, IsAuthenticatedTeam]
     serializer_class = serializers.TeamMemberSerializer
+    queryset = TeamMember.objects.none()
 
     def get_queryset(self):
         return self.request.current_team.team_members.all()

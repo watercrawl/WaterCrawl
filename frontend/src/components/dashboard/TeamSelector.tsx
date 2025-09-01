@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import { Menu, Transition, Dialog, MenuButton, MenuItems, MenuItem, TransitionChild, DialogPanel, DialogTitle } from '@headlessui/react';
 import { ChevronDownIcon, PlusIcon } from '@heroicons/react/20/solid';
-import { classNames } from '../../utils/classNames';
+import { classnames } from '../../lib/utils';
 import { useTeam } from '../../contexts/TeamContext';
 
 export const TeamSelector: React.FC = () => {
@@ -44,10 +44,10 @@ export const TeamSelector: React.FC = () => {
                 {({ active }) => (
                   <button
                     onClick={() => setCurrentTeam(team)}
-                    className={classNames(
-                      active ? 'bg-gray-50 dark:bg-gray-700' : '',
-                      'block px-3 py-1 w-full text-left text-sm leading-6 text-gray-900 dark:text-white'
-                    )}
+                    className={classnames({
+                      'block px-3 py-1 w-full text-left text-sm leading-6 text-gray-900 dark:text-white': true,
+                      'bg-gray-50 dark:bg-gray-700': active,
+                    })}
                   >
                     {team.name}
                   </button>
@@ -59,10 +59,10 @@ export const TeamSelector: React.FC = () => {
               {({ active }) => (
                 <button
                   onClick={() => setIsCreateTeamOpen(true)}
-                  className={classNames(
-                    active ? 'bg-gray-50 dark:bg-gray-700' : '',
-                    'block px-3 py-1 w-full text-left text-sm leading-6 text-gray-900 dark:text-white'
-                  )}
+                  className={classnames({
+                    'block px-3 py-1 w-full text-left text-sm leading-6 text-gray-900 dark:text-white': true,
+                    'bg-gray-50 dark:bg-gray-700': active,
+                  })}
                 >
                   <div className="flex items-center">
                     <PlusIcon className="h-4 w-4 mr-2" />

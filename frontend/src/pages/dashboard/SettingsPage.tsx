@@ -11,6 +11,8 @@ import { SubscriptionStatusCard } from '../../components/shared/SubscriptionStat
 import { BillingManagementCard } from '../../components/shared/BillingManagementCard';
 import { SubscriptionsList } from '../../components/shared/SubscriptionsList';
 import ProxySettings from '../../components/settings/ProxySettings';
+import ProviderConfigSettings from '../../components/settings/ProviderConfigSettings';
+import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -33,14 +35,21 @@ const SettingsPage: React.FC = () => {
   const { refreshTeams } = useTeam();
   const { settings } = useSettings();
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
+  const { setItems } = useBreadcrumbs();
 
   useEffect(() => {
+    setItems([
+      { label: 'Dashboard', href: '/dashboard'},
+      { label: 'Settings', href: '/dashboard/settings', current: true },
+    ]);
     // Check for hash on initial load
     const handleHashChange = () => {
       if (window.location.hash === '#proxy') {
         setSelectedTabIndex(1);
-      } else if (window.location.hash === '#billing') {
+      } else if (window.location.hash === '#provider-config') {
         setSelectedTabIndex(2);
+      } else if (window.location.hash === '#billing') {
+        setSelectedTabIndex(3);
       } else {
         setSelectedTabIndex(0);
       }
@@ -56,7 +65,7 @@ const SettingsPage: React.FC = () => {
     return () => {
       window.removeEventListener('hashchange', handleHashChange);
     };
-  }, []);
+  }, [setItems]);
 
 
   const fetchTeam = useCallback(async () => {
@@ -189,6 +198,19 @@ const SettingsPage: React.FC = () => {
               }
             >
               Proxy Settings
+            </Tab>
+            <Tab
+              className={({ selected }: { selected: boolean }) =>
+                classNames(
+                  'px-4 py-2.5 text-sm font-medium leading-5 transition-all duration-200',
+                  'focus:outline-none',
+                  selected
+                    ? 'text-gray-900 dark:text-white border-b-2 border-gray-900 dark:border-white'
+                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                )
+              }
+            >
+              Provider Configurations
             </Tab>
             {settings?.is_enterprise_mode_active && (
               <Tab
@@ -356,6 +378,9 @@ const SettingsPage: React.FC = () => {
             </TabPanel>
             <TabPanel>
               <ProxySettings />
+            </TabPanel>
+            <TabPanel>
+              <ProviderConfigSettings />
             </TabPanel>
             {settings?.is_enterprise_mode_active && (
               <TabPanel>

@@ -7,7 +7,7 @@ import { ApiKey } from '../../types/apiKeys';
 import DocumentItem from '../crawl/DocumentItem';
 import { API_URL } from '../../utils/env';
 import { SitemapRequest } from '../../types/sitemap';
-import { classNames } from '../../utils/classNames';
+import { classnames } from '../../lib/utils';
 
 interface SitemapApiDocumentationProps {
   request?: SitemapRequest | null;
@@ -145,14 +145,11 @@ console.log('Sitemap request created:', sitemapRequest.uuid);`;
             {tabs.map((tab) => (
               <Tab
                 key={tab.name}
-                className={({ selected }: { selected: boolean }) =>
-                  classNames(
-                    'px-4 py-2.5 text-sm font-medium leading-5 focus:outline-none',
-                    selected
-                      ? 'text-primary-600 dark:text-primary-400 border-b-2 border-primary-600 dark:border-primary-400'
-                      : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
-                  )
-                }
+                className={({ selected }) => classnames({
+                  'px-4 py-2.5 text-sm font-medium leading-5 focus:outline-none': true,
+                  'text-primary-600 dark:text-primary-400 border-b-2 border-primary-600 dark:border-primary-400': selected,
+                  'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300': !selected
+                })}
               >
                 {tab.name}
               </Tab>

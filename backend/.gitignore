@@ -29,3 +29,7 @@ Thumbs.db
 docker-compose.yml
 celerybeat-schedule.db
 VERSION
+
+watercrawl_llm/*
+.qola/*
+celerybeat-schedule*

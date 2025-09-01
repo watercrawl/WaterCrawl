@@ -2,6 +2,7 @@ import datetime
 import json
 from abc import ABC, abstractmethod
 import stripe
+from django.contrib.contenttypes.models import ContentType
 from django.db.transaction import atomic
 
 from django.utils.translation import gettext_lazy as _
@@ -10,8 +11,10 @@ from django.core.exceptions import ValidationError
 from django.utils import timezone
 from rest_framework.exceptions import PermissionDenied
 
-from core.models import CrawlRequest, SearchRequest
+from common.application_context import get_application_context_api_key
+from core.models import CrawlRequest, SearchRequest, SitemapRequest
 from core import consts as core_consts
+from knowledge_base.models import KnowledgeBaseDocument
 from plan import consts
 from plan.models import (
     Plan,
@@ -23,6 +26,7 @@ from plan.models import (
 from plan.utils import (
     calculate_number_of_search_credits,
     calculate_number_of_sitemap_credits,
+    calculate_number_of_knowledge_base_documents_credits,
 )
 from user.models import Team
 
@@ -121,6 +125,21 @@ class TeamPlanAbstractService(ABC):
         """Amount can be positive or negative"""
         raise NotImplementedError
 
+    @property
+    @abstractmethod
+    def number_of_knowledge_bases(self) -> int:
+        raise NotImplementedError
+
+    @property
+    @abstractmethod
+    def number_of_each_knowledge_base_documents(self) -> int:
+        raise NotImplementedError
+
+    @property
+    @abstractmethod
+    def knowledge_base_retrival_rate_limit(self) -> str:
+        raise NotImplementedError
+
 
 class TeamPlanUnlimitedService(TeamPlanAbstractService):
     @property
@@ -197,6 +216,18 @@ class TeamPlanUnlimitedService(TeamPlanAbstractService):
             core_consts.PROXY_CATEGORY_GENERAL,
             core_consts.PROXY_CATEGORY_PREMIUM,
         ]
+
+    @property
+    def number_of_knowledge_bases(self):
+        return -1
+
+    @property
+    def number_of_each_knowledge_base_documents(self):
+        return -1
+
+    @property
+    def knowledge_base_retrival_rate_limit(self):
+        return None  # unlimited
 
 
 class TeamPlanEnterpriseService(TeamPlanAbstractService, ABC):
@@ -293,9 +324,13 @@ class TeamPlanEnterpriseService(TeamPlanAbstractService, ABC):
 
         if self.remaining_page_credit != -1:
             subscription.remain_page_credit -= amount
+            if subscription.remain_page_credit < 0:
+                subscription.remain_page_credit = 0
 
         if self.remaining_daily_page_credit != -1:
             subscription.remain_daily_page_credit -= amount
+            if subscription.remain_daily_page_credit < 0:
+                subscription.remain_daily_page_credit = 0
 
         subscription.save(
             update_fields=["remain_page_credit", "remain_daily_page_credit"]
@@ -311,6 +346,18 @@ class TeamPlanEnterpriseService(TeamPlanAbstractService, ABC):
             categories.append(core_consts.PROXY_CATEGORY_PREMIUM)
 
         return categories
+
+    @property
+    def number_of_knowledge_bases(self):
+        return self.subscription.plan.number_of_knowledge_bases
+
+    @property
+    def number_of_each_knowledge_base_documents(self):
+        return self.subscription.plan.number_of_each_knowledge_base_documents
+
+    @property
+    def knowledge_base_retrival_rate_limit(self):
+        return self.subscription.plan.knowledge_base_retrival_rate_limit
 
 
 TeamPlanService = (
@@ -745,105 +792,87 @@ class UsageHistoryService:
         self.team = team
         self.team_plan_service = TeamPlanService(team)
 
-    def create(self, crawl_request: CrawlRequest):
-        usage_history = UsageHistory.objects.create(
-            team=self.team,
-            crawl_request=crawl_request,
-            requested_page_credit=crawl_request.options.get("spider_options", {}).get(
-                "page_limit", 1
-            ),
-            used_page_credit=0,
+        # this is shared memory in the current request
+        api_key = get_application_context_api_key()
+        self.__team_api_key = (
+            self.team.api_keys.filter(key=api_key).first() if api_key else None
         )
-        self.team_plan_service.balance_page_credit(usage_history.requested_page_credit)
 
-        return usage_history
-
-    def create_search(self, search: SearchRequest):
-        usage_history = UsageHistory.objects.create(
-            team=self.team,
-            search_request=search,
-            requested_page_credit=calculate_number_of_search_credits(
-                search.result_limit, search.search_options["depth"]
-            ),
-            used_page_credit=0,
-        )
-        self.team_plan_service.balance_page_credit(usage_history.requested_page_credit)
-
-        return usage_history
-
-    def update_used_page_credit(self, crawl_request: CrawlRequest):
-        try:
-            usage_history = self.team.usage_histories.get(crawl_request=crawl_request)
-        except UsageHistory.DoesNotExist:
-            usage_history = self.create(crawl_request)
-
-        actual_documents = crawl_request.number_of_documents()
-        usage_diff = actual_documents - usage_history.requested_page_credit
-        self.team_plan_service.balance_page_credit(usage_diff)
-
-        usage_history.used_page_credit = actual_documents
-        usage_history.save()
-
-    def revert_page_credit(self, crawl_request: CrawlRequest):
-        try:
-            usage_history = self.team.usage_histories.get(crawl_request=crawl_request)
-        except UsageHistory.DoesNotExist:
-            usage_history = self.create(crawl_request)
-
-        self.team_plan_service.balance_page_credit(usage_history.requested_page_credit)
-        usage_history.used_page_credit = 0
-        usage_history.save()
-
-    def update_used_search_credit(self, search_request: SearchRequest):
-        try:
-            usage_history = self.team.usage_histories.get(search_request=search_request)
-        except UsageHistory.DoesNotExist:
-            usage_history = self.create_search(search_request)
-
-        number_of_results = (
-            len(json.load(search_request.result)) if search_request.result else 0
-        )
-        depth = usage_history.search_request.search_options["depth"]
-        actual_document_used = calculate_number_of_search_credits(
-            number_of_results, depth
-        )
-        usage_diff = actual_document_used - usage_history.requested_page_credit
-        self.team_plan_service.balance_page_credit(usage_diff)
-
-        usage_history.used_page_credit = actual_document_used
-        usage_history.save()
-
-    def revert_search_credit(self, instance):
-        try:
-            usage_history = self.team.usage_histories.get(search_request=instance)
-        except UsageHistory.DoesNotExist:
-            usage_history = self.create_search(instance)
-
-        self.team_plan_service.balance_page_credit(usage_history.requested_page_credit)
-        usage_history.used_page_credit = 0
-        usage_history.save()
-
-    def create_sitemap(self, sitemap_request):
-        usage_history = UsageHistory.objects.create(
-            team=self.team,
-            sitemap_request=sitemap_request,
-            requested_page_credit=calculate_number_of_sitemap_credits(
-                sitemap_request.options.get("ignore_sitemap_xml", False)
-            ),
-            used_page_credit=0,
-        )
-        self.team_plan_service.balance_page_credit(usage_history.requested_page_credit)
-
-        return usage_history
-
-    def revert_sitemap_credit(self, sitemap_request):
-        try:
-            usage_history = self.team.usage_histories.get(
-                sitemap_request=sitemap_request
+    def get_calculat_needed_credits(self, request) -> int:
+        if isinstance(request, CrawlRequest):
+            return request.options.get("spider_options", {}).get("page_limit", 1)
+        elif isinstance(request, SearchRequest):
+            return calculate_number_of_search_credits(
+                request.result_limit, request.search_options["depth"]
             )
-        except UsageHistory.DoesNotExist:
-            usage_history = self.create_search(sitemap_request)
+        elif isinstance(request, SitemapRequest):
+            return calculate_number_of_sitemap_credits(
+                request.options.get("ignore_sitemap_xml", False)
+            )
+        elif isinstance(request, KnowledgeBaseDocument):
+            return calculate_number_of_knowledge_base_documents_credits(
+                request.knowledge_base
+            )
 
+        raise NotImplementedError
+
+    def get_actual_credits(self, request) -> int:
+        if isinstance(request, CrawlRequest):
+            return request.number_of_documents()
+        elif isinstance(request, SearchRequest):
+            number_of_results = len(json.load(request.result)) if request.result else 0
+            depth = request.search_options["depth"]
+            return calculate_number_of_search_credits(number_of_results, depth)
+        elif isinstance(request, SitemapRequest):
+            return calculate_number_of_sitemap_credits(
+                request.options.get("ignore_sitemap_xml", False)
+            )
+        elif isinstance(request, KnowledgeBaseDocument):
+            return calculate_number_of_knowledge_base_documents_credits(
+                request.knowledge_base
+            )
+        raise NotImplementedError(f"get_actual_credits: Unhandled type {type(request)}")
+
+    def create(self, request, revertable: bool = True) -> UsageHistory:
+        content_type = ContentType.objects.get_for_model(request.__class__)
+        requested_credits = self.get_calculat_needed_credits(request)
+        usage_history = UsageHistory.objects.create(
+            team=self.team,
+            content_type=content_type,
+            content_id=request.uuid,
+            requested_page_credit=requested_credits,
+            team_api_key=self.__team_api_key,
+            used_page_credit=0 if revertable else requested_credits,
+        )
         self.team_plan_service.balance_page_credit(usage_history.requested_page_credit)
+
+        return usage_history
+
+    def _get_or_create_usage_history(
+        self, request, revertable: bool = True
+    ) -> UsageHistory:
+        content_type = ContentType.objects.get_for_model(request.__class__)
+        try:
+            return UsageHistory.objects.filter(
+                team=self.team,
+                content_type=content_type,
+                content_id=request.uuid,
+            ).first()
+        except UsageHistory.DoesNotExist:
+            return self.create(request, revertable)
+
+    def update_used_credit(self, request):
+        actual_credits = self.get_actual_credits(request)
+        usage_history = self._get_or_create_usage_history(request)
+        usage_diff = actual_credits - usage_history.requested_page_credit
+        usage_history.used_page_credit = actual_credits
+        if usage_diff < 0:
+            self.team_plan_service.balance_page_credit(usage_diff)
+
+        usage_history.save(update_fields=["used_page_credit"])
+
+    def revert_credit(self, instance):
+        usage_history = self._get_or_create_usage_history(instance)
+        self.team_plan_service.balance_page_credit(-usage_history.requested_page_credit)
         usage_history.used_page_credit = 0
-        usage_history.save()
+        usage_history.save(update_fields=["used_page_credit"])

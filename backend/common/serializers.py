@@ -19,3 +19,4 @@ class SettingSerializer(serializers.Serializer):
     is_search_configured = serializers.BooleanField()
     max_crawl_concurrency = serializers.IntegerField()
     mcp_server = serializers.CharField()
+    is_knowledge_base_enabled = serializers.BooleanField()

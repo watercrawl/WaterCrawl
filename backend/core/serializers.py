@@ -52,8 +52,8 @@ class PageOptionSerializer(serializers.Serializer):
 
 
 class SpiderOptionSerializer(serializers.Serializer):
-    max_depth = serializers.IntegerField(default=1, required=False)
-    page_limit = serializers.IntegerField(default=1, required=False)
+    max_depth = serializers.IntegerField(default=1, required=False, min_value=1)
+    page_limit = serializers.IntegerField(default=1, required=False, min_value=1)
     concurrent_requests = serializers.IntegerField(
         default=settings.SCRAPY_CONCURRENT_REQUESTS,
         required=False,

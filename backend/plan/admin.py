@@ -57,6 +57,9 @@ class PlanAdmin(admin.ModelAdmin):
                     "crawl_max_depth",
                     "crawl_max_limit",
                     "max_concurrent_crawl",
+                    "number_of_knowledge_bases",
+                    "number_of_each_knowledge_base_documents",
+                    "knowledge_base_retrival_rate_limit",
                 )
             },
         ),
@@ -129,6 +132,6 @@ class StripeWebhookHistoryAdmin(admin.ModelAdmin):
 
 @admin.register(UsageHistory)
 class UsageHistoryAdmin(admin.ModelAdmin):
-    list_display = ("__str__", "created_at", "updated_at")
+    list_display = ("__str__", "content", "created_at", "updated_at")
     readonly_fields = ("created_at", "updated_at")
     list_per_page = 20
