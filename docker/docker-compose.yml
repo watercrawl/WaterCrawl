@@ -1,6 +1,6 @@
 x-app: &app
   build:
-    context: ../backend
+    context: backend/
     dockerfile: Dockerfile
     args:
       - VERSION=${VERSION:-v0.10.1}
@@ -187,7 +187,7 @@ services:
   mcp:
     image: watercrawl/mcp:v1.2.0
     restart: always
-    command: [ "sse", "--base-url", "http://app", '--port', '3000', '--endpoint', '/sse' ]
+    command: [ "sse", "--base-url", "http://app:9000", '--port', '3000', '--endpoint', '/sse' ]
 
   redis:
     image: redis:latest
