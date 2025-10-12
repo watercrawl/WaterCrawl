@@ -61,7 +61,7 @@
   },
   "api": {
     "example": "Exemple",
-    "install": "Install",
+    "install": "Installer",
     "noRequestData": "Aucune donnée de requête disponible",
     "seeDocumentation": "Consultez la documentation officielle pour l'utilisation avancée, l'authentification et d'autres exemples.",
     "selectApiKey": "Clé API...",
