@@ -61,7 +61,6 @@
   },
   "api": {
     "example": "Ejemplo",
-    "install": "Instalar",
     "noRequestData": "No hay datos de solicitud disponibles",
     "seeDocumentation": "Consulta la documentación oficial para uso avanzado, autenticación y más ejemplos.",
     "selectApiKey": "Clave API...",
@@ -84,11 +83,11 @@
     }
   },
   "apiKeys": {
-    "actions": {
-      "copied": "¡Copiado!",
-      "copy": "Copiar",
-      "revoke": "Revocar",
-      "revokeConfirm": "¿Estás seguro de que quieres revocar esta clave?"
+    "actionsMenu": {
+      "cancel": "Cancel",
+      "copy": "Copy",
+      "revoke": "Revoke",
+      "revokeConfirm": "Are you sure you want to revoke this key?"
     },
     "copyToClipboard": "Copiar al portapapeles",
     "create": {
@@ -253,7 +252,6 @@
     "upgradePlan": "Mejorar Plan"
   },
   "common": {
-    "version": "Versión",
     "actions": "Acciones",
     "ago": "hace",
     "appName": "WaterCrawl",
@@ -264,9 +262,6 @@
     "deselectAll": "Deseleccionar todo",
     "importing": "Importando...",
     "url": "URL",
-    "common": {
-      "subtitle": "¡Bienvenido de nuevo! Por favor inicia sesión en tu cuenta"
-    },
     "copiedToClipboard": "¡Copiado al portapapeles!",
     "copyFailed": "Error al copiar al portapapeles",
     "crawls": "Crawls",
@@ -1676,7 +1671,6 @@
       },
       "updateButton": "Actualizar"
     },
-    "subtitle": "Configura tu aplicación",
     "team": {
       "billingTab": "Facturación",
       "confirmRemove": "¿Estás seguro de que quieres eliminar a este miembro?",
@@ -1717,6 +1711,7 @@
       "status": "Estado",
       "title": "Invitaciones de Equipo"
     },
+    "subtitle": "Configura tu aplicación",
     "title": "Configuración"
   },
   "sitemap": {
@@ -1734,6 +1729,7 @@
       "cancelFailed": "Error al cancelar la generación del sitemap.",
       "download": "Error al descargar sitemap",
       "generateFailed": "Error al generar sitemap.",
+      "loadFailed": "Failed to load sitemap data",
       "loadGraphFailed": "Error al cargar gráfico del sitemap",
       "loadMarkdown": "Error al cargar markdown",
       "loadMarkdownFailed": "Error al cargar markdown del sitemap",
