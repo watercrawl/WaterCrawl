@@ -61,6 +61,7 @@
   },
   "api": {
     "example": "例",
+    "install": "Install",
     "noRequestData": "リクエストデータがありません",
     "seeDocumentation": "高度な使用方法、認証、その他の例については、公式ドキュメントをご覧ください。",
     "selectApiKey": "APIキー...",
@@ -83,12 +84,6 @@
     }
   },
   "apiKeys": {
-    "actionsMenu": {
-      "cancel": "Cancel",
-      "copy": "Copy",
-      "revoke": "Revoke",
-      "revokeConfirm": "Are you sure you want to revoke this key?"
-    },
     "copyToClipboard": "クリップボードにコピー",
     "create": {
       "copyKey": "キーをコピー",
@@ -252,6 +247,7 @@
     "upgradePlan": "プランをアップグレード"
   },
   "common": {
+    "version": "Version",
     "actions": "アクション",
     "ago": "前",
     "appName": "WaterCrawl",
@@ -484,6 +480,7 @@
     },
     "subtitle": "URLを入力してWebページからデータをクロールして抽出",
     "title": "Webクローラー",
+    "typeLabel": "Type",
     "type": {
       "batch": "一括",
       "single": "単一"
