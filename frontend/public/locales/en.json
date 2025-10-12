@@ -61,6 +61,7 @@
   },
   "api": {
     "example": "Example",
+    "install": "Install",
     "noRequestData": "No request data available",
     "seeDocumentation": "See the official documentation for advanced usage, authentication, and more examples.",
     "selectApiKey": "API key...",
@@ -83,12 +84,6 @@
     }
   },
   "apiKeys": {
-    "actionsMenu": {
-      "cancel": "Cancel",
-      "copy": "Copy",
-      "revoke": "Revoke",
-      "revokeConfirm": "Are you sure you want to revoke this key?"
-    },
     "copyToClipboard": "Copy to Clipboard",
     "create": {
       "copyKey": "Copy Key",
@@ -252,6 +247,7 @@
     "upgradePlan": "Upgrade Plan"
   },
   "common": {
+    "version": "Version",
     "actions": "Actions",
     "ago": "ago",
     "appName": "WaterCrawl",
@@ -484,6 +480,7 @@
     },
     "subtitle": "Enter a URL to crawl and extract data from web pages",
     "title": "Web Crawler",
+    "typeLabel": "Type",
     "type": {
       "batch": "Batch",
       "single": "Single"
