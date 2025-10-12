@@ -84,12 +84,6 @@
     }
   },
   "apiKeys": {
-    "actions": {
-      "copied": "کپی شد!",
-      "copy": "کپی",
-      "revoke": "لغو",
-      "revokeConfirm": "آیا مطمئن هستید که می‌خواهید این کلید را لغو کنید؟"
-    },
     "copyToClipboard": "کپی در کلیپ‌بورد",
     "create": {
       "copyKey": "کپی کلید",
@@ -264,9 +258,6 @@
     "deselectAll": "لغو انتخاب همه",
     "importing": "در حال وارد کردن...",
     "url": "آدرس URL",
-    "common": {
-      "subtitle": "خوش آمدید! لطفاً وارد حساب خود شوید"
-    },
     "copiedToClipboard": "در کلیپ‌بورد کپی شد!",
     "copyFailed": "کپی در کلیپ‌بورد ناموفق بود",
     "crawls": "خزش‌ها",
@@ -489,6 +480,7 @@
     },
     "subtitle": "یک URL وارد کنید تا داده‌ها را از صفحات وب خزش و استخراج کنید",
     "title": "خزنده وب",
+    "typeLabel": "Type",
     "type": {
       "batch": "دسته‌ای",
       "single": "منفرد"
@@ -877,12 +869,16 @@
       "selectResultsTitle": "انتخاب نتایج برای وارد کردن",
       "selectResultsDescription": "نتایجی را از {{url}} که می‌خواهید به پایگاه دانش خود وارد کنید انتخاب کنید",
       "resultsSelected": "{{count}} نتیجه در تمام صفحات انتخاب شده است",
+      "resultsSelected_one": "{{count}} result selected across all pages",
+      "resultsSelected_other": "{{count}} results selected across all pages",
       "importAll": "وارد کردن همه نتایج",
       "importSelected": "وارد کردن موارد انتخاب شده ({{count}})",
       "noResults": "هیچ نتیجه‌ای یافت نشد",
       "noResultsDescription": "این درخواست خزش هیچ نتیجه‌ای ندارد.",
       "noResultsSelected": "هیچ نتیجه‌ای انتخاب نشده است",
       "importSuccess": "{{count}} نتیجه با موفقیت وارد شد",
+      "importSuccess_one": "Successfully imported {{count}} result",
+      "importSuccess_other": "Successfully imported {{count}} results",
       "invalidRequest": "درخواست نامعتبر. لطفاً انتخاب‌های خود را بررسی کرده و دوباره امتحان کنید.",
       "importFailed": "وارد کردن نتایج انتخاب شده ناموفق بود",
       "missingIds": "شناسه‌های مورد نیاز موجود نیست",
@@ -1672,7 +1668,6 @@
       },
       "updateButton": "به‌روزرسانی"
     },
-    "subtitle": "پیکربندی برنامه خود",
     "team": {
       "billingTab": "صورت‌حساب",
       "confirmRemove": "آیا مطمئن هستید که می‌خواهید این عضو را حذف کنید؟",
@@ -1713,6 +1708,7 @@
       "status": "وضعیت",
       "title": "دعوت‌نامه‌های تیم"
     },
+    "subtitle": "پیکربندی برنامه خود",
     "title": "تنظیمات"
   },
   "sitemap": {
@@ -1730,6 +1726,7 @@
       "cancelFailed": "لغو تولید نقشه سایت ناموفق بود.",
       "download": "دانلود نقشه سایت ناموفق بود",
       "generateFailed": "تولید نقشه سایت ناموفق بود.",
+      "loadFailed": "Failed to load sitemap data",
       "loadGraphFailed": "بارگذاری گراف نقشه سایت ناموفق بود",
       "loadMarkdown": "بارگذاری markdown ناموفق بود",
       "loadMarkdownFailed": "بارگذاری markdown نقشه سایت ناموفق بود",

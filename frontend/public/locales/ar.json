@@ -84,12 +84,6 @@
     }
   },
   "apiKeys": {
-    "actions": {
-      "copied": "تم النسخ!",
-      "copy": "نسخ",
-      "revoke": "إلغاء",
-      "revokeConfirm": "هل أنت متأكد من إلغاء هذا المفتاح؟"
-    },
     "copyToClipboard": "نسخ إلى الحافظة",
     "create": {
       "copyKey": "نسخ المفتاح",
@@ -264,9 +258,6 @@
     "deselectAll": "إلغاء تحديد الكل",
     "importing": "جاري الاستيراد...",
     "url": "عنوان URL",
-    "common": {
-      "subtitle": "مرحبًا بعودتك! يرجى تسجيل الدخول إلى حسابك"
-    },
     "copiedToClipboard": "تم النسخ إلى الحافظة!",
     "copyFailed": "فشل النسخ إلى الحافظة",
     "crawls": "الزحف",
@@ -489,6 +480,7 @@
     },
     "subtitle": "أدخل عنوان URL للزحف واستخراج البيانات من صفحات الويب",
     "title": "زاحف الويب",
+    "typeLabel": "Type",
     "type": {
       "batch": "مجموعة",
       "single": "واحد"
@@ -1676,7 +1668,6 @@
       },
       "updateButton": "تحديث"
     },
-    "subtitle": "تكوين تطبيقك",
     "team": {
       "billingTab": "الفوترة",
       "confirmRemove": "هل أنت متأكد من رغبتك في إزالة هذا العضو؟",
@@ -1717,6 +1708,7 @@
       "status": "الحالة",
       "title": "دعوات الفريق"
     },
+    "subtitle": "تكوين تطبيقك",
     "title": "الإعدادات"
   },
   "sitemap": {
@@ -1734,6 +1726,7 @@
       "cancelFailed": "فشل إلغاء إنشاء خريطة الموقع.",
       "download": "فشل تنزيل خريطة الموقع",
       "generateFailed": "فشل إنشاء خريطة الموقع.",
+      "loadFailed": "Failed to load sitemap data",
       "loadGraphFailed": "فشل تحميل رسم خريطة الموقع",
       "loadMarkdown": "فشل تحميل markdown",
       "loadMarkdownFailed": "فشل تحميل markdown خريطة الموقع",

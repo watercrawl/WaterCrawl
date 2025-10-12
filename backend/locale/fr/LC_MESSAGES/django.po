@@ -1,2217 +1,2131 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: watercrawl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-06 10:58+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"POT-Creation-Date: 2025-10-08 13:07+0200\n"
+"PO-Revision-Date: 2025-10-12 19:43\n"
+"Last-Translator: \n"
+"Language-Team: French\n"
+"Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Crowdin-Project: watercrawl\n"
+"X-Crowdin-Project-ID: 819230\n"
+"X-Crowdin-Language: fr\n"
+"X-Crowdin-File: /development/backend/locale/en/LC_MESSAGES/django.po\n"
+"X-Crowdin-File-ID: 26\n"
 
-#: agent/models.py:9 core/models.py:147 llm/models.py:8 llm/models.py:102
-#: user/models.py:71 user/models.py:160
+#: backend/agent/models.py:9 backend/core/models.py:147 backend/llm/models.py:8
+#: backend/llm/models.py:102 backend/user/models.py:71
+#: backend/user/models.py:160
 msgid "Name"
 msgstr "Nom"
 
-#: agent/models.py:14
+#: backend/agent/models.py:14
 msgid "System Prompt"
 msgstr "Invite système"
 
-#: agent/models.py:21
+#: backend/agent/models.py:21
 msgid "Config Provider"
 msgstr "Fournisseur de configuration"
 
-#: agent/models.py:29
+#: backend/agent/models.py:29
 msgid "LLM Model"
 msgstr "Modèle LLM"
 
-#: agent/models.py:37 core/consts.py:203 knowledge_base/models.py:15
-#: llm/models.py:56 plan/models.py:115 plan/models.py:194 user/models.py:92
-#: user/models.py:110 user/models.py:130 user/models.py:165
+#: backend/agent/models.py:37 backend/core/consts.py:203
+#: backend/knowledge_base/models.py:15 backend/llm/models.py:56
+#: backend/plan/models.py:115 backend/plan/models.py:194
+#: backend/user/models.py:92 backend/user/models.py:110
+#: backend/user/models.py:130 backend/user/models.py:165
 msgid "Team"
 msgstr "Équipe"
 
-#: agent/models.py:47 agent/models.py:59
+#: backend/agent/models.py:47 backend/agent/models.py:59
 msgid "Agent"
-msgstr "Agent"
+msgstr ""
 
-#: agent/models.py:48
+#: backend/agent/models.py:48
 msgid "Agents"
-msgstr "Agents"
+msgstr ""
 
-#: agent/models.py:53
+#: backend/agent/models.py:53
 msgid "Tool Type"
 msgstr "Type d'outil"
 
-#: agent/models.py:63
+#: backend/agent/models.py:63
 msgid "Config"
 msgstr "Configuration"
 
-#: agent/models.py:75
+#: backend/agent/models.py:75
 msgid "agent"
-msgstr "agent"
+msgstr ""
 
-#: agent/models.py:83 core/models.py:19 core/models.py:117 core/models.py:172
-#: core/models.py:193
+#: backend/agent/models.py:83 backend/core/models.py:19
+#: backend/core/models.py:117 backend/core/models.py:172
+#: backend/core/models.py:193
 msgid "team"
 msgstr "équipe"
 
-#: agent/models.py:92
+#: backend/agent/models.py:92
 msgid "conversation"
-msgstr "conversation"
+msgstr ""
 
-#: common/docs.py:3
-msgid ""
-"\n"
-"# Introduction\n"
-"\n"
-"This documentation covers all the external APIs that can be accessed using a "
-"Team API Key. These APIs are designed for integration with external systems "
-"and services.\n"
-"\n"
-"## Authentication\n"
-"\n"
-"All endpoints in this documentation require authentication using an API Key. "
-"To authenticate your requests:\n"
-"\n"
-"1. Generate an API Key from the [API Keys Dashboard](https://"
-"app.watercrawl.dev/dashboard/api-keys)\n"
-"2. Include the API Key in your requests using the `X-API-Key` header:\n"
-"\n"
+#: backend/common/docs.py:3
+msgid "\n"
+"# Introduction\n\n"
+"This documentation covers all the external APIs that can be accessed using a Team API Key. These APIs are designed for integration with external systems and services.\n\n"
+"## Authentication\n\n"
+"All endpoints in this documentation require authentication using an API Key. To authenticate your requests:\n\n"
+"1. Generate an API Key from the [API Keys Dashboard](https://app.watercrawl.dev/dashboard/api-keys)\n"
+"2. Include the API Key in your requests using the `X-API-Key` header:\n\n"
 "```bash\n"
 "curl -H \"X-API-Key: your_api_key_here\" https://api.watercrawl.dev/v1/...\n"
-"```\n"
-"\n"
+"```\n\n"
 "### Important Notes:\n"
 "- Keep your API Key secure and never share it publicly\n"
 "- You can generate multiple API Keys for different purposes\n"
 "- You can revoke API Keys at any time from the dashboard\n"
-"- Each API Key is associated with a specific team\n"
-"\n"
+"- Each API Key is associated with a specific team\n\n"
 "## Rate Limiting\n"
-"API requests are rate-limited based on your team's plan. Please refer to "
-"your plan details for specific limits.\n"
+"API requests are rate-limited based on your team's plan. Please refer to your plan details for specific limits.\n"
 msgstr ""
 
-#: common/docs.py:30
-msgid ""
-"API Key for team authentication. Generate from https://app.watercrawl.dev/"
-"dashboard/api-keys"
+#: backend/common/docs.py:30
+msgid "API Key for team authentication. Generate from https://app.watercrawl.dev/dashboard/api-keys"
 msgstr ""
 
-#: common/handlers.py:19
+#: backend/common/handlers.py:19
 msgid "An unexpected error occurred."
 msgstr "Une erreur inattendue s'est produite."
 
-#: common/handlers.py:27 common/handlers.py:36
+#: backend/common/handlers.py:27 backend/common/handlers.py:36
 msgid "Invalid input data."
 msgstr "Données d'entrée invalides."
 
-#: common/handlers.py:58 common/handlers.py:62
+#: backend/common/handlers.py:58 backend/common/handlers.py:62
 msgid "Not found."
 msgstr "Non trouvé."
 
-#: common/schema.py:30
+#: backend/common/schema.py:30
 msgid "Bad Request"
 msgstr "Mauvaise requête"
 
-#: common/schema.py:40
+#: backend/common/schema.py:40
 msgid "Not Found"
 msgstr "Non trouvé"
 
-#: common/schema.py:48
+#: backend/common/schema.py:48
 msgid "Internal Server Error"
 msgstr "Erreur interne du serveur"
 
-#: common/services.py:125
+#: backend/common/services.py:125
 msgid "No recipient provided"
 msgstr "Aucun destinataire fourni"
 
-#: common/services.py:127
+#: backend/common/services.py:127
 msgid "No subject provided"
 msgstr "Aucun sujet fourni"
 
-#: common/services.py:129
+#: backend/common/services.py:129
 msgid "No body or html provided"
 msgstr "Aucun corps ou HTML fourni"
 
-#: common/views.py:17
+#: backend/common/views.py:17
 msgid "Frontend Setting"
 msgstr "Paramètre frontal"
 
-#: common/views.py:18
+#: backend/common/views.py:18
 msgid "Retrieve the frontend setting."
 msgstr "Récupérer le paramètre frontal."
 
-#: core/admin.py:38 core/admin.py:41
+#: backend/core/admin.py:38 backend/core/admin.py:41
 msgid "Duplicate"
 msgstr "Dupliquer"
 
-#: core/consts.py:41 knowledge_base/consts.py:11
+#: backend/core/consts.py:41 backend/knowledge_base/consts.py:11
 msgid "New"
 msgstr "Nouveau"
 
-#: core/consts.py:42
+#: backend/core/consts.py:42
 msgid "Running"
 msgstr "En cours"
 
-#: core/consts.py:43
+#: backend/core/consts.py:43
 msgid "Finished"
 msgstr "Terminé"
 
-#: core/consts.py:44
+#: backend/core/consts.py:44
 msgid "Canceling"
 msgstr "Annulation en cours"
 
-#: core/consts.py:45 plan/consts.py:22
+#: backend/core/consts.py:45 backend/plan/consts.py:22
 msgid "Canceled"
 msgstr "Annulé"
 
-#: core/consts.py:46 knowledge_base/consts.py:16
+#: backend/core/consts.py:46 backend/knowledge_base/consts.py:16
 msgid "Failed"
 msgstr "Échoué"
 
-#: core/consts.py:154
+#: backend/core/consts.py:154
 msgid "PDF"
-msgstr "PDF"
+msgstr ""
 
-#: core/consts.py:155
+#: backend/core/consts.py:155
 msgid "Screenshot"
 msgstr "Capture d'écran"
 
-#: core/consts.py:160
+#: backend/core/consts.py:160
 msgid "Web"
-msgstr "Web"
+msgstr ""
 
-#: core/consts.py:167
+#: backend/core/consts.py:167
 msgid "Basic"
 msgstr "Basique"
 
-#: core/consts.py:168
+#: backend/core/consts.py:168
 msgid "Advanced"
 msgstr "Avancé"
 
-#: core/consts.py:169
+#: backend/core/consts.py:169
 msgid "Ultimate"
-msgstr "Ultimate"
+msgstr ""
 
-#: core/consts.py:179
+#: backend/core/consts.py:179
 msgid "Any"
 msgstr "Tous"
 
-#: core/consts.py:180
+#: backend/core/consts.py:180
 msgid "Day"
 msgstr "Jour"
 
-#: core/consts.py:181
+#: backend/core/consts.py:181
 msgid "Week"
 msgstr "Semaine"
 
-#: core/consts.py:182
+#: backend/core/consts.py:182
 msgid "Month"
 msgstr "Mois"
 
-#: core/consts.py:183
+#: backend/core/consts.py:183
 msgid "Year"
 msgstr "Année"
 
-#: core/consts.py:191
+#: backend/core/consts.py:191
 msgid "HTTP"
-msgstr "HTTP"
+msgstr ""
 
-#: core/consts.py:192
+#: backend/core/consts.py:192
 msgid "SOCKS4"
-msgstr "SOCKS4"
+msgstr ""
 
-#: core/consts.py:193
+#: backend/core/consts.py:193
 msgid "SOCKS5"
-msgstr "SOCKS5"
+msgstr ""
 
-#: core/consts.py:201
+#: backend/core/consts.py:201
 msgid "General"
 msgstr "Général"
 
-#: core/consts.py:202 llm/consts.py:40
+#: backend/core/consts.py:202 backend/llm/consts.py:40
 msgid "Premium"
-msgstr "Premium"
+msgstr ""
 
-#: core/consts.py:210
+#: backend/core/consts.py:210
 msgid "Single"
 msgstr "Simple"
 
-#: core/consts.py:211
+#: backend/core/consts.py:211
 msgid "Batch"
 msgstr "Lot"
 
-#: core/docs.py:253
+#: backend/core/docs.py:253
 msgid "Filter crawl requests by UUID."
 msgstr "Filtrer les demandes de crawl par UUID."
 
-#: core/docs.py:259
+#: backend/core/docs.py:259
 msgid "Filter crawl requests by start URL."
 msgstr "Filtrer les demandes de crawl par URL de départ."
 
-#: core/docs.py:265
+#: backend/core/docs.py:265
 msgid "Filter crawl requests by status."
 msgstr "Filtrer les demandes de crawl par statut."
 
-#: core/docs.py:271
+#: backend/core/docs.py:271
 msgid "Filter crawl requests by date"
 msgstr "Filtrer les demandes de crawl par date"
 
-#: core/docs.py:280 core/docs.py:301
+#: backend/core/docs.py:280 backend/core/docs.py:301
 msgid "Prefetch crawl results. Default: False."
 msgstr "Précharger les résultats de crawl. Par défaut : False."
 
-#: core/docs.py:286
+#: backend/core/docs.py:286
 msgid "Filter crawl results by URL."
 msgstr "Filtrer les résultats de crawl par URL."
 
-#: core/docs.py:292
+#: backend/core/docs.py:292
 msgid "Filter crawl results by date"
 msgstr "Filtrer les résultats de crawl par date"
 
-#: core/docs.py:312
-msgid ""
-"Format of the download file. Default: json. Available formats: markdown, "
-"json."
-msgstr ""
-"Format du fichier de téléchargement. Par défaut : json. Formats "
-"disponibles : markdown, json."
+#: backend/core/docs.py:312
+msgid "Format of the download file. Default: json. Available formats: markdown, json."
+msgstr "Format du fichier de téléchargement. Par défaut : json. Formats disponibles : markdown, json."
 
-#: core/models.py:23
+#: backend/core/models.py:23
 msgid "urls"
-msgstr "urls"
+msgstr ""
 
-#: core/models.py:25
+#: backend/core/models.py:25
 msgid "crawl type"
 msgstr "type de crawl"
 
-#: core/models.py:31
+#: backend/core/models.py:31
 msgid "status"
 msgstr "statut"
 
-#: core/models.py:36
+#: backend/core/models.py:36
 msgid "options"
-msgstr "options"
+msgstr ""
 
-#: core/models.py:37
+#: backend/core/models.py:37
 msgid "duration"
 msgstr "durée"
 
-#: core/models.py:39
+#: backend/core/models.py:39
 msgid "sitemap"
 msgstr "plan du site"
 
-#: core/models.py:57
+#: backend/core/models.py:57
 msgid "URL must be a string."
 msgstr "L'URL doit être une chaîne de caractères."
 
-#: core/models.py:63 core/models.py:70
+#: backend/core/models.py:63 backend/core/models.py:70
 msgid "Crawl Request"
 msgstr "Demande de crawl"
 
-#: core/models.py:64
+#: backend/core/models.py:64
 msgid "Crawl Requests"
 msgstr "Demandes de crawl"
 
-#: core/models.py:74 core/models.py:196
+#: backend/core/models.py:74 backend/core/models.py:196
 msgid "URL"
-msgstr "URL"
+msgstr ""
 
-#: core/models.py:76 core/models.py:131 core/models.py:206
+#: backend/core/models.py:76 backend/core/models.py:131
+#: backend/core/models.py:206
 msgid "Result"
 msgstr "Résultat"
 
-#: core/models.py:81 core/models.py:88
+#: backend/core/models.py:81 backend/core/models.py:88
 msgid "Crawl Result"
 msgstr "Résultat de crawl"
 
-#: core/models.py:82
+#: backend/core/models.py:82
 msgid "Crawl Results"
 msgstr "Résultats de crawl"
 
-#: core/models.py:93
+#: backend/core/models.py:93
 msgid "Attachment Type"
 msgstr "Type de pièce jointe"
 
-#: core/models.py:98
+#: backend/core/models.py:98
 msgid "Attachment"
 msgstr "Pièce jointe"
 
-#: core/models.py:102
+#: backend/core/models.py:102
 msgid "Crawl Result Attachment"
 msgstr "Pièce jointe du résultat de crawl"
 
-#: core/models.py:103
+#: backend/core/models.py:103
 msgid "Crawl Result Attachments"
 msgstr "Pièces jointes des résultats de crawl"
 
-#: core/models.py:120
+#: backend/core/models.py:120
 msgid "Query"
 msgstr "Requête"
 
-#: core/models.py:121
+#: backend/core/models.py:121
 msgid "Search Options"
 msgstr "Options de recherche"
 
-#: core/models.py:122
+#: backend/core/models.py:122
 msgid "Result Limit"
 msgstr "Limite de résultats"
 
-#: core/models.py:123 core/models.py:204
+#: backend/core/models.py:123 backend/core/models.py:204
 msgid "Duration"
 msgstr "Durée"
 
-#: core/models.py:125 core/models.py:199 knowledge_base/models.py:88
-#: knowledge_base/models.py:130 plan/models.py:144 plan/models.py:163
+#: backend/core/models.py:125 backend/core/models.py:199
+#: backend/knowledge_base/models.py:88 backend/knowledge_base/models.py:130
+#: backend/plan/models.py:144 backend/plan/models.py:163
 msgid "Status"
 msgstr "Statut"
 
-#: core/models.py:142
+#: backend/core/models.py:142
 msgid "Search Request"
 msgstr "Demande de recherche"
 
-#: core/models.py:143
+#: backend/core/models.py:143
 msgid "Search Requests"
 msgstr "Demandes de recherche"
 
-#: core/models.py:148 llm/models.py:9 llm/models.py:103 user/models.py:170
+#: backend/core/models.py:148 backend/llm/models.py:9 backend/llm/models.py:103
+#: backend/user/models.py:170
 msgid "Key"
 msgstr "Clé"
 
-#: core/models.py:149 user/models.py:84
+#: backend/core/models.py:149 backend/user/models.py:84
 msgid "Is Default"
 msgstr "Par défaut"
 
-#: core/models.py:151
+#: backend/core/models.py:151
 msgid "Proxy Category"
 msgstr "Catégorie de proxy"
 
-#: core/models.py:157
+#: backend/core/models.py:157
 msgid "Proxy Type"
 msgstr "Type de proxy"
 
-#: core/models.py:163
+#: backend/core/models.py:163
 msgid "Host"
 msgstr "Hôte"
 
-#: core/models.py:166
+#: backend/core/models.py:166
 msgid "Port"
-msgstr "Port"
+msgstr ""
 
-#: core/models.py:167
+#: backend/core/models.py:167
 msgid "Username"
 msgstr "Nom d'utilisateur"
 
-#: core/models.py:168
+#: backend/core/models.py:168
 msgid "Password"
 msgstr "Mot de passe"
 
-#: core/models.py:179
+#: backend/core/models.py:179
 msgid "Proxy Server"
 msgstr "Serveur proxy"
 
-#: core/models.py:180
+#: backend/core/models.py:180
 msgid "Proxy Servers"
 msgstr "Serveurs proxy"
 
-#: core/models.py:197
+#: backend/core/models.py:197
 msgid "Options"
-msgstr "Options"
+msgstr ""
 
-#: core/models.py:214
+#: backend/core/models.py:214
 msgid "Sitemap Request"
 msgstr "Demande de plan du site"
 
-#: core/models.py:215
+#: backend/core/models.py:215
 msgid "Sitemap Requests"
 msgstr "Demandes de plan du site"
 
-#: core/serializers.py:82 core/serializers.py:356
+#: backend/core/serializers.py:82 backend/core/serializers.py:356
 msgid "Proxy server does not exist"
 msgstr "Le serveur proxy n'existe pas"
 
-#: core/serializers.py:376
+#: backend/core/serializers.py:376
 msgid "This field is required"
 msgstr "Ce champ est obligatoire"
 
-#: core/services.py:769
+#: backend/core/services.py:769
 msgid "At least one URL is required for the crawl request."
 msgstr "Au moins une URL est requise pour la demande de crawl."
 
-#: core/views.py:44
+#: backend/core/views.py:44
 msgid "Start a new crawl request"
 msgstr "Démarrer une nouvelle demande de crawl"
 
-#: core/views.py:49
+#: backend/core/views.py:49
 msgid "Batch create crawl requests"
 msgstr "Créer des demandes de crawl en lot"
 
-#: core/views.py:56
+#: backend/core/views.py:56
 msgid "List crawl requests"
 msgstr "Lister les demandes de crawl"
 
-#: core/views.py:62
+#: backend/core/views.py:62
 msgid "Get crawl request"
 msgstr "Obtenir la demande de crawl"
 
-#: core/views.py:67
+#: backend/core/views.py:67
 msgid "Cancel a running crawl"
 msgstr "Annuler un crawl en cours"
 
-#: core/views.py:72
+#: backend/core/views.py:72
 msgid "Download crawl result"
 msgstr "Télécharger le résultat de crawl"
 
-#: core/views.py:79
+#: backend/core/views.py:79
 msgid "Check crawl status"
 msgstr "Vérifier le statut du crawl"
 
-#: core/views.py:91 core/views.py:492
+#: backend/core/views.py:91 backend/core/views.py:492
 msgid "Get sitemap graph"
 msgstr "Obtenir le graphe du plan du site"
 
-#: core/views.py:97
+#: backend/core/views.py:97
 msgid "Get markdown report"
 msgstr "Obtenir le rapport markdown"
 
-#: core/views.py:141
+#: backend/core/views.py:141
 msgid "Only running crawl requests can be deleted"
 msgstr "Seules les demandes de crawl en cours peuvent être supprimées"
 
-#: core/views.py:161
+#: backend/core/views.py:161
 msgid "Invalid output format"
 msgstr "Format de sortie invalide"
 
-#: core/views.py:187 core/views.py:200
+#: backend/core/views.py:187 backend/core/views.py:200
 msgid "Sitemap for this crawl request does not exist"
 msgstr "Le plan du site pour cette demande de crawl n'existe pas"
 
-#: core/views.py:213
+#: backend/core/views.py:213
 msgid "List crawl results"
 msgstr "Lister les résultats de crawl"
 
-#: core/views.py:219
+#: backend/core/views.py:219
 msgid "Get crawl result"
 msgstr "Obtenir le résultat de crawl"
 
-#: core/views.py:250
+#: backend/core/views.py:250
 msgid "Usage Report"
 msgstr "Rapport d'utilisation"
 
-#: core/views.py:268
+#: backend/core/views.py:268
 msgid "Plugin Form"
 msgstr "Formulaire de plugin"
 
-#: core/views.py:281
+#: backend/core/views.py:281
 msgid "List search requests"
 msgstr "Lister les demandes de recherche"
 
-#: core/views.py:286
+#: backend/core/views.py:286
 msgid "Get search request"
 msgstr "Obtenir la demande de recherche"
 
-#: core/views.py:292
+#: backend/core/views.py:292
 msgid "Create search request"
 msgstr "Créer une demande de recherche"
 
-#: core/views.py:297
+#: backend/core/views.py:297
 msgid "Stop search request"
 msgstr "Arrêter la demande de recherche"
 
-#: core/views.py:302
+#: backend/core/views.py:302
 msgid "Check search request status"
 msgstr "Vérifier le statut de la demande de recherche"
 
-#: core/views.py:340
+#: backend/core/views.py:340
 msgid "Only running search requests can be deleted"
 msgstr "Seules les demandes de recherche en cours peuvent être supprimées"
 
-#: core/views.py:360
+#: backend/core/views.py:360
 msgid "List proxy servers"
 msgstr "Lister les serveurs proxy"
 
-#: core/views.py:365
+#: backend/core/views.py:365
 msgid "Create proxy server"
 msgstr "Créer un serveur proxy"
 
-#: core/views.py:370
+#: backend/core/views.py:370
 msgid "Get proxy server"
 msgstr "Obtenir le serveur proxy"
 
-#: core/views.py:375
+#: backend/core/views.py:375
 msgid "Delete proxy server"
 msgstr "Supprimer le serveur proxy"
 
-#: core/views.py:380 core/views.py:385
+#: backend/core/views.py:380 backend/core/views.py:385
 msgid "Update proxy server"
 msgstr "Mettre à jour le serveur proxy"
 
-#: core/views.py:390
+#: backend/core/views.py:390
 msgid "List all proxy servers (Global and Private proxies)"
 msgstr "Lister tous les serveurs proxy (proxies globaux et privés)"
 
-#: core/views.py:396
+#: backend/core/views.py:396
 msgid "Test proxy"
 msgstr "Tester le proxy"
 
-#: core/views.py:460
+#: backend/core/views.py:460
 msgid "List sitemap requests"
 msgstr "Lister les demandes de plan du site"
 
-#: core/views.py:465
+#: backend/core/views.py:465
 msgid "Create sitemap request"
 msgstr "Créer une demande de plan du site"
 
-#: core/views.py:470
+#: backend/core/views.py:470
 msgid "Get sitemap request"
 msgstr "Obtenir la demande de plan du site"
 
-#: core/views.py:475
+#: backend/core/views.py:475
 msgid "Delete sitemap request"
 msgstr "Supprimer la demande de plan du site"
 
-#: core/views.py:480
+#: backend/core/views.py:480
 msgid "Check sitemap request status"
 msgstr "Vérifier le statut de la demande de plan du site"
 
-#: core/views.py:498
+#: backend/core/views.py:498
 msgid "Get sitemap markdown"
 msgstr "Obtenir le markdown du plan du site"
 
-#: core/views.py:537
+#: backend/core/views.py:537
 msgid "Only running sitemap requests can be deleted"
 msgstr "Seules les demandes de plan du site en cours peuvent être supprimées"
 
-#: core/views.py:563 core/views.py:576
+#: backend/core/views.py:563 backend/core/views.py:576
 msgid "Sitemap for this request does not exist"
 msgstr "Le plan du site pour cette demande n'existe pas"
 
-#: knowledge_base/admin.py:26
+#: backend/knowledge_base/admin.py:26
 msgid "Chunking Configuration"
 msgstr "Configuration du découpage"
 
-#: knowledge_base/admin.py:32
+#: backend/knowledge_base/admin.py:32
 msgid "Embedding Configuration"
 msgstr "Configuration des embeddings"
 
-#: knowledge_base/admin.py:38
+#: backend/knowledge_base/admin.py:38
 msgid "Chunk Enhancement"
 msgstr "Amélioration des fragments"
 
-#: knowledge_base/admin.py:49 knowledge_base/admin.py:73
-#: knowledge_base/admin.py:98 knowledge_base/models.py:128 llm/admin.py:51
+#: backend/knowledge_base/admin.py:49 backend/knowledge_base/admin.py:73
+#: backend/knowledge_base/admin.py:98 backend/knowledge_base/models.py:128
+#: backend/llm/admin.py:51
 msgid "Metadata"
 msgstr "Métadonnées"
 
-#: knowledge_base/admin.py:67 knowledge_base/models.py:119
-#: knowledge_base/models.py:158
+#: backend/knowledge_base/admin.py:67 backend/knowledge_base/models.py:119
+#: backend/knowledge_base/models.py:158
 msgid "Content"
 msgstr "Contenu"
 
-#: knowledge_base/admin.py:91
+#: backend/knowledge_base/admin.py:91
 msgid "Embedding"
-msgstr "Embedding"
+msgstr ""
 
-#: knowledge_base/consts.py:12
+#: backend/knowledge_base/consts.py:12
 msgid "Reindexing"
 msgstr "Réindexation"
 
-#: knowledge_base/consts.py:13
+#: backend/knowledge_base/consts.py:13
 msgid "Crawling"
 msgstr "Crawl en cours"
 
-#: knowledge_base/consts.py:14
+#: backend/knowledge_base/consts.py:14
 msgid "Processing"
 msgstr "Traitement"
 
-#: knowledge_base/consts.py:15
+#: backend/knowledge_base/consts.py:15
 msgid "Ready"
 msgstr "Prêt"
 
-#: knowledge_base/consts.py:23 plan/consts.py:21
+#: backend/knowledge_base/consts.py:23 backend/plan/consts.py:21
 msgid "Active"
 msgstr "Actif"
 
-#: knowledge_base/consts.py:24
+#: backend/knowledge_base/consts.py:24
 msgid "Archived"
 msgstr "Archivé"
 
-#: knowledge_base/consts.py:25
+#: backend/knowledge_base/consts.py:25
 msgid "Deleted"
 msgstr "Supprimé"
 
-#: knowledge_base/consts.py:32
+#: backend/knowledge_base/consts.py:32
 msgid "Standard"
-msgstr "Standard"
+msgstr ""
 
-#: knowledge_base/consts.py:33
+#: backend/knowledge_base/consts.py:33
 msgid "Context-Aware"
 msgstr "Sensible au contexte"
 
-#: knowledge_base/consts.py:40
+#: backend/knowledge_base/consts.py:40
 msgid "Manual"
 msgstr "Manuel"
 
-#: knowledge_base/consts.py:41
+#: backend/knowledge_base/consts.py:41
 msgid "File"
 msgstr "Fichier"
 
-#: knowledge_base/consts.py:42
+#: backend/knowledge_base/consts.py:42
 msgid "Crawl"
-msgstr "Crawl"
+msgstr ""
 
-#: knowledge_base/factories.py:71
+#: backend/knowledge_base/factories.py:71
 #, python-brace-format
 msgid "Text splitter type '{splitter_type}' not supported"
-msgstr ""
-"Le type de séparateur de texte '{splitter_type}' n'est pas pris en charge"
+msgstr "Le type de séparateur de texte '{splitter_type}' n'est pas pris en charge"
 
-#: knowledge_base/factories.py:124
+#: backend/knowledge_base/factories.py:124
 #, python-brace-format
 msgid "Unsupported embedding provider: {provider_name}"
 msgstr "Fournisseur d'embedding non pris en charge : {provider_name}"
 
-#: knowledge_base/factories.py:177
+#: backend/knowledge_base/factories.py:177
 #, python-brace-format
 msgid "Vector store type '{vector_store_type}' not supported"
-msgstr ""
-"Le type de stockage vectoriel '{vector_store_type}' n'est pas pris en charge"
+msgstr "Le type de stockage vectoriel '{vector_store_type}' n'est pas pris en charge"
 
-#: knowledge_base/factories.py:250
+#: backend/knowledge_base/factories.py:250
 #, python-brace-format
 msgid "Unsupported document type: {extension}"
 msgstr "Type de document non pris en charge : {extension}"
 
-#: knowledge_base/models.py:10 knowledge_base/models.py:118 llm/models.py:41
-#: plan/models.py:98
+#: backend/knowledge_base/models.py:10 backend/knowledge_base/models.py:118
+#: backend/llm/models.py:41 backend/plan/models.py:98
 msgid "Title"
 msgstr "Titre"
 
-#: knowledge_base/models.py:11 llm/models.py:104 plan/models.py:15
+#: backend/knowledge_base/models.py:11 backend/llm/models.py:104
+#: backend/plan/models.py:15
 msgid "Description"
-msgstr "Description"
+msgstr ""
 
-#: knowledge_base/models.py:19
+#: backend/knowledge_base/models.py:19
 msgid "Chunk size"
 msgstr "Taille du fragment"
 
-#: knowledge_base/models.py:20
+#: backend/knowledge_base/models.py:20
 msgid "Number of documents to be processed in each chunk"
 msgstr "Nombre de documents à traiter dans chaque fragment"
 
-#: knowledge_base/models.py:24
+#: backend/knowledge_base/models.py:24
 msgid "Chunk overlap"
 msgstr "Chevauchement de fragments"
 
-#: knowledge_base/models.py:25
+#: backend/knowledge_base/models.py:25
 msgid "Number of overlapping documents in each chunk"
 msgstr "Nombre de documents chevauchants dans chaque fragment"
 
-#: knowledge_base/models.py:29
+#: backend/knowledge_base/models.py:29
 msgid "Chunk separator"
 msgstr "Séparateur de fragments"
 
-#: knowledge_base/models.py:30
+#: backend/knowledge_base/models.py:30
 msgid "Separator used to split documents into chunks"
 msgstr "Séparateur utilisé pour diviser les documents en fragments"
 
-#: knowledge_base/models.py:36
+#: backend/knowledge_base/models.py:36
 msgid "Embedding Model"
 msgstr "Modèle d'embedding"
 
-#: knowledge_base/models.py:44
+#: backend/knowledge_base/models.py:44
 msgid "Embedding Provider Config"
 msgstr "Configuration du fournisseur d'embedding"
 
-#: knowledge_base/models.py:48
+#: backend/knowledge_base/models.py:48
 msgid "Provider configuration for embedding models"
 msgstr "Configuration du fournisseur pour les modèles d'embedding"
 
-#: knowledge_base/models.py:53
+#: backend/knowledge_base/models.py:53
 msgid "Summarization Provider Config"
 msgstr "Configuration du fournisseur de résumé"
 
-#: knowledge_base/models.py:57
+#: backend/knowledge_base/models.py:57
 msgid "Provider configuration for summarization models"
 msgstr "Configuration du fournisseur pour les modèles de résumé"
 
-#: knowledge_base/models.py:62
+#: backend/knowledge_base/models.py:62
 msgid "Summarization Model"
 msgstr "Modèle de résumé"
 
-#: knowledge_base/models.py:68
+#: backend/knowledge_base/models.py:68
 msgid "Summarizer Context"
 msgstr "Contexte du résumé"
 
-#: knowledge_base/models.py:71
+#: backend/knowledge_base/models.py:71
 msgid "Context to be provided to the summarizer"
 msgstr "Contexte à fournir au résumé"
 
-#: knowledge_base/models.py:74
+#: backend/knowledge_base/models.py:74
 msgid "Summarizer Type"
 msgstr "Type de résumé"
 
-#: knowledge_base/models.py:78
+#: backend/knowledge_base/models.py:78
 msgid "The type of summarizer to use for document summarization"
 msgstr "Le type de résumé à utiliser pour la résumé de documents"
 
-#: knowledge_base/models.py:81
+#: backend/knowledge_base/models.py:81
 msgid "Summarizer Temperature"
 msgstr "Température du résumé"
 
-#: knowledge_base/models.py:85
+#: backend/knowledge_base/models.py:85
 msgid "Temperature to be provided to the summarizer"
 msgstr "Température à fournir au résumé"
 
-#: knowledge_base/models.py:94
+#: backend/knowledge_base/models.py:94
 msgid "Knowledge Base Each Document Cost"
 msgstr "Coût de chaque document de la base de connaissances"
 
-#: knowledge_base/models.py:95
+#: backend/knowledge_base/models.py:95
 msgid "The cost of each document in the knowledge base"
 msgstr "Le coût de chaque document dans la base de connaissances"
 
-#: knowledge_base/models.py:100 knowledge_base/models.py:115
+#: backend/knowledge_base/models.py:100 backend/knowledge_base/models.py:115
 msgid "Knowledge Base"
 msgstr "Base de connaissances"
 
-#: knowledge_base/models.py:101
+#: backend/knowledge_base/models.py:101
 msgid "Knowledge Bases"
 msgstr "Bases de connaissances"
 
-#: knowledge_base/models.py:121
+#: backend/knowledge_base/models.py:121
 msgid "Source Type"
 msgstr "Type de source"
 
-#: knowledge_base/models.py:126
+#: backend/knowledge_base/models.py:126
 msgid "Source"
-msgstr "Source"
+msgstr ""
 
-#: knowledge_base/models.py:127
+#: backend/knowledge_base/models.py:127
 msgid "Error"
 msgstr "Erreur"
 
-#: knowledge_base/models.py:137 knowledge_base/models.py:154
+#: backend/knowledge_base/models.py:137 backend/knowledge_base/models.py:154
 msgid "Document"
-msgstr "Document"
+msgstr ""
 
-#: knowledge_base/models.py:138
+#: backend/knowledge_base/models.py:138
 msgid "Documents"
-msgstr "Documents"
+msgstr ""
 
-#: knowledge_base/models.py:157
+#: backend/knowledge_base/models.py:157
 msgid "Index"
-msgstr "Index"
+msgstr ""
 
-#: knowledge_base/models.py:159
+#: backend/knowledge_base/models.py:159
 msgid "Keywords"
 msgstr "Mots-clés"
 
-#: knowledge_base/models.py:162
+#: backend/knowledge_base/models.py:162
 msgid "Chunk"
 msgstr "Fragment"
 
-#: knowledge_base/models.py:163
+#: backend/knowledge_base/models.py:163
 msgid "Chunks"
 msgstr "Fragments"
 
-#: knowledge_base/serializers.py:86
+#: backend/knowledge_base/serializers.py:86
 msgid "Invalid embedding provider config id."
 msgstr "ID de configuration du fournisseur d'embedding invalide."
 
-#: knowledge_base/serializers.py:101
+#: backend/knowledge_base/serializers.py:101
 msgid "Invalid summarization provider config id."
 msgstr "ID de configuration du fournisseur de résumé invalide."
 
-#: knowledge_base/serializers.py:118
+#: backend/knowledge_base/serializers.py:118
 msgid "Invalid embedding model id."
 msgstr "ID de modèle d'embedding invalide."
 
-#: knowledge_base/serializers.py:124
+#: backend/knowledge_base/serializers.py:124
 msgid "Summarization model id is required."
 msgstr "L'ID du modèle de résumé est requis."
 
-#: knowledge_base/serializers.py:132
+#: backend/knowledge_base/serializers.py:132
 msgid "Invalid summarization model id."
 msgstr "ID de modèle de résumé invalide."
 
-#: knowledge_base/serializers.py:139
+#: backend/knowledge_base/serializers.py:139
 msgid "Invalid summarizer temperature."
 msgstr "Température du résumé invalide."
 
-#: knowledge_base/serializers.py:232
+#: backend/knowledge_base/serializers.py:232
 msgid "crawl_result_uuids cannot be empty."
 msgstr "crawl_result_uuids ne peut pas être vide."
 
-#: knowledge_base/serializers.py:239
+#: backend/knowledge_base/serializers.py:239
 msgid "No valid crawl results found for the provided UUIDs."
 msgstr "Aucun résultat de crawl valide trouvé pour les UUID fournis."
 
-#: knowledge_base/serializers.py:259
+#: backend/knowledge_base/serializers.py:259
 msgid "Invalid crawl request UUID."
 msgstr "UUID de demande de crawl invalide."
 
-#: knowledge_base/serializers.py:277
+#: backend/knowledge_base/serializers.py:277
 msgid "Files cannot be empty."
 msgstr "Les fichiers ne peuvent pas être vides."
 
-#: knowledge_base/serializers.py:283
+#: backend/knowledge_base/serializers.py:283
 msgid "File must be a pdf, docx, image, or text."
 msgstr "Le fichier doit être un pdf, docx, image ou texte."
 
-#: knowledge_base/serializers.py:310
+#: backend/knowledge_base/serializers.py:310
 msgid "Invalid provider config id."
 msgstr "ID de configuration du fournisseur invalide."
 
-#: knowledge_base/serializers.py:321
+#: backend/knowledge_base/serializers.py:321
 msgid "Invalid temperature."
 msgstr "Température invalide."
 
-#: knowledge_base/serializers.py:326
+#: backend/knowledge_base/serializers.py:326
 msgid "Invalid llm model id."
 msgstr "ID de modèle LLM invalide."
 
-#: knowledge_base/views.py:46
+#: backend/knowledge_base/views.py:46
 msgid "List knowledge bases"
 msgstr "Lister les bases de connaissances"
 
-#: knowledge_base/views.py:47
+#: backend/knowledge_base/views.py:47
 msgid "List all knowledge bases for the current team."
 msgstr "Lister toutes les bases de connaissances pour l'équipe actuelle."
 
-#: knowledge_base/views.py:51
+#: backend/knowledge_base/views.py:51
 msgid "Get knowledge base details"
 msgstr "Obtenir les détails de la base de connaissances"
 
-#: knowledge_base/views.py:52
+#: backend/knowledge_base/views.py:52
 msgid "Get details for a specific knowledge base."
 msgstr "Obtenir les détails d'une base de connaissances spécifique."
 
-#: knowledge_base/views.py:59
+#: backend/knowledge_base/views.py:59
 msgid "Create knowledge base"
 msgstr "Créer une base de connaissances"
 
-#: knowledge_base/views.py:60
+#: backend/knowledge_base/views.py:60
 msgid "Create a new knowledge base for the current team."
 msgstr "Créer une nouvelle base de connaissances pour l'équipe actuelle."
 
-#: knowledge_base/views.py:68
+#: backend/knowledge_base/views.py:68
 msgid "Update knowledge base"
 msgstr "Mettre à jour la base de connaissances"
 
-#: knowledge_base/views.py:69
+#: backend/knowledge_base/views.py:69
 msgid "Update an existing knowledge base."
 msgstr "Mettre à jour une base de connaissances existante."
 
-#: knowledge_base/views.py:73
+#: backend/knowledge_base/views.py:73
 msgid "Partially update knowledge base"
 msgstr "Mettre à jour partiellement la base de connaissances"
 
-#: knowledge_base/views.py:74
+#: backend/knowledge_base/views.py:74
 msgid "Partially update an existing knowledge base."
 msgstr "Mettre à jour partiellement une base de connaissances existante."
 
-#: knowledge_base/views.py:78
+#: backend/knowledge_base/views.py:78
 msgid "Delete knowledge base"
 msgstr "Supprimer la base de connaissances"
 
-#: knowledge_base/views.py:79
+#: backend/knowledge_base/views.py:79
 msgid "Delete an existing knowledge base."
 msgstr "Supprimer une base de connaissances existante."
 
-#: knowledge_base/views.py:83
+#: backend/knowledge_base/views.py:83
 msgid "Enhance knowledge base context aware text"
 msgstr "Améliorer le texte sensible au contexte de la base de connaissances"
 
-#: knowledge_base/views.py:84
+#: backend/knowledge_base/views.py:84
 msgid "Enhance documents using context-aware summarization."
 msgstr "Améliorer les documents en utilisant un résumé sensible au contexte."
 
-#: knowledge_base/views.py:90
+#: backend/knowledge_base/views.py:90
 msgid "Query knowledge base"
 msgstr "Interroger la base de connaissances"
 
-#: knowledge_base/views.py:91
+#: backend/knowledge_base/views.py:91
 msgid "Execute a query against the knowledge base."
 msgstr "Exécuter une requête sur la base de connaissances."
 
-#: knowledge_base/views.py:187
+#: backend/knowledge_base/views.py:187
 msgid "List documents"
 msgstr "Lister les documents"
 
-#: knowledge_base/views.py:188
+#: backend/knowledge_base/views.py:188
 msgid "List all documents for a knowledge base."
 msgstr "Lister tous les documents d'une base de connaissances."
 
-#: knowledge_base/views.py:195
+#: backend/knowledge_base/views.py:195
 msgid "Get document details"
 msgstr "Obtenir les détails du document"
 
-#: knowledge_base/views.py:196
+#: backend/knowledge_base/views.py:196
 msgid "Get details for a specific document."
 msgstr "Obtenir les détails d'un document spécifique."
 
-#: knowledge_base/views.py:200
+#: backend/knowledge_base/views.py:200
 msgid "Create document"
 msgstr "Créer un document"
 
-#: knowledge_base/views.py:201
+#: backend/knowledge_base/views.py:201
 msgid "Create a new document for a knowledge base."
 msgstr "Créer un nouveau document pour une base de connaissances."
 
-#: knowledge_base/views.py:205
+#: backend/knowledge_base/views.py:205
 msgid "Update document"
 msgstr "Mettre à jour le document"
 
-#: knowledge_base/views.py:206
+#: backend/knowledge_base/views.py:206
 msgid "Update an existing document."
 msgstr "Mettre à jour un document existant."
 
-#: knowledge_base/views.py:210
+#: backend/knowledge_base/views.py:210
 msgid "Partially update document"
 msgstr "Mettre à jour partiellement le document"
 
-#: knowledge_base/views.py:211
+#: backend/knowledge_base/views.py:211
 msgid "Partially update an existing document."
 msgstr "Mettre à jour partiellement un document existant."
 
-#: knowledge_base/views.py:215
+#: backend/knowledge_base/views.py:215
 msgid "Delete document"
 msgstr "Supprimer le document"
 
-#: knowledge_base/views.py:216
+#: backend/knowledge_base/views.py:216
 msgid "Delete an existing document."
 msgstr "Supprimer un document existant."
 
-#: knowledge_base/views.py:220
+#: backend/knowledge_base/views.py:220
 msgid "Process URLs"
 msgstr "Traiter les URL"
 
-#: knowledge_base/views.py:221
+#: backend/knowledge_base/views.py:221
 msgid "Process a list of URLs and add them to the knowledge base."
 msgstr "Traiter une liste d'URL et les ajouter à la base de connaissances."
 
-#: knowledge_base/views.py:229
+#: backend/knowledge_base/views.py:229
 msgid "Process crawl results"
 msgstr "Traiter les résultats de crawl"
 
-#: knowledge_base/views.py:230
+#: backend/knowledge_base/views.py:230
 msgid "Process crawl results and add them to the knowledge base."
-msgstr ""
-"Traiter les résultats de crawl et les ajouter à la base de connaissances."
+msgstr "Traiter les résultats de crawl et les ajouter à la base de connaissances."
 
-#: knowledge_base/views.py:238
+#: backend/knowledge_base/views.py:238
 msgid "Process crawl request"
 msgstr "Traiter la demande de crawl"
 
-#: knowledge_base/views.py:239
+#: backend/knowledge_base/views.py:239
 msgid "Process a crawl request and add it to the knowledge base."
 msgstr "Traiter une demande de crawl et l'ajouter à la base de connaissances."
 
-#: knowledge_base/views.py:247
+#: backend/knowledge_base/views.py:247
 msgid "Process files"
 msgstr "Traiter les fichiers"
 
-#: knowledge_base/views.py:248
+#: backend/knowledge_base/views.py:248
 msgid "Process a list of files and add them to the knowledge base."
-msgstr ""
-"Traiter une liste de fichiers et les ajouter à la base de connaissances."
+msgstr "Traiter une liste de fichiers et les ajouter à la base de connaissances."
 
-#: knowledge_base/views.py:256
+#: backend/knowledge_base/views.py:256
 msgid "Retry document"
 msgstr "Réessayer le document"
 
-#: knowledge_base/views.py:257
+#: backend/knowledge_base/views.py:257
 msgid "Retry a failed document. to index it again."
 msgstr "Réessayer un document échoué pour l'indexer à nouveau."
 
-#: knowledge_base/views.py:296 knowledge_base/views.py:337
-#: knowledge_base/views.py:365 knowledge_base/views.py:397
-#: knowledge_base/views.py:428
+#: backend/knowledge_base/views.py:296 backend/knowledge_base/views.py:337
+#: backend/knowledge_base/views.py:365 backend/knowledge_base/views.py:397
+#: backend/knowledge_base/views.py:428
 msgid "You cannot add documents to this knowledge base."
 msgstr "Vous ne pouvez pas ajouter de documents à cette base de connaissances."
 
-#: knowledge_base/views.py:457
+#: backend/knowledge_base/views.py:457
 msgid "You can only retry just failed documents."
 msgstr "Vous ne pouvez réessayer que les documents échoués."
 
-#: knowledge_base/views.py:459
+#: backend/knowledge_base/views.py:459
 msgid "You cannot make changes to this knowledge base."
 msgstr "Vous ne pouvez pas modifier cette base de connaissances."
 
-#: knowledge_base/views.py:467
+#: backend/knowledge_base/views.py:467
 msgid "List document chunks"
 msgstr "Lister les fragments du document"
 
-#: knowledge_base/views.py:468
+#: backend/knowledge_base/views.py:468
 msgid "List all chunks for a document."
 msgstr "Lister tous les fragments d'un document."
 
-#: llm/admin.py:44
+#: backend/llm/admin.py:44
 msgid "API Configuration"
 msgstr "Configuration API"
 
-#: llm/admin_api/serializers.py:54 llm/serializers.py:70
+#: backend/llm/admin_api/serializers.py:54 backend/llm/serializers.py:70
 msgid "API key is required"
 msgstr "La clé API est requise"
 
-#: llm/admin_api/serializers.py:56 llm/serializers.py:72
+#: backend/llm/admin_api/serializers.py:56 backend/llm/serializers.py:72
 msgid "Base URL is required"
 msgstr "L'URL de base est requise"
 
-#: llm/admin_api/serializers.py:73 llm/admin_api/serializers.py:74
-#: llm/serializers.py:89 llm/serializers.py:90
+#: backend/llm/admin_api/serializers.py:73
+#: backend/llm/admin_api/serializers.py:74 backend/llm/serializers.py:89
+#: backend/llm/serializers.py:90
 msgid "Invalid API key or base URL. Test failed"
 msgstr "Clé API ou URL de base invalide. Test échoué"
 
-#: llm/admin_api/views.py:17 llm/admin_api/views.py:18
+#: backend/llm/admin_api/views.py:17 backend/llm/admin_api/views.py:18
 msgid "List provider configs"
 msgstr "Lister les configurations de fournisseurs"
 
-#: llm/admin_api/views.py:22 llm/admin_api/views.py:23 llm/views.py:24
+#: backend/llm/admin_api/views.py:22 backend/llm/admin_api/views.py:23
+#: backend/llm/views.py:24
 msgid "Create provider config"
 msgstr "Créer une configuration de fournisseur"
 
-#: llm/admin_api/views.py:27 llm/admin_api/views.py:28 llm/views.py:29
+#: backend/llm/admin_api/views.py:27 backend/llm/admin_api/views.py:28
+#: backend/llm/views.py:29
 msgid "Get provider config"
 msgstr "Obtenir la configuration du fournisseur"
 
-#: llm/admin_api/views.py:32 llm/admin_api/views.py:33
-#: llm/admin_api/views.py:37 llm/admin_api/views.py:38 llm/views.py:41
-#: llm/views.py:46
+#: backend/llm/admin_api/views.py:32 backend/llm/admin_api/views.py:33
+#: backend/llm/admin_api/views.py:37 backend/llm/admin_api/views.py:38
+#: backend/llm/views.py:41 backend/llm/views.py:46
 msgid "Update provider config"
 msgstr "Mettre à jour la configuration du fournisseur"
 
-#: llm/admin_api/views.py:42 llm/admin_api/views.py:43 llm/views.py:36
+#: backend/llm/admin_api/views.py:42 backend/llm/admin_api/views.py:43
+#: backend/llm/views.py:36
 msgid "Delete provider config"
 msgstr "Supprimer la configuration du fournisseur"
 
-#: llm/admin_api/views.py:47 llm/admin_api/views.py:48
+#: backend/llm/admin_api/views.py:47 backend/llm/admin_api/views.py:48
 msgid "Sync embeddings"
 msgstr "Synchroniser les embeddings"
 
-#: llm/admin_api/views.py:54 llm/admin_api/views.py:55
+#: backend/llm/admin_api/views.py:54 backend/llm/admin_api/views.py:55
 msgid "Sync LLM models"
 msgstr "Synchroniser les modèles LLM"
 
-#: llm/admin_api/views.py:61 llm/admin_api/views.py:62
+#: backend/llm/admin_api/views.py:61 backend/llm/admin_api/views.py:62
 msgid "Test config"
 msgstr "Tester la configuration"
 
-#: llm/admin_api/views.py:68 llm/admin_api/views.py:69
+#: backend/llm/admin_api/views.py:68 backend/llm/admin_api/views.py:69
 msgid "List providers"
 msgstr "Lister les fournisseurs"
 
-#: llm/admin_api/views.py:74 llm/views.py:89
+#: backend/llm/admin_api/views.py:74 backend/llm/views.py:89
 msgid "List of available providers"
 msgstr "Liste des fournisseurs disponibles"
 
-#: llm/admin_api/views.py:157 llm/admin_api/views.py:158
+#: backend/llm/admin_api/views.py:157 backend/llm/admin_api/views.py:158
 msgid "List LLM models"
 msgstr "Lister les modèles LLM"
 
-#: llm/admin_api/views.py:162 llm/admin_api/views.py:163
+#: backend/llm/admin_api/views.py:162 backend/llm/admin_api/views.py:163
 msgid "Create LLM model"
 msgstr "Créer un modèle LLM"
 
-#: llm/admin_api/views.py:167 llm/admin_api/views.py:168
+#: backend/llm/admin_api/views.py:167 backend/llm/admin_api/views.py:168
 msgid "Get LLM model"
 msgstr "Obtenir le modèle LLM"
 
-#: llm/admin_api/views.py:172 llm/admin_api/views.py:173
-#: llm/admin_api/views.py:177 llm/admin_api/views.py:178
+#: backend/llm/admin_api/views.py:172 backend/llm/admin_api/views.py:173
+#: backend/llm/admin_api/views.py:177 backend/llm/admin_api/views.py:178
 msgid "Update LLM model"
 msgstr "Mettre à jour le modèle LLM"
 
-#: llm/admin_api/views.py:182 llm/admin_api/views.py:183
+#: backend/llm/admin_api/views.py:182 backend/llm/admin_api/views.py:183
 msgid "Delete LLM model"
 msgstr "Supprimer le modèle LLM"
 
-#: llm/admin_api/views.py:196 llm/admin_api/views.py:197
+#: backend/llm/admin_api/views.py:196 backend/llm/admin_api/views.py:197
 msgid "List provider embeddings"
 msgstr "Lister les embeddings du fournisseur"
 
-#: llm/admin_api/views.py:201 llm/admin_api/views.py:202
+#: backend/llm/admin_api/views.py:201 backend/llm/admin_api/views.py:202
 msgid "Create provider embedding"
 msgstr "Créer un embedding du fournisseur"
 
-#: llm/admin_api/views.py:206 llm/admin_api/views.py:207
+#: backend/llm/admin_api/views.py:206 backend/llm/admin_api/views.py:207
 msgid "Get provider embedding"
 msgstr "Obtenir l'embedding du fournisseur"
 
-#: llm/admin_api/views.py:211 llm/admin_api/views.py:212
-#: llm/admin_api/views.py:216 llm/admin_api/views.py:217
+#: backend/llm/admin_api/views.py:211 backend/llm/admin_api/views.py:212
+#: backend/llm/admin_api/views.py:216 backend/llm/admin_api/views.py:217
 msgid "Update provider embedding"
 msgstr "Mettre à jour l'embedding du fournisseur"
 
-#: llm/admin_api/views.py:221 llm/admin_api/views.py:222
+#: backend/llm/admin_api/views.py:221 backend/llm/admin_api/views.py:222
 msgid "Delete provider embedding"
 msgstr "Supprimer l'embedding du fournisseur"
 
-#: llm/consts.py:7 llm/consts.py:22
+#: backend/llm/consts.py:7 backend/llm/consts.py:22
 msgid "OpenAI"
-msgstr "OpenAI"
+msgstr ""
 
-#: llm/consts.py:10
+#: backend/llm/consts.py:10
 msgid "WaterCrawl"
-msgstr "WaterCrawl"
+msgstr ""
 
-#: llm/consts.py:37
+#: backend/llm/consts.py:37
 msgid "Not Available"
 msgstr "Non disponible"
 
-#: llm/consts.py:38
+#: backend/llm/consts.py:38
 msgid "Available"
 msgstr "Disponible"
 
-#: llm/consts.py:39
+#: backend/llm/consts.py:39
 msgid "Team Only"
 msgstr "Équipe uniquement"
 
-#: llm/consts.py:46
+#: backend/llm/consts.py:46
 msgid "Start"
 msgstr "Début"
 
-#: llm/consts.py:47
+#: backend/llm/consts.py:47
 msgid "End"
 msgstr "Fin"
 
-#: llm/factories.py:39
+#: backend/llm/factories.py:39
 msgid "Provider config is required"
 msgstr "La configuration du fournisseur est requise"
 
-#: llm/factories.py:60 llm/providers.py:90
+#: backend/llm/factories.py:60 backend/llm/providers.py:90
 msgid "WaterCrawlLLM is not installed. Please install it"
 msgstr "WaterCrawlLLM n'est pas installé. Veuillez l'installer"
 
-#: llm/factories.py:68 llm/factories.py:90
+#: backend/llm/factories.py:68 backend/llm/factories.py:90
 #, python-brace-format
 msgid "Unsupported provider: {provider_name}"
 msgstr "Fournisseur non pris en charge : {provider_name}"
 
-#: llm/models.py:11 llm/models.py:43 llm/models.py:97
+#: backend/llm/models.py:11 backend/llm/models.py:43 backend/llm/models.py:97
 msgid "Provider"
 msgstr "Fournisseur"
 
-#: llm/models.py:17 llm/models.py:114
+#: backend/llm/models.py:17 backend/llm/models.py:114
 msgid "Visibility Level"
 msgstr "Niveau de visibilité"
 
-#: llm/models.py:23
+#: backend/llm/models.py:23
 msgid "Min Temperature"
 msgstr "Température minimale"
 
-#: llm/models.py:26
+#: backend/llm/models.py:26
 msgid "Max Temperature"
 msgstr "Température maximale"
 
-#: llm/models.py:29
+#: backend/llm/models.py:29
 msgid "Default Temperature"
 msgstr "Température par défaut"
 
-#: llm/models.py:33
+#: backend/llm/models.py:33
 msgid "Model"
 msgstr "Modèle"
 
-#: llm/models.py:34
+#: backend/llm/models.py:34
 msgid "Models"
 msgstr "Modèles"
 
-#: llm/models.py:48 plan/models.py:217
+#: backend/llm/models.py:48 backend/plan/models.py:217
 msgid "API Key"
 msgstr "Clé API"
 
-#: llm/models.py:50
+#: backend/llm/models.py:50
 msgid "API Base URL"
 msgstr "URL de base API"
 
-#: llm/models.py:52
+#: backend/llm/models.py:52
 msgid "Temperature"
 msgstr "Température"
 
-#: llm/models.py:86
+#: backend/llm/models.py:86
 msgid "Provider Config"
 msgstr "Configuration du fournisseur"
 
-#: llm/models.py:87
+#: backend/llm/models.py:87
 msgid "Provider Configs"
 msgstr "Configurations des fournisseurs"
 
-#: llm/models.py:105
+#: backend/llm/models.py:105
 msgid "Dimensions"
-msgstr "Dimensions"
+msgstr ""
 
-#: llm/models.py:106
+#: backend/llm/models.py:106
 msgid "Max Input Length"
 msgstr "Longueur d'entrée maximale"
 
-#: llm/models.py:108
+#: backend/llm/models.py:108
 msgid "Truncate"
 msgstr "Tronquer"
 
-#: llm/models.py:121
+#: backend/llm/models.py:121
 msgid "Provider Embedding"
 msgstr "Embedding du fournisseur"
 
-#: llm/models.py:122
+#: backend/llm/models.py:122
 msgid "Provider Embeddings"
 msgstr "Embeddings du fournisseur"
 
-#: llm/views.py:19
+#: backend/llm/views.py:19
 msgid "List team provider configs"
 msgstr "Lister les configurations de fournisseurs de l'équipe"
 
-#: llm/views.py:20
+#: backend/llm/views.py:20
 msgid "Get all provider configurations for the current team."
-msgstr ""
-"Obtenir toutes les configurations de fournisseurs pour l'équipe actuelle."
+msgstr "Obtenir toutes les configurations de fournisseurs pour l'équipe actuelle."
 
-#: llm/views.py:25
+#: backend/llm/views.py:25
 msgid "Create a new provider configuration for the current team."
-msgstr ""
-"Créer une nouvelle configuration de fournisseur pour l'équipe actuelle."
+msgstr "Créer une nouvelle configuration de fournisseur pour l'équipe actuelle."
 
-#: llm/views.py:31
+#: backend/llm/views.py:31
 msgid "Get detailed information about a specific provider configuration."
-msgstr ""
-"Obtenir des informations détaillées sur une configuration de fournisseur "
-"spécifique."
+msgstr "Obtenir des informations détaillées sur une configuration de fournisseur spécifique."
 
-#: llm/views.py:37
+#: backend/llm/views.py:37
 msgid "Delete a provider configuration."
 msgstr "Supprimer une configuration de fournisseur."
 
-#: llm/views.py:42 llm/views.py:47
+#: backend/llm/views.py:42 backend/llm/views.py:47
 msgid "Update a provider configuration."
 msgstr "Mettre à jour une configuration de fournisseur."
 
-#: llm/views.py:51 llm/views.py:84
+#: backend/llm/views.py:51 backend/llm/views.py:84
 msgid "List available providers"
 msgstr "Lister les fournisseurs disponibles"
 
-#: llm/views.py:52 llm/views.py:85
+#: backend/llm/views.py:52 backend/llm/views.py:85
 msgid "Get a list of available LLM providers."
 msgstr "Obtenir une liste des fournisseurs LLM disponibles."
 
-#: llm/views.py:57
+#: backend/llm/views.py:57
 msgid "List all provider configs (Global and Team-specific)"
-msgstr ""
-"Lister toutes les configurations de fournisseurs (globales et spécifiques à "
-"l'équipe)"
+msgstr "Lister toutes les configurations de fournisseurs (globales et spécifiques à l'équipe)"
 
-#: llm/views.py:59
-msgid ""
-"Get all available provider configurations including global and team-specific "
-"ones."
-msgstr ""
-"Obtenir toutes les configurations de fournisseurs disponibles, y compris les "
-"globales et spécifiques à l'équipe."
+#: backend/llm/views.py:59
+msgid "Get all available provider configurations including global and team-specific ones."
+msgstr "Obtenir toutes les configurations de fournisseurs disponibles, y compris les globales et spécifiques à l'équipe."
 
-#: llm/views.py:65
+#: backend/llm/views.py:65
 msgid "Test provider config"
 msgstr "Tester la configuration du fournisseur"
 
-#: llm/views.py:66
+#: backend/llm/views.py:66
 msgid "Test a provider configuration without saving it."
 msgstr "Tester une configuration de fournisseur sans l'enregistrer."
 
-#: llm/views.py:74
+#: backend/llm/views.py:74
 msgid "Get provider models"
 msgstr "Obtenir les modèles du fournisseur"
 
-#: llm/views.py:75
+#: backend/llm/views.py:75
 msgid "Get all models supported by a specific provider."
 msgstr "Obtenir tous les modèles pris en charge par un fournisseur spécifique."
 
-#: llm/views.py:79
+#: backend/llm/views.py:79
 msgid "Get provider embedding models"
 msgstr "Obtenir les modèles d'embedding du fournisseur"
 
-#: llm/views.py:80
+#: backend/llm/views.py:80
 msgid "Get all embedding models supported by a specific provider."
-msgstr ""
-"Obtenir tous les modèles d'embedding pris en charge par un fournisseur "
-"spécifique."
+msgstr "Obtenir tous les modèles d'embedding pris en charge par un fournisseur spécifique."
 
-#: llm/views.py:178
+#: backend/llm/views.py:178
 msgid "Test failed"
 msgstr "Test échoué"
 
-#: locker/helpers.py:43
+#: backend/locker/helpers.py:43
 #, python-brace-format
 msgid "Failed to acquire lock '{lock_name}' within {wait_time} seconds"
-msgstr ""
-"Échec de l'acquisition du verrou '{lock_name}' dans les {wait_time} secondes"
+msgstr "Échec de l'acquisition du verrou '{lock_name}' dans les {wait_time} secondes"
 
-#: plan/admin.py:50
+#: backend/plan/admin.py:50
 msgid "Stripe Configuration"
 msgstr "Configuration Stripe"
 
-#: plan/admin.py:52
+#: backend/plan/admin.py:52
 msgid "Plan Limits"
 msgstr "Limites du plan"
 
-#: plan/admin.py:67 plan/admin.py:102 plan/admin.py:119 plan/admin.py:130
+#: backend/plan/admin.py:67 backend/plan/admin.py:102 backend/plan/admin.py:119
+#: backend/plan/admin.py:130
 msgid "Timestamps"
 msgstr "Horodatages"
 
-#: plan/admin.py:89
+#: backend/plan/admin.py:89
 msgid "Credits"
 msgstr "Crédits"
 
-#: plan/admin.py:91
+#: backend/plan/admin.py:91
 msgid "Subscription Details"
 msgstr "Détails de l'abonnement"
 
-#: plan/admin.py:118
+#: backend/plan/admin.py:118
 msgid "Payment Details"
 msgstr "Détails du paiement"
 
-#: plan/authentication.py:18
+#: backend/plan/authentication.py:18
 msgid "No Stripe signature found"
 msgstr "Aucune signature Stripe trouvée"
 
-#: plan/authentication.py:30
+#: backend/plan/authentication.py:30
 msgid "Invalid Stripe signature"
 msgstr "Signature Stripe invalide"
 
-#: plan/consts.py:7
+#: backend/plan/consts.py:7
 msgid "Yearly"
 msgstr "Annuel"
 
-#: plan/consts.py:8
+#: backend/plan/consts.py:8
 msgid "Monthly"
 msgstr "Mensuel"
 
-#: plan/consts.py:23
+#: backend/plan/consts.py:23
 msgid "Incomplete"
 msgstr "Incomplet"
 
-#: plan/consts.py:24
+#: backend/plan/consts.py:24
 msgid "Incomplete Expired"
 msgstr "Incomplet expiré"
 
-#: plan/consts.py:25
+#: backend/plan/consts.py:25
 msgid "Past Due"
 msgstr "Échu"
 
-#: plan/consts.py:26
+#: backend/plan/consts.py:26
 msgid "Paused"
 msgstr "En pause"
 
-#: plan/consts.py:27
+#: backend/plan/consts.py:27
 msgid "Trialing"
 msgstr "En essai"
 
-#: plan/consts.py:28
+#: backend/plan/consts.py:28
 msgid "Unpaid"
 msgstr "Non payé"
 
-#: plan/consts.py:35
+#: backend/plan/consts.py:35
 msgid "Default"
 msgstr "Par défaut"
 
-#: plan/consts.py:36
+#: backend/plan/consts.py:36
 msgid "Info"
-msgstr "Info"
+msgstr ""
 
-#: plan/consts.py:37
+#: backend/plan/consts.py:37
 msgid "Cross"
 msgstr "Croix"
 
-#: plan/consts.py:38
+#: backend/plan/consts.py:38
 msgid "Check"
 msgstr "Cocher"
 
-#: plan/filters.py:11 plan/models.py:200
+#: backend/plan/filters.py:11 backend/plan/models.py:200
 msgid "Content type"
 msgstr "Type de contenu"
 
-#: plan/filters.py:13
+#: backend/plan/filters.py:13
 msgid "Crawl request"
 msgstr "Demande de crawl"
 
-#: plan/filters.py:14
+#: backend/plan/filters.py:14
 msgid "Search request"
 msgstr "Demande de recherche"
 
-#: plan/filters.py:15
+#: backend/plan/filters.py:15
 msgid "Sitemap request"
 msgstr "Demande de plan du site"
 
-#: plan/filters.py:16
+#: backend/plan/filters.py:16
 msgid "Knowledge base document"
 msgstr "Document de base de connaissances"
 
-#: plan/filters.py:21
+#: backend/plan/filters.py:21
 msgid "API key"
 msgstr "Clé API"
 
-#: plan/filters.py:33
+#: backend/plan/filters.py:33
 msgid "Invalid value. Expected format: app_label.model"
 msgstr "Valeur invalide. Format attendu : app_label.model"
 
-#: plan/models.py:10
+#: backend/plan/models.py:10
 msgid "name"
 msgstr "nom"
 
-#: plan/models.py:11
+#: backend/plan/models.py:11
 msgid "Label"
 msgstr "Étiquette"
 
-#: plan/models.py:13
+#: backend/plan/models.py:13
 msgid "Group"
 msgstr "Groupe"
 
-#: plan/models.py:17
+#: backend/plan/models.py:17
 msgid "Price before discount"
 msgstr "Prix avant remise"
 
-#: plan/models.py:23
+#: backend/plan/models.py:23
 msgid "Price"
 msgstr "Prix"
 
-#: plan/models.py:25
+#: backend/plan/models.py:25
 msgid "Stripe price id"
 msgstr "ID de prix Stripe"
 
-#: plan/models.py:28
+#: backend/plan/models.py:28
 msgid "Number of users"
 msgstr "Nombre d'utilisateurs"
 
-#: plan/models.py:29
+#: backend/plan/models.py:29
 msgid "Number of users that can be added to the team."
 msgstr "Nombre d'utilisateurs pouvant être ajoutés à l'équipe."
 
-#: plan/models.py:33
+#: backend/plan/models.py:33
 msgid "Page credit"
 msgstr "Crédit de pages"
 
-#: plan/models.py:34
+#: backend/plan/models.py:34
 msgid "Number of pages that can be crawled in plan duration."
 msgstr "Nombre de pages pouvant être crawlées pendant la durée du plan."
 
-#: plan/models.py:38
+#: backend/plan/models.py:38
 msgid "Daily page credit"
 msgstr "Crédit de pages quotidien"
 
-#: plan/models.py:40
-msgid ""
-"Number of pages that can be crawled per day. resets at midnight. -1 for "
-"unlimited"
-msgstr ""
-"Nombre de pages pouvant être crawlées par jour. Réinitialisé à minuit. -1 "
-"pour illimité"
+#: backend/plan/models.py:40
+msgid "Number of pages that can be crawled per day. resets at midnight. -1 for unlimited"
+msgstr "Nombre de pages pouvant être crawlées par jour. Réinitialisé à minuit. -1 pour illimité"
 
-#: plan/models.py:45
+#: backend/plan/models.py:45
 msgid "Crawl max depth"
 msgstr "Profondeur maximale de crawl"
 
-#: plan/models.py:45
+#: backend/plan/models.py:45
 msgid "Max depth of crawling."
 msgstr "Profondeur maximale de crawl."
 
-#: plan/models.py:48
+#: backend/plan/models.py:48
 msgid "Crawl max limit"
 msgstr "Limite maximale de crawl"
 
-#: plan/models.py:48
+#: backend/plan/models.py:48
 msgid "Max number of pages to crawl."
 msgstr "Nombre maximal de pages à crawler."
 
-#: plan/models.py:51
+#: backend/plan/models.py:51
 msgid "Max concurrent crawl"
 msgstr "Crawl simultané maximum"
 
-#: plan/models.py:52
+#: backend/plan/models.py:52
 msgid "Max Number of concurrent crawling."
 msgstr "Nombre maximal de crawl simultané."
 
-#: plan/models.py:56
+#: backend/plan/models.py:56
 msgid "Number of knowledge bases"
 msgstr "Nombre de bases de connaissances"
 
-#: plan/models.py:59
+#: backend/plan/models.py:59
 msgid "Number of each knowledge base documents"
 msgstr "Nombre de documents de chaque base de connaissances"
 
-#: plan/models.py:62
+#: backend/plan/models.py:62
 msgid "Knowledge base retrival rate limit"
 msgstr "Limite de taux de récupération de la base de connaissances"
 
-#: plan/models.py:63
+#: backend/plan/models.py:63
 msgid "DRF-style rate string, e.g. '100/min', '500/day'"
 msgstr "Chaîne de taux de style DRF, par ex. '100/min', '500/day'"
 
-#: plan/models.py:69
+#: backend/plan/models.py:69
 msgid "Is default"
 msgstr "Par défaut"
 
-#: plan/models.py:70 plan/models.py:89
+#: backend/plan/models.py:70 backend/plan/models.py:89
 msgid "Order"
 msgstr "Ordre"
 
-#: plan/models.py:71
+#: backend/plan/models.py:71
 msgid "Is active"
 msgstr "Actif"
 
-#: plan/models.py:74 plan/models.py:124
+#: backend/plan/models.py:74 backend/plan/models.py:124
 msgid "Plan"
-msgstr "Plan"
+msgstr ""
 
-#: plan/models.py:75
+#: backend/plan/models.py:75
 msgid "Plans"
-msgstr "Plans"
+msgstr ""
 
-#: plan/models.py:91
+#: backend/plan/models.py:91
 msgid "Icon"
 msgstr "Icône"
 
-#: plan/models.py:101
+#: backend/plan/models.py:101
 msgid "Help text"
 msgstr "Texte d'aide"
 
-#: plan/models.py:104
+#: backend/plan/models.py:104
 msgid "Plan Feature"
 msgstr "Fonctionnalité du plan"
 
-#: plan/models.py:105
+#: backend/plan/models.py:105
 msgid "Plan Features"
 msgstr "Fonctionnalités du plan"
 
-#: plan/models.py:120
+#: backend/plan/models.py:120
 msgid "Stripe subscription id"
 msgstr "ID d'abonnement Stripe"
 
-#: plan/models.py:128
+#: backend/plan/models.py:128
 msgid "Remain page credit"
 msgstr "Crédit de pages restant"
 
-#: plan/models.py:130
+#: backend/plan/models.py:130
 msgid "Remain daily page credit"
 msgstr "Crédit de pages quotidien restant"
 
-#: plan/models.py:133
+#: backend/plan/models.py:133
 msgid "Start datetime"
 msgstr "Date et heure de début"
 
-#: plan/models.py:135
+#: backend/plan/models.py:135
 msgid "Current period start datetime"
 msgstr "Date et heure de début de la période actuelle"
 
-#: plan/models.py:138
+#: backend/plan/models.py:138
 msgid "Current period end datetime"
 msgstr "Date et heure de fin de la période actuelle"
 
-#: plan/models.py:140
+#: backend/plan/models.py:140
 msgid "Canceled at"
 msgstr "Annulé le"
 
-#: plan/models.py:148 plan/models.py:157
+#: backend/plan/models.py:148 backend/plan/models.py:157
 msgid "Subscription"
 msgstr "Abonnement"
 
-#: plan/models.py:149
+#: backend/plan/models.py:149
 msgid "Subscriptions"
 msgstr "Abonnements"
 
-#: plan/models.py:159
+#: backend/plan/models.py:159
 msgid "Amount"
 msgstr "Montant"
 
-#: plan/models.py:161
+#: backend/plan/models.py:161
 msgid "Stripe payment id"
 msgstr "ID de paiement Stripe"
 
-#: plan/models.py:171
+#: backend/plan/models.py:171
 msgid "Subscription Payment"
 msgstr "Paiement d'abonnement"
 
-#: plan/models.py:172
+#: backend/plan/models.py:172
 msgid "Subscription Payments"
 msgstr "Paiements d'abonnement"
 
-#: plan/models.py:180
+#: backend/plan/models.py:180
 msgid "Data"
 msgstr "Données"
 
-#: plan/models.py:183
+#: backend/plan/models.py:183
 msgid "Stripe webhook history"
 msgstr "Historique des webhooks Stripe"
 
-#: plan/models.py:184
+#: backend/plan/models.py:184
 msgid "Stripe webhook histories"
 msgstr "Historiques des webhooks Stripe"
 
-#: plan/models.py:207
+#: backend/plan/models.py:207
 msgid "Content ID"
 msgstr "ID de contenu"
 
-#: plan/models.py:223
+#: backend/plan/models.py:223
 msgid "Requested Page Credit"
 msgstr "Crédit de pages demandé"
 
-#: plan/models.py:226
+#: backend/plan/models.py:226
 msgid "Actual Page Credit Used"
 msgstr "Crédit de pages réellement utilisé"
 
-#: plan/models.py:230
+#: backend/plan/models.py:230
 msgid "Usage History"
 msgstr "Historique d'utilisation"
 
-#: plan/models.py:231
+#: backend/plan/models.py:231
 msgid "Usage Histories"
 msgstr "Historiques d'utilisation"
 
-#: plan/serializers.py:73
+#: backend/plan/serializers.py:73
 msgid "Plan not found"
 msgstr "Plan non trouvé"
 
-#: plan/services.py:147
+#: backend/plan/services.py:147
 msgid "Unlimited"
 msgstr "Illimité"
 
-#: plan/services.py:243 plan/views.py:57
+#: backend/plan/services.py:243 backend/plan/views.py:57
 msgid "You have no active subscription"
 msgstr "Vous n'avez pas d'abonnement actif"
 
-#: plan/services.py:630
+#: backend/plan/services.py:630
 msgid "You can't downgrade your plan."
 msgstr "Vous ne pouvez pas rétrograder votre plan."
 
-#: plan/services.py:677
+#: backend/plan/services.py:677
 msgid "Team already has an active subscription."
 msgstr "L'équipe a déjà un abonnement actif."
 
-#: plan/services.py:711 plan/services.py:741 plan/services.py:764
+#: backend/plan/services.py:711 backend/plan/services.py:741
+#: backend/plan/services.py:764
 msgid "Team does not have an active subscription."
 msgstr "L'équipe n'a pas d'abonnement actif."
 
-#: plan/services.py:714 plan/services.py:744
+#: backend/plan/services.py:714 backend/plan/services.py:744
 msgid "You cannot cancel freemium plan."
 msgstr "Vous ne pouvez pas annuler le plan freemium."
 
-#: plan/services.py:767
+#: backend/plan/services.py:767
 msgid "You cannot renew freemium plan."
 msgstr "Vous ne pouvez pas renouveler le plan freemium."
 
-#: plan/services.py:770
+#: backend/plan/services.py:770
 msgid "This plan is already active."
 msgstr "Ce plan est déjà actif."
 
-#: plan/services.py:817 plan/services.py:834
+#: backend/plan/services.py:817 backend/plan/services.py:834
 msgid "get_actual_credits: Unhandled type {type(request)}"
 msgstr "get_actual_credits : Type non géré {type(request)}"
 
-#: plan/throttle.py:18 plan/throttle.py:33
+#: backend/plan/throttle.py:18 backend/plan/throttle.py:33
 msgid "Cannot throttle a request without a team attached to it."
 msgstr "Impossible de limiter une requête sans équipe associée."
 
-#: plan/validators.py:42
+#: backend/plan/validators.py:42
 #, python-brace-format
-msgid ""
-"You have no more daily credit left in your plan. for current request you "
-"need {} credits."
-msgstr ""
-"Vous n'avez plus de crédit quotidien dans votre plan. Pour la requête "
-"actuelle, vous avez besoin de {} crédits."
+msgid "You have no more daily credit left in your plan. for current request you need {} credits."
+msgstr "Vous n'avez plus de crédit quotidien dans votre plan. Pour la requête actuelle, vous avez besoin de {} crédits."
 
-#: plan/validators.py:49
+#: backend/plan/validators.py:49
 #, python-brace-format
-msgid ""
-"You just have {} daily credit left in your plan. for current request you "
-"need {} credits."
-msgstr ""
-"Il vous reste seulement {} crédit quotidien dans votre plan. Pour la requête "
-"actuelle, vous avez besoin de {} crédits."
+msgid "You just have {} daily credit left in your plan. for current request you need {} credits."
+msgstr "Il vous reste seulement {} crédit quotidien dans votre plan. Pour la requête actuelle, vous avez besoin de {} crédits."
 
-#: plan/validators.py:62
+#: backend/plan/validators.py:62
 #, python-brace-format
-msgid ""
-"You have no more pages left in your plan. for current request you need {} "
-"credits."
-msgstr ""
-"Il ne vous reste plus de pages dans votre plan. Pour la requête actuelle, "
-"vous avez besoin de {} crédits."
+msgid "You have no more pages left in your plan. for current request you need {} credits."
+msgstr "Il ne vous reste plus de pages dans votre plan. Pour la requête actuelle, vous avez besoin de {} crédits."
 
-#: plan/validators.py:69
+#: backend/plan/validators.py:69
 #, python-brace-format
-msgid ""
-"You just have {} credits left in your plan. for current request you need {} "
-"credits."
-msgstr ""
-"Il vous reste seulement {} crédits dans votre plan. Pour la requête "
-"actuelle, vous avez besoin de {} crédits."
+msgid "You just have {} credits left in your plan. for current request you need {} credits."
+msgstr "Il vous reste seulement {} crédits dans votre plan. Pour la requête actuelle, vous avez besoin de {} crédits."
 
-#: plan/validators.py:111
-msgid ""
-"With the current plan you cannot use this proxy server. Upgrade your plan to "
-"use Premium proxy servers."
-msgstr ""
-"Avec le plan actuel, vous ne pouvez pas utiliser ce serveur proxy. Mettez à "
-"niveau votre plan pour utiliser les serveurs proxy Premium."
+#: backend/plan/validators.py:111
+msgid "With the current plan you cannot use this proxy server. Upgrade your plan to use Premium proxy servers."
+msgstr "Avec le plan actuel, vous ne pouvez pas utiliser ce serveur proxy. Mettez à niveau votre plan pour utiliser les serveurs proxy Premium."
 
-#: plan/validators.py:125
+#: backend/plan/validators.py:125
 #, python-brace-format
-msgid ""
-"Your plan does not support more than {} depth. change the max depth in "
-"spider options."
-msgstr ""
-"Votre plan ne prend pas en charge une profondeur supérieure à {}. Modifiez "
-"la profondeur maximale dans les options du spider."
+msgid "Your plan does not support more than {} depth. change the max depth in spider options."
+msgstr "Votre plan ne prend pas en charge une profondeur supérieure à {}. Modifiez la profondeur maximale dans les options du spider."
 
-#: plan/validators.py:138
+#: backend/plan/validators.py:138
 #, python-brace-format
-msgid ""
-"Your plan does not support more than {} pages per crawl. change the page "
-"limit in spider options."
-msgstr ""
-"Votre plan ne prend pas en charge plus de {} pages par crawl. Modifiez la "
-"limite de pages dans les options du spider."
+msgid "Your plan does not support more than {} pages per crawl. change the page limit in spider options."
+msgstr "Votre plan ne prend pas en charge plus de {} pages par crawl. Modifiez la limite de pages dans les options du spider."
 
-#: plan/validators.py:160
+#: backend/plan/validators.py:160
 #, python-brace-format
-msgid ""
-"Your plan does not support more than {} concurrent crawls. Wait for them to "
-"finish."
-msgstr ""
-"Votre plan ne prend pas en charge plus de {} crawls simultanés. Attendez "
-"qu'ils se terminent."
+msgid "Your plan does not support more than {} concurrent crawls. Wait for them to finish."
+msgstr "Votre plan ne prend pas en charge plus de {} crawls simultanés. Attendez qu'ils se terminent."
 
-#: plan/validators.py:196
+#: backend/plan/validators.py:196
 #, python-brace-format
-msgid ""
-"Your plan does not support more than {} concurrent searches. Wait for them "
-"to finish."
-msgstr ""
-"Votre plan ne prend pas en charge plus de {} recherches simultanées. "
-"Attendez qu'elles se terminent."
+msgid "Your plan does not support more than {} concurrent searches. Wait for them to finish."
+msgstr "Votre plan ne prend pas en charge plus de {} recherches simultanées. Attendez qu'elles se terminent."
 
-#: plan/validators.py:229
+#: backend/plan/validators.py:229
 #, python-brace-format
-msgid ""
-"Your plan does not support more than {} concurrent sitemaps. Wait for them "
-"to finish."
-msgstr ""
-"Votre plan ne prend pas en charge plus de {} plans de site simultanés. "
-"Attendez qu'ils se terminent."
+msgid "Your plan does not support more than {} concurrent sitemaps. Wait for them to finish."
+msgstr "Votre plan ne prend pas en charge plus de {} plans de site simultanés. Attendez qu'ils se terminent."
 
-#: plan/validators.py:258
+#: backend/plan/validators.py:258
 #, python-brace-format
-msgid ""
-"Your plan does not support more than {} knowledge bases. You can not create "
-"more."
-msgstr ""
-"Votre plan ne prend pas en charge plus de {} bases de connaissances. Vous ne "
-"pouvez pas en créer davantage."
+msgid "Your plan does not support more than {} knowledge bases. You can not create more."
+msgstr "Votre plan ne prend pas en charge plus de {} bases de connaissances. Vous ne pouvez pas en créer davantage."
 
-#: plan/validators.py:291
+#: backend/plan/validators.py:291
 #, python-brace-format
-msgid ""
-"Your current plan does not support more than {} documents per knowledge "
-"base. This knowledge base has {} documents left. Your request will add {} "
-"documents."
-msgstr ""
-"Votre plan actuel ne prend pas en charge plus de {} documents par base de "
-"connaissances. Cette base de connaissances a {} documents restants. Votre "
-"requête ajoutera {} documents."
+msgid "Your current plan does not support more than {} documents per knowledge base. This knowledge base has {} documents left. Your request will add {} documents."
+msgstr "Votre plan actuel ne prend pas en charge plus de {} documents par base de connaissances. Cette base de connaissances a {} documents restants. Votre requête ajoutera {} documents."
 
-#: plan/views.py:22
+#: backend/plan/views.py:22
 msgid "List available plans"
 msgstr "Lister les plans disponibles"
 
-#: plan/views.py:24
-msgid ""
-"Returns a list of all active subscription plans with their details including "
-"pricing, features and limits."
-msgstr ""
-"Retourne une liste de tous les plans d'abonnement actifs avec leurs détails, "
-"y compris les tarifs, fonctionnalités et limites."
+#: backend/plan/views.py:24
+msgid "Returns a list of all active subscription plans with their details including pricing, features and limits."
+msgstr "Retourne une liste de tous les plans d'abonnement actifs avec leurs détails, y compris les tarifs, fonctionnalités et limites."
 
-#: plan/views.py:29
+#: backend/plan/views.py:29
 msgid "Get plan details"
 msgstr "Obtenir les détails du plan"
 
-#: plan/views.py:31
+#: backend/plan/views.py:31
 msgid "Returns detailed information about a specific subscription plan."
-msgstr ""
-"Retourne des informations détaillées sur un plan d'abonnement spécifique."
+msgstr "Retourne des informations détaillées sur un plan d'abonnement spécifique."
 
-#: plan/views.py:49
+#: backend/plan/views.py:49
 msgid "Get current subscription details"
 msgstr "Obtenir les détails de l'abonnement actuel"
 
-#: plan/views.py:51 plan/views.py:63
+#: backend/plan/views.py:51 backend/plan/views.py:63
 msgid "Returns detailed information about the team's current subscription."
-msgstr ""
-"Retourne des informations détaillées sur l'abonnement actuel de l'équipe."
+msgstr "Retourne des informations détaillées sur l'abonnement actuel de l'équipe."
 
-#: plan/views.py:61
+#: backend/plan/views.py:61
 msgid "Get subscription details"
 msgstr "Obtenir les détails de l'abonnement"
 
-#: plan/views.py:68
+#: backend/plan/views.py:68
 msgid "List team subscriptions"
 msgstr "Lister les abonnements de l'équipe"
 
-#: plan/views.py:69
+#: backend/plan/views.py:69
 msgid "Returns a list of all active subscriptions for the team."
 msgstr "Retourne une liste de tous les abonnements actifs pour l'équipe."
 
-#: plan/views.py:73
+#: backend/plan/views.py:73
 msgid "Start a new subscription"
 msgstr "Démarrer un nouvel abonnement"
 
-#: plan/views.py:74
+#: backend/plan/views.py:74
 msgid "Starts a new subscription for the team."
 msgstr "Démarre un nouvel abonnement pour l'équipe."
 
-#: plan/views.py:77
+#: backend/plan/views.py:77
 msgid "Subscription started successfully."
 msgstr "Abonnement démarré avec succès."
 
-#: plan/views.py:85 plan/views.py:115
+#: backend/plan/views.py:85 backend/plan/views.py:115
 msgid "The URL to redirect the user to for payment processing."
-msgstr ""
-"L'URL vers laquelle rediriger l'utilisateur pour le traitement du paiement."
+msgstr "L'URL vers laquelle rediriger l'utilisateur pour le traitement du paiement."
 
-#: plan/views.py:91 plan/views.py:104 plan/views.py:121
+#: backend/plan/views.py:91 backend/plan/views.py:104 backend/plan/views.py:121
 msgid "Returns the URL to redirect the user to for payment processing."
-msgstr ""
-"Retourne l'URL vers laquelle rediriger l'utilisateur pour le traitement du "
-"paiement."
+msgstr "Retourne l'URL vers laquelle rediriger l'utilisateur pour le traitement du paiement."
 
-#: plan/views.py:97
+#: backend/plan/views.py:97
 msgid "Cancel subscription"
 msgstr "Annuler l'abonnement"
 
-#: plan/views.py:98
+#: backend/plan/views.py:98
 msgid "Cancels the active subscription for the team."
 msgstr "Annule l'abonnement actif pour l'équipe."
 
-#: plan/views.py:102
+#: backend/plan/views.py:102
 msgid "Get customer session URL"
 msgstr "Obtenir l'URL de session client"
 
-#: plan/views.py:167
+#: backend/plan/views.py:167
 msgid "You cannot start freemium plan for this team"
 msgstr "Vous ne pouvez pas démarrer le plan freemium pour cette équipe"
 
-#: plan/views.py:219
+#: backend/plan/views.py:219
 msgid "Handle Stripe webhooks"
 msgstr "Gérer les webhooks Stripe"
 
-#: plan/views.py:221
-msgid ""
-"Processes webhook events from Stripe for subscription and payment updates."
-msgstr ""
-"Traite les événements de webhook depuis Stripe pour les mises à jour "
-"d'abonnement et de paiement."
+#: backend/plan/views.py:221
+msgid "Processes webhook events from Stripe for subscription and payment updates."
+msgstr "Traite les événements de webhook depuis Stripe pour les mises à jour d'abonnement et de paiement."
 
-#: plan/views.py:243
+#: backend/plan/views.py:243
 msgid "List usage history"
 msgstr "Lister l'historique d'utilisation"
 
-#: plan/views.py:244
+#: backend/plan/views.py:244
 msgid "List usage history for the team."
 msgstr "Lister l'historique d'utilisation pour l'équipe."
 
-#: plan/views.py:248
+#: backend/plan/views.py:248
 msgid "Get usage history"
 msgstr "Obtenir l'historique d'utilisation"
 
-#: plan/views.py:249
+#: backend/plan/views.py:249
 msgid "Get usage history for the team."
 msgstr "Obtenir l'historique d'utilisation pour l'équipe."
 
-#: user/admin.py:20
+#: backend/user/admin.py:20
 msgid "Personal info"
 msgstr "Informations personnelles"
 
-#: user/admin.py:22
+#: backend/user/admin.py:22
 msgid "Permissions"
-msgstr "Permissions"
+msgstr ""
 
-#: user/admin.py:34
+#: backend/user/admin.py:34
 msgid "Email verification"
 msgstr "Vérification de l'email"
 
-#: user/admin.py:38
+#: backend/user/admin.py:38
 msgid "Password reset"
 msgstr "Réinitialisation du mot de passe"
 
-#: user/decorators.py:51
+#: backend/user/decorators.py:51
 msgid "Invalid API key"
 msgstr "Clé API invalide"
 
-#: user/managers.py:11
+#: backend/user/managers.py:11
 msgid "Superuser must have is_staff=True."
 msgstr "Le superutilisateur doit avoir is_staff=True."
 
-#: user/managers.py:13
+#: backend/user/managers.py:13
 msgid "Superuser must have is_superuser=True."
 msgstr "Le superutilisateur doit avoir is_superuser=True."
 
-#: user/managers.py:24
+#: backend/user/managers.py:24
 msgid "The given email must be set"
 msgstr "L'email fourni doit être défini"
 
-#: user/models.py:15 user/models.py:141
+#: backend/user/models.py:15 backend/user/models.py:141
 msgid "Email Address"
 msgstr "Adresse email"
 
-#: user/models.py:17
+#: backend/user/models.py:17
 msgid "Reset Password Expires At"
 msgstr "Réinitialisation du mot de passe expire le"
 
-#: user/models.py:22
+#: backend/user/models.py:22
 msgid "Reset Password Token"
 msgstr "Jeton de réinitialisation du mot de passe"
 
-#: user/models.py:28
+#: backend/user/models.py:28
 msgid "Email Verification Token"
 msgstr "Jeton de vérification de l'email"
 
-#: user/models.py:34
+#: backend/user/models.py:34
 msgid "Email Verified"
 msgstr "Email vérifié"
 
-#: user/models.py:38
+#: backend/user/models.py:38
 msgid "Privacy Confirmed At"
 msgstr "Confidentialité confirmée le"
 
-#: user/models.py:43
+#: backend/user/models.py:43
 msgid "Terms Confirmed At"
 msgstr "Conditions confirmées le"
 
-#: user/models.py:48
+#: backend/user/models.py:48
 msgid "Newsletter Confirmed"
 msgstr "Newsletter confirmée"
 
-#: user/models.py:59 user/models.py:104
+#: backend/user/models.py:59 backend/user/models.py:104
 msgid "User"
 msgstr "Utilisateur"
 
-#: user/models.py:60
+#: backend/user/models.py:60
 msgid "Users"
 msgstr "Utilisateurs"
 
-#: user/models.py:76
+#: backend/user/models.py:76
 msgid "Members"
 msgstr "Membres"
 
-#: user/models.py:81
+#: backend/user/models.py:81
 msgid "Stripe Customer ID"
 msgstr "ID client Stripe"
 
-#: user/models.py:93
+#: backend/user/models.py:93
 msgid "Teams"
 msgstr "Équipes"
 
-#: user/models.py:115
+#: backend/user/models.py:115
 msgid "Is Owner"
 msgstr "Est propriétaire"
 
-#: user/models.py:123
+#: backend/user/models.py:123
 msgid "Team Member"
 msgstr "Membre de l'équipe"
 
-#: user/models.py:124
+#: backend/user/models.py:124
 msgid "Team Members"
 msgstr "Membres de l'équipe"
 
-#: user/models.py:135
+#: backend/user/models.py:135
 msgid "Invitation Token"
 msgstr "Jeton d'invitation"
 
-#: user/models.py:145
+#: backend/user/models.py:145
 msgid "Activated"
 msgstr "Activé"
 
-#: user/models.py:153
+#: backend/user/models.py:153
 msgid "Team Invitation"
 msgstr "Invitation d'équipe"
 
-#: user/models.py:154
+#: backend/user/models.py:154
 msgid "Team Invitations"
 msgstr "Invitations d'équipe"
 
-#: user/models.py:173
+#: backend/user/models.py:173
 msgid "Last Used At"
 msgstr "Dernière utilisation le"
 
-#: user/models.py:182
+#: backend/user/models.py:182
 msgid "Team API Key"
 msgstr "Clé API de l'équipe"
 
-#: user/models.py:183
+#: backend/user/models.py:183
 msgid "Team API Keys"
 msgstr "Clés API de l'équipe"
 
-#: user/serializers.py:23
+#: backend/user/serializers.py:23
 msgid "Email already exists"
 msgstr "L'email existe déjà"
 
-#: user/serializers.py:74 user/serializers.py:76
+#: backend/user/serializers.py:74 backend/user/serializers.py:76
 msgid "Invalid email or password"
 msgstr "Email ou mot de passe invalide"
 
-#: user/serializers.py:79
+#: backend/user/serializers.py:79
 msgid "Email is not verified"
 msgstr "L'email n'est pas vérifié"
 
-#: user/services.py:146
+#: backend/user/services.py:146
 msgid "User is already a member of the team"
 msgstr "L'utilisateur est déjà un membre de l'équipe"
 
-#: user/services.py:237
+#: backend/user/services.py:237
 msgid "User does not exist"
 msgstr "L'utilisateur n'existe pas"
 
-#: user/views.py:40 user/views.py:41
+#: backend/user/views.py:40 backend/user/views.py:41
 msgid "Install WaterCrawl"
 msgstr "Installer WaterCrawl"
 
-#: user/views.py:69 user/views.py:70 user/views.py:109 user/views.py:110
+#: backend/user/views.py:69 backend/user/views.py:70 backend/user/views.py:109
+#: backend/user/views.py:110
 msgid "Register a new user"
 msgstr "Enregistrer un nouvel utilisateur"
 
-#: user/views.py:94 user/views.py:95
+#: backend/user/views.py:94 backend/user/views.py:95
 msgid "Verify invitation"
 msgstr "Vérifier l'invitation"
 
-#: user/views.py:138
+#: backend/user/views.py:138
 msgid "You can not register you already have an account"
 msgstr "Vous ne pouvez pas vous inscrire, vous avez déjà un compte"
 
-#: user/views.py:144
+#: backend/user/views.py:144
 msgid "Emails do not match"
 msgstr "Les emails ne correspondent pas"
 
-#: user/views.py:159 user/views.py:160
+#: backend/user/views.py:159 backend/user/views.py:160
 msgid "Authenticate using email and password"
 msgstr "S'authentifier avec email et mot de passe"
 
-#: user/views.py:191 user/views.py:192
+#: backend/user/views.py:191 backend/user/views.py:192
 msgid "Send a verification email"
 msgstr "Envoyer un email de vérification"
 
-#: user/views.py:218 user/views.py:219
+#: backend/user/views.py:218 backend/user/views.py:219
 msgid "Authenticate using OAuth"
 msgstr "S'authentifier avec OAuth"
 
-#: user/views.py:244
+#: backend/user/views.py:244
 msgid "Invalid token"
 msgstr "Jeton invalide"
 
-#: user/views.py:257 user/views.py:258
+#: backend/user/views.py:257 backend/user/views.py:258
 msgid "Send a forgot password email"
 msgstr "Envoyer un email de mot de passe oublié"
 
-#: user/views.py:278 user/views.py:279
+#: backend/user/views.py:278 backend/user/views.py:279
 msgid "Verify reset password token"
 msgstr "Vérifier le jeton de réinitialisation du mot de passe"
 
-#: user/views.py:285 user/views.py:286
+#: backend/user/views.py:285 backend/user/views.py:286
 msgid "Reset password"
 msgstr "Réinitialiser le mot de passe"
 
-#: user/views.py:314 user/views.py:315
+#: backend/user/views.py:314 backend/user/views.py:315
 msgid "Verify email"
 msgstr "Vérifier l'email"
 
-#: user/views.py:348
+#: backend/user/views.py:348
 msgid "Get user profile"
 msgstr "Obtenir le profil utilisateur"
 
-#: user/views.py:349
+#: backend/user/views.py:349
 msgid "Get the current user profile"
 msgstr "Obtenir le profil de l'utilisateur actuel"
 
-#: user/views.py:353 user/views.py:354
+#: backend/user/views.py:353 backend/user/views.py:354
 msgid "Update user profile"
 msgstr "Mettre à jour le profil utilisateur"
 
-#: user/views.py:376 user/views.py:377
+#: backend/user/views.py:376 backend/user/views.py:377
 msgid "Get my invitations"
 msgstr "Obtenir mes invitations"
 
-#: user/views.py:381 user/views.py:382
+#: backend/user/views.py:381 backend/user/views.py:382
 msgid "Accept an invitation"
 msgstr "Accepter une invitation"
 
-#: user/views.py:408 user/views.py:409
+#: backend/user/views.py:408 backend/user/views.py:409
 msgid "Create a new team"
 msgstr "Créer une nouvelle équipe"
 
-#: user/views.py:413 user/views.py:414
+#: backend/user/views.py:413 backend/user/views.py:414
 msgid "Get a team"
 msgstr "Obtenir une équipe"
 
-#: user/views.py:418 user/views.py:419
+#: backend/user/views.py:418 backend/user/views.py:419
 msgid "Update a team"
 msgstr "Mettre à jour une équipe"
 
-#: user/views.py:423 user/views.py:424
+#: backend/user/views.py:423 backend/user/views.py:424
 msgid "List teams"
 msgstr "Lister les équipes"
 
-#: user/views.py:428
+#: backend/user/views.py:428
 msgid "Get/Update the current team"
 msgstr "Obtenir/Mettre à jour l'équipe actuelle"
 
-#: user/views.py:429
+#: backend/user/views.py:429
 msgid "Get the current team"
 msgstr "Obtenir l'équipe actuelle"
 
-#: user/views.py:434 user/views.py:435
+#: backend/user/views.py:434 backend/user/views.py:435
 msgid "Invite a user to the current team"
 msgstr "Inviter un utilisateur dans l'équipe actuelle"
 
-#: user/views.py:441 user/views.py:442
+#: backend/user/views.py:441 backend/user/views.py:442
 msgid "List invitations to the current team"
 msgstr "Lister les invitations de l'équipe actuelle"
 
-#: user/views.py:512 user/views.py:513
+#: backend/user/views.py:512 backend/user/views.py:513
 msgid "Create a new API key"
 msgstr "Créer une nouvelle clé API"
 
-#: user/views.py:517 user/views.py:518
+#: backend/user/views.py:517 backend/user/views.py:518
 msgid "List API keys"
 msgstr "Lister les clés API"
 
-#: user/views.py:522 user/views.py:523
+#: backend/user/views.py:522 backend/user/views.py:523
 msgid "Delete an API key"
 msgstr "Supprimer une clé API"
 
-#: user/views.py:550 user/views.py:551
+#: backend/user/views.py:550 backend/user/views.py:551
 msgid "List team members"
 msgstr "Lister les membres de l'équipe"
 
-#: user/views.py:555 user/views.py:556
+#: backend/user/views.py:555 backend/user/views.py:556
 msgid "Delete a team member"
 msgstr "Supprimer un membre de l'équipe"
 
-#: user/views.py:573
+#: backend/user/views.py:573
 msgid "You can not delete the owner of the team"
 msgstr "Vous ne pouvez pas supprimer le propriétaire de l'équipe"
 
-#: user/views.py:579 user/views.py:580
+#: backend/user/views.py:579 backend/user/views.py:580
 msgid "Refresh token"
 msgstr "Rafraîchir le jeton"
 
-#: user/views.py:590 user/views.py:591
+#: backend/user/views.py:590 backend/user/views.py:591
 msgid "Verify token"
 msgstr "Vérifier le jeton"
+

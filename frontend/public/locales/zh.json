@@ -84,12 +84,6 @@
     }
   },
   "apiKeys": {
-    "actions": {
-      "copied": "已复制！",
-      "copy": "复制",
-      "revoke": "撤销",
-      "revokeConfirm": "您确定要撤销此密钥吗？"
-    },
     "copyToClipboard": "复制到剪贴板",
     "create": {
       "copyKey": "复制密钥",
@@ -264,9 +258,6 @@
     "deselectAll": "取消全选",
     "importing": "导入中...",
     "url": "URL",
-    "common": {
-      "subtitle": "欢迎回来！请登录您的账户"
-    },
     "copiedToClipboard": "已复制到剪贴板！",
     "copyFailed": "复制到剪贴板失败",
     "crawls": "爬取",
@@ -489,6 +480,7 @@
     },
     "subtitle": "输入 URL 以爬取并从网页提取数据",
     "title": "网络爬虫",
+    "typeLabel": "Type",
     "type": {
       "batch": "批量",
       "single": "单个"
@@ -877,12 +869,16 @@
       "selectResultsTitle": "选择要导入的结果",
       "selectResultsDescription": "选择要从 {{url}} 导入到知识库的结果",
       "resultsSelected": "所有页面中已选择 {{count}} 个结果",
+      "resultsSelected_one": "{{count}} result selected across all pages",
+      "resultsSelected_other": "{{count}} results selected across all pages",
       "importAll": "导入所有结果",
       "importSelected": "导入选中项 ({{count}})",
       "noResults": "未找到结果",
       "noResultsDescription": "此爬取请求没有任何结果。",
       "noResultsSelected": "未选择结果",
       "importSuccess": "成功导入 {{count}} 个结果",
+      "importSuccess_one": "Successfully imported {{count}} result",
+      "importSuccess_other": "Successfully imported {{count}} results",
       "invalidRequest": "无效请求。请检查您的选择并重试。",
       "importFailed": "导入选中结果失败",
       "missingIds": "缺少必需的ID",
@@ -1672,7 +1668,6 @@
       },
       "updateButton": "更新"
     },
-    "subtitle": "配置您的应用程序",
     "team": {
       "billingTab": "计费",
       "confirmRemove": "您确定要删除这个成员吗？",
@@ -1713,6 +1708,7 @@
       "status": "状态",
       "title": "团队邀请"
     },
+    "subtitle": "配置您的应用程序",
     "title": "设置"
   },
   "sitemap": {
@@ -1730,6 +1726,7 @@
       "cancelFailed": "取消站点地图生成失败。",
       "download": "下载站点地图失败",
       "generateFailed": "生成站点地图失败。",
+      "loadFailed": "Failed to load sitemap data",
       "loadGraphFailed": "加载站点地图图失败",
       "loadMarkdown": "加载 markdown 失败",
       "loadMarkdownFailed": "加载站点地图 markdown 失败",
@@ -1922,6 +1919,7 @@
     "getStarted": "开始使用",
     "history": "历史",
     "noHistory": "没有可用的使用历史",
+    "noLimit": "Plan has no limit.",
     "noResultsFiltered": "没有结果匹配您的过滤器",
     "refresh": "刷新使用统计",
     "requestedAt": "请求时间",

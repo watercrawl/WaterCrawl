@@ -84,12 +84,6 @@
     }
   },
   "apiKeys": {
-    "actions": {
-      "copied": "Copiado!",
-      "copy": "Copiar",
-      "revoke": "Revogar",
-      "revokeConfirm": "Tem certeza que deseja revogar esta chave?"
-    },
     "copyToClipboard": "Copiar para a Área de Transferência",
     "create": {
       "copyKey": "Copiar Chave",
@@ -264,9 +258,6 @@
     "deselectAll": "Desselecionar tudo",
     "importing": "Importando...",
     "url": "URL",
-    "common": {
-      "subtitle": "Bem-vindo de volta! Por favor, faça login em sua conta"
-    },
     "copiedToClipboard": "Copiado para a área de transferência!",
     "copyFailed": "Falha ao copiar para a área de transferência",
     "crawls": "Rastreamentos",
@@ -489,6 +480,7 @@
     },
     "subtitle": "Digite uma URL para rastrear e extrair dados de páginas web",
     "title": "Rastreador Web",
+    "typeLabel": "Type",
     "type": {
       "batch": "Lote",
       "single": "Único"
@@ -1676,7 +1668,6 @@
       },
       "updateButton": "Atualizar"
     },
-    "subtitle": "Configure sua aplicação",
     "team": {
       "billingTab": "Faturamento",
       "confirmRemove": "Tem certeza de que deseja remover este membro?",
@@ -1717,6 +1708,7 @@
       "status": "Status",
       "title": "Convites da Equipe"
     },
+    "subtitle": "Configure sua aplicação",
     "title": "Configurações"
   },
   "sitemap": {
@@ -1734,6 +1726,7 @@
       "cancelFailed": "Falha ao cancelar geração de sitemap.",
       "download": "Falha ao baixar sitemap",
       "generateFailed": "Falha ao gerar sitemap.",
+      "loadFailed": "Failed to load sitemap data",
       "loadGraphFailed": "Falha ao carregar gráfico do sitemap",
       "loadMarkdown": "Falha ao carregar markdown",
       "loadMarkdownFailed": "Falha ao carregar markdown do sitemap",
