@@ -61,6 +61,7 @@
   },
   "api": {
     "example": "مثال",
+    "install": "Install",
     "noRequestData": "داده درخواستی موجود نیست",
     "seeDocumentation": "برای استفاده پیشرفته، احراز هویت و مثال‌های بیشتر، مستندات رسمی را مشاهده کنید.",
     "selectApiKey": "کلید API...",
@@ -83,12 +84,6 @@
     }
   },
   "apiKeys": {
-    "actionsMenu": {
-      "cancel": "Cancel",
-      "copy": "Copy",
-      "revoke": "Revoke",
-      "revokeConfirm": "Are you sure you want to revoke this key?"
-    },
     "copyToClipboard": "کپی در کلیپ‌بورد",
     "create": {
       "copyKey": "کپی کلید",
@@ -252,6 +247,7 @@
     "upgradePlan": "ارتقاء پلن"
   },
   "common": {
+    "version": "Version",
     "actions": "عملیات",
     "ago": "پیش",
     "appName": "WaterCrawl",
@@ -484,6 +480,7 @@
     },
     "subtitle": "یک URL وارد کنید تا داده‌ها را از صفحات وب خزش و استخراج کنید",
     "title": "خزنده وب",
+    "typeLabel": "Type",
     "type": {
       "batch": "دسته‌ای",
       "single": "منفرد"
