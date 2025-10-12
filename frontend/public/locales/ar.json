@@ -61,6 +61,7 @@
   },
   "api": {
     "example": "مثال",
+    "install": "Install",
     "noRequestData": "لا توجد بيانات طلب متاحة",
     "seeDocumentation": "راجع الوثائق الرسمية للاستخدام المتقدم والمصادقة والمزيد من الأمثلة.",
     "selectApiKey": "مفتاح API...",
@@ -83,12 +84,6 @@
     }
   },
   "apiKeys": {
-    "actionsMenu": {
-      "cancel": "Cancel",
-      "copy": "Copy",
-      "revoke": "Revoke",
-      "revokeConfirm": "Are you sure you want to revoke this key?"
-    },
     "copyToClipboard": "نسخ إلى الحافظة",
     "create": {
       "copyKey": "نسخ المفتاح",
@@ -252,6 +247,7 @@
     "upgradePlan": "ترقية الخطة"
   },
   "common": {
+    "version": "Version",
     "actions": "الإجراءات",
     "ago": "منذ",
     "appName": "WaterCrawl",
@@ -484,6 +480,7 @@
     },
     "subtitle": "أدخل عنوان URL للزحف واستخراج البيانات من صفحات الويب",
     "title": "زاحف الويب",
+    "typeLabel": "Type",
     "type": {
       "batch": "مجموعة",
       "single": "واحد"
