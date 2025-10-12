@@ -38,7 +38,7 @@ export const FormInput: React.FC<{
       value={value}
       onChange={(e) => onChange(e.target.value)}
       disabled={disabled}
-      className="w-full h-10 px-3 bg-transparent border border-gray-200 dark:border-gray-700 rounded-md text-gray-900 dark:text-white focus:outline-none focus:border-gray-400 dark:focus:border-gray-500 disabled:bg-gray-100 dark:disabled:bg-gray-700"
+      className="w-full h-10 px-3 bg-transparent border border-gray-200 dark:border-gray-700 rounded-md text-gray-900 dark:text-white focus:outline-none focus:border-gray-400 dark:focus:border-gray-500 disabled:bg-gray-100 dark:disabled:bg-gray-700 ltr"
       placeholder={placeholder}
     />
     {helpText && <p className="mt-1 text-xs text-gray-500">{helpText}</p>}
@@ -64,11 +64,13 @@ export const FormSection: React.FC<{
 
 export const InfoTooltip: React.FC<{
   content: string;
-}> = ({ content }) => (
-  <div className="group relative inline-block">
-    <QuestionMarkCircleIcon className="h-4 w-4 text-gray-400 hover:text-gray-500 dark:hover:text-gray-300" />
-    <div className="hidden group-hover:block absolute z-10 w-64 p-2 text-sm text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 -translate-x-1/2 left-1/2 mt-1">
-      {content}
+}> = ({ content }) => {
+  return (
+    <div className="group relative inline-block">
+      <QuestionMarkCircleIcon className="h-4 w-4 text-gray-400 hover:text-gray-500 dark:hover:text-gray-300" />
+      <div className="hidden group-hover:block absolute z-10 w-64 p-2 text-sm text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 left-1/2 -translate-x-1/2 mt-1">
+        {content}
+      </div>
     </div>
-  </div>
-);
+  );
+};

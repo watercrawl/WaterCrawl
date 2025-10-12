@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface PaginationProps {
   currentPage: number;
@@ -19,6 +20,7 @@ export const Pagination: React.FC<PaginationProps> = ({
   onPageChange,
   loading = false,
 }) => {
+  const { t } = useTranslation();
   const startItem = (currentPage - 1) * itemsPerPage + 1;
   const endItem = Math.min(currentPage * itemsPerPage, totalItems);
 
@@ -27,25 +29,25 @@ export const Pagination: React.FC<PaginationProps> = ({
       <div className="flex flex-1 items-center justify-between">
         <div className="flex items-center">
           <p className="text-sm text-gray-700 dark:text-gray-300">
-            Showing <span className="font-medium">{startItem}</span> to{' '}
-            <span className="font-medium">{endItem}</span>{' '}
-            of <span className="font-medium">{totalItems}</span> results
+            {t('pagination.showing')} <span className="font-medium">{startItem}</span> {t('pagination.to')}{' '}
+            <span className="font-medium">{endItem}</span> {t('pagination.of')}{' '}
+            <span className="font-medium">{totalItems}</span> {t('pagination.results')}
           </p>
         </div>
-        <div className="flex space-x-2">
+        <div className="flex gap-x-2">
           <button
             onClick={() => onPageChange(currentPage - 1)}
             disabled={!hasPreviousPage || loading}
             className="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Previous
+            {t('common.previous')}
           </button>
           <button
             onClick={() => onPageChange(currentPage + 1)}
             disabled={!hasNextPage || loading}
             className="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Next
+            {t('common.next')}
           </button>
         </div>
       </div>

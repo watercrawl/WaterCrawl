@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { authApi } from '../services/api/auth';
 import { Button } from '../components/shared/Button';
@@ -10,6 +11,7 @@ interface EmailVerificationPopupProps {
 }
 
 export const EmailVerificationPopup: React.FC<EmailVerificationPopupProps> = ({ email, onClose }) => {
+    const { t } = useTranslation();
     const [isResending, setIsResending] = useState(false);
     const [resendMessage, setResendMessage] = useState<string | null>(null);
 
@@ -19,10 +21,10 @@ export const EmailVerificationPopup: React.FC<EmailVerificationPopupProps> = ({ 
             setResendMessage(null);
             await authApi.resendVerificationEmail(email);
             // setResendMessage('Verification email has been resent. Please check your inbox.');
-            toast.success('Verification email has been resent. Please check your inbox.');
+            toast.success(t('auth.verification.resendSuccess'));
             onClose();
         } catch (_error) {
-            setResendMessage('Failed to resend verification email. Please try again.');
+            setResendMessage(t('auth.verification.resendError'));
         } finally {
             setIsResending(false);
         }
@@ -33,15 +35,15 @@ export const EmailVerificationPopup: React.FC<EmailVerificationPopupProps> = ({ 
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl max-w-sm w-full relative">
                 <button
                     onClick={onClose}
-                    className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                    className="absolute top-4 end-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                 >
                     <XMarkIcon className="h-6 w-6" />
                 </button>
 
                 <div className="text-center">
-                    <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Email Verification Required</h2>
+                    <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">{t('auth.verification.required')}</h2>
                     <p className="text-gray-600 dark:text-gray-300 mb-6">
-                        Your email is not activated. Please check your inbox and verify your email address.
+                        {t('auth.verification.message')}
                     </p>
 
                     <Button
@@ -51,7 +53,7 @@ export const EmailVerificationPopup: React.FC<EmailVerificationPopupProps> = ({ 
                         fullWidth
                         className="mb-4"
                     >
-                        Resend Verification Email
+                        {t('auth.verification.resendButton')}
                     </Button>
 
                     {resendMessage && (

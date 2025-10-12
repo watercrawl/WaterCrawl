@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeftIcon, ChevronDownIcon, ChevronRightIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
-import { formatDistanceToNow } from 'date-fns';
+import { ChevronDownIcon } from '@heroicons/react/24/outline';
+import { useTranslation } from 'react-i18next';
+import { useDateLocale } from '../../hooks/useDateLocale';
+import { formatDistanceToNowLocalized } from '../../utils/dateUtils';
 import { CrawlRequest, CrawlResult, CrawlEvent } from '../../types/crawl';
 import { PaginatedResponse } from '../../types/common';
 import { activityLogsApi } from '../../services/api/activityLogs';
@@ -16,8 +18,11 @@ import { DownloadFormatSelector } from '../../components/shared/DownloadFormatSe
 import { SitemapModalSelector } from '../../components/shared/SitemapModalSelector';
 import { CrawlTypeBadge } from '../../components/crawl/CrawlTypeBadge';
 import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
+import { ChevronRight, ArrowRight, ArrowLeft } from '../../components/shared/DirectionalIcon';
 
 const CrawlRequestDetailPage: React.FC = () => {
+  const { t } = useTranslation();
+  const dateLocale = useDateLocale();
   const { requestId } = useParams<{ requestId: string }>();
   const navigate = useNavigate();
   const [request, setRequest] = useState<CrawlRequest | null>(null);
@@ -36,11 +41,11 @@ const CrawlRequestDetailPage: React.FC = () => {
 
   useEffect(() => {
     setItems([
-      { label: 'Dashboard', href: '/dashboard'},
-      { label: 'Crawl Logs', href: '/dashboard/logs/crawls' },
-      { label: 'Crawl Request', href: `/dashboard/logs/crawls/${requestId}`, current: true },
+      { label: t('dashboard.navigation.dashboard'), href: '/dashboard'},
+      { label: t('activityLogs.crawlLogs'), href: '/dashboard/logs/crawls' },
+      { label: t('activityLogs.table.url'), href: `/dashboard/logs/crawls/${requestId}`, current: true },
     ]);
-  }, [setItems, requestId]);
+  }, [setItems, requestId, t]);
 
   const handleCrawlEvent = (event: CrawlEvent) => {
     if (event.type === 'state') {
@@ -98,7 +103,7 @@ const CrawlRequestDetailPage: React.FC = () => {
         }
       } catch (error) {
         console.error('Error fetching crawl request:', error);
-        toast.error('Failed to load crawl request');
+        toast.error(t('activityLogs.errors.fetchFailed'));
         navigate('/dashboard/logs');
       } finally {
         setLoading(false);
@@ -106,7 +111,7 @@ const CrawlRequestDetailPage: React.FC = () => {
     };
 
     fetchRequest();
-  }, [requestId, navigate]);
+  }, [requestId, navigate, t]);
 
   useEffect(() => {
     if (!request || request.status === 'running' || wasRunning) return;
@@ -121,14 +126,14 @@ const CrawlRequestDetailPage: React.FC = () => {
         setHasMore(!!data.next);
       } catch (error) {
         console.error('Error fetching crawl results:', error);
-        toast.error('Failed to load results');
+        toast.error(t('crawl.messages.noResults'));
       } finally {
         setLoading(false);
       }
     };
 
     fetchResults();
-  }, [request, requestId, navigate, wasRunning]);
+  }, [request, requestId, navigate, wasRunning, t]);
 
   const loadMore = async () => {
     if (!requestId || !results?.next || loadingMore ) return;
@@ -143,7 +148,7 @@ const CrawlRequestDetailPage: React.FC = () => {
       setHasMore(!!data.next);
     } catch (error) {
       console.error('Error loading more results:', error);
-      toast.error('Failed to load more results');
+      toast.error(t('crawl.messages.noResults'));
     } finally {
       setLoadingMore(false);
     }
@@ -154,11 +159,11 @@ const CrawlRequestDetailPage: React.FC = () => {
 
     try {
       await crawlRequestApi.cancelCrawl(request.uuid);
-      toast.success('Crawl canceled successfully');
+      toast.success(t('crawl.messages.cancelled'));
       setRequest(prev => prev ? { ...prev, status: 'canceled' } : null);
     } catch (error) {
       console.error('Error canceling crawl:', error);
-      toast.error('Failed to cancel crawl');
+      toast.error(t('crawl.messages.cancelFailed'));
     }
   };
 
@@ -172,7 +177,7 @@ const CrawlRequestDetailPage: React.FC = () => {
       <div className="h-full flex items-center justify-center">
         <div className="flex flex-col items-center space-y-4">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Loading request details...</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">{t('common.loading')}</p>
         </div>
       </div>
     );
@@ -194,15 +199,15 @@ const CrawlRequestDetailPage: React.FC = () => {
       <div className="px-6 py-4">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center gap-x-3">
             <button
               onClick={() => navigate('/dashboard/logs/crawls')}
               className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
             >
-              <ArrowLeftIcon className="h-5 w-5" />
+              <ArrowLeft className="h-5 w-5" />
             </button>
             <div>
-              <h1 className="text-xl font-semibold text-gray-900 dark:text-white">Request Details</h1>
+              <h1 className="text-xl font-semibold text-gray-900 dark:text-white">{t('crawl.results.details')}</h1>
               <p className="text-sm text-gray-500 dark:text-gray-400 truncate max-w-lg">{request.url}</p>
             </div>
           </div>
@@ -212,8 +217,8 @@ const CrawlRequestDetailPage: React.FC = () => {
                 onClick={handleCancel}
                 className="inline-flex items-center px-3 py-1.5 text-sm rounded-md shadow-sm font-medium bg-red-600 text-white hover:bg-red-700 focus:outline-none focus:ring-red-500 focus:ring-offset-2 transition-colors"
               >
-                <div className="flex items-center space-x-2">
-                  <span>Cancel Crawling</span>
+                <div className="flex items-center gap-x-2">
+                  <span>{t('crawl.form.cancelCrawl')}</span>
                 </div>
               </button>
             )}
@@ -223,8 +228,8 @@ const CrawlRequestDetailPage: React.FC = () => {
               onClick={handleTryInCrawl}
               className="inline-flex items-center px-3 py-1.5 text-sm border border-primary-300 dark:border-primary-600 rounded-md shadow-sm font-medium text-primary-700 dark:text-primary-200 bg-white dark:bg-gray-800 hover:bg-primary-50 dark:hover:bg-primary-900/20 focus:outline-none focus:ring-primary-500 focus:ring-offset-2 transition-colors"
             >
-              <ArrowRightIcon className="h-4 w-4 mr-1.5" />
-              Try in Crawl Playground
+              <ArrowRight className="h-4 w-4 me-1.5" />
+              {t('activityLogs.emptyState.goToCrawl')}
             </button>
           </div>
         </div>
@@ -235,61 +240,61 @@ const CrawlRequestDetailPage: React.FC = () => {
           <div className="order-1 lg:order-2 lg:col-span-1">
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
               <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
-                <h2 className="text-base font-medium text-gray-900 dark:text-white">Information</h2>
+                <h2 className="text-base font-medium text-gray-900 dark:text-white">{t('common.info')}</h2>
               </div>
               <div className="px-4 py-4">
                 <dl className="space-y-4">
                   <div>
-                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">Start URL</dt>
+                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('crawl.form.url')}</dt>
                     <dd className="mt-1 text-sm text-gray-900 dark:text-white break-all">{request.url}</dd>
                   </div>
                   <div>
-                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">Status</dt>
+                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('activityLogs.table.status')}</dt>
                     <dd className="mt-1">
                       <StatusBadge status={request.status} />
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">Crawl Type</dt>
+                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('common.common.subtitle')}</dt>
                     <dd className="mt-1">
                       <CrawlTypeBadge type={request.crawl_type || 'single'} />
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">Created</dt>
+                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('activityLogs.table.created')}</dt>
                     <dd className="mt-1 text-sm text-gray-900 dark:text-white">
-                      {formatDistanceToNow(new Date(request.created_at), { addSuffix: true })}
+                      {formatDistanceToNowLocalized(new Date(request.created_at), dateLocale, { addSuffix: true })}
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">Duration</dt>
+                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('activityLogs.table.duration')}</dt>
                     <dd className="mt-1 text-sm text-gray-900 dark:text-white">
                       {formatRequestDuration(request.duration)}
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">Number of Results</dt>
+                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('activityLogs.table.results')}</dt>
                     <dd className="mt-1 text-sm text-gray-900 dark:text-white">
                       {request.number_of_documents || 0}
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">Parameters</dt>
+                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('dashboard.settings.advanced')}</dt>
                     <dd className="mt-1">
                       <button
                         onClick={() => setShowParameters(!showParameters)}
                         className="inline-flex items-center text-sm text-gray-900 dark:text-white"
                       >
-                        <span className="mr-1">View Parameters</span>
+                        <span className="me-1">{t('dashboard.actions.viewDetails')}</span>
                         {showParameters ? (
                           <ChevronDownIcon className="h-4 w-4" />
                         ) : (
-                          <ChevronRightIcon className="h-4 w-4" />
+                          <ChevronRight className="h-4 w-4" />
                         )}
                       </button>
                       {showParameters && (
                         <div className="mt-2 space-y-2">
-                          <div className="rounded-md bg-gray-50 dark:bg-gray-900 p-3">
+                          <div className="rounded-md bg-gray-50 dark:bg-gray-900 p-3 ltr">
                             <pre className="text-xs text-gray-900 dark:text-white whitespace-pre-wrap">
                               {JSON.stringify(request.options, null, 2)}
                             </pre>
@@ -307,7 +312,7 @@ const CrawlRequestDetailPage: React.FC = () => {
           <div className="order-2 lg:order-1 lg:col-span-2">
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
               <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
-                <h2 className="text-base font-medium text-gray-900 dark:text-white">Results</h2>
+                <h2 className="text-base font-medium text-gray-900 dark:text-white">{t('crawl.form.results')}</h2>
               </div>
               <div className="p-4">
                 {request?.status === 'running' && (
@@ -319,7 +324,7 @@ const CrawlRequestDetailPage: React.FC = () => {
                   <div className="flex flex-col items-center justify-center py-8 space-y-3">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
                     <p className="text-sm text-gray-500 dark:text-gray-400">
-                      Loading results...
+                      {t('common.loading')}
                     </p>
                   </div>
                 ) : (
@@ -345,21 +350,21 @@ const CrawlRequestDetailPage: React.FC = () => {
                         >
                           {loadingMore ? (
                             <>
-                              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-900 dark:border-white mr-2"></div>
-                              Loading...
+                              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-900 dark:border-white me-2"></div>
+                              {t('common.loading')}
                             </>
                           ) : (
-                            'Load More'
+                            t('dashboard.actions.viewAll')
                           )}
                         </button>
                       ) : request.status !== 'running' && allResults && allResults.length > 0 ? (
                         <p className="text-sm text-gray-500 dark:text-gray-400">
-                          All {allResults.length} results loaded
+                          {t('pagination.showing')} {allResults.length} {t('pagination.results')}
                         </p>
                       ) : null}
                       {request.status === 'running' && (
                         <p className="text-sm text-gray-500 dark:text-gray-400">
-                          Crawling...
+                          {t('crawl.form.crawling')}
                         </p>
                       )}
                     </div>

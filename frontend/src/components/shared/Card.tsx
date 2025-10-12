@@ -45,7 +45,7 @@ const Title: React.FC<TitleProps> = ({ children, className = '', icon }) => {
   return (
     <div className="pb-2 mb-2">
       <h2 className={twMerge('text-lg font-medium text-gray-900 dark:text-white flex items-center', className)}>
-        {icon && <span className="mr-2">{icon}</span>}
+        {icon && <span className="me-2">{icon}</span>}
         {children}
       </h2>
     </div>

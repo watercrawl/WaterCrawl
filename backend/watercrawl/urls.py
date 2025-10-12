@@ -27,6 +27,7 @@ from drf_spectacular.views import (
 from common.views import TeamSchemaView
 
 urlpatterns = [
+    path("i18n/", include("django.conf.urls.i18n")),
     path("admin/", admin.site.urls),
     # YOUR PATTERNS
     path("api/schema/team/", TeamSchemaView.as_view(), name="team_schema"),

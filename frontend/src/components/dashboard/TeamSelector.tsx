@@ -3,8 +3,10 @@ import { Menu, Transition, Dialog, MenuButton, MenuItems, MenuItem, TransitionCh
 import { ChevronDownIcon, PlusIcon } from '@heroicons/react/20/solid';
 import { classnames } from '../../lib/utils';
 import { useTeam } from '../../contexts/TeamContext';
+import { useTranslation } from 'react-i18next';
 
 export const TeamSelector: React.FC = () => {
+  const { t } = useTranslation();
   const { currentTeam, teams, setCurrentTeam, createTeam } = useTeam();
   const [isCreateTeamOpen, setIsCreateTeamOpen] = useState(false);
   const [newTeamName, setNewTeamName] = useState('');
@@ -38,14 +40,14 @@ export const TeamSelector: React.FC = () => {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <MenuItems anchor="bottom start" className="absolute left-0 z-10 mt-2.5 w-48 origin-top-left rounded-md bg-white dark:bg-gray-800 py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
+          <MenuItems anchor="bottom start" className="z-[101] mt-2.5 w-48 rounded-md bg-white dark:bg-gray-800 py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
             {teams.map((team) => (
               <MenuItem key={team.uuid}>
                 {({ active }) => (
                   <button
                     onClick={() => setCurrentTeam(team)}
                     className={classnames({
-                      'block px-3 py-1 w-full text-left text-sm leading-6 text-gray-900 dark:text-white': true,
+                      'block px-3 py-1 w-full text-start text-sm leading-6 text-gray-900 dark:text-white': true,
                       'bg-gray-50 dark:bg-gray-700': active,
                     })}
                   >
@@ -60,13 +62,13 @@ export const TeamSelector: React.FC = () => {
                 <button
                   onClick={() => setIsCreateTeamOpen(true)}
                   className={classnames({
-                    'block px-3 py-1 w-full text-left text-sm leading-6 text-gray-900 dark:text-white': true,
+                    'block px-3 py-1 w-full text-start text-sm leading-6 text-gray-900 dark:text-white': true,
                     'bg-gray-50 dark:bg-gray-700': active,
                   })}
                 >
                   <div className="flex items-center">
-                    <PlusIcon className="h-4 w-4 mr-2" />
-                    Create Team
+                    <PlusIcon className="h-4 w-4 me-2" />
+                    {t('team.createTeam')}
                   </div>
                 </button>
               )}
@@ -100,37 +102,37 @@ export const TeamSelector: React.FC = () => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <DialogPanel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-gray-800 p-6 text-left align-middle shadow-xl transition-all">
+                <DialogPanel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-gray-800 p-6 text-start align-middle shadow-xl transition-all">
                   <DialogTitle
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900 dark:text-white"
                   >
-                    Create New Team
+                    {t('team.createNewTeam')}
                   </DialogTitle>
                   <div className="mt-4">
                     <input
                       type="text"
                       value={newTeamName}
                       onChange={(e) => setNewTeamName(e.target.value)}
-                      placeholder="Team Name"
+                      placeholder={t('team.teamNamePlaceholder')}
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 dark:text-white dark:bg-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
 
-                  <div className="mt-6 flex justify-end space-x-3">
+                  <div className="mt-6 flex justify-end gap-x-3">
                     <button
                       type="button"
                       className="inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
                       onClick={() => setIsCreateTeamOpen(false)}
                     >
-                      Cancel
+                      {t('common.cancel')}
                     </button>
                     <button
                       type="button"
                       className="inline-flex justify-center rounded-md border border-transparent bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
                       onClick={handleCreateTeam}
                     >
-                      Create
+                      {t('common.create')}
                     </button>
                   </div>
                 </DialogPanel>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
 import { adminProviderApi } from '../../services/api/admin/provider';
 import { AdminProviderConfig, AdminLLMModel, AdminEmbeddingModel, VisibilityLevel, AdminLLMModelRequest, AdminEmbeddingModelRequest } from '../../types/admin/provider';
@@ -8,6 +9,7 @@ import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
 
 const ProviderConfigDetailPage: React.FC = () => {
+  const { t } = useTranslation();
   const { providerConfigId } = useParams<{ providerConfigId: string }>();
   const [providerConfig, setProviderConfig] = useState<AdminProviderConfig | null>(null);
   const [llmModels, setLlmModels] = useState<AdminLLMModel[]>([]);
@@ -20,11 +22,11 @@ const ProviderConfigDetailPage: React.FC = () => {
 
   useEffect(() => {
     setItems([
-      { label: 'Admin', href: '/admin' },
-      { label: 'Manage LLM Providers', href: '/admin/llm-providers' },
-      { label: 'Provider Config Detail', href: `/admin/llm-providers/${providerConfigId}`, current: true },
+      { label: t('dashboard.navigation.adminPanel'), href: '/manager' },
+      { label: t('admin.llm.title'), href: '/manager/llm-providers' },
+      { label: t('providerConfig.details'), href: `/manager/llm-providers/${providerConfigId}`, current: true },
     ]);
-  }, [setItems, providerConfigId]);
+  }, [setItems, providerConfigId, t]);
 
   const fetchProviderData = useCallback(async () => {
     if (!providerConfigId) return;
@@ -43,12 +45,12 @@ const ProviderConfigDetailPage: React.FC = () => {
       setEmbeddingModels(embeddingResponse.results);
 
     } catch (_err) {
-      setError('Failed to fetch provider details.');
-      toast.error('Failed to fetch provider details.');
+      setError(t('providerConfig.toast.loadError'));
+      toast.error(t('providerConfig.toast.loadError'));
     } finally {
       setLoading(false);
     }
-  }, [providerConfigId]);
+  }, [providerConfigId, t]);
 
   useEffect(() => {
     fetchProviderData();
@@ -57,15 +59,15 @@ const ProviderConfigDetailPage: React.FC = () => {
   const handleSyncLLMs = async () => {
     if (!providerConfigId) return;
     setIsSyncingLLMs(true);
-    toast.loading('Syncing LLM models...');
+    toast.loading(t('admin.llm.syncing'));
     try {
       await adminProviderApi.providerConfiguration.sync_llm_models(providerConfigId);
       toast.dismiss();
-      toast.success('LLM models synced successfully.');
+      toast.success(t('admin.llm.syncSuccess'));
       await fetchProviderData(); // Refresh data
     } catch (_err) {
       toast.dismiss();
-      toast.error('Failed to sync LLM models.');
+      toast.error(t('admin.llm.syncError'));
     } finally {
       setIsSyncingLLMs(false);
     }
@@ -74,15 +76,15 @@ const ProviderConfigDetailPage: React.FC = () => {
   const handleSyncEmbeddings = async () => {
     if (!providerConfigId) return;
     setIsSyncingEmbeddings(true);
-    toast.loading('Syncing embedding models...');
+    toast.loading(t('admin.llm.syncing'));
     try {
       await adminProviderApi.providerConfiguration.sync_provider_embeddings(providerConfigId);
       toast.dismiss();
-      toast.success('Embedding models synced successfully.');
+      toast.success(t('admin.llm.syncSuccess'));
       await fetchProviderData(); // Refresh data
     } catch (_err) {
       toast.dismiss();
-      toast.error('Failed to sync embedding models.');
+      toast.error(t('admin.llm.syncError'));
     } finally {
       setIsSyncingEmbeddings(false);
     }
@@ -103,11 +105,11 @@ const ProviderConfigDetailPage: React.FC = () => {
             provider_name: modelToUpdate.provider_name
         };
         await adminProviderApi.llmModel.update(uuid, requestData);
-        toast.success('LLM model visibility updated.');
+        toast.success(t('admin.llm.visibilityUpdated'));
       }
     } catch (_err) {
       setLlmModels(originalModels);
-      toast.error('Failed to update LLM model visibility.');
+      toast.error(t('admin.llm.updateError'));
     }
   };
 
@@ -130,11 +132,11 @@ const ProviderConfigDetailPage: React.FC = () => {
                 provider_name: modelToUpdate.provider_name
             };
             await adminProviderApi.embeddingModel.update(uuid, requestData);
-            toast.success('Embedding model visibility updated.');
+            toast.success(t('admin.llm.visibilityUpdated'));
         }
     } catch (_err) {
       setEmbeddingModels(originalModels);
-      toast.error('Failed to update embedding model visibility.');
+      toast.error(t('admin.llm.updateError'));
     }
   };
 
@@ -148,60 +150,60 @@ const ProviderConfigDetailPage: React.FC = () => {
   }
 
   if (!providerConfig) {
-    return <div className="text-center mt-8">Provider configuration not found.</div>;
+    return <div className="text-center mt-8">{t('errors.notFound')}</div>;
   }
 
   return (
     <div className="space-y-8 mt-8">
       <div>
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{providerConfig.title}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400">Provider: {providerConfig.provider_name}</p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">{t('providerConfig.provider')}: {providerConfig.provider_name}</p>
       </div>
 
-      <div className="flex space-x-4">
+      <div className="flex gap-x-4">
         <button
           onClick={handleSyncLLMs}
           disabled={isSyncingLLMs || isSyncingEmbeddings}
           className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
         >
-          <ArrowPathIcon className={`-ml-1 mr-2 h-5 w-5 ${isSyncingLLMs ? 'animate-spin' : ''}`} />
-          {isSyncingLLMs ? 'Syncing...' : 'Sync LLM Models'}
+          <ArrowPathIcon className={`-ms-1 me-2 h-5 w-5 ${isSyncingLLMs ? 'animate-spin' : ''}`} />
+          {isSyncingLLMs ? t('admin.llm.syncing') : t('admin.llm.syncModels')}
         </button>
         <button
           onClick={handleSyncEmbeddings}
           disabled={isSyncingLLMs || isSyncingEmbeddings}
           className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
         >
-          <ArrowPathIcon className={`-ml-1 mr-2 h-5 w-5 ${isSyncingEmbeddings ? 'animate-spin' : ''}`} />
-          {isSyncingEmbeddings ? 'Syncing...' : 'Sync Embeddings'}
+          <ArrowPathIcon className={`-ms-1 me-2 h-5 w-5 ${isSyncingEmbeddings ? 'animate-spin' : ''}`} />
+          {isSyncingEmbeddings ? t('admin.llm.syncing') : t('admin.llm.syncEmbeddings')}
         </button>
       </div>
 
       {/* LLM Models Table */}
       <div className="space-y-4">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white">LLM Models</h2>
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{t('admin.llm.models')}</h2>
         <div className="overflow-x-auto shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
           <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
             <thead className="bg-gray-50 dark:bg-gray-800">
               <tr>
-                <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-white sm:pl-6">Model Name</th>
-                <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">Visibility</th>
+                <th scope="col" className="py-3.5 ps-4 pe-3 text-start text-sm font-semibold text-gray-900 dark:text-white sm:ps-6">{t('providerConfig.modelName')}</th>
+                <th scope="col" className="px-3 py-3.5 text-start text-sm font-semibold text-gray-900 dark:text-white">{t('providerConfig.visibility.label')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 dark:divide-gray-800 bg-white dark:bg-gray-900">
               {llmModels.map((model) => (
                 <tr key={model.uuid}>
-                  <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 dark:text-white sm:pl-6">{model.name}</td>
+                  <td className="whitespace-nowrap py-4 ps-4 pe-3 text-sm font-medium text-gray-900 dark:text-white sm:ps-6">{model.name}</td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-300">
                     <select
                       value={model.visibility_level}
                       onChange={(e) => handleLLMVisibilityChange(model.uuid, e.target.value as VisibilityLevel)}
-                      className="block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                      className="block w-full rounded-md border-gray-300 py-2 ps-3 pe-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                     >
-                      <option value={VisibilityLevel.AVAILABLE}>Available</option>
-                      <option value={VisibilityLevel.NOT_AVAILABLE}>Not Available</option>
-                      <option value={VisibilityLevel.TEAM_ONLY}>Team Only</option>
-                      <option value={VisibilityLevel.PREMIUM}>Premium</option>
+                      <option value={VisibilityLevel.AVAILABLE}>{t('providerConfig.visibility.available')}</option>
+                      <option value={VisibilityLevel.NOT_AVAILABLE}>{t('providerConfig.visibility.notAvailable')}</option>
+                      <option value={VisibilityLevel.TEAM_ONLY}>{t('providerConfig.visibility.teamOnly')}</option>
+                      <option value={VisibilityLevel.PREMIUM}>{t('providerConfig.visibility.premium')}</option>
                     </select>
                   </td>
                 </tr>
@@ -213,29 +215,29 @@ const ProviderConfigDetailPage: React.FC = () => {
 
       {/* Embedding Models Table */}
       <div className="space-y-4">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Embedding Models</h2>
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{t('admin.llm.embeddingModels')}</h2>
         <div className="overflow-x-auto shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
           <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
             <thead className="bg-gray-50 dark:bg-gray-800">
               <tr>
-                <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-white sm:pl-6">Model Name</th>
-                <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">Visibility</th>
+                <th scope="col" className="py-3.5 ps-4 pe-3 text-start text-sm font-semibold text-gray-900 dark:text-white sm:ps-6">{t('providerConfig.modelName')}</th>
+                <th scope="col" className="px-3 py-3.5 text-start text-sm font-semibold text-gray-900 dark:text-white">{t('providerConfig.visibility.label')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 dark:divide-gray-800 bg-white dark:bg-gray-900">
               {embeddingModels.map((model) => (
                 <tr key={model.uuid}>
-                  <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 dark:text-white sm:pl-6">{model.name}</td>
+                  <td className="whitespace-nowrap py-4 ps-4 pe-3 text-sm font-medium text-gray-900 dark:text-white sm:ps-6">{model.name}</td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-300">
                     <select
                       value={model.visibility_level}
                       onChange={(e) => handleEmbeddingVisibilityChange(model.uuid, e.target.value as VisibilityLevel)}
-                      className="block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                      className="block w-full rounded-md border-gray-300 py-2 ps-3 pe-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                     >
-                      <option value={VisibilityLevel.AVAILABLE}>Available</option>
-                      <option value={VisibilityLevel.NOT_AVAILABLE}>Not Available</option>
-                      <option value={VisibilityLevel.TEAM_ONLY}>Team Only</option>
-                      <option value={VisibilityLevel.PREMIUM}>Premium</option>
+                      <option value={VisibilityLevel.AVAILABLE}>{t('providerConfig.visibility.available')}</option>
+                      <option value={VisibilityLevel.NOT_AVAILABLE}>{t('providerConfig.visibility.notAvailable')}</option>
+                      <option value={VisibilityLevel.TEAM_ONLY}>{t('providerConfig.visibility.teamOnly')}</option>
+                      <option value={VisibilityLevel.PREMIUM}>{t('providerConfig.visibility.premium')}</option>
                     </select>
                   </td>
                 </tr>

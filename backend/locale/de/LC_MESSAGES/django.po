@@ -1,0 +1,2212 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-06 10:58+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: agent/models.py:9 core/models.py:147 llm/models.py:8 llm/models.py:102
+#: user/models.py:71 user/models.py:160
+msgid "Name"
+msgstr "Name"
+
+#: agent/models.py:14
+msgid "System Prompt"
+msgstr "System-Prompt"
+
+#: agent/models.py:21
+msgid "Config Provider"
+msgstr "Konfigurationsanbieter"
+
+#: agent/models.py:29
+msgid "LLM Model"
+msgstr "LLM-Modell"
+
+#: agent/models.py:37 core/consts.py:203 knowledge_base/models.py:15
+#: llm/models.py:56 plan/models.py:115 plan/models.py:194 user/models.py:92
+#: user/models.py:110 user/models.py:130 user/models.py:165
+msgid "Team"
+msgstr "Team"
+
+#: agent/models.py:47 agent/models.py:59
+msgid "Agent"
+msgstr "Agent"
+
+#: agent/models.py:48
+msgid "Agents"
+msgstr "Agenten"
+
+#: agent/models.py:53
+msgid "Tool Type"
+msgstr "Werkzeugtyp"
+
+#: agent/models.py:63
+msgid "Config"
+msgstr "Konfiguration"
+
+#: agent/models.py:75
+msgid "agent"
+msgstr "Agent"
+
+#: agent/models.py:83 core/models.py:19 core/models.py:117 core/models.py:172
+#: core/models.py:193
+msgid "team"
+msgstr "Team"
+
+#: agent/models.py:92
+msgid "conversation"
+msgstr "Konversation"
+
+#: common/docs.py:3
+msgid ""
+"\n"
+"# Introduction\n"
+"\n"
+"This documentation covers all the external APIs that can be accessed using a "
+"Team API Key. These APIs are designed for integration with external systems "
+"and services.\n"
+"\n"
+"## Authentication\n"
+"\n"
+"All endpoints in this documentation require authentication using an API Key. "
+"To authenticate your requests:\n"
+"\n"
+"1. Generate an API Key from the [API Keys Dashboard](https://"
+"app.watercrawl.dev/dashboard/api-keys)\n"
+"2. Include the API Key in your requests using the `X-API-Key` header:\n"
+"\n"
+"```bash\n"
+"curl -H \"X-API-Key: your_api_key_here\" https://api.watercrawl.dev/v1/...\n"
+"```\n"
+"\n"
+"### Important Notes:\n"
+"- Keep your API Key secure and never share it publicly\n"
+"- You can generate multiple API Keys for different purposes\n"
+"- You can revoke API Keys at any time from the dashboard\n"
+"- Each API Key is associated with a specific team\n"
+"\n"
+"## Rate Limiting\n"
+"API requests are rate-limited based on your team's plan. Please refer to "
+"your plan details for specific limits.\n"
+msgstr ""
+
+#: common/docs.py:30
+msgid ""
+"API Key for team authentication. Generate from https://app.watercrawl.dev/"
+"dashboard/api-keys"
+msgstr ""
+
+#: common/handlers.py:19
+msgid "An unexpected error occurred."
+msgstr "Ein unerwarteter Fehler ist aufgetreten."
+
+#: common/handlers.py:27 common/handlers.py:36
+msgid "Invalid input data."
+msgstr "Ungültige Eingabedaten."
+
+#: common/handlers.py:58 common/handlers.py:62
+msgid "Not found."
+msgstr "Nicht gefunden."
+
+#: common/schema.py:30
+msgid "Bad Request"
+msgstr "Fehlerhafte Anfrage"
+
+#: common/schema.py:40
+msgid "Not Found"
+msgstr "Nicht gefunden"
+
+#: common/schema.py:48
+msgid "Internal Server Error"
+msgstr "Interner Serverfehler"
+
+#: common/services.py:125
+msgid "No recipient provided"
+msgstr "Kein Empfänger angegeben"
+
+#: common/services.py:127
+msgid "No subject provided"
+msgstr "Kein Betreff angegeben"
+
+#: common/services.py:129
+msgid "No body or html provided"
+msgstr "Kein Text oder HTML angegeben"
+
+#: common/views.py:17
+msgid "Frontend Setting"
+msgstr "Frontend-Einstellung"
+
+#: common/views.py:18
+msgid "Retrieve the frontend setting."
+msgstr "Die Frontend-Einstellung abrufen."
+
+#: core/admin.py:38 core/admin.py:41
+msgid "Duplicate"
+msgstr "Duplizieren"
+
+#: core/consts.py:41 knowledge_base/consts.py:11
+msgid "New"
+msgstr "Neu"
+
+#: core/consts.py:42
+msgid "Running"
+msgstr "Läuft"
+
+#: core/consts.py:43
+msgid "Finished"
+msgstr "Abgeschlossen"
+
+#: core/consts.py:44
+msgid "Canceling"
+msgstr "Wird abgebrochen"
+
+#: core/consts.py:45 plan/consts.py:22
+msgid "Canceled"
+msgstr "Abgebrochen"
+
+#: core/consts.py:46 knowledge_base/consts.py:16
+msgid "Failed"
+msgstr "Fehlgeschlagen"
+
+#: core/consts.py:154
+msgid "PDF"
+msgstr "PDF"
+
+#: core/consts.py:155
+msgid "Screenshot"
+msgstr "Screenshot"
+
+#: core/consts.py:160
+msgid "Web"
+msgstr "Web"
+
+#: core/consts.py:167
+msgid "Basic"
+msgstr "Basis"
+
+#: core/consts.py:168
+msgid "Advanced"
+msgstr "Erweitert"
+
+#: core/consts.py:169
+msgid "Ultimate"
+msgstr "Ultimate"
+
+#: core/consts.py:179
+msgid "Any"
+msgstr "Beliebig"
+
+#: core/consts.py:180
+msgid "Day"
+msgstr "Tag"
+
+#: core/consts.py:181
+msgid "Week"
+msgstr "Woche"
+
+#: core/consts.py:182
+msgid "Month"
+msgstr "Monat"
+
+#: core/consts.py:183
+msgid "Year"
+msgstr "Jahr"
+
+#: core/consts.py:191
+msgid "HTTP"
+msgstr "HTTP"
+
+#: core/consts.py:192
+msgid "SOCKS4"
+msgstr "SOCKS4"
+
+#: core/consts.py:193
+msgid "SOCKS5"
+msgstr "SOCKS5"
+
+#: core/consts.py:201
+msgid "General"
+msgstr "Allgemein"
+
+#: core/consts.py:202 llm/consts.py:40
+msgid "Premium"
+msgstr "Premium"
+
+#: core/consts.py:210
+msgid "Single"
+msgstr "Einzeln"
+
+#: core/consts.py:211
+msgid "Batch"
+msgstr "Stapel"
+
+#: core/docs.py:253
+msgid "Filter crawl requests by UUID."
+msgstr "Crawl-Anfragen nach UUID filtern."
+
+#: core/docs.py:259
+msgid "Filter crawl requests by start URL."
+msgstr "Crawl-Anfragen nach Start-URL filtern."
+
+#: core/docs.py:265
+msgid "Filter crawl requests by status."
+msgstr "Crawl-Anfragen nach Status filtern."
+
+#: core/docs.py:271
+msgid "Filter crawl requests by date"
+msgstr "Crawl-Anfragen nach Datum filtern"
+
+#: core/docs.py:280 core/docs.py:301
+msgid "Prefetch crawl results. Default: False."
+msgstr "Crawl-Ergebnisse vorladen. Standard: False."
+
+#: core/docs.py:286
+msgid "Filter crawl results by URL."
+msgstr "Crawl-Ergebnisse nach URL filtern."
+
+#: core/docs.py:292
+msgid "Filter crawl results by date"
+msgstr "Crawl-Ergebnisse nach Datum filtern"
+
+#: core/docs.py:312
+msgid ""
+"Format of the download file. Default: json. Available formats: markdown, "
+"json."
+msgstr ""
+"Format der Download-Datei. Standard: json. Verfügbare Formate: markdown, "
+"json."
+
+#: core/models.py:23
+msgid "urls"
+msgstr "URLs"
+
+#: core/models.py:25
+msgid "crawl type"
+msgstr "Crawl-Typ"
+
+#: core/models.py:31
+msgid "status"
+msgstr "Status"
+
+#: core/models.py:36
+msgid "options"
+msgstr "Optionen"
+
+#: core/models.py:37
+msgid "duration"
+msgstr "Dauer"
+
+#: core/models.py:39
+msgid "sitemap"
+msgstr "Sitemap"
+
+#: core/models.py:57
+msgid "URL must be a string."
+msgstr "URL muss eine Zeichenkette sein."
+
+#: core/models.py:63 core/models.py:70
+msgid "Crawl Request"
+msgstr "Crawl-Anfrage"
+
+#: core/models.py:64
+msgid "Crawl Requests"
+msgstr "Crawl-Anfragen"
+
+#: core/models.py:74 core/models.py:196
+msgid "URL"
+msgstr "URL"
+
+#: core/models.py:76 core/models.py:131 core/models.py:206
+msgid "Result"
+msgstr "Ergebnis"
+
+#: core/models.py:81 core/models.py:88
+msgid "Crawl Result"
+msgstr "Crawl-Ergebnis"
+
+#: core/models.py:82
+msgid "Crawl Results"
+msgstr "Crawl-Ergebnisse"
+
+#: core/models.py:93
+msgid "Attachment Type"
+msgstr "Anhangstyp"
+
+#: core/models.py:98
+msgid "Attachment"
+msgstr "Anhang"
+
+#: core/models.py:102
+msgid "Crawl Result Attachment"
+msgstr "Crawl-Ergebnis-Anhang"
+
+#: core/models.py:103
+msgid "Crawl Result Attachments"
+msgstr "Crawl-Ergebnis-Anhänge"
+
+#: core/models.py:120
+msgid "Query"
+msgstr "Abfrage"
+
+#: core/models.py:121
+msgid "Search Options"
+msgstr "Suchoptionen"
+
+#: core/models.py:122
+msgid "Result Limit"
+msgstr "Ergebnislimit"
+
+#: core/models.py:123 core/models.py:204
+msgid "Duration"
+msgstr "Dauer"
+
+#: core/models.py:125 core/models.py:199 knowledge_base/models.py:88
+#: knowledge_base/models.py:130 plan/models.py:144 plan/models.py:163
+msgid "Status"
+msgstr "Status"
+
+#: core/models.py:142
+msgid "Search Request"
+msgstr "Suchanfrage"
+
+#: core/models.py:143
+msgid "Search Requests"
+msgstr "Suchanfragen"
+
+#: core/models.py:148 llm/models.py:9 llm/models.py:103 user/models.py:170
+msgid "Key"
+msgstr "Schlüssel"
+
+#: core/models.py:149 user/models.py:84
+msgid "Is Default"
+msgstr "Ist Standard"
+
+#: core/models.py:151
+msgid "Proxy Category"
+msgstr "Proxy-Kategorie"
+
+#: core/models.py:157
+msgid "Proxy Type"
+msgstr "Proxy-Typ"
+
+#: core/models.py:163
+msgid "Host"
+msgstr "Host"
+
+#: core/models.py:166
+msgid "Port"
+msgstr "Port"
+
+#: core/models.py:167
+msgid "Username"
+msgstr "Benutzername"
+
+#: core/models.py:168
+msgid "Password"
+msgstr "Passwort"
+
+#: core/models.py:179
+msgid "Proxy Server"
+msgstr "Proxy-Server"
+
+#: core/models.py:180
+msgid "Proxy Servers"
+msgstr "Proxy-Server"
+
+#: core/models.py:197
+msgid "Options"
+msgstr "Optionen"
+
+#: core/models.py:214
+msgid "Sitemap Request"
+msgstr "Sitemap-Anfrage"
+
+#: core/models.py:215
+msgid "Sitemap Requests"
+msgstr "Sitemap-Anfragen"
+
+#: core/serializers.py:82 core/serializers.py:356
+msgid "Proxy server does not exist"
+msgstr "Proxy-Server existiert nicht"
+
+#: core/serializers.py:376
+msgid "This field is required"
+msgstr "Dieses Feld ist erforderlich"
+
+#: core/services.py:769
+msgid "At least one URL is required for the crawl request."
+msgstr "Mindestens eine URL ist für die Crawl-Anfrage erforderlich."
+
+#: core/views.py:44
+msgid "Start a new crawl request"
+msgstr "Eine neue Crawl-Anfrage starten"
+
+#: core/views.py:49
+msgid "Batch create crawl requests"
+msgstr "Crawl-Anfragen stapelweise erstellen"
+
+#: core/views.py:56
+msgid "List crawl requests"
+msgstr "Crawl-Anfragen auflisten"
+
+#: core/views.py:62
+msgid "Get crawl request"
+msgstr "Crawl-Anfrage abrufen"
+
+#: core/views.py:67
+msgid "Cancel a running crawl"
+msgstr "Einen laufenden Crawl abbrechen"
+
+#: core/views.py:72
+msgid "Download crawl result"
+msgstr "Crawl-Ergebnis herunterladen"
+
+#: core/views.py:79
+msgid "Check crawl status"
+msgstr "Crawl-Status überprüfen"
+
+#: core/views.py:91 core/views.py:492
+msgid "Get sitemap graph"
+msgstr "Sitemap-Graph abrufen"
+
+#: core/views.py:97
+msgid "Get markdown report"
+msgstr "Markdown-Bericht abrufen"
+
+#: core/views.py:141
+msgid "Only running crawl requests can be deleted"
+msgstr "Nur laufende Crawl-Anfragen können gelöscht werden"
+
+#: core/views.py:161
+msgid "Invalid output format"
+msgstr "Ungültiges Ausgabeformat"
+
+#: core/views.py:187 core/views.py:200
+msgid "Sitemap for this crawl request does not exist"
+msgstr "Sitemap für diese Crawl-Anfrage existiert nicht"
+
+#: core/views.py:213
+msgid "List crawl results"
+msgstr "Crawl-Ergebnisse auflisten"
+
+#: core/views.py:219
+msgid "Get crawl result"
+msgstr "Crawl-Ergebnis abrufen"
+
+#: core/views.py:250
+msgid "Usage Report"
+msgstr "Nutzungsbericht"
+
+#: core/views.py:268
+msgid "Plugin Form"
+msgstr "Plugin-Formular"
+
+#: core/views.py:281
+msgid "List search requests"
+msgstr "Suchanfragen auflisten"
+
+#: core/views.py:286
+msgid "Get search request"
+msgstr "Suchanfrage abrufen"
+
+#: core/views.py:292
+msgid "Create search request"
+msgstr "Suchanfrage erstellen"
+
+#: core/views.py:297
+msgid "Stop search request"
+msgstr "Suchanfrage stoppen"
+
+#: core/views.py:302
+msgid "Check search request status"
+msgstr "Suchanfragen-Status überprüfen"
+
+#: core/views.py:340
+msgid "Only running search requests can be deleted"
+msgstr "Nur laufende Suchanfragen können gelöscht werden"
+
+#: core/views.py:360
+msgid "List proxy servers"
+msgstr "Proxy-Server auflisten"
+
+#: core/views.py:365
+msgid "Create proxy server"
+msgstr "Proxy-Server erstellen"
+
+#: core/views.py:370
+msgid "Get proxy server"
+msgstr "Proxy-Server abrufen"
+
+#: core/views.py:375
+msgid "Delete proxy server"
+msgstr "Proxy-Server löschen"
+
+#: core/views.py:380 core/views.py:385
+msgid "Update proxy server"
+msgstr "Proxy-Server aktualisieren"
+
+#: core/views.py:390
+msgid "List all proxy servers (Global and Private proxies)"
+msgstr "Alle Proxy-Server auflisten (Global und Privat)"
+
+#: core/views.py:396
+msgid "Test proxy"
+msgstr "Proxy testen"
+
+#: core/views.py:460
+msgid "List sitemap requests"
+msgstr "Sitemap-Anfragen auflisten"
+
+#: core/views.py:465
+msgid "Create sitemap request"
+msgstr "Sitemap-Anfrage erstellen"
+
+#: core/views.py:470
+msgid "Get sitemap request"
+msgstr "Sitemap-Anfrage abrufen"
+
+#: core/views.py:475
+msgid "Delete sitemap request"
+msgstr "Sitemap-Anfrage löschen"
+
+#: core/views.py:480
+msgid "Check sitemap request status"
+msgstr "Sitemap-Anfragen-Status überprüfen"
+
+#: core/views.py:498
+msgid "Get sitemap markdown"
+msgstr "Sitemap-Markdown abrufen"
+
+#: core/views.py:537
+msgid "Only running sitemap requests can be deleted"
+msgstr "Nur laufende Sitemap-Anfragen können gelöscht werden"
+
+#: core/views.py:563 core/views.py:576
+msgid "Sitemap for this request does not exist"
+msgstr "Sitemap für diese Anfrage existiert nicht"
+
+#: knowledge_base/admin.py:26
+msgid "Chunking Configuration"
+msgstr "Chunking-Konfiguration"
+
+#: knowledge_base/admin.py:32
+msgid "Embedding Configuration"
+msgstr "Embedding-Konfiguration"
+
+#: knowledge_base/admin.py:38
+msgid "Chunk Enhancement"
+msgstr "Chunk-Verbesserung"
+
+#: knowledge_base/admin.py:49 knowledge_base/admin.py:73
+#: knowledge_base/admin.py:98 knowledge_base/models.py:128 llm/admin.py:51
+msgid "Metadata"
+msgstr "Metadaten"
+
+#: knowledge_base/admin.py:67 knowledge_base/models.py:119
+#: knowledge_base/models.py:158
+msgid "Content"
+msgstr "Inhalt"
+
+#: knowledge_base/admin.py:91
+msgid "Embedding"
+msgstr "Embedding"
+
+#: knowledge_base/consts.py:12
+msgid "Reindexing"
+msgstr "Neuindizierung"
+
+#: knowledge_base/consts.py:13
+msgid "Crawling"
+msgstr "Crawling"
+
+#: knowledge_base/consts.py:14
+msgid "Processing"
+msgstr "Verarbeitung"
+
+#: knowledge_base/consts.py:15
+msgid "Ready"
+msgstr "Bereit"
+
+#: knowledge_base/consts.py:23 plan/consts.py:21
+msgid "Active"
+msgstr "Aktiv"
+
+#: knowledge_base/consts.py:24
+msgid "Archived"
+msgstr "Archiviert"
+
+#: knowledge_base/consts.py:25
+msgid "Deleted"
+msgstr "Gelöscht"
+
+#: knowledge_base/consts.py:32
+msgid "Standard"
+msgstr "Standard"
+
+#: knowledge_base/consts.py:33
+msgid "Context-Aware"
+msgstr "Kontextbewusst"
+
+#: knowledge_base/consts.py:40
+msgid "Manual"
+msgstr "Manuell"
+
+#: knowledge_base/consts.py:41
+msgid "File"
+msgstr "Datei"
+
+#: knowledge_base/consts.py:42
+msgid "Crawl"
+msgstr "Crawl"
+
+#: knowledge_base/factories.py:71
+#, python-brace-format
+msgid "Text splitter type '{splitter_type}' not supported"
+msgstr "Text-Splitter-Typ '{splitter_type}' wird nicht unterstützt"
+
+#: knowledge_base/factories.py:124
+#, python-brace-format
+msgid "Unsupported embedding provider: {provider_name}"
+msgstr "Nicht unterstützter Embedding-Anbieter: {provider_name}"
+
+#: knowledge_base/factories.py:177
+#, python-brace-format
+msgid "Vector store type '{vector_store_type}' not supported"
+msgstr "Vektorspeicher-Typ '{vector_store_type}' wird nicht unterstützt"
+
+#: knowledge_base/factories.py:250
+#, python-brace-format
+msgid "Unsupported document type: {extension}"
+msgstr "Nicht unterstützter Dokumenttyp: {extension}"
+
+#: knowledge_base/models.py:10 knowledge_base/models.py:118 llm/models.py:41
+#: plan/models.py:98
+msgid "Title"
+msgstr "Titel"
+
+#: knowledge_base/models.py:11 llm/models.py:104 plan/models.py:15
+msgid "Description"
+msgstr "Beschreibung"
+
+#: knowledge_base/models.py:19
+msgid "Chunk size"
+msgstr "Chunk-Größe"
+
+#: knowledge_base/models.py:20
+msgid "Number of documents to be processed in each chunk"
+msgstr "Anzahl der Dokumente, die in jedem Chunk verarbeitet werden"
+
+#: knowledge_base/models.py:24
+msgid "Chunk overlap"
+msgstr "Chunk-Überschneidung"
+
+#: knowledge_base/models.py:25
+msgid "Number of overlapping documents in each chunk"
+msgstr "Anzahl der überlappenden Dokumente in jedem Chunk"
+
+#: knowledge_base/models.py:29
+msgid "Chunk separator"
+msgstr "Chunk-Trennzeichen"
+
+#: knowledge_base/models.py:30
+msgid "Separator used to split documents into chunks"
+msgstr "Trennzeichen zum Aufteilen von Dokumenten in Chunks"
+
+#: knowledge_base/models.py:36
+msgid "Embedding Model"
+msgstr "Embedding-Modell"
+
+#: knowledge_base/models.py:44
+msgid "Embedding Provider Config"
+msgstr "Embedding-Anbieter-Konfiguration"
+
+#: knowledge_base/models.py:48
+msgid "Provider configuration for embedding models"
+msgstr "Anbieterkonfiguration für Embedding-Modelle"
+
+#: knowledge_base/models.py:53
+msgid "Summarization Provider Config"
+msgstr "Zusammenfassungs-Anbieter-Konfiguration"
+
+#: knowledge_base/models.py:57
+msgid "Provider configuration for summarization models"
+msgstr "Anbieterkonfiguration für Zusammenfassungsmodelle"
+
+#: knowledge_base/models.py:62
+msgid "Summarization Model"
+msgstr "Zusammenfassungsmodell"
+
+#: knowledge_base/models.py:68
+msgid "Summarizer Context"
+msgstr "Zusammenfassungs-Kontext"
+
+#: knowledge_base/models.py:71
+msgid "Context to be provided to the summarizer"
+msgstr "Kontext, der der Zusammenfassung bereitgestellt wird"
+
+#: knowledge_base/models.py:74
+msgid "Summarizer Type"
+msgstr "Zusammenfassungstyp"
+
+#: knowledge_base/models.py:78
+msgid "The type of summarizer to use for document summarization"
+msgstr "Der Typ der Zusammenfassung für die Dokumentzusammenfassung"
+
+#: knowledge_base/models.py:81
+msgid "Summarizer Temperature"
+msgstr "Zusammenfassungs-Temperatur"
+
+#: knowledge_base/models.py:85
+msgid "Temperature to be provided to the summarizer"
+msgstr "Temperatur, die der Zusammenfassung bereitgestellt wird"
+
+#: knowledge_base/models.py:94
+msgid "Knowledge Base Each Document Cost"
+msgstr "Wissensdatenbank - Kosten pro Dokument"
+
+#: knowledge_base/models.py:95
+msgid "The cost of each document in the knowledge base"
+msgstr "Die Kosten für jedes Dokument in der Wissensdatenbank"
+
+#: knowledge_base/models.py:100 knowledge_base/models.py:115
+msgid "Knowledge Base"
+msgstr "Wissensdatenbank"
+
+#: knowledge_base/models.py:101
+msgid "Knowledge Bases"
+msgstr "Wissensdatenbanken"
+
+#: knowledge_base/models.py:121
+msgid "Source Type"
+msgstr "Quellentyp"
+
+#: knowledge_base/models.py:126
+msgid "Source"
+msgstr "Quelle"
+
+#: knowledge_base/models.py:127
+msgid "Error"
+msgstr "Fehler"
+
+#: knowledge_base/models.py:137 knowledge_base/models.py:154
+msgid "Document"
+msgstr "Dokument"
+
+#: knowledge_base/models.py:138
+msgid "Documents"
+msgstr "Dokumente"
+
+#: knowledge_base/models.py:157
+msgid "Index"
+msgstr "Index"
+
+#: knowledge_base/models.py:159
+msgid "Keywords"
+msgstr "Schlüsselwörter"
+
+#: knowledge_base/models.py:162
+msgid "Chunk"
+msgstr "Chunk"
+
+#: knowledge_base/models.py:163
+msgid "Chunks"
+msgstr "Chunks"
+
+#: knowledge_base/serializers.py:86
+msgid "Invalid embedding provider config id."
+msgstr "Ungültige Embedding-Anbieter-Konfigurations-ID."
+
+#: knowledge_base/serializers.py:101
+msgid "Invalid summarization provider config id."
+msgstr "Ungültige Zusammenfassungs-Anbieter-Konfigurations-ID."
+
+#: knowledge_base/serializers.py:118
+msgid "Invalid embedding model id."
+msgstr "Ungültige Embedding-Modell-ID."
+
+#: knowledge_base/serializers.py:124
+msgid "Summarization model id is required."
+msgstr "Zusammenfassungsmodell-ID ist erforderlich."
+
+#: knowledge_base/serializers.py:132
+msgid "Invalid summarization model id."
+msgstr "Ungültige Zusammenfassungsmodell-ID."
+
+#: knowledge_base/serializers.py:139
+msgid "Invalid summarizer temperature."
+msgstr "Ungültige Zusammenfassungs-Temperatur."
+
+#: knowledge_base/serializers.py:232
+msgid "crawl_result_uuids cannot be empty."
+msgstr "crawl_result_uuids darf nicht leer sein."
+
+#: knowledge_base/serializers.py:239
+msgid "No valid crawl results found for the provided UUIDs."
+msgstr "Keine gültigen Crawl-Ergebnisse für die angegebenen UUIDs gefunden."
+
+#: knowledge_base/serializers.py:259
+msgid "Invalid crawl request UUID."
+msgstr "Ungültige Crawl-Anfrage-UUID."
+
+#: knowledge_base/serializers.py:277
+msgid "Files cannot be empty."
+msgstr "Dateien dürfen nicht leer sein."
+
+#: knowledge_base/serializers.py:283
+msgid "File must be a pdf, docx, image, or text."
+msgstr "Datei muss eine PDF, DOCX, Bild oder Text sein."
+
+#: knowledge_base/serializers.py:310
+msgid "Invalid provider config id."
+msgstr "Ungültige Anbieter-Konfigurations-ID."
+
+#: knowledge_base/serializers.py:321
+msgid "Invalid temperature."
+msgstr "Ungültige Temperatur."
+
+#: knowledge_base/serializers.py:326
+msgid "Invalid llm model id."
+msgstr "Ungültige LLM-Modell-ID."
+
+#: knowledge_base/views.py:46
+msgid "List knowledge bases"
+msgstr "Wissensdatenbanken auflisten"
+
+#: knowledge_base/views.py:47
+msgid "List all knowledge bases for the current team."
+msgstr "Alle Wissensdatenbanken für das aktuelle Team auflisten."
+
+#: knowledge_base/views.py:51
+msgid "Get knowledge base details"
+msgstr "Wissensdatenbank-Details abrufen"
+
+#: knowledge_base/views.py:52
+msgid "Get details for a specific knowledge base."
+msgstr "Details für eine bestimmte Wissensdatenbank abrufen."
+
+#: knowledge_base/views.py:59
+msgid "Create knowledge base"
+msgstr "Wissensdatenbank erstellen"
+
+#: knowledge_base/views.py:60
+msgid "Create a new knowledge base for the current team."
+msgstr "Eine neue Wissensdatenbank für das aktuelle Team erstellen."
+
+#: knowledge_base/views.py:68
+msgid "Update knowledge base"
+msgstr "Wissensdatenbank aktualisieren"
+
+#: knowledge_base/views.py:69
+msgid "Update an existing knowledge base."
+msgstr "Eine bestehende Wissensdatenbank aktualisieren."
+
+#: knowledge_base/views.py:73
+msgid "Partially update knowledge base"
+msgstr "Wissensdatenbank teilweise aktualisieren"
+
+#: knowledge_base/views.py:74
+msgid "Partially update an existing knowledge base."
+msgstr "Eine bestehende Wissensdatenbank teilweise aktualisieren."
+
+#: knowledge_base/views.py:78
+msgid "Delete knowledge base"
+msgstr "Wissensdatenbank löschen"
+
+#: knowledge_base/views.py:79
+msgid "Delete an existing knowledge base."
+msgstr "Eine bestehende Wissensdatenbank löschen."
+
+#: knowledge_base/views.py:83
+msgid "Enhance knowledge base context aware text"
+msgstr "Wissensdatenbank mit kontextbewusstem Text verbessern"
+
+#: knowledge_base/views.py:84
+msgid "Enhance documents using context-aware summarization."
+msgstr "Dokumente mit kontextbewusster Zusammenfassung verbessern."
+
+#: knowledge_base/views.py:90
+msgid "Query knowledge base"
+msgstr "Wissensdatenbank abfragen"
+
+#: knowledge_base/views.py:91
+msgid "Execute a query against the knowledge base."
+msgstr "Eine Abfrage gegen die Wissensdatenbank ausführen."
+
+#: knowledge_base/views.py:187
+msgid "List documents"
+msgstr "Dokumente auflisten"
+
+#: knowledge_base/views.py:188
+msgid "List all documents for a knowledge base."
+msgstr "Alle Dokumente für eine Wissensdatenbank auflisten."
+
+#: knowledge_base/views.py:195
+msgid "Get document details"
+msgstr "Dokument-Details abrufen"
+
+#: knowledge_base/views.py:196
+msgid "Get details for a specific document."
+msgstr "Details für ein bestimmtes Dokument abrufen."
+
+#: knowledge_base/views.py:200
+msgid "Create document"
+msgstr "Dokument erstellen"
+
+#: knowledge_base/views.py:201
+msgid "Create a new document for a knowledge base."
+msgstr "Ein neues Dokument für eine Wissensdatenbank erstellen."
+
+#: knowledge_base/views.py:205
+msgid "Update document"
+msgstr "Dokument aktualisieren"
+
+#: knowledge_base/views.py:206
+msgid "Update an existing document."
+msgstr "Ein bestehendes Dokument aktualisieren."
+
+#: knowledge_base/views.py:210
+msgid "Partially update document"
+msgstr "Dokument teilweise aktualisieren"
+
+#: knowledge_base/views.py:211
+msgid "Partially update an existing document."
+msgstr "Ein bestehendes Dokument teilweise aktualisieren."
+
+#: knowledge_base/views.py:215
+msgid "Delete document"
+msgstr "Dokument löschen"
+
+#: knowledge_base/views.py:216
+msgid "Delete an existing document."
+msgstr "Ein bestehendes Dokument löschen."
+
+#: knowledge_base/views.py:220
+msgid "Process URLs"
+msgstr "URLs verarbeiten"
+
+#: knowledge_base/views.py:221
+msgid "Process a list of URLs and add them to the knowledge base."
+msgstr "Eine Liste von URLs verarbeiten und zur Wissensdatenbank hinzufügen."
+
+#: knowledge_base/views.py:229
+msgid "Process crawl results"
+msgstr "Crawl-Ergebnisse verarbeiten"
+
+#: knowledge_base/views.py:230
+msgid "Process crawl results and add them to the knowledge base."
+msgstr "Crawl-Ergebnisse verarbeiten und zur Wissensdatenbank hinzufügen."
+
+#: knowledge_base/views.py:238
+msgid "Process crawl request"
+msgstr "Crawl-Anfrage verarbeiten"
+
+#: knowledge_base/views.py:239
+msgid "Process a crawl request and add it to the knowledge base."
+msgstr "Eine Crawl-Anfrage verarbeiten und zur Wissensdatenbank hinzufügen."
+
+#: knowledge_base/views.py:247
+msgid "Process files"
+msgstr "Dateien verarbeiten"
+
+#: knowledge_base/views.py:248
+msgid "Process a list of files and add them to the knowledge base."
+msgstr ""
+"Eine Liste von Dateien verarbeiten und zur Wissensdatenbank hinzufügen."
+
+#: knowledge_base/views.py:256
+msgid "Retry document"
+msgstr "Dokument erneut versuchen"
+
+#: knowledge_base/views.py:257
+msgid "Retry a failed document. to index it again."
+msgstr ""
+"Ein fehlgeschlagenes Dokument erneut versuchen, um es erneut zu indizieren."
+
+#: knowledge_base/views.py:296 knowledge_base/views.py:337
+#: knowledge_base/views.py:365 knowledge_base/views.py:397
+#: knowledge_base/views.py:428
+msgid "You cannot add documents to this knowledge base."
+msgstr "Sie können dieser Wissensdatenbank keine Dokumente hinzufügen."
+
+#: knowledge_base/views.py:457
+msgid "You can only retry just failed documents."
+msgstr "Sie können nur fehlgeschlagene Dokumente erneut versuchen."
+
+#: knowledge_base/views.py:459
+msgid "You cannot make changes to this knowledge base."
+msgstr "Sie können keine Änderungen an dieser Wissensdatenbank vornehmen."
+
+#: knowledge_base/views.py:467
+msgid "List document chunks"
+msgstr "Dokument-Chunks auflisten"
+
+#: knowledge_base/views.py:468
+msgid "List all chunks for a document."
+msgstr "Alle Chunks für ein Dokument auflisten."
+
+#: llm/admin.py:44
+msgid "API Configuration"
+msgstr "API-Konfiguration"
+
+#: llm/admin_api/serializers.py:54 llm/serializers.py:70
+msgid "API key is required"
+msgstr "API-Schlüssel ist erforderlich"
+
+#: llm/admin_api/serializers.py:56 llm/serializers.py:72
+msgid "Base URL is required"
+msgstr "Basis-URL ist erforderlich"
+
+#: llm/admin_api/serializers.py:73 llm/admin_api/serializers.py:74
+#: llm/serializers.py:89 llm/serializers.py:90
+msgid "Invalid API key or base URL. Test failed"
+msgstr "Ungültiger API-Schlüssel oder Basis-URL. Test fehlgeschlagen"
+
+#: llm/admin_api/views.py:17 llm/admin_api/views.py:18
+msgid "List provider configs"
+msgstr "Anbieterkonfigurationen auflisten"
+
+#: llm/admin_api/views.py:22 llm/admin_api/views.py:23 llm/views.py:24
+msgid "Create provider config"
+msgstr "Anbieterkonfiguration erstellen"
+
+#: llm/admin_api/views.py:27 llm/admin_api/views.py:28 llm/views.py:29
+msgid "Get provider config"
+msgstr "Anbieterkonfiguration abrufen"
+
+#: llm/admin_api/views.py:32 llm/admin_api/views.py:33
+#: llm/admin_api/views.py:37 llm/admin_api/views.py:38 llm/views.py:41
+#: llm/views.py:46
+msgid "Update provider config"
+msgstr "Anbieterkonfiguration aktualisieren"
+
+#: llm/admin_api/views.py:42 llm/admin_api/views.py:43 llm/views.py:36
+msgid "Delete provider config"
+msgstr "Anbieterkonfiguration löschen"
+
+#: llm/admin_api/views.py:47 llm/admin_api/views.py:48
+msgid "Sync embeddings"
+msgstr "Embeddings synchronisieren"
+
+#: llm/admin_api/views.py:54 llm/admin_api/views.py:55
+msgid "Sync LLM models"
+msgstr "LLM-Modelle synchronisieren"
+
+#: llm/admin_api/views.py:61 llm/admin_api/views.py:62
+msgid "Test config"
+msgstr "Konfiguration testen"
+
+#: llm/admin_api/views.py:68 llm/admin_api/views.py:69
+msgid "List providers"
+msgstr "Anbieter auflisten"
+
+#: llm/admin_api/views.py:74 llm/views.py:89
+msgid "List of available providers"
+msgstr "Liste der verfügbaren Anbieter"
+
+#: llm/admin_api/views.py:157 llm/admin_api/views.py:158
+msgid "List LLM models"
+msgstr "LLM-Modelle auflisten"
+
+#: llm/admin_api/views.py:162 llm/admin_api/views.py:163
+msgid "Create LLM model"
+msgstr "LLM-Modell erstellen"
+
+#: llm/admin_api/views.py:167 llm/admin_api/views.py:168
+msgid "Get LLM model"
+msgstr "LLM-Modell abrufen"
+
+#: llm/admin_api/views.py:172 llm/admin_api/views.py:173
+#: llm/admin_api/views.py:177 llm/admin_api/views.py:178
+msgid "Update LLM model"
+msgstr "LLM-Modell aktualisieren"
+
+#: llm/admin_api/views.py:182 llm/admin_api/views.py:183
+msgid "Delete LLM model"
+msgstr "LLM-Modell löschen"
+
+#: llm/admin_api/views.py:196 llm/admin_api/views.py:197
+msgid "List provider embeddings"
+msgstr "Anbieter-Embeddings auflisten"
+
+#: llm/admin_api/views.py:201 llm/admin_api/views.py:202
+msgid "Create provider embedding"
+msgstr "Anbieter-Embedding erstellen"
+
+#: llm/admin_api/views.py:206 llm/admin_api/views.py:207
+msgid "Get provider embedding"
+msgstr "Anbieter-Embedding abrufen"
+
+#: llm/admin_api/views.py:211 llm/admin_api/views.py:212
+#: llm/admin_api/views.py:216 llm/admin_api/views.py:217
+msgid "Update provider embedding"
+msgstr "Anbieter-Embedding aktualisieren"
+
+#: llm/admin_api/views.py:221 llm/admin_api/views.py:222
+msgid "Delete provider embedding"
+msgstr "Anbieter-Embedding löschen"
+
+#: llm/consts.py:7 llm/consts.py:22
+msgid "OpenAI"
+msgstr "OpenAI"
+
+#: llm/consts.py:10
+msgid "WaterCrawl"
+msgstr "WaterCrawl"
+
+#: llm/consts.py:37
+msgid "Not Available"
+msgstr "Nicht verfügbar"
+
+#: llm/consts.py:38
+msgid "Available"
+msgstr "Verfügbar"
+
+#: llm/consts.py:39
+msgid "Team Only"
+msgstr "Nur Team"
+
+#: llm/consts.py:46
+msgid "Start"
+msgstr "Start"
+
+#: llm/consts.py:47
+msgid "End"
+msgstr "Ende"
+
+#: llm/factories.py:39
+msgid "Provider config is required"
+msgstr "Anbieterkonfiguration ist erforderlich"
+
+#: llm/factories.py:60 llm/providers.py:90
+msgid "WaterCrawlLLM is not installed. Please install it"
+msgstr "WaterCrawlLLM ist nicht installiert. Bitte installieren Sie es"
+
+#: llm/factories.py:68 llm/factories.py:90
+#, python-brace-format
+msgid "Unsupported provider: {provider_name}"
+msgstr "Nicht unterstützter Anbieter: {provider_name}"
+
+#: llm/models.py:11 llm/models.py:43 llm/models.py:97
+msgid "Provider"
+msgstr "Anbieter"
+
+#: llm/models.py:17 llm/models.py:114
+msgid "Visibility Level"
+msgstr "Sichtbarkeitsstufe"
+
+#: llm/models.py:23
+msgid "Min Temperature"
+msgstr "Minimale Temperatur"
+
+#: llm/models.py:26
+msgid "Max Temperature"
+msgstr "Maximale Temperatur"
+
+#: llm/models.py:29
+msgid "Default Temperature"
+msgstr "Standard-Temperatur"
+
+#: llm/models.py:33
+msgid "Model"
+msgstr "Modell"
+
+#: llm/models.py:34
+msgid "Models"
+msgstr "Modelle"
+
+#: llm/models.py:48 plan/models.py:217
+msgid "API Key"
+msgstr "API-Schlüssel"
+
+#: llm/models.py:50
+msgid "API Base URL"
+msgstr "API-Basis-URL"
+
+#: llm/models.py:52
+msgid "Temperature"
+msgstr "Temperatur"
+
+#: llm/models.py:86
+msgid "Provider Config"
+msgstr "Anbieterkonfiguration"
+
+#: llm/models.py:87
+msgid "Provider Configs"
+msgstr "Anbieterkonfigurationen"
+
+#: llm/models.py:105
+msgid "Dimensions"
+msgstr "Dimensionen"
+
+#: llm/models.py:106
+msgid "Max Input Length"
+msgstr "Maximale Eingabelänge"
+
+#: llm/models.py:108
+msgid "Truncate"
+msgstr "Abschneiden"
+
+#: llm/models.py:121
+msgid "Provider Embedding"
+msgstr "Anbieter-Embedding"
+
+#: llm/models.py:122
+msgid "Provider Embeddings"
+msgstr "Anbieter-Embeddings"
+
+#: llm/views.py:19
+msgid "List team provider configs"
+msgstr "Team-Anbieterkonfigurationen auflisten"
+
+#: llm/views.py:20
+msgid "Get all provider configurations for the current team."
+msgstr "Alle Anbieterkonfigurationen für das aktuelle Team abrufen."
+
+#: llm/views.py:25
+msgid "Create a new provider configuration for the current team."
+msgstr "Eine neue Anbieterkonfiguration für das aktuelle Team erstellen."
+
+#: llm/views.py:31
+msgid "Get detailed information about a specific provider configuration."
+msgstr ""
+"Detaillierte Informationen über eine bestimmte Anbieterkonfiguration abrufen."
+
+#: llm/views.py:37
+msgid "Delete a provider configuration."
+msgstr "Eine Anbieterkonfiguration löschen."
+
+#: llm/views.py:42 llm/views.py:47
+msgid "Update a provider configuration."
+msgstr "Eine Anbieterkonfiguration aktualisieren."
+
+#: llm/views.py:51 llm/views.py:84
+msgid "List available providers"
+msgstr "Verfügbare Anbieter auflisten"
+
+#: llm/views.py:52 llm/views.py:85
+msgid "Get a list of available LLM providers."
+msgstr "Eine Liste der verfügbaren LLM-Anbieter abrufen."
+
+#: llm/views.py:57
+msgid "List all provider configs (Global and Team-specific)"
+msgstr "Alle Anbieterkonfigurationen auflisten (Global und teamspezifisch)"
+
+#: llm/views.py:59
+msgid ""
+"Get all available provider configurations including global and team-specific "
+"ones."
+msgstr ""
+"Alle verfügbaren Anbieterkonfigurationen einschließlich globaler und "
+"teamspezifischer abrufen."
+
+#: llm/views.py:65
+msgid "Test provider config"
+msgstr "Anbieterkonfiguration testen"
+
+#: llm/views.py:66
+msgid "Test a provider configuration without saving it."
+msgstr "Eine Anbieterkonfiguration testen, ohne sie zu speichern."
+
+#: llm/views.py:74
+msgid "Get provider models"
+msgstr "Anbietermodelle abrufen"
+
+#: llm/views.py:75
+msgid "Get all models supported by a specific provider."
+msgstr "Alle von einem bestimmten Anbieter unterstützten Modelle abrufen."
+
+#: llm/views.py:79
+msgid "Get provider embedding models"
+msgstr "Anbieter-Embedding-Modelle abrufen"
+
+#: llm/views.py:80
+msgid "Get all embedding models supported by a specific provider."
+msgstr ""
+"Alle Embedding-Modelle abrufen, die von einem bestimmten Anbieter "
+"unterstützt werden."
+
+#: llm/views.py:178
+msgid "Test failed"
+msgstr "Test fehlgeschlagen"
+
+#: locker/helpers.py:43
+#, python-brace-format
+msgid "Failed to acquire lock '{lock_name}' within {wait_time} seconds"
+msgstr ""
+"Lock '{lock_name}' konnte nicht innerhalb von {wait_time} Sekunden erworben "
+"werden"
+
+#: plan/admin.py:50
+msgid "Stripe Configuration"
+msgstr "Stripe-Konfiguration"
+
+#: plan/admin.py:52
+msgid "Plan Limits"
+msgstr "Planlimits"
+
+#: plan/admin.py:67 plan/admin.py:102 plan/admin.py:119 plan/admin.py:130
+msgid "Timestamps"
+msgstr "Zeitstempel"
+
+#: plan/admin.py:89
+msgid "Credits"
+msgstr "Credits"
+
+#: plan/admin.py:91
+msgid "Subscription Details"
+msgstr "Abonnement-Details"
+
+#: plan/admin.py:118
+msgid "Payment Details"
+msgstr "Zahlungsdetails"
+
+#: plan/authentication.py:18
+msgid "No Stripe signature found"
+msgstr "Keine Stripe-Signatur gefunden"
+
+#: plan/authentication.py:30
+msgid "Invalid Stripe signature"
+msgstr "Ungültige Stripe-Signatur"
+
+#: plan/consts.py:7
+msgid "Yearly"
+msgstr "Jährlich"
+
+#: plan/consts.py:8
+msgid "Monthly"
+msgstr "Monatlich"
+
+#: plan/consts.py:23
+msgid "Incomplete"
+msgstr "Unvollständig"
+
+#: plan/consts.py:24
+msgid "Incomplete Expired"
+msgstr "Unvollständig abgelaufen"
+
+#: plan/consts.py:25
+msgid "Past Due"
+msgstr "Überfällig"
+
+#: plan/consts.py:26
+msgid "Paused"
+msgstr "Pausiert"
+
+#: plan/consts.py:27
+msgid "Trialing"
+msgstr "Testphase"
+
+#: plan/consts.py:28
+msgid "Unpaid"
+msgstr "Unbezahlt"
+
+#: plan/consts.py:35
+msgid "Default"
+msgstr "Standard"
+
+#: plan/consts.py:36
+msgid "Info"
+msgstr "Info"
+
+#: plan/consts.py:37
+msgid "Cross"
+msgstr "Kreuz"
+
+#: plan/consts.py:38
+msgid "Check"
+msgstr "Häkchen"
+
+#: plan/filters.py:11 plan/models.py:200
+msgid "Content type"
+msgstr "Inhaltstyp"
+
+#: plan/filters.py:13
+msgid "Crawl request"
+msgstr "Crawl-Anfrage"
+
+#: plan/filters.py:14
+msgid "Search request"
+msgstr "Suchanfrage"
+
+#: plan/filters.py:15
+msgid "Sitemap request"
+msgstr "Sitemap-Anfrage"
+
+#: plan/filters.py:16
+msgid "Knowledge base document"
+msgstr "Wissensdatenbank-Dokument"
+
+#: plan/filters.py:21
+msgid "API key"
+msgstr "API-Schlüssel"
+
+#: plan/filters.py:33
+msgid "Invalid value. Expected format: app_label.model"
+msgstr "Ungültiger Wert. Erwartetes Format: app_label.model"
+
+#: plan/models.py:10
+msgid "name"
+msgstr "Name"
+
+#: plan/models.py:11
+msgid "Label"
+msgstr "Bezeichnung"
+
+#: plan/models.py:13
+msgid "Group"
+msgstr "Gruppe"
+
+#: plan/models.py:17
+msgid "Price before discount"
+msgstr "Preis vor Rabatt"
+
+#: plan/models.py:23
+msgid "Price"
+msgstr "Preis"
+
+#: plan/models.py:25
+msgid "Stripe price id"
+msgstr "Stripe-Preis-ID"
+
+#: plan/models.py:28
+msgid "Number of users"
+msgstr "Anzahl der Benutzer"
+
+#: plan/models.py:29
+msgid "Number of users that can be added to the team."
+msgstr "Anzahl der Benutzer, die dem Team hinzugefügt werden können."
+
+#: plan/models.py:33
+msgid "Page credit"
+msgstr "Seiten-Credit"
+
+#: plan/models.py:34
+msgid "Number of pages that can be crawled in plan duration."
+msgstr "Anzahl der Seiten, die während der Plandauer gecrawlt werden können."
+
+#: plan/models.py:38
+msgid "Daily page credit"
+msgstr "Tägliches Seiten-Credit"
+
+#: plan/models.py:40
+msgid ""
+"Number of pages that can be crawled per day. resets at midnight. -1 for "
+"unlimited"
+msgstr ""
+"Anzahl der Seiten, die pro Tag gecrawlt werden können. Wird um Mitternacht "
+"zurückgesetzt. -1 für unbegrenzt"
+
+#: plan/models.py:45
+msgid "Crawl max depth"
+msgstr "Maximale Crawl-Tiefe"
+
+#: plan/models.py:45
+msgid "Max depth of crawling."
+msgstr "Maximale Tiefe des Crawlings."
+
+#: plan/models.py:48
+msgid "Crawl max limit"
+msgstr "Maximales Crawl-Limit"
+
+#: plan/models.py:48
+msgid "Max number of pages to crawl."
+msgstr "Maximale Anzahl der zu crawlenden Seiten."
+
+#: plan/models.py:51
+msgid "Max concurrent crawl"
+msgstr "Maximale gleichzeitige Crawls"
+
+#: plan/models.py:52
+msgid "Max Number of concurrent crawling."
+msgstr "Maximale Anzahl gleichzeitiger Crawls."
+
+#: plan/models.py:56
+msgid "Number of knowledge bases"
+msgstr "Anzahl der Wissensdatenbanken"
+
+#: plan/models.py:59
+msgid "Number of each knowledge base documents"
+msgstr "Anzahl der Dokumente je Wissensdatenbank"
+
+#: plan/models.py:62
+msgid "Knowledge base retrival rate limit"
+msgstr "Ratenlimit für Wissensdatenbank-Abrufe"
+
+#: plan/models.py:63
+msgid "DRF-style rate string, e.g. '100/min', '500/day'"
+msgstr "DRF-Stil Rate-String, z.B. '100/min', '500/day'"
+
+#: plan/models.py:69
+msgid "Is default"
+msgstr "Ist Standard"
+
+#: plan/models.py:70 plan/models.py:89
+msgid "Order"
+msgstr "Reihenfolge"
+
+#: plan/models.py:71
+msgid "Is active"
+msgstr "Ist aktiv"
+
+#: plan/models.py:74 plan/models.py:124
+msgid "Plan"
+msgstr "Plan"
+
+#: plan/models.py:75
+msgid "Plans"
+msgstr "Pläne"
+
+#: plan/models.py:91
+msgid "Icon"
+msgstr "Symbol"
+
+#: plan/models.py:101
+msgid "Help text"
+msgstr "Hilfetext"
+
+#: plan/models.py:104
+msgid "Plan Feature"
+msgstr "Plan-Funktion"
+
+#: plan/models.py:105
+msgid "Plan Features"
+msgstr "Plan-Funktionen"
+
+#: plan/models.py:120
+msgid "Stripe subscription id"
+msgstr "Stripe-Abonnement-ID"
+
+#: plan/models.py:128
+msgid "Remain page credit"
+msgstr "Verbleibendes Seiten-Credit"
+
+#: plan/models.py:130
+msgid "Remain daily page credit"
+msgstr "Verbleibendes tägliches Seiten-Credit"
+
+#: plan/models.py:133
+msgid "Start datetime"
+msgstr "Startdatum und -zeit"
+
+#: plan/models.py:135
+msgid "Current period start datetime"
+msgstr "Startdatum und -zeit der aktuellen Periode"
+
+#: plan/models.py:138
+msgid "Current period end datetime"
+msgstr "Enddatum und -zeit der aktuellen Periode"
+
+#: plan/models.py:140
+msgid "Canceled at"
+msgstr "Abgebrochen am"
+
+#: plan/models.py:148 plan/models.py:157
+msgid "Subscription"
+msgstr "Abonnement"
+
+#: plan/models.py:149
+msgid "Subscriptions"
+msgstr "Abonnements"
+
+#: plan/models.py:159
+msgid "Amount"
+msgstr "Betrag"
+
+#: plan/models.py:161
+msgid "Stripe payment id"
+msgstr "Stripe-Zahlungs-ID"
+
+#: plan/models.py:171
+msgid "Subscription Payment"
+msgstr "Abonnement-Zahlung"
+
+#: plan/models.py:172
+msgid "Subscription Payments"
+msgstr "Abonnement-Zahlungen"
+
+#: plan/models.py:180
+msgid "Data"
+msgstr "Daten"
+
+#: plan/models.py:183
+msgid "Stripe webhook history"
+msgstr "Stripe-Webhook-Verlauf"
+
+#: plan/models.py:184
+msgid "Stripe webhook histories"
+msgstr "Stripe-Webhook-Verläufe"
+
+#: plan/models.py:207
+msgid "Content ID"
+msgstr "Inhalts-ID"
+
+#: plan/models.py:223
+msgid "Requested Page Credit"
+msgstr "Angefordertes Seiten-Credit"
+
+#: plan/models.py:226
+msgid "Actual Page Credit Used"
+msgstr "Tatsächlich verwendetes Seiten-Credit"
+
+#: plan/models.py:230
+msgid "Usage History"
+msgstr "Nutzungsverlauf"
+
+#: plan/models.py:231
+msgid "Usage Histories"
+msgstr "Nutzungsverläufe"
+
+#: plan/serializers.py:73
+msgid "Plan not found"
+msgstr "Plan nicht gefunden"
+
+#: plan/services.py:147
+msgid "Unlimited"
+msgstr "Unbegrenzt"
+
+#: plan/services.py:243 plan/views.py:57
+msgid "You have no active subscription"
+msgstr "Sie haben kein aktives Abonnement"
+
+#: plan/services.py:630
+msgid "You can't downgrade your plan."
+msgstr "Sie können Ihren Plan nicht herabstufen."
+
+#: plan/services.py:677
+msgid "Team already has an active subscription."
+msgstr "Das Team hat bereits ein aktives Abonnement."
+
+#: plan/services.py:711 plan/services.py:741 plan/services.py:764
+msgid "Team does not have an active subscription."
+msgstr "Das Team hat kein aktives Abonnement."
+
+#: plan/services.py:714 plan/services.py:744
+msgid "You cannot cancel freemium plan."
+msgstr "Sie können den Freemium-Plan nicht kündigen."
+
+#: plan/services.py:767
+msgid "You cannot renew freemium plan."
+msgstr "Sie können den Freemium-Plan nicht erneuern."
+
+#: plan/services.py:770
+msgid "This plan is already active."
+msgstr "Dieser Plan ist bereits aktiv."
+
+#: plan/services.py:817 plan/services.py:834
+msgid "get_actual_credits: Unhandled type {type(request)}"
+msgstr "get_actual_credits: Nicht behandelter Typ {type(request)}"
+
+#: plan/throttle.py:18 plan/throttle.py:33
+msgid "Cannot throttle a request without a team attached to it."
+msgstr "Eine Anfrage ohne zugeordnetes Team kann nicht gedrosselt werden."
+
+#: plan/validators.py:42
+#, python-brace-format
+msgid ""
+"You have no more daily credit left in your plan. for current request you "
+"need {} credits."
+msgstr ""
+"Sie haben kein tägliches Credit mehr in Ihrem Plan. Für die aktuelle Anfrage "
+"benötigen Sie {} Credits."
+
+#: plan/validators.py:49
+#, python-brace-format
+msgid ""
+"You just have {} daily credit left in your plan. for current request you "
+"need {} credits."
+msgstr ""
+"Sie haben nur noch {} tägliches Credit in Ihrem Plan. Für die aktuelle "
+"Anfrage benötigen Sie {} Credits."
+
+#: plan/validators.py:62
+#, python-brace-format
+msgid ""
+"You have no more pages left in your plan. for current request you need {} "
+"credits."
+msgstr ""
+"Sie haben keine Seiten mehr in Ihrem Plan. Für die aktuelle Anfrage "
+"benötigen Sie {} Credits."
+
+#: plan/validators.py:69
+#, python-brace-format
+msgid ""
+"You just have {} credits left in your plan. for current request you need {} "
+"credits."
+msgstr ""
+"Sie haben nur noch {} Credits in Ihrem Plan. Für die aktuelle Anfrage "
+"benötigen Sie {} Credits."
+
+#: plan/validators.py:111
+msgid ""
+"With the current plan you cannot use this proxy server. Upgrade your plan to "
+"use Premium proxy servers."
+msgstr ""
+"Mit dem aktuellen Plan können Sie diesen Proxy-Server nicht verwenden. "
+"Aktualisieren Sie Ihren Plan, um Premium-Proxy-Server zu nutzen."
+
+#: plan/validators.py:125
+#, python-brace-format
+msgid ""
+"Your plan does not support more than {} depth. change the max depth in "
+"spider options."
+msgstr ""
+"Ihr Plan unterstützt nicht mehr als {} Tiefe. Ändern Sie die maximale Tiefe "
+"in den Spider-Optionen."
+
+#: plan/validators.py:138
+#, python-brace-format
+msgid ""
+"Your plan does not support more than {} pages per crawl. change the page "
+"limit in spider options."
+msgstr ""
+"Ihr Plan unterstützt nicht mehr als {} Seiten pro Crawl. Ändern Sie das "
+"Seitenlimit in den Spider-Optionen."
+
+#: plan/validators.py:160
+#, python-brace-format
+msgid ""
+"Your plan does not support more than {} concurrent crawls. Wait for them to "
+"finish."
+msgstr ""
+"Ihr Plan unterstützt nicht mehr als {} gleichzeitige Crawls. Warten Sie, bis "
+"diese abgeschlossen sind."
+
+#: plan/validators.py:196
+#, python-brace-format
+msgid ""
+"Your plan does not support more than {} concurrent searches. Wait for them "
+"to finish."
+msgstr ""
+"Ihr Plan unterstützt nicht mehr als {} gleichzeitige Suchen. Warten Sie, bis "
+"diese abgeschlossen sind."
+
+#: plan/validators.py:229
+#, python-brace-format
+msgid ""
+"Your plan does not support more than {} concurrent sitemaps. Wait for them "
+"to finish."
+msgstr ""
+"Ihr Plan unterstützt nicht mehr als {} gleichzeitige Sitemaps. Warten Sie, "
+"bis diese abgeschlossen sind."
+
+#: plan/validators.py:258
+#, python-brace-format
+msgid ""
+"Your plan does not support more than {} knowledge bases. You can not create "
+"more."
+msgstr ""
+"Ihr Plan unterstützt nicht mehr als {} Wissensdatenbanken. Sie können keine "
+"weiteren erstellen."
+
+#: plan/validators.py:291
+#, python-brace-format
+msgid ""
+"Your current plan does not support more than {} documents per knowledge "
+"base. This knowledge base has {} documents left. Your request will add {} "
+"documents."
+msgstr ""
+"Ihr aktueller Plan unterstützt nicht mehr als {} Dokumente pro "
+"Wissensdatenbank. Diese Wissensdatenbank hat noch {} Dokumente übrig. Ihre "
+"Anfrage wird {} Dokumente hinzufügen."
+
+#: plan/views.py:22
+msgid "List available plans"
+msgstr "Verfügbare Pläne auflisten"
+
+#: plan/views.py:24
+msgid ""
+"Returns a list of all active subscription plans with their details including "
+"pricing, features and limits."
+msgstr ""
+"Gibt eine Liste aller aktiven Abonnementpläne mit ihren Details "
+"einschließlich Preisen, Funktionen und Limits zurück."
+
+#: plan/views.py:29
+msgid "Get plan details"
+msgstr "Plandetails abrufen"
+
+#: plan/views.py:31
+msgid "Returns detailed information about a specific subscription plan."
+msgstr ""
+"Gibt detaillierte Informationen über einen bestimmten Abonnementplan zurück."
+
+#: plan/views.py:49
+msgid "Get current subscription details"
+msgstr "Aktuelle Abonnementdetails abrufen"
+
+#: plan/views.py:51 plan/views.py:63
+msgid "Returns detailed information about the team's current subscription."
+msgstr ""
+"Gibt detaillierte Informationen über das aktuelle Abonnement des Teams "
+"zurück."
+
+#: plan/views.py:61
+msgid "Get subscription details"
+msgstr "Abonnementdetails abrufen"
+
+#: plan/views.py:68
+msgid "List team subscriptions"
+msgstr "Team-Abonnements auflisten"
+
+#: plan/views.py:69
+msgid "Returns a list of all active subscriptions for the team."
+msgstr "Gibt eine Liste aller aktiven Abonnements für das Team zurück."
+
+#: plan/views.py:73
+msgid "Start a new subscription"
+msgstr "Ein neues Abonnement starten"
+
+#: plan/views.py:74
+msgid "Starts a new subscription for the team."
+msgstr "Startet ein neues Abonnement für das Team."
+
+#: plan/views.py:77
+msgid "Subscription started successfully."
+msgstr "Abonnement erfolgreich gestartet."
+
+#: plan/views.py:85 plan/views.py:115
+msgid "The URL to redirect the user to for payment processing."
+msgstr ""
+"Die URL, zu der der Benutzer zur Zahlungsabwicklung weitergeleitet wird."
+
+#: plan/views.py:91 plan/views.py:104 plan/views.py:121
+msgid "Returns the URL to redirect the user to for payment processing."
+msgstr ""
+"Gibt die URL zurück, zu der der Benutzer zur Zahlungsabwicklung "
+"weitergeleitet wird."
+
+#: plan/views.py:97
+msgid "Cancel subscription"
+msgstr "Abonnement kündigen"
+
+#: plan/views.py:98
+msgid "Cancels the active subscription for the team."
+msgstr "Kündigt das aktive Abonnement für das Team."
+
+#: plan/views.py:102
+msgid "Get customer session URL"
+msgstr "Kundensitzungs-URL abrufen"
+
+#: plan/views.py:167
+msgid "You cannot start freemium plan for this team"
+msgstr "Sie können den Freemium-Plan für dieses Team nicht starten"
+
+#: plan/views.py:219
+msgid "Handle Stripe webhooks"
+msgstr "Stripe-Webhooks verarbeiten"
+
+#: plan/views.py:221
+msgid ""
+"Processes webhook events from Stripe for subscription and payment updates."
+msgstr ""
+"Verarbeitet Webhook-Ereignisse von Stripe für Abonnement- und "
+"Zahlungsaktualisierungen."
+
+#: plan/views.py:243
+msgid "List usage history"
+msgstr "Nutzungsverlauf auflisten"
+
+#: plan/views.py:244
+msgid "List usage history for the team."
+msgstr "Nutzungsverlauf für das Team auflisten."
+
+#: plan/views.py:248
+msgid "Get usage history"
+msgstr "Nutzungsverlauf abrufen"
+
+#: plan/views.py:249
+msgid "Get usage history for the team."
+msgstr "Nutzungsverlauf für das Team abrufen."
+
+#: user/admin.py:20
+msgid "Personal info"
+msgstr "Persönliche Informationen"
+
+#: user/admin.py:22
+msgid "Permissions"
+msgstr "Berechtigungen"
+
+#: user/admin.py:34
+msgid "Email verification"
+msgstr "E-Mail-Verifizierung"
+
+#: user/admin.py:38
+msgid "Password reset"
+msgstr "Passwort zurücksetzen"
+
+#: user/decorators.py:51
+msgid "Invalid API key"
+msgstr "Ungültiger API-Schlüssel"
+
+#: user/managers.py:11
+msgid "Superuser must have is_staff=True."
+msgstr "Superuser muss is_staff=True haben."
+
+#: user/managers.py:13
+msgid "Superuser must have is_superuser=True."
+msgstr "Superuser muss is_superuser=True haben."
+
+#: user/managers.py:24
+msgid "The given email must be set"
+msgstr "Die angegebene E-Mail-Adresse muss gesetzt sein"
+
+#: user/models.py:15 user/models.py:141
+msgid "Email Address"
+msgstr "E-Mail-Adresse"
+
+#: user/models.py:17
+msgid "Reset Password Expires At"
+msgstr "Passwort-Reset läuft ab am"
+
+#: user/models.py:22
+msgid "Reset Password Token"
+msgstr "Passwort-Reset-Token"
+
+#: user/models.py:28
+msgid "Email Verification Token"
+msgstr "E-Mail-Verifizierungs-Token"
+
+#: user/models.py:34
+msgid "Email Verified"
+msgstr "E-Mail verifiziert"
+
+#: user/models.py:38
+msgid "Privacy Confirmed At"
+msgstr "Datenschutz bestätigt am"
+
+#: user/models.py:43
+msgid "Terms Confirmed At"
+msgstr "Bedingungen bestätigt am"
+
+#: user/models.py:48
+msgid "Newsletter Confirmed"
+msgstr "Newsletter bestätigt"
+
+#: user/models.py:59 user/models.py:104
+msgid "User"
+msgstr "Benutzer"
+
+#: user/models.py:60
+msgid "Users"
+msgstr "Benutzer"
+
+#: user/models.py:76
+msgid "Members"
+msgstr "Mitglieder"
+
+#: user/models.py:81
+msgid "Stripe Customer ID"
+msgstr "Stripe-Kunden-ID"
+
+#: user/models.py:93
+msgid "Teams"
+msgstr "Teams"
+
+#: user/models.py:115
+msgid "Is Owner"
+msgstr "Ist Eigentümer"
+
+#: user/models.py:123
+msgid "Team Member"
+msgstr "Teammitglied"
+
+#: user/models.py:124
+msgid "Team Members"
+msgstr "Teammitglieder"
+
+#: user/models.py:135
+msgid "Invitation Token"
+msgstr "Einladungs-Token"
+
+#: user/models.py:145
+msgid "Activated"
+msgstr "Aktiviert"
+
+#: user/models.py:153
+msgid "Team Invitation"
+msgstr "Team-Einladung"
+
+#: user/models.py:154
+msgid "Team Invitations"
+msgstr "Team-Einladungen"
+
+#: user/models.py:173
+msgid "Last Used At"
+msgstr "Zuletzt verwendet am"
+
+#: user/models.py:182
+msgid "Team API Key"
+msgstr "Team-API-Schlüssel"
+
+#: user/models.py:183
+msgid "Team API Keys"
+msgstr "Team-API-Schlüssel"
+
+#: user/serializers.py:23
+msgid "Email already exists"
+msgstr "E-Mail-Adresse existiert bereits"
+
+#: user/serializers.py:74 user/serializers.py:76
+msgid "Invalid email or password"
+msgstr "Ungültige E-Mail-Adresse oder Passwort"
+
+#: user/serializers.py:79
+msgid "Email is not verified"
+msgstr "E-Mail ist nicht verifiziert"
+
+#: user/services.py:146
+msgid "User is already a member of the team"
+msgstr "Benutzer ist bereits Mitglied des Teams"
+
+#: user/services.py:237
+msgid "User does not exist"
+msgstr "Benutzer existiert nicht"
+
+#: user/views.py:40 user/views.py:41
+msgid "Install WaterCrawl"
+msgstr "WaterCrawl installieren"
+
+#: user/views.py:69 user/views.py:70 user/views.py:109 user/views.py:110
+msgid "Register a new user"
+msgstr "Einen neuen Benutzer registrieren"
+
+#: user/views.py:94 user/views.py:95
+msgid "Verify invitation"
+msgstr "Einladung überprüfen"
+
+#: user/views.py:138
+msgid "You can not register you already have an account"
+msgstr "Sie können sich nicht registrieren, Sie haben bereits ein Konto"
+
+#: user/views.py:144
+msgid "Emails do not match"
+msgstr "E-Mail-Adressen stimmen nicht überein"
+
+#: user/views.py:159 user/views.py:160
+msgid "Authenticate using email and password"
+msgstr "Mit E-Mail und Passwort authentifizieren"
+
+#: user/views.py:191 user/views.py:192
+msgid "Send a verification email"
+msgstr "Eine Verifizierungs-E-Mail senden"
+
+#: user/views.py:218 user/views.py:219
+msgid "Authenticate using OAuth"
+msgstr "Mit OAuth authentifizieren"
+
+#: user/views.py:244
+msgid "Invalid token"
+msgstr "Ungültiges Token"
+
+#: user/views.py:257 user/views.py:258
+msgid "Send a forgot password email"
+msgstr "Eine E-Mail zum Passwort vergessen senden"
+
+#: user/views.py:278 user/views.py:279
+msgid "Verify reset password token"
+msgstr "Passwort-Reset-Token überprüfen"
+
+#: user/views.py:285 user/views.py:286
+msgid "Reset password"
+msgstr "Passwort zurücksetzen"
+
+#: user/views.py:314 user/views.py:315
+msgid "Verify email"
+msgstr "E-Mail verifizieren"
+
+#: user/views.py:348
+msgid "Get user profile"
+msgstr "Benutzerprofil abrufen"
+
+#: user/views.py:349
+msgid "Get the current user profile"
+msgstr "Das aktuelle Benutzerprofil abrufen"
+
+#: user/views.py:353 user/views.py:354
+msgid "Update user profile"
+msgstr "Benutzerprofil aktualisieren"
+
+#: user/views.py:376 user/views.py:377
+msgid "Get my invitations"
+msgstr "Meine Einladungen abrufen"
+
+#: user/views.py:381 user/views.py:382
+msgid "Accept an invitation"
+msgstr "Eine Einladung annehmen"
+
+#: user/views.py:408 user/views.py:409
+msgid "Create a new team"
+msgstr "Ein neues Team erstellen"
+
+#: user/views.py:413 user/views.py:414
+msgid "Get a team"
+msgstr "Ein Team abrufen"
+
+#: user/views.py:418 user/views.py:419
+msgid "Update a team"
+msgstr "Ein Team aktualisieren"
+
+#: user/views.py:423 user/views.py:424
+msgid "List teams"
+msgstr "Teams auflisten"
+
+#: user/views.py:428
+msgid "Get/Update the current team"
+msgstr "Das aktuelle Team abrufen/aktualisieren"
+
+#: user/views.py:429
+msgid "Get the current team"
+msgstr "Das aktuelle Team abrufen"
+
+#: user/views.py:434 user/views.py:435
+msgid "Invite a user to the current team"
+msgstr "Einen Benutzer zum aktuellen Team einladen"
+
+#: user/views.py:441 user/views.py:442
+msgid "List invitations to the current team"
+msgstr "Einladungen zum aktuellen Team auflisten"
+
+#: user/views.py:512 user/views.py:513
+msgid "Create a new API key"
+msgstr "Einen neuen API-Schlüssel erstellen"
+
+#: user/views.py:517 user/views.py:518
+msgid "List API keys"
+msgstr "API-Schlüssel auflisten"
+
+#: user/views.py:522 user/views.py:523
+msgid "Delete an API key"
+msgstr "Einen API-Schlüssel löschen"
+
+#: user/views.py:550 user/views.py:551
+msgid "List team members"
+msgstr "Teammitglieder auflisten"
+
+#: user/views.py:555 user/views.py:556
+msgid "Delete a team member"
+msgstr "Ein Teammitglied löschen"
+
+#: user/views.py:573
+msgid "You can not delete the owner of the team"
+msgstr "Sie können den Eigentümer des Teams nicht löschen"
+
+#: user/views.py:579 user/views.py:580
+msgid "Refresh token"
+msgstr "Token aktualisieren"
+
+#: user/views.py:590 user/views.py:591
+msgid "Verify token"
+msgstr "Token überprüfen"

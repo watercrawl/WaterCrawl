@@ -13,6 +13,7 @@ import { SubscriptionsList } from '../../components/shared/SubscriptionsList';
 import ProxySettings from '../../components/settings/ProxySettings';
 import ProviderConfigSettings from '../../components/settings/ProviderConfigSettings';
 import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
+import { useTranslation } from 'react-i18next';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -22,7 +23,11 @@ interface ErrorResponse {
   message: string;
 }
 
+// Define tabs outside component to avoid recreation on every render
+const TABS = ['#team', '#proxy', '#provider-config', '#billing'] as const;
+
 const SettingsPage: React.FC = () => {
+  const { t } = useTranslation();
   const [team, setTeam] = useState<Team | null>(null);
   const [members, setMembers] = useState<TeamMember[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -36,23 +41,38 @@ const SettingsPage: React.FC = () => {
   const { settings } = useSettings();
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const { setItems } = useBreadcrumbs();
+  
+  // Track if we're updating tab from hash change (to prevent loops)
+  const isUpdatingFromHash = useRef(false);
 
   useEffect(() => {
-    setItems([
-      { label: 'Dashboard', href: '/dashboard'},
-      { label: 'Settings', href: '/dashboard/settings', current: true },
-    ]);
     // Check for hash on initial load
     const handleHashChange = () => {
-      if (window.location.hash === '#proxy') {
-        setSelectedTabIndex(1);
-      } else if (window.location.hash === '#provider-config') {
-        setSelectedTabIndex(2);
-      } else if (window.location.hash === '#billing') {
-        setSelectedTabIndex(3);
+      const hash = window.location.hash;
+      
+      isUpdatingFromHash.current = true;
+      
+      // If no hash exists, set default to #team
+      if (!hash) {
+        window.location.hash = '#team';
+        setSelectedTabIndex(0);
+        isUpdatingFromHash.current = false;
+        return;
+      }
+      
+      // If hash exists and is valid, set the corresponding tab
+      if (TABS.includes(hash as any)) {
+        setSelectedTabIndex(TABS.indexOf(hash as any));
       } else {
+        // If hash is invalid, default to #team
+        window.location.hash = '#team';
         setSelectedTabIndex(0);
       }
+      
+      // Reset flag after state update
+      setTimeout(() => {
+        isUpdatingFromHash.current = false;
+      }, 0);
     };
 
     // Initial check
@@ -65,8 +85,45 @@ const SettingsPage: React.FC = () => {
     return () => {
       window.removeEventListener('hashchange', handleHashChange);
     };
-  }, [setItems]);
+  }, []);
 
+  // Update URL hash when tab index changes (from user clicking tabs)
+  useEffect(() => {
+    // Skip if we're updating from a hash change (to prevent loops)
+    if (isUpdatingFromHash.current) {
+      return;
+    }
+    
+    const currentHash = window.location.hash;
+    const expectedHash = TABS[selectedTabIndex];
+    
+    // Only update hash if it's different (avoids infinite loops)
+    if (currentHash !== expectedHash) {
+      window.location.hash = expectedHash;
+    }
+  }, [selectedTabIndex]);
+
+  // Update breadcrumbs when tab changes
+  useEffect(() => {
+    const breadcrumbs = [
+      { label: t('dashboard.title'), href: '/dashboard'},
+      { label: t('settings.title'), href: '/dashboard/settings' },
+      { label: t('settings.team.tab'), href: `/dashboard/settings${TABS[selectedTabIndex]}`, current: true },
+    ];
+    
+    // Update breadcrumb label based on selected tab
+    if (selectedTabIndex === 1) {
+      breadcrumbs[2].label = t('settings.team.proxyTab');
+    } else if (selectedTabIndex === 2) {
+      breadcrumbs[2].label = t('settings.team.providerTab');
+    } else if (selectedTabIndex === 3) {
+      breadcrumbs[2].label = t('settings.team.billingTab');
+    } else {
+      breadcrumbs[2].label = t('settings.team.tab');
+    }
+    
+    setItems(breadcrumbs);
+  }, [selectedTabIndex, t, setItems]);
 
   const fetchTeam = useCallback(async () => {
     try {
@@ -113,9 +170,9 @@ const SettingsPage: React.FC = () => {
       setTeam(updatedTeam);
       setEditingName(false);
       await refreshTeams(); // Refresh teams list in context
-      toast.success('Team name updated successfully');
+      toast.success(t('settings.team.nameUpdateSuccess'));
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Failed to update team name');
+      toast.error(error.response?.data?.message || t('settings.team.nameUpdateError'));
     } finally {
       setLoading(false);
     }
@@ -131,7 +188,7 @@ const SettingsPage: React.FC = () => {
       .then(() => {
         fetchMembers(); // Refresh members list
         setNewMemberEmail('');
-        toast.success('Member invited successfully');
+        toast.success(t('settings.team.memberInviteSuccess'));
         invitationsListRef.current?.reloadInvitations();
       })
       .catch((error) => {
@@ -139,7 +196,7 @@ const SettingsPage: React.FC = () => {
           const errorData = error.response.data as ErrorResponse;
           toast.error(errorData.message);
         } else {
-          toast.error('An error occurred while inviting the member');
+          toast.error(t('settings.team.memberInviteError'));
         }
       })
       .finally(() => {
@@ -148,7 +205,7 @@ const SettingsPage: React.FC = () => {
   };
 
   const handleRemoveMember = async (memberId: string) => {
-    if (!window.confirm('Are you sure you want to remove this member?')) return;
+    if (!window.confirm(t('settings.team.confirmRemove'))) return;
 
     try {
       setLoading(true);
@@ -157,9 +214,9 @@ const SettingsPage: React.FC = () => {
         fetchMembers(), // Refresh members list
         refreshTeams(), // Refresh teams in context
       ]);
-      toast.success('Team member removed successfully');
+      toast.success(t('settings.team.memberRemoveSuccess'));
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Failed to remove team member');
+      toast.error(error.response?.data?.message || t('settings.team.memberRemoveError'));
     } finally {
       setLoading(false);
     }
@@ -168,11 +225,11 @@ const SettingsPage: React.FC = () => {
   return (
     <div className="h-full">
       <div className="px-8 py-6">
-        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Settings</h1>
-        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">Manage your team and account settings.</p>
+        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">{t('settings.title')}</h1>
+        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{t('settings.team.subtitle')}</p>
 
         <TabGroup selectedIndex={selectedTabIndex} onChange={setSelectedTabIndex}>
-          <TabList className="flex space-x-1 mt-8 border-b border-gray-200 dark:border-gray-700">
+          <TabList className="flex gap-x-1 mt-8 border-b border-gray-200 dark:border-gray-700">
             <Tab
               className={({ selected }: { selected: boolean }) =>
                 classNames(
@@ -184,7 +241,7 @@ const SettingsPage: React.FC = () => {
                 )
               }
             >
-              Team
+              {t('settings.team.tab')}
             </Tab>
             <Tab
               className={({ selected }: { selected: boolean }) =>
@@ -197,7 +254,7 @@ const SettingsPage: React.FC = () => {
                 )
               }
             >
-              Proxy Settings
+              {t('settings.team.proxyTab')}
             </Tab>
             <Tab
               className={({ selected }: { selected: boolean }) =>
@@ -210,7 +267,7 @@ const SettingsPage: React.FC = () => {
                 )
               }
             >
-              Provider Configurations
+              {t('settings.team.providerTab')}
             </Tab>
             {settings?.is_enterprise_mode_active && (
               <Tab
@@ -224,7 +281,7 @@ const SettingsPage: React.FC = () => {
                   )
                 }
               >
-                Billing
+                {t('settings.team.billingTab')}
               </Tab>
             )}
           </TabList>
@@ -233,8 +290,8 @@ const SettingsPage: React.FC = () => {
             <TabPanel className="space-y-8">
               {/* Team Name Section */}
               <div>
-                <h3 className="text-base font-medium text-gray-900 dark:text-white mb-4">Team Name</h3>
-                <div className="flex items-center space-x-4">
+                <h3 className="text-base font-medium text-gray-900 dark:text-white mb-4">{t('settings.team.name')}</h3>
+                <div className="flex items-center gap-x-4">
                   <input
                     type="text"
                     value={editingName ? newTeamName : team?.name}
@@ -249,7 +306,7 @@ const SettingsPage: React.FC = () => {
                       disabled={loading}
                       className="inline-flex items-center h-10 px-4 text-sm font-medium rounded-md text-white bg-gray-900 hover:bg-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50 transition-colors duration-200"
                     >
-                      Save
+                      {t('settings.team.save')}
                     </button>
                   )}
                 </div>
@@ -257,14 +314,14 @@ const SettingsPage: React.FC = () => {
 
               {/* Invite Member Section */}
               <div>
-                <h3 className="text-base font-medium text-gray-900 dark:text-white mb-4">Invite Member</h3>
+                <h3 className="text-base font-medium text-gray-900 dark:text-white mb-4">{t('settings.team.inviteMemberTitle')}</h3>
                 <form onSubmit={handleInviteMember} className="mt-6">
-                  <div className="flex items-center space-x-4">
+                  <div className="flex items-center gap-x-4">
                     <input
                       type="email"
                       value={newMemberEmail}
                       onChange={(e) => setNewMemberEmail(e.target.value)}
-                      placeholder="Enter email to invite"
+                      placeholder={t('settings.team.emailPlaceholder')}
                       className="max-w-md h-10 px-3 rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white shadow-sm focus:border-gray-500 focus:ring-gray-500 dark:focus:border-gray-400 dark:focus:ring-gray-400 dark:placeholder-gray-400"
                       disabled={loading}
                     />
@@ -273,13 +330,13 @@ const SettingsPage: React.FC = () => {
                       disabled={loading}
                       className="inline-flex items-center h-10 px-4 text-sm font-medium rounded-md text-white bg-gray-900 hover:bg-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50 transition-colors duration-200"
                     >
-                      Invite
+                      {t('settings.team.invite')}
                     </button>
                   </div>
                 </form>
 
                 <div className="mt-6">
-                  <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Pending Invitations</h4>
+                  <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">{t('settings.team.pendingInvitations')}</h4>
                   <TeamInvitationsList ref={invitationsListRef} />
                 </div>
               </div>
@@ -288,9 +345,9 @@ const SettingsPage: React.FC = () => {
               <div>
                 <div className="flex items-center justify-between mb-4">
                   <div>
-                    <h3 className="text-base font-medium text-gray-900 dark:text-white">Team Members</h3>
+                    <h3 className="text-base font-medium text-gray-900 dark:text-white">{t('settings.team.members')}</h3>
                     <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                      Manage your team members and their roles.
+                      {t('settings.team.subtitle2')}
                     </p>
                   </div>
                 </div>
@@ -299,13 +356,13 @@ const SettingsPage: React.FC = () => {
                   <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
                     <thead>
                       <tr className="bg-gray-50 dark:bg-gray-800/50">
-                        <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-white sm:pl-6">
-                          Member
+                        <th scope="col" className="py-3.5 ps-4 pe-3 text-start text-sm font-semibold text-gray-900 dark:text-white sm:ps-6">
+                          {t('settings.team.memberColumn')}
                         </th>
-                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
-                          Role
+                        <th scope="col" className="px-3 py-3.5 text-start text-sm font-semibold text-gray-900 dark:text-white">
+                          {t('settings.team.roleColumn')}
                         </th>
-                        <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                        <th scope="col" className="relative py-3.5 ps-3 pe-4 sm:pe-6">
                           <span className="sr-only">Actions</span>
                         </th>
                       </tr>
@@ -313,12 +370,12 @@ const SettingsPage: React.FC = () => {
                     <tbody className="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800">
                       {members.map((member) => (
                         <tr key={member.uuid} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-200">
-                          <td className="whitespace-nowrap py-4 pl-4 pr-3 sm:pl-6">
+                          <td className="whitespace-nowrap py-4 ps-4 pe-3 sm:ps-6">
                             <div className="flex items-center">
                               <div className="flex-shrink-0">
                                 <UserCircleIcon className="h-8 w-8 text-gray-400" />
                               </div>
-                              <div className="ml-4">
+                              <div className="ms-4">
                                 <div className="text-sm font-medium text-gray-900 dark:text-white">
                                   {member.user.full_name}
                                 </div>
@@ -328,10 +385,10 @@ const SettingsPage: React.FC = () => {
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm">
                             <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium capitalize bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-100">
-                              {member.is_owner ? 'Owner' : 'Member'}
+                              {member.is_owner ? t('settings.team.owner') : t('settings.team.member')}
                             </span>
                           </td>
-                          <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                          <td className="relative whitespace-nowrap py-4 ps-3 pe-4 text-end text-sm font-medium sm:pe-6">
                             {!member.is_owner && (
                               <button
                                 onClick={() => handleRemoveMember(member.uuid)}
@@ -351,24 +408,24 @@ const SettingsPage: React.FC = () => {
                     <div className="flex items-center justify-between border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 px-4 py-3 sm:px-6">
                       <div>
                         <p className="text-sm text-gray-700 dark:text-gray-300">
-                          Showing page <span className="font-medium">{currentPage}</span> of{' '}
+                          {t('settings.team.showingPage')} <span className="font-medium">{currentPage}</span> {t('settings.team.of')}{' '}
                           <span className="font-medium">{totalPages}</span>
                         </p>
                       </div>
-                      <div className="flex space-x-2">
+                      <div className="flex gap-x-2">
                         <button
                           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                           disabled={currentPage === 1 || loading}
                           className="inline-flex items-center h-10 px-4 text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50 transition-colors duration-200"
                         >
-                          Previous
+                          {t('common.previous')}
                         </button>
                         <button
                           onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                           disabled={currentPage === totalPages || loading}
                           className="inline-flex items-center h-10 px-4 text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50 transition-colors duration-200"
                         >
-                          Next
+                          {t('common.next')}
                         </button>
                       </div>
                     </div>

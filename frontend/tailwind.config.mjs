@@ -1,5 +1,6 @@
 import forms from '@tailwindcss/forms';
 import typography from '@tailwindcss/typography';
+import logicalPlugin from 'tailwindcss-logical';
 
 export default {
   content: [
@@ -23,7 +24,15 @@ export default {
           900: '#0c4a6e',
         },
       },
+      fontFamily: {
+        sans: ['var(--font-sans-default)', 'ui-sans-serif', 'system-ui'],
+        persian: ['var(--font-sans-persian)', 'ui-sans-serif', 'system-ui'],
+      },
     },
   },
-  plugins: [forms, typography],
+  plugins: [
+    forms, 
+    typography,
+    logicalPlugin,
+  ],
 };

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FormInput, InfoTooltip } from './FormComponents';
 import Button from './Button';
 import { PlusIcon, XMarkIcon } from '@heroicons/react/20/solid';
@@ -20,6 +21,7 @@ const ArrayStringField: React.FC<ArrayStringFieldProps> = ({
   placeholder = 'Enter a value',
   className = '',
 }) => {
+  const { t } = useTranslation();
   const [newValue, setNewValue] = useState('');
 
   const handleAddValue = () => {
@@ -39,13 +41,13 @@ const ArrayStringField: React.FC<ArrayStringFieldProps> = ({
 
   return (
     <div className={className}>
-      <div className="flex items-center space-x-1 mb-1">
+      <div className="flex items-center gap-x-1 mb-1">
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
           {label}
         </label>
         {tooltipContent && <InfoTooltip content={tooltipContent} />}
       </div>
-      <div className="flex space-x-2">
+      <div className="flex gap-x-2">
         <div className="flex-1">
           <FormInput
             label=""
@@ -79,8 +81,8 @@ const ArrayStringField: React.FC<ArrayStringFieldProps> = ({
                 <button
                   type="button"
                   onClick={() => handleRemoveValue(value)}
-                  className="ml-1.5 inline-flex items-center justify-center rounded-full h-4 w-4 bg-blue-200 dark:bg-blue-800 hover:bg-blue-300 dark:hover:bg-blue-700 transition-colors"
-                  aria-label="Remove"
+                  className="ms-1.5 inline-flex items-center justify-center rounded-full h-4 w-4 bg-blue-200 dark:bg-blue-800 hover:bg-blue-300 dark:hover:bg-blue-700 transition-colors"
+                  aria-label={t('common.remove')}
                 >
                   <XMarkIcon className="h-3 w-3" />
                 </button>

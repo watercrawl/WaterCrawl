@@ -175,4 +175,4 @@ class ProviderConfigViewSet(ModelViewSet):
         if result:
             return Response(status=status.HTTP_204_NO_CONTENT)
         else:
-            raise ValidationError("Test failed")
+            raise ValidationError(_("Test failed"))

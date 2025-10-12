@@ -10,6 +10,7 @@ import { OAuthButtons } from './OAuthButtons';
 import { authApi } from '../../services/api/auth';
 import { RegisterRequest, VerifyInvitationResponse } from '../../types/auth';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 
 const passwordStrengthRegex = {
   hasNumber: /\d/,
@@ -19,13 +20,13 @@ const passwordStrengthRegex = {
   minLength: 8,
 };
 
-const schema = yup.object({
-  first_name: yup.string().required('First name is required'),
-  last_name: yup.string().required('Last name is required'),
+const getSchema = (t: (key: string) => string) => yup.object({
+  first_name: yup.string().required(t('validation.required')),
+  last_name: yup.string().required(t('validation.required')),
   email: yup
     .string()
-    .email('Please enter a valid email')
-    .required('Email is required'),
+    .email(t('validation.email'))
+    .required(t('validation.required')),
   password: yup
     .string()
     .min(8, 'Password must be at least 8 characters')
@@ -33,10 +34,15 @@ const schema = yup.object({
     .matches(passwordStrengthRegex.hasUpperCase, 'Password must contain at least one uppercase letter')
     .matches(passwordStrengthRegex.hasLowerCase, 'Password must contain at least one lowercase letter')
     .matches(passwordStrengthRegex.hasSpecialChar, 'Password must contain at least one special character')
-    .required('Password is required'),
+    .required(t('validation.required')),
 }).required();
 
-type FormData = yup.InferType<typeof schema>;
+type FormData = {
+  first_name: string;
+  last_name: string;
+  email: string;
+  password: string;
+};
 
 interface SignupFormProps {
   invitation?: VerifyInvitationResponse | null;
@@ -73,6 +79,7 @@ const getPasswordStrength = (password: string): { score: number; message: string
 };
 
 export const SignupForm: React.FC<SignupFormProps> = ({ invitation }) => {
+  const { t } = useTranslation();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -89,7 +96,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ invitation }) => {
   }, [invitation]);
 
   const methods = useForm<FormData>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(getSchema(t)),
     mode: 'onChange',
     defaultValues
   });
@@ -130,7 +137,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ invitation }) => {
     request
       .then((response) => {
         if (response.email_verified) {
-          toast.success('You account created successfully and you can login now.', {
+          toast.success(t('auth.signup.success'), {
             duration: 3000,
           });
           navigate('/');
@@ -161,7 +168,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ invitation }) => {
             setError(errorData.message);
           }
         } else {
-          setError(errorData?.message || 'An error occurred during signup. Please try again.');
+          setError(errorData?.message || t('auth.signup.error'));
         }
       })
       .finally(() => {
@@ -186,17 +193,17 @@ export const SignupForm: React.FC<SignupFormProps> = ({ invitation }) => {
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white dark:bg-gray-800 px-4 py-8 shadow sm:rounded-lg sm:px-10">
           <h2 className="mb-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
-            Check your email
+            {t('auth.signup.checkEmail')}
           </h2>
           <p className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
-            We've sent a verification email to your address. Please click the link in the email to verify your account.
+            {t('auth.signup.verificationSent')}
           </p>
           <div className="mt-6 text-center">
             <Link
               to="/"
               className="font-medium text-primary-600 hover:text-primary-500 dark:text-primary-400"
             >
-              Return to login
+              {t('auth.signup.returnToLogin')}
             </Link>
           </div>
         </div>
@@ -213,7 +220,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ invitation }) => {
 
             <div className="grid grid-cols-2 gap-4">
               <FormInput
-                label="First name"
+                label={t('auth.signup.firstName')}
                 name="first_name"
                 type="text"
                 error={errors.first_name?.message}
@@ -221,7 +228,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ invitation }) => {
               />
 
               <FormInput
-                label="Last name"
+                label={t('auth.signup.lastName')}
                 name="last_name"
                 type="text"
                 error={errors.last_name?.message}
@@ -230,7 +237,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ invitation }) => {
             </div>
 
             <FormInput
-              label="Email address"
+              label={t('auth.signup.email')}
               name="email"
               type="email"
               error={errors.email?.message}
@@ -240,7 +247,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ invitation }) => {
 
             <div className="space-y-1">
               <FormInput
-                label="Password"
+                label={t('auth.signup.password')}
                 name="password"
                 type={showPassword ? 'text' : 'password'}
                 error={errors.password?.message}
@@ -249,7 +256,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ invitation }) => {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="pr-3 focus:outline-none"
+                    className="pe-3 focus:outline-none"
                   >
                     {showPassword ? (
                       <EyeSlashIcon className="h-5 w-5 text-gray-400 hover:text-gray-500 dark:hover:text-gray-300" />
@@ -262,7 +269,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ invitation }) => {
 
               {passwordStrength && (
                 <div className="mt-2">
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center gap-x-2">
                     <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
                       <div
                         className={`h-full ${getPasswordStrengthColor(
@@ -285,7 +292,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ invitation }) => {
                   to="/"
                   className="font-medium text-primary-600 hover:text-primary-500 dark:text-primary-400 dark:hover:text-primary-300"
                 >
-                  Already have an account?
+                  {t('auth.signup.hasAccount')}
                 </Link>
               </div>
             </div>
@@ -296,7 +303,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ invitation }) => {
               className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-800 ${isLoading ? 'opacity-50 cursor-not-allowed' : ''
                 }`}
             >
-              {isLoading ? 'Creating account...' : 'Create account'}
+              {isLoading ? t('auth.signup.creating') : t('auth.signup.signupButton')}
             </button>
           </form>
 
@@ -307,7 +314,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ invitation }) => {
               </div>
               <div className="relative flex justify-center text-sm">
                 <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">
-                  Or continue with
+                  {t('auth.login.or')}
                 </span>
               </div>
             </div>

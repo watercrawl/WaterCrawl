@@ -57,3 +57,12 @@
     scrollbar-width: none;  /* Firefox */
   }
 }
+
+
+.ltr {
+  direction: ltr;
+}
+
+.rtl {
+  direction: rtl;
+}

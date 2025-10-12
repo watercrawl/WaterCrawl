@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSearchParams, useNavigate, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { PaginatedResponse } from '../../types/common';
 import { UsageHistory, ContentType } from '../../types/usage_history';
 import { usageHistoryApi } from '../../services/api/usage_history';
@@ -7,8 +8,9 @@ import { apiKeysApi } from '../../services/api/apiKeys';
 import { ApiKey } from '../../types/apiKeys';
 import { useIsTabletOrMobile } from '../../hooks/useMediaQuery';
 import { Pagination } from '../../components/shared/Pagination';
-import { formatDistanceToNow } from 'date-fns';
 import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
+import { useDateLocale } from '../../hooks/useDateLocale';
+import { formatDistanceToNowLocalized } from '../../utils/dateUtils';
 import {
     DocumentTextIcon,
     MagnifyingGlassIcon,
@@ -20,13 +22,13 @@ import SpiderIcon from '../../components/icons/SpiderIcon';
 import toast from 'react-hot-toast';
 import { useSettings } from '../../contexts/SettingsProvider';
 
-// Content type options for filtering
+// Content type options for filtering - will use t() inside component
 const CONTENT_TYPE_OPTIONS = [
-    { value: '', label: 'All Types' },
-    { value: ContentType.CrawlRequest, label: 'Crawl Request' },
-    { value: ContentType.SitemapRequest, label: 'Sitemap Request' },
-    { value: ContentType.SearchRequest, label: 'Search Request' },
-    { value: ContentType.KnowledgeBaseDocument, label: 'Knowledge Base Document' },
+    { value: '', key: 'usage.filters.allTypes' },
+    { value: ContentType.CrawlRequest, key: 'crawl.title' },
+    { value: ContentType.SitemapRequest, key: 'sitemap.title' },
+    { value: ContentType.SearchRequest, key: 'search.title' },
+    { value: ContentType.KnowledgeBaseDocument, key: 'knowledgeBase.document' },
 ];
 
 const getContentTypeIcon = (contentType: ContentType) => {
@@ -44,18 +46,18 @@ const getContentTypeIcon = (contentType: ContentType) => {
     }
 };
 
-const getContentTypeLabel = (contentType: ContentType) => {
+const getContentTypeLabel = (contentType: ContentType, t: any) => {
     switch (contentType) {
         case ContentType.CrawlRequest:
-            return 'Crawl Request';
+            return t('crawl.title');
         case ContentType.SitemapRequest:
-            return 'Sitemap Request';
+            return t('sitemap.title');
         case ContentType.SearchRequest:
-            return 'Search Request';
+            return t('search.title');
         case ContentType.KnowledgeBaseDocument:
-            return 'Knowledge Base Document';
+            return t('knowledgeBase.document');
         default:
-            return 'Unknown';
+            return t('common.unknown');
     }
 };
 
@@ -72,27 +74,30 @@ interface UsageHistoryCardProps {
     onContentIdClick: (contentType: ContentType, contentId: string) => void;
 }
 
-const UsageHistoryCard: React.FC<UsageHistoryCardProps> = ({ usage, onContentIdClick }) => (
+const UsageHistoryCard: React.FC<UsageHistoryCardProps> = ({ usage, onContentIdClick }) => {
+    const { t } = useTranslation();
+    const dateLocale = useDateLocale();
+    return (
     <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-4 hover:shadow-md transition-shadow duration-200">
         <div className="flex items-start justify-between">
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center gap-x-3">
                 <div className="flex-shrink-0 text-gray-500 dark:text-gray-400">
                     {getContentTypeIcon(usage.content_type)}
                 </div>
                 <div className="min-w-0 flex-1">
                     <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
-                        {getContentTypeLabel(usage.content_type)}
+                        {getContentTypeLabel(usage.content_type, t)}
                     </p>
                     {isContentIdClickable(usage.content_type) ? (
                         <button
                             onClick={() => onContentIdClick(usage.content_type, usage.content_id)}
                             className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline cursor-pointer"
                         >
-                            ID: {usage.content_id}
+                            {t('usage.contentId')}: {usage.content_id}
                         </button>
                     ) : (
                         <p className="text-sm text-gray-500 dark:text-gray-400">
-                            ID: {usage.content_id}
+                            {t('usage.contentId')}: {usage.content_id}
                         </p>
                     )}
                 </div>
@@ -102,7 +107,7 @@ const UsageHistoryCard: React.FC<UsageHistoryCardProps> = ({ usage, onContentIdC
         <div className="mt-4 grid grid-cols-2 gap-4">
             <div>
                 <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
-                    Requested Credits
+                    {t('usage.requestedCredits')}
                 </p>
                 <p className="mt-1 text-sm text-gray-900 dark:text-white">
                     {usage.requested_page_credit}
@@ -110,7 +115,7 @@ const UsageHistoryCard: React.FC<UsageHistoryCardProps> = ({ usage, onContentIdC
             </div>
             <div>
                 <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
-                    Used Credits
+                    {t('usage.usedCredits')}
                 </p>
                 <p className="mt-1 text-sm text-gray-900 dark:text-white">
                     {usage.used_page_credit}
@@ -118,25 +123,28 @@ const UsageHistoryCard: React.FC<UsageHistoryCardProps> = ({ usage, onContentIdC
             </div>
             <div>
                 <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
-                    API Key
+                    {t('apiKeys.title')}
                 </p>
                 <p className="mt-1 text-sm text-gray-900 dark:text-white truncate">
-                    {usage.team_api_key?.name || 'Web Interface'}
+                    {usage.team_api_key?.name || t('usage.webInterface')}
                 </p>
             </div>
             <div>
                 <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
-                    Created
+                    {t('activityLogs.table.created')}
                 </p>
                 <p className="mt-1 text-sm text-gray-900 dark:text-white">
-                    {formatDistanceToNow(new Date(usage.created_at))} ago
+                    {formatDistanceToNowLocalized(new Date(usage.created_at), dateLocale)} {t('common.ago')}
                 </p>
             </div>
         </div>
     </div>
-);
+    );
+};
 
 const UsageHistoryPage: React.FC = () => {
+    const { t } = useTranslation();
+    const dateLocale = useDateLocale();
     const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate();
     const [usageHistory, setUsageHistory] = useState<PaginatedResponse<UsageHistory> | null>(null);
@@ -173,10 +181,10 @@ const UsageHistoryPage: React.FC = () => {
 
     useEffect(() => {
         setItems([
-            { label: 'Dashboard', href: '/dashboard' },
-            { label: 'Usage History', href: '/dashboard/logs/usage', current: true },
+            { label: t('dashboard.navigation.dashboard'), href: '/dashboard' },
+            { label: t('usage.history'), href: '/dashboard/logs/usage', current: true },
         ]);
-    }, [setItems]);
+    }, [setItems, t]);
 
     // Initialize filters from URL params
     useEffect(() => {
@@ -199,7 +207,7 @@ const UsageHistoryPage: React.FC = () => {
         fetchApiKeys();
     }, []);
 
-    const fetchUsageHistory = async (
+    const fetchUsageHistory = useCallback(async (
         page: number,
         contentType?: ContentType,
         apiKey?: string
@@ -219,12 +227,12 @@ const UsageHistoryPage: React.FC = () => {
             setUsageHistory(data);
         } catch (error) {
             console.error('Failed to fetch usage history:', error);
-            toast.error('Failed to fetch usage history');
+            toast.error(t('usage.fetchError'));
             setUsageHistory(null);
         } finally {
             setLoading(false);
         }
-    };
+    }, [t]);
 
     useEffect(() => {
         fetchUsageHistory(
@@ -232,7 +240,7 @@ const UsageHistoryPage: React.FC = () => {
             selectedContentType as ContentType,
             selectedApiKey
         );
-    }, [currentPage, selectedContentType, selectedApiKey]);
+    }, [currentPage, selectedContentType, selectedApiKey, fetchUsageHistory, t]);
 
     // Update URL when content type filter changes
     const handleContentTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -269,7 +277,7 @@ const UsageHistoryPage: React.FC = () => {
             <div className="h-full flex items-center justify-center">
                 <div className="flex flex-col items-center space-y-4">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Loading usage history...</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{t('common.loading')}</p>
                 </div>
             </div>
         );
@@ -280,9 +288,9 @@ const UsageHistoryPage: React.FC = () => {
     return (
         <div className="h-full">
             <div className="px-4 sm:px-8 py-6">
-                <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Usage History</h1>
+                <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">{t('usage.history')}</h1>
                 <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                    View your credit usage across all services
+                    {t('usage.subtitle')}
                 </p>
 
                 <div className="mt-8">
@@ -291,7 +299,7 @@ const UsageHistoryPage: React.FC = () => {
                         {/* Content Type Filter */}
                         <div>
                             <label htmlFor="content-type-filter" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Filter by Content Type
+                                {t('usage.filters.contentType')}
                             </label>
                             <select
                                 id="content-type-filter"
@@ -301,7 +309,7 @@ const UsageHistoryPage: React.FC = () => {
                             >
                                 {CONTENT_TYPE_OPTIONS.map((option) => (
                                     <option key={option.value} value={option.value}>
-                                        {option.label}
+                                        {t(option.key)}
                                     </option>
                                 ))}
                             </select>
@@ -310,7 +318,7 @@ const UsageHistoryPage: React.FC = () => {
                         {/* API Key Filter */}
                         <div>
                             <label htmlFor="api-key-filter" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Filter by API Key
+                                {t('usage.filters.apiKey')}
                             </label>
                             <select
                                 id="api-key-filter"
@@ -318,7 +326,7 @@ const UsageHistoryPage: React.FC = () => {
                                 onChange={handleApiKeyChange}
                                 className="block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                             >
-                                <option value="">All API Keys</option>
+                                <option value="">{t('usage.filters.allApiKeys')}</option>
                                 {apiKeys.map((apiKey) => (
                                     <option key={apiKey.uuid} value={apiKey.uuid}>
                                         {apiKey.name}
@@ -331,19 +339,19 @@ const UsageHistoryPage: React.FC = () => {
                     {hasNoData ? (
                         <div className="text-center py-12">
                             <BookOpenIcon className="mx-auto h-12 w-12 text-gray-400" />
-                            <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-white">No usage history</h3>
+                            <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-white">{t('usage.noHistory')}</h3>
                             <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                                 {selectedContentType || selectedApiKey
-                                    ? "No usage found with the current filters."
-                                    : "Get started by making your first request."}
+                                    ? t('usage.noResultsFiltered')
+                                    : t('usage.getStarted')}
                             </p>
                         </div>
                     ) : (
                         <>
                             {loading && (
-                                <div className="flex items-center justify-center space-x-2 text-gray-600 dark:text-gray-300 mb-4">
+                                <div className="flex items-center justify-center gap-x-2 text-gray-600 dark:text-gray-300 mb-4">
                                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-indigo-500"></div>
-                                    <span className="text-xs text-gray-600 dark:text-gray-300">Updating...</span>
+                                    <span className="text-xs text-gray-600 dark:text-gray-300">{t('common.loading')}</span>
                                 </div>
                             )}
 
@@ -366,47 +374,47 @@ const UsageHistoryPage: React.FC = () => {
                                                     <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
                                                         <thead className="bg-gray-50 dark:bg-gray-800">
                                                             <tr>
-                                                                <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-white sm:pl-6">
-                                                                    Content Type
+                                                                <th scope="col" className="py-3.5 ps-4 pe-3 text-start text-sm font-semibold text-gray-900 dark:text-white sm:ps-6">
+                                                                    {t('usage.contentType')}
                                                                 </th>
-                                                                <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
-                                                                    Content ID
+                                                                <th scope="col" className="px-3 py-3.5 text-start text-sm font-semibold text-gray-900 dark:text-white">
+                                                                    {t('usage.contentId')}
                                                                 </th>
                                                                 {settings?.is_enterprise_mode_active && (
                                                                     <>
-                                                                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
-                                                                            Requested Credits
+                                                                        <th scope="col" className="px-3 py-3.5 text-start text-sm font-semibold text-gray-900 dark:text-white">
+                                                                            {t('usage.requestedCredits')}
                                                                         </th>
-                                                                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
-                                                                            Used Credits
+                                                                        <th scope="col" className="px-3 py-3.5 text-start text-sm font-semibold text-gray-900 dark:text-white">
+                                                                            {t('usage.usedCredits')}
                                                                         </th>
                                                                     </>
                                                                 )}
-                                                                <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
-                                                                    API Key
+                                                                <th scope="col" className="px-3 py-3.5 text-start text-sm font-semibold text-gray-900 dark:text-white">
+                                                                    {t('apiKeys.title')}
                                                                 </th>
-                                                                <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
-                                                                    Requested At
+                                                                <th scope="col" className="px-3 py-3.5 text-start text-sm font-semibold text-gray-900 dark:text-white">
+                                                                    {t('usage.requestedAt')}
                                                                 </th>
                                                             </tr>
                                                         </thead>
                                                         <tbody className="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900">
                                                             {usageHistory?.results.map((usage) => (
                                                                 <tr key={usage.uuid} className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200">
-                                                                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 dark:text-white sm:pl-6">
-                                                                        <div className="flex items-center space-x-2">
+                                                                    <td className="whitespace-nowrap py-4 ps-4 pe-3 text-sm font-medium text-gray-900 dark:text-white sm:ps-6">
+                                                                        <div className="flex items-center gap-x-2">
                                                                             <div className="flex-shrink-0 text-gray-500 dark:text-gray-400">
                                                                                 {getContentTypeIcon(usage.content_type)}
                                                                             </div>
-                                                                            <span>{getContentTypeLabel(usage.content_type)}</span>
+                                                                            <span>{getContentTypeLabel(usage.content_type, t)}</span>
                                                                         </div>
                                                                     </td>
                                                                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
-                                                                        <div className="flex items-center space-x-2">
+                                                                        <div className="flex items-center gap-x-2">
                                                                             {isContentIdClickable(usage.content_type) && (
                                                                                 <Link
                                                                                     to={getDetailPageUrl(usage.content_type, usage.content_id) || '#'}
-                                                                                    className="max-w-[200px] truncate block text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline cursor-pointer text-left"
+                                                                                    className="max-w-[200px] truncate block text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline cursor-pointer text-start"
                                                                                     title={usage.content_id}
                                                                                 >
                                                                                     <EyeIcon className="h-4 w-4" />
@@ -429,10 +437,10 @@ const UsageHistoryPage: React.FC = () => {
                                                                     )}
 
                                                                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
-                                                                        {usage.team_api_key?.name || 'Web Interface'}
+                                                                        {usage.team_api_key?.name || t('usage.webInterface')}
                                                                     </td>
                                                                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
-                                                                        {formatDistanceToNow(new Date(usage.created_at))} ago
+                                                                        {formatDistanceToNowLocalized(new Date(usage.created_at), dateLocale)} {t('common.ago')}
                                                                     </td>
                                                                 </tr>
                                                             ))}

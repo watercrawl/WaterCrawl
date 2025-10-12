@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { SitemapGraph, SitemapNode } from '../../types/crawl';
 
 interface SitemapGraphViewerProps {
@@ -10,6 +11,7 @@ const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({
   sitemapData,
   isLoading
 }) => {
+  const { t } = useTranslation();
   // Keep track of which nodes have been expanded
   const [expandedPaths, setExpandedPaths] = useState<Set<string>>(new Set());
   const [rootExpanded, setRootExpanded] = useState(true);
@@ -73,7 +75,7 @@ const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({
         <div
           key={data.url}
           className="py-1.5"
-          style={{ paddingLeft: `${level * 1.5}rem` }}
+          style={{ paddingInlineStart: `${level * 1.5}rem` }}
         >
           <a
             href={data.url}
@@ -133,12 +135,12 @@ const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({
         <div key={currentPath}>
           <div
             className={`py-1.5 flex items-center ${hasChildren || hasQueries ? 'cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50' : ''}`}
-            style={{ paddingLeft: `${level * 1.5}rem` }}
+            style={{ paddingInlineStart: `${level * 1.5}rem` }}
             onClick={(hasChildren || hasQueries) ? handleClick : undefined}
           >
             {/* Only show expand/collapse icons for items with children or queries */}
             {(hasChildren || hasQueries) && (
-              <span className="mr-1.5 text-gray-500 dark:text-gray-400">
+              <span className="me-1.5 text-gray-500 dark:text-gray-400">
                 {isExpanded ? '▼' : '►'}
               </span>
             )}
@@ -152,7 +154,7 @@ const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({
               </span>
 
               {totalChildCount > 0 && (
-                <span className="text-gray-500 dark:text-gray-400 text-xs ml-1" title={`${totalChildCount} sub-items total`}>
+                <span className="text-gray-500 dark:text-gray-400 text-xs ms-1" title={`${totalChildCount} sub-items total`}>
                   ({totalChildCount})
                 </span>
               )}
@@ -164,10 +166,10 @@ const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={(e) => e.stopPropagation()}
-                  className="text-blue-600 dark:text-blue-400 hover:underline truncate inline-block max-w-[150px] ml-2 text-sm"
+                  className="text-blue-600 dark:text-blue-400 hover:underline truncate inline-block max-w-[150px] ms-2 text-sm"
                   title={`${selfNode.title || 'No title'}\n${selfNode.url}`}
                 >
-                  <span className="text-gray-400 dark:text-gray-500 mr-1">→</span>
+                  <span className="text-gray-400 dark:text-gray-500 me-1">→</span>
                   {selfNode.title || selfNode.url}
                 </a>
               )}
@@ -176,12 +178,12 @@ const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({
 
           {/* Render query parameters if this node is expanded */}
           {isExpanded && hasQueries && Array.isArray((value as SitemapGraph).__query__) && (
-            <div className="ml-6">
+            <div className="ms-6">
               {(value as SitemapGraph).__query__?.map((queryNode, index) => (
                 <div
                   key={`${currentPath}-query-${index}`}
                   className="py-1.5 flex items-center"
-                  style={{ paddingLeft: `${(level + 1) * 1.5}rem` }}
+                  style={{ paddingInlineStart: `${(level + 1) * 1.5}rem` }}
                 >
                   <a
                     href={queryNode.url}
@@ -190,7 +192,7 @@ const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({
                     className="text-blue-600 dark:text-blue-400 hover:underline truncate inline-block max-w-xs flex items-center"
                     title={`${queryNode.title || 'No title'}\n${queryNode.url}`}
                   >
-                    <span className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs rounded px-1.5 py-0.5 mr-2 font-medium">
+                    <span className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs rounded px-1.5 py-0.5 me-2 font-medium">
                       query
                     </span>
                     {queryNode.title || queryNode.url}
@@ -202,7 +204,7 @@ const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({
 
           {/* Render children if this node is expanded */}
           {shouldRenderChildren && (
-            <div className="ml-2">
+            <div className="ms-2">
               {renderSitemapTree(value as SitemapGraph, currentPath, level + 1)}
             </div>
           )}
@@ -218,7 +220,7 @@ const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({
           <div
             key={`${path}-root-query-${index}`}
             className="py-1.5 flex items-center"
-            style={{ paddingLeft: `${level * 1.5}rem` }}
+            style={{ paddingInlineStart: `${level * 1.5}rem` }}
           >
             <a
               href={queryNode.url}
@@ -227,7 +229,7 @@ const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({
               className="text-blue-600 dark:text-blue-400 hover:underline truncate inline-block max-w-xs flex items-center"
               title={`${queryNode.title || 'No title'}\n${queryNode.url}`}
             >
-              <span className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs rounded px-1.5 py-0.5 mr-2 font-medium">
+              <span className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs rounded px-1.5 py-0.5 me-2 font-medium">
                 query
               </span>
               {queryNode.title || queryNode.url}
@@ -243,7 +245,7 @@ const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({
   if (isLoading) {
     return (
       <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-        Loading sitemap data...
+        {t('sitemap.loading')}
       </div>
     );
   }
@@ -251,7 +253,7 @@ const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({
   if (!sitemapData) {
     return (
       <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-        No sitemap data available.
+        {t('sitemap.noData')}
       </div>
     );
   }
@@ -263,7 +265,7 @@ const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({
           onClick={() => setRootExpanded(true)}
           className="text-primary-600 hover:text-primary-700 font-medium"
         >
-          Show Sitemap
+          {t('sitemap.showSitemap')}
         </button>
       )}
     </div>

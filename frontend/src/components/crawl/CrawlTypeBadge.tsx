@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { CrawlType } from '../../types/crawl';
 
 interface CrawlTypeBadgeProps {
@@ -22,13 +23,15 @@ const getCrawlTypeColor = (type: string) => {
 };
 
 export const CrawlTypeBadge: React.FC<CrawlTypeBadgeProps> = ({ type }: CrawlTypeBadgeProps) => {
+  const { t } = useTranslation();
+  
   return (
     <span
       className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getCrawlTypeColor(
         type
       )}`}
     >
-      {type}
+      {t(`crawl.type.${type}`)}
     </span>
   );
 };

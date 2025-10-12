@@ -79,7 +79,7 @@ class SpiderOptionSerializer(serializers.Serializer):
             .filter(slug=value)
             .exists()
         ):
-            raise serializers.ValidationError("Proxy server does not exist")
+            raise serializers.ValidationError(_("Proxy server does not exist"))
         return value
 
 

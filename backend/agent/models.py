@@ -5,12 +5,14 @@ from common.models import BaseModel
 
 
 class Agent(BaseModel):
-    name = models.CharField(max_length=255, unique=True)
-    system_prompt = models.TextField(null=True, blank=True)
+    name = models.CharField(verbose_name=_("Name"), max_length=255, unique=True)
+    system_prompt = models.TextField(
+        verbose_name=_("System Prompt"), null=True, blank=True
+    )
     provider_config = models.ForeignKey(
         "llm.ProviderConfig",
         on_delete=models.SET_NULL,
-        verbose_name=_("config provider"),
+        verbose_name=_("Config Provider"),
         related_name="agents",
         null=True,
         blank=True,
@@ -18,7 +20,7 @@ class Agent(BaseModel):
     llm_model = models.ForeignKey(
         "llm.LLMModel",
         on_delete=models.CASCADE,
-        verbose_name=_("llm model"),
+        verbose_name=_("LLM Model"),
         related_name="agents",
         null=True,
         blank=True,
@@ -26,22 +28,29 @@ class Agent(BaseModel):
     team = models.ForeignKey(
         "user.Team",
         on_delete=models.CASCADE,
-        verbose_name=_("team"),
+        verbose_name=_("Team"),
         related_name="agents",
         null=True,
         blank=True,
     )
 
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = _("Agent")
+        verbose_name_plural = _("Agents")
+
 
 class Tool(BaseModel):
-    tool_type = models.CharField(max_length=255)
+    tool_type = models.CharField(verbose_name=_("Tool Type"), max_length=255)
     agent = models.ForeignKey(
         "agent.Agent",
         on_delete=models.CASCADE,
-        verbose_name=_("agent"),
+        verbose_name=_("Agent"),
         related_name="tools",
     )
-    config = models.JSONField()
+    config = models.JSONField(verbose_name=_("Config"), null=True, blank=True)
 
 
 class Conversation(BaseModel):

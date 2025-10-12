@@ -4,6 +4,7 @@ import {
   MagnifyingGlassIcon,
   DocumentTextIcon
 } from '@heroicons/react/24/outline';
+import { useTranslation } from 'react-i18next';
 
 interface NavigationItem {
   href: string;
@@ -16,11 +17,13 @@ interface NavigationItem {
 }
 
 export const QuickNavigation: React.FC = () => {
+  const { t } = useTranslation();
+  
   const navigationItems: NavigationItem[] = [
     {
       href: '/dashboard/crawl',
-      title: 'Start Crawling',
-      description: 'Extract data from websites',
+      title: t('dashboard.quickActions.startCrawling'),
+      description: t('dashboard.quickActions.crawlDescription'),
       icon: GlobeAltIcon,
       borderColor: 'hover:border-blue-200 dark:hover:border-blue-700',
       iconBgColor: 'bg-blue-50 dark:bg-blue-900/20 group-hover:bg-blue-100 dark:group-hover:bg-blue-900/30',
@@ -28,8 +31,8 @@ export const QuickNavigation: React.FC = () => {
     },
     {
       href: '/dashboard/search',
-      title: 'Smart Search',
-      description: 'Find information intelligently',
+      title: t('dashboard.quickActions.smartSearch'),
+      description: t('dashboard.quickActions.searchDescription'),
       icon: MagnifyingGlassIcon,
       borderColor: 'hover:border-green-200 dark:hover:border-green-700',
       iconBgColor: 'bg-green-50 dark:bg-green-900/20 group-hover:bg-green-100 dark:group-hover:bg-green-900/30',
@@ -37,8 +40,8 @@ export const QuickNavigation: React.FC = () => {
     },
     {
       href: '/dashboard/sitemap',
-      title: 'Generate Sitemap',
-      description: 'Create website structure maps',
+      title: t('dashboard.quickActions.generateSitemap'),
+      description: t('dashboard.quickActions.sitemapDescription'),
       icon: DocumentTextIcon,
       borderColor: 'hover:border-purple-200 dark:hover:border-purple-700',
       iconBgColor: 'bg-purple-50 dark:bg-purple-900/20 group-hover:bg-purple-100 dark:group-hover:bg-purple-900/30',
@@ -57,7 +60,7 @@ export const QuickNavigation: React.FC = () => {
               href={item.href}
               className={`group p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 transition-colors ${item.borderColor}`}
             >
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center gap-x-3">
                 <div className={`p-2 rounded-lg transition-colors ${item.iconBgColor}`}>
                   <IconComponent className={`h-5 w-5 ${item.iconColor}`} />
                 </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { providerApi } from '../../services/api/provider';
 import { ListProviderConfig, ProviderConfigFormData, Provider } from '../../types/provider';
 import toast from 'react-hot-toast';
@@ -14,6 +15,7 @@ import { AdminProviderConfig } from '../../types/admin/provider';
 import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
 
 const ManageLLMProvidersPage: React.FC = () => {
+  const { t } = useTranslation();
   const [response, setResponse] = useState<PaginatedResponse<AdminProviderConfig>>({
     count: 0,
     next: null,
@@ -33,10 +35,10 @@ const ManageLLMProvidersPage: React.FC = () => {
 
   useEffect(() => {
     setItems([
-      { label: 'Admin', href: '/admin' },
-      { label: 'Manage LLM Providers', href: '/admin/llm-providers', current: true },
+      { label: t('dashboard.navigation.adminPanel'), href: '/manager' },
+      { label: t('admin.llm.title'), href: '/manager/llm-providers', current: true },
     ]);
-  }, [setItems]);
+  }, [setItems, t]);
 
   // Function to fetch provider configs
   const fetchProviderConfigs = useCallback(async () => {
@@ -46,11 +48,11 @@ const ManageLLMProvidersPage: React.FC = () => {
       setResponse(response);
     } catch (error) {
       console.error('Error fetching provider configurations:', error);
-      toast.error('Failed to fetch provider configurations');
+      toast.error(t('providerConfig.toast.fetchError'));
     } finally {
       setLoading(false);
     }
-  }, [currentPage]);
+  }, [currentPage, t]);
 
   const fetchProviders = useCallback(async () => {
     try {
@@ -58,9 +60,9 @@ const ManageLLMProvidersPage: React.FC = () => {
       setAvailableProviders(response);
     } catch (error) {
       console.error('Error fetching providers:', error);
-      toast.error('Failed to fetch providers');
+      toast.error(t('providerConfig.toast.fetchProvidersError'));
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     fetchProviderConfigs();
@@ -71,7 +73,7 @@ const ManageLLMProvidersPage: React.FC = () => {
   const handleCreateProviderConfig = async (data: ProviderConfigFormData) => {
     try {
       await adminProviderApi.providerConfiguration.create(data);
-      toast.success('Provider configuration created successfully');
+      toast.success(t('providerConfig.toast.createSuccess'));
       fetchProviderConfigs();
       return Promise.resolve();
     } catch (error: any) {
@@ -86,7 +88,7 @@ const ManageLLMProvidersPage: React.FC = () => {
 
     try {
       await adminProviderApi.providerConfiguration.update(editingProviderConfig.uuid, data);
-      toast.success('Provider configuration updated successfully');
+      toast.success(t('providerConfig.toast.updateSuccess'));
       fetchProviderConfigs();
       return Promise.resolve();
     } catch (error: any) {
@@ -99,26 +101,26 @@ const ManageLLMProvidersPage: React.FC = () => {
   const handleTestProviderConfig = async (data: ProviderConfigFormData) => {
     try {
       await adminProviderApi.providerConfiguration.testProviderConfig(data);
-      toast.success('Connection test successful');
+      toast.success(t('providerConfig.toast.testSuccess'));
       return Promise.resolve();
     } catch (error) {
       console.error('Error testing provider config:', error);
-      toast.error('Connection test failed');
+      toast.error(t('providerConfig.toast.testError'));
       return Promise.reject(error);
     }
   };
 
   // Function to delete a provider config
   const handleDeleteProviderConfig = async (uuid: string) => {
-    if (window.confirm('Are you sure you want to delete this provider configuration?')) {
+    if (window.confirm(t('providerConfig.deleteConfirm'))) {
       try {
         setDeletingUuid(uuid);
         await adminProviderApi.providerConfiguration.delete(uuid);
-        toast.success('Provider configuration deleted successfully');
+        toast.success(t('providerConfig.toast.deleteSuccess'));
         fetchProviderConfigs();
       } catch (error) {
         console.error('Error deleting provider config:', error);
-        toast.error('Failed to delete provider configuration');
+        toast.error(t('providerConfig.toast.deleteError'));
       } finally {
         setDeletingUuid(null);
       }
@@ -133,7 +135,7 @@ const ManageLLMProvidersPage: React.FC = () => {
       setIsModalOpen(true);
     } catch (error) {
       console.error('Error loading provider config for edit:', error);
-      toast.error('Failed to load provider configuration details');
+      toast.error(t('providerConfig.toast.loadError'));
     }
   };
 
@@ -144,15 +146,15 @@ const ManageLLMProvidersPage: React.FC = () => {
   };
 
   const handleViewDetails = (providerConfig: ListProviderConfig) => {
-    navigate(`/admin/llm-providers/${providerConfig.uuid}`);
+    navigate(`/manager/llm-providers/${providerConfig.uuid}`);
   };
 
   return (
     <div className="space-y-6 mt-8">
       <div className="sm:flex sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-lg font-medium text-gray-900 dark:text-white">Provider Configurations</h2>
-          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">Manage your LLM provider configurations.</p>
+          <h2 className="text-lg font-medium text-gray-900 dark:text-white">{t('providerConfig.title')}</h2>
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{t('providerConfig.subtitle')}</p>
         </div>
         <div className="mt-4 sm:mt-0">
           <Button
@@ -162,7 +164,7 @@ const ManageLLMProvidersPage: React.FC = () => {
             }}
           >
             <PlusIcon className="h-5 w-5" aria-hidden="true" />
-            Add Provider Configuration
+            {t('providerConfig.addButton')}
           </Button>
         </div>
       </div>

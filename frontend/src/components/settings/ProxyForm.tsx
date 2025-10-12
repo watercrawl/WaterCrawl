@@ -1,5 +1,6 @@
 import React, { useState, Fragment, useEffect } from 'react';
 import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
+import { useTranslation } from 'react-i18next';
 import { Proxy, CreateProxyRequest, ProxyType, TestProxyRequest } from '../../types/proxy';
 import toast from 'react-hot-toast';
 import Button from '../shared/Button';
@@ -13,6 +14,7 @@ interface ProxyFormProps {
 }
 
 const ProxyForm: React.FC<ProxyFormProps> = ({ isOpen, initialData, onClose, onSubmit, onTest }) => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState<CreateProxyRequest>({
     name: initialData?.name || '',
     host: initialData?.host || '',
@@ -94,18 +96,18 @@ const ProxyForm: React.FC<ProxyFormProps> = ({ isOpen, initialData, onClose, onS
     if (validateForm) {
       // Validate required fields
       if (!formData.name.trim()) {
-        newErrors.name = 'Name is required';
+        newErrors.name = t('settings.proxy.form.nameRequired');
       }
       if (!formData.host.trim()) {
-        newErrors.host = 'Host is required';
+        newErrors.host = t('settings.proxy.form.hostRequired');
       }
       if (formData.port <= 0) {
-        newErrors.port = 'Port must be greater than 0';
+        newErrors.port = t('settings.proxy.form.portRequired');
       }
       
       // Validate password if user is setting a new one
       if (initialData && passwordAction === 'change' && formData.password === '') {
-        newErrors.password = 'Password cannot be empty when setting a new password';
+        newErrors.password = t('settings.proxy.form.passwordEmpty');
       }
       
       setErrors(newErrors);
@@ -113,7 +115,7 @@ const ProxyForm: React.FC<ProxyFormProps> = ({ isOpen, initialData, onClose, onS
       // Check if there are errors
       if (Object.keys(newErrors).length > 0) {
         const errorFields = Object.keys(newErrors).join(', ');
-        toast.error(`Please fix the following fields: ${errorFields}`);
+        toast.error(t('settings.proxy.form.fixFields', { fields: errorFields }));
         return { isValid: false, data: {} };
       }
     }
@@ -184,7 +186,7 @@ const ProxyForm: React.FC<ProxyFormProps> = ({ isOpen, initialData, onClose, onS
       if (!isValid) {
         setLoading(false);
         if (Object.keys(data).length === 0 && initialData) {
-          toast.error('No changes to update');
+          toast.error(t('settings.proxy.form.noChanges'));
         }
         return;
       }
@@ -208,10 +210,10 @@ const ProxyForm: React.FC<ProxyFormProps> = ({ isOpen, initialData, onClose, onS
         } else if (error.response.data.detail) {
           toast.error(`Error: ${error.response.data.detail}`);
         } else {
-          toast.error('An error occurred while saving the proxy server. Please try again.');
+          toast.error(t('settings.proxy.toast.createError'));
         }
       } else {
-        toast.error('An error occurred while saving the proxy server. Please try again.');
+        toast.error(t('settings.proxy.toast.createError'));
       }
     } finally {
       setLoading(false);
@@ -229,7 +231,7 @@ const ProxyForm: React.FC<ProxyFormProps> = ({ isOpen, initialData, onClose, onS
       
       // Test the proxy
       await onTest(data as TestProxyRequest);
-      toast.success('Proxy server tested successfully');
+      toast.success(t('settings.proxy.toast.testSuccess'));
     } catch (error: any) {
       console.error('Error testing proxy:', error);
       
@@ -244,10 +246,10 @@ const ProxyForm: React.FC<ProxyFormProps> = ({ isOpen, initialData, onClose, onS
         if (error.response.data.message) {
           toast.error(`${error.response.data.message}`);
         } else {
-          toast.error('Failed to test proxy server');
+          toast.error(t('settings.proxy.toast.testError'));
         }
       } else {
-        toast.error('Failed to test proxy server');
+        toast.error(t('settings.proxy.toast.testError'));
       }
     } finally {
       setLoadingTest(false);
@@ -280,19 +282,19 @@ const ProxyForm: React.FC<ProxyFormProps> = ({ isOpen, initialData, onClose, onS
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <DialogPanel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-gray-800 p-6 text-left align-middle shadow-xl transition-all">
+              <DialogPanel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-gray-800 p-6 text-start align-middle shadow-xl transition-all">
                 <DialogTitle
                   as="h3"
                   className="text-lg font-medium leading-6 text-gray-900 dark:text-white"
                 >
-                  {initialData ? 'Edit Proxy Server' : 'Create New Proxy Server'}
+                  {initialData ? t('settings.proxy.editTitle') : t('settings.proxy.createTitle')}
                 </DialogTitle>
                 
                 <form onSubmit={handleSubmit} className="mt-4">
                   <div className="space-y-4">
                     <div>
                       <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Name <span className="text-red-500">*</span>
+                        {t('settings.proxy.form.name')} <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="text"
@@ -301,7 +303,7 @@ const ProxyForm: React.FC<ProxyFormProps> = ({ isOpen, initialData, onClose, onS
                         value={formData.name}
                         onChange={handleChange}
                         className={`mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm ${errors.name ? 'border-red-500' : ''}`}
-                        placeholder="My Proxy Server"
+                        placeholder={t('settings.proxy.form.namePlaceholder')}
                         required
                       />
                       {errors.name && (
@@ -311,7 +313,7 @@ const ProxyForm: React.FC<ProxyFormProps> = ({ isOpen, initialData, onClose, onS
                     
                     <div>
                       <label htmlFor="slug" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Slug <span className="text-red-500">*</span>
+                        {t('settings.proxy.form.slug')} <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="text"
@@ -320,18 +322,18 @@ const ProxyForm: React.FC<ProxyFormProps> = ({ isOpen, initialData, onClose, onS
                         value={formData.slug}
                         onChange={handleChange}
                         className={`mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm ${errors.slug ? 'border-red-500' : ''}`}
-                        placeholder="my-proxy-server"
+                        placeholder={t('settings.proxy.form.slugPlaceholder')}
                         required
                       />
                       {errors.slug && (
                         <p className="mt-1 text-sm text-red-600 dark:text-red-500">{errors.slug}</p>
                       )}
-                      <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">URL-friendly identifier (lowercase, no spaces)</p>
+                      <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">{t('settings.proxy.form.slugHelp')}</p>
                     </div>
                     
                     <div>
                       <label htmlFor="proxy_type" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Proxy Type <span className="text-red-500">*</span>
+                        {t('settings.proxy.form.proxyType')} <span className="text-red-500">*</span>
                       </label>
                       <select
                         id="proxy_type"
@@ -352,7 +354,7 @@ const ProxyForm: React.FC<ProxyFormProps> = ({ isOpen, initialData, onClose, onS
                     
                     <div>
                       <label htmlFor="host" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Host <span className="text-red-500">*</span>
+                        {t('settings.proxy.form.host')} <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="text"
@@ -361,7 +363,7 @@ const ProxyForm: React.FC<ProxyFormProps> = ({ isOpen, initialData, onClose, onS
                         value={formData.host}
                         onChange={handleChange}
                         className={`mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm ${errors.host ? 'border-red-500' : ''}`}
-                        placeholder="proxy.example.com"
+                        placeholder={t('settings.proxy.form.hostPlaceholder')}
                         required
                       />
                       {errors.host && (
@@ -371,7 +373,7 @@ const ProxyForm: React.FC<ProxyFormProps> = ({ isOpen, initialData, onClose, onS
                     
                     <div>
                       <label htmlFor="port" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Port <span className="text-red-500">*</span>
+                        {t('settings.proxy.form.port')} <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="number"
@@ -391,12 +393,12 @@ const ProxyForm: React.FC<ProxyFormProps> = ({ isOpen, initialData, onClose, onS
                     
                     {/* Authentication Section with clear separation */}
                     <div className="border border-gray-200 dark:border-gray-700 rounded-md p-4 mb-4">
-                      <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">Authentication Settings</h3>
+                      <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">{t('settings.proxy.form.authSettings')}</h3>
                       
                       {/* Username field - same for both adding and updating */}
                       <div className="mb-4">
                         <label htmlFor="username" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                          Username
+                          {t('settings.proxy.form.username')}
                         </label>
                         <input
                           type="text"
@@ -405,7 +407,7 @@ const ProxyForm: React.FC<ProxyFormProps> = ({ isOpen, initialData, onClose, onS
                           value={formData.username || ''}
                           onChange={handleChange}
                           className={`mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm ${errors.username ? 'border-red-500' : ''}`}
-                          placeholder="Leave empty for no username"
+                          placeholder={t('settings.proxy.form.usernamePlaceholder')}
                         />
                         {errors.username && (
                           <p className="mt-1 text-sm text-red-600 dark:text-red-500">{errors.username}</p>
@@ -416,7 +418,7 @@ const ProxyForm: React.FC<ProxyFormProps> = ({ isOpen, initialData, onClose, onS
                       {initialData ? (
                         // Update mode - Show options for password handling
                         <div>
-                          <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Password</div>
+                          <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('settings.proxy.form.password')}</div>
                           
                           {/* Option 1: Keep existing password state */}
                           <div className="flex items-center mb-3">
@@ -435,8 +437,8 @@ const ProxyForm: React.FC<ProxyFormProps> = ({ isOpen, initialData, onClose, onS
                               }}
                               className="rounded-full border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700"
                             />
-                            <label htmlFor="keep_password" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
-                              {initialData.has_password ? 'Keep existing password' : 'No password'}
+                            <label htmlFor="keep_password" className="ms-2 block text-sm text-gray-700 dark:text-gray-300">
+                              {initialData.has_password ? t('settings.proxy.form.keepPassword') : t('settings.proxy.form.noPassword')}
                             </label>
                           </div>
                           
@@ -457,8 +459,8 @@ const ProxyForm: React.FC<ProxyFormProps> = ({ isOpen, initialData, onClose, onS
                                 }}
                                 className="rounded-full border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700"
                               />
-                              <label htmlFor="remove_password" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
-                                Remove password
+                              <label htmlFor="remove_password" className="ms-2 block text-sm text-gray-700 dark:text-gray-300">
+                                {t('settings.proxy.form.removePassword')}
                               </label>
                             </div>
                           )}
@@ -480,16 +482,16 @@ const ProxyForm: React.FC<ProxyFormProps> = ({ isOpen, initialData, onClose, onS
                               }}
                               className="rounded-full border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700"
                             />
-                            <label htmlFor="set_password" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
-                              {initialData.has_password ? 'Change password' : 'Set password'}
+                            <label htmlFor="set_password" className="ms-2 block text-sm text-gray-700 dark:text-gray-300">
+                              {initialData.has_password ? t('settings.proxy.form.changePassword') : t('settings.proxy.form.setPassword')}
                             </label>
                           </div>
                           
                           {/* Show password field only when setting/changing password */}
                           {passwordAction === 'change' && (
-                            <div className="mt-3 ml-6 pl-2 border-l-2 border-gray-200 dark:border-gray-700">
+                            <div className="mt-3 ms-6 ps-2 border-s-2 border-gray-200 dark:border-gray-700">
                               <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                New Password
+                                {t('settings.proxy.form.newPassword')}
                               </label>
                               <input
                                 type="password"
@@ -511,7 +513,7 @@ const ProxyForm: React.FC<ProxyFormProps> = ({ isOpen, initialData, onClose, onS
                         // Create mode - Simple password field
                         <div>
                           <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                            Password
+                            {t('settings.proxy.form.password')}
                           </label>
                           <input
                             type="password"
@@ -520,12 +522,12 @@ const ProxyForm: React.FC<ProxyFormProps> = ({ isOpen, initialData, onClose, onS
                             value={formData.password || ''}
                             onChange={handleChange}
                             className={`mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm ${errors.password ? 'border-red-500' : ''}`}
-                            placeholder="Leave empty for no password"
+                            placeholder={t('settings.proxy.form.passwordPlaceholder')}
                           />
                           {errors.password && (
                             <p className="mt-1 text-sm text-red-600 dark:text-red-500">{errors.password}</p>
                           )}
-                          <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">Leave empty if no authentication is required</p>
+                          <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">{t('settings.proxy.form.passwordHelp')}</p>
                         </div>
                       )}
                     </div>
@@ -539,8 +541,8 @@ const ProxyForm: React.FC<ProxyFormProps> = ({ isOpen, initialData, onClose, onS
                         onChange={handleChange}
                         className="rounded border-gray-300 text-primary-600 shadow-sm focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 dark:border-gray-600 dark:bg-gray-700"
                       />
-                      <label htmlFor="is_default" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
-                        Set as default proxy server
+                      <label htmlFor="is_default" className="ms-2 block text-sm text-gray-700 dark:text-gray-300">
+                        {t('settings.proxy.form.isDefault')}
                       </label>
                     </div>
                   </div>
@@ -548,33 +550,33 @@ const ProxyForm: React.FC<ProxyFormProps> = ({ isOpen, initialData, onClose, onS
                   {/* Display non-field errors above action buttons */}
                   {errors.non_field_errors && (
                     <div className="mt-4 p-3 rounded bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
-                      <ul className="list-disc pl-5 text-sm text-red-600 dark:text-red-400">
+                      <ul className="list-disc ps-5 text-sm text-red-600 dark:text-red-400">
                         <li>{errors.non_field_errors}</li>
                       </ul>
                     </div>
                   )}
                   
-                  <div className="mt-6 flex justify-end space-x-3">
+                  <div className="mt-6 flex justify-end gap-x-3">
                     <Button
                       onClick={onClose}
                       disabled={loading}
                       variant="outline"
                     >
-                      Cancel
+                      {t('settings.proxy.cancelButton')}
                     </Button>
                     <Button
                       type="submit"
                       disabled={loading}
                       loading={loading}
                     >
-                      {initialData ? 'Update' : 'Create'}
+                      {initialData ? t('settings.proxy.updateButton') : t('settings.proxy.createButton')}
                     </Button>
                     <Button
                       onClick={handleTestProxy}
                       disabled={loadingTest}
                       loading={loadingTest}
                     >
-                      Test Proxy
+                      {t('settings.proxy.testButton')}
                     </Button>
                   </div>
                 </form>

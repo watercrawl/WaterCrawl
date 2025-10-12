@@ -14,6 +14,7 @@ import { JSONSchemaDefinition } from '../json-forms/types/schema';
 import { AxiosError } from 'axios';
 import { FeedMessage } from '../../types/feed';
 import Feed from '../shared/Feed';
+import { useTranslation } from 'react-i18next';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -32,6 +33,7 @@ interface Error {
 }
 
 export const CrawlForm: React.FC<CrawlFormProps> = ({ initialRequest, onCrawlEvent, hideApiDocs = false, hideResultsTab = false, hidePluginTab = false }) => {
+  const { t } = useTranslation();
   const [url, setUrl] = useState<string | null>(null);
   const [urls, setUrls] = useState<string[]>([]);
   const [isBatch, setIsBatch] = useState(false);
@@ -257,13 +259,13 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ initialRequest, onCrawlEve
     setFeedMessages([]);
     e.preventDefault();
     if (!url && !urls.length) {
-      toast.error('Please enter a URL or URLs');
+      toast.error(t('crawl.form.enterUrl'));
       return;
     }
 
     // Check for validation errors
     if (formErrors.plugin) {
-      toast.error('Please fix the validation errors before submitting');
+      toast.error(t('crawl.form.fixErrors'));
       // Switch to the plugin tab if there are errors
       setSelectedTab(tabs.findIndex(tab => tab.name === 'Plugin Options'));
       return;
@@ -294,10 +296,10 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ initialRequest, onCrawlEve
       console.error('Error:', error);
 
       if (error instanceof AxiosError) {
-        toast.error(error?.response?.data?.message);
+        toast.error(error?.response?.data?.message || t('errors.generic'));
         setFormErrors(prev => ({ ...prev, errors: error?.response?.data?.errors }));
       } else {
-        toast.error('Failed to start crawling');
+        toast.error(t('crawl.messages.failed'));
       }
       setIsLoading(false);
     }
@@ -308,7 +310,7 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ initialRequest, onCrawlEve
 
     try {
       await crawlRequestApi.cancelCrawl(crawlStatus.request.uuid);
-      toast.success('Crawl cancelled successfully');
+      toast.success(t('crawl.messages.cancelled'));
       setIsLoading(false);
       setCrawlStatus(prev => ({
         ...prev,
@@ -316,13 +318,13 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ initialRequest, onCrawlEve
       }));
     } catch (error) {
       console.error('Error cancelling crawl:', error);
-      toast.error('Failed to cancel crawl');
+      toast.error(t('crawl.messages.cancelFailed'));
     }
   };
 
   const tabs = [
     {
-      name: 'Spider Options',
+      name: t('crawl.form.spiderOptions'),
       content: (
         <SpiderOptionsForm
           options={spiderOptions}
@@ -332,7 +334,7 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ initialRequest, onCrawlEve
       )
     },
     {
-      name: 'Page Options',
+      name: t('crawl.form.pageOptions'),
       content: (
         <PageOptionsForm
           options={pageOptions}
@@ -342,7 +344,7 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ initialRequest, onCrawlEve
     },
     ...(hidePluginTab ? [] : [
       {
-        name: 'Plugin Options',
+        name: t('crawl.form.pluginOptions'),
         content: (
           <PluginOptionsForm
             onChange={handlePluginOptionsChange}
@@ -354,13 +356,13 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ initialRequest, onCrawlEve
       }]),
     ...(hideApiDocs ? [] : [
       {
-        name: 'API Documentation',
+        name: t('crawl.form.apiDocs'),
         content: <ApiDocumentation request={currentRequest} isBatch={isBatch} />
       },
     ]),
     ...(hideResultsTab ? [] : [
       {
-        name: 'Results',
+        name: t('crawl.form.results'),
         content: crawlStatus.request ? (
           <>
             <Feed messages={feedMessages} showTimestamp={true} loading={isLoading} />
@@ -372,7 +374,7 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ initialRequest, onCrawlEve
           </>
         ) : (
           <div className="text-center py-12 text-gray-500 dark:text-gray-400">
-            No results yet. Start crawling to see results here.
+            {t('crawl.form.noResults')}
           </div>
         ),
       },
@@ -391,9 +393,9 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ initialRequest, onCrawlEve
               className={`${!isBatch
                 ? 'bg-gray-700 text-white dark:bg-gray-600 dark:text-white'
                 : 'bg-white text-gray-700 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700'
-                } px-4 py-2 text-sm font-medium rounded-l-md`}
+                } px-4 py-2 text-sm font-medium rounded-s-md`}
             >
-              Single URL
+              {t('crawl.form.singleUrl')}
             </button>
             <button
               type="button"
@@ -401,26 +403,26 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ initialRequest, onCrawlEve
               className={`${isBatch
                 ? 'bg-gray-700 text-white dark:bg-gray-600 dark:text-white'
                 : 'bg-white text-gray-700 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700'
-                } px-4 py-2 text-sm font-medium rounded-r-md`}
+                } px-4 py-2 text-sm font-medium rounded-e-md`}
             >
-              Batch URLs
+              {t('crawl.form.batchUrls')}
             </button>
           </div>
 
         </div>
-        <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 items-start">
+        <div className="flex flex-col md:flex-row md:gap-x-4 space-y-4 md:space-y-0 items-start">
           <div className="w-full">
             {isBatch ? (
               <>
                 <textarea
-                  placeholder={`Enter multiple URLs (one per line)\nhttps://example1.com\nhttps://example2.com`}
-                  className="w-full px-3 bg-transparent border border-gray-200 dark:border-gray-700 rounded-md text-gray-900 dark:text-white focus:outline-none focus:border-gray-400 dark:focus:border-gray-500 disabled:bg-gray-100 dark:disabled:bg-gray-700"
+                  placeholder={t('crawl.form.batchPlaceholder')}
+                  className="w-full px-3 bg-transparent border border-gray-200 dark:border-gray-700 rounded-md text-gray-900 dark:text-white focus:outline-none focus:border-gray-400 dark:focus:border-gray-500 disabled:bg-gray-100 dark:disabled:bg-gray-700 ltr"
                   rows={5}
                   value={urls.join('\n')}
                   onChange={(e) => handleBatchUrlsChange(e.target.value)}
                 />
                 <div className="mt-1.5 text-sm text-gray-500 dark:text-gray-400 hidden md:block">
-                  <p>Enter multiple URLs (one per line). Currently added: <span className="font-medium">{urls.length}</span> URLs</p>
+                  <p>{t('crawl.form.batchHelp', { count: urls.length })}</p>
                 </div>
               </>
             ) : (
@@ -430,11 +432,11 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ initialRequest, onCrawlEve
                   value={url || ''}
                   onChange={setUrl}
                   type="url"
-                  placeholder="https://example.com"
-                  className="w-full text-lg"
+                  placeholder={t('crawl.form.urlPlaceholder')}
+                  className="w-full text-lg ltr"
                 />
                 <p className="mt-1.5 text-sm text-gray-500 dark:text-gray-400 hidden md:block">
-                  Enter the URL of the website you want to crawl. Make sure to include the protocol (http:// or https://).
+                  {t('crawl.form.urlHelp')}
                 </p>
               </>
             )}
@@ -446,7 +448,7 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ initialRequest, onCrawlEve
                 onClick={handleCancel}
                 className="w-full md:w-auto px-6 py-2.5 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 focus:outline-none focus:ring-red-500 focus:ring-offset-2 transition-colors"
               >
-                Cancel Crawling
+                {t('crawl.form.cancelCrawl')}
               </button>
             ) : (
               <button
@@ -454,7 +456,7 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ initialRequest, onCrawlEve
                 disabled={isLoading || formErrors.plugin}
                 className="w-full md:w-auto px-6 py-2.5 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 focus:outline-none focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
-                {isLoading ? 'Starting...' : 'Start Crawling'}
+                {isLoading ? t('crawl.form.starting') : t('crawl.form.startCrawl')}
               </button>
             )}
           </div>
@@ -466,7 +468,7 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ initialRequest, onCrawlEve
         <TabGroup selectedIndex={selectedTab} onChange={setSelectedTab}>
           <div className="relative">
             <div className="overflow-x-auto scrollbar-hide">
-              <TabList className="flex space-x-1 border-b border-gray-200 dark:border-gray-700 min-w-max">
+              <TabList className="flex gap-x-1 border-b border-gray-200 dark:border-gray-700 min-w-max">
                 {tabs.map((tab) => (
                   <Tab
                     key={tab.name}
@@ -487,7 +489,7 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({ initialRequest, onCrawlEve
                   >
                     {tab.name}
                     {(tab.name === 'Plugin Options' && formErrors.plugin) && (
-                      <span className="ml-2 text-red-500">⚠️</span>
+                      <span className="ms-2 text-red-500">⚠️</span>
                     )}
                   </Tab>
                 ))}

@@ -5,8 +5,10 @@ import KnowledgeBaseQueryForm from '../../../components/knowledge/KnowledgeBaseQ
 import { knowledgeBaseApi } from '../../../services/api/knowledgeBase';
 import { useBreadcrumbs } from '../../../contexts/BreadcrumbContext';
 import { KnowledgeBaseDetail } from '../../../types/knowledge';
+import { useTranslation } from 'react-i18next';
 
 const KnowledgeBaseQueryPage: React.FC = () => {
+  const { t } = useTranslation();
   const { knowledgeBaseId } = useParams<{ knowledgeBaseId: string }>();
   const navigate = useNavigate();
   const { setItems } = useBreadcrumbs();
@@ -19,29 +21,29 @@ const KnowledgeBaseQueryPage: React.FC = () => {
     knowledgeBaseApi.get(knowledgeBaseId as string).then((response) => {
       setKnowledgeBase(response);
     }).catch(() => {
-      toast.error('Failed to load knowledge base');
+      toast.error(t('settings.knowledgeBase.toast.loadError'));
       navigate('/dashboard/knowledge-base');
     });
-  }, [knowledgeBaseId, navigate]);
+  }, [knowledgeBaseId, navigate, t]);
 
   useEffect(() => {
     if (!knowledgeBase) return;
     setItems([
-      { label: 'Dashboard', href: '/dashboard' },
-      { label: 'Knowledge Bases', href: '/dashboard/knowledge-base' },
+      { label: t('common.dashboard'), href: '/dashboard' },
+      { label: t('settings.knowledgeBase.title'), href: '/dashboard/knowledge-base' },
       { label: knowledgeBase.title, href: `/dashboard/knowledge-base/${knowledgeBaseId}`},
-      { label: 'Query', href: `/dashboard/knowledge-base/${knowledgeBaseId}/query`, current: true },
+      { label: t('settings.knowledgeBase.query.title'), href: `/dashboard/knowledge-base/${knowledgeBaseId}/query`, current: true },
     ]);
-  }, [knowledgeBase, setItems, knowledgeBaseId]);
+  }, [knowledgeBase, setItems, knowledgeBaseId, t]);
 
 
 
   return (
     <div className="px-8 py-6 space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Knowledge Base Playground</h1>
+        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">{t('settings.knowledgeBase.playground.title')}</h1>
         <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-          Test and experiment with your knowledge base in real-time.
+          {t('settings.knowledgeBase.playground.subtitle')}
         </p>
       </div>
 

@@ -54,7 +54,7 @@ class CrawlRequest(BaseModel):
         if isinstance(value, str):
             self.urls = [value]
         else:
-            raise ValueError("URL must be a string.")
+            raise ValueError(_("URL must be a string."))
 
     def number_of_documents(self):
         return self.results.count()
@@ -67,12 +67,13 @@ class CrawlRequest(BaseModel):
 class CrawlResult(BaseModel):
     request = models.ForeignKey(
         CrawlRequest,
+        verbose_name=_("Crawl Request"),
         on_delete=models.CASCADE,
         related_name="results",
     )
-    url = models.URLField(_("url"), max_length=2048)
+    url = models.URLField(_("URL"), max_length=2048)
     result = models.FileField(
-        _("result"),
+        _("Result"),
         upload_to=generate_crawl_result_file_path,
     )
 
@@ -84,16 +85,17 @@ class CrawlResult(BaseModel):
 class CrawlResultAttachment(BaseModel):
     crawl_result = models.ForeignKey(
         CrawlResult,
+        verbose_name=_("Crawl Result"),
         on_delete=models.CASCADE,
         related_name="attachments",
     )
     attachment_type = models.CharField(
-        _("attachment type"),
+        _("Attachment Type"),
         max_length=255,
         choices=consts.CRAWL_RESULT_ATTACHMENT_TYPE_CHOICES,
     )
     attachment = models.FileField(
-        _("attachment"), max_length=511, upload_to=generate_crawl_result_attachment_path
+        _("Attachment"), max_length=511, upload_to=generate_crawl_result_attachment_path
     )
 
     class Meta:
@@ -115,18 +117,18 @@ class SearchRequest(BaseModel):
         verbose_name=_("team"),
         related_name="search_requests",
     )
-    query = models.CharField(_("query"), max_length=255)
-    search_options = models.JSONField(_("search options"), default=dict)
-    result_limit = models.PositiveIntegerField(_("result limit"), default=5)
-    duration = models.DurationField(_("duration"), null=True)
+    query = models.CharField(_("Query"), max_length=255)
+    search_options = models.JSONField(_("Search Options"), default=dict)
+    result_limit = models.PositiveIntegerField(_("Result Limit"), default=5)
+    duration = models.DurationField(_("Duration"), null=True)
     status = models.CharField(
-        _("status"),
+        _("Status"),
         max_length=255,
         choices=consts.CRAWL_STATUS_CHOICES,
         default=consts.CRAWL_STATUS_NEW,
     )
     result = models.FileField(
-        _("result"),
+        _("Result"),
         max_length=255,
         upload_to=search_result_file_path,
         null=True,
@@ -142,28 +144,28 @@ class SearchRequest(BaseModel):
 
 
 class ProxyServer(BaseModel):
-    name = models.CharField(_("name"), max_length=255)
-    slug = models.SlugField(_("key"), max_length=255)
-    is_default = models.BooleanField(_("is default"), default=False)
+    name = models.CharField(_("Name"), max_length=255)
+    slug = models.SlugField(_("Key"), max_length=255)
+    is_default = models.BooleanField(_("Is Default"), default=False)
     category = models.CharField(
-        _("proxy category"),
+        _("Proxy Category"),
         max_length=255,
         choices=consts.PROXY_CATEGORY_CHOICES,
         default=consts.PROXY_CATEGORY_GENERAL,
     )
     proxy_type = models.CharField(
-        _("proxy type"),
+        _("Proxy Type"),
         max_length=255,
         choices=consts.PROXY_TYPE_CHOICES,
         default=consts.PROXY_TYPE_HTTP,
     )
     host = models.CharField(
-        _("host"),
+        _("Host"),
         max_length=255,
     )
-    port = models.PositiveIntegerField(_("port"), default=0)
-    username = models.CharField(_("username"), max_length=255, null=True, blank=True)
-    password = models.TextField(_("password"), null=True, blank=True)
+    port = models.PositiveIntegerField(_("Port"), default=0)
+    username = models.CharField(_("Username"), max_length=255, null=True, blank=True)
+    password = models.TextField(_("Password"), null=True, blank=True)
     team = models.ForeignKey(
         "user.Team",
         on_delete=models.CASCADE,
@@ -191,17 +193,17 @@ class SitemapRequest(BaseModel):
         verbose_name=_("team"),
         related_name="sitemap_requests",
     )
-    url = models.URLField(_("url"), max_length=255)
-    options = models.JSONField(_("options"), default=dict)
+    url = models.URLField(_("URL"), max_length=255)
+    options = models.JSONField(_("Options"), default=dict)
     status = models.CharField(
-        _("status"),
+        _("Status"),
         max_length=255,
         choices=consts.CRAWL_STATUS_CHOICES,
         default=consts.CRAWL_STATUS_NEW,
     )
-    duration = models.DurationField(_("duration"), null=True)
+    duration = models.DurationField(_("Duration"), null=True)
     result = models.FileField(
-        _("result"),
+        _("Result"),
         max_length=255,
         upload_to=sitemap_result_file_path,
         null=True,

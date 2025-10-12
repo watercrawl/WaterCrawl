@@ -5,9 +5,11 @@ import {
   CodeBracketIcon,
   ChatBubbleLeftRightIcon,
   BugAntIcon,
-  GlobeAltIcon
+  GlobeAltIcon,
+  LanguageIcon
 } from '@heroicons/react/24/outline';
 import { useSettings } from '../../contexts/SettingsProvider';
+import { useTranslation } from 'react-i18next';
 
 interface ResourceLink {
   title: string;
@@ -21,54 +23,62 @@ interface ResourceLink {
 
 
 export const ResourcesShortcuts: React.FC = () => {
-
+  const { t } = useTranslation();
   const { settings } = useSettings();
   
   const resources: ResourceLink[] = [
     {
-      title: 'API Documentation',
-      description: 'Complete API reference and guides',
+      title: t('dashboard.resources.apiDocs'),
+      description: t('dashboard.resources.apiDocsDesc'),
       href: '/dashboard/api-reference',
       icon: DocumentTextIcon,
       external: false,
       color: 'text-blue-600 dark:text-blue-400'
     },
     {
-      title: 'Developer Guides',
-      description: 'In-depth development documentation',
+      title: t('dashboard.resources.devGuides'),
+      description: t('dashboard.resources.devGuidesDesc'),
       href: 'https://docs.watercrawl.dev/api/overview',
       icon: BookOpenIcon,
       external: true,
       color: 'text-purple-600 dark:text-purple-400'
     },
     {
-      title: 'Code Examples',
-      description: 'Sample implementations and snippets',
+      title: t('dashboard.resources.codeExamples'),
+      description: t('dashboard.resources.codeExamplesDesc'),
       href: 'https://github.com/watercrawl/WaterCrawl/tree/main/tutorials',
       icon: CodeBracketIcon,
       external: true,
       color: 'text-gray-600 dark:text-gray-400'
     },
     {
-      title: 'GitHub Discussions',
-      description: 'Connect with other developers',
+      title: t('dashboard.resources.discussions'),
+      description: t('dashboard.resources.discussionsDesc'),
       href: 'https://github.com/watercrawl/WaterCrawl/discussions',
       icon: ChatBubbleLeftRightIcon,
       external: true,
       color: 'text-pink-600 dark:text-pink-400'
     },
     {
-      title: 'Bug Reports',
-      description: 'Report issues and feature requests',
+      title: t('dashboard.resources.bugReports'),
+      description: t('dashboard.resources.bugReportsDesc'),
       href: 'https://github.com/watercrawl/watercrawl/issues',
       icon: BugAntIcon,
       external: true,
       color: 'text-red-600 dark:text-red-400'
     },
+    {
+      title: t('dashboard.resources.translations'),
+      description: t('dashboard.resources.translationsDesc'),
+      href: 'https://crowdin.com/project/watercrawl',
+      icon: LanguageIcon,
+      external: true,
+      color: 'text-yellow-600 dark:text-yellow-400'
+    },
     ...(settings?.is_enterprise_mode_active ? [
       {
-        title: 'Status Page',
-        description: 'System status and uptime monitoring',
+        title: t('dashboard.resources.statusPage'),
+        description: t('dashboard.resources.statusPageDesc'),
         href: 'https://status.watercrawl.dev',
         icon: GlobeAltIcon,
         external: true,
@@ -77,11 +87,11 @@ export const ResourcesShortcuts: React.FC = () => {
   ];
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
-      <div className="flex items-center space-x-3 mb-6">
+      <div className="flex items-center gap-x-3 mb-6">
         <BookOpenIcon className="h-6 w-6 text-primary-600" />
         <div>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Resources & Documentation</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Quick access to help and documentation</p>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('dashboard.resources.title')}</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400">{t('dashboard.resources.subtitle')}</p>
         </div>
       </div>
 
@@ -99,12 +109,12 @@ export const ResourcesShortcuts: React.FC = () => {
               {...linkProps}
               className="group p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-600 hover:shadow-md transition-all duration-200"
             >
-              <div className="flex items-start space-x-3">
+              <div className="flex items-start gap-x-3">
                 <div className={`p-2 rounded-lg bg-white dark:bg-gray-800 shadow-sm group-hover:shadow-md transition-shadow`}>
                   <IconComponent className={`h-5 w-5 ${resource.color}`} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center space-x-1">
+                  <div className="flex items-center gap-x-1">
                     <h3 className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
                       {resource.title}
                     </h3>
@@ -134,8 +144,8 @@ export const ResourcesShortcuts: React.FC = () => {
             rel="noopener noreferrer"
             className="inline-flex items-center px-3 py-2 text-sm font-medium text-primary-700 dark:text-primary-300 bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/30 transition-colors"
           >
-            <DocumentTextIcon className="h-4 w-4 mr-2" />
-            Full Documentation
+            <DocumentTextIcon className="h-4 w-4 me-2" />
+            {t('dashboard.resources.fullDocs')}
           </a>
           <a
             href="https://github.com/watercrawl/watercrawl"
@@ -143,15 +153,15 @@ export const ResourcesShortcuts: React.FC = () => {
             rel="noopener noreferrer"
             className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
           >
-            <CodeBracketIcon className="h-4 w-4 mr-2" />
-            GitHub Repository
+            <CodeBracketIcon className="h-4 w-4 me-2" />
+            {t('dashboard.resources.githubRepo')}
           </a>
           <a
             href="mailto:support@watercrawl.dev"
             className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
           >
-            <ChatBubbleLeftRightIcon className="h-4 w-4 mr-2" />
-            Contact Support
+            <ChatBubbleLeftRightIcon className="h-4 w-4 me-2" />
+            {t('dashboard.resources.contactSupport')}
           </a>
         </div>
       </div>

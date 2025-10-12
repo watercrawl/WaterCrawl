@@ -51,10 +51,10 @@ const OptionCard: React.FC<OptionCardProps> = ({
       } rounded-lg cursor-pointer transition-all hover:border-primary-300 dark:hover:border-primary-700`}
     >
       <div className="flex items-center">
-        <div className={`flex-shrink-0 h-5 w-5 ${iconBgColor} ${iconDarkBgColor} rounded-full flex items-center justify-center mr-1.5`}>
+        <div className={`flex-shrink-0 h-5 w-5 ${iconBgColor} ${iconDarkBgColor} rounded-full flex items-center justify-center me-1.5`}>
           {icon}
         </div>
-        <h3 className="text-xs font-medium text-gray-900 dark:text-white mr-1.5">{title}</h3>
+        <h3 className="text-xs font-medium text-gray-900 dark:text-white me-1.5">{title}</h3>
         {badge && (
           <span className={`inline-flex items-center justify-center rounded px-1 py-0.5 text-xs font-medium ${getBadgeColors(badge.color)}`}>
             {badge.text}

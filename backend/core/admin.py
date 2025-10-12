@@ -1,5 +1,6 @@
 from urllib.parse import urlencode
 
+from django.utils.translation import gettext as _
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
@@ -34,7 +35,10 @@ class ProxyServerAdmin(admin.ModelAdmin):
         add_url = reverse(f"admin:{obj._meta.app_label}_{obj._meta.model_name}_add")
 
         return format_html(
-            '<a class="button" href="{}?{}">Duplicate</a>', add_url, query_string
+            '<a class="button" href="{}?{}">{}</a>',
+            add_url,
+            query_string,
+            _("Duplicate"),
         )
 
-    duplicate_link.short_description = "Duplicate"
+    duplicate_link.short_description = _("Duplicate")

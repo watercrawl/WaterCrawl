@@ -3,17 +3,19 @@ import { useLocation } from 'react-router-dom';
 import { CrawlForm } from '../../components/crawl/CrawlForm';
 import { CrawlRequest } from '../../types/crawl';
 import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
+import { useTranslation } from 'react-i18next';
 
 const CrawlPage: React.FC = () => {
+  const { t } = useTranslation();
   const location = useLocation();
   const [initialRequest, setInitialRequest] = useState<CrawlRequest | null>(null);
   const {setItems} = useBreadcrumbs();
   useEffect(() => {
     setItems([
-      { label: 'Dashboard', href: '/dashboard'},
-      { label: 'Crawl Playground', href: '/dashboard/crawl', current: true },
+      { label: t('dashboard.title'), href: '/dashboard'},
+      { label: t('crawl.title'), href: '/dashboard/crawl', current: true },
     ]);
-  }, [setItems]);
+  }, [setItems, t]);
 
   useEffect(() => {
     // Load request from navigation state if available
@@ -25,9 +27,9 @@ const CrawlPage: React.FC = () => {
   return (
     <div className="px-8 py-6 space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Crawl Playground</h1>
+        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">{t('crawl.title')}</h1>
         <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-          Test and experiment with different crawling configurations in real-time
+          {t('crawl.subtitle')}
         </p>
       </div>
 

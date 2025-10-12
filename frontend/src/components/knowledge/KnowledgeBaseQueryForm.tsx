@@ -11,6 +11,7 @@ import Card from '../shared/Card';
 import Editor from '@monaco-editor/react';
 import { AxiosError } from 'axios';
 import { classnames } from '../../lib/utils';
+import { useTranslation } from 'react-i18next';
 
 interface IFormInput {
   query: string;
@@ -23,6 +24,7 @@ interface KnowledgeBaseQueryFormProps {
 }
 
 const KnowledgeBaseQueryForm: React.FC<KnowledgeBaseQueryFormProps> = ({ knowledgeBaseId }) => {
+  const { t } = useTranslation();
   const [query, setQuery] = useState('');
   const [topK, setTopK] = useState(3);
   const [results, setResults] = useState<any | null>(null);
@@ -38,8 +40,8 @@ const KnowledgeBaseQueryForm: React.FC<KnowledgeBaseQueryFormProps> = ({ knowled
   });
 
   useEffect(() => {
-    register('query', { required: 'Query cannot be empty' });
-  }, [register]);
+    register('query', { required: t('settings.knowledgeBase.query.error') });
+  }, [register, t]);
 
   useEffect(() => {
     setValue('query', query);
@@ -54,12 +56,12 @@ const KnowledgeBaseQueryForm: React.FC<KnowledgeBaseQueryFormProps> = ({ knowled
     try {
       const response = await knowledgeBaseApi.query(knowledgeBaseId, { query: data.query, top_k: data.top_k });
       setResults(response);
-      toast.success('Query successful!');
+      toast.success(t('settings.knowledgeBase.query.success'));
     } catch (error) {
       if(error instanceof AxiosError){
-        toast.error(error.response?.data?.message || 'Failed to execute query.');
+        toast.error(error.response?.data?.message || t('settings.knowledgeBase.query.error'));
       }else{
-        toast.error('Failed to execute query.');
+        toast.error(t('settings.knowledgeBase.query.error'));
       }
     } finally {
       setIsQuerying(false);
@@ -69,19 +71,19 @@ const KnowledgeBaseQueryForm: React.FC<KnowledgeBaseQueryFormProps> = ({ knowled
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div className="space-y-2">
-        <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 items-start">
+        <div className="flex flex-col md:flex-row md:gap-x-4 space-y-4 md:space-y-0 items-start">
           <div className="w-full">
             <FormInput
               label=""
               value={query}
               onChange={setQuery}
               type="text"
-              placeholder="Enter your query..."
+              placeholder={t('settings.knowledgeBase.query.placeholder')}
               className="w-full text-lg"
             />
             {errors.query && <p className="mt-2 text-sm text-red-600">{errors.query.message}</p>}
             <p className="mt-1.5 text-sm text-gray-500 dark:text-gray-400 hidden md:block">
-              Enter your query to search the knowledge base for relevant results.
+              {t('settings.knowledgeBase.query.helpText')}
             </p>
           </div>
           <div className="w-full pt-1">
@@ -90,24 +92,24 @@ const KnowledgeBaseQueryForm: React.FC<KnowledgeBaseQueryFormProps> = ({ knowled
               disabled={isQuerying}
               className="w-full md:w-auto px-6 py-2.5 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 focus:outline-none focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              {isQuerying ? 'Querying...' : 'Run Query'}
+              {isQuerying ? t('settings.knowledgeBase.query.querying') : t('settings.knowledgeBase.query.runButton')}
             </button>
           </div>
         </div>
       </div>
       <div className="mt-8">
         <TabGroup selectedIndex={selectedTab} onChange={setSelectedTab}>
-          <TabList className="flex space-x-1 border-b border-gray-200 dark:border-gray-700 min-w-max">
+          <TabList className="flex gap-x-1 border-b border-gray-200 dark:border-gray-700 min-w-max">
             <Tab className={({ selected }) => classnames({
               'px-4 py-2.5 text-sm font-medium leading-5 focus:outline-none': true,
               'text-gray-900 dark:text-white border-b-2 border-gray-900 dark:border-white': selected,
               'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300': !selected
-            })}>Options</Tab>
+            })}>{t('settings.knowledgeBase.query.options.title')}</Tab>
             <Tab className={({ selected }) => classnames({
               'px-4 py-2.5 text-sm font-medium leading-5 focus:outline-none': true,
               'text-gray-900 dark:text-white border-b-2 border-gray-900 dark:border-white': selected,
               'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300': !selected
-            })}>Results</Tab>
+            })}>{t('common.results')}</Tab>
             <Tab className={({ selected }) => classnames({
               'px-4 py-2.5 text-sm font-medium leading-5 focus:outline-none': true,
               'text-gray-900 dark:text-white border-b-2 border-gray-900 dark:border-white': selected,
@@ -117,19 +119,19 @@ const KnowledgeBaseQueryForm: React.FC<KnowledgeBaseQueryFormProps> = ({ knowled
           <TabPanels className="mt-4">
             <TabPanel>
               <Card>
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white">Options</h3>
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white">{t('settings.knowledgeBase.query.options.title')}</h3>
                 <div>
                   <label htmlFor="top_k" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Number of Results
+                    {t('settings.knowledgeBase.query.options.topK')}
                   </label>
                   <input
                     id="top_k"
                     type="number"
                     {...register('top_k', {
                       valueAsNumber: true,
-                      required: 'Number of results is required',
-                      min: { value: 1, message: 'Must be at least 1' },
-                      max: { value: 50, message: 'Must be at most 50' },
+                      required: t('settings.knowledgeBase.query.options.topKRequired'),
+                      min: { value: 1, message: t('settings.knowledgeBase.query.options.topKMin') },
+                      max: { value: 50, message: t('settings.knowledgeBase.query.options.topKMax') },
                     })}
                     className="mt-1 block w-full sm:w-1/4 rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm"
                   />
@@ -143,11 +145,14 @@ const KnowledgeBaseQueryForm: React.FC<KnowledgeBaseQueryFormProps> = ({ knowled
                 <div>
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-                      Results ({results.length} {results.length === 1 ? 'chunk' : 'chunks'} found)
+                      {t('settings.knowledgeBase.query.resultsCount', { 
+                        count: results.length, 
+                        unit: results.length === 1 ? t('settings.knowledgeBase.query.chunk') : t('settings.knowledgeBase.query.chunks')
+                      })}
                     </h3>
-                    <div className="flex items-center space-x-3">
-                      <span className="text-sm text-gray-600 dark:text-gray-400">View:</span>
-                      <div className="flex items-center space-x-1 bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+                    <div className="flex items-center gap-x-3">
+                      <span className="text-sm text-gray-600 dark:text-gray-400">{t('settings.knowledgeBase.query.viewLabel')}</span>
+                      <div className="flex items-center gap-x-1 bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
                         <button
                           type="button"
                           onClick={() => setViewMode('rendered')}
@@ -157,7 +162,7 @@ const KnowledgeBaseQueryForm: React.FC<KnowledgeBaseQueryFormProps> = ({ knowled
                               : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'
                           }`}
                         >
-                          Rendered
+                          {t('settings.knowledgeBase.query.rendered')}
                         </button>
                         <button
                           type="button"
@@ -168,7 +173,7 @@ const KnowledgeBaseQueryForm: React.FC<KnowledgeBaseQueryFormProps> = ({ knowled
                               : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'
                           }`}
                         >
-                          JSON
+                          {t('settings.knowledgeBase.query.json')}
                         </button>
                       </div>
                     </div>
@@ -216,7 +221,7 @@ const KnowledgeBaseQueryForm: React.FC<KnowledgeBaseQueryFormProps> = ({ knowled
               )}
               {!isQuerying && !results && (
                 <div className="text-center py-12">
-                  <p className="text-gray-500 dark:text-gray-400">Run a query to see the results here.</p>
+                  <p className="text-gray-500 dark:text-gray-400">{t('settings.knowledgeBase.query.noResults')}</p>
                 </div>
               )}
             </TabPanel>

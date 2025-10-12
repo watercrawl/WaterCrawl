@@ -211,7 +211,7 @@ class WaterCrawlOpenSearchVectorStore(VectorStore):
 
         # Sort by keyword score and return
         scored_docs.sort(key=lambda x: x[1], reverse=True)
-        return [doc for doc, _ in scored_docs]
+        return [doc for doc, __ in scored_docs]
 
     def _calculate_keyword_score(
         self, doc_keywords: List[str], query_keywords: List[str]

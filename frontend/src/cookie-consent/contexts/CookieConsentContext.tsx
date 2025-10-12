@@ -1,15 +1,16 @@
 'use client';
 
-import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
+import React, { createContext, useState, useContext, useEffect, useCallback, useMemo } from 'react';
 import {
-  COOKIE_CATEGORIES,
   COOKIE_CONFIG_KEY,
   CookieCategory,
-  validateCookieConsent
+  validateCookieConsent,
+  getCookieCategories
 } from '../constants/cookieConfig';
 import { CookieConsentBanner } from '../components/CookieConsentBanner';
 import { useSettings } from '../../contexts/SettingsProvider';
 import { initializeGoogleAnalytics } from '../utils/analytics';
+import { useTranslation } from 'react-i18next';
 
 interface CookieConsentContextType {
   isConsentGiven: boolean;
@@ -30,12 +31,16 @@ const CookieConsentContext = createContext<CookieConsentContextType>({
 });
 
 export const CookieConsentProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { t } = useTranslation();
   const [isConsentGiven, setIsConsentGiven] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>(['necessary']);
   const [isClient, setIsClient] = useState(false);
   const [analyticsInitialized, setAnalyticsInitialized] = useState(false);
   const [marketingInitialized, setMarketingInitialized] = useState(false);
   const { settings } = useSettings();
+
+  // Get translated cookie categories
+  const translatedCategories = useMemo(() => getCookieCategories(t), [t]);
 
   useEffect(() => {
     // Check if consent was previously given
@@ -117,7 +122,7 @@ export const CookieConsentProvider: React.FC<{ children: React.ReactNode }> = ({
         selectedCategories,
         updateConsent,
         privacyUrl: settings?.policy_url || '',
-        categories: COOKIE_CATEGORIES,
+        categories: translatedCategories,
         isClient
       }}
     >

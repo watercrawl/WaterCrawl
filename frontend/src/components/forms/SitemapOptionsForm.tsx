@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FormInput, InfoTooltip, OptionGroup } from '../shared/FormComponents';
 import { SitemapOptions } from '../../types/sitemap';
 import ArrayStringField from '../shared/ArrayStringField';
@@ -10,6 +11,7 @@ interface SitemapOptionsFormProps {
 }
 
 export const SitemapOptionsForm: React.FC<SitemapOptionsFormProps> = ({ options, onChange }) => {
+  const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState(options.search || '');
 
   // Get current values
@@ -45,14 +47,14 @@ export const SitemapOptionsForm: React.FC<SitemapOptionsFormProps> = ({ options,
         {/* Left Column - Basic Settings */}
         <div>
           <OptionGroup
-            title="Basic Settings"
-            description="Configure how the sitemap generator should behave"
+            title={t('dashboard.settings.general')}
+            description={t('sitemap.subtitle')}
           >
             <div className="space-y-4">
               <div className="flex items-center">
                 <Switch
-                  label="Include subdomains"
-                  description="When enabled, the sitemap will include URLs from subdomains of the main domain"
+                  label={t('crawl.spiderOptions.allowedDomains')}
+                  description={t('crawl.spiderOptions.allowedDomainsTooltip')}
                   checked={includeSubdomains}
                   onChange={(checked) => handleToggleChange('include_subdomains', checked)}
                 />
@@ -60,8 +62,8 @@ export const SitemapOptionsForm: React.FC<SitemapOptionsFormProps> = ({ options,
 
               <div className="flex items-center">
                 <Switch
-                  label="Ignore sitemap.xml"
-                  description="When enabled, the sitemap will ignore the sitemap.xml file and try to use other methods to generate a sitemap"
+                  label={t('dashboard.settings.advanced')}
+                  description={t('sitemap.subtitle')}
                   checked={ignoreSitemapXml}
                   onChange={(checked) => handleToggleChange('ignore_sitemap_xml', checked)}
                 />
@@ -69,18 +71,18 @@ export const SitemapOptionsForm: React.FC<SitemapOptionsFormProps> = ({ options,
               
               {/* Search filter */}
               <div className="space-y-2">
-                <div className="flex items-center space-x-1 mb-1">
+                <div className="flex items-center gap-x-1 mb-1">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Search term
+                    {t('search.form.query')}
                   </label>
-                  <InfoTooltip content="Search term to filter pages. Leave empty to include all pages" />
+                  <InfoTooltip content={t('search.form.filters')} />
                 </div>
                 <FormInput
                   label=""
                   value={searchTerm || ''}
                   onChange={handleSearchChange}
                   type="text"
-                  placeholder="Enter search term (optional)"
+                  placeholder={t('search.form.queryPlaceholder')}
                 />
               </div>
             </div>
@@ -90,14 +92,14 @@ export const SitemapOptionsForm: React.FC<SitemapOptionsFormProps> = ({ options,
         {/* Right Column - Path Settings */}
         <div>
           <OptionGroup
-            title="Path Settings"
-            description="Configure which paths to include or exclude in the sitemap"
+            title={t('crawl.spiderOptions.pathFilters')}
+            description={t('crawl.spiderOptions.pathFiltersDesc')}
           >
             <div className="space-y-4">
               {/* Include paths */}
               <ArrayStringField
-                label="Include paths"
-                tooltipContent="Specify paths to include in sitemap (e.g., */admin/* or /login/*). Each rule must start with * or /. Use * as a wildcard to match any number of characters, or omit * for an exact match."
+                label={t('crawl.spiderOptions.includePaths')}
+                tooltipContent={t('crawl.spiderOptions.includePathsTooltip')}
                 values={includePaths}
                 onChange={handleIncludePathsChange}
                 placeholder="/path/to/include"
@@ -106,8 +108,8 @@ export const SitemapOptionsForm: React.FC<SitemapOptionsFormProps> = ({ options,
 
               {/* Exclude paths */}
               <ArrayStringField
-                label="Exclude paths"
-                tooltipContent="Specify paths to exclude from crawling (e.g., */admin/* or /login/*). Each rule must start with * or /. Use * as a wildcard to match any number of characters, or omit * for an exact match."
+                label={t('crawl.spiderOptions.excludePaths')}
+                tooltipContent={t('crawl.spiderOptions.excludePathsTooltip')}
                 values={excludePaths}
                 onChange={handleExcludePathsChange}
                 placeholder="/path/to/exclude"

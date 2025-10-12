@@ -8,6 +8,7 @@ from abc import abstractmethod, ABC
 from typing import Dict, Any, Type, Optional
 
 from django.conf import settings
+from django.utils.translation import gettext as _
 
 from langchain_text_splitters import (
     RecursiveCharacterTextSplitter,
@@ -67,7 +68,11 @@ class TextSplitterFactory(BaseFactory):
     def create(cls, splitter_type: str, **kwargs) -> TextSplitter:
         """Create a text splitter instance."""
         if splitter_type not in cls._text_splitters:
-            raise ValueError(f"Text splitter type '{splitter_type}' not supported")
+            raise ValueError(
+                _("Text splitter type '{splitter_type}' not supported").format(
+                    splitter_type=splitter_type
+                )
+            )
 
         return cls._text_splitters[splitter_type](**kwargs)
 
@@ -120,7 +125,11 @@ class EmbedderFactory(BaseFactory):
             return cls.create_openai_embedding(knowledge_base)
         if provider_name == "watercrawl":
             return cls.create_watercrawl_embedding(knowledge_base)
-        raise ValueError(f"Unsupported embedding provider: {provider_name}")
+        raise ValueError(
+            _("Unsupported embedding provider: {provider_name}").format(
+                provider_name=provider_name
+            )
+        )
 
 
 class VectorStoreFactory(BaseFactory):
@@ -173,7 +182,11 @@ class VectorStoreFactory(BaseFactory):
         if vector_store_type == "opensearch":
             return cls.create_opensearch_store(knowledge_base, embedder)
 
-        raise ValueError(f"Vector store type '{vector_store_type}' not supported")
+        raise ValueError(
+            _("Vector store type '{vector_store_type}' not supported").format(
+                vector_store_type=vector_store_type
+            )
+        )
 
 
 class SummarizerFactory(BaseFactory):
@@ -246,4 +259,6 @@ class FileToMarkdownFactory:
                     knowledge_base_document.knowledge_base
                 )
 
-        raise ValueError(f"Unsupported document type: {extension}")
+        raise ValueError(
+            _("Unsupported document type: {extension}").format(extension=extension)
+        )

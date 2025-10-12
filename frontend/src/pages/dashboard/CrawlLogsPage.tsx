@@ -9,23 +9,27 @@ import { useIsTabletOrMobile } from '../../hooks/useMediaQuery';
 import { Pagination } from '../../components/shared/Pagination';
 import { EyeIcon } from '@heroicons/react/24/outline';
 import { StatusBadge } from '../../components/shared/StatusBadge';
-import { formatDistanceToNow } from 'date-fns';
 import { formatDuration } from '../../utils/formatters';
+import { useDateLocale } from '../../hooks/useDateLocale';
+import { formatDistanceToNowLocalized } from '../../utils/dateUtils';
 import { DownloadFormatSelector } from '../../components/shared/DownloadFormatSelector';
 import { SitemapModalSelector } from '../../components/shared/SitemapModalSelector';
 import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
-
-// Status options for filtering
-const STATUS_OPTIONS = [
-  { value: '', label: 'All Statuses' },
-  { value: 'new', label: 'New' },
-  { value: 'running', label: 'Running' },
-  { value: 'finished', label: 'Finished' },
-  { value: 'canceled', label: 'Canceled' },
-  // { value: 'failed', label: 'Failed' },
-];
+import { useTranslation } from 'react-i18next';
 
 const CrawlLogsPage: React.FC = () => {
+  const { t } = useTranslation();
+  const dateLocale = useDateLocale();
+  
+  // Status options for filtering
+  const STATUS_OPTIONS = [
+    { value: '', label: t('activityLogs.filters.allStatuses') },
+    { value: 'new', label: t('status.new') },
+    { value: 'running', label: t('status.running') },
+    { value: 'finished', label: t('status.finished') },
+    { value: 'canceled', label: t('status.canceled') },
+    // { value: 'failed', label: t('status.failed') },
+  ];
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [crawlRequests, setCrawlRequests] = useState<PaginatedResponse<CrawlRequest> | null>(null);
@@ -38,10 +42,10 @@ const CrawlLogsPage: React.FC = () => {
 
   useEffect(() => {
     setItems([
-      { label: 'Dashboard', href: '/dashboard'},
-      { label: 'Crawl Logs', href: '/dashboard/logs/crawls', current: true },
+      { label: t('dashboard.title'), href: '/dashboard'},
+      { label: t('activityLogs.crawlLogs'), href: '/dashboard/logs/crawls', current: true },
     ]);
-  }, [setItems]);
+  }, [setItems, t]);
 
   // Initialize selectedStatus from URL params
   useEffect(() => {
@@ -92,7 +96,7 @@ const CrawlLogsPage: React.FC = () => {
       <div className="h-full flex items-center justify-center">
         <div className="flex flex-col items-center space-y-4">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Loading crawl logs...</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">{t('activityLogs.loading')}</p>
         </div>
       </div>
     );
@@ -103,23 +107,23 @@ const CrawlLogsPage: React.FC = () => {
   return (
     <div className="h-full">
       <div className="px-4 sm:px-8 py-6">
-        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Crawl Logs</h1>
+        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">{t('activityLogs.crawlLogs')}</h1>
         <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-          View your recent crawl requests and their results
+          {t('activityLogs.crawlLogsDesc')}
         </p>
 
         <div className="mt-8">
           {/* Status Filter - Positioned at the top */}
           <div className="mb-6">
             <label htmlFor="status-filter" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Filter by Status
+              {t('activityLogs.filters.filterByStatus')}
             </label>
             <div className="relative rounded-md shadow-sm">
               <select
                 id="status-filter"
                 value={selectedStatus}
                 onChange={handleStatusChange}
-                className="block w-full sm:w-64 pl-3 pr-10 py-2 text-base border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="block w-full sm:w-64 ps-3 pe-10 py-2 text-base border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 disabled={loading}
               >
                 {STATUS_OPTIONS.map((option) => (
@@ -137,10 +141,10 @@ const CrawlLogsPage: React.FC = () => {
             <>
               {/* Loading overlay when filtering with existing data */}
               {loading && (
-                <div className="absolute top-4 right-4 flex items-center justify-center z-10">
-                  <div className="flex items-center space-x-2 px-3 py-1 bg-white dark:bg-gray-800 shadow-md rounded-md">
+                <div className="absolute top-4 end-4 flex items-center justify-center z-10">
+                  <div className="flex items-center gap-x-2 px-3 py-1 bg-white dark:bg-gray-800 shadow-md rounded-md">
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-indigo-500"></div>
-                    <span className="text-xs text-gray-600 dark:text-gray-300">Updating...</span>
+                    <span className="text-xs text-gray-600 dark:text-gray-300">{t('activityLogs.updating')}</span>
                   </div>
                 </div>
               )}
@@ -167,23 +171,23 @@ const CrawlLogsPage: React.FC = () => {
                           <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
                             <thead className="bg-gray-50 dark:bg-gray-800">
                               <tr>
-                                <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-white sm:pl-6">
-                                  URL
+                                <th scope="col" className="py-3.5 ps-4 pe-3 text-start text-sm font-semibold text-gray-900 dark:text-white sm:ps-6">
+                                  {t('activityLogs.table.url')}
                                 </th>
-                                <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
-                                  Status
+                                <th scope="col" className="px-3 py-3.5 text-start text-sm font-semibold text-gray-900 dark:text-white">
+                                  {t('activityLogs.table.status')}
                                 </th>
-                                <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
-                                  Results
+                                <th scope="col" className="px-3 py-3.5 text-start text-sm font-semibold text-gray-900 dark:text-white">
+                                  {t('activityLogs.table.results')}
                                 </th>
-                                <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
-                                  Created
+                                <th scope="col" className="px-3 py-3.5 text-start text-sm font-semibold text-gray-900 dark:text-white">
+                                  {t('activityLogs.table.created')}
                                 </th>
-                                <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
-                                  Duration
+                                <th scope="col" className="px-3 py-3.5 text-start text-sm font-semibold text-gray-900 dark:text-white">
+                                  {t('activityLogs.table.duration')}
                                 </th>
-                                <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                                  <span className="sr-only">Actions</span>
+                                <th scope="col" className="relative py-3.5 ps-3 pe-4 sm:pe-6">
+                                  <span className="sr-only">{t('common.actions')}</span>
                                 </th>
                               </tr>
                             </thead>
@@ -191,7 +195,7 @@ const CrawlLogsPage: React.FC = () => {
                               {crawlRequests?.results.map((request) => (
                                 <React.Fragment key={request.uuid}>
                                   <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200">
-                                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 dark:text-white sm:pl-6">
+                                    <td className="whitespace-nowrap py-4 ps-4 pe-3 text-sm font-medium text-gray-900 dark:text-white sm:ps-6">
                                       <div className="flex items-center">
                                         <span className="max-w-[300px] truncate" title={request.url || ''}>
                                           {request.url}
@@ -205,21 +209,21 @@ const CrawlLogsPage: React.FC = () => {
                                       {request.number_of_documents}
                                     </td>
                                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
-                                      {formatDistanceToNow(new Date(request.created_at), { addSuffix: true })}
+                                      {formatDistanceToNowLocalized(new Date(request.created_at), dateLocale, { addSuffix: true })}
                                     </td>
                                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
                                       {formatDuration(request.duration, request.created_at)}
                                     </td>
-                                    <td className="whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                                      <div className="flex justify-end space-x-3">
+                                    <td className="whitespace-nowrap py-4 ps-3 pe-4 text-end text-sm font-medium sm:pe-6">
+                                      <div className="flex justify-end gap-x-3">
                                         <DownloadFormatSelector request={request} />
                                         <SitemapModalSelector request={request} />
                                         <button
                                           onClick={(e) => handleViewDetails(e, request.uuid)}
                                           className="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 focus:outline-none"
-                                          title="View details"
+                                          title={t('activityLogs.viewDetails')}
                                         >
-                                          <span className="sr-only">View details</span>
+                                          <span className="sr-only">{t('activityLogs.viewDetails')}</span>
                                           <EyeIcon className="h-5 w-5" aria-hidden="true" />
                                         </button>
                                       </div>

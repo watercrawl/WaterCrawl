@@ -3,8 +3,10 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { ArrowTrendingUpIcon } from '@heroicons/react/24/outline';
 import { usageApi } from '../../services/api/usage';
 import { UsageResponse } from '../../types/common';
+import { useTranslation } from 'react-i18next';
 
 const DashboardStats: React.FC = () => {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<UsageResponse | null>(null);
 
@@ -35,7 +37,7 @@ const DashboardStats: React.FC = () => {
   if (!data) {
     return (
       <div className="flex items-center justify-center h-48">
-        <p className="text-gray-500 dark:text-gray-400">Failed to load usage data</p>
+        <p className="text-gray-500 dark:text-gray-400">{t('usage.errors.loadFailed')}</p>
       </div>
     );
   }
@@ -47,7 +49,7 @@ const DashboardStats: React.FC = () => {
         <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Total Crawl Requests</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{t('usage.stats.totalCrawlRequests')}</p>
               <p className="mt-1 text-2xl font-semibold text-gray-900 dark:text-white">
                 {data.total_crawls?.toLocaleString()}
               </p>
@@ -61,7 +63,7 @@ const DashboardStats: React.FC = () => {
         <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Total Results</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{t('usage.stats.totalResults')}</p>
               <p className="mt-1 text-2xl font-semibold text-gray-900 dark:text-white">
                 {data.total_documents?.toLocaleString()}
               </p>
@@ -77,8 +79,8 @@ const DashboardStats: React.FC = () => {
       <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-base font-semibold text-gray-900 dark:text-white">Crawl Requests</h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400">All time</p>
+            <h2 className="text-base font-semibold text-gray-900 dark:text-white">{t('usage.crawlRequests')}</h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400">{t('usage.allTime')}</p>
           </div>
         </div>
         
@@ -109,7 +111,7 @@ const DashboardStats: React.FC = () => {
                   color: 'white'
                 }}
                 labelStyle={{ color: 'rgb(156 163 175)' }}
-                formatter={(value: number) => [value.toLocaleString(), 'Crawls']}
+                formatter={(value: number) => [value.toLocaleString(), t('common.crawls')]}
               />
               <Area
                 type="monotone"

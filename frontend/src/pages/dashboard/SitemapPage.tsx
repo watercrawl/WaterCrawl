@@ -3,30 +3,32 @@ import { useLocation } from 'react-router-dom';
 import { SitemapForm } from '../../components/sitemap/SitemapForm';
 import { SitemapRequest } from '../../types/sitemap';
 import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
+import { useTranslation } from 'react-i18next';
 
 interface LocationState {
   request?: SitemapRequest;
 }
 
 const SitemapPage: React.FC = () => {
+  const { t } = useTranslation();
   const location = useLocation();
   const { request } = (location.state as LocationState) || {};
   const { setItems } = useBreadcrumbs();
   useEffect(() => {
     setItems([
-      { label: 'Dashboard', href: '/dashboard'},
-      { label: 'Sitemap Explorer', href: '/dashboard/sitemap', current: true },
+      { label: t('dashboard.title'), href: '/dashboard'},
+      { label: t('sitemap.title'), href: '/dashboard/sitemap', current: true },
     ]);
-  }, [setItems]);
+  }, [setItems, t]);
 
   return (
     <div className="px-8 py-6 space-y-6">
       <div>
         <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
-          Sitemap Explorer
+          {t('sitemap.title')}
         </h1>
         <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-          Discover and visualize website structure with our sitemap generation tool
+          {t('sitemap.subtitle')}
         </p>
       </div>
 

@@ -1,0 +1,64 @@
+/* Import Vazirmatn font for Persian/Arabic */
+@import 'vazirmatn/Vazirmatn-font-face.css';
+
+/* Font configuration for different languages */
+:root {
+  /* Default font (English and LTR languages) */
+  --font-sans-default: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  
+  /* Persian/Arabic font */
+  --font-sans-persian: "Vazirmatn", ui-sans-serif, system-ui, sans-serif;
+  
+  /* Apply default font */
+  font-family: var(--font-sans-default);
+}
+
+/* Persian language font */
+html[lang="fa"] {
+  font-family: var(--font-sans-persian);
+}
+
+/* Arabic language font */
+html[lang="ar"] {
+  font-family: var(--font-sans-persian);
+}
+
+/* Hebrew font (if needed) */
+html[lang="he"] {
+  font-family: var(--font-sans-persian);
+}
+
+/* Urdu font (if needed) */
+html[lang="ur"] {
+  font-family: var(--font-sans-persian);
+}
+
+/* Override body font to respect html lang attribute */
+body {
+  font-family: inherit;
+}
+
+/* Ensure all text elements inherit the font */
+* {
+  font-family: inherit;
+}
+
+/* Optional: Specific font weights for better readability */
+html[lang="fa"] {
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+}
+
+/* Optional: Line height adjustments for Persian script */
+html[lang="fa"] p,
+html[lang="fa"] span,
+html[lang="fa"] div {
+  line-height: 1.8;
+}
+
+/* Optional: Better letter spacing for Persian */
+html[lang="fa"] {
+  letter-spacing: 0.01em;
+}

@@ -2,6 +2,7 @@ import React from 'react';
 import { Switch } from '@headlessui/react';
 import { FieldProps } from '../types/schema';
 import { InfoTooltip } from '../../shared/FormComponents';
+import { useDirection } from '../../../contexts/DirectionContext';
 
 export const SwitchWidget: React.FC<FieldProps> = ({
   schema,
@@ -10,9 +11,10 @@ export const SwitchWidget: React.FC<FieldProps> = ({
   onBlur,
   disabled,
 }) => {
+  const { direction } = useDirection();
   return (
     <Switch.Group>
-      <div className="flex items-center space-x-3">
+      <div className="flex items-center gap-x-3">
         <Switch
           checked={value || false}
           onChange={onChange}
@@ -24,13 +26,15 @@ export const SwitchWidget: React.FC<FieldProps> = ({
         >
           <span
             className={`${
-              value ? 'translate-x-5' : 'translate-x-0'
+              value 
+                ? (direction === 'rtl' ? '-translate-x-5' : 'translate-x-5')
+                : 'translate-x-0'
             } pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out`}
           />
         </Switch>
         {(schema.title || schema.description) && (
           <div className="flex-1">
-            <div className="flex items-center space-x-1">
+            <div className="flex items-center gap-x-1">
               {schema.title && (
                 <Switch.Label className="text-sm font-medium text-gray-900 dark:text-white cursor-pointer">
                   {schema.title}

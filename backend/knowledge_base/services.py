@@ -42,7 +42,7 @@ class KnowledgeBaseService:
         if metadata is None:
             metadata = {}
 
-        document, _ = KnowledgeBaseDocument.objects.update_or_create(
+        document, _created = KnowledgeBaseDocument.objects.update_or_create(
             knowledge_base=self.knowledge_base,
             source_type=source_type,
             source=source,

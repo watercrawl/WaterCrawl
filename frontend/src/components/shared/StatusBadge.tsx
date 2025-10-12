@@ -1,6 +1,7 @@
 import React from 'react';
 import { CrawlStatus } from '../../types/crawl';
 import { PlusIcon, ArrowPathIcon, XMarkIcon, CheckIcon, BeakerIcon, ArchiveBoxIcon, TrashIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import { useTranslation } from 'react-i18next';
 
 interface StatusBadgeProps {
   status: CrawlStatus | string;
@@ -79,6 +80,25 @@ const getStatusIcon = (status: string) => {
 };
 
 export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, showIcon = false }) => {
+  const { t } = useTranslation();
+  
+  const getStatusLabel = (status: string) => {
+    const statusMap: Record<string, string> = {
+      'new': t('status.new'),
+      'running': t('status.running'),
+      'canceled': t('status.canceled'),
+      'canceling': t('status.canceling'),
+      'failed': t('status.failed'),
+      'finished': t('status.finished'),
+      'ready': t('status.ready'),
+      'processing': t('status.processing'),
+      'active': t('status.active'),
+      'archived': t('status.archived'),
+      'deleted': t('status.deleted'),
+    };
+    return statusMap[status.toLowerCase()] || status;
+  };
+  
   return (
     <>
       <span
@@ -86,8 +106,8 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, showIcon = fal
           status
         )}`}
         >
-        {status}
-        {showIcon && <span className="ml-0.5">{getStatusIcon(status)}</span>}
+        {getStatusLabel(status)}
+        {showIcon && <span className="ms-0.5">{getStatusIcon(status)}</span>}
       </span>
     </>
   );

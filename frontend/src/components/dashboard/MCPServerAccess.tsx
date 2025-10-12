@@ -16,8 +16,11 @@ import { API_URL } from '../../utils/env';
 import { useSettings } from '../../contexts/SettingsProvider';
 import { Link } from 'react-router-dom';
 import { ClaudeLogo, CursorLogo, VSCodeLogo, WindsurfLogo } from '../logos';
+import { ArrowRight } from '../shared/DirectionalIcon';
+import { useTranslation } from 'react-i18next';
 
 export const MCPServerAccess: React.FC = () => {
+  const { t } = useTranslation();
   const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
   const [selectedApiKey, setSelectedApiKey] = useState<string>('');
   const [loading, setLoading] = useState(true);
@@ -50,10 +53,10 @@ export const MCPServerAccess: React.FC = () => {
     try {
       await navigator.clipboard.writeText(text);
       setCopiedItem(item);
-      toast.success('Copied to clipboard');
+      toast.success(t('toasts.success.copied'));
       setTimeout(() => setCopiedItem(null), 2000);
     } catch (_error) {
-      toast.error('Failed to copy to clipboard');
+      toast.error(t('dashboard.mcp.copyError'));
     }
   };
 
@@ -165,40 +168,40 @@ export const MCPServerAccess: React.FC = () => {
       case 'windsurf':
         return (
           <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-            Add this configuration to your Windsurf mcp_config.json file. <Link className="underline" to="https://docs.windsurf.com/windsurf/cascade/mcp" target="_blank" rel="noopener noreferrer">
-              more info
+            {t('dashboard.mcp.windsurfDesc')} <Link className="underline" to="https://docs.windsurf.com/windsurf/cascade/mcp" target="_blank" rel="noopener noreferrer">
+              {t('dashboard.mcp.moreInfo')}
             </Link>
           </p>
         );
       case 'cursor':
         return (
           <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-            Click this URL to automatically install the MCP server in Cursor. <Link className="underline" to="https://docs.cursor.com/en/context/mcp" target="_blank" rel="noopener noreferrer">
-              more info
+            {t('dashboard.mcp.cursorDesc')} <Link className="underline" to="https://docs.cursor.com/en/context/mcp" target="_blank" rel="noopener noreferrer">
+              {t('dashboard.mcp.moreInfo')}
             </Link>
           </p>
         );
       case 'vscode':
         return (
           <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-            Click this URL to automatically install the MCP server in VS Code. <Link className="underline" to="https://code.visualstudio.com/docs/copilot/customization/mcp-servers" target="_blank" rel="noopener noreferrer">
-              more info
+            {t('dashboard.mcp.vscodeDesc')} <Link className="underline" to="https://code.visualstudio.com/docs/copilot/customization/mcp-servers" target="_blank" rel="noopener noreferrer">
+              {t('dashboard.mcp.moreInfo')}
             </Link>
           </p>
         );
       case 'claude-code':
         return (
           <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-            Run this command in your terminal to install the MCP server. <Link className="underline" to="https://docs.anthropic.com/en/docs/claude-code/mcp" target="_blank" rel="noopener noreferrer">
-              more info
+            {t('dashboard.mcp.claudeCodeDesc')} <Link className="underline" to="https://docs.anthropic.com/en/docs/claude-code/mcp" target="_blank" rel="noopener noreferrer">
+              {t('dashboard.mcp.moreInfo')}
             </Link>
           </p>
         );
       case 'claude-desktop':
         return (
           <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-            Add this configuration to your Claude desktop mcp config file. <Link className="underline" to="https://www.anthropic.com/engineering/desktop-extensions" target="_blank" rel="noopener noreferrer">
-              more info
+            {t('dashboard.mcp.claudeDesktopDesc')} <Link className="underline" to="https://www.anthropic.com/engineering/desktop-extensions" target="_blank" rel="noopener noreferrer">
+              {t('dashboard.mcp.moreInfo')}
             </Link>
           </p>
         );
@@ -206,8 +209,8 @@ export const MCPServerAccess: React.FC = () => {
       default:
         return (
           <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-            Use these configurations for any MCP-compatible application. <Link className="underline" to="https://modelcontextprotocol.io/docs/getting-started/intro" target="_blank" rel="noopener noreferrer">
-              more info
+            {t('dashboard.mcp.generalDesc')} <Link className="underline" to="https://modelcontextprotocol.io/docs/getting-started/intro" target="_blank" rel="noopener noreferrer">
+              {t('dashboard.mcp.moreInfo')}
             </Link>
           </p>
         );
@@ -231,7 +234,7 @@ export const MCPServerAccess: React.FC = () => {
 
 
   const CodeBlock: React.FC<{ code: string; language: string; copyId: string, apiKey: string }> = ({ code, language, copyId, apiKey }) => (
-    <div className="relative rounded-t-lg border border-gray-200 dark:border-gray-700">
+    <div className="relative rounded-t-lg border border-gray-200 dark:border-gray-700 ltr">
       <div className="flex items-center justify-between bg-gray-800 px-4 py-2 rounded-t-lg">
         <span className="text-xs font-medium text-gray-300 uppercase">{language}</span>
         <button
@@ -254,9 +257,9 @@ export const MCPServerAccess: React.FC = () => {
   if (loading) {
     return (
       <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
-        <div className="flex items-center space-x-3 mb-4">
+        <div className="flex items-center gap-x-3 mb-4">
           <ServerIcon className="h-6 w-6 text-primary-600" />
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">MCP Server Access</h2>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('dashboard.mcp.title')}</h2>
         </div>
         <div className="animate-pulse space-y-4">
           <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
@@ -268,20 +271,20 @@ export const MCPServerAccess: React.FC = () => {
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
-      <div className="flex items-center space-x-3 mb-6">
+      <div className="flex items-center gap-x-3 mb-6">
         <SparklesIcon className="h-6 w-6 text-primary-600" />
         <div>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">API & Integration Hub</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Manage API keys and connect AI assistants</p>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('dashboard.mcp.hubTitle')}</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400">{t('dashboard.mcp.hubSubtitle')}</p>
         </div>
       </div>
 
       {apiKeys.length === 0 ? (
         <div className="text-center py-8 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
           <ExclamationTriangleIcon className="h-12 w-12 text-yellow-500 mx-auto mb-3" />
-          <p className="text-yellow-800 dark:text-yellow-200 mb-2">No API keys available</p>
+          <p className="text-yellow-800 dark:text-yellow-200 mb-2">{t('dashboard.mcp.noKeys')}</p>
           <p className="text-sm text-yellow-600 dark:text-yellow-400">
-            Create an API key first to access MCP server features.
+            {t('dashboard.mcp.noKeysMessage')}
           </p>
         </div>
       ) : (
@@ -289,7 +292,7 @@ export const MCPServerAccess: React.FC = () => {
           {/* API Key Selector */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Select API Key
+              {t('dashboard.mcp.selectKey')}
             </label>
             <select
               value={selectedApiKey}
@@ -307,7 +310,7 @@ export const MCPServerAccess: React.FC = () => {
 
           {/* Tab Navigation */}
           <div className="border-b border-gray-200 dark:border-gray-700">
-            <nav className="-mb-px flex space-x-8">
+            <nav className="-mb-px flex gap-x-8">
               <button
                 onClick={() => setActiveTab('apikeys')}
                 className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${activeTab === 'apikeys'
@@ -315,9 +318,9 @@ export const MCPServerAccess: React.FC = () => {
                   : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 hover:border-gray-300'
                   }`}
               >
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center gap-x-2">
                   <KeyIcon className="h-4 w-4" />
-                  <span>API Keys</span>
+                  <span>{t('dashboard.mcp.apiKeysTab')}</span>
                 </div>
               </button>
               <button
@@ -327,9 +330,9 @@ export const MCPServerAccess: React.FC = () => {
                   : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 hover:border-gray-300'
                   }`}
               >
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center gap-x-2">
                   <CommandLineIcon className="h-4 w-4" />
-                  <span>MCP Configuration</span>
+                  <span>{t('dashboard.mcp.mcpConfigTab')}</span>
                 </div>
               </button>
             </nav>
@@ -343,15 +346,15 @@ export const MCPServerAccess: React.FC = () => {
                 {apiKeys.length === 0 ? (
                   <div className="text-center py-12 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg">
                     <KeyIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                    <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No API Keys Available</h4>
+                    <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-2">{t('dashboard.mcp.noKeysAvailable')}</h4>
                     <p className="text-gray-500 dark:text-gray-400 mb-4 max-w-sm mx-auto">
-                      You need to create an API key to access the WaterCrawl API and use MCP integration
+                      {t('dashboard.mcp.createKeyMessage')}
                     </p>
                     <a
                       href="/dashboard/api-keys"
                       className="inline-flex items-center px-4 py-2 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 transition-colors"
                     >
-                      Go to API Keys Management
+                      {t('dashboard.mcp.goToApiKeys')}
                     </a>
                   </div>
                 ) : (
@@ -363,19 +366,19 @@ export const MCPServerAccess: React.FC = () => {
                       return (
                         <div className="space-y-3">
                           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                            API Key
+                            {t('dashboard.mcp.apiKey')}
                           </label>
-                          <div className="flex items-center space-x-3">
+                          <div className="flex items-center gap-x-3">
                             <div className="flex-1 relative">
                               <code className="block w-full text-sm bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-3 font-mono text-gray-900 dark:text-gray-100">
                                 {visibleKeys.has(selectedKey.uuid) ? selectedKey.key : maskKey(selectedKey.key)}
                               </code>
                             </div>
-                            <div className="flex items-center space-x-2">
+                            <div className="flex items-center gap-x-2">
                               <button
                                 onClick={() => toggleKeyVisibility(selectedKey.uuid)}
                                 className="inline-flex items-center justify-center w-10 h-10 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-                                title={visibleKeys.has(selectedKey.uuid) ? 'Hide key' : 'Show key'}
+                                title={visibleKeys.has(selectedKey.uuid) ? t('dashboard.mcp.hideKey') : t('dashboard.mcp.showKey')}
                               >
                                 {visibleKeys.has(selectedKey.uuid) ? (
                                   <EyeSlashIcon className="h-5 w-5" />
@@ -386,7 +389,7 @@ export const MCPServerAccess: React.FC = () => {
                               <button
                                 onClick={() => copyToClipboard(selectedKey.key, selectedKey.uuid)}
                                 className="inline-flex items-center justify-center w-10 h-10 text-gray-400 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-lg transition-colors"
-                                title="Copy API key"
+                                title={t('dashboard.mcp.copyKey')}
                               >
                                 {copiedItem === selectedKey.uuid ? (
                                   <CheckIcon className="h-5 w-5 text-green-600" />
@@ -406,10 +409,8 @@ export const MCPServerAccess: React.FC = () => {
                         href="/dashboard/api-keys"
                         className="inline-flex items-center text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium transition-colors"
                       >
-                        <span>Manage all API keys</span>
-                        <svg className="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
+                        <span>{t('dashboard.mcp.manageKeys')}</span>
+                        <ArrowRight className="ms-1 h-4 w-4" />
                       </a>
                     </div>
                   </div>
@@ -427,7 +428,7 @@ export const MCPServerAccess: React.FC = () => {
                       <button
                         key={app.id}
                         onClick={() => setSelectedApp(app.id as any)}
-                        className={`inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${selectedApp === app.id
+                        className={`inline-flex items-center gap-x-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${selectedApp === app.id
                           ? 'bg-primary-100 text-primary-800 border border-primary-200 dark:bg-primary-900/30 dark:text-primary-200 dark:border-primary-700'
                           : 'bg-gray-100 text-gray-700 border border-gray-200 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600'
                           }`}
@@ -472,14 +473,14 @@ export const MCPServerAccess: React.FC = () => {
                           to={mcpInstallLink}
                           className="mb-4 inline-flex items-center justify-center px-6 py-3 bg-white dark:bg-gray-800 border-2 border-primary-300 dark:border-primary-600 rounded-lg text-primary-700 dark:text-primary-300 font-medium hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:border-primary-400 dark:hover:border-primary-500 transition-all duration-200 shadow-sm hover:shadow-md"
                         >
-                          <span className="text-lg mr-2">
+                          <span className="text-lg me-2">
                             {selectedApp === 'cursor' && <CursorLogo className="h-6 w-6" />}
                             {selectedApp === 'windsurf' && <WindsurfLogo className="h-6 w-6" />}
                             {selectedApp === 'vscode' && <VSCodeLogo className="h-6 w-6" />}
                             {selectedApp === 'claude-code' && <ClaudeLogo className="h-6 w-6" />}
                             {selectedApp === 'claude-desktop' && <ClaudeLogo className="h-6 w-6" />}
                           </span>
-                          <span>Add MCP to {selectedApp}</span>
+                          <span>{t('dashboard.mcp.addMcpTo', { app: selectedApp })}</span>
                         </Link>
                       )}
                     </div>

@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Dialog } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import { useTranslation } from 'react-i18next';
 import { ProviderConfigFormData, Provider, ProviderConfig, OPTIONS } from '../../types/provider';
 import Button from '../shared/Button';
 import { classnames } from '../../lib/utils';
@@ -23,6 +24,7 @@ export const ProviderConfigForm: React.FC<ProviderConfigFormProps> = ({
   onTest,
   availableProviders,
 }) => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState<ProviderConfigFormData>({
     title: initialData?.title || '',
     provider_name: initialData?.provider_name || '',
@@ -87,21 +89,21 @@ export const ProviderConfigForm: React.FC<ProviderConfigFormProps> = ({
     const newErrors: Record<string, string> = {};
     
     if (!formData.title.trim()) {
-      newErrors.title = 'Title is required';
+      newErrors.title = t('settings.providerConfig.form.titleRequired');
     }
     
     if (!formData.provider_name || formData.provider_name.trim() === '') {
-      newErrors.provider_name = 'Provider is required';
+      newErrors.provider_name = t('settings.providerConfig.form.providerRequired');
     }
     
     // Only validate API key if it should be shown and is required
     if (shouldShowApiKey && isApiKeyRequired && !formData.api_key?.trim() && !isEditMode) {
-      newErrors.api_key = 'API key is required';
+      newErrors.api_key = t('settings.providerConfig.form.apiKeyRequired');
     }
     
     // Only validate base URL if it should be shown and is required
     if (shouldShowBaseUrl && isBaseUrlRequired && !formData.base_url?.trim()) {
-      newErrors.base_url = 'Base URL is required';
+      newErrors.base_url = t('settings.providerConfig.form.baseUrlRequired');
     }
     
     setErrors(newErrors);
@@ -196,9 +198,9 @@ export const ProviderConfigForm: React.FC<ProviderConfigFormProps> = ({
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
 
       <div className="fixed inset-0 flex items-center justify-center p-4">
-        <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-gray-900 p-6 text-left align-middle shadow-xl transition-all">
+        <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-gray-900 p-6 text-start align-middle shadow-xl transition-all">
           <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900 dark:text-white flex justify-between items-center">
-            {initialData ? 'Edit Provider Configuration' : 'Add Provider Configuration'}
+            {initialData ? t('settings.providerConfig.editTitle') : t('settings.providerConfig.createTitle')}
             <button
               type="button"
               className="rounded-md text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 focus:outline-none"
@@ -211,7 +213,7 @@ export const ProviderConfigForm: React.FC<ProviderConfigFormProps> = ({
           <form onSubmit={handleSubmit} className="mt-4 space-y-4">
             <div>
               <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                Title
+                {t('settings.providerConfig.form.title')}
               </label>
               <input
                 type="text"
@@ -220,7 +222,7 @@ export const ProviderConfigForm: React.FC<ProviderConfigFormProps> = ({
                 value={formData.title}
                 onChange={handleChange}
                 disabled={loading}
-                placeholder="Configuration Title"
+                placeholder={t('settings.providerConfig.form.titlePlaceholder')}
                 className={classnames({
                   'mt-1 block w-full rounded-md shadow-sm dark:bg-gray-800 dark:text-white sm:text-sm': true,
                   'border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500': !!errors.title,
@@ -234,7 +236,7 @@ export const ProviderConfigForm: React.FC<ProviderConfigFormProps> = ({
 
             <div>
               <label htmlFor="provider_name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                Provider
+                {t('settings.providerConfig.form.provider')}
               </label>
               <select
                 id="provider_name"
@@ -250,7 +252,7 @@ export const ProviderConfigForm: React.FC<ProviderConfigFormProps> = ({
                 })}
                 required
               >
-                <option value="">Select a provider</option>
+                <option value="">{t('settings.providerConfig.form.providerPlaceholder')}</option>
                 {availableProviders && availableProviders.length > 0 ? (
                   availableProviders.map((provider) => (
                     <option key={provider.key} value={provider.key}>
@@ -258,7 +260,7 @@ export const ProviderConfigForm: React.FC<ProviderConfigFormProps> = ({
                     </option>
                   ))
                 ) : (
-                  <option value="" disabled>Loading providers...</option>
+                  <option value="" disabled>{t('settings.providerConfig.form.loadingProviders')}</option>
                 )}
               </select>
               {errors.provider_name && (
@@ -269,9 +271,9 @@ export const ProviderConfigForm: React.FC<ProviderConfigFormProps> = ({
             {shouldShowApiKey && (
               <div>
                 <label htmlFor="api_key" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  API Key
-                  {!isApiKeyRequired && !isEditMode && <span className="text-xs text-gray-500 ml-1">(optional)</span>}
-                  {isEditMode && <span className="text-xs text-gray-500 ml-1">(leave empty to keep current)</span>}
+                  {t('settings.providerConfig.form.apiKey')}
+                  {!isApiKeyRequired && !isEditMode && <span className="text-xs text-gray-500 ms-1">{t('settings.providerConfig.form.apiKeyOptional')}</span>}
+                  {isEditMode && <span className="text-xs text-gray-500 ms-1">{t('settings.providerConfig.form.apiKeyKeepCurrent')}</span>}
                 </label>
                 <input
                   type="password"
@@ -280,7 +282,7 @@ export const ProviderConfigForm: React.FC<ProviderConfigFormProps> = ({
                   value={formData.api_key}
                   onChange={handleChange}
                   disabled={loading}
-                  placeholder={isEditMode ? '••••••••••••••••' : 'Enter API Key'}
+                  placeholder={isEditMode ? t('settings.providerConfig.form.apiKeyPlaceholderEdit') : t('settings.providerConfig.form.apiKeyPlaceholder')}
                   className={classnames({
                     'mt-1 block w-full rounded-md shadow-sm dark:bg-gray-800 dark:text-white sm:text-sm': true,
                     'border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500': !!errors.api_key,
@@ -296,9 +298,9 @@ export const ProviderConfigForm: React.FC<ProviderConfigFormProps> = ({
             {shouldShowBaseUrl && (
               <div>
                 <label htmlFor="base_url" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Base URL
-                  {!isBaseUrlRequired && <span className="text-xs text-gray-500 ml-1">(optional)</span>}
-                  {isBaseUrlRequired && <span className="text-xs text-red-500 ml-1">*</span>}
+                  {t('settings.providerConfig.form.baseUrl')}
+                  {!isBaseUrlRequired && <span className="text-xs text-gray-500 ms-1">{t('settings.providerConfig.form.baseUrlOptional')}</span>}
+                  {isBaseUrlRequired && <span className="text-xs text-red-500 ms-1">*</span>}
                 </label>
                 <input
                   type="text"
@@ -320,7 +322,7 @@ export const ProviderConfigForm: React.FC<ProviderConfigFormProps> = ({
               </div>
             )}
 
-            <div className="flex justify-between space-x-3 mt-5">
+            <div className="flex justify-between gap-x-3 mt-5">
               <Button
                 type="button"
                 onClick={handleTest}
@@ -328,14 +330,14 @@ export const ProviderConfigForm: React.FC<ProviderConfigFormProps> = ({
                 variant="secondary"
                 className="flex-1"
               >
-                {testing ? 'Testing...' : 'Test Connection'}
+                {testing ? t('settings.providerConfig.form.testing') : t('settings.providerConfig.form.testButton')}
               </Button>
               <Button
                 type="submit"
                 disabled={loading}
                 className="flex-1"
               >
-                {loading ? 'Saving...' : initialData ? 'Update' : 'Create'}
+                {loading ? t('settings.providerConfig.form.saving') : initialData ? t('settings.providerConfig.form.updateButton') : t('settings.providerConfig.form.saveButton')}
               </Button>
             </div>
           </form>

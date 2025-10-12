@@ -154,7 +154,10 @@ class Subscription(BaseModel):
 
 class SubscriptionPayment(BaseModel):
     subscription = models.ForeignKey(
-        "Subscription", on_delete=models.CASCADE, related_name="payments"
+        "Subscription",
+        on_delete=models.CASCADE,
+        verbose_name=_("Subscription"),
+        related_name="payments",
     )
     amount = models.DecimalField(_("Amount"), max_digits=10, decimal_places=2)
     stripe_payment_id = models.CharField(
@@ -204,7 +207,7 @@ class UsageHistory(BaseModel):
         blank=True,
     )
     content_id = models.UUIDField(
-        _("Content id"),
+        _("Content ID"),
         null=True,
         blank=True,
     )
@@ -214,16 +217,16 @@ class UsageHistory(BaseModel):
     )
     team_api_key = models.ForeignKey(
         "user.TeamAPIKey",
-        verbose_name=_("API key"),
+        verbose_name=_("API Key"),
         on_delete=models.SET_NULL,
         related_name="usage_histories",
         null=True,
     )
     requested_page_credit = models.PositiveIntegerField(
-        _("Requested page credit"),
+        _("Requested Page Credit"),
     )
     used_page_credit = models.PositiveIntegerField(
-        _("Actual page credit used"),
+        _("Actual Page Credit Used"),
     )
 
     class Meta:

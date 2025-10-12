@@ -9,6 +9,7 @@ import ComboboxComponent from '../shared/ComboboxComponent';
 import { useTeam } from '../../contexts/TeamContext';
 import { capFirst } from '../../utils/formatters';
 import { useSettings } from '../../contexts/SettingsProvider';
+import { useTranslation } from 'react-i18next';
 export interface SpiderOptions {
   maxDepth: string;
   pageLimit: string;
@@ -30,6 +31,7 @@ interface SpiderOptionsFormProps {
 }
 
 export const SpiderOptionsForm: React.FC<SpiderOptionsFormProps> = ({ options, onChange, isBatchMode }) => {
+  const { t } = useTranslation();
   const [newExcludePath, setNewExcludePath] = useState('');
   const [newIncludePath, setNewIncludePath] = useState('');
   const [newAllowedDomain, setNewAllowedDomain] = useState('');
@@ -105,7 +107,7 @@ export const SpiderOptionsForm: React.FC<SpiderOptionsFormProps> = ({ options, o
 
   const getCategoryText = (category: string) => {
     if (category.toLowerCase() === 'premium') {
-      return 'Premium (Just for paid plans)';
+      return t('crawl.spiderOptions.premiumProxy');
     }
     return capFirst(category);
   };
@@ -116,18 +118,18 @@ export const SpiderOptionsForm: React.FC<SpiderOptionsFormProps> = ({ options, o
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
         {/* Left Column - Crawler Settings */}
           <OptionGroup
-            title="Crawler Settings"
-            subtitle={isBatchMode ? (<small className="text-red-500 dark:text-red-400">(This option is not available in batch mode)</small>) : ''}
-            description="Configure how deep and wide the crawler should go"
+            title={t('crawl.spiderOptions.crawlerSettings')}
+            subtitle={isBatchMode ? (<small className="text-red-500 dark:text-red-400">({t('crawl.spiderOptions.notAvailableInBatch')})</small>) : ''}
+            description={t('crawl.spiderOptions.crawlerSettingsDesc')}
           >
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <div className="flex items-center space-x-1 mb-1">
+                  <div className="flex items-center gap-x-1 mb-1">
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Max Depth
+                      {t('crawl.spiderOptions.maxDepth')}
                     </label>
-                    <InfoTooltip content="Maximum depth of pages to crawl from the starting URL" />
+                    <InfoTooltip content={t('crawl.spiderOptions.maxDepthTooltip')} />
                   </div>
                   <FormInput
                     label=""
@@ -140,11 +142,11 @@ export const SpiderOptionsForm: React.FC<SpiderOptionsFormProps> = ({ options, o
                 </div>
 
                 <div>
-                  <div className="flex items-center space-x-1 mb-1">
+                  <div className="flex items-center gap-x-1 mb-1">
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Page Limit
+                      {t('crawl.spiderOptions.pageLimit')}
                     </label>
-                    <InfoTooltip content="Maximum number of pages to crawl" />
+                    <InfoTooltip content={t('crawl.spiderOptions.pageLimitTooltip')} />
                   </div>
                   <FormInput
                     label=""
@@ -159,11 +161,11 @@ export const SpiderOptionsForm: React.FC<SpiderOptionsFormProps> = ({ options, o
 
 
               <div>
-                <div className="flex items-center space-x-1 mb-1">
+                <div className="flex items-center gap-x-1 mb-1">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Concurrent Requests
+                    {t('crawl.spiderOptions.concurrentRequests')}
                   </label>
-                  <InfoTooltip content="Maximum number of concurrent requests." />
+                  <InfoTooltip content={t('crawl.spiderOptions.concurrentRequestsTooltip')} />
                 </div>
                 <FormInput
                   label=""
@@ -173,7 +175,7 @@ export const SpiderOptionsForm: React.FC<SpiderOptionsFormProps> = ({ options, o
                   placeholder={`Auto - Maximum(${settings?.max_crawl_concurrency})`}
                 />
                 <small className="text-xs text-gray-500 dark:text-gray-400">
-                The number of concurrent requests to make. Higher numbers will make the crawl faster but may increase the risk of getting blocked.
+                {t('crawl.spiderOptions.concurrentRequestsHelp')}
                 </small>
               </div>
 
@@ -181,21 +183,21 @@ export const SpiderOptionsForm: React.FC<SpiderOptionsFormProps> = ({ options, o
           </OptionGroup>
 
           <OptionGroup
-            title="Path Filters"
-            subtitle={isBatchMode ? (<small className="text-red-500 dark:text-red-400">(This option is not available in batch mode)</small>) : ''}
-            description="Specify which paths to include or exclude from crawling"
+            title={t('crawl.spiderOptions.pathFilters')}
+            subtitle={isBatchMode ? (<small className="text-red-500 dark:text-red-400">({t('crawl.spiderOptions.notAvailableInBatch')})</small>) : ''}
+            description={t('crawl.spiderOptions.pathFiltersDesc')}
           >
             <div className="space-y-4">
               <div>
-                <div className="flex items-center space-x-1 mb-1">
+                <div className="flex items-center gap-x-1 mb-1">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Exclude Paths
+                    {t('crawl.spiderOptions.excludePaths')}
                   </label>
-                  <InfoTooltip content="Specify paths to exclude from crawling (e.g., */admin/* or /login/*). Each rule must start with * or /. Use * as a wildcard to match any number of characters, or omit * for an exact match." />
+                  <InfoTooltip content={t('crawl.spiderOptions.excludePathsTooltip')} />
                 </div>
                 <div className="space-y-2">
                   <div className="grid grid-cols-2 gap-2">
-                    <div className="col-span-2 flex space-x-2">
+                    <div className="col-span-2 flex gap-x-2">
                       <FormInput
                         label=""
                         value={newExcludePath}
@@ -227,7 +229,7 @@ export const SpiderOptionsForm: React.FC<SpiderOptionsFormProps> = ({ options, o
                         {path}
                         <button
                           onClick={() => handleRemoveExcludePath(path)}
-                          className="ml-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                          className="ms-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                         >
                           <XMarkIcon className="h-3 w-3" />
                         </button>
@@ -238,15 +240,15 @@ export const SpiderOptionsForm: React.FC<SpiderOptionsFormProps> = ({ options, o
               </div>
 
               <div>
-                <div className="flex items-center space-x-1 mb-1">
+                <div className="flex items-center gap-x-1 mb-1">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Include Paths
+                    {t('crawl.spiderOptions.includePaths')}
                   </label>
-                  <InfoTooltip content="Specify paths to include in crawling (e.g., /blog/*, *docs*). Each rule must start with * or /. Use * as a wildcard to match any number of characters, or omit * for an exact match." />
+                  <InfoTooltip content={t('crawl.spiderOptions.includePathsTooltip')} />
                 </div>
                 <div className="space-y-2">
                   <div className="grid grid-cols-2 gap-2">
-                    <div className="col-span-2 flex space-x-2">
+                    <div className="col-span-2 flex gap-x-2">
                       <FormInput
                         label=""
                         value={newIncludePath}
@@ -278,7 +280,7 @@ export const SpiderOptionsForm: React.FC<SpiderOptionsFormProps> = ({ options, o
                         {path}
                         <button
                           onClick={() => handleRemoveIncludePath(path)}
-                          className="ml-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                          className="ms-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                         >
                           <XMarkIcon className="h-3 w-3" />
                         </button>
@@ -289,15 +291,15 @@ export const SpiderOptionsForm: React.FC<SpiderOptionsFormProps> = ({ options, o
               </div>
 
               <div>
-                <div className="flex items-center space-x-1 mb-1">
+                <div className="flex items-center gap-x-1 mb-1">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Allowed Domains
+                    {t('crawl.spiderOptions.allowedDomains')}
                   </label>
-                  <InfoTooltip content="Specify domains to crawl (e.g., example.com, sub.example.com). Leave empty to crawl all domains." />
+                  <InfoTooltip content={t('crawl.spiderOptions.allowedDomainsTooltip')} />
                 </div>
                 <div className="space-y-2">
                   <div className="grid grid-cols-2 gap-2">
-                    <div className="col-span-2 flex space-x-2">
+                    <div className="col-span-2 flex gap-x-2">
                       <FormInput
                         label=""
                         value={newAllowedDomain}
@@ -329,7 +331,7 @@ export const SpiderOptionsForm: React.FC<SpiderOptionsFormProps> = ({ options, o
                         {domain}
                         <button
                           onClick={() => handleRemoveAllowedDomain(domain)}
-                          className="ml-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                          className="ms-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                         >
                           <XMarkIcon className="h-3 w-3" />
                         </button>
@@ -342,28 +344,28 @@ export const SpiderOptionsForm: React.FC<SpiderOptionsFormProps> = ({ options, o
           </OptionGroup>
 
           <OptionGroup
-            title="Proxy Settings"
-            description="Configure proxy servers for your crawl requests"
+            title={t('crawl.spiderOptions.proxySettings')}
+            description={t('crawl.spiderOptions.proxySettingsDesc')}
           >
             <div className="space-y-4">
               <div>
-                <div className="flex items-center space-x-1 mb-1">
+                <div className="flex items-center gap-x-1 mb-1">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Proxy Server
+                    {t('crawl.spiderOptions.proxyServer')}
                   </label>
-                  <InfoTooltip content="Select a proxy server to use for crawling" />
+                  <InfoTooltip content={t('crawl.spiderOptions.proxyServerTooltip')} />
                 </div>
                 <div className="flex flex-col space-y-2">
                   <div className="relative">
                     {isLoadingProxies ? (
                       <div className="w-full h-10 px-3 flex items-center border border-gray-200 dark:border-gray-700 rounded-md text-gray-500 dark:text-gray-400">
-                        Loading proxies...
+                        {t('crawl.spiderOptions.loadingProxies')}
                       </div>
                     ) : (
                       <ComboboxComponent
                         value={options.proxy_server || ''}
                         onChange={handleProxyChange}
-                        placeholder="Use default proxies"
+                        placeholder={t('crawl.spiderOptions.useDefaultProxies')}
                         items={availableProxies.map(proxy => ({
                           id: proxy.slug,
                           label: proxy.name,
@@ -373,30 +375,30 @@ export const SpiderOptionsForm: React.FC<SpiderOptionsFormProps> = ({ options, o
                       />
                     )}
                   </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center space-x-1">
-                    <span>Need to add a proxy?</span>
+                  <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-x-1">
+                    <span>{t('crawl.spiderOptions.needProxy')}</span>
                     <Link to="/dashboard/settings#proxy" className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 inline-flex items-center">
-                      Manage proxies
-                      <ArrowTopRightOnSquareIcon className="ml-1 h-3 w-3" />
+                      {t('crawl.spiderOptions.manageProxies')}
+                      <ArrowTopRightOnSquareIcon className="ms-1 h-3 w-3" />
                     </Link>
                   </div>
 
                   {/* Subscription Information Box */}
                   {currentSubscription?.is_default && (
                     <div className="mt-3 space-y-2 bg-gray-50 dark:bg-gray-900 rounded-md p-3 border border-gray-200 dark:border-gray-700">
-                      <p className="text-xs font-medium text-gray-700 dark:text-gray-300">Proxy Access by Subscription:</p>
+                      <p className="text-xs font-medium text-gray-700 dark:text-gray-300">{t('crawl.spiderOptions.proxyAccessTitle')}</p>
                       <div className="grid grid-cols-1 gap-2">
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center gap-x-2">
                           <div className="w-2 h-2 rounded-full bg-green-400 flex-shrink-0"></div>
                           <p className="text-sm text-gray-600 dark:text-gray-400">
-                            <span className="font-medium">Free Subscription:</span> Access to Team and General proxies
+                            <span className="font-medium">{t('crawl.spiderOptions.freeSubscription')}</span> {t('crawl.spiderOptions.freeProxyAccess')}
                           </p>
                         </div>
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center gap-x-2">
                           <div className="w-2 h-2 rounded-full bg-blue-400 flex-shrink-0"></div>
                           <p className="text-sm text-gray-600 dark:text-gray-400">
-                            <span className="font-medium">Startup+ Plans:</span> Additional access to Premium Residential proxies
-                            <a href="/dashboard/plans" className="ml-1 text-xs text-blue-600 dark:text-blue-400">Upgrade to Startup Plan</a>
+                            <span className="font-medium">{t('crawl.spiderOptions.startupPlans')}</span> {t('crawl.spiderOptions.premiumProxyAccess')}
+                            <a href="/dashboard/plans" className="ms-1 text-xs text-blue-600 dark:text-blue-400">{t('crawl.spiderOptions.upgradeToStartup')}</a>
                           </p>
                         </div>
                       </div>

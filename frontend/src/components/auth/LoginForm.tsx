@@ -14,15 +14,16 @@ import { useSettings } from '../../contexts/SettingsProvider';
 import { TeamService } from '../../services/teamService';
 import { AxiosError } from 'axios';
 import { EmailVerificationPopup } from '../EmailVerificationPopup';
+import { useTranslation } from 'react-i18next';
 
-const schema = yup.object({
+const getSchema = (t: (key: string) => string) => yup.object({
   email: yup
     .string()
-    .email('Please enter a valid email')
-    .required('Email is required'),
+    .email(t('validation.email'))
+    .required(t('validation.required')),
   password: yup
     .string()
-    .required('Password is required'),
+    .required(t('validation.required')),
 }).required();
 
 type LoginFormData = {
@@ -31,6 +32,7 @@ type LoginFormData = {
 };
 
 export const LoginForm: React.FC = () => {
+  const { t } = useTranslation();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -39,7 +41,7 @@ export const LoginForm: React.FC = () => {
   const navigate = useNavigate();
 
   const methods = useForm<LoginFormData>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(getSchema(t)),
   });
 
   const { handleSubmit, formState: { errors } } = methods;
@@ -59,7 +61,7 @@ export const LoginForm: React.FC = () => {
       })
       .catch((err: AxiosError<ApiError>) => {
         if (err.response?.status === 400) {
-          setError(err.response?.data?.errors?.email?.toLocaleString() || 'An error occurred during login. Please try again.');
+          setError(err.response?.data?.errors?.email?.toLocaleString() || t('auth.login.error'));
         }
         if (err.response?.status === 403) {
           setShowEmailVerificationPopup(true);
@@ -79,7 +81,7 @@ export const LoginForm: React.FC = () => {
               {error && <ValidationMessage message={error} type="error" />}
 
               <FormInput
-                label="Email address"
+                label={t('auth.login.email')}
                 name="email"
                 type="email"
                 error={errors.email?.message}
@@ -88,7 +90,7 @@ export const LoginForm: React.FC = () => {
 
               <div className="space-y-1">
                 <FormInput
-                  label="Password"
+                  label={t('auth.login.password')}
                   name="password"
                   type={showPassword ? 'text' : 'password'}
                   error={errors.password?.message}
@@ -97,7 +99,7 @@ export const LoginForm: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="pr-3 focus:outline-none"
+                      className="pe-3 focus:outline-none"
                     >
                       {showPassword ? (
                         <EyeSlashIcon className="h-5 w-5 text-gray-400 hover:text-gray-500 dark:hover:text-gray-300" />
@@ -115,7 +117,7 @@ export const LoginForm: React.FC = () => {
                     to="/forgot-password"
                     className="font-medium text-primary-600 hover:text-primary-500 dark:text-primary-400 dark:hover:text-primary-300"
                   >
-                    Forgot your password?
+                    {t('auth.login.forgotPassword')}
                   </Link>
                 </div>
                 {settings.is_signup_active &&
@@ -124,7 +126,7 @@ export const LoginForm: React.FC = () => {
                       to="/register"
                       className="font-medium text-primary-600 hover:text-primary-500 dark:text-primary-400 dark:hover:text-primary-300"
                     >
-                      Create an account
+                      {t('auth.signup.signupButton')}
                     </Link>
                   </div>)
                 }
@@ -136,7 +138,7 @@ export const LoginForm: React.FC = () => {
                 className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-800 ${isLoading ? 'opacity-50 cursor-not-allowed' : ''
                   }`}
               >
-                {isLoading ? 'Signing in...' : 'Sign in'}
+                {isLoading ? t('auth.login.loading') : t('auth.login.loginButton')}
               </button>
             </form>
           }
@@ -148,7 +150,7 @@ export const LoginForm: React.FC = () => {
                 </div>
                 <div className="relative flex justify-center text-sm">
                   <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">
-                    continue with
+                    {t('auth.login.or')}
                   </span>
                 </div>
               </div>

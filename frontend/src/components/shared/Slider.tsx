@@ -56,7 +56,7 @@ export const Slider: React.FC<SliderProps> = ({
           <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-lg h-2 relative">
             {/* Single position indicator for read-only */}
             <div 
-              className="absolute top-0 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-gray-400 dark:bg-gray-500 rounded-full -mt-1 border-2 border-white dark:border-gray-800"
+              className="absolute top-0 start-1/2 transform -translate-x-1/2 w-4 h-4 bg-gray-400 dark:bg-gray-500 rounded-full -mt-1 border-2 border-white dark:border-gray-800"
             />
           </div>
           <div className="flex justify-center mt-1">

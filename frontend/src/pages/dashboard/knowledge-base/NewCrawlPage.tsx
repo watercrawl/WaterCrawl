@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { CrawlForm } from '../../../components/crawl/CrawlForm';
 import { CrawlEvent, CrawlRequest } from '../../../types/crawl';
 import toast from 'react-hot-toast';
@@ -8,6 +9,7 @@ import { KnowledgeBaseDetail } from '../../../types/knowledge';
 import { knowledgeBaseApi } from '../../../services/api/knowledgeBase';
 
 const NewCrawlPage: React.FC = () => {
+  const { t } = useTranslation();
   const { knowledgeBaseId } = useParams<{ knowledgeBaseId: string }>();
   const navigate = useNavigate();
   const { setItems } = useBreadcrumbs();
@@ -33,7 +35,7 @@ const NewCrawlPage: React.FC = () => {
       
       // If crawl is complete, redirect to URL selector
       if (crawlRequest.status === 'finished') {
-        toast.success('Crawl completed successfully!');
+        toast.success(t('crawl.messages.success'));
         setTimeout(() => {
           navigate(`/dashboard/knowledge-base/${knowledgeBaseId}/import/select-crawl/${crawlRequest.uuid}`);
         }, 1500);
@@ -46,30 +48,30 @@ const NewCrawlPage: React.FC = () => {
     knowledgeBaseApi.get(knowledgeBaseId as string).then((response) => {
       setKnowledgeBase(response);
     }).catch(() => {
-      toast.error('Failed to load knowledge base');
+      toast.error(t('settings.knowledgeBase.toast.loadError'));
       navigate('/dashboard/knowledge-base');
     });
-  }, [knowledgeBaseId, navigate]);
+  }, [knowledgeBaseId, navigate, t]);
 
   useEffect(() => {
     if (!knowledgeBase) return;
     setItems([
-      { label: 'Dashboard', href: '/dashboard' },
-      { label: 'Knowledge Bases', href: '/dashboard/knowledge-base' },
+      { label: t('dashboard.navigation.dashboard'), href: '/dashboard' },
+      { label: t('knowledgeBase.list'), href: '/dashboard/knowledge-base' },
       { label: knowledgeBase.title, href: `/dashboard/knowledge-base/${knowledgeBaseId}`},
-      { label: 'Import Options', href: `/dashboard/knowledge-base/${knowledgeBaseId}/import`},
-      { label: 'New Crawl', href: `/dashboard/knowledge-base/${knowledgeBaseId}/import/new-crawl`, current: true },
+      { label: t('knowledgeBase.import.title'), href: `/dashboard/knowledge-base/${knowledgeBaseId}/import`},
+      { label: t('knowledgeBase.import.newCrawl'), href: `/dashboard/knowledge-base/${knowledgeBaseId}/import/new-crawl`, current: true },
     ]);
-  }, [knowledgeBase, knowledgeBaseId, setItems]);
+  }, [knowledgeBase, knowledgeBaseId, setItems, t]);
 
   return (
     <div className="py-6 px-4 sm:px-6 lg:px-8">
       <div className="mb-6">
         <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
-          Run New Crawl
+          {t('knowledgeBase.import.newCrawl')}
         </h1>
         <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">
-          Enter a URL to crawl and import into your knowledge base.
+          {t('knowledgeBase.import.newCrawlDesc')}
         </p>
       </div>
 
@@ -77,15 +79,15 @@ const NewCrawlPage: React.FC = () => {
         {activeCrawl ? (
           <div className="space-y-4">
             <div>
-              <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Crawling: {activeCrawl.url}</h4>
+              <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('crawl.form.crawling')}: {activeCrawl.url}</h4>
               <div className="relative pt-1">
                 <div className="flex mb-2 items-center justify-between">
                   <div>
                     <span className="text-xs font-semibold inline-block text-primary-600 dark:text-primary-400">
-                      {Math.round(crawlProgress)}% Complete
+                      {Math.round(crawlProgress)}% {t('dashboard.stats.successRate')}
                     </span>
                   </div>
-                  <div className="text-right">
+                  <div className="text-end">
                     <span className="text-xs font-semibold inline-block text-primary-600 dark:text-primary-400">
                       {activeCrawl.number_of_documents || 0} of {activeCrawl.options.spider_options.page_limit || '?'} pages
                     </span>
@@ -99,14 +101,14 @@ const NewCrawlPage: React.FC = () => {
                 </div>
               </div>
               <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                Your crawl is in progress. You'll be redirected to select URLs when it completes.
+                {t('crawl.status.crawling')}
               </p>
             </div>
           </div>
         ) : (
           <div className="space-y-4">
             <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">
-              Enter a URL to crawl and import into your knowledge base. After crawling, you'll be able to select which pages to import.
+              {t('knowledgeBase.import.newCrawlDesc')}
             </p>
             
             {/* Limited CrawlForm without API docs, Results tab, or Plugin tab */}

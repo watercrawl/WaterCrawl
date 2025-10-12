@@ -1,5 +1,6 @@
 from typing import Optional
 
+from django.utils.translation import gettext as _
 from langchain_community.chat_models import ChatOpenAI
 from langchain_core.language_models import BaseChatModel
 
@@ -35,7 +36,7 @@ class ChatModelFactory:
             A LangChain chat model instance
         """
         if not provider_config:
-            raise ValueError("Provider config is required")
+            raise ValueError(_("Provider config is required"))
 
         provider_name = llm_model.provider_name
         model_name = llm_model.key  # Use key as it's the actual API model name
@@ -56,7 +57,9 @@ class ChatModelFactory:
             try:
                 from watercrawl_llm import ChatWaterCrawl
             except ImportError:
-                raise ImportError("WaterCrawlLLM is not installed. Please install it")
+                raise ImportError(
+                    _("WaterCrawlLLM is not installed. Please install it")
+                )
 
             kwargs = {}
             return ChatWaterCrawl(
@@ -64,7 +67,11 @@ class ChatModelFactory:
             )
 
         else:
-            raise ValueError(f"Unsupported provider: {provider_name}")
+            raise ValueError(
+                _("Unsupported provider: {provider_name}").format(
+                    provider_name=provider_name
+                )
+            )
 
 
 class ProviderFactory:
@@ -86,4 +93,8 @@ class ProviderFactory:
                     "base_url": provider_config.base_url,
                 }
             )
-        raise ValueError(f"Unsupported provider: {provider_config.provider_name}")
+        raise ValueError(
+            _("Unsupported provider: {provider_name}").format(
+                provider_name=provider_config.provider_name
+            )
+        )
