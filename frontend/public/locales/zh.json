@@ -61,7 +61,7 @@
   },
   "api": {
     "example": "示例",
-    "install": "Install",
+    "install": "安装",
     "noRequestData": "无可用请求数据",
     "seeDocumentation": "查看官方文档以了解高级用法、身份验证和更多示例。",
     "selectApiKey": "API 密钥...",
@@ -247,7 +247,7 @@
     "upgradePlan": "升级计划"
   },
   "common": {
-    "version": "Version",
+    "version": "版本",
     "actions": "操作",
     "ago": "前",
     "appName": "WaterCrawl",
