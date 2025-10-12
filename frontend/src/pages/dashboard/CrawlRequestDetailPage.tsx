@@ -255,7 +255,7 @@ const CrawlRequestDetailPage: React.FC = () => {
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('common.common.subtitle')}</dt>
+                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('crawl.typeLabel')}</dt>
                     <dd className="mt-1">
                       <CrawlTypeBadge type={request.crawl_type || 'single'} />
                     </dd>

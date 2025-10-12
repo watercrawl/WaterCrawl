@@ -1,6 +1,6 @@
 export default {
-  locales: ['en', 'fa'],
-  output: 'src/i18n/locales/$LOCALE.json',
+  locales: ['en', 'de', 'fr', 'es', 'it', 'pt', 'ja', 'zh', 'ar', 'fa'],
+  output: 'public/locales/$LOCALE.json',
   input: ['src/**/*.{ts,tsx}'],
   
   // Keep existing translations
