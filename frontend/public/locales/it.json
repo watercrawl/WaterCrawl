@@ -61,7 +61,6 @@
   },
   "api": {
     "example": "Esempio",
-    "install": "Installa",
     "noRequestData": "Nessun dato di richiesta disponibile",
     "seeDocumentation": "Consulta la documentazione ufficiale per uso avanzato, autenticazione e altri esempi.",
     "selectApiKey": "Chiave API...",
@@ -84,11 +83,11 @@
     }
   },
   "apiKeys": {
-    "actions": {
-      "copied": "Copiato!",
-      "copy": "Copia",
-      "revoke": "Revoca",
-      "revokeConfirm": "Sei sicuro di voler revocare questa chiave?"
+    "actionsMenu": {
+      "cancel": "Cancel",
+      "copy": "Copy",
+      "revoke": "Revoke",
+      "revokeConfirm": "Are you sure you want to revoke this key?"
     },
     "copyToClipboard": "Copia negli Appunti",
     "create": {
@@ -253,7 +252,6 @@
     "upgradePlan": "Aggiorna Piano"
   },
   "common": {
-    "version": "Versione",
     "actions": "Azioni",
     "ago": "fa",
     "appName": "WaterCrawl",
@@ -264,9 +262,6 @@
     "deselectAll": "Deseleziona tutto",
     "importing": "Importazione...",
     "url": "URL",
-    "common": {
-      "subtitle": "Bentornato! Per favore accedi al tuo account"
-    },
     "copiedToClipboard": "Copiato negli appunti!",
     "copyFailed": "Impossibile copiare negli appunti",
     "crawls": "Crawl",
@@ -1676,7 +1671,6 @@
       },
       "updateButton": "Aggiorna"
     },
-    "subtitle": "Configura la tua applicazione",
     "team": {
       "billingTab": "Fatturazione",
       "confirmRemove": "Sei sicuro di voler rimuovere questo membro?",
@@ -1717,6 +1711,7 @@
       "status": "Stato",
       "title": "Inviti Team"
     },
+    "subtitle": "Configura la tua applicazione",
     "title": "Impostazioni"
   },
   "sitemap": {
@@ -1734,6 +1729,7 @@
       "cancelFailed": "Impossibile annullare la generazione del sitemap.",
       "download": "Impossibile scaricare il sitemap",
       "generateFailed": "Impossibile generare il sitemap.",
+      "loadFailed": "Failed to load sitemap data",
       "loadGraphFailed": "Impossibile caricare il grafico del sitemap",
       "loadMarkdown": "Impossibile caricare il markdown",
       "loadMarkdownFailed": "Impossibile caricare il markdown del sitemap",
