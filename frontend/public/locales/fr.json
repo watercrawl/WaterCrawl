@@ -61,7 +61,6 @@
   },
   "api": {
     "example": "Exemple",
-    "install": "Installer",
     "noRequestData": "Aucune donnée de requête disponible",
     "seeDocumentation": "Consultez la documentation officielle pour l'utilisation avancée, l'authentification et d'autres exemples.",
     "selectApiKey": "Clé API...",
@@ -84,11 +83,11 @@
     }
   },
   "apiKeys": {
-    "actions": {
-      "copied": "Copié !",
-      "copy": "Copier",
-      "revoke": "Révoquer",
-      "revokeConfirm": "Êtes-vous sûr de vouloir révoquer cette clé ?"
+    "actionsMenu": {
+      "cancel": "Cancel",
+      "copy": "Copy",
+      "revoke": "Revoke",
+      "revokeConfirm": "Are you sure you want to revoke this key?"
     },
     "copyToClipboard": "Copier dans le presse-papiers",
     "create": {
@@ -252,8 +251,7 @@
     },
     "upgradePlan": "Améliorer le plan"
   },
-    "common": {
-      "version": "Version",
+  "common": {
     "actions": "Actions",
     "ago": "il y a",
     "appName": "WaterCrawl",
@@ -264,9 +262,6 @@
     "deselectAll": "Tout désélectionner",
     "importing": "Importation en cours...",
     "url": "URL",
-    "common": {
-      "subtitle": "Bon retour ! Veuillez vous connecter à votre compte"
-    },
     "copiedToClipboard": "Copié dans le presse-papiers !",
     "copyFailed": "Échec de la copie dans le presse-papiers",
     "crawls": "Crawls",
@@ -1676,7 +1671,6 @@
       },
       "updateButton": "Mettre à jour"
     },
-    "subtitle": "Configurez votre application",
     "team": {
       "billingTab": "Facturation",
       "confirmRemove": "Êtes-vous sûr de vouloir supprimer ce membre ?",
@@ -1717,6 +1711,7 @@
       "status": "Statut",
       "title": "Invitations d'équipe"
     },
+    "subtitle": "Configurez votre application",
     "title": "Paramètres"
   },
   "sitemap": {
@@ -1734,6 +1729,7 @@
       "cancelFailed": "Échec de l'annulation de la génération du sitemap.",
       "download": "Échec du téléchargement du sitemap",
       "generateFailed": "Échec de la génération du sitemap.",
+      "loadFailed": "Failed to load sitemap data",
       "loadGraphFailed": "Échec du chargement du graphe du sitemap",
       "loadMarkdown": "Échec du chargement du markdown",
       "loadMarkdownFailed": "Échec du chargement du markdown du sitemap",
