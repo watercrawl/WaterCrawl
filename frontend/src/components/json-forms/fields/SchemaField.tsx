@@ -93,11 +93,11 @@ export const SchemaField: React.FC<FieldProps> = (props) => {
   return (
     <div className={`mb-4 ${ui.className || ''}`}>
       {(schema.title || schema.description) && (
-        <div className="flex items-center space-x-1 mb-1">
+        <div className="flex items-center gap-x-1 mb-1">
           {schema.title && (
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
               {schema.title}
-              {props.required && <span className="text-red-500 ml-1">*</span>}
+              {props.required && <span className="text-red-500 ms-1">*</span>}
             </label>
           )}
           {schema.description && <InfoTooltip content={schema.description} />}

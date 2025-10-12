@@ -1,4 +1,5 @@
 import React, { Fragment, useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Combobox, ComboboxInput, ComboboxOptions, ComboboxOption } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 import { Transition } from '@headlessui/react';
@@ -24,11 +25,13 @@ const ComboboxComponent: React.FC<ComboboxComponentProps> = ({
   items,
   value,
   onChange,
-  placeholder = 'Select an option',
+  placeholder,
   className = '',
   label,
   disabled = false
 }) => {
+  const { t } = useTranslation();
+  const defaultPlaceholder = placeholder || t('common.selectOption');
   const [query, setQuery] = useState('');
   const [position, setPosition] = useState<'top' | 'bottom'>('bottom');
   const containerRef = useRef<HTMLDivElement>(null);
@@ -99,18 +102,18 @@ const ComboboxComponent: React.FC<ComboboxComponentProps> = ({
       >
         <div className="group relative w-full cursor-pointer rounded-md focus:border-b-0">
           {/* Input container */}
-          <div className="relative w-full rounded-t-md rounded-b-md border border-gray-300 dark:border-gray-700 dark:bg-gray-800 text-left sm:text-sm overflow-hidden">
+          <div className="relative w-full rounded-t-md rounded-b-md border border-gray-300 dark:border-gray-700 dark:bg-gray-800 text-start sm:text-sm overflow-hidden">
             {/* Combobox button for dropdown toggling */}
-            <Combobox.Button className="w-full text-left">
+            <Combobox.Button className="w-full text-start">
               <ComboboxInput
-                className="w-full border-none py-2 pl-10 pr-4 text-sm leading-5 text-gray-900 dark:text-white bg-transparent focus:ring-0 cursor-pointer"
-                placeholder={placeholder}
+                className="w-full border-none py-2 ps-10 pe-4 text-sm leading-5 text-gray-900 dark:text-white bg-transparent focus:ring-0 cursor-pointer"
+                placeholder={defaultPlaceholder}
                 displayValue={() => getDisplayValue(value)}
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => setQuery(event.target.value)}
                 disabled={disabled}
                 onClick={(e: React.MouseEvent) => e.stopPropagation()} // Prevent click bubbling
               />
-              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                 <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
               </div>
             </Combobox.Button>
@@ -118,7 +121,7 @@ const ComboboxComponent: React.FC<ComboboxComponentProps> = ({
             {/* Clear button outside Combobox.Button to ensure it works separately */}
             {value && (
               <div 
-                className="absolute inset-y-0 right-0 flex items-center pr-2 z-10"
+                className="absolute inset-y-0 end-0 flex items-center pe-2 z-10"
               >
                 <button
                   type="button"
@@ -161,7 +164,7 @@ const ComboboxComponent: React.FC<ComboboxComponentProps> = ({
             >
               {filteredItems.length === 0 && query !== '' ? (
                 <div className="relative cursor-default select-none py-2 px-4 text-gray-700 dark:text-gray-300">
-                  Nothing found.
+                  {t('common.nothingFound')}
                 </div>
               ) : (
                 // Check if we have any items with categories
@@ -178,7 +181,7 @@ const ComboboxComponent: React.FC<ComboboxComponentProps> = ({
                           <ComboboxOption
                             key={item.id}
                             className={({ active }: { active: boolean }) =>
-                              `relative select-none py-2 pl-10 pr-4 ${
+                              `relative select-none py-2 ps-10 pe-4 ${
                                 item.disabled ? 'cursor-not-allowed text-gray-400 dark:text-gray-500' :
                                 active ? 'cursor-default bg-primary-600 text-white' : 'cursor-default text-gray-900 dark:text-white'
                               }`
@@ -192,7 +195,7 @@ const ComboboxComponent: React.FC<ComboboxComponentProps> = ({
                                   {item.label}
                                 </span>
                                 {selected ? (
-                                  <span className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
+                                  <span className={`absolute inset-y-0 start-0 flex items-center ps-3 ${
                                     active ? 'text-white' : 'text-primary-600'
                                   }`}>
                                     <CheckIcon className="h-5 w-5" aria-hidden="true" />
@@ -211,7 +214,7 @@ const ComboboxComponent: React.FC<ComboboxComponentProps> = ({
                     <ComboboxOption
                       key={item.id}
                       className={({ active }: { active: boolean }) =>
-                        `relative select-none py-2 pl-10 pr-4 ${
+                        `relative select-none py-2 ps-10 pe-4 ${
                           item.disabled ? 'cursor-not-allowed text-gray-400 dark:text-gray-500' :
                           active ? 'cursor-default bg-primary-600 text-white' : 'cursor-default text-gray-900 dark:text-white'
                         }`
@@ -225,7 +228,7 @@ const ComboboxComponent: React.FC<ComboboxComponentProps> = ({
                             {item.label}
                           </span>
                           {selected ? (
-                            <span className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
+                            <span className={`absolute inset-y-0 start-0 flex items-center ps-3 ${
                               active ? 'text-white' : 'text-primary-600'
                             }`}>
                               <CheckIcon className="h-5 w-5" aria-hidden="true" />

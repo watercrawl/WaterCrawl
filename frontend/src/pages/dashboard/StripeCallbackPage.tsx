@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { 
   CheckCircleIcon, 
   XCircleIcon, 
@@ -10,6 +11,7 @@ import { Button } from '../../components/shared/Button';
 import Loading from '../../components/shared/Loading';
 
 const StripeCallbackPage: React.FC = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(true);
@@ -23,86 +25,86 @@ const StripeCallbackPage: React.FC = () => {
     // Optionally, you can add specific logic for each state
     switch (state) {
       case 'payment-success':
-        toast.success('New subscription activated successfully!');
+        toast.success(t('stripe.callback.paymentSuccess'));
         break;
       case 'payment-cancel':
-        toast.error('Subscription process canceled.');
+        toast.error(t('stripe.callback.paymentCancel'));
         break;
       case 'subscription-cancel':
-        toast.success('Subscription will continue as planned.', {
+        toast.success(t('stripe.callback.subscriptionContinues'), {
           icon: <ExclamationTriangleIcon className="h-6 w-6 text-yellow-500 mx-auto" />
         });
         break;
       case 'subscription-cancel-success':
-        toast.success('Subscription will be deactivated at the end of the current period.');
+        toast.success(t('stripe.callback.subscriptionCancelSuccess'));
         break;
       case 'payment-method-update-cancel':
-        toast.error('Payment method update canceled.');
+        toast.error(t('stripe.callback.paymentMethodCancel'));
         break;
       case 'payment-method-update-success':
-        toast.success('Payment method updated successfully!');
+        toast.success(t('stripe.callback.paymentMethodSuccess'));
         break;
       default:
-        toast.error('Unknown callback state');
+        toast.error(t('errors.unknownState'));
     }
-  }, [searchParams, navigate]);
+  }, [searchParams, navigate, t]);
 
   const getStateDetails = () => {
     switch (callbackState) {
       case 'payment-success':
         return {
           icon: <CheckCircleIcon className="h-16 w-16 text-green-500 mx-auto" />,
-          title: 'Subscription Activated',
-          description: 'Your new subscription is now active. Enjoy your enhanced features!',
-          buttonText: 'Go to Dashboard',
+          title: t('stripe.status.subscriptionActivated'),
+          description: t('stripe.status.subscriptionActivatedDesc'),
+          buttonText: t('dashboard.navigation.dashboard'),
           onClick: () => navigate('/dashboard')
         };
       case 'payment-cancel':
         return {
           icon: <XCircleIcon className="h-16 w-16 text-red-500 mx-auto" />,
-          title: 'Subscription Process Canceled',
-          description: 'You have canceled the subscription process. Feel free to explore other plans.',
-          buttonText: 'View Plans',
+          title: t('stripe.status.processCanceled'),
+          description: t('stripe.status.processCanceledDesc'),
+          buttonText: t('plans.viewPlans'),
           onClick: () => navigate('/dashboard/plans')
         };
       case 'subscription-cancel':
         return {
           icon: <ExclamationTriangleIcon className="h-16 w-16 text-yellow-500 mx-auto" />,
-          title: 'Subscription Continues',
-          description: 'Your current subscription will remain active. No changes have been made.',
-          buttonText: 'Back to Dashboard',
+          title: t('stripe.status.subscriptionContinues'),
+          description: t('stripe.status.subscriptionContinuesDesc'),
+          buttonText: t('dashboard.navigation.backToDashboard'),
           onClick: () => navigate('/dashboard/')
         };
       case 'subscription-cancel-success':
         return {
           icon: <CheckCircleIcon className="h-16 w-16 text-green-500 mx-auto" />,
-          title: 'Subscription Cancellation Confirmed',
-          description: 'Your subscription will be deactivated at the end of the current billing period.',
-          buttonText: 'Back to Settings',
+          title: t('stripe.status.cancellationConfirmed'),
+          description: t('stripe.status.cancellationConfirmedDesc'),
+          buttonText: t('dashboard.navigation.backToSettings'),
           onClick: () => navigate('/dashboard/settings#billing')
         };
       case 'payment-method-update-cancel':
         return {
           icon: <XCircleIcon className="h-16 w-16 text-red-500 mx-auto" />,
-          title: 'Payment Method Update Canceled',
-          description: 'Your current payment method remains unchanged.',
-          buttonText: 'Back to Settings',
+          title: t('stripe.status.paymentUpdateCanceled'),
+          description: t('stripe.status.paymentUpdateCanceledDesc'),
+          buttonText: t('dashboard.navigation.backToSettings'),
           onClick: () => navigate('/dashboard/settings#billing')
         };
       case 'payment-method-update-success':
         return {
           icon: <CheckCircleIcon className="h-16 w-16 text-green-500 mx-auto" />,
-          title: 'Payment Method Updated',
-          description: 'Your payment method has been successfully updated.',
-          buttonText: 'Back to Settings',
+          title: t('stripe.status.paymentUpdated'),
+          description: t('stripe.status.paymentUpdatedDesc'),
+          buttonText: t('dashboard.navigation.backToSettings'),
           onClick: () => navigate('/dashboard/settings#billing')
         };
       default:
         return {
           icon: <ExclamationTriangleIcon className="h-16 w-16 text-yellow-500 mx-auto" />,
-          title: 'Unknown State',
-          description: 'An unexpected error occurred. Please contact support.',
-          buttonText: 'Back to Dashboard',
+          title: t('errors.unknownState'),
+          description: t('errors.contactSupport'),
+          buttonText: t('dashboard.navigation.backToDashboard'),
           onClick: () => navigate('/dashboard')
         };
     }

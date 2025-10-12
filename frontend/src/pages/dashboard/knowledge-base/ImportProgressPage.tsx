@@ -1,15 +1,8 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import {
-  LinkIcon,
-  DocumentIcon,
-  PencilIcon,
-  GlobeAltIcon,
-  CodeBracketIcon,
-  MapIcon,
-  DocumentTextIcon,
-  ChevronRightIcon
-} from '@heroicons/react/24/outline';
+import { useTranslation } from 'react-i18next';
+import { LinkIcon, DocumentIcon, PencilIcon, GlobeAltIcon, CodeBracketIcon, MapIcon, DocumentTextIcon } from '@heroicons/react/24/outline';
+import { ChevronRight } from '../../../components/shared/DirectionalIcon';
 
 interface ImportMethod {
   id: string;
@@ -21,54 +14,55 @@ interface ImportMethod {
 }
 
 const KnowledgeBaseImportOptionsPage: React.FC = () => {
+  const { t } = useTranslation();
   const { knowledgeBaseId } = useParams<{ knowledgeBaseId: string }>();
   const navigate = useNavigate();
 
   const importMethods: ImportMethod[] = [
     {
       id: 'select-crawl',
-      name: 'Select Existing Crawl',
-      description: 'Choose from your previously crawled websites',
+      name: t('knowledgeBase.import.selectCrawl'),
+      description: t('knowledgeBase.import.selectCrawlDesc'),
       icon: LinkIcon,
       path: `/dashboard/knowledge-base/${knowledgeBaseId}/import/select-crawl`,
       category: 'crawl'
     },
     {
       id: 'new-crawl',
-      name: 'Run New Crawl',
-      description: 'Crawl a new website and import its content',
+      name: t('knowledgeBase.import.newCrawl'),
+      description: t('knowledgeBase.import.newCrawlDesc'),
       icon: GlobeAltIcon,
       path: `/dashboard/knowledge-base/${knowledgeBaseId}/import/new-crawl`,
       category: 'crawl'
     },
     {
       id: "select-sitemap",
-      name: "Select Existing Sitemap",
-      description: "Select a sitemap to import its content",
+      name: t('knowledgeBase.import.selectSitemap'),
+      description: t('knowledgeBase.import.selectSitemapDesc'),
       icon: LinkIcon,
       path: `/dashboard/knowledge-base/${knowledgeBaseId}/import/select-sitemap`,
       category: 'sitemap'
     },
     {
       id: "new-sitemap",
-      name: "Generate New Sitemap",
-      description: "Create a new sitemap and import its content",
+      name: t('knowledgeBase.import.newSitemap'),
+      description: t('knowledgeBase.import.newSitemapDesc'),
       icon: MapIcon,
       path: `/dashboard/knowledge-base/${knowledgeBaseId}/import/new-sitemap`,
       category: 'sitemap'
     },
     {
       id: 'manual',
-      name: 'Add Content Manually',
-      description: 'Create a knowledge base item with custom title and content',
+      name: t('knowledgeBase.import.manual'),
+      description: t('knowledgeBase.import.manualDesc'),
       icon: PencilIcon,
       path: `/dashboard/knowledge-base/${knowledgeBaseId}/import/manual`,
       category: 'manual'
     },
     {
       id: 'upload',
-      name: 'Upload Documents',
-      description: 'Upload PDF, DOCX, TXT or image files',
+      name: t('knowledgeBase.import.upload'),
+      description: t('knowledgeBase.import.uploadDesc'),
       icon: DocumentIcon,
       path: `/dashboard/knowledge-base/${knowledgeBaseId}/import/upload`,
       category: 'manual'
@@ -101,11 +95,11 @@ const KnowledgeBaseImportOptionsPage: React.FC = () => {
         key={method.id}
         type="button"
         onClick={() => handleImportMethodSelect(method.path)}
-        className="group flex items-center w-full px-3 py-2 text-sm text-left font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-900 transition-colors"
+        className="group flex items-center w-full px-3 py-2 text-sm text-start font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-900 transition-colors"
       >
-        <method.icon className={`h-4 w-4 ${iconColors[accentColor]} mr-3 flex-shrink-0`} aria-hidden="true" />
+        <method.icon className={`h-4 w-4 ${iconColors[accentColor]} me-3 flex-shrink-0`} aria-hidden="true" />
         <span className="truncate">{method.name}</span>
-        <ChevronRightIcon className="ml-auto h-4 w-4 text-gray-400 group-hover:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-400" aria-hidden="true" />
+        <ChevronRight className="ms-auto h-4 w-4 text-gray-400 group-hover:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-400" aria-hidden="true" />
       </button>
     );
   };
@@ -134,7 +128,7 @@ const KnowledgeBaseImportOptionsPage: React.FC = () => {
     return (
       <div className="mb-6 bg-white dark:bg-gray-800 rounded-md shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
         <div className="px-4 pt-4 pb-2 flex items-center">
-          <Icon className={`h-4 w-4 ${iconColors[accentColor]} mr-2`} />
+          <Icon className={`h-4 w-4 ${iconColors[accentColor]} me-2`} />
           <h2 className="text-sm font-medium text-gray-900 dark:text-white">{title}</h2>
         </div>
         {description && (
@@ -155,36 +149,36 @@ const KnowledgeBaseImportOptionsPage: React.FC = () => {
     <div className="py-5 px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto">
       <div className="mb-5">
         <h1 className="text-lg font-medium text-gray-900 dark:text-white">
-          Import Content to Knowledge Base
+          {t('knowledgeBase.import.pageTitle')}
         </h1>
         <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-          Choose an import method below
+          {t('knowledgeBase.import.pageSubtitle')}
         </p>
       </div>
 
       {/* Web Crawler Section */}
       <ImportSection 
-        title="Web Crawler" 
+        title={t('knowledgeBase.import.webCrawler')} 
         icon={CodeBracketIcon}
-        description="Crawl websites to import their content into your knowledge base"
+        description={t('crawl.subtitle')}
         methods={crawlMethods}
         accentColor="blue"
       />
 
       {/* Sitemap Section */}
       <ImportSection 
-        title="Sitemap" 
+        title={t('knowledgeBase.import.sitemap')} 
         icon={MapIcon}
-        description="Use sitemaps to efficiently import website content"
+        description={t('sitemap.subtitle')}
         methods={sitemapMethods}
         accentColor="green"
       />
 
       {/* Manual & Document Upload Section */}
       <ImportSection 
-        title="Manual & Document Upload" 
+        title={t('knowledgeBase.import.manualUpload')} 
         icon={DocumentTextIcon}
-        description="Manually add content or upload document files"
+        description={t('knowledgeBase.import.uploadDesc')}
         methods={manualMethods}
         accentColor="purple"
       />

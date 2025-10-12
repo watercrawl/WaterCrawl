@@ -1,6 +1,7 @@
 import json
 from functools import cached_property
 from typing import Generator
+from django.utils.translation import gettext as _
 
 import html2text
 from django.conf import settings
@@ -121,11 +122,11 @@ class EmailService:
 
     def validate(self):
         if not self.tos:
-            raise ValueError("No recipient provided")
+            raise ValueError(_("No recipient provided"))
         if not self.subject:
-            raise ValueError("No subject provided")
+            raise ValueError(_("No subject provided"))
         if not self.body and not self.html:
-            raise ValueError("No body or html provided")
+            raise ValueError(_("No body or html provided"))
 
     def add_to(self, to):
         self.tos.append(to)

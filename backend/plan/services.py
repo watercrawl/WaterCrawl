@@ -814,7 +814,11 @@ class UsageHistoryService:
                 request.knowledge_base
             )
 
-        raise NotImplementedError
+        raise NotImplementedError(
+            _("get_actual_credits: Unhandled type {type(request)}").format(
+                type(request)
+            )
+        )
 
     def get_actual_credits(self, request) -> int:
         if isinstance(request, CrawlRequest):
@@ -831,7 +835,11 @@ class UsageHistoryService:
             return calculate_number_of_knowledge_base_documents_credits(
                 request.knowledge_base
             )
-        raise NotImplementedError(f"get_actual_credits: Unhandled type {type(request)}")
+        raise NotImplementedError(
+            _("get_actual_credits: Unhandled type {type(request)}").format(
+                type(request)
+            )
+        )
 
     def create(self, request, revertable: bool = True) -> UsageHistory:
         content_type = ContentType.objects.get_for_model(request.__class__)

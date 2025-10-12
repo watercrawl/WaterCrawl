@@ -11,6 +11,7 @@ import { authApi } from '../../services/api/auth';
 import { AxiosError } from 'axios';
 import type { ApiError } from '../../types/common';
 import type { InstallRequest } from '../../types/auth';
+import { useTranslation } from 'react-i18next';
 
 const passwordStrengthRegex = {
   hasNumber: /\d/,
@@ -20,36 +21,46 @@ const passwordStrengthRegex = {
   minLength: 8,
 };
 
-const schema = yup.object({
-  email: yup
-    .string()
-    .email('Please enter a valid email')
-    .required('Email is required'),
-  password: yup
-    .string()
-    .min(passwordStrengthRegex.minLength, `Password must be at least ${passwordStrengthRegex.minLength} characters`)
-    .matches(passwordStrengthRegex.hasNumber, 'Password must contain at least one number')
-    .matches(passwordStrengthRegex.hasUpperCase, 'Password must contain at least one uppercase letter')
-    .matches(passwordStrengthRegex.hasLowerCase, 'Password must contain at least one lowercase letter')
-    .matches(passwordStrengthRegex.hasSpecialChar, 'Password must contain at least one special character')
-    .required('Password is required'),
-  passwordConfirm: yup
-    .string()
-    .required('Please confirm your password')
-    .oneOf([yup.ref('password')], 'Passwords must match'),
-  acceptLicense: yup
-    .boolean()
-    .oneOf([true], 'You must accept the license agreement')
-    .required('You must accept the license agreement'),
-  joinNewsletter: yup
-    .boolean()
-    .default(false)
-    .required(),
-  allowAnalytics: yup
-    .boolean()
-    .default(false)
-    .required(),
-}).required();
+
+export const InstallForm: React.FC = () => {
+  const { t } = useTranslation();
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [installSuccess, setInstallSuccess] = useState(false);
+  const {reloadSettings} = useSettings();
+
+  const schema = yup.object({
+    email: yup
+      .string()
+      .email(t('install.validation.validEmail'))
+      .required(t('install.validation.emailRequired')),
+    password: yup
+      .string()
+      .min(passwordStrengthRegex.minLength, t('install.validation.passwordMinLength', { min: passwordStrengthRegex.minLength }))
+      .matches(passwordStrengthRegex.hasNumber, t('install.validation.passwordNumber'))
+      .matches(passwordStrengthRegex.hasUpperCase, t('install.validation.passwordUppercase'))
+      .matches(passwordStrengthRegex.hasLowerCase, t('install.validation.passwordLowercase'))
+      .matches(passwordStrengthRegex.hasSpecialChar, t('install.validation.passwordSpecial'))
+      .required(t('install.validation.passwordRequired')),
+    passwordConfirm: yup
+      .string()
+      .required(t('install.validation.confirmPassword'))
+      .oneOf([yup.ref('password')], t('install.validation.passwordsMatch')),
+    acceptLicense: yup
+      .boolean()
+      .oneOf([true], t('install.validation.acceptLicense'))
+      .required(t('install.validation.acceptLicense')),
+    joinNewsletter: yup
+      .boolean()
+      .default(false)
+      .required(),
+    allowAnalytics: yup
+      .boolean()
+      .default(false)
+      .required(),
+  }).required();
 
 type InstallFormData = {
   email: string;
@@ -60,43 +71,35 @@ type InstallFormData = {
   allowAnalytics: boolean;
 };
 
-const getPasswordStrength = (password: string): { score: number; message: string } => {
-  let score = 0;
-  const checks = [
-    { regex: passwordStrengthRegex.hasNumber, message: 'number' },
-    { regex: passwordStrengthRegex.hasUpperCase, message: 'uppercase letter' },
-    { regex: passwordStrengthRegex.hasLowerCase, message: 'lowercase letter' },
-    { regex: passwordStrengthRegex.hasSpecialChar, message: 'special character' },
-  ];
+  const getPasswordStrength = (password: string): { score: number; message: string } => {
+    let score = 0;
+    const checks = [
+      { regex: passwordStrengthRegex.hasNumber, message: 'number' },
+      { regex: passwordStrengthRegex.hasUpperCase, message: 'uppercase letter' },
+      { regex: passwordStrengthRegex.hasLowerCase, message: 'lowercase letter' },
+      { regex: passwordStrengthRegex.hasSpecialChar, message: 'special character' },
+    ];
 
-  checks.forEach(check => {
-    if (check.regex.test(password)) score++;
-  });
+    checks.forEach(check => {
+      if (check.regex.test(password)) score++;
+    });
 
-  if (password.length >= passwordStrengthRegex.minLength) score++;
+    if (password.length >= passwordStrengthRegex.minLength) score++;
 
-  const messages = {
-    0: 'Very weak',
-    1: 'Weak',
-    2: 'Fair',
-    3: 'Good',
-    4: 'Strong',
-    5: 'Very strong',
+    const messages = {
+      0: t('install.password.veryWeak'),
+      1: t('install.password.weak'),
+      2: t('install.password.fair'),
+      3: t('install.password.good'),
+      4: t('install.password.strong'),
+      5: t('install.password.veryStrong'),
+    };
+
+    return {
+      score,
+      message: messages[score as keyof typeof messages],
+    };
   };
-
-  return {
-    score,
-    message: messages[score as keyof typeof messages],
-  };
-};
-
-export const InstallForm: React.FC = () => {
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [installSuccess, setInstallSuccess] = useState(false);
-  const {reloadSettings} = useSettings();
 
   const methods = useForm<InstallFormData>({
     resolver: yupResolver(schema),
@@ -141,7 +144,7 @@ export const InstallForm: React.FC = () => {
       .then(() => {
         // Store auth tokens
         setInstallSuccess(true);
-        toast.success('System installed successfully!');
+        toast.success(t('install.success'));
       })
       .catch((err: AxiosError<ApiError>) => {
         console.error('Installation error:', err);
@@ -155,13 +158,13 @@ export const InstallForm: React.FC = () => {
             } else if (errors.password) {
               setError(errors.password.toString());
             } else {
-              setError(Object.values(errors)[0].toString() || 'An error occurred during installation. Please try again.');
+              setError(Object.values(errors)[0].toString() || t('install.error'));
             }
           } else {
-            setError(err.response.data?.message || 'An error occurred during installation. Please try again.');
+            setError(err.response.data?.message || t('install.error'));
           }
         } else {
-          setError('An error occurred during installation. Please try again.');
+          setError(t('install.error'));
         }
       })
       .finally(() => {
@@ -184,17 +187,17 @@ export const InstallForm: React.FC = () => {
               </div>
             </div>
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-              Installation Complete
+              {t('install.complete.title')}
             </h2>
             <p className="text-gray-600 dark:text-gray-300 mb-6">
-              WaterCrawl has been successfully installed. You can now start using the system.
+              {t('install.complete.message')}
             </p>
             <button
               type="button"
               onClick={goToHome}
               className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-800 transition-colors duration-200"
             >
-              Login and Start Using WaterCrawl
+              {t('install.complete.button')}
             </button>
           </div>
         </div>
@@ -208,10 +211,10 @@ export const InstallForm: React.FC = () => {
         <div className="bg-white dark:bg-gray-800 py-8 px-6 shadow sm:rounded-lg">
           <div className="text-center mb-8">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-              Install WaterCrawl
+              {t('install.title')}
             </h2>
             <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-              Set up your administrator account and configure your installation preferences
+              {t('install.subtitle')}
             </p>
           </div>
 
@@ -221,12 +224,12 @@ export const InstallForm: React.FC = () => {
             {/* Admin Account Section */}
             <div className="space-y-6">
               <div className="flex items-center">
-                <UserIcon className="h-5 w-5 text-primary-500 mr-2" />
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white">Administrator Account</h3>
+                <UserIcon className="h-5 w-5 text-primary-500 me-2" />
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white">{t('install.adminAccount')}</h3>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-4 space-y-4">
                 <FormInput
-                  label="Admin Email Address"
+                  label={t('install.form.email')}
                   name="email"
                   type="email"
                   error={errors.email?.message}
@@ -235,7 +238,7 @@ export const InstallForm: React.FC = () => {
 
                 <div className="space-y-1">
                   <FormInput
-                    label="Password"
+                    label={t('install.form.password')}
                     name="password"
                     type={showPassword ? 'text' : 'password'}
                     error={errors.password?.message}
@@ -244,7 +247,7 @@ export const InstallForm: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="pr-3 focus:outline-none"
+                        className="pe-3 focus:outline-none"
                       >
                         {showPassword ? (
                           <EyeSlashIcon className="h-5 w-5 text-gray-400 hover:text-gray-500 dark:hover:text-gray-300" />
@@ -260,7 +263,7 @@ export const InstallForm: React.FC = () => {
                     <div className="mt-2">
                       <div className="flex items-center justify-between mb-1">
                         <div className="text-xs font-medium text-gray-500 dark:text-gray-400">
-                          Password strength: {passwordStrength?.message}
+                          {t('install.password.strength')}: {passwordStrength?.message}
                         </div>
                         <div className="text-xs font-medium text-gray-500 dark:text-gray-400">
                           {passwordStrength?.score}/5
@@ -276,19 +279,19 @@ export const InstallForm: React.FC = () => {
                       {/* Password requirements */}
                       <div className="mt-2 text-xs text-gray-500 dark:text-gray-400 space-y-1">
                         <p className={password.length >= passwordStrengthRegex.minLength ? "text-green-500 dark:text-green-400" : ""}>
-                          • At least {passwordStrengthRegex.minLength} characters
+                          • {t('install.password.minChars', { min: passwordStrengthRegex.minLength })}
                         </p>
                         <p className={passwordStrengthRegex.hasUpperCase.test(password) ? "text-green-500 dark:text-green-400" : ""}>
-                          • At least one uppercase letter
+                          • {t('install.password.uppercase')}
                         </p>
                         <p className={passwordStrengthRegex.hasLowerCase.test(password) ? "text-green-500 dark:text-green-400" : ""}>
-                          • At least one lowercase letter
+                          • {t('install.password.lowercase')}
                         </p>
                         <p className={passwordStrengthRegex.hasNumber.test(password) ? "text-green-500 dark:text-green-400" : ""}>
-                          • At least one number
+                          • {t('install.password.number')}
                         </p>
                         <p className={passwordStrengthRegex.hasSpecialChar.test(password) ? "text-green-500 dark:text-green-400" : ""}>
-                          • At least one special character
+                          • {t('install.password.specialChar')}
                         </p>
                       </div>
                     </div>
@@ -297,7 +300,7 @@ export const InstallForm: React.FC = () => {
 
                 <div className="space-y-1">
                   <FormInput
-                    label="Confirm Password"
+                    label={t('install.form.confirmPassword')}
                     name="passwordConfirm"
                     type={showConfirmPassword ? 'text' : 'password'}
                     error={errors.passwordConfirm?.message}
@@ -306,7 +309,7 @@ export const InstallForm: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                        className="pr-3 focus:outline-none"
+                        className="pe-3 focus:outline-none"
                       >
                         {showConfirmPassword ? (
                           <EyeSlashIcon className="h-5 w-5 text-gray-400 hover:text-gray-500 dark:hover:text-gray-300" />
@@ -323,8 +326,8 @@ export const InstallForm: React.FC = () => {
             {/* Preferences Section */}
             <div className="space-y-6">
               <div className="flex items-center">
-                <ShieldCheckIcon className="h-5 w-5 text-primary-500 mr-2" />
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white">Legal & Preferences</h3>
+                <ShieldCheckIcon className="h-5 w-5 text-primary-500 me-2" />
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white">{t('install.preferences')}</h3>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-4 space-y-5">
                 {/* License Agreement Checkbox - Required */}
@@ -337,12 +340,12 @@ export const InstallForm: React.FC = () => {
                       className="focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300 rounded dark:focus:ring-primary-600 dark:focus:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
                     />
                   </div>
-                  <div className="ml-3 text-sm">
+                  <div className="ms-3 text-sm">
                     <label htmlFor="acceptLicense" className="font-medium text-gray-700 dark:text-gray-300">
-                      I accept and agree to follow the license policies of WaterCrawl
+                      {t('install.license.accept')}
                     </label>
                     <p className="text-gray-500 dark:text-gray-400 mt-1">
-                      You can read the latest version <a href="https://github.com/watercrawl/WaterCrawl/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:text-primary-500 dark:text-primary-400 underline">here</a>.
+                      {t('install.license.readVersion')} <a href="https://github.com/watercrawl/WaterCrawl/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:text-primary-500 dark:text-primary-400 underline">{t('install.license.here')}</a>.
                     </p>
                     {errors.acceptLicense && (
                       <p className="mt-1 text-sm text-red-600 dark:text-red-500">{errors.acceptLicense.message}</p>
@@ -360,15 +363,15 @@ export const InstallForm: React.FC = () => {
                       className="focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300 rounded dark:focus:ring-primary-600 dark:focus:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
                     />
                   </div>
-                  <div className="ml-3 text-sm">
+                  <div className="ms-3 text-sm">
                     <div className="flex items-center">
-                      <EnvelopeIcon className="h-4 w-4 text-gray-500 dark:text-gray-400 mr-1" />
+                      <EnvelopeIcon className="h-4 w-4 text-gray-500 dark:text-gray-400 me-1" />
                       <label htmlFor="joinNewsletter" className="font-medium text-gray-700 dark:text-gray-300">
-                        Join our newsletter
+                        {t('install.newsletter.title')}
                       </label>
                     </div>
                     <p className="text-gray-500 dark:text-gray-400 mt-1">
-                      We'll send you WaterCrawl updates, new features, and important announcements.
+                      {t('install.newsletter.description')}
                     </p>
                   </div>
                 </div>
@@ -383,27 +386,27 @@ export const InstallForm: React.FC = () => {
                       className="focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300 rounded dark:focus:ring-primary-600 dark:focus:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
                     />
                   </div>
-                  <div className="ml-3 text-sm">
+                  <div className="ms-3 text-sm">
                     <div className="flex items-center">
-                      <ChartBarIcon className="h-4 w-4 text-gray-500 dark:text-gray-400 mr-1" />
+                      <ChartBarIcon className="h-4 w-4 text-gray-500 dark:text-gray-400 me-1" />
                       <label htmlFor="allowAnalytics" className="font-medium text-gray-700 dark:text-gray-300">
-                        Send anonymous analytics
+                        {t('install.analytics.title')}
                       </label>
                     </div>
                     <p className="text-gray-500 dark:text-gray-400 mt-1">
-                      Help us improve WaterCrawl by sending anonymous installation and usage data.
+                      {t('install.analytics.description')}
                     </p>
                     <div className="mt-2 p-3 bg-gray-100 dark:bg-gray-800 rounded text-xs text-gray-600 dark:text-gray-400">
-                      <p className="font-medium mb-1">We collect the following system information:</p>
-                      <ul className="list-disc pl-4 space-y-1">
-                        <li>OS name (Windows, Linux, macOS)</li>
-                        <li>OS version and release</li>
-                        <li>System architecture (x86_64, ARM)</li>
-                        <li>Kernel version</li>
-                        <li>CPU model</li>
-                        <li>A unique installation ID</li>
+                      <p className="font-medium mb-1">{t('install.analytics.collected')}:</p>
+                      <ul className="list-disc ps-4 space-y-1">
+                        <li>{t('install.analytics.os')}</li>
+                        <li>{t('install.analytics.osVersion')}</li>
+                        <li>{t('install.analytics.architecture')}</li>
+                        <li>{t('install.analytics.kernel')}</li>
+                        <li>{t('install.analytics.cpu')}</li>
+                        <li>{t('install.analytics.installId')}</li>
                       </ul>
-                      <p className="mt-2">All data is collected anonymously and used only for improving WaterCrawl.</p>
+                      <p className="mt-2">{t('install.analytics.anonymous')}</p>
                     </div>
                   </div>
                 </div>
@@ -418,13 +421,13 @@ export const InstallForm: React.FC = () => {
             >
               {isLoading ? (
                 <span className="flex items-center">
-                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <svg className="animate-spin -ms-1 me-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  Installing...
+                  {t('install.button.installing')}
                 </span>
-              ) : 'Install WaterCrawl'}
+              ) : t('install.button.install')}
             </button>
           </form>
         </div>

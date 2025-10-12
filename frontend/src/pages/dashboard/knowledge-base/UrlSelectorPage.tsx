@@ -1,13 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { 
-  CheckIcon, 
-  DocumentTextIcon,
-  LinkIcon,
-  GlobeAltIcon,
-  ChevronRightIcon,
-  FolderArrowDownIcon
-} from '@heroicons/react/24/outline';
+import { useTranslation } from 'react-i18next';
+import { CheckIcon, DocumentTextIcon, LinkIcon, GlobeAltIcon, FolderArrowDownIcon } from '@heroicons/react/24/outline';
 // Navigation components
 import { SitemapGraph, SitemapNode } from '../../../types/crawl';
 import { knowledgeBaseApi } from '../../../services/api/knowledgeBase';
@@ -17,8 +11,10 @@ import { sitemapApi } from '../../../services/api/sitemap';
 import { useBreadcrumbs } from '../../../contexts/BreadcrumbContext';
 import { KnowledgeBaseDetail } from '../../../types/knowledge';
 import { AxiosError } from 'axios';
+import { ChevronRight } from '../../../components/shared/DirectionalIcon';
 
 const UrlSelectorPage: React.FC = () => {
+  const { t } = useTranslation();
   const { knowledgeBaseId, sitemapRequestId } = useParams<{ knowledgeBaseId: string, sitemapRequestId: string }>();
   const navigate = useNavigate();
   const { setItems } = useBreadcrumbs();
@@ -36,22 +32,22 @@ const UrlSelectorPage: React.FC = () => {
     knowledgeBaseApi.get(knowledgeBaseId as string).then((response) => {
       setKnowledgeBase(response);
     }).catch(() => {
-      toast.error('Failed to load knowledge base');
+      toast.error(t('settings.knowledgeBase.toast.loadError'));
       navigate('/dashboard/knowledge-base');
     });
-  }, [knowledgeBaseId, navigate]);
+  }, [knowledgeBaseId, navigate, t]);
 
   useEffect(() => {
     if (!knowledgeBase) return;
     setItems([
-      { label: 'Dashboard', href: '/dashboard' },
-      { label: 'Knowledge Bases', href: '/dashboard/knowledge-base' },
+      { label: t('dashboard.navigation.dashboard'), href: '/dashboard' },
+      { label: t('knowledgeBase.list'), href: '/dashboard/knowledge-base' },
       { label: knowledgeBase.title, href: `/dashboard/knowledge-base/${knowledgeBaseId}`},
-      { label: 'Import Options', href: `/dashboard/knowledge-base/${knowledgeBaseId}/import`},
-      { label: 'Select Sitemap', href: `/dashboard/knowledge-base/${knowledgeBaseId}/import/select-sitemap`},
-      { label: 'Select URLs', href: `/dashboard/knowledge-base/${knowledgeBaseId}/import/select-urls`, current: true },
+      { label: t('knowledgeBase.import.title'), href: `/dashboard/knowledge-base/${knowledgeBaseId}/import`},
+      { label: t('knowledgeBase.import.selectSitemap'), href: `/dashboard/knowledge-base/${knowledgeBaseId}/import/select-sitemap`},
+      { label: t('knowledgeBase.import.selectUrls'), href: `/dashboard/knowledge-base/${knowledgeBaseId}/import/select-urls`, current: true },
     ]);
-  }, [knowledgeBase, knowledgeBaseId, setItems]);
+  }, [knowledgeBase, knowledgeBaseId, setItems, t]);
   
   // Load crawl request data
   useEffect(() => {
@@ -63,12 +59,12 @@ const UrlSelectorPage: React.FC = () => {
         }
       } catch (error) {
         console.error('Failed to load crawl data:', error);
-        toast.error('Failed to load crawl data');
+        toast.error(t('activityLogs.errors.fetchFailed'));
       }
     };
 
     fetchCrawlData();
-  }, [sitemapRequestId]);
+  }, [sitemapRequestId, t]);
   
   // Load sitemap data
   const loadSitemap = useCallback(async () => {
@@ -97,12 +93,12 @@ const UrlSelectorPage: React.FC = () => {
 
     } catch (error) {
       console.error('Failed to load sitemap:', error);
-      toast.error('Failed to load sitemap data');
+      toast.error(t('sitemap.errors.loadFailed'));
       setSitemapData(null);
     } finally {
       setIsLoadingSitemap(false);
     }
-  }, [sitemapRequestId]);
+  }, [sitemapRequestId, t]);
 
   // Load sitemap when component mounts
   useEffect(() => {
@@ -220,12 +216,12 @@ const UrlSelectorPage: React.FC = () => {
 
   const handleSubmit = async () => {
     if (selectedUrls.size === 0) {
-      toast.error('Please select at least one URL to import');
+      toast.error(t('knowledgeBase.import.pleaseSelectUrl'));
       return;
     }
 
     if (!knowledgeBaseId) {
-      toast.error('Knowledge base ID is missing');
+      toast.error(t('knowledgeBase.import.missingIds'));
       return;
     }
 
@@ -236,7 +232,7 @@ const UrlSelectorPage: React.FC = () => {
       await knowledgeBaseApi.importFromUrls(knowledgeBaseId, { 
         urls: urlsToImport,
       });
-      toast.success(`Successfully started import of ${selectedUrls.size} URLs to knowledge base`);
+      toast.success(t('knowledgeBase.import.importUrlsSuccess', { count: selectedUrls.size }));
       console.log('Importing URLs:', urlsToImport);
       
       // Navigate back to knowledge base detail page
@@ -246,7 +242,7 @@ const UrlSelectorPage: React.FC = () => {
         toast.error(error?.response?.data?.message);
       } else {
         console.error('Failed to import URLs:', error);
-        toast.error('Failed to import URLs to knowledge base');
+        toast.error(t('knowledgeBase.import.importUrlsFailed'));
       }
     } finally {
       setIsSubmitting(false);
@@ -258,16 +254,16 @@ const UrlSelectorPage: React.FC = () => {
     if (!url) return null;
     
     return (
-      <div className="flex items-center py-1" style={{ marginLeft: `${level * 1.5}rem` }}>
+      <div className="flex items-center py-1" style={{ marginInlineStart: `${level * 1.5}rem` }}>
         <input
           type="checkbox"
           id={`url-${url}`}
           checked={selectedUrls.has(url)}
           onChange={() => toggleUrl(url)}
-          className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 mr-2"
+          className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 me-2"
         />
         <div className="flex items-center">
-          <GlobeAltIcon className="h-5 w-5 text-blue-500 mr-1.5" />
+          <GlobeAltIcon className="h-5 w-5 text-blue-500 me-1.5" />
           <span className="text-sm font-medium text-gray-700 dark:text-gray-300 line-clamp-1" title={title || url}>
             {title || url}
           </span>
@@ -275,7 +271,7 @@ const UrlSelectorPage: React.FC = () => {
             href={url}
             target="_blank"
             rel="noopener noreferrer"
-            className="ml-2 text-gray-400 hover:text-blue-500 dark:hover:text-blue-400"
+            className="ms-2 text-gray-400 hover:text-blue-500 dark:hover:text-blue-400"
             title={url}
             onClick={(e) => e.stopPropagation()}
           >
@@ -369,28 +365,28 @@ const UrlSelectorPage: React.FC = () => {
                   id={`url-${selfNode.url}`}
                   checked={selectedUrls.has(selfNode.url)}
                   onChange={() => toggleUrl(selfNode.url)}
-                  className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 mr-1"
+                  className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 me-1"
                   onClick={(e) => e.stopPropagation()}
-                  style={{ marginLeft: `${level * 1.5 + 0.5}rem` }}
+                  style={{ marginInlineStart: `${level * 1.5 + 0.5}rem` }}
                 />
               )}
 
               <div
                 className="flex items-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 py-1.5"
                 onClick={() => hasChildren && togglePath(currentPath)}
-                style={{ marginLeft: selfNode ? '0.25rem' : `${level * 1.5 + 0.5}rem` }}
+                style={{ marginInlineStart: selfNode ? '0.25rem' : `${level * 1.5 + 0.5}rem` }}
               >
                 {hasChildren ? (
-                  <ChevronRightIcon 
-                    className={`h-4 w-4 text-gray-400 dark:text-gray-500 mr-1 transition-transform ${isExpanded ? 'transform rotate-90' : ''}`}
+                  <ChevronRight 
+                    className={`h-4 w-4 text-gray-400 dark:text-gray-500 me-1 transition-transform ${isExpanded ? 'transform rotate-90' : ''}`}
                   />
                 ) : (
                   <span className="w-5"></span> 
                 )}
                 {hasChildren ? (
-                  <FolderArrowDownIcon className="h-5 w-5 text-gray-400 dark:text-gray-500 mr-1.5" />
+                  <FolderArrowDownIcon className="h-5 w-5 text-gray-400 dark:text-gray-500 me-1.5" />
                 ) : (
-                  <DocumentTextIcon className="h-5 w-5 text-gray-400 dark:text-gray-500 mr-1.5" />
+                  <DocumentTextIcon className="h-5 w-5 text-gray-400 dark:text-gray-500 me-1.5" />
                 )}
                 <span className="font-medium text-gray-700 dark:text-gray-300">{key}</span>
                 
@@ -400,7 +396,7 @@ const UrlSelectorPage: React.FC = () => {
                     href={selfNode.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="ml-2 text-gray-400 hover:text-blue-500 dark:hover:text-blue-400"
+                    className="ms-2 text-gray-400 hover:text-blue-500 dark:hover:text-blue-400"
                     title={`${selfNode.title || key} - ${selfNode.url}`}
                     onClick={(e) => e.stopPropagation()}
                   >
@@ -409,7 +405,7 @@ const UrlSelectorPage: React.FC = () => {
                 )}
 
                 {hasChildren && (
-                  <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">
+                  <span className="text-xs text-gray-500 dark:text-gray-400 ms-2">
                     ({Object.keys(value).filter(k => k !== '__self__' && k !== '__query__').length})
                   </span>
                 )}
@@ -418,7 +414,7 @@ const UrlSelectorPage: React.FC = () => {
 
             {/* Select/Deselect buttons for subtree */}
             {hasChildren && (
-              <div className="flex space-x-2 mr-4">
+              <div className="flex gap-x-2 me-4">
                 <button
                   type="button"
                   onClick={(e) => {
@@ -427,7 +423,7 @@ const UrlSelectorPage: React.FC = () => {
                   }}
                   className="text-xs text-primary-600 hover:text-primary-900 dark:text-primary-400 dark:hover:text-primary-300"
                 >
-                  Select Tree
+                  {t('knowledgeBase.import.selectTree')}
                 </button>
                 <button
                   type="button"
@@ -437,7 +433,7 @@ const UrlSelectorPage: React.FC = () => {
                   }}
                   className="text-xs text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
                 >
-                  Deselect Tree
+                  {t('knowledgeBase.import.deselectTree')}
                 </button>
               </div>
             )}
@@ -447,14 +443,14 @@ const UrlSelectorPage: React.FC = () => {
             <>
               {/* Render query parameters with checkboxes if this node is expanded */}
               {hasQueries && Array.isArray(value.__query__) && value.__query__.map((queryNode: SitemapNode, index: number) => (
-                <div key={`${currentPath}-query-${index}`} className="ml-8">
+                <div key={`${currentPath}-query-${index}`} className="ms-8">
                   {renderUrlNode(queryNode.url as string, queryNode.title as string | undefined, level + 1)}
                 </div>
               ))}
                 
               {/* Render children recursively */}
               {shouldRenderChildren && (
-                <div className="ml-4">
+                <div className="ms-4">
                   {renderSitemapTree(value as SitemapGraph | SitemapNode, currentPath, level + 1)}
                 </div>
               )}
@@ -468,7 +464,7 @@ const UrlSelectorPage: React.FC = () => {
     if ('__query__' in data && Array.isArray(data.__query__) && data.__query__?.length > 0) {
       data.__query__.forEach((queryNode, index) => {
         components.push(
-          <div key={`${path}-root-query-${index}`} className="ml-8">
+          <div key={`${path}-root-query-${index}`} className="ms-8">
             {renderUrlNode(queryNode.url as string, queryNode.title as string | undefined, level + 1)}
           </div>
         );
@@ -500,10 +496,10 @@ const UrlSelectorPage: React.FC = () => {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
-              Select URLs to Import
+              {t('knowledgeBase.import.selectUrlsTitle')}
             </h1>
             <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">
-              Choose which URLs from {sitemapRequest?.url} you want to add to your knowledge base.
+              {t('knowledgeBase.import.selectUrlsDescription', { url: sitemapRequest?.url })}
             </p>
           </div>
           <div>
@@ -515,18 +511,18 @@ const UrlSelectorPage: React.FC = () => {
             >
               {isSubmitting ? (
                 <>
-                  <svg className="animate-spin h-4 w-4 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <svg className="animate-spin h-4 w-4 me-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  Importing...
+                  {t('common.importing')}
                 </>
               ) : (
                 <>
-                  <CheckIcon className="h-4 w-4 mr-2" />
+                  <CheckIcon className="h-4 w-4 me-2" />
                   {selectedUrls.size === 0
-                    ? "Select URLs to continue"
-                    : `Import ${selectedUrls.size} URLs`}
+                    ? t('knowledgeBase.import.selectUrlsToContinue')
+                    : t('knowledgeBase.import.importUrls', { count: selectedUrls.size })}
                 </>
               )}
             </button>
@@ -538,22 +534,22 @@ const UrlSelectorPage: React.FC = () => {
       <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg overflow-hidden">
         <div className="border-b border-gray-200 dark:border-gray-700 p-4 flex items-center justify-between bg-gray-50 dark:bg-gray-900">
           <h2 className="text-lg font-medium text-gray-900 dark:text-white">
-            Website Structure
+            {t('knowledgeBase.import.websiteStructure')}
           </h2>
-          <div className="flex space-x-2">
+          <div className="flex gap-x-2">
             <button
               type="button"
               onClick={handleSelectAll}
               className="text-xs font-medium text-primary-600 hover:text-primary-900 dark:text-primary-400 dark:hover:text-primary-300"
             >
-              Select All
+              {t('common.selectAll')}
             </button>
             <button
               type="button"
               onClick={handleDeselectAll}
-              className="text-xs font-medium text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 ml-2"
+              className="text-xs font-medium text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 ms-2"
             >
-              Deselect All
+              {t('common.deselectAll')}
             </button>
           </div>
         </div>
@@ -563,12 +559,12 @@ const UrlSelectorPage: React.FC = () => {
           <div className="mb-4 text-sm text-gray-500 dark:text-gray-400">
             <span className="font-medium text-gray-700 dark:text-gray-300">
               {selectedUrls.size}
-            </span> URLs selected
+            </span> {t('knowledgeBase.import.urlsSelected')}
           </div>
           
           {!sitemapData ? (
             <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-              No sitemap data available.
+              {t('sitemap.noData')}
             </div>
           ) : (
             <div className="text-sm border border-gray-200 dark:border-gray-700 rounded-lg max-h-[600px] overflow-y-auto dark:text-gray-300">

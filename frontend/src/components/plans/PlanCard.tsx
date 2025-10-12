@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { SparklesIcon, CheckIcon, UserGroupIcon, InformationCircleIcon, XMarkIcon, BoltIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import { SparklesIcon, CheckIcon, UserGroupIcon, InformationCircleIcon, XMarkIcon, BoltIcon } from '@heroicons/react/24/outline';
 import { Plan } from '../../types/subscription';
 import { subscriptionApi } from '../../services/api/subscription';
 import { toast } from 'react-hot-toast';
 import { useTeam } from '../../contexts/TeamContext';
 import Button from '../shared/Button';
+import { ChevronRight } from '../../components/shared/DirectionalIcon';
+import { useTranslation } from 'react-i18next';
 
 interface PlanCardProps {
   plan: Plan;
@@ -16,6 +18,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
   plan,
   isPopular,
 }) => {
+  const { t } = useTranslation();
   const { currentTeam, currentSubscription, refreshCurrentSubscription } = useTeam();
   const monthlyPrice = plan.group === 'yearly' ? Number(plan.price) / 12 : Number(plan.price);
   const [loading, setLoading] = useState(false);
@@ -40,13 +43,13 @@ export const PlanCard: React.FC<PlanCardProps> = ({
           refreshCurrentSubscription().then(() => {
             setLoading(false);
           })
-          toast.success('Plan created successfully');
+          toast.success(t('plans.planCreatedSuccess'));
         }
       }).catch((error) => {
         if (error.response?.status === 403) {
-          toast.error(error.response?.data?.message || 'You do not have permission to create a subscription');
+          toast.error(error.response?.data?.message || t('plans.noPermission'));
         } else {
-          toast.error('Failed to create subscription');
+          toast.error(t('plans.createFailed'));
         }
         console.error('Error creating subscription:', error);
         setLoading(false);
@@ -65,21 +68,21 @@ export const PlanCard: React.FC<PlanCardProps> = ({
               <UserGroupIcon className="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500" />
             </div>
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
-              Team Restriction
+              {t('plans.teamRestriction')}
             </h3>
             <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
-              The Free plan is only available for default teams. Please switch to your default team to activate this plan.
+              {t('plans.freePlanRestriction')}
             </p>
             <div className="text-xs text-gray-500 dark:text-gray-400">
-              You can change your team in the navigation menu.
+              {t('plans.changeTeamHint')}
             </div>
           </div>
         </div>
       )}
       {isPopular && (
         <span className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-x-1.5 rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-600 dark:text-blue-100">
-          <SparklesIcon className="h-3 w-3" />
-          {plan.label || 'Most popular'}
+          <SparklesIcon className="h-3 w-3 shrink-0" />
+          {plan.label || t('plans.mostPopular')}
         </span>
       )}
       <div className="mb-6">
@@ -100,17 +103,17 @@ export const PlanCard: React.FC<PlanCardProps> = ({
               €{monthlyPrice.toFixed(2)}
             </span>
             <span className="text-sm font-semibold leading-6 text-gray-600 dark:text-gray-400">
-              /Monthly
+              {t('plans.monthly')}
             </span>
           </div>
           {plan.group === 'yearly' && (
             <div className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-              €{Number(plan.price).toFixed(2)} billed yearly
+              €{Number(plan.price).toFixed(2)} {t('plans.billedYearly')}
             </div>
           )}
           {plan.name === 'Free' && (
             <div className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-              No credit card required
+              {t('plans.noCreditCard')}
             </div>
           )}
         </div>
@@ -131,7 +134,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
             to="/dashboard/settings#billing"
             className="mt-6 w-full block rounded-md bg-gray-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
           >
-            Manage subscription
+            {t('plans.manageSubscription')}
           </Link>
         </div>
       ) : (
@@ -142,9 +145,9 @@ export const PlanCard: React.FC<PlanCardProps> = ({
           onClick={handleActivate}
           className="mt-6"
         >
-          {plan.is_default ? 'Activate Free plan' : 'Activate plan'}
+          {plan.is_default ? t('plans.activateFreePlan') : t('plans.activatePlan')}
         </Button>
-        {plan.is_default && <label className="text-sm font-medium text-green-500 dark:text-green-400">No credit card required</label>}
+        {plan.is_default && <label className="text-sm font-medium text-green-500 dark:text-green-400">{t('plans.noCreditCard')}</label>}
       </div>
       )}
     </div>
@@ -169,7 +172,7 @@ const PlanFeature: React.FC<PlanFeatureProps> = ({ label, helpText, icon }) => (
       <CheckIcon className="h-5 w-5 flex-none text-blue-600 dark:text-blue-400" />
     )}
     {!icon && (
-      <ChevronRightIcon className="h-5 w-5 flex-none text-gray-400 hover:text-gray-500 dark:hover:text-gray-300" />
+      <ChevronRight className="h-5 w-5 flex-none text-gray-400 hover:text-gray-500 dark:hover:text-gray-300" />
     )}
 
     <span className="text-sm leading-6 text-gray-600 dark:text-gray-300">
@@ -178,8 +181,8 @@ const PlanFeature: React.FC<PlanFeatureProps> = ({ label, helpText, icon }) => (
     {helpText && (
       <div className="group relative">
         <InformationCircleIcon className="h-5 w-5 text-gray-400 hover:text-gray-500 dark:hover:text-gray-300" />
-        <div className="pointer-events-none absolute -top-2 left-1/2 -translate-x-1/2 -translate-y-full opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-          <div className="bg-gray-900 dark:bg-gray-700 text-white text-xs rounded py-1 px-2 min-w-[200px] max-w-[300px] shadow-lg">
+        <div className="pointer-events-none absolute -top-2 left-1/2 -translate-x-1/2 -translate-y-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-50">
+          <div className="bg-gray-900 dark:bg-gray-700 text-white text-xs rounded py-1 px-2 min-w-[200px] max-w-[300px] shadow-lg whitespace-normal">
             {helpText}
             <div className="absolute left-1/2 -translate-x-1/2 top-full">
               <div className="border-4 border-transparent border-t-gray-900 dark:border-t-gray-700" />

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Modal } from '../shared/Modal';
 import { Button } from '../shared/Button';
 import { knowledgeBaseApi } from '../../services/api/knowledgeBase';
@@ -25,6 +26,7 @@ export const EnhanceContextModal: React.FC<EnhanceContextModalProps> = ({
   modelId,
   temperature,
 }) => {
+  const { t } = useTranslation();
   const [context, setContext] = useState(initialContext);
   const [isLoading, setIsLoading] = useState(false);
   const [isEnhanced, setIsEnhanced] = useState(false);
@@ -38,12 +40,12 @@ export const EnhanceContextModal: React.FC<EnhanceContextModalProps> = ({
 
   const handleEnhance = async () => {
     if (!providerConfigId || !modelId) {
-      toast.error('Please select a summarization provider and model first.');
+      toast.error(t('knowledgeBase.enhance.selectProviderFirst'));
       return;
     }
 
     setIsLoading(true);
-    toast.loading('Enhancing context...');
+    toast.loading(t('knowledgeBase.enhance.enhancing'));
 
     try {
       const data: KnowledgeBaseContextAwareEnhanceData = {
@@ -54,15 +56,15 @@ export const EnhanceContextModal: React.FC<EnhanceContextModalProps> = ({
       };
       const response = await knowledgeBaseApi.enhanceContextAware(data);
       toast.dismiss();
-      toast.success('Context enhanced successfully!');
+      toast.success(t('knowledgeBase.enhance.success'));
       setContext(response.content);
       setIsEnhanced(true);
     } catch (error) {
       toast.dismiss();
       if(error instanceof AxiosError){
-        toast.error(error.response?.data?.message || 'Failed to enhance context. Please try again.');
+        toast.error(error.response?.data?.message || t('knowledgeBase.enhance.error'));
       }else{
-        toast.error('Failed to enhance context. Please try again.');
+        toast.error(t('knowledgeBase.enhance.error'));
       }
     } finally {
       setIsLoading(false);
@@ -78,19 +80,19 @@ export const EnhanceContextModal: React.FC<EnhanceContextModalProps> = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Enhance Summarizer Context"
+      title={t('knowledgeBase.enhance.title')}
       footer={
         <div className="flex justify-end gap-4">
           <Button variant="secondary" onClick={onClose} disabled={isLoading}>
-            Cancel
+            {t('common.cancel')}
           </Button>
           {isEnhanced ? (
             <Button onClick={handleApply} disabled={isLoading}>
-              Use Enhanced Text
+              {t('knowledgeBase.enhance.useEnhanced')}
             </Button>
           ) : (
             <Button onClick={handleEnhance} loading={isLoading} disabled={!context.trim()}>
-              Enhance
+              {t('knowledgeBase.enhance.enhance')}
             </Button>
           )}
         </div>
@@ -98,14 +100,14 @@ export const EnhanceContextModal: React.FC<EnhanceContextModalProps> = ({
     >
       <div className="space-y-4">
         <p className="text-sm text-gray-600 dark:text-gray-400">
-          You can edit your context below, or click 'Enhance' to have our AI improve it for you.
+          {t('knowledgeBase.enhance.description')}
         </p>
         <textarea
           value={context}
           onChange={(e) => setContext(e.target.value)}
           rows={10}
           className="w-full p-2 border rounded-md bg-white dark:bg-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600 focus:ring-primary-500 focus:border-primary-500"
-          placeholder="e.g., This knowledge base contains technical documentation for our product..."
+          placeholder={t('knowledgeBase.enhance.placeholder')}
         />
       </div>
     </Modal>

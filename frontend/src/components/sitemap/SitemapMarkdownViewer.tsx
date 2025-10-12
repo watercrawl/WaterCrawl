@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface SitemapMarkdownViewerProps {
   markdownContent: string;
@@ -9,10 +10,12 @@ const SitemapMarkdownViewer: React.FC<SitemapMarkdownViewerProps> = ({
   markdownContent,
   isLoading
 }) => {
+  const { t } = useTranslation();
+  
   if (isLoading) {
     return (
       <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-        Loading markdown content...
+        {t('sitemap.loadingMarkdown')}
       </div>
     );
   }
@@ -20,7 +23,7 @@ const SitemapMarkdownViewer: React.FC<SitemapMarkdownViewerProps> = ({
   if (!markdownContent) {
     return (
       <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-        No markdown content available.
+        {t('sitemap.noMarkdownContent')}
       </div>
     );
   }

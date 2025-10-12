@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
+import { DirectionProvider } from './contexts/DirectionContext';
 import { TeamProvider } from './contexts/TeamContext';
 import { UserProvider } from './contexts/UserContext';
 import { AuthLayout } from './layouts/AuthLayout';
@@ -16,6 +17,7 @@ import { AuthGuard } from './components/auth/AuthGuard';
 import { CookieConsentProvider } from './cookie-consent/contexts/CookieConsentContext';
 import { BreadcrumbProvider } from './contexts/BreadcrumbContext';
 import { useSettings } from './contexts/SettingsProvider';
+import './i18n/config'; // Initialize i18n
 
 const LoginPage = React.lazy(() => import('./pages/auth/LoginPage'));
 const SignupPage = React.lazy(() => import('./pages/auth/SignupPage'));
@@ -62,10 +64,10 @@ const KnowledgeBaseUrlSelectorPage = React.lazy(() => import('./pages/dashboard/
 const KnowledgeBaseImportProgressPage = React.lazy(() => import('./pages/dashboard/knowledge-base/ImportProgressPage'));
 
 // Admin pages
-const AdminDashboard = React.lazy(() => import('./pages/admin/AdminDashboard'));
-const ManageProxiesPage = React.lazy(() => import('./pages/admin/ManageProxiesPage'));
-const ManageLLMProvidersPage = React.lazy(() => import('./pages/admin/ManageLLMProvidersPage'));
-const ProviderConfigDetailPage = React.lazy(() => import('./pages/admin/ProviderConfigDetailPage'));
+const AdminDashboard = React.lazy(() => import('./pages/manager/ManagerDashboard'));
+const ManageProxiesPage = React.lazy(() => import('./pages/manager/ManageProxiesPage'));
+const ManageLLMProvidersPage = React.lazy(() => import('./pages/manager/ManageLLMProvidersPage'));
+const ProviderConfigDetailPage = React.lazy(() => import('./pages/manager/ProviderConfigDetailPage'));
 
 // App Content Component (inside SettingsProvider)
 const AppContent: React.FC = () => {
@@ -148,7 +150,7 @@ const AppContent: React.FC = () => {
               </UserProvider>
             </AuthGuard>
           }>
-            <Route path="/admin">
+            <Route path="/manager">
               <Route index element={<AdminDashboard />} />
               <Route path="proxies" element={<ManageProxiesPage />} />
               <Route path="llm-providers" element={<ManageLLMProvidersPage />} />
@@ -167,37 +169,39 @@ const AppContent: React.FC = () => {
 const App: React.FC = () => {
   return (
     <ThemeProvider>
-      <Router>
-        <Toaster
-          position="top-right"
-          toastOptions={{
-            duration: 4000,
-            style: {
-              background: 'rgb(51, 65, 85)',
-              color: '#fff',
-              borderRadius: '8px',
-              padding: '12px 16px',
-            },
-            success: {
-              iconTheme: {
-                primary: '#10B981',
-                secondary: '#fff',
+      <DirectionProvider>
+        <Router>
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              duration: 4000,
+              style: {
+                background: 'rgb(51, 65, 85)',
+                color: '#fff',
+                borderRadius: '8px',
+                padding: '12px 16px',
               },
-            },
-            error: {
-              iconTheme: {
-                primary: '#EF4444',
-                secondary: '#fff',
+              success: {
+                iconTheme: {
+                  primary: '#10B981',
+                  secondary: '#fff',
+                },
               },
-            },
-          }}
-        />
-        <SettingsProvider>
-          <CookieConsentProvider>
-            <AppContent />
-          </CookieConsentProvider>
-        </SettingsProvider>
-      </Router>
+              error: {
+                iconTheme: {
+                  primary: '#EF4444',
+                  secondary: '#fff',
+                },
+              },
+            }}
+          />
+          <SettingsProvider>
+            <CookieConsentProvider>
+              <AppContent />
+            </CookieConsentProvider>
+          </SettingsProvider>
+        </Router>
+      </DirectionProvider>
     </ThemeProvider >
   );
 };

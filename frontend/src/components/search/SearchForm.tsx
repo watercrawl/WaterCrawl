@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-hot-toast';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
 import ComboboxComponent from '../shared/ComboboxComponent';
@@ -122,16 +123,17 @@ const COUNTRIES = [
   { code: 'za', name: '🇿🇦 South Africa' },
 ];
 
-// Time range options
+// Time range options - will be translated in component
 const TIME_RANGES = [
-  { value: 'any', label: 'Any time' },
-  { value: 'day', label: 'Past 24 hours' },
-  { value: 'week', label: 'Past week' },
-  { value: 'month', label: 'Past month' },
-  { value: 'year', label: 'Past year' },
+  { value: 'any', key: 'search.timeRange.any' },
+  { value: 'day', key: 'search.timeRange.day' },
+  { value: 'week', key: 'search.timeRange.week' },
+  { value: 'month', key: 'search.timeRange.month' },
+  { value: 'year', key: 'search.timeRange.year' },
 ];
 
 export const SearchForm: React.FC<SearchFormProps> = ({ initialRequest, initialQuery, initialSearchOptions, initialNumResults }) => {
+  const { t } = useTranslation();
   const [query, setQuery] = useState(initialQuery || initialRequest?.query || '');
   const [isLoading, setIsLoading] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
@@ -191,13 +193,13 @@ export const SearchForm: React.FC<SearchFormProps> = ({ initialRequest, initialQ
           a.download = `search_results_${searchResult.uuid}.json`;
           a.click();
           URL.revokeObjectURL(url);
-          toast.success('Results downloaded successfully');
+          toast.success(t('search.downloadSuccess'));
         } else {
-          toast.error('No results available to download');
+          toast.error(t('search.noResults'));
         }
       } catch (error) {
         console.error('Error downloading results:', error);
-        toast.error('Failed to download results.');
+        toast.error(t('search.downloadFailed'));
       }
     }
   };
@@ -205,7 +207,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({ initialRequest, initialQ
   // Define tabs for tab panel
   const tabs = [
     {
-      name: 'Search Options',
+      name: t('search.tabs.options'),
       content: (
         <div className='border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800'>
           <div className="p-4 space-y-6 ">
@@ -213,7 +215,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({ initialRequest, initialQ
               {/* Language */}
               <div>
                 <label htmlFor="language" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Language
+                  {t('search.language')}
                 </label>
                 <ComboboxComponent
                   items={LANGUAGES.map(lang => ({
@@ -222,14 +224,14 @@ export const SearchForm: React.FC<SearchFormProps> = ({ initialRequest, initialQ
                   }))}
                   value={searchOptions.language}
                   onChange={(value) => handleOptionChange('language', value)}
-                  placeholder="Any language"
+                  placeholder={t('search.anyLanguage')}
                 />
               </div>
 
               {/* Country */}
               <div>
                 <label htmlFor="country" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Country
+                  {t('search.country')}
                 </label>
                 <ComboboxComponent
                   items={COUNTRIES.map(country => ({
@@ -238,24 +240,24 @@ export const SearchForm: React.FC<SearchFormProps> = ({ initialRequest, initialQ
                   }))}
                   value={searchOptions.country}
                   onChange={(value) => handleOptionChange('country', value)}
-                  placeholder="Any country"
+                  placeholder={t('search.anyCountry')}
                 />
               </div>
 
               {/* Time Range */}
               <div>
                 <label htmlFor="timeRange" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Time Range
+                  {t('search.timeRange.label')}
                 </label>
                 <select
                   id="timeRange"
                   value={searchOptions.timeRange}
                   onChange={(e) => handleOptionChange('timeRange', e.target.value)}
-                  className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md"
+                  className="mt-1 block w-full ps-3 pe-10 py-2 text-base border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md"
                 >
                   {TIME_RANGES.map((timeRange) => (
                     <option key={timeRange.value} value={timeRange.value}>
-                      {timeRange.label}
+                      {t(timeRange.key)}
                     </option>
                   ))}
                 </select>
@@ -264,7 +266,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({ initialRequest, initialQ
               {/* Number of Results */}
               <div>
                 <label htmlFor="numResults" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Number of Results
+                  {t('search.numResults')}
                 </label>
                 <input
                   type="number"
@@ -280,7 +282,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({ initialRequest, initialQ
               {/* Search Depth */}
               <div className="col-span-1 md:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Search Depth
+                  {t('search.depth.label')}
                 </label>
                 <div className="mt-2 flex flex-wrap gap-2">
                   <button
@@ -292,7 +294,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({ initialRequest, initialQ
                         : 'bg-gray-100 text-gray-700 border-gray-300 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700'} 
                     border hover:bg-opacity-90 transition-all`}
                   >
-                    <div className="w-2 h-2 rounded-full bg-green-400 mr-2"></div>
+                    <div className="w-2 h-2 rounded-full bg-green-400 me-2"></div>
                     <div>
                       <span>Basic</span>
                     </div>
@@ -306,7 +308,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({ initialRequest, initialQ
                         : 'bg-gray-100 text-gray-700 border-gray-300 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700'} 
                     border hover:bg-opacity-90 transition-all`}
                   >
-                    <div className="w-2 h-2 rounded-full bg-yellow-400 mr-2"></div>
+                    <div className="w-2 h-2 rounded-full bg-yellow-400 me-2"></div>
                     <div>
                       <span>Advanced</span>
                     </div>
@@ -320,38 +322,38 @@ export const SearchForm: React.FC<SearchFormProps> = ({ initialRequest, initialQ
                         : 'bg-gray-100 text-gray-700 border-gray-300 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700'} 
                     border hover:bg-opacity-90 transition-all`}
                   >
-                    <div className="w-2 h-2 rounded-full bg-red-400 mr-2"></div>
+                    <div className="w-2 h-2 rounded-full bg-red-400 me-2"></div>
                     <div>
                       <span>Ultimate</span>
                     </div>
                   </button>
                 </div>
                 <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                  Select the depth of search to control the quality and comprehensiveness of results
+                  {t('search.depth.description')}
                 </p>
                 {settings?.is_enterprise_mode_active && (
                   <div className="mt-3 space-y-2 bg-gray-50 dark:bg-gray-900 rounded-md p-3 border border-gray-200 dark:border-gray-700">
-                    <p className="text-xs font-medium text-gray-700 dark:text-gray-300">Credit Usage & Speed:</p>
+                    <p className="text-xs font-medium text-gray-700 dark:text-gray-300">{t('search.creditUsage.title')}</p>
                     <div className="grid grid-cols-1 gap-2">
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-center gap-x-2">
                         <div className="w-2 h-2 rounded-full bg-green-400"></div>
                         <p className="text-sm text-gray-600 dark:text-gray-400">
-                          <span className="font-medium">Basic:</span> 1 credit per 5 results
-                          <span className="ml-1 text-xs text-green-600 dark:text-green-400">(Fast response)</span>
+                          <span className="font-medium">{t('search.depth.basic')}:</span> {t('search.creditUsage.basic')}
+                          <span className="ms-1 text-xs text-green-600 dark:text-green-400">({t('search.speed.fast')})</span>
                         </p>
                       </div>
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-center gap-x-2">
                         <div className="w-2 h-2 rounded-full bg-yellow-400"></div>
                         <p className="text-sm text-gray-600 dark:text-gray-400">
-                          <span className="font-medium">Advanced:</span> 2 credits per 5 results
-                          <span className="ml-1 text-xs text-yellow-600 dark:text-yellow-400">(Moderate speed)</span>
+                          <span className="font-medium">{t('search.depth.advanced')}:</span> {t('search.creditUsage.advanced')}
+                          <span className="ms-1 text-xs text-yellow-600 dark:text-yellow-400">({t('search.speed.moderate')})</span>
                         </p>
                       </div>
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-center gap-x-2">
                         <div className="w-2 h-2 rounded-full bg-red-400"></div>
                         <p className="text-sm text-gray-600 dark:text-gray-400">
-                          <span className="font-medium">Ultimate:</span> 1 credit per result
-                          <span className="ml-1 text-xs text-red-600 dark:text-red-400">(Slower, more thorough)</span>
+                          <span className="font-medium">{t('search.depth.ultimate')}:</span> {t('search.creditUsage.ultimate')}
+                          <span className="ms-1 text-xs text-red-600 dark:text-red-400">({t('search.speed.slow')})</span>
                         </p>
                       </div>
                     </div>
@@ -364,7 +366,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({ initialRequest, initialQ
       ),
     },
     {
-      name: 'API Documentation',
+      name: t('search.tabs.api'),
       content: (
         <div className="w-full">
           <SearchApiDocumentation
@@ -375,12 +377,12 @@ export const SearchForm: React.FC<SearchFormProps> = ({ initialRequest, initialQ
       )
     },
     {
-      name: 'Results',
+      name: t('search.tabs.results'),
       content: (
         <div className="p-4 space-y-4">
           {searchResult ? (
             <>
-              <Feed messages={feedMessages} loading={searchResult.status === SearchStatus.Running} emptyMessage="No search updates" showTimestamp />
+              <Feed messages={feedMessages} loading={searchResult.status === SearchStatus.Running} emptyMessage={t('search.noUpdates')} showTimestamp />
               <SearchResultDisplay
                 results={Array.isArray(searchResult.result) ? searchResult.result : []}
                 loading={searchResult.status === SearchStatus.Running}
@@ -389,7 +391,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({ initialRequest, initialQ
             </>
           ) : (
             <div className="text-center py-12 text-gray-500 dark:text-gray-400">
-              No results yet. Perform a search to see results here.
+              {t('search.noResultsYet')}
             </div>
           )}
         </div>
@@ -446,7 +448,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({ initialRequest, initialQ
     setFeedMessages([]);
     e.preventDefault();
     if (!query.trim()) {
-      toast.error('Please enter a search query');
+      toast.error(t('search.enterQuery'));
       return;
     }
 
@@ -484,7 +486,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({ initialRequest, initialQ
       if (error instanceof AxiosError) {
         toast.error(error.response?.data?.message || 'Failed to start search.');
       } else {
-        toast.error('Failed to start search.');
+        toast.error(t('search.startFailed'));
       }
       console.error('Error starting search:', error);
       setIsLoading(false);
@@ -497,13 +499,13 @@ export const SearchForm: React.FC<SearchFormProps> = ({ initialRequest, initialQ
       setIsLoading(true);
       try {
         await searchApi.delete(searchResult.uuid);
-        toast.success('Search canceled');
+        toast.success(t('search.canceled'));
         // Refresh the search state to show canceled
         const updatedRequest = await searchApi.get(searchResult.uuid);
         setSearchResult(updatedRequest);
       } catch (error) {
         console.error('Error canceling search:', error);
-        toast.error('Failed to cancel search.');
+        toast.error(t('search.cancelFailed'));
       } finally {
         setIsLoading(false);
       }
@@ -514,18 +516,18 @@ export const SearchForm: React.FC<SearchFormProps> = ({ initialRequest, initialQ
     <form onSubmit={handleSearch} className="space-y-6">
       {/* Search Input and Start Button */}
       <div className="space-y-2">
-        <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 items-start">
+        <div className="flex flex-col md:flex-row md:gap-x-4 space-y-4 md:space-y-0 items-start">
           <div className="w-full">
             <FormInput
               label=""
               value={query}
               onChange={setQuery}
               type="text"
-              placeholder="Enter your search query..."
-              className="w-full text-lg"
+              placeholder={t('search.queryPlaceholder')}
+              className="w-full text-lg ltr"
             />
             <p className="mt-1.5 text-sm text-gray-500 dark:text-gray-400 hidden md:block">
-              Enter your query to search the internet for relevant results.
+              {t('search.queryDescription')}
             </p>
           </div>
           <div className="w-full pt-1">
@@ -535,7 +537,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({ initialRequest, initialQ
                 onClick={handleCancel}
                 className="w-full md:w-auto px-6 py-2.5 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 focus:outline-none focus:ring-red-500 focus:ring-offset-2 transition-colors"
               >
-                Cancel Search
+                {t('search.cancelSearch')}
               </button>
             ) : (
               <button
@@ -543,7 +545,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({ initialRequest, initialQ
                 disabled={isLoading}
                 className="w-full md:w-auto px-6 py-2.5 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 focus:outline-none focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
-                {isLoading ? 'Searching...' : 'Start Search'}
+                {isLoading ? t('search.searching') : t('search.startSearch')}
               </button>
             )}
           </div>
@@ -555,7 +557,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({ initialRequest, initialQ
         <TabGroup selectedIndex={selectedTab} onChange={setSelectedTab}>
           <div className="relative">
             <div className="overflow-x-auto scrollbar-hide">
-              <TabList className="flex space-x-1 border-b border-gray-200 dark:border-gray-700 min-w-max">
+              <TabList className="flex gap-x-1 border-b border-gray-200 dark:border-gray-700 min-w-max">
                 {tabs.map((tab) => (
                   <Tab
                     key={tab.name}

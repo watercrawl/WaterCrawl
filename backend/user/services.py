@@ -1,5 +1,6 @@
 from datetime import timedelta
 from urllib.parse import urljoin
+from django.utils.translation import gettext_lazy as _
 
 import requests
 from django.conf import settings
@@ -142,8 +143,8 @@ class TeamService:
 
     def invite(self, email: str):
         if self.team.members.filter(email__iexact=email).exists():
-            raise ValidationError("User is already a member of the team")
-        invitation, _ = self.team.invitations.update_or_create(
+            raise ValidationError(_("User is already a member of the team"))
+        invitation, _created = self.team.invitations.update_or_create(
             email=email, defaults={"activated": False}
         )
         return invitation
@@ -233,7 +234,7 @@ class VerificationService:
             return cls(User.objects.get(email__iexact=email))
         except User.DoesNotExist:
             if raise_error:
-                raise ValidationError("User does not exist")
+                raise ValidationError(_("User does not exist"))
             return None
 
     def send_verification_email(self):

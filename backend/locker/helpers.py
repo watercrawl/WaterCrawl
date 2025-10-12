@@ -1,6 +1,7 @@
 import time
 from redis import Redis
 from django.conf import settings
+from django.utils.translation import gettext as _
 
 connection = Redis(
     host=settings.REDIS_LOCKER_CONFIG["HOST"],
@@ -39,7 +40,12 @@ class RedisLock:
     def __enter__(self):
         if not self.acquire():
             raise TimeoutError(
-                f"Failed to acquire lock '{self.lock_name}' within {self.wait_time} seconds"
+                _(
+                    "Failed to acquire lock '{lock_name}' within {wait_time} seconds"
+                ).format(
+                    lock_name=self.lock_name,
+                    wait_time=self.wait_time,
+                )
             )
         return self
 

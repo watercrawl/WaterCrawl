@@ -1,10 +1,11 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useTheme } from "../../contexts/ThemeContext";
 import { RedocStandalone } from "redoc";
 import { API_URL } from "../../utils/env";
+import { useBreadcrumbs } from "../../contexts/BreadcrumbContext";
 
 const ApiReferencePage: React.FC = () => {
-    // const { setItems } = useBreadcrumbs();
+    const { setItems } = useBreadcrumbs();
     const { theme } = useTheme();
 
     const getBaseUrl = useCallback(() => {
@@ -94,11 +95,11 @@ const ApiReferencePage: React.FC = () => {
         return baseTheme;
     }, [theme]);
 
-    // useEffect(() => {
-    //     setItems([]);
-    // }, [setItems]);
+    useEffect(() => {
+        setItems([]);
+    }, [setItems]);
     return (
-        <div className="relative">
+        <div className="relative ltr">
             <style>
                 {`
                     .redoc-wrap h5{

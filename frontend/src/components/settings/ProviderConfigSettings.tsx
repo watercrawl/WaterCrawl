@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { PlusIcon } from '@heroicons/react/24/outline';
+import { useTranslation } from 'react-i18next';
 import { providerApi } from '../../services/api/provider';
 import { ProviderConfigFormData, Provider, ProviderConfig } from '../../types/provider';
 import toast from 'react-hot-toast';
@@ -10,6 +11,7 @@ import { PaginatedResponse } from '../../types/common';
 import Button from '../shared/Button';
 
 const ProviderConfigSettings: React.FC = () => {
+  const { t } = useTranslation();
   const [response, setResponse] = useState<PaginatedResponse<ProviderConfig>>({
     count: 0,
     next: null,
@@ -33,11 +35,11 @@ const ProviderConfigSettings: React.FC = () => {
       setResponse(response);
     } catch (error) {
       console.error('Error fetching provider configurations:', error);
-      toast.error('Failed to fetch provider configurations');
+      toast.error(t('settings.providerConfig.toast.fetchError'));
     } finally {
       setLoading(false);
     }
-  }, [currentPage]);
+  }, [currentPage, t]);
 
   const fetchProviders = useCallback(async () => {
     try {
@@ -45,9 +47,9 @@ const ProviderConfigSettings: React.FC = () => {
       setAvailableProviders(response);
     } catch (error) {
       console.error('Error fetching providers:', error);
-      toast.error('Failed to fetch providers');
+      toast.error(t('settings.providerConfig.toast.fetchProvidersError'));
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     fetchProviderConfigs();
@@ -58,7 +60,7 @@ const ProviderConfigSettings: React.FC = () => {
   const handleCreateProviderConfig = async (data: ProviderConfigFormData) => {
     try {
       await providerApi.createProviderConfig(data);
-      toast.success('Provider configuration created successfully');
+      toast.success(t('settings.providerConfig.toast.createSuccess'));
       fetchProviderConfigs();
       return Promise.resolve();
     } catch (error: any) {
@@ -73,7 +75,7 @@ const ProviderConfigSettings: React.FC = () => {
 
     try {
       await providerApi.updateProviderConfig(editingProviderConfig.uuid, data);
-      toast.success('Provider configuration updated successfully');
+      toast.success(t('settings.providerConfig.toast.updateSuccess'));
       fetchProviderConfigs();
       return Promise.resolve();
     } catch (error: any) {
@@ -86,26 +88,26 @@ const ProviderConfigSettings: React.FC = () => {
   const handleTestProviderConfig = async (data: ProviderConfigFormData) => {
     try {
       await providerApi.testProviderConfig(data);
-      toast.success('Connection test successful');
+      toast.success(t('settings.providerConfig.toast.testSuccess'));
       return Promise.resolve();
     } catch (error) {
       console.error('Error testing provider config:', error);
-      toast.error('Connection test failed');
+      toast.error(t('settings.providerConfig.toast.testError'));
       return Promise.reject(error);
     }
   };
 
   // Function to delete a provider config
   const handleDeleteProviderConfig = async (uuid: string) => {
-    if (window.confirm('Are you sure you want to delete this provider configuration?')) {
+    if (window.confirm(t('settings.providerConfig.deleteConfirm'))) {
       try {
         setDeletingUuid(uuid);
         await providerApi.deleteProviderConfig(uuid);
-        toast.success('Provider configuration deleted successfully');
+        toast.success(t('settings.providerConfig.toast.deleteSuccess'));
         fetchProviderConfigs();
       } catch (error) {
         console.error('Error deleting provider config:', error);
-        toast.error('Failed to delete provider configuration');
+        toast.error(t('settings.providerConfig.toast.deleteError'));
       } finally {
         setDeletingUuid(null);
       }
@@ -120,7 +122,7 @@ const ProviderConfigSettings: React.FC = () => {
       setIsModalOpen(true);
     } catch (error) {
       console.error('Error loading provider config for edit:', error);
-      toast.error('Failed to load provider configuration details');
+      toast.error(t('settings.providerConfig.toast.loadError'));
     }
   };
 
@@ -134,8 +136,8 @@ const ProviderConfigSettings: React.FC = () => {
     <div className="space-y-6">
       <div className="sm:flex sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-lg font-medium text-gray-900 dark:text-white">Provider Configurations</h2>
-          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">Manage your LLM provider configurations.</p>
+          <h2 className="text-lg font-medium text-gray-900 dark:text-white">{t('settings.providerConfig.title')}</h2>
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{t('settings.providerConfig.subtitle')}</p>
         </div>
         <div className="mt-4 sm:mt-0">
           <Button
@@ -145,7 +147,7 @@ const ProviderConfigSettings: React.FC = () => {
             }}
           >
             <PlusIcon className="h-5 w-5" aria-hidden="true" />
-            Add Provider Configuration
+            {t('settings.providerConfig.addButton')}
           </Button>
         </div>
       </div>

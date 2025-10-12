@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { 
   CheckCircleIcon, 
   ClockIcon, 
@@ -10,6 +11,7 @@ import toast from 'react-hot-toast';
 import Loading from './Loading';
 
 export const SubscriptionsList: React.FC = () => {
+  const { t } = useTranslation();
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -20,7 +22,7 @@ export const SubscriptionsList: React.FC = () => {
         const data = await subscriptionApi.getSubscriptions();
         setSubscriptions(data);
       } catch (error) {
-        toast.error('Failed to fetch subscriptions');
+        toast.error(t('subscriptions.errors.fetchFailed'));
         console.error(error);
       } finally {
         setLoading(false);
@@ -28,7 +30,7 @@ export const SubscriptionsList: React.FC = () => {
     };
 
     fetchSubscriptions();
-  }, []);
+  }, [t]);
 
   const getStatusIcon = (status: string) => {
     switch (status.toLowerCase()) {
@@ -62,7 +64,7 @@ export const SubscriptionsList: React.FC = () => {
   if (subscriptions.length === 0) {
     return (
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <p className="text-gray-500 dark:text-gray-400">No subscriptions found.</p>
+        <p className="text-gray-500 dark:text-gray-400">{t('subscriptions.noSubscriptions')}</p>
       </div>
     );
   }
@@ -71,7 +73,7 @@ export const SubscriptionsList: React.FC = () => {
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md">
       <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-          Subscription History
+          {t('subscriptions.history')}
         </h3>
       </div>
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -80,7 +82,7 @@ export const SubscriptionsList: React.FC = () => {
             key={subscription.uuid} 
             className="px-6 py-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
           >
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center gap-x-4">
               {getStatusIcon(subscription.status)}
               <div>
                 <p className="text-sm font-medium text-gray-900 dark:text-white">
@@ -91,7 +93,7 @@ export const SubscriptionsList: React.FC = () => {
                 </p>
               </div>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center gap-x-4">
               <div className="text-sm text-gray-500 dark:text-gray-400 capitalize">
                 {subscription.status}
               </div>

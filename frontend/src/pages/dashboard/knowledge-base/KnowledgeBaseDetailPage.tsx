@@ -12,10 +12,14 @@ import { StatusBadge } from '../../../components/shared/StatusBadge';
 import { useBreadcrumbs } from '../../../contexts/BreadcrumbContext';
 import { useTeam } from '../../../contexts/TeamContext';
 import UsageLimitBox from '../../../components/shared/UsageLimitBox';
-import { formatDistanceToNow } from 'date-fns';
 import { useSettings } from '../../../contexts/SettingsProvider';
+import { useDateLocale } from '../../../hooks/useDateLocale';
+import { formatDistanceToNowLocalized } from '../../../utils/dateUtils';
+import { useTranslation } from 'react-i18next';
 
 const KnowledgeBaseDetailPage: React.FC = () => {
+  const { t } = useTranslation();
+  const dateLocale = useDateLocale();
   const navigate = useNavigate();
   const { setItems } = useBreadcrumbs();
   const { currentSubscription } = useTeam();
@@ -34,18 +38,18 @@ const KnowledgeBaseDetailPage: React.FC = () => {
 
   const handleDeleteKnowledgeBase = async () => {
     if (!knowledgeBase || deleteConfirmation !== knowledgeBase.title) {
-      toast.error('Please enter the correct knowledge base title to confirm deletion');
+      toast.error(t('settings.knowledgeBase.delete.confirmError'));
       return;
     }
 
     setIsDeleting(true);
     try {
       await knowledgeBaseApi.delete(knowledgeBase.uuid);
-      toast.success('Knowledge base deleted successfully');
+      toast.success(t('settings.knowledgeBase.toast.deleteSuccess'));
       navigate('/dashboard/knowledge-base');
     } catch (error) {
       console.error('Failed to delete knowledge base:', error);
-      toast.error('Failed to delete knowledge base');
+      toast.error(t('settings.knowledgeBase.toast.deleteError'));
     } finally {
       setIsDeleting(false);
       setShowDeleteModal(false);
@@ -56,11 +60,11 @@ const KnowledgeBaseDetailPage: React.FC = () => {
   useEffect(() => {
     if (!knowledgeBase) return;
     setItems([
-      { label: 'Dashboard', href: '/dashboard' },
-      { label: 'Knowledge Bases', href: '/dashboard/knowledge-base' },
+      { label: t('common.dashboard'), href: '/dashboard' },
+      { label: t('settings.knowledgeBase.title'), href: '/dashboard/knowledge-base' },
       { label: knowledgeBase.title, href: `/dashboard/knowledge-base/${knowledgeBaseId}`, current: true },
     ]);
-  }, [knowledgeBase, setItems, knowledgeBaseId]);
+  }, [knowledgeBase, setItems, knowledgeBaseId, t]);
 
   const fetchDocuments = useCallback(async (page: number, controlledRefresh = false) => {
     if (!knowledgeBaseId) return;
@@ -74,11 +78,11 @@ const KnowledgeBaseDetailPage: React.FC = () => {
       setAutoRefresh(isProcessing);
     } catch (error) {
       console.error('Failed to load documents:', error);
-      toast.error('Failed to load documents');
+      toast.error(t('settings.knowledgeBase.documents.loadError'));
     } finally {
       if (!controlledRefresh) setIsLoadingDocuments(false);
     }
-  }, [knowledgeBaseId]);
+  }, [knowledgeBaseId, t]);
 
   const fetchKnowledgeBase = useCallback(async () => {
     if (!knowledgeBaseId) return;
@@ -87,12 +91,12 @@ const KnowledgeBaseDetailPage: React.FC = () => {
       const response = await knowledgeBaseApi.get(knowledgeBaseId);
       setKnowledgeBase(response);
     } catch (_error) {
-      toast.error('Failed to load knowledge base details.');
+      toast.error(t('settings.knowledgeBase.toast.loadError'));
       navigate('/dashboard/knowledge-base');
     } finally {
       setIsLoading(false);
     }
-  }, [knowledgeBaseId, navigate]);
+  }, [knowledgeBaseId, navigate, t]);
 
   useEffect(() => {
     if (!knowledgeBaseId) return;
@@ -115,16 +119,16 @@ const KnowledgeBaseDetailPage: React.FC = () => {
   const handleRetryIndexing = async (documentUuid: string) => {
     if (!knowledgeBaseId) return;
     setIsRetrying(true);
-    toast.loading('Retrying indexing for failed documents...');
+    toast.loading(t('settings.knowledgeBase.documents.retryingIndexing'));
     try {
       await knowledgeBaseApi.retry_indexing(knowledgeBaseId, documentUuid);
       toast.dismiss();
-      toast.success('Successfully started re-indexing for failed documents.');
+      toast.success(t('settings.knowledgeBase.documents.retrySuccess'));
       await fetchDocuments(currentPage);
     } catch (error) {
       toast.dismiss();
       console.error('Failed to retry indexing:', error);
-      toast.error('Failed to retry indexing.');
+      toast.error(t('settings.knowledgeBase.documents.retryError'));
     } finally {
       setIsRetrying(false);
     }
@@ -142,10 +146,10 @@ const KnowledgeBaseDetailPage: React.FC = () => {
           results: prevDocs.results.filter(doc => doc.uuid !== documentId),
         };
       });
-      toast.success('Document removed from knowledge base');
+      toast.success(t('settings.knowledgeBase.documents.deleteSuccess'));
     } catch (error) {
       console.error('Failed to delete document:', error);
-      toast.error('Failed to remove document');
+      toast.error(t('settings.knowledgeBase.documents.deleteError'));
     } finally {
       setIsDeleting(false);
     }
@@ -155,7 +159,7 @@ const KnowledgeBaseDetailPage: React.FC = () => {
     return (
       <div className="text-center py-8">
         <Loading size="md" />
-        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">Loading documents...</p>
+        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">{t('settings.knowledgeBase.documents.loading')}</p>
       </div>
     );
   };
@@ -173,14 +177,14 @@ const KnowledgeBaseDetailPage: React.FC = () => {
       <div className="py-6 px-4 sm:px-6 lg:px-8">
         <div className="text-center py-12">
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            Knowledge base not found or you don't have access to it.
+            {t('settings.knowledgeBase.detail.notFound')}
           </p>
           <div className="mt-4">
             <Link
               to="/dashboard/knowledge-base"
               className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
             >
-              Go back to Knowledge Bases
+              {t('settings.knowledgeBase.detail.goBack')}
             </Link>
           </div>
         </div>
@@ -196,10 +200,10 @@ const KnowledgeBaseDetailPage: React.FC = () => {
             <div className="flex-shrink-0">
               <ExclamationTriangleIcon className="h-5 w-5 text-yellow-400" aria-hidden="true" />
             </div>
-            <div className="ml-3">
-              <h3 className="text-sm font-medium text-yellow-800 dark:text-yellow-300">Archived Knowledge Base</h3>
+            <div className="ms-3">
+              <h3 className="text-sm font-medium text-yellow-800 dark:text-yellow-300">{t('settings.knowledgeBase.detail.archivedTitle')}</h3>
               <div className="mt-2 text-sm text-yellow-700 dark:text-yellow-200">
-                <p>This knowledge base is archived and is in view-only mode. You cannot add new documents or make changes.</p>
+                <p>{t('settings.knowledgeBase.detail.archivedMessage')}</p>
               </div>
             </div>
           </div>
@@ -209,16 +213,16 @@ const KnowledgeBaseDetailPage: React.FC = () => {
         <div className="sm:flex-auto">
           <div className="flex items-center mb-2">
             <h1 className="text-xl font-semibold text-gray-900 dark:text-white">{knowledgeBase?.title}</h1>
-            <Link to={`/dashboard/knowledge-base/${knowledgeBase?.uuid}/edit`} className="ml-4 text-primary-600 hover:text-primary-700">
+            <Link to={`/dashboard/knowledge-base/${knowledgeBase?.uuid}/edit`} className="ms-4 text-primary-600 hover:text-primary-700">
               <PencilSquareIcon className="h-5 w-5" />
             </Link>
           </div>
           <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">{knowledgeBase?.description}</p>
           <div className="mt-2 flex flex-wrap items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
             {settings?.is_enterprise_mode_active && (
-              <span>Cost per Document: {knowledgeBase?.knowledge_base_each_document_cost}</span>
+              <span>{t('settings.knowledgeBase.detail.costPerDocument')}: {knowledgeBase?.knowledge_base_each_document_cost}</span>
             )}
-            <span>Created: {formatDistanceToNow(new Date(knowledgeBase?.created_at))}</span>
+            <span>{t('settings.knowledgeBase.detail.created')}: {formatDistanceToNowLocalized(new Date(knowledgeBase?.created_at), dateLocale)}</span>
 
             {/* Compact Document Usage moved to actions area for better layout */}
           </div>
@@ -226,48 +230,48 @@ const KnowledgeBaseDetailPage: React.FC = () => {
         <div className="mt-4 sm:mt-0 flex flex-col items-stretch sm:items-end gap-2">
           {currentSubscription && knowledgeBase && (
             <UsageLimitBox
-              label="Documents"
+              label={t('settings.knowledgeBase.detail.documents')}
               current={knowledgeBase.document_count}
               limit={currentSubscription.number_of_each_knowledge_base_documents}
             />
           )}
-          <div className="flex space-x-3">
+          <div className="flex gap-x-3">
           <Link
             to={`/dashboard/knowledge-base/${knowledgeBaseId}/edit`}
             className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-700 shadow-sm text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
           >
-            <PencilSquareIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-            Edit
+            <PencilSquareIcon className="-ms-1 me-2 h-5 w-5" aria-hidden="true" />
+            {t('common.edit')}
           </Link>
           <Link
             to={`/dashboard/knowledge-base/${knowledgeBaseId}/query`}
             className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
           >
-            <BeakerIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-            Test
+            <BeakerIcon className="-ms-1 me-2 h-5 w-5" aria-hidden="true" />
+            {t('settings.knowledgeBase.detail.test')}
           </Link>
           {knowledgeBase?.status === 'active' && (
             <Link
               to={`/dashboard/knowledge-base/${knowledgeBaseId}/import`}
               className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
             >
-              <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-              Add Document
+              <PlusIcon className="-ms-1 me-2 h-5 w-5" aria-hidden="true" />
+              {t('settings.knowledgeBase.detail.addDocument')}
             </Link>
           )}
           <button
             onClick={() => setShowDeleteModal(true)}
             className="inline-flex items-center px-4 py-2 border border-red-300 dark:border-red-700 shadow-sm text-sm font-medium rounded-md text-red-700 dark:text-red-400 bg-white dark:bg-gray-800 hover:bg-red-50 dark:hover:bg-red-900/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
           >
-            <TrashIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-            Delete
+            <TrashIcon className="-ms-1 me-2 h-5 w-5" aria-hidden="true" />
+            {t('common.delete')}
           </button>
           </div>
         </div>
       </div>
 
       <div className="mt-8">
-        <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Documents</h2>
+        <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">{t('settings.knowledgeBase.detail.documents')}</h2>
         <div>
           <div className="mt-4">
             {isLoadingDocuments ? (
@@ -279,30 +283,30 @@ const KnowledgeBaseDetailPage: React.FC = () => {
                     <tr>
                       <th
                         scope="col"
-                        className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-200 sm:pl-6"
+                        className="py-3.5 ps-4 pe-3 text-start text-sm font-semibold text-gray-900 dark:text-gray-200 sm:ps-6"
                       >
-                        Title
+                        {t('settings.knowledgeBase.documents.title')}
                       </th>
                       <th
                         scope="col"
-                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-200"
+                        className="px-3 py-3.5 text-start text-sm font-semibold text-gray-900 dark:text-gray-200"
                       >
-                        Source
+                        {t('settings.knowledgeBase.documents.source')}
                       </th>
                       <th
                         scope="col"
-                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-200"
+                        className="px-3 py-3.5 text-start text-sm font-semibold text-gray-900 dark:text-gray-200"
                       >
-                        Status
+                        {t('settings.knowledgeBase.documents.status')}
                       </th>
                       <th
                         scope="col"
-                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-200"
+                        className="px-3 py-3.5 text-start text-sm font-semibold text-gray-900 dark:text-gray-200"
                       >
-                        Updated At
+                        {t('settings.knowledgeBase.documents.updatedAt')}
                       </th>
-                      <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                        <span className="sr-only">Actions</span>
+                      <th scope="col" className="relative py-3.5 ps-3 pe-4 sm:pe-6">
+                        <span className="sr-only">{t('common.actions')}</span>
                       </th>
                     </tr>
                   </thead>
@@ -317,14 +321,14 @@ const KnowledgeBaseDetailPage: React.FC = () => {
                       <tr>
                         <td colSpan={5} className="text-center py-8">
                           <ExclamationTriangleIcon className="mx-auto h-12 w-12 text-gray-400" />
-                          <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-white">No documents found</h3>
-                          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">Get started by importing a new document.</p>
+                          <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-white">{t('settings.knowledgeBase.documents.noDocuments')}</h3>
+                          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{t('settings.knowledgeBase.documents.getStarted')}</p>
                         </td>
                       </tr>
                     ) : (
                       documents && documents.results.map(document => (
                         <tr key={document.uuid}>
-                          <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 dark:text-white sm:pl-6">
+                          <td className="whitespace-nowrap py-4 ps-4 pe-3 text-sm font-medium text-gray-900 dark:text-white sm:ps-6">
                             <Link to={`/dashboard/knowledge-base/${knowledgeBaseId}/documents/${document.uuid}`} className="hover:text-primary-600 dark:hover:text-primary-400">
                               {document.title.slice(0, 50)}
                             </Link>
@@ -346,7 +350,7 @@ const KnowledgeBaseDetailPage: React.FC = () => {
                                 <>
                                   {document.error && (
                                     <span
-                                      className="ml-2 text-red-500 dark:text-red-400 cursor-help"
+                                      className="ms-2 text-red-500 dark:text-red-400 cursor-help"
                                       title={document.error}
                                     >
                                       ⓘ
@@ -354,7 +358,7 @@ const KnowledgeBaseDetailPage: React.FC = () => {
                                   )}
                                   <button
                                     onClick={() => handleRetryIndexing(document.uuid)}
-                                    className="ml-2 text-primary-600 hover:text-primary-900 disabled:opacity-50"
+                                    className="ms-2 text-primary-600 hover:text-primary-900 disabled:opacity-50"
                                     disabled={isRetrying}
                                     title="Retry indexing"
                                   >
@@ -365,10 +369,10 @@ const KnowledgeBaseDetailPage: React.FC = () => {
                             </div>
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
-                            {formatDistanceToNow(new Date(document.updated_at))}
+                            {formatDistanceToNowLocalized(new Date(document.updated_at), dateLocale)}
                           </td>
-                          <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                            <div className="flex items-center justify-end space-x-4">
+                          <td className="relative whitespace-nowrap py-4 ps-3 pe-4 text-end text-sm font-medium sm:pe-6">
+                            <div className="flex items-center justify-end gap-x-4">
                               <Link to={`/dashboard/knowledge-base/${knowledgeBaseId}/documents/${document.uuid}`} className="text-gray-400 hover:text-primary-500" title="View Chunks">
                                 <EyeIcon className="h-5 w-5" />
                               </Link>
@@ -411,27 +415,25 @@ const KnowledgeBaseDetailPage: React.FC = () => {
           setShowDeleteModal(false);
           setDeleteConfirmation('');
         }}
-        title="Delete Knowledge Base"
+        title={t('settings.knowledgeBase.delete.title')}
         size="md"
       >
         <div className="mt-4">
           <div className="flex items-center mb-4">
-            <ExclamationTriangleIcon className="h-6 w-6 text-red-600 dark:text-red-400 mr-3" />
+            <ExclamationTriangleIcon className="h-6 w-6 text-red-600 dark:text-red-400 me-3" />
             <div>
               <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-                Are you sure you want to delete this knowledge base?
+                {t('settings.knowledgeBase.delete.confirmTitle')}
               </h3>
             </div>
           </div>
           
           <div className="mb-4">
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-              This action cannot be undone. This will permanently delete the knowledge base{' '}
-              <strong className="text-gray-900 dark:text-white">{knowledgeBase?.title}</strong> and 
-              remove all associated documents and chunks.
+              {t('settings.knowledgeBase.delete.warningMessage', { title: knowledgeBase?.title })}
             </p>
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-              Please type the knowledge base title <strong>{knowledgeBase?.title}</strong> to confirm:
+              {t('settings.knowledgeBase.delete.confirmPrompt', { title: knowledgeBase?.title })}
             </p>
             <input
               type="text"
@@ -443,7 +445,7 @@ const KnowledgeBaseDetailPage: React.FC = () => {
             />
           </div>
           
-          <div className="flex space-x-3 justify-end">
+          <div className="flex gap-x-3 justify-end">
             <button
               type="button"
               onClick={() => {
@@ -453,7 +455,7 @@ const KnowledgeBaseDetailPage: React.FC = () => {
               className="px-4 py-2 border border-gray-300 dark:border-gray-700 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
               disabled={isDeleting}
             >
-              Cancel
+              {t('common.cancel')}
             </button>
             <button
               type="button"
@@ -464,10 +466,10 @@ const KnowledgeBaseDetailPage: React.FC = () => {
               {isDeleting ? (
                 <>
                   <Loading size="sm" />
-                  <span className="ml-2">Deleting...</span>
+                  <span className="ms-2">{t('settings.knowledgeBase.delete.deleting')}</span>
                 </>
               ) : (
-                'Delete Knowledge Base'
+                t('settings.knowledgeBase.delete.confirm')
               )}
             </button>
           </div>

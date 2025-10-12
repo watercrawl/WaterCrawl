@@ -1,6 +1,7 @@
 from functools import cached_property
 from typing import List
 
+from django.utils.translation import gettext as _
 from llm.interfaces import BaseProvider
 
 
@@ -86,7 +87,7 @@ class WaterCrawlProvider(BaseProvider):
         try:
             from watercrawl_llm import WaterCrawlLLM
         except ImportError:
-            raise ImportError("WaterCrawlLLM is not installed. Please install it")
+            raise ImportError(_("WaterCrawlLLM is not installed. Please install it"))
         return WaterCrawlLLM(
             api_key=self.config["api_key"],
             base_url=self.config["base_url"],

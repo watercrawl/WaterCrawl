@@ -1,3 +1,4 @@
+from django.utils.translation import gettext_lazy as _
 from drf_spectacular.openapi import AutoSchema
 from drf_spectacular.utils import Direction
 from rest_framework.fields import JSONField
@@ -26,7 +27,7 @@ class WatterCrawlAutoSchema(AutoSchema):
         bad_request_schema = self.get_bad_request_schema()
         if bad_request_schema and not responses.get("400"):
             responses["400"] = {
-                "description": "Bad Request",
+                "description": _("Bad Request"),
                 "content": {"application/json": {"schema": bad_request_schema}},
             }
 
@@ -36,7 +37,7 @@ class WatterCrawlAutoSchema(AutoSchema):
             and not responses.get("404")
         ):
             responses["404"] = {
-                "description": "Not Found",
+                "description": _("Not Found"),
                 "content": {
                     "application/json": {"schema": self.get_not_found_schema()}
                 },
@@ -44,7 +45,7 @@ class WatterCrawlAutoSchema(AutoSchema):
 
         if not responses.get("500"):
             responses["500"] = {
-                "description": "Internal Server Error",
+                "description": _("Internal Server Error"),
                 "content": {
                     "application/json": {"schema": self.get_internal_error_schema()}
                 },

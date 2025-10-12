@@ -7,8 +7,10 @@ import UsageStatsGrid from '../../components/shared/UsageStatsGrid';
 import UsageCharts from '../../components/shared/UsageCharts';
 import { useTeam } from '../../contexts/TeamContext';
 import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
+import { useTranslation } from 'react-i18next';
 
 const UsagePage: React.FC = () => {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<UsageResponse | null>(null);
   const { refreshCurrentSubscription } = useTeam();
@@ -16,10 +18,10 @@ const UsagePage: React.FC = () => {
 
   useEffect(() => {
     setItems([
-      { label: 'Dashboard', href: '/dashboard'},
-      { label: 'Usage', href: '/dashboard/usage', current: true },
+      { label: t('dashboard.title'), href: '/dashboard'},
+      { label: t('usage.title'), href: '/dashboard/usage', current: true },
     ]);
-  }, [setItems]);
+  }, [setItems, t]);
 
   const fetchData = useCallback(async () => {
     try {
@@ -44,7 +46,7 @@ const UsagePage: React.FC = () => {
   if (!loading && !data) {
     return (
       <div className="flex items-center justify-center h-full">
-        <p className="text-gray-500 dark:text-gray-400">Failed to load usage data</p>
+        <p className="text-gray-500 dark:text-gray-400">{t('usage.errors.loadFailed')}</p>
       </div>
     );
   }
@@ -54,22 +56,22 @@ const UsagePage: React.FC = () => {
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Usage Statistics</h1>
+            <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">{t('usage.title')}</h1>
             <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-              Monitor your crawling and API usage across your team.
+              {t('usage.subtitle')}
             </p>
           </div>
           <button
             onClick={fetchData}
             disabled={loading}
             className="inline-flex items-center justify-center p-2 text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400 transition-colors duration-200 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
-            title="Refresh usage statistics"
+            title={t('usage.refresh')}
           >
             <ArrowPathIcon
               className={`h-5 w-5 ${loading ? 'animate-spin' : ''}`}
               aria-hidden="true"
             />
-            <span className="sr-only">Refresh usage statistics</span>
+            <span className="sr-only">{t('usage.refresh')}</span>
           </button>
         </div>
       </div>

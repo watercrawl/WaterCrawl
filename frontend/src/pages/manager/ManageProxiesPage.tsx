@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { PlusIcon } from '@heroicons/react/24/outline';
+import { useTranslation } from 'react-i18next';
 import proxyApi from '../../services/api/proxy';
 import { Proxy, CreateProxyRequest, TestProxyRequest } from '../../types/proxy';
 import toast from 'react-hot-toast';
@@ -11,6 +12,7 @@ import Button from '../../components/shared/Button';
 import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
 
 const ManageProxiesPage: React.FC = () => {
+  const { t } = useTranslation();
   const [response, setResponse] = useState<PaginatedResponse<Proxy>>({
     count: 0,
     next: null,
@@ -26,10 +28,10 @@ const ManageProxiesPage: React.FC = () => {
 
   useEffect(() => {
     setItems([
-      { label: 'Admin', href: '/admin' },
-      { label: 'Manage Proxies', href: '/admin/proxies', current: true },
+      { label: t('dashboard.navigation.adminPanel'), href: '/manager' },
+      { label: t('admin.proxies.title'), href: '/manager/proxies', current: true },
     ]);
-  }, [setItems]);
+  }, [setItems, t]);
 
   const isTabletOrMobile = useIsTabletOrMobile();
 
@@ -41,11 +43,11 @@ const ManageProxiesPage: React.FC = () => {
       setResponse(response);
     } catch (error) {
       console.error('Error fetching proxies:', error);
-      toast.error('Failed to fetch proxy servers');
+      toast.error(t('settings.proxy.toast.fetchError'));
     } finally {
       setLoading(false);
     }
-  }, [currentPage]);
+  }, [currentPage, t]);
 
   useEffect(() => {
     fetchProxies();
@@ -55,7 +57,7 @@ const ManageProxiesPage: React.FC = () => {
   const handleCreateProxy = async (data: CreateProxyRequest) => {
     try {
       await proxyApi.create(data);
-      toast.success('Proxy server created successfully');
+      toast.success(t('settings.proxy.toast.createSuccess'));
       fetchProxies();
       return Promise.resolve();
     } catch (error: any) {
@@ -70,7 +72,7 @@ const ManageProxiesPage: React.FC = () => {
 
     try {
       await proxyApi.update(editingProxy.slug, data);
-      toast.success('Proxy server updated successfully');
+      toast.success(t('settings.proxy.toast.updateSuccess'));
       fetchProxies();
       return Promise.resolve();
     } catch (error: any) {
@@ -90,15 +92,15 @@ const ManageProxiesPage: React.FC = () => {
 
   // Function to delete a proxy
   const handleDeleteProxy = async (slug: string) => {
-    if (window.confirm('Are you sure you want to delete this proxy server?')) {
+    if (window.confirm(t('settings.proxy.deleteConfirm'))) {
       try {
         setDeletingSlug(slug);
         await proxyApi.delete(slug);
-        toast.success('Proxy server deleted successfully');
+        toast.success(t('settings.proxy.toast.deleteSuccess'));
         fetchProxies();
       } catch (error) {
         console.error('Error deleting proxy:', error);
-        toast.error('Failed to delete proxy server');
+        toast.error(t('settings.proxy.toast.deleteError'));
       } finally {
         setDeletingSlug(null);
       }
@@ -121,8 +123,8 @@ const ManageProxiesPage: React.FC = () => {
     <div className="space-y-6 mt-8">
       <div className="sm:flex sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-lg font-medium text-gray-900 dark:text-white">Proxy Servers</h2>
-          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">Manage your proxy servers for web crawling.</p>
+          <h2 className="text-lg font-medium text-gray-900 dark:text-white">{t('settings.proxy.title')}</h2>
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{t('settings.proxy.subtitle')}</p>
         </div>
         <div className="mt-4 sm:mt-0">
           <Button
@@ -132,7 +134,7 @@ const ManageProxiesPage: React.FC = () => {
             }}
           >
             <PlusIcon className="h-5 w-5" aria-hidden="true" />
-            Add Proxy
+            {t('settings.proxy.addButton')}
           </Button>
         </div>
       </div>

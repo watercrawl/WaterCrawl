@@ -23,7 +23,7 @@ WaterCrawl uses a single `.env` file in the `docker` directory for all configura
 | `API_ENCRYPTION_KEY` | `8zSd6JIuC7ovfZ4AoxG_XmhubW6CPnQWW7Qe_4TD1TQ=` | **API encryption key for security. Generate a new one using `python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"`. MUST be changed in production!** |
 | `DEBUG` | `True` | Debug mode (set to `False` in production) |
 | `ALLOWED_HOSTS` | `*` | List of allowed hosts (comma-separated) |
-| `LANGUAGE_CODE` | `en-us` | Default language code |
+| `LANGUAGE_CODE` | `en` | Default language code |
 | `TIME_ZONE` | `UTC` | Server time zone |
 | `USE_I18N` | `True` | Enable internationalization |
 | `USE_TZ` | `True` | Enable timezone support |

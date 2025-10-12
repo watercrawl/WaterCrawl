@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { MapIcon } from '@heroicons/react/24/outline';
 import SitemapModal from '../SitemapModal';
 import { CrawlRequest } from '../../types/crawl';
+import { useTranslation } from 'react-i18next';
 
 interface SitemapModalSelectorProps {
   request: CrawlRequest;
@@ -14,6 +15,7 @@ export const SitemapModalSelector: React.FC<SitemapModalSelectorProps> = ({
   className = '',
   buttonWithText = false
 }) => {
+  const { t } = useTranslation();
   const [isSitemapModalOpen, setIsSitemapModalOpen] = useState(false);
 
   const handleOpenSitemap = (e: React.MouseEvent) => {
@@ -36,10 +38,10 @@ export const SitemapModalSelector: React.FC<SitemapModalSelectorProps> = ({
             ? 'inline-flex items-center px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-primary-500 focus:ring-offset-2 transition-colors' 
             : 'text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400'
         } ${!request.sitemap ? 'opacity-50 cursor-not-allowed' : ''}`}
-        title="View Sitemap"
+        title={t('sitemap.viewSitemap')}
       >
-        <MapIcon className={`${buttonWithText ? 'h-4 w-4 mr-1.5' : 'h-5 w-5'}`} />
-        {buttonWithText && 'Sitemap'}
+        <MapIcon className={`${buttonWithText ? 'h-4 w-4 me-1.5' : 'h-5 w-5'}`} />
+        {buttonWithText && t('sitemap.title')}
       </button>
       
       {/* Render modal only when needed */}

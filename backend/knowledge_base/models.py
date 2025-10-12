@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 
 from common.models import BaseModel
 from knowledge_base import consts
+from knowledge_base.utils import chunk_default_separators
 
 
 class KnowledgeBase(BaseModel):
@@ -27,12 +28,12 @@ class KnowledgeBase(BaseModel):
     chunk_seperator = models.JSONField(
         _("Chunk separator"),
         help_text=_("Separator used to split documents into chunks"),
-        default=["\n\n", "\n", " ", ""],
+        default=chunk_default_separators,
     )
     embedding_model = models.ForeignKey(
         "llm.EmbeddingModel",
         on_delete=models.SET_NULL,
-        verbose_name=_("embedding model"),
+        verbose_name=_("Embedding Model"),
         related_name="knowledge_bases",
         blank=True,
         null=True,
@@ -40,7 +41,7 @@ class KnowledgeBase(BaseModel):
     embedding_provider_config = models.ForeignKey(
         "llm.ProviderConfig",
         on_delete=models.SET_NULL,
-        verbose_name=_("embedding provider config"),
+        verbose_name=_("Embedding Provider Config"),
         related_name="embedding_knowledge_bases",
         blank=True,
         null=True,
@@ -49,7 +50,7 @@ class KnowledgeBase(BaseModel):
     summarization_provider_config = models.ForeignKey(
         "llm.ProviderConfig",
         on_delete=models.SET_NULL,
-        verbose_name=_("summarization provider config"),
+        verbose_name=_("Summarization Provider Config"),
         related_name="summarization_knowledge_bases",
         blank=True,
         null=True,
@@ -58,7 +59,7 @@ class KnowledgeBase(BaseModel):
     summarization_model = models.ForeignKey(
         "llm.LLMModel",
         on_delete=models.SET_NULL,
-        verbose_name=_("summarization model"),
+        verbose_name=_("Summarization Model"),
         related_name="summarization_knowledge_bases",
         blank=True,
         null=True,

@@ -23,34 +23,35 @@ import {
 import { ListProviderConfig, Model } from '../../../types/provider';
 import { useBreadcrumbs } from '../../../contexts/BreadcrumbContext';
 import { useTeam } from '../../../contexts/TeamContext';
+import { useTranslation } from 'react-i18next';
 
 
 
-// Create validation schema for form
-const schema = yup.object().shape({
-  title: yup.string().required('Title is required'),
-  description: yup.string().required('Description is required'),
+// Create validation schema for form - translations will be applied at runtime
+const createSchema = (t: any) => yup.object().shape({
+  title: yup.string().required(t('settings.knowledgeBase.form.basicInfo.nameRequired')),
+  description: yup.string().required(t('settings.knowledgeBase.form.basicInfo.descriptionRequired')),
   embedding_model_id: yup.string().when('embeddingEnabled', {
     is: true,
-    then: (schema) => schema.required('Embedding model is required'),
+    then: (schema) => schema.required(t('settings.knowledgeBase.form.embedding.modelRequired')),
     otherwise: (schema) => schema.nullable(),
   }),
   embedding_provider_config_id: yup.string().when('embeddingEnabled', {
     is: true,
-    then: (schema) => schema.required('Embedding provider config is required'),
+    then: (schema) => schema.required(t('settings.knowledgeBase.form.embedding.providerConfigRequired')),
     otherwise: (schema) => schema.nullable(),
   }),
-  chunk_size: yup.number().required('Chunk size is required').positive('Chunk size must be positive'),
-  chunk_overlap: yup.number().required('Chunk overlap is required').min(0, 'Chunk overlap cannot be negative'),
+  chunk_size: yup.number().required(t('settings.knowledgeBase.form.chunking.chunkSizeRequired')).positive(t('settings.knowledgeBase.form.chunking.chunkSizePositive')),
+  chunk_overlap: yup.number().required(t('settings.knowledgeBase.form.chunking.chunkOverlapRequired')).min(0, t('settings.knowledgeBase.form.chunking.chunkOverlapMin')),
   summarization_model_id: yup.string().nullable(),
   summarization_provider_config_id: yup.string().nullable(),
-  summarizer_type: yup.string().oneOf(['standard', 'context_aware'], 'Invalid summarizer type').required('Summarizer type is required'),
+  summarizer_type: yup.string().oneOf(['standard', 'context_aware'], t('settings.knowledgeBase.form.summarization.typeInvalid')).required(t('settings.knowledgeBase.form.summarization.typeRequired')),
   summarizer_context: yup.string().when('summarizer_type', {
     is: 'context_aware',
-    then: (schema) => schema.required('Context is required for context-aware summarization'),
+    then: (schema) => schema.required(t('settings.knowledgeBase.form.summarization.contextRequired')),
     otherwise: (schema) => schema.nullable(),
   }),
-  summarizer_temperature: yup.number().min(0, 'Temperature must be at least 0').max(2, 'Temperature must be at most 2'),
+  summarizer_temperature: yup.number().min(0, t('settings.knowledgeBase.form.summarization.temperatureMin')).max(2, t('settings.knowledgeBase.form.summarization.temperatureMax')),
   autoChunkOverlap: yup.boolean(),
   enhancementEnabled: yup.boolean().required(),
   embeddingEnabled: yup.boolean().required(),
@@ -58,6 +59,7 @@ const schema = yup.object().shape({
 });
 
 const KnowledgeBaseNewPage: React.FC = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [providerConfigs, setProviderConfigs] = useState<ListProviderConfig[]>([]);
@@ -73,9 +75,9 @@ const KnowledgeBaseNewPage: React.FC = () => {
   // Fetch provider configs
   useEffect(() => {
     setItems([
-      { label: 'Dashboard', href: '/dashboard' },
-      { label: 'Knowledge Bases', href: '/dashboard/knowledge-base' },
-      { label: 'Create Knowledge Base', href: '/dashboard/knowledge-base/new', current: true },
+      { label: t('common.dashboard'), href: '/dashboard' },
+      { label: t('settings.knowledgeBase.title'), href: '/dashboard/knowledge-base' },
+      { label: t('settings.knowledgeBase.form.title'), href: '/dashboard/knowledge-base/new', current: true },
     ]);
 
     const fetchProviderConfigs = async () => {
@@ -85,14 +87,14 @@ const KnowledgeBaseNewPage: React.FC = () => {
         setProviderConfigs(response || []);
       } catch (error) {
         console.error('Failed to fetch provider configs:', error);
-        toast.error('Failed to load provider configurations');
+        toast.error(t('settings.knowledgeBase.toast.providerConfigError'));
       } finally {
         setIsLoadingProviders(false);
       }
     };
 
     fetchProviderConfigs();
-  }, [setItems]);
+  }, [setItems, t]);
 
   // Define a type that extends KnowledgeBaseFormData with our additional UI control fields
   type FormData = KnowledgeBaseFormData & {
@@ -103,7 +105,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
   };
 
   const { register, handleSubmit, watch, setValue, control, formState: { errors } } = useForm<FormData>({
-    resolver: yupResolver(schema) as any,
+    resolver: yupResolver(createSchema(t)) as any,
     defaultValues: {
       title: '',
       description: '',
@@ -191,7 +193,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
             : undefined,
       };
       const response = await knowledgeBaseApi.create(knowledgeBaseData);
-      toast.success('Knowledge base created successfully!');
+      toast.success(t('settings.knowledgeBase.toast.createSuccess'));
       // Navigate to the knowledge base detail page
       navigate(`/dashboard/knowledge-base/${response.uuid}`);
     } catch (error: any) {
@@ -209,7 +211,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
           toast.error(`Failed to create knowledge base: ${errorData}`);
         }
       } else {
-        toast.error('Failed to create knowledge base. Please try again.');
+        toast.error(t('settings.knowledgeBase.toast.createError'));
       }
     } finally {
       setIsSubmitting(false);
@@ -219,17 +221,17 @@ const KnowledgeBaseNewPage: React.FC = () => {
   return (
     <div className="py-6 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Create Knowledge Base</h1>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('settings.knowledgeBase.form.title')}</h1>
         <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">
-          Configure your knowledge base settings for optimal information retrieval.
+          {t('settings.knowledgeBase.form.subtitle')}
         </p>
       </div>
 
       {isLoadingProviders && (
         <div className="flex flex-col items-center justify-center py-24">
           <Loading size="lg" />
-          <span className="mt-4 text-gray-600 dark:text-gray-400">Loading provider configurations...</span>
-          <p className="mt-2 text-sm text-gray-500 dark:text-gray-500">This may take a few moments...</p>
+          <span className="mt-4 text-gray-600 dark:text-gray-400">{t('settings.knowledgeBase.loadingProviders')}</span>
+          <p className="mt-2 text-sm text-gray-500 dark:text-gray-500">{t('settings.knowledgeBase.loadingMessage')}</p>
         </div>
       )}
 
@@ -249,13 +251,13 @@ const KnowledgeBaseNewPage: React.FC = () => {
                     </svg>
                   }
                 >
-                  Basic Information
+                  {t('settings.knowledgeBase.form.basicInfo.title')}
                 </Card.Title>
                 <Card.Body>
                   <div className="grid grid-cols-1 gap-6">
                     <div className="">
                       <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Title
+                        {t('settings.knowledgeBase.form.basicInfo.name')}
                       </label>
                       <div className="mt-2">
                         <input
@@ -263,7 +265,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                           id="title"
                           {...register('title')}
                           className={`shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-md ${errors.title ? 'border-red-500' : ''}`}
-                          placeholder="My Knowledge Base"
+                          placeholder={t('settings.knowledgeBase.form.basicInfo.namePlaceholder')}
                         />
                         {errors.title && (
                           <p className="mt-1 text-sm text-red-600">{errors.title.message}</p>
@@ -273,7 +275,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
 
                     <div className="">
                       <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Description
+                        {t('settings.knowledgeBase.form.basicInfo.description')}
                       </label>
                       <div className="mt-2">
                         <textarea
@@ -281,7 +283,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                           rows={3}
                           {...register('description')}
                           className="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-md"
-                          placeholder="Description for this knowledge base"
+                          placeholder={t('settings.knowledgeBase.form.basicInfo.descriptionPlaceholder')}
                         />
                       </div>
                       {errors.description && (
@@ -301,24 +303,24 @@ const KnowledgeBaseNewPage: React.FC = () => {
                     </svg>
                   }
                 >
-                  Embedding Configuration
+                  {t('settings.knowledgeBase.form.embedding.title')}
                 </Card.Title>
                 <Card.Body>
-                  <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 rounded">
+                  <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 border-s-4 border-blue-500 rounded">
                     <p className="text-sm text-blue-700 dark:text-blue-300">
-                      Embeddings convert text into numerical vectors for semantic search. Choose whether to enable embeddings for your knowledge base.
+                      {t('settings.knowledgeBase.form.embedding.description')}
                     </p>
                   </div>
 
                   {/* Embedding Enable/Disable Selection */}
                   <div className="mb-6">
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                      Vector Search Method
+                      {t('settings.knowledgeBase.form.embedding.vectorSearchMethod')}
                     </label>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                       <OptionCard
-                        title="Semantic Search"
-                        description="Enable embeddings to convert text into vectors for semantic similarity search."
+                        title={t('settings.knowledgeBase.form.embedding.semanticSearch')}
+                        description={t('settings.knowledgeBase.form.embedding.semanticDescription')}
                         icon={
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-green-500" viewBox="0 0 20 20" fill="currentColor">
                             <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -327,7 +329,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                         isSelected={watchEmbeddingEnabled}
                         onClick={() => setValue('embeddingEnabled', true)}
                         badge={{
-                          text: "Recommended",
+                          text: t('settings.knowledgeBase.form.embedding.recommended'),
                           color: "primary"
                         }}
                         iconBgColor="bg-green-100"
@@ -335,8 +337,8 @@ const KnowledgeBaseNewPage: React.FC = () => {
                       />
 
                       <OptionCard
-                        title="Text-only Search"
-                        description="Skip embeddings for a lighter setup. Search will be based on exact text matching only."
+                        title={t('settings.knowledgeBase.form.embedding.textOnlySearch')}
+                        description={t('settings.knowledgeBase.form.embedding.textOnlyDescription')}
                         icon={
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
                             <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
@@ -353,7 +355,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="">
                         <label htmlFor="embedding_provider_config_id" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                          Embedding Provider Configuration
+                          {t('settings.knowledgeBase.form.embedding.providerConfig')}
                         </label>
                         <div className="mt-2">
                           <Controller
@@ -368,7 +370,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                                 }))}
                                 value={field.value || ''}
                                 onChange={field.onChange}
-                                placeholder="Select a provider config"
+                                placeholder={t('settings.knowledgeBase.form.embedding.providerConfigPlaceholder')}
                                 disabled={!watchEmbeddingEnabled || isLoadingProviders}
                                 className={errors.embedding_provider_config_id ? 'border-red-500' : ''}
                               />
@@ -379,14 +381,14 @@ const KnowledgeBaseNewPage: React.FC = () => {
                           )}
                         </div>
                         <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                          Select the provider configuration for embeddings.
+                          {t('settings.knowledgeBase.form.embedding.providerConfigHelp')}
                         </p>
                       </div>
 
                       {/* Embedding Model Selection */}
                       <div className="">
                         <label htmlFor="embedding_model_id" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                          Embedding Model
+                          {t('settings.knowledgeBase.form.embedding.model')}
                         </label>
                         <div className="mt-2 relative">
                           <Controller
@@ -396,12 +398,12 @@ const KnowledgeBaseNewPage: React.FC = () => {
                               <ComboboxComponent
                                 items={selectedEmbeddingProviderConfig?.available_embedding_models.map((model): ComboboxItem => ({
                                   id: model.uuid,
-                                  label: `${model.name}${model.dimensions ? ` - ${model.dimensions} dimensions` : ''}`,
+                                  label: `${model.name}${model.dimensions ? ` - ${model.dimensions} ${t('settings.knowledgeBase.form.embedding.dimensions')}` : ''}`,
                                   category: selectedEmbeddingProviderConfig?.provider_name
                                 })) || []}
                                 value={field.value || ''}
                                 onChange={field.onChange}
-                                placeholder="Select a model"
+                                placeholder={t('settings.knowledgeBase.form.embedding.modelPlaceholder')}
                                 disabled={!watchEmbeddingEnabled || !watchEmbeddingProviderConfig}
                                 className={errors.embedding_model_id ? 'border-red-500' : ''}
                               />
@@ -412,7 +414,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                           )}
                         </div>
                         <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                          Select the embedding model to use for this knowledge base.
+                          {t('settings.knowledgeBase.form.embedding.modelHelp')}
                         </p>
                       </div>
                     </div>
@@ -430,19 +432,19 @@ const KnowledgeBaseNewPage: React.FC = () => {
                     </svg>
                   }
                 >
-                  Chunking Configuration
+                  {t('settings.knowledgeBase.form.chunking.title')}
                 </Card.Title>
                 <Card.Body>
-                  <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 rounded">
+                  <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 border-s-4 border-blue-500 rounded">
                     <p className="text-sm text-blue-700 dark:text-blue-300">
-                      Proper text chunking is essential for effective information retrieval. Chunks should be large enough to capture context but small enough for precise matching.
+                      {t('settings.knowledgeBase.form.chunking.description')}
                     </p>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
                     <div>
                       <label htmlFor="chunk_size" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Chunk Size
+                        {t('settings.knowledgeBase.form.chunking.chunkSize')}
                       </label>
                       <div className="mt-2">
                         <input
@@ -458,14 +460,14 @@ const KnowledgeBaseNewPage: React.FC = () => {
                         )}
                       </div>
                       <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                        Number of characters per chunk. Recommended: 1000-1500 characters.
+                        {t('settings.knowledgeBase.form.chunking.chunkSizeHelp')}
                       </p>
                     </div>
 
                     <div>
                       <div className="flex items-center justify-between mb-2">
                         <label htmlFor="chunk_overlap" className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                          Chunk Overlap
+                          {t('settings.knowledgeBase.form.chunking.chunkOverlap')}
                         </label>
                         <Controller
                           name="autoChunkOverlap"
@@ -473,7 +475,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                           render={({ field }) => (
                             <div className="flex items-center gap-2">
                               <label htmlFor="autoChunkOverlap" className="text-sm text-gray-700 dark:text-gray-300">
-                                Automatic
+                                {t('settings.knowledgeBase.form.chunking.automatic')}
                               </label>
                               <input
                                 type="checkbox"
@@ -481,7 +483,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                                 checked={field.value}
                                 onChange={(e) => field.onChange(e.target.checked)}
                                 className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
-                                title="When enabled, chunk overlap will be automatically set to 20% of chunk size"
+                                title={t('settings.knowledgeBase.form.chunking.automaticTooltip')}
                               />
                             </div>
                           )}
@@ -500,7 +502,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                         <p className="mt-1 text-sm text-red-600">{errors.chunk_overlap.message}</p>
                       )}
                       <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                        Number of characters to overlap between chunks to maintain context.
+                        {t('settings.knowledgeBase.form.chunking.chunkOverlapHelp')}
                       </p>
                     </div>
                   </div>
@@ -540,24 +542,24 @@ const KnowledgeBaseNewPage: React.FC = () => {
                     </svg>
                   }
                 >
-                  Chunk Enhancement
+                  {t('settings.knowledgeBase.form.summarization.title')}
                 </Card.Title>
                 <Card.Body>
-                  <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 rounded">
+                  <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 border-s-4 border-blue-500 rounded">
                     <p className="text-sm text-blue-700 dark:text-blue-300">
-                      Chunk enhancement helps extract key information. Choose a provider and model for enhancing document chunks.
+                      {t('settings.knowledgeBase.form.summarization.description')}
                     </p>
                   </div>
 
                   {/* Index Method Selection */}
                   <div className="mb-6">
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                      Index Method
+                      {t('settings.knowledgeBase.form.summarization.enableQuestion')}
                     </label>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                       <OptionCard
-                        title="High Quality"
-                        description="Add Summarization for each chunk/document to extract key information. This helps improve the quality of the retrieved documents."
+                        title={t('settings.knowledgeBase.form.summarization.enabledTitle')}
+                        description={t('settings.knowledgeBase.form.summarization.enabledDescription')}
                         icon={
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-orange-500" viewBox="0 0 20 20" fill="currentColor">
                             <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 011.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
@@ -566,7 +568,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                         isSelected={watchEnhancementEnabled}
                         onClick={() => setValue('enhancementEnabled', true)}
                         badge={{
-                          text: "Recommended",
+                          text: t('settings.knowledgeBase.form.embedding.recommended'),
                           color: "primary"
                         }}
                         iconBgColor="bg-orange-100"
@@ -574,8 +576,8 @@ const KnowledgeBaseNewPage: React.FC = () => {
                       />
 
                       <OptionCard
-                        title="Economical"
-                        description="Non-enhanced documents are processed using the embedding model, which is more economical."
+                        title={t('settings.knowledgeBase.form.summarization.disabledTitle')}
+                        description={t('settings.knowledgeBase.form.summarization.disabledDescription')}
                         icon={
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
                             <path fillRule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
@@ -593,7 +595,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                       <div className="grid grid-cols-12 gap-6">
                         <div className="col-span-12 sm:col-span-6">
                           <label htmlFor="summarization_provider_config_id" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                            Summarization Provider/Model Configuration
+                            {t('settings.knowledgeBase.form.summarization.providerConfig')}
                           </label>
                           <div className="mt-2 relative">
                             <Controller
@@ -608,7 +610,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                                   }))}
                                   value={field.value || ''}
                                   onChange={field.onChange}
-                                  placeholder="Select a provider configuration"
+                                  placeholder={t('settings.knowledgeBase.form.summarization.providerConfigPlaceholder')}
                                   disabled={!watchEnhancementEnabled || isLoadingProviders}
                                   className={errors.summarization_provider_config_id ? 'border-red-500' : ''}
                                 />
@@ -631,7 +633,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                                   })) || []}
                                   value={field.value || ''}
                                   onChange={field.onChange}
-                                  placeholder="Select a model"
+                                  placeholder={t('settings.knowledgeBase.form.summarization.modelPlaceholder')}
                                   disabled={!watchEnhancementEnabled || !watchSummarizationProviderConfig}
                                   className={errors.summarization_model_id ? 'border-red-500' : ''}
                                 />
@@ -642,13 +644,13 @@ const KnowledgeBaseNewPage: React.FC = () => {
                             )}
                           </div>
                           <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                            Select the summarization provider configuration and model to use for this knowledge base.
+                            {t('settings.knowledgeBase.form.summarization.providerConfigHelp')}
                           </p>
                         </div>
 
                         <div className="col-span-12 sm:col-span-6">
                           <label htmlFor="summarizer_type" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                            Summarizer Type
+                            {t('settings.knowledgeBase.form.summarization.type')}
                           </label>
                           <div className="mt-2">
                             <Controller
@@ -657,19 +659,19 @@ const KnowledgeBaseNewPage: React.FC = () => {
                               render={({ field }) => (
                                 <ComboboxComponent
                                   items={[
-                                    { id: 'standard', label: 'Standard' },
-                                    { id: 'context_aware', label: 'Context Aware' }
+                                    { id: 'standard', label: t('settings.knowledgeBase.form.summarization.typeStandard') },
+                                    { id: 'context_aware', label: t('settings.knowledgeBase.form.summarization.typeContextAware') }
                                   ]}
                                   value={field.value || 'standard'}
                                   onChange={field.onChange}
-                                  placeholder="Select summarizer type"
+                                  placeholder={t('settings.knowledgeBase.form.summarization.type')}
                                   disabled={!watchEnhancementEnabled}
                                 />
                               )}
                             />
                           </div>
                           <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                            Choose between standard and context-aware summarization.
+                            {t('settings.knowledgeBase.form.summarization.modelHelp')}
                           </p>
                         </div>
 
@@ -684,7 +686,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                                 return (
                                   <div className="opacity-50">
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                      Temperature
+                                      {t('settings.knowledgeBase.form.summarization.temperature')}
                                     </label>
                                     <div className="text-sm text-gray-500 dark:text-gray-400">
                                       {!isTemperatureConfigurable && selectedSummarizationModel
@@ -698,14 +700,14 @@ const KnowledgeBaseNewPage: React.FC = () => {
 
                               return (
                                 <Slider
-                                  label="Temperature"
+                                  label={t('settings.knowledgeBase.form.summarization.temperature')}
                                   value={field.value !== undefined && field.value !== null ? field.value : (selectedSummarizationModel?.default_temperature ?? 0.7)}
                                   onChange={field.onChange}
                                   min={selectedSummarizationModel.min_temperature!}
                                   max={selectedSummarizationModel.max_temperature!}
                                   step={0.1}
                                   formatValue={(val) => val.toFixed(1)}
-                                  description="Controls randomness in the model's output. Lower values make the output more focused and deterministic, higher values make it more random and creative."
+                                  description={t('settings.knowledgeBase.form.summarization.temperatureHelp')}
                                 />
                               );
                             }}
@@ -719,7 +721,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                             <div className="col-span-12">
                               <div className="flex justify-between items-center">
                                 <label htmlFor="summarizer_context" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                  Summarizer Context
+                                  {t('settings.knowledgeBase.form.summarization.context')}
                                 </label>
                                 <Button
                                   variant="outline"
@@ -727,7 +729,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                                   onClick={() => setIsEnhanceModalOpen(true)}
                                   disabled={!watchSummarizationProviderConfig || !watchSummarizationModelId}
                                 >
-                                  Enhance
+                                  {t('settings.knowledgeBase.form.summarization.enhanceButton')}
                                 </Button>
                               </div>
                               <div className="mt-2">
@@ -736,14 +738,14 @@ const KnowledgeBaseNewPage: React.FC = () => {
                                   {...register('summarizer_context')}
                                   rows={4}
                                   className={`shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-md ${errors.summarizer_context ? 'border-red-500' : ''}`}
-                                  placeholder="Provide context for the summarizer, e.g., 'This knowledge base will be used to answer customer support questions about our products.'"
+                                  placeholder={t('settings.knowledgeBase.form.summarization.contextPlaceholder')}
                                 />
                                 {errors.summarizer_context && (
                                   <p className="mt-1 text-sm text-red-600">{errors.summarizer_context.message}</p>
                                 )}
                               </div>
                               <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                                Provide instructions or context to guide the summarization process. This is required for context-aware summarization.
+                                {t('settings.knowledgeBase.form.summarization.contextHelp')}
                               </p>
                             </div>
                           </div>
@@ -771,7 +773,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                   onClick={() => navigate('/dashboard/knowledge-base')}
                   className="px-5 py-2 border border-gray-300 dark:border-gray-700 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                 >
-                  Cancel
+                  {t('settings.knowledgeBase.form.submit.cancel')}
                 </button>
                 <button
                   type="submit"
@@ -781,10 +783,10 @@ const KnowledgeBaseNewPage: React.FC = () => {
                   {isSubmitting ? (
                     <>
                       <Loading size="sm" />
-                      <span className="ml-2">Creating...</span>
+                      <span className="ms-2">{t('settings.knowledgeBase.form.submit.creating')}</span>
                     </>
                   ) : (
-                    'Create Knowledge Base'
+                    t('settings.knowledgeBase.form.submit.create')
                   )}
                 </button>
               </div>

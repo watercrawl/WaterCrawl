@@ -3,6 +3,7 @@ import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { AuthService } from '../authService';
 import { TeamService } from '../teamService';
 import { API_URL } from '../../utils/env';
+import i18n from '../../i18n/config';
 
 interface CustomAxiosInstance extends AxiosInstance {
   subscribeToSSE: <T>(url: string, config: AxiosRequestConfig, onEvent: (data: T) => void, onEnd?: () => void) => Promise<boolean>;
@@ -15,7 +16,7 @@ const api = axios.create({
   }
 }) as CustomAxiosInstance;
 
-// Add a request interceptor to add the token and team ID to all requests
+// Add a request interceptor to add the token, team ID, and language to all requests
 api.interceptors.request.use(
   async (config) => {
     const token = AuthService.getInstance().getToken();
@@ -28,6 +29,10 @@ api.interceptors.request.use(
         config.headers['x-team-id'] = teamId;
       }
     }
+
+    // Add Accept-Language header based on current user language
+    config.headers['Accept-Language'] = i18n.language || 'en';
+
     return config;
   },
   (error) => {
@@ -87,6 +92,8 @@ api.subscribeToSSE = async <T>(url: string, config: AxiosRequestConfig, onEvent:
     if (teamId) {
       headers.set('x-team-id', teamId);
     }
+    // Add Accept-Language header for SSE requests
+    headers.set('Accept-Language', i18n.language || 'en');
     const response = await fetch(apiUrl.toString(), {
       method: 'GET',
       headers,

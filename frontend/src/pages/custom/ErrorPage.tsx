@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { PublicSkeleton } from '../../layouts/PublicSkeleton';
 import { API_URL } from '../../utils/env';
 
@@ -8,13 +9,14 @@ interface ErrorPageProps {
 }
 
 export const ErrorPage: React.FC<ErrorPageProps> = ({ error, onRetry }) => {
+  const { t } = useTranslation();
   return (
     <PublicSkeleton>
       <div className="flex items-center justify-center mt-12">
         <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6 max-w-2xl mx-auto shadow-md">
           <div className="flex items-center mb-4">
             <svg
-              className="w-8 h-8 text-red-500 mr-3"
+              className="w-8 h-8 text-red-500 me-3"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -28,46 +30,46 @@ export const ErrorPage: React.FC<ErrorPageProps> = ({ error, onRetry }) => {
               />
             </svg>
             <h2 className="text-xl font-semibold text-red-700 dark:text-red-400">
-              Settings Error
+              {t('error.settingsError')}
             </h2>
           </div>
           <p className="text-gray-700 dark:text-gray-300 mb-4">
-            We encountered a problem loading your application settings. This could be due to:
+            {t('error.description')}
           </p>
-          <ul className="list-disc pl-5 mb-4 text-gray-700 dark:text-gray-300 space-y-2">
-            <li>Backend server is not running or unreachable</li>
-            <li>API URL is misconfigured</li>
-            <li>CORS issues preventing connection</li>
-            <li>Network connectivity problems</li>
-            <li>Backend service errors</li>
+          <ul className="list-disc ps-5 mb-4 text-gray-700 dark:text-gray-300 space-y-2">
+            <li>{t('error.reasons.backendDown')}</li>
+            <li>{t('error.reasons.apiMisconfigured')}</li>
+            <li>{t('error.reasons.corsIssues')}</li>
+            <li>{t('error.reasons.networkProblems')}</li>
+            <li>{t('error.reasons.serviceErrors')}</li>
           </ul>
 
           {error && (
             <div className="bg-red-100 dark:bg-red-900/40 p-3 rounded mb-4 overflow-auto text-red-800 dark:text-red-300 text-sm font-mono">
-              <p className="font-semibold">Error Details:</p>
+              <p className="font-semibold">{t('error.errorDetails')}:</p>
               {error.message}
             </div>
           )}
 
           <div className="bg-gray-100 dark:bg-gray-800 p-3 rounded mb-4 overflow-auto">
             <p className="font-semibold text-gray-700 dark:text-gray-300 mb-2">
-              Current Configuration:
+              {t('error.currentConfiguration')}:
             </p>
-            <div className="flex items-center space-x-2">
-              <span className="text-gray-600 dark:text-gray-400">API URL:</span>
+            <div className="flex items-center gap-x-2">
+              <span className="text-gray-600 dark:text-gray-400">{t('error.apiUrl')}:</span>
               <code className="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded text-sm text-gray-800 dark:text-gray-300">
                 {API_URL}
               </code>
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:space-x-4 space-y-3 sm:space-y-0 mb-2">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:gap-x-4 space-y-3 sm:space-y-0 mb-2">
             {onRetry && (
               <button
                 onClick={onRetry}
                 className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
               >
-                Try Again
+                {t('error.tryAgain')}
               </button>
             )}
             <a
@@ -76,20 +78,20 @@ export const ErrorPage: React.FC<ErrorPageProps> = ({ error, onRetry }) => {
               rel="noopener noreferrer"
               className="px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-md transition-colors duration-200 text-center focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
             >
-              Troubleshooting Guide
+              {t('error.troubleshootingGuide')}
             </a>
           </div>
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-3">
-            Check the{" "}
+            {t('error.checkDocs')}{" "}
             <a
               href="https://docs.watercrawl.dev/self-hosted/troubleshooting"
               className="text-blue-600 dark:text-blue-400 hover:underline"
               target="_blank"
               rel="noopener noreferrer"
             >
-              troubleshooting documentation
+              {t('error.troubleshootingDocs')}
             </a>{" "}
-            for more detailed help.
+            {t('error.forMoreHelp')}.
           </p>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { MagnifyingGlassIcon, EyeIcon } from '@heroicons/react/24/outline';
 import { Pagination } from '../../components/shared/Pagination';
@@ -6,23 +6,29 @@ import { PaginatedResponse } from '../../types/common';
 import { toast } from 'react-hot-toast';
 import { sitemapApi } from '../../services/api/sitemap';
 import { useIsTabletOrMobile } from '../../hooks/useMediaQuery';
-import { formatDistanceToNow } from 'date-fns';
 import { formatDuration } from '../../utils/formatters';
+import { useDateLocale } from '../../hooks/useDateLocale';
+import { formatDistanceToNowLocalized } from '../../utils/dateUtils';
 import { SitemapRequest, SitemapStatus } from '../../types/sitemap';
-import { SitemapRequestCard, SitemapStatusBadge } from '../../components/shared/SitemapRequestCard';
+import { SitemapRequestCard } from '../../components/shared/SitemapRequestCard';
 import { SitemapDownloadFormatSelector } from '../../components/shared/SitemapDownloadFormatSelector';
 import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
-
-// Status options for filtering
-const STATUS_OPTIONS = [
-  { value: '', label: 'All Statuses' },
-  { value: 'new', label: 'New' },
-  { value: 'running', label: 'Running' },
-  { value: 'finished', label: 'Finished' },
-  { value: 'canceled', label: 'Canceled' },
-];
+import { useTranslation } from 'react-i18next';
+import { StatusBadge } from '../../components/shared/StatusBadge';
+import { CrawlStatus } from '../../types/crawl';
 
 const SitemapLogsPage: React.FC = () => {
+  const { t } = useTranslation();
+  const dateLocale = useDateLocale();
+  
+  // Status options for filtering
+  const STATUS_OPTIONS = [
+    { value: '', label: t('activityLogs.filters.allStatuses') },
+    { value: 'new', label: t('status.new') },
+    { value: 'running', label: t('status.running') },
+    { value: 'finished', label: t('status.finished') },
+    { value: 'canceled', label: t('status.canceled') },
+  ];
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [sitemapRequests, setSitemapRequests] = useState<PaginatedResponse<SitemapRequest> | null>(null);
@@ -36,10 +42,10 @@ const SitemapLogsPage: React.FC = () => {
 
   useEffect(() => {
     setItems([
-      { label: 'Dashboard', href: '/dashboard'},
-      { label: 'Sitemap Logs', href: '/dashboard/logs/sitemaps', current: true },
+      { label: t('dashboard.title'), href: '/dashboard'},
+      { label: t('activityLogs.sitemapLogs'), href: '/dashboard/logs/sitemaps', current: true },
     ]);
-  }, [setItems]);
+  }, [setItems, t]);
 
   // Initialize selectedStatus from URL params
   useEffect(() => {
@@ -47,22 +53,22 @@ const SitemapLogsPage: React.FC = () => {
     setSelectedStatus(statusParam);
   }, [searchParams]);
 
-  const fetchSitemapRequests = async (page: number, status?: string) => {
+  const fetchSitemapRequests = useCallback(async (page: number, status?: string) => {
     try {
       setLoading(true);
       const data = await sitemapApi.list(page, status);
       setSitemapRequests(data);
     } catch (error) {
       console.error('Error fetching sitemap requests:', error);
-      toast.error('Failed to fetch sitemap history.');
+      toast.error(t('activityLogs.errors.fetchFailed'));
     } finally {
       setLoading(false);
     }
-  };
+  }, [t]);
 
   useEffect(() => {
     fetchSitemapRequests(currentPage, selectedStatus);
-  }, [currentPage, selectedStatus]);
+  }, [currentPage, selectedStatus, fetchSitemapRequests]);
 
   // Update URL when status filter changes
   const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -97,22 +103,22 @@ const SitemapLogsPage: React.FC = () => {
   return (
     <div className="h-full">
       <div className="px-4 sm:px-8 py-6">
-        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Sitemap History</h1>
+        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">{t('activityLogs.sitemapLogs')}</h1>
         <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-          View your recent sitemap requests and their results
+          {t('activityLogs.sitemapLogsDesc')}
         </p>
 
         <div className="mt-8">
           {/* Status Filter - Positioned at the top */}
           <div className="mb-6">
             <label htmlFor="status-filter" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Filter by Status
+              {t('activityLogs.filters.filterByStatus')}
             </label>
             <select
               id="status-filter"
               value={selectedStatus}
               onChange={handleStatusChange}
-              className="mt-1 block w-full sm:w-48 rounded-md border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 py-2 pl-3 pr-10 text-base focus:border-primary-500 focus:outline-none focus:ring-primary-500 dark:text-white sm:text-sm"
+              className="mt-1 block w-full sm:w-48 rounded-md border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 py-2 ps-3 pe-10 text-base focus:border-primary-500 focus:outline-none focus:ring-primary-500 dark:text-white sm:text-sm"
             >
               {STATUS_OPTIONS.map((option) => (
                 <option key={option.value} value={option.value}>
@@ -125,9 +131,9 @@ const SitemapLogsPage: React.FC = () => {
           {hasNoData ? (
             <div className="text-center py-12 bg-white dark:bg-gray-800 shadow rounded-lg">
               <MagnifyingGlassIcon className="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500" />
-              <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-white">No sitemap requests found</h3>
+              <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-white">{t('activityLogs.noSitemapRequestsFound')}</h3>
               <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                Try changing your filter or create a new sitemap request.
+                {t('activityLogs.tryChangingFilterOrCreateNewSitemapRequest')}
               </p>
             </div>
           ) : (
@@ -148,27 +154,27 @@ const SitemapLogsPage: React.FC = () => {
                       <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                         <thead>
                           <tr>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                              URL
+                            <th scope="col" className="px-6 py-3 text-start text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                              {t('activityLogs.table.url')}
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                              Status
+                            <th scope="col" className="px-6 py-3 text-start text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                              {t('activityLogs.table.status')}
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                              Created
+                            <th scope="col" className="px-6 py-3 text-start text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                              {t('activityLogs.table.created')}
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                              Duration
+                            <th scope="col" className="px-6 py-3 text-start text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                              {t('activityLogs.table.duration')}
                             </th>
                             <th scope="col" className="relative px-6 py-3">
-                              <span className="sr-only">Actions</span>
+                              <span className="sr-only">{t('activityLogs.table.actions')}</span>
                             </th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900">
                           {sitemapRequests?.results.map((request) => (
                             <tr key={request.uuid} className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200">
-                              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 dark:text-white sm:pl-6">
+                              <td className="whitespace-nowrap py-4 ps-4 pe-3 text-sm font-medium text-gray-900 dark:text-white sm:ps-6">
                                 <div className="flex items-center">
                                   <span className="max-w-[300px] truncate" title={request.url}>
                                     {request.url}
@@ -176,16 +182,16 @@ const SitemapLogsPage: React.FC = () => {
                                 </div>
                               </td>
                               <td className="whitespace-nowrap px-3 py-4 text-sm">
-                                <SitemapStatusBadge status={request.status} />
+                                <StatusBadge status={request.status as CrawlStatus} />
                               </td>
                               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
-                                {request.created_at ? formatDistanceToNow(new Date(request.created_at), { addSuffix: true }) : 'Unknown'}
+                                {request.created_at ? formatDistanceToNowLocalized(new Date(request.created_at), dateLocale, { addSuffix: true }) : t('common.unknown')}
                               </td>
                               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
                                 {formatDuration(request.duration || null, request.created_at)}
                               </td>
-                              <td className="whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                                <div className="flex justify-end space-x-3">
+                              <td className="whitespace-nowrap py-4 ps-3 pe-4 text-end text-sm font-medium sm:pe-6">
+                                <div className="flex justify-end gap-x-3">
                                   {request.status === SitemapStatus.Finished && (
                                     <SitemapDownloadFormatSelector request={request} />
                                   )}
@@ -197,7 +203,7 @@ const SitemapLogsPage: React.FC = () => {
                                     className="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 focus:outline-none"
                                     title="View details"
                                   >
-                                    <span className="sr-only">View details</span>
+                                    <span className="sr-only">{t('activityLogs.viewDetails')}</span>
                                     <EyeIcon className="h-5 w-5" aria-hidden="true" />
                                   </button>
                                 </div>

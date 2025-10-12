@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useCookieConsent } from '../contexts/CookieConsentContext';
 import { Cookie, X, CheckCircle, XCircle, Settings } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 import Switch from './Switch';
 
@@ -15,6 +16,7 @@ export const CookieConsentModal: React.FC<CookieConsentModalProps & { gtag?: str
   isOpen,
   onClose
 }) => {
+  const { t } = useTranslation();
   const { isConsentGiven, updateConsent, privacyUrl, categories } = useCookieConsent();
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [isClient, setIsClient] = useState(false);
@@ -77,7 +79,7 @@ export const CookieConsentModal: React.FC<CookieConsentModalProps & { gtag?: str
       >
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-600 hover:text-black dark:text-gray-300 dark:hover:text-white transition-colors"
+          className="absolute top-4 end-4 text-gray-600 hover:text-black dark:text-gray-300 dark:hover:text-white transition-colors"
         >
           <X className="w-6 h-6" />
         </button>
@@ -86,16 +88,15 @@ export const CookieConsentModal: React.FC<CookieConsentModalProps & { gtag?: str
           text-2xl font-bold mb-4 flex items-center
           text-gray-900 dark:text-white
         ">
-          <Cookie className="mr-3 w-8 h-8 text-blue-500" />
-          Cookie Preferences
+          <Cookie className="me-3 w-8 h-8 text-blue-500" />
+          {t('cookieConsent.modal.title')}
         </h2>
 
         <p className="
           mb-4 
           text-gray-600 dark:text-gray-300
         ">
-          We use cookies to enhance your browsing experience, analyze site traffic,
-          and personalize content. You can manage your preferences below.
+          {t('cookieConsent.modal.description')}
         </p>
 
         {categories.map((category) => (
@@ -111,7 +112,7 @@ export const CookieConsentModal: React.FC<CookieConsentModalProps & { gtag?: str
             `}
           >
             {!category.essential && (
-              <div className="absolute top-4 right-3">
+              <div className="absolute top-4 end-3">
                 <Switch
                   checked={selectedCategories.includes(category.id)}
                   onChange={() => handleCategoryToggle(category.id)}
@@ -122,14 +123,14 @@ export const CookieConsentModal: React.FC<CookieConsentModalProps & { gtag?: str
               <div>
                 <div className="flex items-center">
                   <h3 className="
-                    font-semibold mr-2
+                    font-semibold me-2
                     text-gray-900 dark:text-white
                   ">
                     {category.name}
                   </h3>
                   {category.essential && (
                     <span className="text-green-600 font-semibold text-xs">
-                      Always Active
+                      {t('cookieConsent.modal.alwaysActive')}
                     </span>
                   )}
                 </div>
@@ -155,7 +156,7 @@ export const CookieConsentModal: React.FC<CookieConsentModalProps & { gtag?: str
                 text-sm
               "
             >
-              Read Our Full Privacy Policy
+              {t('cookieConsent.modal.privacyPolicyLink')}
             </button>
           </div>
           <div className="flex flex-col sm:flex-row sm:justify-between gap-2">
@@ -169,8 +170,8 @@ export const CookieConsentModal: React.FC<CookieConsentModalProps & { gtag?: str
                   text-sm font-medium transition-colors whitespace-nowrap
                 "
               >
-                <Settings className="w-4 h-4 mr-2" />
-                Save Preferences
+                <Settings className="w-4 h-4 me-2" />
+                {t('cookieConsent.modal.savePreferences')}
               </button>
             </div>
             <div className="flex flex-col-reverse sm:flex-row gap-2">
@@ -183,8 +184,8 @@ export const CookieConsentModal: React.FC<CookieConsentModalProps & { gtag?: str
                   text-sm font-medium transition-colors whitespace-nowrap
                 "
               >
-                <XCircle className="w-4 h-4 mr-2" />
-                Reject
+                <XCircle className="w-4 h-4 me-2" />
+                {t('cookieConsent.modal.reject')}
               </button>
               <button
                 onClick={handleAcceptAll}
@@ -195,8 +196,8 @@ export const CookieConsentModal: React.FC<CookieConsentModalProps & { gtag?: str
                   text-sm font-medium transition-colors whitespace-nowrap
                 "
               >
-                <CheckCircle className="w-4 h-4 mr-2" />
-                Accept All
+                <CheckCircle className="w-4 h-4 me-2" />
+                {t('cookieConsent.modal.acceptAll')}
               </button>
             </div>
           </div>

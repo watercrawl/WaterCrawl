@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { ClipboardDocumentIcon, ChevronDownIcon, ChevronUpIcon, EyeIcon, ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
 import { toast } from 'react-hot-toast';
@@ -31,15 +32,16 @@ export const KnowledgeBaseQueryResult: React.FC<KnowledgeBaseQueryResultProps> =
   showSource = true,
   maxPreviewLength = 200
 }) => {
+  const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(false);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
 
   const handleCopy = async (content: string) => {
     try {
       await navigator.clipboard.writeText(content);
-      toast.success('Content copied to clipboard!');
+      toast.success(t('common.copiedToClipboard'));
     } catch (_error) {
-      toast.error('Failed to copy content');
+      toast.error(t('common.copyFailed'));
     }
   };
 
@@ -65,34 +67,34 @@ export const KnowledgeBaseQueryResult: React.FC<KnowledgeBaseQueryResultProps> =
               {showSource && (
                 <div className="mb-2">
                   <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center">
-                    <span className="mr-2">Source:</span>
+                    <span className="me-2">{t('knowledgeBase.source')}:</span>
                     <span className="text-primary-600 dark:text-primary-400 break-all">{result.metadata.source}</span>
                   </p>
                 </div>
               )}
-              <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
-                <span>Chunk #{result.metadata.index}</span>
+              <div className="flex items-center gap-x-2 text-sm text-gray-500 dark:text-gray-400">
+                <span>{t('knowledgeBase.chunk')} #{result.metadata.index}</span>
                 <span>•</span>
-                <span>ID: {result.metadata.uuid.substring(0, 8)}...</span>
+                <span>{t('knowledgeBase.id')}: {result.metadata.uuid.substring(0, 8)}...</span>
               </div>
             </div>
             
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center gap-x-2">
               {showDocumentLink && result.metadata.document_id && (
                 <Link
                   to={`/dashboard/knowledge-base/${result.metadata.knowledge_base_id}/documents/${result.metadata.document_id}`}
                   className="inline-flex items-center px-2 py-1 text-xs font-medium text-primary-600 bg-primary-100 rounded-md hover:bg-primary-200 dark:bg-primary-900 dark:text-primary-300 dark:hover:bg-primary-800 transition-colors"
                   target="_blank"
                 >
-                  <ArrowTopRightOnSquareIcon className="h-3 w-3 mr-1" />
-                  View Document
+                  <ArrowTopRightOnSquareIcon className="h-3 w-3 me-1" />
+                  {t('knowledgeBase.viewDocument')}
                 </Link>
               )}
               <button
                 type="button"
                 onClick={handlePreview}
                 className="inline-flex items-center p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
-                title="Preview full content"
+                title={t('knowledgeBase.previewContent')}
               >
                 <EyeIcon className="h-4 w-4" />
               </button>
@@ -100,7 +102,7 @@ export const KnowledgeBaseQueryResult: React.FC<KnowledgeBaseQueryResultProps> =
                 type="button"
                 onClick={() => handleCopy(result.content)}
                 className="inline-flex items-center p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
-                title="Copy content"
+                title={t('knowledgeBase.copyContent')}
               >
                 <ClipboardDocumentIcon className="h-4 w-4" />
               </button>
@@ -116,8 +118,8 @@ export const KnowledgeBaseQueryResult: React.FC<KnowledgeBaseQueryResultProps> =
                 onClick={() => setIsExpanded(!isExpanded)}
                 className="text-primary-600 dark:text-primary-400 hover:underline text-sm mt-2 inline-flex items-center"
               >
-                {isExpanded ? 'Show less' : 'Show more'}
-                {isExpanded ? <ChevronUpIcon className="h-4 w-4 ml-1" /> : <ChevronDownIcon className="h-4 w-4 ml-1" />}
+                {isExpanded ? t('common.showLess') : t('common.showMore')}
+                {isExpanded ? <ChevronUpIcon className="h-4 w-4 ms-1" /> : <ChevronDownIcon className="h-4 w-4 ms-1" />}
               </button>
             )}
           </div>
@@ -125,7 +127,7 @@ export const KnowledgeBaseQueryResult: React.FC<KnowledgeBaseQueryResultProps> =
           {/* Keywords */}
           {result.metadata.keywords && result.metadata.keywords.length > 0 && (
             <div>
-              <h5 className="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2">Keywords</h5>
+              <h5 className="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2">{t('knowledgeBase.keywords')}</h5>
               <div className="flex flex-wrap gap-2">
                 {result.metadata.keywords.map((keyword, i) => (
                   <span
@@ -145,7 +147,7 @@ export const KnowledgeBaseQueryResult: React.FC<KnowledgeBaseQueryResultProps> =
       <Modal
         isOpen={showPreviewModal}
         onClose={() => setShowPreviewModal(false)}
-        title="Content Preview"
+        title={t('knowledgeBase.contentPreview')}
         size="80vw"
       >
         <div className="mt-4">
@@ -153,15 +155,15 @@ export const KnowledgeBaseQueryResult: React.FC<KnowledgeBaseQueryResultProps> =
             <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
               {showSource && (
                 <div>
-                  <strong>Source:</strong> {result.metadata.source}
+                  <strong>{t('knowledgeBase.source')}:</strong> {result.metadata.source}
                 </div>
               )}
               <div>
-                <strong>Chunk:</strong> #{result.metadata.index} (ID: {result.metadata.uuid})
+                <strong>{t('knowledgeBase.chunk')}:</strong> #{result.metadata.index} ({t('knowledgeBase.id')}: {result.metadata.uuid})
               </div>
               {result.metadata.keywords.length > 0 && (
                 <div>
-                  <strong>Keywords:</strong> {result.metadata.keywords.join(', ')}
+                  <strong>{t('knowledgeBase.keywords')}:</strong> {result.metadata.keywords.join(', ')}
                 </div>
               )}
             </div>

@@ -3,6 +3,7 @@ import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
 import { SitemapRequest } from '../../types/sitemap';
 import { sitemapApi } from '../../services/api/sitemap';
+import { useTranslation } from 'react-i18next';
 
 type DownloadFormat = 'json' | 'markdown' | 'graph';
 
@@ -17,6 +18,7 @@ export const SitemapDownloadFormatSelector: React.FC<DownloadFormatSelectorProps
     className = '',
     buttonWithText = false
 }) => {
+    const { t } = useTranslation();
     const [isOpen, setIsOpen] = useState(false);
     const [isDownloading, setIsDownloading] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -64,10 +66,10 @@ export const SitemapDownloadFormatSelector: React.FC<DownloadFormatSelectorProps
             a.click();
             window.URL.revokeObjectURL(url);
             document.body.removeChild(a);
-            toast.success('Download started');
+            toast.success(t('common.downloadStarted'));
         } catch (error) {
             console.error('Error downloading results:', error);
-            toast.error('Failed to download results');
+            toast.error(t('common.downloadFailed'));
         } finally {
             setIsDownloading(false);
             setIsOpen(false);
@@ -86,8 +88,8 @@ export const SitemapDownloadFormatSelector: React.FC<DownloadFormatSelectorProps
                     }}
                     className="inline-flex items-center px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-md shadow-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 focus:outline-none focus:ring-offset-2 focus:ring-primary-500"
                 >
-                    <ArrowDownTrayIcon className="h-4 w-4 mr-1.5" />
-                    Download
+                    <ArrowDownTrayIcon className="h-4 w-4 me-1.5" />
+                    {t('common.download')}
                 </button>
             ) : (
                 <button
@@ -98,35 +100,35 @@ export const SitemapDownloadFormatSelector: React.FC<DownloadFormatSelectorProps
                     }}
                     disabled={isDownloading}
                     className="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 focus:outline-none"
-                    title="Download Results"
+                    title={t('common.downloadResults')}
                 >
                     <ArrowDownTrayIcon className={`h-5 w-5 ${isDownloading ? 'animate-pulse' : ''}`} />
                 </button>
             )}
 
             {isOpen && (
-                <div className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <div className="absolute end-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <div className="py-1">
                         <button
                             onClick={(e) => handleDownload('json', e)}
                             disabled={!request.result}
-                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                            className="block w-full text-start px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
                         >
-                            Sitemap List (JSON)
+                            {t('download.sitemapListJSON')}
                         </button>
                         <button
                             onClick={(e) => handleDownload('markdown', e)}
                             disabled={!request.result}
-                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                            className="block w-full text-start px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
                         >
-                            Markdown
+                            {t('download.markdown')}
                         </button>
                         <button
                             onClick={(e) => handleDownload('graph', e)}
                             disabled={!request.result}
-                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                            className="block w-full text-start px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
                         >
-                            Site Graph (JSON)
+                            {t('download.siteGraphJSON')}
                         </button>
                     </div>
                 </div>

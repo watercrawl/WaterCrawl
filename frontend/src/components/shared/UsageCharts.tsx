@@ -1,5 +1,6 @@
 import React from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { useTranslation } from 'react-i18next';
 
 interface HistoryData {
   date: string;
@@ -12,6 +13,7 @@ interface UsageChartsProps {
 }
 
 const UsageCharts: React.FC<UsageChartsProps> = ({ crawlHistory, documentHistory }) => {
+  const { t } = useTranslation();
   const chartTooltipStyle = {
     contentStyle: {
       backgroundColor: 'rgb(31 41 55)',
@@ -30,8 +32,8 @@ const UsageCharts: React.FC<UsageChartsProps> = ({ crawlHistory, documentHistory
       {/* Crawls Chart */}
       <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
         <div className="mb-6">
-          <h2 className="text-base font-semibold text-gray-900 dark:text-white">Crawl Requests History</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Number of crawl requests over time</p>
+          <h2 className="text-base font-semibold text-gray-900 dark:text-white">{t('usage.charts.crawlRequestsHistory')}</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400">{t('usage.charts.crawlRequestsDesc')}</p>
         </div>
 
         <div className="h-[300px]">
@@ -73,8 +75,8 @@ const UsageCharts: React.FC<UsageChartsProps> = ({ crawlHistory, documentHistory
       {/* Documents Chart */}
       <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
         <div className="mb-6">
-          <h2 className="text-base font-semibold text-gray-900 dark:text-white">Results History</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Number of results over time</p>
+          <h2 className="text-base font-semibold text-gray-900 dark:text-white">{t('usage.charts.resultsHistory')}</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400">{t('usage.charts.resultsDesc')}</p>
         </div>
 
         <div className="h-[300px]">

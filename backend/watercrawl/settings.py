@@ -68,6 +68,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -81,7 +82,7 @@ ROOT_URLCONF = "watercrawl.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -132,13 +133,29 @@ REDIS_LOCKER_CONFIG = env.db_url("REDIS_LOCKER_URL", default="redis://redis:6379
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = env("LANGUAGE_CODE", cast=str, default="en-us")
+LANGUAGE_CODE = env("LANGUAGE_CODE", cast=str, default="en")
 
 TIME_ZONE = env("TIME_ZONE", cast=str, default="UTC")
 
 USE_I18N = env("USE_I18N", cast=bool, default=True)
 
 USE_TZ = env("USE_TZ", cast=bool, default=True)
+
+LOCALE_PATHS = [
+    BASE_DIR / "locale",
+]
+LANGUAGES = [
+    ("en", "English"),
+    ("de", "German"),
+    ("fr", "French"),
+    ("es", "Spanish"),
+    ("it", "Italian"),
+    ("pt", "Portuguese"),
+    ("ja", "Japanese"),
+    ("zh-hans", "Chinese"),
+    ("ar", "Arabic"),
+    ("fa", "Persian"),
+]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/

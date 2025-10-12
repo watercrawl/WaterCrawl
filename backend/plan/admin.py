@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.translation import gettext as _
 from .models import (
     Plan,
     PlanFeature,
@@ -46,9 +47,9 @@ class PlanAdmin(admin.ModelAdmin):
                 )
             },
         ),
-        ("Stripe Configuration", {"fields": ("stripe_price_id",)}),
+        (_("Stripe Configuration"), {"fields": ("stripe_price_id",)}),
         (
-            "Plan Limits",
+            _("Plan Limits"),
             {
                 "fields": (
                     "number_of_users",
@@ -63,7 +64,7 @@ class PlanAdmin(admin.ModelAdmin):
                 )
             },
         ),
-        ("Timestamps", {"fields": ("created_at", "updated_at")}),
+        (_("Timestamps"), {"fields": ("created_at", "updated_at")}),
     )
 
 
@@ -85,9 +86,9 @@ class SubscriptionAdmin(admin.ModelAdmin):
     inlines = [SubscriptionPaymentInline]
     fieldsets = (
         (None, {"fields": ("team", "plan", "status")}),
-        ("Credits", {"fields": ("remain_page_credit", "remain_daily_page_credit")}),
+        (_("Credits"), {"fields": ("remain_page_credit", "remain_daily_page_credit")}),
         (
-            "Subscription Details",
+            _("Subscription Details"),
             {
                 "fields": (
                     "stripe_subscription_id",
@@ -98,7 +99,7 @@ class SubscriptionAdmin(admin.ModelAdmin):
                 )
             },
         ),
-        ("Timestamps", {"fields": ("created_at", "updated_at")}),
+        (_("Timestamps"), {"fields": ("created_at", "updated_at")}),
     )
 
 
@@ -114,8 +115,8 @@ class SubscriptionPaymentAdmin(admin.ModelAdmin):
     readonly_fields = ("created_at", "updated_at")
     fieldsets = (
         (None, {"fields": ("subscription", "amount")}),
-        ("Payment Details", {"fields": ("stripe_payment_id",)}),
-        ("Timestamps", {"fields": ("created_at", "updated_at")}),
+        (_("Payment Details"), {"fields": ("stripe_payment_id",)}),
+        (_("Timestamps"), {"fields": ("created_at", "updated_at")}),
     )
 
 
@@ -126,7 +127,7 @@ class StripeWebhookHistoryAdmin(admin.ModelAdmin):
     list_per_page = 20
     fieldsets = (
         (None, {"fields": ("data",)}),
-        ("Timestamps", {"fields": ("created_at", "updated_at")}),
+        (_("Timestamps"), {"fields": ("created_at", "updated_at")}),
     )
 
 

@@ -33,7 +33,7 @@ const AdminCard: React.FC<AdminCardProps> = ({
           <div className={`flex-shrink-0 ${iconBgColor} rounded-md p-3`}>
             <Icon className={`h-6 w-6 ${iconTextColor}`} />
           </div>
-          <div className="ml-5">
+          <div className="ms-5">
             <h3 className="text-lg font-medium text-gray-900 dark:text-white">
               {title}
             </h3>

@@ -29,12 +29,12 @@ export const CheckboxWidget: React.FC<FieldProps> = ({
       />
       {schema.title && (
         <label
-          className={`ml-2 block text-sm text-gray-900 dark:text-white ${
+          className={`ms-2 block text-sm text-gray-900 dark:text-white ${
             ui.labelClassName || ''
           }`}
         >
           {schema.title}
-          {required && <span className="text-red-500 ml-1">*</span>}
+          {required && <span className="text-red-500 ms-1">*</span>}
         </label>
       )}
     </div>

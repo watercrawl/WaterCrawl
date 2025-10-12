@@ -1,41 +1,43 @@
-import  { useEffect, useState } from 'react';
+import  { useCallback, useEffect, useState } from 'react';
 import { format } from 'date-fns';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 import Loading from '../shared/Loading';
 import { profileApi } from '../../services/api/profile';
 import { useTeam } from '../../contexts/TeamContext';
 import { Invitation } from '../../types/user';
 
 export function InvitationsList() {
+  const { t } = useTranslation();
   const [invitations, setInvitations] = useState<Invitation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [processingInvitation, setProcessingInvitation] = useState<string | null>(null);
   const { refreshTeams } = useTeam();
 
-  const loadInvitations = async () => {
+  const loadInvitations = useCallback(async () => {
     try {
       const data = await profileApi.getInvitations();
       setInvitations(data);
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Failed to load invitations');
+      toast.error(error.response?.data?.message || t('profile.invitations.loadError'));
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [t]);
 
   useEffect(() => {
     loadInvitations();
-  }, []);
+  }, [loadInvitations]);
 
   const handleAccept = async (uuid: string) => {
     setProcessingInvitation(uuid);
     try {
       await profileApi.acceptInvitation(uuid);
       await refreshTeams(); // Refresh teams list after accepting invitation
-      toast.success('Invitation accepted successfully');
+      toast.success(t('profile.invitations.acceptSuccess'));
       await loadInvitations();
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Failed to accept invitation');
+      toast.error(error.response?.data?.message || t('profile.invitations.acceptError'));
     } finally {
       setProcessingInvitation(null);
     }
@@ -52,7 +54,7 @@ export function InvitationsList() {
   if (invitations.length === 0) {
     return (
       <div className="text-center py-6 text-gray-500 dark:text-gray-400">
-        No pending invitations
+        {t('profile.invitations.noPending')}
       </div>
     );
   }
@@ -78,7 +80,7 @@ export function InvitationsList() {
               disabled={processingInvitation === invitation.uuid}
               className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50"
             >
-              {processingInvitation === invitation.uuid ? <Loading size="sm" /> : 'Accept'}
+              {processingInvitation === invitation.uuid ? <Loading size="sm" /> : t('profile.invitations.acceptButton')}
             </button>
           </div>
         </div>

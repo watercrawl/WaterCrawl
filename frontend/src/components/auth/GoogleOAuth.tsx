@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useGoogleLogin, useGoogleOneTapLogin } from "@react-oauth/google";
 import { LoginButton } from "../shared/LoginButton";
 
@@ -8,6 +9,7 @@ interface GoogleOAuthProps {
 
 
 export default function GoogleOAuth({ onSuccess, onError }: GoogleOAuthProps) {
+    const { t } = useTranslation();
 
     useGoogleOneTapLogin({
       onSuccess: credentialResponse => {
@@ -37,7 +39,7 @@ export default function GoogleOAuth({ onSuccess, onError }: GoogleOAuthProps) {
           fill="currentColor"
         />
       </svg>
-      <span>Continue with Google</span>
+      <span>{t('auth.oauth.continueWithGoogle')}</span>
       </LoginButton>
       );
 }

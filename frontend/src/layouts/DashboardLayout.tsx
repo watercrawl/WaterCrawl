@@ -18,6 +18,8 @@ import {
   ServerIcon,
 } from '@heroicons/react/24/outline';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
+import { useDirection } from '../contexts/DirectionContext';
+import { useTranslation } from 'react-i18next';
 import { TeamSelector } from '../components/dashboard/TeamSelector';
 import { useTheme } from '../contexts/ThemeContext';
 import { useSettings } from '../contexts/SettingsProvider';
@@ -28,6 +30,8 @@ import { GitHubStars } from '../components/shared/GitHubStars';
 import SpiderIcon from '../components/icons/SpiderIcon';
 import Breadcrumbs from '../components/shared/Breadcrumbs';
 import { PlansModal } from '../components/plans/PlansModal';
+import { LanguageSelector } from '../components/shared/LanguageSelector';
+import { ArrowRight } from '../components/shared/DirectionalIcon';
 
 
 
@@ -51,31 +55,34 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
 }) => {
   const { user } = useUser();
   const { settings } = useSettings();
+  const { direction } = useDirection();
+  const { t } = useTranslation();
+  
   const navigation = [
-      { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, end: true },
-      { name: 'Crawl', href: '/dashboard/crawl', icon: SpiderIcon },
-      { name: 'Search', href: '/dashboard/search', icon: MagnifyingGlassIcon },
-      { name: 'Sitemap', href: '/dashboard/sitemap', icon: MapIcon },
+      { name: t('dashboard.navigation.dashboard'), href: '/dashboard', icon: HomeIcon, end: true },
+      { name: t('dashboard.navigation.crawl'), href: '/dashboard/crawl', icon: SpiderIcon },
+      { name: t('dashboard.navigation.search'), href: '/dashboard/search', icon: MagnifyingGlassIcon },
+      { name: t('dashboard.navigation.sitemap'), href: '/dashboard/sitemap', icon: MapIcon },
       ...(settings?.is_knowledge_base_enabled ? [{
-        name: 'Knowledge Base',
+        name: t('dashboard.navigation.knowledgeBase'),
         href: '/dashboard/knowledge-base',
         icon: BookOpenIcon,
       }] : []),
       {
-        name: 'Activity Logs',
+        name: t('dashboard.navigation.activityLogs'),
         icon: ClockIcon,
         children: [
-          { name: 'Crawls', href: '/dashboard/logs/crawls', icon: SpiderIcon },
-          { name: 'Searches', href: '/dashboard/logs/searches', icon: MagnifyingGlassIcon },
-          { name: 'Sitemaps', href: '/dashboard/logs/sitemaps', icon: MapIcon },
-          { name: 'Usage History', href: '/dashboard/logs/usage', icon: DocumentTextIcon },
+          { name: t('dashboard.navigation.crawls'), href: '/dashboard/logs/crawls', icon: SpiderIcon },
+          { name: t('dashboard.navigation.searches'), href: '/dashboard/logs/searches', icon: MagnifyingGlassIcon },
+          { name: t('dashboard.navigation.sitemaps'), href: '/dashboard/logs/sitemaps', icon: MapIcon },
+          { name: t('dashboard.navigation.usageHistory'), href: '/dashboard/logs/usage', icon: DocumentTextIcon },
         ]
       },
-      { name: 'Usage', href: '/dashboard/usage', icon: ChartBarIcon },
-      { name: 'API Keys', href: '/dashboard/api-keys', icon: KeyIcon },
-      { name: 'Settings', href: '/dashboard/settings', icon: Cog6ToothIcon },
-      { name: 'Profile', href: '/dashboard/profile', icon: UserIcon },
-      { name: 'API Reference', href: '/dashboard/api-reference', icon: DocumentTextIcon },
+      { name: t('dashboard.navigation.usage'), href: '/dashboard/usage', icon: ChartBarIcon },
+      { name: t('dashboard.navigation.apiKeys'), href: '/dashboard/api-keys', icon: KeyIcon },
+      { name: t('dashboard.navigation.settings'), href: '/dashboard/settings', icon: Cog6ToothIcon },
+      { name: t('dashboard.navigation.profile'), href: '/dashboard/profile', icon: UserIcon },
+      { name: t('dashboard.navigation.apiReference'), href: '/dashboard/api-reference', icon: DocumentTextIcon },
     ];
   return (
     <ul role="list" className="-mx-2 space-y-1">
@@ -98,13 +105,17 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
                   <span className={isMenuExpanded(item.name) ? 'font-medium text-blue-100' : ''}>{item.name}</span>
                 </div>
                 <ChevronDownIcon
-                  className={`h-5 w-5 shrink-0 text-blue-300 transition-transform duration-200 ease-in-out ${isMenuExpanded(item.name) ? 'rotate-0' : '-rotate-90'}`}
+                  className={`h-5 w-5 shrink-0 text-blue-300 transition-transform duration-200 ease-in-out ${
+                    isMenuExpanded(item.name) 
+                      ? 'rotate-0' 
+                      : direction === 'rtl' ? 'rotate-90' : '-rotate-90'
+                  }`}
                   aria-hidden="true"
                 />
               </button>
 
               <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isMenuExpanded(item.name) ? 'max-h-52 opacity-100' : 'max-h-0 opacity-0'}`}>
-                <ul className="ml-6 mt-2 space-y-2 pl-3 border-l border-blue-700/60">
+                <ul className="ms-6 mt-2 space-y-2 ps-3 border-s border-blue-700/60">
                   {item.children.map((child: any) => (
                     <li key={child.name} className="relative">
                       <NavLink
@@ -156,7 +167,7 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
       {user?.is_superuser && (
         <li key="admin">
           <NavLink
-            to="/admin"
+            to="/manager"
             onClick={isMobile && closeSidebar ? closeSidebar : undefined}
             className={({ isActive }) =>
               `group flex gap-x-3 rounded-md p-2 text-sm font-medium leading-6 ${isActive
@@ -169,7 +180,7 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
               className="h-5 w-5 shrink-0"
               aria-hidden="true"
             />
-            {"Admin Panel ->"}
+            {t('dashboard.navigation.adminPanel')} <ArrowRight className="h-4 w-4 shrink-0 mt-1" />
           </NavLink>
         </li>
       )}
@@ -185,6 +196,7 @@ export const DashboardLayout = () => {
   const location = useLocation();
   const { showSubscriptionBanner } = useTeam();
   const { showPrivacyTermsModal } = useUser();
+  const { t } = useTranslation();
   // Set breadcrumbs based on current path
 
 
@@ -235,7 +247,7 @@ export const DashboardLayout = () => {
 
         {/* Sidebar */}
         <div
-          className={`fixed inset-y-0 left-0 z-50 flex w-full max-w-xs transform flex-col overflow-y-auto bg-blue-950 px-6 py-6 transition-transform duration-200 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          className={`fixed inset-y-0 start-0 z-50 flex w-full max-w-xs transform flex-col overflow-y-auto bg-blue-950 px-6 py-6 transition-transform duration-200 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
             }`}
         >
           <div className="flex items-center justify-between mb-6">
@@ -324,7 +336,7 @@ export const DashboardLayout = () => {
               />
             </div>
 
-            Version: <b>{settings?.api_version}</b>
+            {t('common.version')}: <b>{settings?.api_version}</b>
 
             {/* Copyright */}
             <p className="text-xs leading-6 text-blue-200/60 pt-2">
@@ -342,7 +354,7 @@ export const DashboardLayout = () => {
         </div>
       </div>
 
-      <div className="lg:pl-72 min-h-screen flex flex-col">
+      <div className="lg:ps-72 min-h-screen flex flex-col">
         <main className="bg-gray-50 dark:bg-gray-900 flex-1">
           <div className="sticky top-0 z-40 flex h-16 items-center gap-x-4 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 px-4 sm:px-6 lg:px-8 shadow-sm">
             <button
@@ -360,7 +372,7 @@ export const DashboardLayout = () => {
             <div className="flex flex-1 items-center">
               <div className="flex-1">
                 <div className="flex items-center justify-between w-full">
-                  <div className="flex items-center space-x-2 sm:space-x-3 overflow-hidden">
+                  <div className="flex items-center gap-x-2 sm:gap-x-3 overflow-hidden">
                     <div className="flex-shrink-0">
                       <TeamSelector />
                     </div>
@@ -368,17 +380,20 @@ export const DashboardLayout = () => {
 
                     </div>
                   </div>
-                  <button
-                    onClick={toggleTheme}
-                    className="flex-shrink-0 p-1.5 sm:p-2 rounded-md bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 ml-2"
-                    aria-label="Toggle theme"
-                  >
-                    {theme === 'dark' ? (
-                      <SunIcon className="h-4 w-4 sm:h-5 sm:w-5" />
-                    ) : (
-                      <MoonIcon className="h-4 w-4 sm:h-5 sm:w-5" />
-                    )}
-                  </button>
+                  <div className="flex items-center gap-x-2">
+                    <LanguageSelector />
+                    <button
+                      onClick={toggleTheme}
+                      className="flex-shrink-0 p-1.5 sm:p-2 rounded-md bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"
+                      aria-label="Toggle theme"
+                    >
+                      {theme === 'dark' ? (
+                        <SunIcon className="h-4 w-4 sm:h-5 sm:w-5" />
+                      ) : (
+                        <MoonIcon className="h-4 w-4 sm:h-5 sm:w-5" />
+                      )}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

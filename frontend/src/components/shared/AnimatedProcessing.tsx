@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface AnimatedProcessingProps {
   className?: string;
 }
 
 export const AnimatedProcessing: React.FC<AnimatedProcessingProps> = ({ className = '' }) => {
+  const { t } = useTranslation();
   const [messageIndex, setMessageIndex] = useState(0);
   const messages = [
-    "🕷️ Crawling the web",
-    "❄️ Converting data",
-    "🔍 Analyzing content",
-    "🎯 Almost there"
+    t('processing.crawling'),
+    t('processing.converting'),
+    t('processing.analyzing'),
+    t('processing.almostThere')
   ];
 
   useEffect(() => {

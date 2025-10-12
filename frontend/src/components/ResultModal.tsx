@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Dialog } from '@headlessui/react';
 import { Tab } from '@headlessui/react';
 import { XMarkIcon, ArrowDownTrayIcon } from '@heroicons/react/24/outline';
@@ -11,7 +12,7 @@ interface CrawlResultModalProps {
 }
 
 export default function CrawlResultModal({ isOpen, onClose, result }: CrawlResultModalProps) {
-
+  const { t } = useTranslation();
 
   if (!isOpen) return null;
 
@@ -24,8 +25,8 @@ export default function CrawlResultModal({ isOpen, onClose, result }: CrawlResul
     >
       <div className="fixed inset-0 bg-gray-500/75 dark:bg-gray-900/75" />
       <div className="relative mx-auto max-w-4xl">
-        <div className="w-full transform overflow-hidden rounded-2xl bg-white dark:bg-gray-900 p-6 text-left align-middle shadow-xl transition-all">
-          <div className="absolute top-0 right-0 pt-4 pr-4">
+        <div className="w-full transform overflow-hidden rounded-2xl bg-white dark:bg-gray-900 p-6 text-start align-middle shadow-xl transition-all">
+          <div className="absolute top-0 end-0 pt-4 pe-4">
             <button
               onClick={onClose}
               className="bg-white dark:bg-gray-900 rounded-md text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
@@ -41,14 +42,14 @@ export default function CrawlResultModal({ isOpen, onClose, result }: CrawlResul
               {result.url ? (
                 <span className="truncate max-w-lg block" title={result.url}>{result.url}</span>
               ) : (
-                'Result Details'
+                t('results.details')
               )}
             </Dialog.Title>
           </div>
 
           {/* Tabbed Content Area */}
           <Tab.Group>
-            <Tab.List className="flex space-x-1 rounded-xl bg-gray-100 dark:bg-gray-800 p-1 mb-4">
+            <Tab.List className="flex gap-x-1 rounded-xl bg-gray-100 dark:bg-gray-800 p-1 mb-4">
               <Tab
                 className={({ selected }: { selected: boolean }) =>
                   `${selected
@@ -57,7 +58,7 @@ export default function CrawlResultModal({ isOpen, onClose, result }: CrawlResul
                   } w-full rounded-lg py-2.5 text-sm font-medium leading-5 transition-colors focus:outline-none focus:ring-2 ring-offset-2 ring-offset-primary-400 ring-white/60 ring-opacity-60 px-4`
                 }
               >
-                Markdown
+                {t('results.markdown')}
               </Tab>
               <Tab
                 className={({ selected }: { selected: boolean }) =>
@@ -67,7 +68,7 @@ export default function CrawlResultModal({ isOpen, onClose, result }: CrawlResul
                   } w-full rounded-lg py-2.5 text-sm font-medium leading-5 transition-colors focus:outline-none focus:ring-2 ring-offset-2 ring-offset-primary-400 ring-white/60 ring-opacity-60 px-4`
                 }
               >
-                JSON
+                {t('results.json')}
               </Tab>
               {result.attachments && result.attachments.length > 0 && (
                 <Tab
@@ -78,20 +79,20 @@ export default function CrawlResultModal({ isOpen, onClose, result }: CrawlResul
                     } w-full rounded-lg py-2.5 text-sm font-medium leading-5 transition-colors focus:outline-none focus:ring-2 ring-offset-2 ring-offset-primary-400 ring-white/60 ring-opacity-60 px-4`
                   }
                 >
-                  Attachments ({result.attachments.length})
+                  {t('results.attachments')} ({result.attachments.length})
                 </Tab>
               )}
             </Tab.List>
             <Tab.Panels>
               <Tab.Panel className="rounded-xl focus:outline-none">
-                <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 max-h-[60vh] overflow-y-auto border border-gray-200 dark:border-gray-700">
+                <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 max-h-[60vh] overflow-y-auto border border-gray-200 dark:border-gray-700 ltr">
                   <div className="prose dark:prose-invert max-w-none">
-                    <pre className='text-sm font-mono whitespace-pre-wrap p-4 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 rounded-md shadow-inner overflow-auto'>{(result.result as ResultData)?.markdown || 'No content available'}</pre>
+                    <pre className='text-sm font-mono whitespace-pre-wrap p-4 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 rounded-md shadow-inner overflow-auto ltr'>{(result.result as ResultData)?.markdown || t('results.noContent')}</pre>
                   </div>
                 </div>
               </Tab.Panel>
               <Tab.Panel className="rounded-xl focus:outline-none h-[60vh] flex flex-col">
-                <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-0 flex-1 flex flex-col max-h-full overflow-hidden border border-gray-200 dark:border-gray-700">
+                <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-0 flex-1 flex flex-col max-h-full overflow-hidden border border-gray-200 dark:border-gray-700 ltr">
                   <Editor
                     height="100%"
                     defaultLanguage="json"
@@ -108,7 +109,7 @@ export default function CrawlResultModal({ isOpen, onClose, result }: CrawlResul
               </Tab.Panel>
               {result.attachments && result.attachments.length > 0 && (
                 <Tab.Panel className="rounded-xl focus:outline-none">
-                  <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 max-h-[60vh] overflow-y-auto border border-gray-200 dark:border-gray-700">
+                  <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 max-h-[60vh] overflow-y-auto border border-gray-200 dark:border-gray-700 ltr">
                     <div className="space-y-3">
                       {result.attachments.map((attachment) => (
                         <div
@@ -122,10 +123,10 @@ export default function CrawlResultModal({ isOpen, onClose, result }: CrawlResul
                             href={attachment.attachment}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center space-x-2 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+                            className="inline-flex items-center gap-x-2 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
                           >
                             <ArrowDownTrayIcon className="h-4 w-4" />
-                            <span>Download</span>
+                            <span>{t('common.download')}</span>
                           </a>
                         </div>
                       ))}

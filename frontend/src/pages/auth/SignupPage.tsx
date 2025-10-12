@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 import { SignupForm } from '../../components/auth/SignupForm';
 import { AuthService } from '../../services/authService';
 import { authApi } from '../../services/api/auth';
@@ -8,6 +9,7 @@ import { VerifyInvitationResponse } from '../../types/auth';
 import { useSettings } from '../../contexts/SettingsProvider';
 
 const SignupPage = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [invitation, setInvitation] = useState<VerifyInvitationResponse | null>(null);
@@ -27,7 +29,7 @@ const SignupPage = () => {
       authApi.verifyInvitationCode(invitationCode)
         .then((response) => {
           if (!response.new_user) {
-            toast.success('You can activate your invitation in your account dashboard', {
+            toast.success(t('profile.invitations.acceptSuccess'), {
               duration: 3000,
             });
             navigate('/');
@@ -37,7 +39,7 @@ const SignupPage = () => {
         })
         .catch((error) => {
           console.error('Error verifying invitation code:', error);
-          toast.error('Failed to verify invitation code', {
+          toast.error(t('profile.invitations.acceptError'), {
             duration: 3000,
           });
           navigate('/');
@@ -47,7 +49,7 @@ const SignupPage = () => {
         navigate('/');
       }
     }
-  }, [invitationCode, navigate, settings?.is_signup_active]);
+  }, [invitationCode, navigate, settings?.is_signup_active, t]);
 
   return (<SignupForm invitation={invitation} /> );
 };

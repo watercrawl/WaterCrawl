@@ -10,10 +10,10 @@ class UsageHistoryFilter(django_filters.FilterSet):
         field_name="content_type_filter",
         label=_("Content type"),
         choices=[
-            ("core.crawlrequest", "Crawl request"),
-            ("core.searchrequest", "Search request"),
-            ("core.sitemaprequest", "Sitemap request"),
-            ("knowledge_base.knowledgebasedocument", "Knowledge base document"),
+            ("core.crawlrequest", _("Crawl request")),
+            ("core.searchrequest", _("Search request")),
+            ("core.sitemaprequest", _("Sitemap request")),
+            ("knowledge_base.knowledgebasedocument", _("Knowledge base document")),
         ],
         method="filter_content_type",
     )
@@ -30,7 +30,7 @@ class UsageHistoryFilter(django_filters.FilterSet):
             app_label, model = value.split(".")
         except ValueError:
             raise ValidationError(
-                {"content_type": "Invalid value. Expected format: app_label.model"}
+                {"content_type": _("Invalid value. Expected format: app_label.model")}
             )
 
         return queryset.filter(

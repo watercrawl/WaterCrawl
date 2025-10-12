@@ -1,17 +1,22 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { formatDistanceToNow, format } from 'date-fns';
+import { format } from 'date-fns';
 import { CrawlRequest } from '../../types/crawl';
 import { DocumentTextIcon, ClockIcon, CalendarIcon, ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
 import { formatDuration } from '../../utils/formatters';
 import { StatusBadge } from './StatusBadge';
+import { useTranslation } from 'react-i18next';
+import { useDateLocale } from '../../hooks/useDateLocale';
+import { formatDistanceToNowLocalized } from '../../utils/dateUtils';
 
 interface CrawlRequestCardProps {
   request: CrawlRequest;
 }
 
 export const CrawlRequestCard: React.FC<CrawlRequestCardProps> = ({ request }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
+  const dateLocale = useDateLocale();
 
   const getDurationDisplay = (duration: string | null) => {
     if (request.status === 'running') {
@@ -29,11 +34,11 @@ export const CrawlRequestCard: React.FC<CrawlRequestCardProps> = ({ request }) =
       <div className="p-4">
         <div className="flex items-start justify-between">
           <div className="flex-1 min-w-0">
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center gap-x-2">
               <StatusBadge status={request.status} />
               {request.duration && (
                 <span className="inline-flex items-center text-xs text-gray-500 dark:text-gray-400">
-                  <ClockIcon className="w-3.5 h-3.5 mr-1" />
+                  <ClockIcon className="w-3.5 h-3.5 me-1" />
                   {getDurationDisplay(request.duration)}
                 </span>
               )}
@@ -42,7 +47,7 @@ export const CrawlRequestCard: React.FC<CrawlRequestCardProps> = ({ request }) =
               {request.url}
             </h3>
           </div>
-          <ArrowTopRightOnSquareIcon className="w-5 h-5 text-gray-400 dark:text-gray-500 flex-shrink-0 ml-4" />
+          <ArrowTopRightOnSquareIcon className="w-5 h-5 text-gray-400 dark:text-gray-500 flex-shrink-0 ms-4" />
         </div>
       </div>
 
@@ -51,15 +56,15 @@ export const CrawlRequestCard: React.FC<CrawlRequestCardProps> = ({ request }) =
         <div className="grid grid-cols-2 divide-x divide-gray-200 dark:divide-gray-700">
           <div className="px-4 py-3 sm:px-4">
             <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-              <DocumentTextIcon className="flex-shrink-0 mr-1.5 h-4 w-4" />
-              <span>{request.number_of_documents} documents</span>
+              <DocumentTextIcon className="flex-shrink-0 me-1.5 h-4 w-4" />
+              <span>{request.number_of_documents} {t('common.documents')}</span>
             </div>
           </div>
           <div className="px-4 py-3 sm:px-4">
             <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-              <CalendarIcon className="flex-shrink-0 mr-1.5 h-4 w-4" />
+              <CalendarIcon className="flex-shrink-0 me-1.5 h-4 w-4" />
               <span title={format(new Date(request.created_at), 'PPpp')}>
-                {formatDistanceToNow(new Date(request.created_at), { addSuffix: true })}
+                {formatDistanceToNowLocalized(new Date(request.created_at), dateLocale, { addSuffix: true })}
               </span>
             </div>
           </div>

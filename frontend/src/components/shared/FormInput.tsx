@@ -19,9 +19,9 @@ export const FormInput: React.FC<FormInputProps> = ({
     <div className="space-y-1">
       <label htmlFor={name} className="block text-sm font-medium text-gray-700 dark:text-gray-200">
         {label}
-        {required && <span className="text-red-500 ml-1">*</span>}
+        {required && <span className="text-red-500 ms-1">*</span>}
       </label>
-      <div className="relative">
+      <div className="relative ltr">
         <input
           {...register(name)}
           type={type}
@@ -37,13 +37,13 @@ export const FormInput: React.FC<FormInputProps> = ({
             focus:ring-primary-500 dark:focus:ring-primary-400
             sm:text-sm
             ${error ? 'border-red-500 dark:border-red-400' : 'border-gray-300 dark:border-gray-600'}
-            ${endAdornment ? 'pr-10' : ''}
+            ${endAdornment ? 'pe-10' : ''}
             ${className}
             ${disabled && 'opacity-50 cursor-not-allowed'}
           `}
         />
         {endAdornment && (
-          <div className="absolute inset-y-0 right-0 flex items-center">
+          <div className="absolute inset-y-0 end-0 flex items-center">
             {endAdornment}
           </div>
         )}

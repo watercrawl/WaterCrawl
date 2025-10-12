@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronRightIcon, HomeIcon } from '@heroicons/react/20/solid';
+import { HomeIcon } from '@heroicons/react/24/solid';
 import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
+import { ChevronRight } from '../../components/shared/DirectionalIcon';
+import { useTranslation } from 'react-i18next';
 
 interface BreadcrumbsProps {
   homeHref?: string;
@@ -12,6 +14,7 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
   homeHref = '/dashboard', 
   className = '' 
 }) => {
+  const { t } = useTranslation();
   const { items } = useBreadcrumbs();
   // Function to render breadcrumb items with responsive design
   const renderItems = () => {
@@ -27,7 +30,7 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
                 className="text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400"
               >
                 <HomeIcon className="flex-shrink-0 h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
-                <span className="sr-only">Home</span>
+                <span className="sr-only">{t('common.home')}</span>
               </Link>
             </div>
           </li>
@@ -48,19 +51,19 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
           {items.slice(0, -2).map((item, index) => (
             <li key={`${item.label}-${index}`} className="hidden sm:block">
               <div className="flex items-center">
-                <ChevronRightIcon
+                <ChevronRight
                   className="flex-shrink-0 h-4 w-4 sm:h-5 sm:w-5 text-gray-400 dark:text-gray-600"
                   aria-hidden="true"
                 />
                 {item.href ? (
                   <Link
                     to={item.href}
-                    className="ml-2 sm:ml-3 text-xs sm:text-sm font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+                    className="ms-2 sm:ms-3 text-xs sm:text-sm font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
                   >
                     {item.label}
                   </Link>
                 ) : (
-                  <span className="ml-2 sm:ml-3 text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
+                  <span className="ms-2 sm:ms-3 text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
                     {item.label}
                   </span>
                 )}
@@ -72,11 +75,11 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
           {items.length > 2 && (
             <li className="sm:hidden">
               <div className="flex items-center">
-                <ChevronRightIcon
+                <ChevronRight
                   className="flex-shrink-0 h-4 w-4 text-gray-400 dark:text-gray-600"
                   aria-hidden="true"
                 />
-                <span className="ml-1 text-xs font-medium text-gray-500 dark:text-gray-400">...</span>
+                <span className="ms-1 text-xs font-medium text-gray-500 dark:text-gray-400">...</span>
               </div>
             </li>
           )}
@@ -85,14 +88,14 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
           {items.slice(-2).map((item, index) => (
             <li key={`last-${item.label}-${index}`}>
               <div className="flex items-center">
-                <ChevronRightIcon
+                <ChevronRight
                   className="flex-shrink-0 h-4 w-4 sm:h-5 sm:w-5 text-gray-400 dark:text-gray-600"
                   aria-hidden="true"
                 />
                 {item.href && !item.current ? (
                   <Link
                     to={item.href}
-                    className="ml-2 sm:ml-3 text-xs sm:text-sm font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 truncate max-w-[100px] sm:max-w-xs"
+                    className="ms-2 sm:ms-3 text-xs sm:text-sm font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 truncate max-w-[100px] sm:max-w-xs"
                     aria-current={item.current ? 'page' : undefined}
                     title={item.label}
                   >
@@ -100,7 +103,7 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
                   </Link>
                 ) : (
                   <span
-                    className="ml-2 sm:ml-3 text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 truncate max-w-[100px] sm:max-w-xs"
+                    className="ms-2 sm:ms-3 text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 truncate max-w-[100px] sm:max-w-xs"
                     aria-current={item.current ? 'page' : undefined}
                     title={item.label}
                   >
@@ -123,21 +126,21 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
                 className="text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400"
               >
                 <HomeIcon className="flex-shrink-0 h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
-                <span className="sr-only">Home</span>
+                <span className="sr-only">{t('common.home')}</span>
               </Link>
             </div>
           </li>
           {items.map((item, index) => (
             <li key={`${item.label}-${index}`}>
               <div className="flex items-center">
-                <ChevronRightIcon
+                <ChevronRight
                   className="flex-shrink-0 h-4 w-4 sm:h-5 sm:w-5 text-gray-400 dark:text-gray-600"
                   aria-hidden="true"
                 />
                 {item.href && !item.current ? (
                   <Link
                     to={item.href}
-                    className="ml-2 sm:ml-3 text-xs sm:text-sm font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 truncate max-w-[100px] sm:max-w-xs"
+                    className="ms-2 sm:ms-3 text-xs sm:text-sm font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 truncate max-w-[100px] sm:max-w-xs"
                     aria-current={item.current ? 'page' : undefined}
                     title={item.label}
                   >
@@ -145,7 +148,7 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
                   </Link>
                 ) : (
                   <span
-                    className="ml-2 sm:ml-3 text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 truncate max-w-[100px] sm:max-w-xs"
+                    className="ms-2 sm:ms-3 text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 truncate max-w-[100px] sm:max-w-xs"
                     aria-current={item.current ? 'page' : undefined}
                     title={item.label}
                   >
@@ -167,7 +170,7 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
   return (
     <div className="px-4 py-2 sm:px-6 sm:py-3">
     <nav className={`flex ${className}`} aria-label="Breadcrumb">
-      <ol className="flex items-center space-x-1 sm:space-x-2">
+      <ol className="flex items-center gap-x-1 sm:gap-x-2">
         {renderItems()}
       </ol>
     </nav>

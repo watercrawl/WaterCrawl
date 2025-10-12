@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { MagnifyingGlassIcon, EyeIcon, ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 import { SearchRequest, SearchStatus } from '../../types/search';
@@ -8,21 +8,26 @@ import { PaginatedResponse } from '../../types/common';
 import { toast } from 'react-hot-toast';
 import { searchApi } from '../../services/api/search';
 import { useIsTabletOrMobile } from '../../hooks/useMediaQuery';
-import { formatDistanceToNow } from 'date-fns';
 import { formatDuration } from '../../utils/formatters';
-import { SearchStatusBadge } from '../../components/shared/SearchRequestCard';
+import { useDateLocale } from '../../hooks/useDateLocale';
+import { formatDistanceToNowLocalized } from '../../utils/dateUtils';
 import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
-
-// Status options for filtering
-const STATUS_OPTIONS = [
-  { value: '', label: 'All Statuses' },
-  { value: 'new', label: 'New' },
-  { value: 'running', label: 'Running' },
-  { value: 'finished', label: 'Finished' },
-  { value: 'canceled', label: 'Canceled' },
-];
+import { useTranslation } from 'react-i18next';
+import { StatusBadge } from '../../components/shared/StatusBadge';
+import { CrawlStatus } from '../../types/crawl';
 
 const SearchLogsPage: React.FC = () => {
+  const { t } = useTranslation();
+  const dateLocale = useDateLocale();
+  
+  // Status options for filtering
+  const STATUS_OPTIONS = [
+    { value: '', label: t('activityLogs.filters.allStatuses') },
+    { value: 'new', label: t('status.new') },
+    { value: 'running', label: t('status.running') },
+    { value: 'finished', label: t('status.finished') },
+    { value: 'canceled', label: t('status.canceled') },
+  ];
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchRequests, setSearchRequests] = useState<PaginatedResponse<SearchRequest> | null>(null);
@@ -35,10 +40,10 @@ const SearchLogsPage: React.FC = () => {
 
   useEffect(() => {
     setItems([
-      { label: 'Dashboard', href: '/dashboard'},
-      { label: 'Search Logs', href: '/dashboard/logs/searches', current: true },
+      { label: t('dashboard.title'), href: '/dashboard'},
+      { label: t('activityLogs.searchLogs'), href: '/dashboard/logs/searches', current: true },
     ]);
-  }, [setItems]);
+  }, [setItems, t]);
 
   // Initialize selectedStatus from URL params
   useEffect(() => {
@@ -46,22 +51,22 @@ const SearchLogsPage: React.FC = () => {
     setSelectedStatus(statusParam);
   }, [searchParams]);
 
-  const fetchSearchRequests = async (page: number, status?: string) => {
+  const fetchSearchRequests = useCallback(async (page: number, status?: string) => {
     try {
       setLoading(true);
       const data = await searchApi.list(page, status);
       setSearchRequests(data);
     } catch (error) {
       console.error('Error fetching search requests:', error);
-      toast.error('Failed to fetch search history.');
+      toast.error(t('activityLogs.errors.fetchFailed'));
     } finally {
       setLoading(false);
     }
-  };
+  }, [t]);
 
   useEffect(() => {
     fetchSearchRequests(currentPage, selectedStatus);
-  }, [currentPage, selectedStatus]);
+  }, [currentPage, selectedStatus, fetchSearchRequests]);
 
   // Update URL when status filter changes
   const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -85,7 +90,7 @@ const SearchLogsPage: React.FC = () => {
       <div className="h-full flex items-center justify-center">
         <div className="flex flex-col items-center space-y-4">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Loading activity logs...</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">{t('activityLogs.loading')}</p>
         </div>
       </div>
     );
@@ -96,22 +101,22 @@ const SearchLogsPage: React.FC = () => {
   return (
     <div className="h-full">
       <div className="px-4 sm:px-8 py-6">
-        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Search History</h1>
+        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">{t('activityLogs.searchLogs')}</h1>
         <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-          View your recent search requests and their results
+          {t('activityLogs.searchLogsDesc')}
         </p>
 
         <div className="mt-8">
           {/* Status Filter - Positioned at the top */}
           <div className="mb-6">
             <label htmlFor="status-filter" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Filter by Status
+              {t('activityLogs.filters.filterByStatus')}
             </label>
             <select
               id="status-filter"
               value={selectedStatus}
               onChange={handleStatusChange}
-              className="mt-1 block w-full sm:w-48 rounded-md border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 py-2 pl-3 pr-10 text-base focus:border-primary-500 focus:outline-none focus:ring-primary-500 dark:text-white sm:text-sm"
+              className="mt-1 block w-full sm:w-48 rounded-md border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 py-2 ps-3 pe-10 text-base focus:border-primary-500 focus:outline-none focus:ring-primary-500 dark:text-white sm:text-sm"
             >
               {STATUS_OPTIONS.map((option) => (
                 <option key={option.value} value={option.value}>
@@ -124,9 +129,9 @@ const SearchLogsPage: React.FC = () => {
           {hasNoData ? (
             <div className="text-center py-12 bg-white dark:bg-gray-800 shadow rounded-lg">
               <MagnifyingGlassIcon className="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500" />
-              <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-white">No search requests found</h3>
+              <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-white">{t('activityLogs.noSearchRequestsFound')}</h3>
               <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                Try changing your filter or create a new search request.
+                {t('activityLogs.tryChangingFilterOrCreateNewSearchRequest')}
               </p>
             </div>
           ) : (
@@ -147,27 +152,27 @@ const SearchLogsPage: React.FC = () => {
                       <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                         <thead>
                           <tr>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                              Query
+                            <th scope="col" className="px-6 py-3 text-start text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                              {t('activityLogs.table.query')}
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                              Status
+                            <th scope="col" className="px-6 py-3 text-start text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                              {t('activityLogs.table.status')}
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                              Created
+                            <th scope="col" className="px-6 py-3 text-start text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                              {t('activityLogs.table.created')}
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                              Duration
+                            <th scope="col" className="px-6 py-3 text-start text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                              {t('activityLogs.table.duration')}
                             </th>
                             <th scope="col" className="relative px-6 py-3">
-                              <span className="sr-only">Actions</span>
+                              <span className="sr-only">{t('common.actions')}</span>
                             </th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900">
                           {searchRequests?.results.map((request) => (
                             <tr key={request.uuid} className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200">
-                              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 dark:text-white sm:pl-6">
+                              <td className="whitespace-nowrap py-4 ps-4 pe-3 text-sm font-medium text-gray-900 dark:text-white sm:ps-6">
                                 <div className="flex items-center">
                                   <span className="max-w-[300px] truncate" title={request.query}>
                                     {request.query}
@@ -175,16 +180,16 @@ const SearchLogsPage: React.FC = () => {
                                 </div>
                               </td>
                               <td className="whitespace-nowrap px-3 py-4 text-sm">
-                                <SearchStatusBadge status={request.status} />
+                                <StatusBadge status={request.status as CrawlStatus} />
                               </td>
                               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
-                                {request.created_at ? formatDistanceToNow(new Date(request.created_at), { addSuffix: true }) : 'Unknown'}
+                                {request.created_at ? formatDistanceToNowLocalized(new Date(request.created_at), dateLocale, { addSuffix: true }) : t('common.unknown')}
                               </td>
                               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
                                 {formatDuration(request.duration || null, request.created_at)}
                               </td>
-                              <td className="whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                                <div className="flex justify-end space-x-3">
+                              <td className="whitespace-nowrap py-4 ps-3 pe-4 text-end text-sm font-medium sm:pe-6">
+                                <div className="flex justify-end gap-x-3">
                                   {request.status === SearchStatus.Finished && (
                                     <button
                                       onClick={(e) => {
@@ -199,7 +204,7 @@ const SearchLogsPage: React.FC = () => {
                                         URL.revokeObjectURL(url);
                                       }}
                                       className="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 focus:outline-none disabled:opacity-50"
-                                      title="Download results"
+                                      title={t('activityLogs.downloadResults')}
                                     >
                                       <ArrowDownTrayIcon className="h-5 w-5" aria-hidden="true" />
                                     </button>
@@ -210,9 +215,9 @@ const SearchLogsPage: React.FC = () => {
                                       navigate(`/dashboard/logs/searches/${request.uuid}`);
                                     }}
                                     className="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 focus:outline-none"
-                                    title="View details"
+                                    title={t('activityLogs.viewDetails')}
                                   >
-                                    <span className="sr-only">View details</span>
+                                    <span className="sr-only">{t('activityLogs.viewDetails')}</span>
                                     <EyeIcon className="h-5 w-5" aria-hidden="true" />
                                   </button>
                                 </div>

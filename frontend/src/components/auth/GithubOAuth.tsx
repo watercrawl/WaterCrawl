@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { LoginButton } from '../shared/LoginButton';
 
 interface GithubOAuthProps {
@@ -8,6 +9,8 @@ interface GithubOAuthProps {
 }
 
 export default function GithubOAuth({ clientId, onSuccess, onError }: GithubOAuthProps) {
+    const { t } = useTranslation();
+    
     useEffect(() => {
         // Check if this is the popup window
         const urlParams = new URLSearchParams(window.location.search);
@@ -98,8 +101,8 @@ export default function GithubOAuth({ clientId, onSuccess, onError }: GithubOAut
         return (
             <div className="flex items-center justify-center min-h-screen">
                 <div className="text-center">
-                    <h2 className="text-xl font-semibold mb-2">Authentication Complete</h2>
-                    <p className="text-gray-600">This window will close automatically...</p>
+                    <h2 className="text-xl font-semibold mb-2">{t('auth.oauth.authComplete')}</h2>
+                    <p className="text-gray-600">{t('auth.oauth.windowWillClose')}</p>
                 </div>
             </div>
         );
@@ -113,7 +116,7 @@ export default function GithubOAuth({ clientId, onSuccess, onError }: GithubOAut
                     fill="currentColor"
                 />
             </svg>
-            <span>Continue with GitHub</span>
+            <span>{t('auth.oauth.continueWithGithub')}</span>
         </LoginButton>
     );
 }

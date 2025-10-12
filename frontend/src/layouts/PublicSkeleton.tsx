@@ -1,15 +1,19 @@
 import React from 'react';
 import { useTheme } from '../contexts/ThemeContext';
 import { SunIcon, MoonIcon } from '@heroicons/react/24/outline';
+import { LanguageSelector } from '../components/shared/LanguageSelector';
 
 export const PublicSkeleton: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { theme, toggleTheme } = useTheme();
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div className="absolute top-4 end-16">
+        <LanguageSelector />
+      </div>
       <button
         onClick={toggleTheme}
-        className="absolute top-4 right-4 p-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+        className="absolute top-4 end-4 p-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
         aria-label="Toggle theme"
       >
         {theme === 'dark' ? (

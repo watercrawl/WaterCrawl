@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface LoadingProps {
   size?: 'sm' | 'md' | 'lg';
@@ -6,6 +7,7 @@ interface LoadingProps {
 }
 
 const Loading: React.FC<LoadingProps> = ({ size = 'md', className = '' }) => {
+  const { t } = useTranslation();
   const sizeClasses = {
     sm: 'w-4 h-4',
     md: 'w-8 h-8',
@@ -19,7 +21,7 @@ const Loading: React.FC<LoadingProps> = ({ size = 'md', className = '' }) => {
         role="status"
         aria-label="loading"
       >
-        <span className="sr-only">Loading...</span>
+        <span className="sr-only">{t('common.loading')}</span>
       </div>
     </div>
   );

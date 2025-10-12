@@ -1,0 +1,2204 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-06 10:58+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: agent/models.py:9 core/models.py:147 llm/models.py:8 llm/models.py:102
+#: user/models.py:71 user/models.py:160
+msgid "Name"
+msgstr "الاسم"
+
+#: agent/models.py:14
+msgid "System Prompt"
+msgstr "موجه النظام"
+
+#: agent/models.py:21
+msgid "Config Provider"
+msgstr "مزود التهيئة"
+
+#: agent/models.py:29
+msgid "LLM Model"
+msgstr "نموذج LLM"
+
+#: agent/models.py:37 core/consts.py:203 knowledge_base/models.py:15
+#: llm/models.py:56 plan/models.py:115 plan/models.py:194 user/models.py:92
+#: user/models.py:110 user/models.py:130 user/models.py:165
+msgid "Team"
+msgstr "الفريق"
+
+#: agent/models.py:47 agent/models.py:59
+msgid "Agent"
+msgstr "الوكيل"
+
+#: agent/models.py:48
+msgid "Agents"
+msgstr "الوكلاء"
+
+#: agent/models.py:53
+msgid "Tool Type"
+msgstr "نوع الأداة"
+
+#: agent/models.py:63
+msgid "Config"
+msgstr "التهيئة"
+
+#: agent/models.py:75
+msgid "agent"
+msgstr "الوكيل"
+
+#: agent/models.py:83 core/models.py:19 core/models.py:117 core/models.py:172
+#: core/models.py:193
+msgid "team"
+msgstr "الفريق"
+
+#: agent/models.py:92
+msgid "conversation"
+msgstr "المحادثة"
+
+#: common/docs.py:3
+msgid ""
+"\n"
+"# Introduction\n"
+"\n"
+"This documentation covers all the external APIs that can be accessed using a "
+"Team API Key. These APIs are designed for integration with external systems "
+"and services.\n"
+"\n"
+"## Authentication\n"
+"\n"
+"All endpoints in this documentation require authentication using an API Key. "
+"To authenticate your requests:\n"
+"\n"
+"1. Generate an API Key from the [API Keys Dashboard](https://"
+"app.watercrawl.dev/dashboard/api-keys)\n"
+"2. Include the API Key in your requests using the `X-API-Key` header:\n"
+"\n"
+"```bash\n"
+"curl -H \"X-API-Key: your_api_key_here\" https://api.watercrawl.dev/v1/...\n"
+"```\n"
+"\n"
+"### Important Notes:\n"
+"- Keep your API Key secure and never share it publicly\n"
+"- You can generate multiple API Keys for different purposes\n"
+"- You can revoke API Keys at any time from the dashboard\n"
+"- Each API Key is associated with a specific team\n"
+"\n"
+"## Rate Limiting\n"
+"API requests are rate-limited based on your team's plan. Please refer to "
+"your plan details for specific limits.\n"
+msgstr ""
+"\n"
+"# مقدمة\n"
+"\n"
+"تغطي هذه الوثائق جميع واجهات API الخارجية التي يمكن الوصول إليها باستخدام "
+"مفتاح API للفريق. تم تصميم هذه واجهات API للتكامل مع الأنظمة الخارجية "
+"والخدمات.\n"
+"\n"
+"## المصادقة\n"
+"\n"
+"تتطلب جميع نقاط النهاية في هذه الوثائق المصادقة باستخدام مفتاح API. للمصادقة "
+"على طلباتك:\n"
+"\n"
+"1. أنشئ مفتاح API من [لوحة مفاتيح API](https://app.watercrawl.dev/dashboard/"
+"api-keys)\n"
+"2. قم بتضمين مفتاح API في طلباتك باستخدام رأس `X-API-Key`:\n"
+"\n"
+"```bash\n"
+"curl -H \"X-API-Key: your_api_key_here\" https://api.watercrawl.dev/v1/...\n"
+"```\n"
+"\n"
+"### ملاحظات هامة:\n"
+"- حافظ على مفتاح API الخاص بك آمناً ولا تشاركه علناً\n"
+"- يمكنك إنشاء مفاتيح API متعددة لأغراض مختلفة\n"
+"- يمكنك إلغاء مفاتيح API في أي وقت من لوحة التحكم\n"
+"- كل مفتاح API مرتبط بفريق محدد\n"
+"\n"
+"## تحديد المعدل\n"
+"تخضع طلبات API لتحديد المعدل بناءً على خطة فريقك. يرجى الرجوع إلى تفاصيل خطتك "
+"للحدود المحددة.\n"
+
+#: common/docs.py:30
+msgid ""
+"API Key for team authentication. Generate from https://app.watercrawl.dev/"
+"dashboard/api-keys"
+msgstr ""
+"مفتاح API لمصادقة الفريق. قم بإنشائه من https://app.watercrawl.dev/dashboard/"
+"api-keys"
+
+#: common/handlers.py:19
+msgid "An unexpected error occurred."
+msgstr "حدث خطأ غير متوقع."
+
+#: common/handlers.py:27 common/handlers.py:36
+msgid "Invalid input data."
+msgstr "بيانات إدخال غير صالحة."
+
+#: common/handlers.py:58 common/handlers.py:62
+msgid "Not found."
+msgstr "غير موجود."
+
+#: common/schema.py:30
+msgid "Bad Request"
+msgstr "طلب خاطئ"
+
+#: common/schema.py:40
+msgid "Not Found"
+msgstr "غير موجود"
+
+#: common/schema.py:48
+msgid "Internal Server Error"
+msgstr "خطأ داخلي في الخادم"
+
+#: common/services.py:125
+msgid "No recipient provided"
+msgstr "لم يتم توفير مستلم"
+
+#: common/services.py:127
+msgid "No subject provided"
+msgstr "لم يتم توفير موضوع"
+
+#: common/services.py:129
+msgid "No body or html provided"
+msgstr "لم يتم توفير محتوى أو HTML"
+
+#: common/views.py:17
+msgid "Frontend Setting"
+msgstr "إعدادات الواجهة الأمامية"
+
+#: common/views.py:18
+msgid "Retrieve the frontend setting."
+msgstr "استرجاع إعدادات الواجهة الأمامية."
+
+#: core/admin.py:38 core/admin.py:41
+msgid "Duplicate"
+msgstr "نسخ"
+
+#: core/consts.py:41 knowledge_base/consts.py:11
+msgid "New"
+msgstr "جديد"
+
+#: core/consts.py:42
+msgid "Running"
+msgstr "قيد التشغيل"
+
+#: core/consts.py:43
+msgid "Finished"
+msgstr "مكتمل"
+
+#: core/consts.py:44
+msgid "Canceling"
+msgstr "جاري الإلغاء"
+
+#: core/consts.py:45 plan/consts.py:22
+msgid "Canceled"
+msgstr "ملغى"
+
+#: core/consts.py:46 knowledge_base/consts.py:16
+msgid "Failed"
+msgstr "فشل"
+
+#: core/consts.py:154
+msgid "PDF"
+msgstr "PDF"
+
+#: core/consts.py:155
+msgid "Screenshot"
+msgstr "لقطة شاشة"
+
+#: core/consts.py:160
+msgid "Web"
+msgstr "ويب"
+
+#: core/consts.py:167
+msgid "Basic"
+msgstr "أساسي"
+
+#: core/consts.py:168
+msgid "Advanced"
+msgstr "متقدم"
+
+#: core/consts.py:169
+msgid "Ultimate"
+msgstr "متميز"
+
+#: core/consts.py:179
+msgid "Any"
+msgstr "أي"
+
+#: core/consts.py:180
+msgid "Day"
+msgstr "يوم"
+
+#: core/consts.py:181
+msgid "Week"
+msgstr "أسبوع"
+
+#: core/consts.py:182
+msgid "Month"
+msgstr "شهر"
+
+#: core/consts.py:183
+msgid "Year"
+msgstr "سنة"
+
+#: core/consts.py:191
+msgid "HTTP"
+msgstr "HTTP"
+
+#: core/consts.py:192
+msgid "SOCKS4"
+msgstr "SOCKS4"
+
+#: core/consts.py:193
+msgid "SOCKS5"
+msgstr "SOCKS5"
+
+#: core/consts.py:201
+msgid "General"
+msgstr "عام"
+
+#: core/consts.py:202 llm/consts.py:40
+msgid "Premium"
+msgstr "مميز"
+
+#: core/consts.py:210
+msgid "Single"
+msgstr "مفرد"
+
+#: core/consts.py:211
+msgid "Batch"
+msgstr "دفعة"
+
+#: core/docs.py:253
+msgid "Filter crawl requests by UUID."
+msgstr "تصفية طلبات الزحف حسب UUID."
+
+#: core/docs.py:259
+msgid "Filter crawl requests by start URL."
+msgstr "تصفية طلبات الزحف حسب رابط البداية."
+
+#: core/docs.py:265
+msgid "Filter crawl requests by status."
+msgstr "تصفية طلبات الزحف حسب الحالة."
+
+#: core/docs.py:271
+msgid "Filter crawl requests by date"
+msgstr "تصفية طلبات الزحف حسب التاريخ"
+
+#: core/docs.py:280 core/docs.py:301
+msgid "Prefetch crawl results. Default: False."
+msgstr "جلب نتائج الزحف مسبقاً. افتراضي: False."
+
+#: core/docs.py:286
+msgid "Filter crawl results by URL."
+msgstr "تصفية نتائج الزحف حسب الرابط."
+
+#: core/docs.py:292
+msgid "Filter crawl results by date"
+msgstr "تصفية نتائج الزحف حسب التاريخ"
+
+#: core/docs.py:312
+msgid ""
+"Format of the download file. Default: json. Available formats: markdown, "
+"json."
+msgstr "تنسيق ملف التنزيل. افتراضي: json. التنسيقات المتاحة: markdown, json."
+
+#: core/models.py:23
+msgid "urls"
+msgstr "الروابط"
+
+#: core/models.py:25
+msgid "crawl type"
+msgstr "نوع الزحف"
+
+#: core/models.py:31
+msgid "status"
+msgstr "الحالة"
+
+#: core/models.py:36
+msgid "options"
+msgstr "الخيارات"
+
+#: core/models.py:37
+msgid "duration"
+msgstr "المدة"
+
+#: core/models.py:39
+msgid "sitemap"
+msgstr "خريطة الموقع"
+
+#: core/models.py:57
+msgid "URL must be a string."
+msgstr "يجب أن يكون الرابط نصاً."
+
+#: core/models.py:63 core/models.py:70
+msgid "Crawl Request"
+msgstr "طلب زحف"
+
+#: core/models.py:64
+msgid "Crawl Requests"
+msgstr "طلبات الزحف"
+
+#: core/models.py:74 core/models.py:196
+msgid "URL"
+msgstr "الرابط"
+
+#: core/models.py:76 core/models.py:131 core/models.py:206
+msgid "Result"
+msgstr "النتيجة"
+
+#: core/models.py:81 core/models.py:88
+msgid "Crawl Result"
+msgstr "نتيجة الزحف"
+
+#: core/models.py:82
+msgid "Crawl Results"
+msgstr "نتائج الزحف"
+
+#: core/models.py:93
+msgid "Attachment Type"
+msgstr "نوع المرفق"
+
+#: core/models.py:98
+msgid "Attachment"
+msgstr "المرفق"
+
+#: core/models.py:102
+msgid "Crawl Result Attachment"
+msgstr "مرفق نتيجة الزحف"
+
+#: core/models.py:103
+msgid "Crawl Result Attachments"
+msgstr "مرفقات نتائج الزحف"
+
+#: core/models.py:120
+msgid "Query"
+msgstr "الاستعلام"
+
+#: core/models.py:121
+msgid "Search Options"
+msgstr "خيارات البحث"
+
+#: core/models.py:122
+msgid "Result Limit"
+msgstr "حد النتائج"
+
+#: core/models.py:123 core/models.py:204
+msgid "Duration"
+msgstr "المدة"
+
+#: core/models.py:125 core/models.py:199 knowledge_base/models.py:88
+#: knowledge_base/models.py:130 plan/models.py:144 plan/models.py:163
+msgid "Status"
+msgstr "الحالة"
+
+#: core/models.py:142
+msgid "Search Request"
+msgstr "طلب بحث"
+
+#: core/models.py:143
+msgid "Search Requests"
+msgstr "طلبات البحث"
+
+#: core/models.py:148 llm/models.py:9 llm/models.py:103 user/models.py:170
+msgid "Key"
+msgstr "المفتاح"
+
+#: core/models.py:149 user/models.py:84
+msgid "Is Default"
+msgstr "افتراضي"
+
+#: core/models.py:151
+msgid "Proxy Category"
+msgstr "فئة البروكسي"
+
+#: core/models.py:157
+msgid "Proxy Type"
+msgstr "نوع البروكسي"
+
+#: core/models.py:163
+msgid "Host"
+msgstr "المضيف"
+
+#: core/models.py:166
+msgid "Port"
+msgstr "المنفذ"
+
+#: core/models.py:167
+msgid "Username"
+msgstr "اسم المستخدم"
+
+#: core/models.py:168
+msgid "Password"
+msgstr "كلمة المرور"
+
+#: core/models.py:179
+msgid "Proxy Server"
+msgstr "خادم بروكسي"
+
+#: core/models.py:180
+msgid "Proxy Servers"
+msgstr "خوادم البروكسي"
+
+#: core/models.py:197
+msgid "Options"
+msgstr "الخيارات"
+
+#: core/models.py:214
+msgid "Sitemap Request"
+msgstr "طلب خريطة الموقع"
+
+#: core/models.py:215
+msgid "Sitemap Requests"
+msgstr "طلبات خريطة الموقع"
+
+#: core/serializers.py:82 core/serializers.py:356
+msgid "Proxy server does not exist"
+msgstr "خادم البروكسي غير موجود"
+
+#: core/serializers.py:376
+msgid "This field is required"
+msgstr "هذا الحقل مطلوب"
+
+#: core/services.py:769
+msgid "At least one URL is required for the crawl request."
+msgstr "يتطلب رابط واحد على الأقل لطلب الزحف."
+
+#: core/views.py:44
+msgid "Start a new crawl request"
+msgstr "بدء طلب زحف جديد"
+
+#: core/views.py:49
+msgid "Batch create crawl requests"
+msgstr "إنشاء طلبات زحف بشكل دفعة"
+
+#: core/views.py:56
+msgid "List crawl requests"
+msgstr "عرض طلبات الزحف"
+
+#: core/views.py:62
+msgid "Get crawl request"
+msgstr "الحصول على طلب زحف"
+
+#: core/views.py:67
+msgid "Cancel a running crawl"
+msgstr "إلغاء زحف قيد التشغيل"
+
+#: core/views.py:72
+msgid "Download crawl result"
+msgstr "تنزيل نتيجة الزحف"
+
+#: core/views.py:79
+msgid "Check crawl status"
+msgstr "فحص حالة الزحف"
+
+#: core/views.py:91 core/views.py:492
+msgid "Get sitemap graph"
+msgstr "الحصول على رسم خريطة الموقع"
+
+#: core/views.py:97
+msgid "Get markdown report"
+msgstr "الحصول على تقرير markdown"
+
+#: core/views.py:141
+msgid "Only running crawl requests can be deleted"
+msgstr "يمكن حذف طلبات الزحف قيد التشغيل فقط"
+
+#: core/views.py:161
+msgid "Invalid output format"
+msgstr "تنسيق إخراج غير صالح"
+
+#: core/views.py:187 core/views.py:200
+msgid "Sitemap for this crawl request does not exist"
+msgstr "خريطة الموقع لطلب الزحف هذا غير موجودة"
+
+#: core/views.py:213
+msgid "List crawl results"
+msgstr "عرض نتائج الزحف"
+
+#: core/views.py:219
+msgid "Get crawl result"
+msgstr "الحصول على نتيجة الزحف"
+
+#: core/views.py:250
+msgid "Usage Report"
+msgstr "تقرير الاستخدام"
+
+#: core/views.py:268
+msgid "Plugin Form"
+msgstr "نموذج الإضافة"
+
+#: core/views.py:281
+msgid "List search requests"
+msgstr "عرض طلبات البحث"
+
+#: core/views.py:286
+msgid "Get search request"
+msgstr "الحصول على طلب بحث"
+
+#: core/views.py:292
+msgid "Create search request"
+msgstr "إنشاء طلب بحث"
+
+#: core/views.py:297
+msgid "Stop search request"
+msgstr "إيقاف طلب البحث"
+
+#: core/views.py:302
+msgid "Check search request status"
+msgstr "فحص حالة طلب البحث"
+
+#: core/views.py:340
+msgid "Only running search requests can be deleted"
+msgstr "يمكن حذف طلبات البحث قيد التشغيل فقط"
+
+#: core/views.py:360
+msgid "List proxy servers"
+msgstr "عرض خوادم البروكسي"
+
+#: core/views.py:365
+msgid "Create proxy server"
+msgstr "إنشاء خادم بروكسي"
+
+#: core/views.py:370
+msgid "Get proxy server"
+msgstr "الحصول على خادم بروكسي"
+
+#: core/views.py:375
+msgid "Delete proxy server"
+msgstr "حذف خادم بروكسي"
+
+#: core/views.py:380 core/views.py:385
+msgid "Update proxy server"
+msgstr "تحديث خادم بروكسي"
+
+#: core/views.py:390
+msgid "List all proxy servers (Global and Private proxies)"
+msgstr "عرض جميع خوادم البروكسي (عامة وخاصة)"
+
+#: core/views.py:396
+msgid "Test proxy"
+msgstr "اختبار البروكسي"
+
+#: core/views.py:460
+msgid "List sitemap requests"
+msgstr "عرض طلبات خريطة الموقع"
+
+#: core/views.py:465
+msgid "Create sitemap request"
+msgstr "إنشاء طلب خريطة موقع"
+
+#: core/views.py:470
+msgid "Get sitemap request"
+msgstr "الحصول على طلب خريطة موقع"
+
+#: core/views.py:475
+msgid "Delete sitemap request"
+msgstr "حذف طلب خريطة موقع"
+
+#: core/views.py:480
+msgid "Check sitemap request status"
+msgstr "فحص حالة طلب خريطة الموقع"
+
+#: core/views.py:498
+msgid "Get sitemap markdown"
+msgstr "الحصول على markdown خريطة الموقع"
+
+#: core/views.py:537
+msgid "Only running sitemap requests can be deleted"
+msgstr "يمكن حذف طلبات خريطة الموقع قيد التشغيل فقط"
+
+#: core/views.py:563 core/views.py:576
+msgid "Sitemap for this request does not exist"
+msgstr "خريطة الموقع لهذا الطلب غير موجودة"
+
+#: knowledge_base/admin.py:26
+msgid "Chunking Configuration"
+msgstr "إعدادات التجزئة"
+
+#: knowledge_base/admin.py:32
+msgid "Embedding Configuration"
+msgstr "إعدادات التضمين"
+
+#: knowledge_base/admin.py:38
+msgid "Chunk Enhancement"
+msgstr "تحسين الأجزاء"
+
+#: knowledge_base/admin.py:49 knowledge_base/admin.py:73
+#: knowledge_base/admin.py:98 knowledge_base/models.py:128 llm/admin.py:51
+msgid "Metadata"
+msgstr "البيانات الوصفية"
+
+#: knowledge_base/admin.py:67 knowledge_base/models.py:119
+#: knowledge_base/models.py:158
+msgid "Content"
+msgstr "المحتوى"
+
+#: knowledge_base/admin.py:91
+msgid "Embedding"
+msgstr "التضمين"
+
+#: knowledge_base/consts.py:12
+msgid "Reindexing"
+msgstr "إعادة الفهرسة"
+
+#: knowledge_base/consts.py:13
+msgid "Crawling"
+msgstr "الزحف"
+
+#: knowledge_base/consts.py:14
+msgid "Processing"
+msgstr "المعالجة"
+
+#: knowledge_base/consts.py:15
+msgid "Ready"
+msgstr "جاهز"
+
+#: knowledge_base/consts.py:23 plan/consts.py:21
+msgid "Active"
+msgstr "نشط"
+
+#: knowledge_base/consts.py:24
+msgid "Archived"
+msgstr "مؤرشف"
+
+#: knowledge_base/consts.py:25
+msgid "Deleted"
+msgstr "محذوف"
+
+#: knowledge_base/consts.py:32
+msgid "Standard"
+msgstr "قياسي"
+
+#: knowledge_base/consts.py:33
+msgid "Context-Aware"
+msgstr "واعي بالسياق"
+
+#: knowledge_base/consts.py:40
+msgid "Manual"
+msgstr "يدوي"
+
+#: knowledge_base/consts.py:41
+msgid "File"
+msgstr "ملف"
+
+#: knowledge_base/consts.py:42
+msgid "Crawl"
+msgstr "زحف"
+
+#: knowledge_base/factories.py:71
+#, python-brace-format
+msgid "Text splitter type '{splitter_type}' not supported"
+msgstr "نوع فاصل النص '{splitter_type}' غير مدعوم"
+
+#: knowledge_base/factories.py:124
+#, python-brace-format
+msgid "Unsupported embedding provider: {provider_name}"
+msgstr "مزود تضمين غير مدعوم: {provider_name}"
+
+#: knowledge_base/factories.py:177
+#, python-brace-format
+msgid "Vector store type '{vector_store_type}' not supported"
+msgstr "نوع مخزن الفيكتور '{vector_store_type}' غير مدعوم"
+
+#: knowledge_base/factories.py:250
+#, python-brace-format
+msgid "Unsupported document type: {extension}"
+msgstr "نوع مستند غير مدعوم: {extension}"
+
+#: knowledge_base/models.py:10 knowledge_base/models.py:118 llm/models.py:41
+#: plan/models.py:98
+msgid "Title"
+msgstr "العنوان"
+
+#: knowledge_base/models.py:11 llm/models.py:104 plan/models.py:15
+msgid "Description"
+msgstr "الوصف"
+
+#: knowledge_base/models.py:19
+msgid "Chunk size"
+msgstr "حجم الجزء"
+
+#: knowledge_base/models.py:20
+msgid "Number of documents to be processed in each chunk"
+msgstr "عدد المستندات التي سيتم معالجتها في كل جزء"
+
+#: knowledge_base/models.py:24
+msgid "Chunk overlap"
+msgstr "تداخل الأجزاء"
+
+#: knowledge_base/models.py:25
+msgid "Number of overlapping documents in each chunk"
+msgstr "عدد المستندات المتداخلة في كل جزء"
+
+#: knowledge_base/models.py:29
+msgid "Chunk separator"
+msgstr "فاصل الأجزاء"
+
+#: knowledge_base/models.py:30
+msgid "Separator used to split documents into chunks"
+msgstr "الفاصل المستخدم لتقسيم المستندات إلى أجزاء"
+
+#: knowledge_base/models.py:36
+msgid "Embedding Model"
+msgstr "نموذج التضمين"
+
+#: knowledge_base/models.py:44
+msgid "Embedding Provider Config"
+msgstr "تهيئة مزود التضمين"
+
+#: knowledge_base/models.py:48
+msgid "Provider configuration for embedding models"
+msgstr "تهيئة المزود لنماذج التضمين"
+
+#: knowledge_base/models.py:53
+msgid "Summarization Provider Config"
+msgstr "تهيئة مزود التلخيص"
+
+#: knowledge_base/models.py:57
+msgid "Provider configuration for summarization models"
+msgstr "تهيئة المزود لنماذج التلخيص"
+
+#: knowledge_base/models.py:62
+msgid "Summarization Model"
+msgstr "نموذج التلخيص"
+
+#: knowledge_base/models.py:68
+msgid "Summarizer Context"
+msgstr "سياق الملخص"
+
+#: knowledge_base/models.py:71
+msgid "Context to be provided to the summarizer"
+msgstr "السياق الذي سيتم توفيره للملخص"
+
+#: knowledge_base/models.py:74
+msgid "Summarizer Type"
+msgstr "نوع الملخص"
+
+#: knowledge_base/models.py:78
+msgid "The type of summarizer to use for document summarization"
+msgstr "نوع الملخص المستخدم لتلخيص المستند"
+
+#: knowledge_base/models.py:81
+msgid "Summarizer Temperature"
+msgstr "درجة حرارة الملخص"
+
+#: knowledge_base/models.py:85
+msgid "Temperature to be provided to the summarizer"
+msgstr "درجة الحرارة التي سيتم توفيرها للملخص"
+
+#: knowledge_base/models.py:94
+msgid "Knowledge Base Each Document Cost"
+msgstr "تكلفة كل مستند في قاعدة المعرفة"
+
+#: knowledge_base/models.py:95
+msgid "The cost of each document in the knowledge base"
+msgstr "تكلفة كل مستند في قاعدة المعرفة"
+
+#: knowledge_base/models.py:100 knowledge_base/models.py:115
+msgid "Knowledge Base"
+msgstr "قاعدة المعرفة"
+
+#: knowledge_base/models.py:101
+msgid "Knowledge Bases"
+msgstr "قواعد المعرفة"
+
+#: knowledge_base/models.py:121
+msgid "Source Type"
+msgstr "نوع المصدر"
+
+#: knowledge_base/models.py:126
+msgid "Source"
+msgstr "المصدر"
+
+#: knowledge_base/models.py:127
+msgid "Error"
+msgstr "خطأ"
+
+#: knowledge_base/models.py:137 knowledge_base/models.py:154
+msgid "Document"
+msgstr "مستند"
+
+#: knowledge_base/models.py:138
+msgid "Documents"
+msgstr "مستندات"
+
+#: knowledge_base/models.py:157
+msgid "Index"
+msgstr "الفهرس"
+
+#: knowledge_base/models.py:159
+msgid "Keywords"
+msgstr "الكلمات المفتاحية"
+
+#: knowledge_base/models.py:162
+msgid "Chunk"
+msgstr "جزء"
+
+#: knowledge_base/models.py:163
+msgid "Chunks"
+msgstr "أجزاء"
+
+#: knowledge_base/serializers.py:86
+msgid "Invalid embedding provider config id."
+msgstr "معرف تهيئة مزود التضمين غير صالح."
+
+#: knowledge_base/serializers.py:101
+msgid "Invalid summarization provider config id."
+msgstr "معرف تهيئة مزود التلخيص غير صالح."
+
+#: knowledge_base/serializers.py:118
+msgid "Invalid embedding model id."
+msgstr "معرف نموذج التضمين غير صالح."
+
+#: knowledge_base/serializers.py:124
+msgid "Summarization model id is required."
+msgstr "معرف نموذج التلخيص مطلوب."
+
+#: knowledge_base/serializers.py:132
+msgid "Invalid summarization model id."
+msgstr "معرف نموذج التلخيص غير صالح."
+
+#: knowledge_base/serializers.py:139
+msgid "Invalid summarizer temperature."
+msgstr "درجة حرارة الملخص غير صالحة."
+
+#: knowledge_base/serializers.py:232
+msgid "crawl_result_uuids cannot be empty."
+msgstr "crawl_result_uuids لا يمكن أن تكون فارغة."
+
+#: knowledge_base/serializers.py:239
+msgid "No valid crawl results found for the provided UUIDs."
+msgstr "لم يتم العثور على نتائج زحف صالحة لمعرفات UUIDs المقدمة."
+
+#: knowledge_base/serializers.py:259
+msgid "Invalid crawl request UUID."
+msgstr "UUID طلب الزحف غير صالح."
+
+#: knowledge_base/serializers.py:277
+msgid "Files cannot be empty."
+msgstr "الملفات لا يمكن أن تكون فارغة."
+
+#: knowledge_base/serializers.py:283
+msgid "File must be a pdf, docx, image, or text."
+msgstr "يجب أن يكون الملف pdf أو docx أو صورة أو نص."
+
+#: knowledge_base/serializers.py:310
+msgid "Invalid provider config id."
+msgstr "معرف تهيئة المزود غير صالح."
+
+#: knowledge_base/serializers.py:321
+msgid "Invalid temperature."
+msgstr "درجة حرارة غير صالحة."
+
+#: knowledge_base/serializers.py:326
+msgid "Invalid llm model id."
+msgstr "معرف نموذج llm غير صالح."
+
+#: knowledge_base/views.py:46
+msgid "List knowledge bases"
+msgstr "عرض قواعد المعرفة"
+
+#: knowledge_base/views.py:47
+msgid "List all knowledge bases for the current team."
+msgstr "عرض جميع قواعد المعرفة للفريق الحالي."
+
+#: knowledge_base/views.py:51
+msgid "Get knowledge base details"
+msgstr "الحصول على تفاصيل قاعدة المعرفة"
+
+#: knowledge_base/views.py:52
+msgid "Get details for a specific knowledge base."
+msgstr "الحصول على تفاصيل قاعدة معرفة محددة."
+
+#: knowledge_base/views.py:59
+msgid "Create knowledge base"
+msgstr "إنشاء قاعدة معرفة"
+
+#: knowledge_base/views.py:60
+msgid "Create a new knowledge base for the current team."
+msgstr "إنشاء قاعدة معرفة جديدة للفريق الحالي."
+
+#: knowledge_base/views.py:68
+msgid "Update knowledge base"
+msgstr "تحديث قاعدة المعرفة"
+
+#: knowledge_base/views.py:69
+msgid "Update an existing knowledge base."
+msgstr "تحديث قاعدة معرفة موجودة."
+
+#: knowledge_base/views.py:73
+msgid "Partially update knowledge base"
+msgstr "تحديث جزئي لقاعدة المعرفة"
+
+#: knowledge_base/views.py:74
+msgid "Partially update an existing knowledge base."
+msgstr "تحديث جزئي لقاعدة معرفة موجودة."
+
+#: knowledge_base/views.py:78
+msgid "Delete knowledge base"
+msgstr "حذف قاعدة المعرفة"
+
+#: knowledge_base/views.py:79
+msgid "Delete an existing knowledge base."
+msgstr "حذف قاعدة معرفة موجودة."
+
+#: knowledge_base/views.py:83
+msgid "Enhance knowledge base context aware text"
+msgstr "تحسين النص الواعي بالسياق لقاعدة المعرفة"
+
+#: knowledge_base/views.py:84
+msgid "Enhance documents using context-aware summarization."
+msgstr "تحسين المستندات باستخدام التلخيص الواعي بالسياق."
+
+#: knowledge_base/views.py:90
+msgid "Query knowledge base"
+msgstr "استعلام قاعدة المعرفة"
+
+#: knowledge_base/views.py:91
+msgid "Execute a query against the knowledge base."
+msgstr "تنفيذ استعلام على قاعدة المعرفة."
+
+#: knowledge_base/views.py:187
+msgid "List documents"
+msgstr "عرض المستندات"
+
+#: knowledge_base/views.py:188
+msgid "List all documents for a knowledge base."
+msgstr "عرض جميع المستندات لقاعدة معرفة."
+
+#: knowledge_base/views.py:195
+msgid "Get document details"
+msgstr "الحصول على تفاصيل المستند"
+
+#: knowledge_base/views.py:196
+msgid "Get details for a specific document."
+msgstr "الحصول على تفاصيل مستند محدد."
+
+#: knowledge_base/views.py:200
+msgid "Create document"
+msgstr "إنشاء مستند"
+
+#: knowledge_base/views.py:201
+msgid "Create a new document for a knowledge base."
+msgstr "إنشاء مستند جديد لقاعدة معرفة."
+
+#: knowledge_base/views.py:205
+msgid "Update document"
+msgstr "تحديث المستند"
+
+#: knowledge_base/views.py:206
+msgid "Update an existing document."
+msgstr "تحديث مستند موجود."
+
+#: knowledge_base/views.py:210
+msgid "Partially update document"
+msgstr "تحديث جزئي للمستند"
+
+#: knowledge_base/views.py:211
+msgid "Partially update an existing document."
+msgstr "تحديث جزئي لمستند موجود."
+
+#: knowledge_base/views.py:215
+msgid "Delete document"
+msgstr "حذف المستند"
+
+#: knowledge_base/views.py:216
+msgid "Delete an existing document."
+msgstr "حذف مستند موجود."
+
+#: knowledge_base/views.py:220
+msgid "Process URLs"
+msgstr "معالجة الروابط"
+
+#: knowledge_base/views.py:221
+msgid "Process a list of URLs and add them to the knowledge base."
+msgstr "معالجة قائمة من الروابط وإضافتها إلى قاعدة المعرفة."
+
+#: knowledge_base/views.py:229
+msgid "Process crawl results"
+msgstr "معالجة نتائج الزحف"
+
+#: knowledge_base/views.py:230
+msgid "Process crawl results and add them to the knowledge base."
+msgstr "معالجة نتائج الزحف وإضافتها إلى قاعدة المعرفة."
+
+#: knowledge_base/views.py:238
+msgid "Process crawl request"
+msgstr "معالجة طلب الزحف"
+
+#: knowledge_base/views.py:239
+msgid "Process a crawl request and add it to the knowledge base."
+msgstr "معالجة طلب زحف وإضافته إلى قاعدة المعرفة."
+
+#: knowledge_base/views.py:247
+msgid "Process files"
+msgstr "معالجة الملفات"
+
+#: knowledge_base/views.py:248
+msgid "Process a list of files and add them to the knowledge base."
+msgstr "معالجة قائمة من الملفات وإضافتها إلى قاعدة المعرفة."
+
+#: knowledge_base/views.py:256
+msgid "Retry document"
+msgstr "إعادة محاولة المستند"
+
+#: knowledge_base/views.py:257
+msgid "Retry a failed document. to index it again."
+msgstr "إعادة محاولة مستند فشل. لفهرسته مرة أخرى."
+
+#: knowledge_base/views.py:296 knowledge_base/views.py:337
+#: knowledge_base/views.py:365 knowledge_base/views.py:397
+#: knowledge_base/views.py:428
+msgid "You cannot add documents to this knowledge base."
+msgstr "لا يمكنك إضافة مستندات إلى قاعدة المعرفة هذه."
+
+#: knowledge_base/views.py:457
+msgid "You can only retry just failed documents."
+msgstr "يمكنك فقط إعادة محاولة المستندات الفاشلة."
+
+#: knowledge_base/views.py:459
+msgid "You cannot make changes to this knowledge base."
+msgstr "لا يمكنك إجراء تغييرات على قاعدة المعرفة هذه."
+
+#: knowledge_base/views.py:467
+msgid "List document chunks"
+msgstr "عرض أجزاء المستند"
+
+#: knowledge_base/views.py:468
+msgid "List all chunks for a document."
+msgstr "عرض جميع الأجزاء لمستند."
+
+#: llm/admin.py:44
+msgid "API Configuration"
+msgstr "تهيئة API"
+
+#: llm/admin_api/serializers.py:54 llm/serializers.py:70
+msgid "API key is required"
+msgstr "مفتاح API مطلوب"
+
+#: llm/admin_api/serializers.py:56 llm/serializers.py:72
+msgid "Base URL is required"
+msgstr "رابط URL الأساسي مطلوب"
+
+#: llm/admin_api/serializers.py:73 llm/admin_api/serializers.py:74
+#: llm/serializers.py:89 llm/serializers.py:90
+msgid "Invalid API key or base URL. Test failed"
+msgstr "مفتاح API أو رابط URL الأساسي غير صالح. فشل الاختبار"
+
+#: llm/admin_api/views.py:17 llm/admin_api/views.py:18
+msgid "List provider configs"
+msgstr "عرض تهيئات المزود"
+
+#: llm/admin_api/views.py:22 llm/admin_api/views.py:23 llm/views.py:24
+msgid "Create provider config"
+msgstr "إنشاء تهيئة المزود"
+
+#: llm/admin_api/views.py:27 llm/admin_api/views.py:28 llm/views.py:29
+msgid "Get provider config"
+msgstr "الحصول على تهيئة المزود"
+
+#: llm/admin_api/views.py:32 llm/admin_api/views.py:33
+#: llm/admin_api/views.py:37 llm/admin_api/views.py:38 llm/views.py:41
+#: llm/views.py:46
+msgid "Update provider config"
+msgstr "تحديث تهيئة المزود"
+
+#: llm/admin_api/views.py:42 llm/admin_api/views.py:43 llm/views.py:36
+msgid "Delete provider config"
+msgstr "حذف تهيئة المزود"
+
+#: llm/admin_api/views.py:47 llm/admin_api/views.py:48
+msgid "Sync embeddings"
+msgstr "مزامنة التضمينات"
+
+#: llm/admin_api/views.py:54 llm/admin_api/views.py:55
+msgid "Sync LLM models"
+msgstr "مزامنة نماذج LLM"
+
+#: llm/admin_api/views.py:61 llm/admin_api/views.py:62
+msgid "Test config"
+msgstr "اختبار التهيئة"
+
+#: llm/admin_api/views.py:68 llm/admin_api/views.py:69
+msgid "List providers"
+msgstr "عرض المزودين"
+
+#: llm/admin_api/views.py:74 llm/views.py:89
+msgid "List of available providers"
+msgstr "قائمة المزودين المتاحين"
+
+#: llm/admin_api/views.py:157 llm/admin_api/views.py:158
+msgid "List LLM models"
+msgstr "عرض نماذج LLM"
+
+#: llm/admin_api/views.py:162 llm/admin_api/views.py:163
+msgid "Create LLM model"
+msgstr "إنشاء نموذج LLM"
+
+#: llm/admin_api/views.py:167 llm/admin_api/views.py:168
+msgid "Get LLM model"
+msgstr "الحصول على نموذج LLM"
+
+#: llm/admin_api/views.py:172 llm/admin_api/views.py:173
+#: llm/admin_api/views.py:177 llm/admin_api/views.py:178
+msgid "Update LLM model"
+msgstr "تحديث نموذج LLM"
+
+#: llm/admin_api/views.py:182 llm/admin_api/views.py:183
+msgid "Delete LLM model"
+msgstr "حذف نموذج LLM"
+
+#: llm/admin_api/views.py:196 llm/admin_api/views.py:197
+msgid "List provider embeddings"
+msgstr "عرض تضمينات المزود"
+
+#: llm/admin_api/views.py:201 llm/admin_api/views.py:202
+msgid "Create provider embedding"
+msgstr "إنشاء تضمين المزود"
+
+#: llm/admin_api/views.py:206 llm/admin_api/views.py:207
+msgid "Get provider embedding"
+msgstr "الحصول على تضمين المزود"
+
+#: llm/admin_api/views.py:211 llm/admin_api/views.py:212
+#: llm/admin_api/views.py:216 llm/admin_api/views.py:217
+msgid "Update provider embedding"
+msgstr "تحديث تضمين المزود"
+
+#: llm/admin_api/views.py:221 llm/admin_api/views.py:222
+msgid "Delete provider embedding"
+msgstr "حذف تضمين المزود"
+
+#: llm/consts.py:7 llm/consts.py:22
+msgid "OpenAI"
+msgstr "OpenAI"
+
+#: llm/consts.py:10
+msgid "WaterCrawl"
+msgstr "WaterCrawl"
+
+#: llm/consts.py:37
+msgid "Not Available"
+msgstr "غير متاح"
+
+#: llm/consts.py:38
+msgid "Available"
+msgstr "متاح"
+
+#: llm/consts.py:39
+msgid "Team Only"
+msgstr "للفريق فقط"
+
+#: llm/consts.py:46
+msgid "Start"
+msgstr "بداية"
+
+#: llm/consts.py:47
+msgid "End"
+msgstr "نهاية"
+
+#: llm/factories.py:39
+msgid "Provider config is required"
+msgstr "تهيئة المزود مطلوبة"
+
+#: llm/factories.py:60 llm/providers.py:90
+msgid "WaterCrawlLLM is not installed. Please install it"
+msgstr "WaterCrawlLLM غير مثبت. يرجى تثبيته"
+
+#: llm/factories.py:68 llm/factories.py:90
+#, python-brace-format
+msgid "Unsupported provider: {provider_name}"
+msgstr "مزود غير مدعوم: {provider_name}"
+
+#: llm/models.py:11 llm/models.py:43 llm/models.py:97
+msgid "Provider"
+msgstr "المزود"
+
+#: llm/models.py:17 llm/models.py:114
+msgid "Visibility Level"
+msgstr "مستوى الرؤية"
+
+#: llm/models.py:23
+msgid "Min Temperature"
+msgstr "أدنى درجة حرارة"
+
+#: llm/models.py:26
+msgid "Max Temperature"
+msgstr "أقصى درجة حرارة"
+
+#: llm/models.py:29
+msgid "Default Temperature"
+msgstr "درجة الحرارة الافتراضية"
+
+#: llm/models.py:33
+msgid "Model"
+msgstr "النموذج"
+
+#: llm/models.py:34
+msgid "Models"
+msgstr "النماذج"
+
+#: llm/models.py:48 plan/models.py:217
+msgid "API Key"
+msgstr "مفتاح API"
+
+#: llm/models.py:50
+msgid "API Base URL"
+msgstr "رابط API الأساسي"
+
+#: llm/models.py:52
+msgid "Temperature"
+msgstr "درجة الحرارة"
+
+#: llm/models.py:86
+msgid "Provider Config"
+msgstr "تهيئة المزود"
+
+#: llm/models.py:87
+msgid "Provider Configs"
+msgstr "تهيئات المزود"
+
+#: llm/models.py:105
+msgid "Dimensions"
+msgstr "الأبعاد"
+
+#: llm/models.py:106
+msgid "Max Input Length"
+msgstr "أقصى طول للإدخال"
+
+#: llm/models.py:108
+msgid "Truncate"
+msgstr "اقتطاع"
+
+#: llm/models.py:121
+msgid "Provider Embedding"
+msgstr "تضمين المزود"
+
+#: llm/models.py:122
+msgid "Provider Embeddings"
+msgstr "تضمينات المزود"
+
+#: llm/views.py:19
+msgid "List team provider configs"
+msgstr "عرض تهيئات مزود الفريق"
+
+#: llm/views.py:20
+msgid "Get all provider configurations for the current team."
+msgstr "الحصول على جميع تهيئات المزود للفريق الحالي."
+
+#: llm/views.py:25
+msgid "Create a new provider configuration for the current team."
+msgstr "إنشاء تهيئة مزود جديدة للفريق الحالي."
+
+#: llm/views.py:31
+msgid "Get detailed information about a specific provider configuration."
+msgstr "الحصول على معلومات تفصيلية حول تهيئة مزود محددة."
+
+#: llm/views.py:37
+msgid "Delete a provider configuration."
+msgstr "حذف تهيئة المزود."
+
+#: llm/views.py:42 llm/views.py:47
+msgid "Update a provider configuration."
+msgstr "تحديث تهيئة المزود."
+
+#: llm/views.py:51 llm/views.py:84
+msgid "List available providers"
+msgstr "عرض المزودين المتاحين"
+
+#: llm/views.py:52 llm/views.py:85
+msgid "Get a list of available LLM providers."
+msgstr "الحصول على قائمة مزودي LLM المتاحين."
+
+#: llm/views.py:57
+msgid "List all provider configs (Global and Team-specific)"
+msgstr "عرض جميع تهيئات المزود (عامة وخاصة بالفريق)"
+
+#: llm/views.py:59
+msgid ""
+"Get all available provider configurations including global and team-specific "
+"ones."
+msgstr ""
+"الحصول على جميع تهيئات المزود المتاحة بما في ذلك العامة والخاصة بالفريق."
+
+#: llm/views.py:65
+msgid "Test provider config"
+msgstr "اختبار تهيئة المزود"
+
+#: llm/views.py:66
+msgid "Test a provider configuration without saving it."
+msgstr "اختبار تهيئة مزود دون حفظها."
+
+#: llm/views.py:74
+msgid "Get provider models"
+msgstr "الحصول على نماذج المزود"
+
+#: llm/views.py:75
+msgid "Get all models supported by a specific provider."
+msgstr "الحصول على جميع النماذج التي يدعمها مزود محدد."
+
+#: llm/views.py:79
+msgid "Get provider embedding models"
+msgstr "الحصول على نماذج تضمين المزود"
+
+#: llm/views.py:80
+msgid "Get all embedding models supported by a specific provider."
+msgstr "الحصول على جميع نماذج التضمين التي يدعمها مزود محدد."
+
+#: llm/views.py:178
+msgid "Test failed"
+msgstr "فشل الاختبار"
+
+#: locker/helpers.py:43
+#, python-brace-format
+msgid "Failed to acquire lock '{lock_name}' within {wait_time} seconds"
+msgstr "فشل الحصول على قفل '{lock_name}' في غضون {wait_time} ثانية"
+
+#: plan/admin.py:50
+msgid "Stripe Configuration"
+msgstr "تهيئة Stripe"
+
+#: plan/admin.py:52
+msgid "Plan Limits"
+msgstr "حدود الخطة"
+
+#: plan/admin.py:67 plan/admin.py:102 plan/admin.py:119 plan/admin.py:130
+msgid "Timestamps"
+msgstr "الطوابع الزمنية"
+
+#: plan/admin.py:89
+msgid "Credits"
+msgstr "الرصيد"
+
+#: plan/admin.py:91
+msgid "Subscription Details"
+msgstr "تفاصيل الاشتراك"
+
+#: plan/admin.py:118
+msgid "Payment Details"
+msgstr "تفاصيل الدفع"
+
+#: plan/authentication.py:18
+msgid "No Stripe signature found"
+msgstr "لم يتم العثور على توقيع Stripe"
+
+#: plan/authentication.py:30
+msgid "Invalid Stripe signature"
+msgstr "توقيع Stripe غير صالح"
+
+#: plan/consts.py:7
+msgid "Yearly"
+msgstr "سنوي"
+
+#: plan/consts.py:8
+msgid "Monthly"
+msgstr "شهري"
+
+#: plan/consts.py:23
+msgid "Incomplete"
+msgstr "غير مكتمل"
+
+#: plan/consts.py:24
+msgid "Incomplete Expired"
+msgstr "غير مكتمل منتهي الصلاحية"
+
+#: plan/consts.py:25
+msgid "Past Due"
+msgstr "متأخر"
+
+#: plan/consts.py:26
+msgid "Paused"
+msgstr "موقوف مؤقتاً"
+
+#: plan/consts.py:27
+msgid "Trialing"
+msgstr "تجريبي"
+
+#: plan/consts.py:28
+msgid "Unpaid"
+msgstr "غير مدفوع"
+
+#: plan/consts.py:35
+msgid "Default"
+msgstr "افتراضي"
+
+#: plan/consts.py:36
+msgid "Info"
+msgstr "معلومات"
+
+#: plan/consts.py:37
+msgid "Cross"
+msgstr "علامة X"
+
+#: plan/consts.py:38
+msgid "Check"
+msgstr "علامة صح"
+
+#: plan/filters.py:11 plan/models.py:200
+msgid "Content type"
+msgstr "نوع المحتوى"
+
+#: plan/filters.py:13
+msgid "Crawl request"
+msgstr "طلب زحف"
+
+#: plan/filters.py:14
+msgid "Search request"
+msgstr "طلب بحث"
+
+#: plan/filters.py:15
+msgid "Sitemap request"
+msgstr "طلب خريطة موقع"
+
+#: plan/filters.py:16
+msgid "Knowledge base document"
+msgstr "مستند قاعدة معرفة"
+
+#: plan/filters.py:21
+msgid "API key"
+msgstr "مفتاح API"
+
+#: plan/filters.py:33
+msgid "Invalid value. Expected format: app_label.model"
+msgstr "قيمة غير صالحة. التنسيق المتوقع: app_label.model"
+
+#: plan/models.py:10
+msgid "name"
+msgstr "الاسم"
+
+#: plan/models.py:11
+msgid "Label"
+msgstr "التسمية"
+
+#: plan/models.py:13
+msgid "Group"
+msgstr "المجموعة"
+
+#: plan/models.py:17
+msgid "Price before discount"
+msgstr "السعر قبل الخصم"
+
+#: plan/models.py:23
+msgid "Price"
+msgstr "السعر"
+
+#: plan/models.py:25
+msgid "Stripe price id"
+msgstr "معرف سعر Stripe"
+
+#: plan/models.py:28
+msgid "Number of users"
+msgstr "عدد المستخدمين"
+
+#: plan/models.py:29
+msgid "Number of users that can be added to the team."
+msgstr "عدد المستخدمين الذين يمكن إضافتهم إلى الفريق."
+
+#: plan/models.py:33
+msgid "Page credit"
+msgstr "رصيد الصفحات"
+
+#: plan/models.py:34
+msgid "Number of pages that can be crawled in plan duration."
+msgstr "عدد الصفحات التي يمكن زحفها في مدة الخطة."
+
+#: plan/models.py:38
+msgid "Daily page credit"
+msgstr "رصيد الصفحات اليومي"
+
+#: plan/models.py:40
+msgid ""
+"Number of pages that can be crawled per day. resets at midnight. -1 for "
+"unlimited"
+msgstr ""
+"عدد الصفحات التي يمكن زحفها يومياً. يتم التصفير عند منتصف الليل. -1 لغير محدود"
+
+#: plan/models.py:45
+msgid "Crawl max depth"
+msgstr "أقصى عمق للزحف"
+
+#: plan/models.py:45
+msgid "Max depth of crawling."
+msgstr "الحد الأقصى لعمق الزحف."
+
+#: plan/models.py:48
+msgid "Crawl max limit"
+msgstr "الحد الأقصى للزحف"
+
+#: plan/models.py:48
+msgid "Max number of pages to crawl."
+msgstr "الحد الأقصى لعدد الصفحات للزحف."
+
+#: plan/models.py:51
+msgid "Max concurrent crawl"
+msgstr "الحد الأقصى للزحف المتزامن"
+
+#: plan/models.py:52
+msgid "Max Number of concurrent crawling."
+msgstr "الحد الأقصى لعدد عمليات الزحف المتزامنة."
+
+#: plan/models.py:56
+msgid "Number of knowledge bases"
+msgstr "عدد قواعد المعرفة"
+
+#: plan/models.py:59
+msgid "Number of each knowledge base documents"
+msgstr "عدد مستندات كل قاعدة معرفة"
+
+#: plan/models.py:62
+msgid "Knowledge base retrival rate limit"
+msgstr "حد معدل استرجاع قاعدة المعرفة"
+
+#: plan/models.py:63
+msgid "DRF-style rate string, e.g. '100/min', '500/day'"
+msgstr "سلسلة نسق DRF للمعدل، مثل: '100/min'، '500/day'"
+
+#: plan/models.py:69
+msgid "Is default"
+msgstr "افتراضي"
+
+#: plan/models.py:70 plan/models.py:89
+msgid "Order"
+msgstr "الترتيب"
+
+#: plan/models.py:71
+msgid "Is active"
+msgstr "نشط"
+
+#: plan/models.py:74 plan/models.py:124
+msgid "Plan"
+msgstr "الخطة"
+
+#: plan/models.py:75
+msgid "Plans"
+msgstr "الخطط"
+
+#: plan/models.py:91
+msgid "Icon"
+msgstr "الأيقونة"
+
+#: plan/models.py:101
+msgid "Help text"
+msgstr "نص المساعدة"
+
+#: plan/models.py:104
+msgid "Plan Feature"
+msgstr "ميزة الخطة"
+
+#: plan/models.py:105
+msgid "Plan Features"
+msgstr "ميزات الخطة"
+
+#: plan/models.py:120
+msgid "Stripe subscription id"
+msgstr "معرف اشتراك Stripe"
+
+#: plan/models.py:128
+msgid "Remain page credit"
+msgstr "رصيد الصفحات المتبقي"
+
+#: plan/models.py:130
+msgid "Remain daily page credit"
+msgstr "رصيد الصفحات اليومي المتبقي"
+
+#: plan/models.py:133
+msgid "Start datetime"
+msgstr "تاريخ ووقت البداية"
+
+#: plan/models.py:135
+msgid "Current period start datetime"
+msgstr "تاريخ بداية الفترة الحالية"
+
+#: plan/models.py:138
+msgid "Current period end datetime"
+msgstr "تاريخ نهاية الفترة الحالية"
+
+#: plan/models.py:140
+msgid "Canceled at"
+msgstr "تم الإلغاء في"
+
+#: plan/models.py:148 plan/models.py:157
+msgid "Subscription"
+msgstr "الاشتراك"
+
+#: plan/models.py:149
+msgid "Subscriptions"
+msgstr "الاشتراكات"
+
+#: plan/models.py:159
+msgid "Amount"
+msgstr "المبلغ"
+
+#: plan/models.py:161
+msgid "Stripe payment id"
+msgstr "معرف دفع Stripe"
+
+#: plan/models.py:171
+msgid "Subscription Payment"
+msgstr "دفع الاشتراك"
+
+#: plan/models.py:172
+msgid "Subscription Payments"
+msgstr "دفعات الاشتراك"
+
+#: plan/models.py:180
+msgid "Data"
+msgstr "البيانات"
+
+#: plan/models.py:183
+msgid "Stripe webhook history"
+msgstr "سجل webhook لـ Stripe"
+
+#: plan/models.py:184
+msgid "Stripe webhook histories"
+msgstr "سجلات webhook لـ Stripe"
+
+#: plan/models.py:207
+msgid "Content ID"
+msgstr "معرف المحتوى"
+
+#: plan/models.py:223
+msgid "Requested Page Credit"
+msgstr "رصيد الصفحات المطلوب"
+
+#: plan/models.py:226
+msgid "Actual Page Credit Used"
+msgstr "رصيد الصفحات الفعلي المستخدم"
+
+#: plan/models.py:230
+msgid "Usage History"
+msgstr "سجل الاستخدام"
+
+#: plan/models.py:231
+msgid "Usage Histories"
+msgstr "سجلات الاستخدام"
+
+#: plan/serializers.py:73
+msgid "Plan not found"
+msgstr "الخطة غير موجودة"
+
+#: plan/services.py:147
+msgid "Unlimited"
+msgstr "غير محدود"
+
+#: plan/services.py:243 plan/views.py:57
+msgid "You have no active subscription"
+msgstr "ليس لديك اشتراك نشط"
+
+#: plan/services.py:630
+msgid "You can't downgrade your plan."
+msgstr "لا يمكنك تخفيض خطتك."
+
+#: plan/services.py:677
+msgid "Team already has an active subscription."
+msgstr "الفريق لديه بالفعل اشتراك نشط."
+
+#: plan/services.py:711 plan/services.py:741 plan/services.py:764
+msgid "Team does not have an active subscription."
+msgstr "الفريق ليس لديه اشتراك نشط."
+
+#: plan/services.py:714 plan/services.py:744
+msgid "You cannot cancel freemium plan."
+msgstr "لا يمكنك إلغاء الخطة المجانية."
+
+#: plan/services.py:767
+msgid "You cannot renew freemium plan."
+msgstr "لا يمكنك تجديد الخطة المجانية."
+
+#: plan/services.py:770
+msgid "This plan is already active."
+msgstr "هذه الخطة نشطة بالفعل."
+
+#: plan/services.py:817 plan/services.py:834
+msgid "get_actual_credits: Unhandled type {type(request)}"
+msgstr "get_actual_credits: نوع غير معالج {type(request)}"
+
+#: plan/throttle.py:18 plan/throttle.py:33
+msgid "Cannot throttle a request without a team attached to it."
+msgstr "لا يمكن تقييد طلب دون فريق مرفق به."
+
+#: plan/validators.py:42
+#, python-brace-format
+msgid ""
+"You have no more daily credit left in your plan. for current request you "
+"need {} credits."
+msgstr "لم يتبق لديك رصيد يومي في خطتك. للطلب الحالي تحتاج إلى {} رصيد."
+
+#: plan/validators.py:49
+#, python-brace-format
+msgid ""
+"You just have {} daily credit left in your plan. for current request you "
+"need {} credits."
+msgstr "لديك فقط {} رصيد يومي متبقٍ في خطتك. للطلب الحالي تحتاج إلى {} رصيد."
+
+#: plan/validators.py:62
+#, python-brace-format
+msgid ""
+"You have no more pages left in your plan. for current request you need {} "
+"credits."
+msgstr "لم يتبق لديك صفحات في خطتك. للطلب الحالي تحتاج إلى {} رصيد."
+
+#: plan/validators.py:69
+#, python-brace-format
+msgid ""
+"You just have {} credits left in your plan. for current request you need {} "
+"credits."
+msgstr "لديك فقط {} رصيد متبقٍ في خطتك. للطلب الحالي تحتاج إلى {} رصيد."
+
+#: plan/validators.py:111
+msgid ""
+"With the current plan you cannot use this proxy server. Upgrade your plan to "
+"use Premium proxy servers."
+msgstr ""
+"مع الخطة الحالية لا يمكنك استخدام خادم البروكسي هذا. قم بترقية خطتك لاستخدام "
+"خوادم بروكسي مميزة."
+
+#: plan/validators.py:125
+#, python-brace-format
+msgid ""
+"Your plan does not support more than {} depth. change the max depth in "
+"spider options."
+msgstr "خطتك لا تدعم أكثر من {} عمق. غيّر الحد الأقصى للعمق في خيارات العنكبوت."
+
+#: plan/validators.py:138
+#, python-brace-format
+msgid ""
+"Your plan does not support more than {} pages per crawl. change the page "
+"limit in spider options."
+msgstr ""
+"خطتك لا تدعم أكثر من {} صفحة لكل زحف. غيّر حد الصفحات في خيارات العنكبوت."
+
+#: plan/validators.py:160
+#, python-brace-format
+msgid ""
+"Your plan does not support more than {} concurrent crawls. Wait for them to "
+"finish."
+msgstr "خطتك لا تدعم أكثر من {} زحف متزامن. انتظر حتى ينتهوا."
+
+#: plan/validators.py:196
+#, python-brace-format
+msgid ""
+"Your plan does not support more than {} concurrent searches. Wait for them "
+"to finish."
+msgstr "خطتك لا تدعم أكثر من {} بحث متزامن. انتظر حتى ينتهوا."
+
+#: plan/validators.py:229
+#, python-brace-format
+msgid ""
+"Your plan does not support more than {} concurrent sitemaps. Wait for them "
+"to finish."
+msgstr "خطتك لا تدعم أكثر من {} خريطة موقع متزامنة. انتظر حتى ينتهوا."
+
+#: plan/validators.py:258
+#, python-brace-format
+msgid ""
+"Your plan does not support more than {} knowledge bases. You can not create "
+"more."
+msgstr "خطتك لا تدعم أكثر من {} قاعدة معرفة. لا يمكنك إنشاء المزيد."
+
+#: plan/validators.py:291
+#, python-brace-format
+msgid ""
+"Your current plan does not support more than {} documents per knowledge "
+"base. This knowledge base has {} documents left. Your request will add {} "
+"documents."
+msgstr ""
+"خطتك الحالية لا تدعم أكثر من {} مستند لكل قاعدة معرفة. هذه القاعدة تبقى لها "
+"{} مستند. طلبك سيضيف {} مستند."
+
+#: plan/views.py:22
+msgid "List available plans"
+msgstr "عرض الخطط المتاحة"
+
+#: plan/views.py:24
+msgid ""
+"Returns a list of all active subscription plans with their details including "
+"pricing, features and limits."
+msgstr ""
+"يعيد قائمة بجميع خطط الاشتراك النشطة مع تفاصيلها بما في ذلك الأسعار والميزات "
+"والحدود."
+
+#: plan/views.py:29
+msgid "Get plan details"
+msgstr "الحصول على تفاصيل الخطة"
+
+#: plan/views.py:31
+msgid "Returns detailed information about a specific subscription plan."
+msgstr "يعيد معلومات تفصيلية حول خطة اشتراك محددة."
+
+#: plan/views.py:49
+msgid "Get current subscription details"
+msgstr "الحصول على تفاصيل الاشتراك الحالي"
+
+#: plan/views.py:51 plan/views.py:63
+msgid "Returns detailed information about the team's current subscription."
+msgstr "يعيد معلومات تفصيلية حول اشتراك الفريق الحالي."
+
+#: plan/views.py:61
+msgid "Get subscription details"
+msgstr "الحصول على تفاصيل الاشتراك"
+
+#: plan/views.py:68
+msgid "List team subscriptions"
+msgstr "عرض اشتراكات الفريق"
+
+#: plan/views.py:69
+msgid "Returns a list of all active subscriptions for the team."
+msgstr "يعيد قائمة بجميع الاشتراكات النشطة للفريق."
+
+#: plan/views.py:73
+msgid "Start a new subscription"
+msgstr "بدء اشتراك جديد"
+
+#: plan/views.py:74
+msgid "Starts a new subscription for the team."
+msgstr "يبدأ اشتراكاً جديداً للفريق."
+
+#: plan/views.py:77
+msgid "Subscription started successfully."
+msgstr "تم بدء الاشتراك بنجاح."
+
+#: plan/views.py:85 plan/views.py:115
+msgid "The URL to redirect the user to for payment processing."
+msgstr "عنوان URL لإعادة توجيه المستخدم لمعالجة الدفع."
+
+#: plan/views.py:91 plan/views.py:104 plan/views.py:121
+msgid "Returns the URL to redirect the user to for payment processing."
+msgstr "يعيد عنوان URL لإعادة توجيه المستخدم لمعالجة الدفع."
+
+#: plan/views.py:97
+msgid "Cancel subscription"
+msgstr "إلغاء الاشتراك"
+
+#: plan/views.py:98
+msgid "Cancels the active subscription for the team."
+msgstr "يلغي الاشتراك النشط للفريق."
+
+#: plan/views.py:102
+msgid "Get customer session URL"
+msgstr "الحصول على رابط جلسة العميل"
+
+#: plan/views.py:167
+msgid "You cannot start freemium plan for this team"
+msgstr "لا يمكنك بدء الخطة المجانية لهذا الفريق"
+
+#: plan/views.py:219
+msgid "Handle Stripe webhooks"
+msgstr "معالجة webhooks لـ Stripe"
+
+#: plan/views.py:221
+msgid ""
+"Processes webhook events from Stripe for subscription and payment updates."
+msgstr "يعالج أحداث webhook من Stripe لتحديثات الاشتراك والدفع."
+
+#: plan/views.py:243
+msgid "List usage history"
+msgstr "عرض سجل الاستخدام"
+
+#: plan/views.py:244
+msgid "List usage history for the team."
+msgstr "عرض سجل الاستخدام للفريق."
+
+#: plan/views.py:248
+msgid "Get usage history"
+msgstr "الحصول على سجل الاستخدام"
+
+#: plan/views.py:249
+msgid "Get usage history for the team."
+msgstr "الحصول على سجل الاستخدام للفريق."
+
+#: user/admin.py:20
+msgid "Personal info"
+msgstr "المعلومات الشخصية"
+
+#: user/admin.py:22
+msgid "Permissions"
+msgstr "الصلاحيات"
+
+#: user/admin.py:34
+msgid "Email verification"
+msgstr "التحقق من البريد الإلكتروني"
+
+#: user/admin.py:38
+msgid "Password reset"
+msgstr "إعادة تعيين كلمة المرور"
+
+#: user/decorators.py:51
+msgid "Invalid API key"
+msgstr "مفتاح API غير صالح"
+
+#: user/managers.py:11
+msgid "Superuser must have is_staff=True."
+msgstr "المستخدم المتميز يجب أن يكون is_staff=True."
+
+#: user/managers.py:13
+msgid "Superuser must have is_superuser=True."
+msgstr "المستخدم المتميز يجب أن يكون is_superuser=True."
+
+#: user/managers.py:24
+msgid "The given email must be set"
+msgstr "يجب تعيين البريد الإلكتروني المعطى"
+
+#: user/models.py:15 user/models.py:141
+msgid "Email Address"
+msgstr "عنوان البريد الإلكتروني"
+
+#: user/models.py:17
+msgid "Reset Password Expires At"
+msgstr "تنتهي صلاحية إعادة تعيين كلمة المرور في"
+
+#: user/models.py:22
+msgid "Reset Password Token"
+msgstr "رمز إعادة تعيين كلمة المرور"
+
+#: user/models.py:28
+msgid "Email Verification Token"
+msgstr "رمز التحقق من البريد الإلكتروني"
+
+#: user/models.py:34
+msgid "Email Verified"
+msgstr "تم التحقق من البريد الإلكتروني"
+
+#: user/models.py:38
+msgid "Privacy Confirmed At"
+msgstr "تم تأكيد الخصوصية في"
+
+#: user/models.py:43
+msgid "Terms Confirmed At"
+msgstr "تم تأكيد الشروط في"
+
+#: user/models.py:48
+msgid "Newsletter Confirmed"
+msgstr "تم تأكيد النشرة الإخبارية"
+
+#: user/models.py:59 user/models.py:104
+msgid "User"
+msgstr "المستخدم"
+
+#: user/models.py:60
+msgid "Users"
+msgstr "المستخدمون"
+
+#: user/models.py:76
+msgid "Members"
+msgstr "الأعضاء"
+
+#: user/models.py:81
+msgid "Stripe Customer ID"
+msgstr "معرف عميل Stripe"
+
+#: user/models.py:93
+msgid "Teams"
+msgstr "الفرق"
+
+#: user/models.py:115
+msgid "Is Owner"
+msgstr "مالك"
+
+#: user/models.py:123
+msgid "Team Member"
+msgstr "عضو الفريق"
+
+#: user/models.py:124
+msgid "Team Members"
+msgstr "أعضاء الفريق"
+
+#: user/models.py:135
+msgid "Invitation Token"
+msgstr "رمز الدعوة"
+
+#: user/models.py:145
+msgid "Activated"
+msgstr "مفعّل"
+
+#: user/models.py:153
+msgid "Team Invitation"
+msgstr "دعوة الفريق"
+
+#: user/models.py:154
+msgid "Team Invitations"
+msgstr "دعوات الفريق"
+
+#: user/models.py:173
+msgid "Last Used At"
+msgstr "آخر استخدام في"
+
+#: user/models.py:182
+msgid "Team API Key"
+msgstr "مفتاح API للفريق"
+
+#: user/models.py:183
+msgid "Team API Keys"
+msgstr "مفاتيح API للفريق"
+
+#: user/serializers.py:23
+msgid "Email already exists"
+msgstr "البريد الإلكتروني موجود بالفعل"
+
+#: user/serializers.py:74 user/serializers.py:76
+msgid "Invalid email or password"
+msgstr "بريد إلكتروني أو كلمة مرور غير صالحة"
+
+#: user/serializers.py:79
+msgid "Email is not verified"
+msgstr "لم يتم التحقق من البريد الإلكتروني"
+
+#: user/services.py:146
+msgid "User is already a member of the team"
+msgstr "المستخدم موجود بالفعل في الفريق"
+
+#: user/services.py:237
+msgid "User does not exist"
+msgstr "المستخدم غير موجود"
+
+#: user/views.py:40 user/views.py:41
+msgid "Install WaterCrawl"
+msgstr "تثبيت WaterCrawl"
+
+#: user/views.py:69 user/views.py:70 user/views.py:109 user/views.py:110
+msgid "Register a new user"
+msgstr "تسجيل مستخدم جديد"
+
+#: user/views.py:94 user/views.py:95
+msgid "Verify invitation"
+msgstr "التحقق من الدعوة"
+
+#: user/views.py:138
+msgid "You can not register you already have an account"
+msgstr "لا يمكنك التسجيل لديك بالفعل حساب"
+
+#: user/views.py:144
+msgid "Emails do not match"
+msgstr "عناوين البريد الإلكتروني غير متطابقة"
+
+#: user/views.py:159 user/views.py:160
+msgid "Authenticate using email and password"
+msgstr "المصادقة باستخدام البريد الإلكتروني وكلمة المرور"
+
+#: user/views.py:191 user/views.py:192
+msgid "Send a verification email"
+msgstr "إرسال بريد إلكتروني للتحقق"
+
+#: user/views.py:218 user/views.py:219
+msgid "Authenticate using OAuth"
+msgstr "المصادقة باستخدام OAuth"
+
+#: user/views.py:244
+msgid "Invalid token"
+msgstr "رمز غير صالح"
+
+#: user/views.py:257 user/views.py:258
+msgid "Send a forgot password email"
+msgstr "إرسال بريد إلكتروني لنسيان كلمة المرور"
+
+#: user/views.py:278 user/views.py:279
+msgid "Verify reset password token"
+msgstr "التحقق من رمز إعادة تعيين كلمة المرور"
+
+#: user/views.py:285 user/views.py:286
+msgid "Reset password"
+msgstr "إعادة تعيين كلمة المرور"
+
+#: user/views.py:314 user/views.py:315
+msgid "Verify email"
+msgstr "التحقق من البريد الإلكتروني"
+
+#: user/views.py:348
+msgid "Get user profile"
+msgstr "الحصول على ملف المستخدم"
+
+#: user/views.py:349
+msgid "Get the current user profile"
+msgstr "الحصول على ملف المستخدم الحالي"
+
+#: user/views.py:353 user/views.py:354
+msgid "Update user profile"
+msgstr "تحديث ملف المستخدم"
+
+#: user/views.py:376 user/views.py:377
+msgid "Get my invitations"
+msgstr "الحصول على دعواتي"
+
+#: user/views.py:381 user/views.py:382
+msgid "Accept an invitation"
+msgstr "قبول دعوة"
+
+#: user/views.py:408 user/views.py:409
+msgid "Create a new team"
+msgstr "إنشاء فريق جديد"
+
+#: user/views.py:413 user/views.py:414
+msgid "Get a team"
+msgstr "الحصول على فريق"
+
+#: user/views.py:418 user/views.py:419
+msgid "Update a team"
+msgstr "تحديث فريق"
+
+#: user/views.py:423 user/views.py:424
+msgid "List teams"
+msgstr "عرض الفرق"
+
+#: user/views.py:428
+msgid "Get/Update the current team"
+msgstr "الحصول/تحديث الفريق الحالي"
+
+#: user/views.py:429
+msgid "Get the current team"
+msgstr "الحصول على الفريق الحالي"
+
+#: user/views.py:434 user/views.py:435
+msgid "Invite a user to the current team"
+msgstr "دعوة مستخدم إلى الفريق الحالي"
+
+#: user/views.py:441 user/views.py:442
+msgid "List invitations to the current team"
+msgstr "عرض الدعوات إلى الفريق الحالي"
+
+#: user/views.py:512 user/views.py:513
+msgid "Create a new API key"
+msgstr "إنشاء مفتاح API جديد"
+
+#: user/views.py:517 user/views.py:518
+msgid "List API keys"
+msgstr "عرض مفاتيح API"
+
+#: user/views.py:522 user/views.py:523
+msgid "Delete an API key"
+msgstr "حذف مفتاح API"
+
+#: user/views.py:550 user/views.py:551
+msgid "List team members"
+msgstr "عرض أعضاء الفريق"
+
+#: user/views.py:555 user/views.py:556
+msgid "Delete a team member"
+msgstr "حذف عضو من الفريق"
+
+#: user/views.py:573
+msgid "You can not delete the owner of the team"
+msgstr "لا يمكنك حذف مالك الفريق"
+
+#: user/views.py:579 user/views.py:580
+msgid "Refresh token"
+msgstr "تحديث الرمز"
+
+#: user/views.py:590 user/views.py:591
+msgid "Verify token"
+msgstr "التحقق من الرمز"

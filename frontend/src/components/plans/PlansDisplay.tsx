@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Plan } from '../../types/subscription';
 import { PlanCard } from './PlanCard';
 import { EnterprisePlan } from './EnterprisePlan';
+import { useTranslation } from 'react-i18next';
 
 interface PlansDisplayProps {
   plans: Plan[];
@@ -18,6 +19,7 @@ export const PlansDisplay: React.FC<PlansDisplayProps> = ({
   headerTitle,
   headerDescription
 }) => {
+  const { t } = useTranslation();
   const [selectedGroup, setSelectedGroup] = useState<string>('yearly');
 
   const freePlan = plans.find((plan) => plan.is_default);
@@ -65,7 +67,7 @@ export const PlansDisplay: React.FC<PlansDisplayProps> = ({
                   }`}
                 onClick={() => setSelectedGroup(group)}
               >
-                {group.charAt(0).toUpperCase() + group.slice(1)}
+                {t(`plans.billing.${group}`)}
               </button>
             ))}
           </div>

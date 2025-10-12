@@ -12,16 +12,20 @@ import { activityLogsApi } from '../../../services/api/activityLogs';
 import { knowledgeBaseApi } from '../../../services/api/knowledgeBase';
 import { PaginatedResponse } from '../../../types/common';
 import toast from 'react-hot-toast';
-import { formatDistanceToNow } from 'date-fns';
 import Button from '../../../components/shared/Button';
+import { useDateLocale } from '../../../hooks/useDateLocale';
+import { formatDistanceToNowLocalized } from '../../../utils/dateUtils';
 import { useBreadcrumbs } from '../../../contexts/BreadcrumbContext';
 import { AxiosError } from 'axios';
 import { Pagination } from '../../../components/shared/Pagination';
 import { KnowledgeBaseDetail } from '../../../types/knowledge';
+import { useTranslation } from 'react-i18next';
 
 const RESULTS_PER_PAGE = 100;
 
 const SelectCrawlResultsPage: React.FC = () => {
+  const { t } = useTranslation();
+  const dateLocale = useDateLocale();
   const { knowledgeBaseId, crawlRequestId } = useParams<{ knowledgeBaseId: string, crawlRequestId: string }>();
   const navigate = useNavigate();
   const { setItems } = useBreadcrumbs();
@@ -40,14 +44,14 @@ const SelectCrawlResultsPage: React.FC = () => {
   useEffect(() => {
     if(!knowledgeBase) return;
     setItems([
-      { label: 'Dashboard', href: '/dashboard' },
-      { label: 'Knowledge Bases', href: '/dashboard/knowledge-base' },
+      { label: t('dashboard.navigation.dashboard'), href: '/dashboard' },
+      { label: t('knowledgeBase.list'), href: '/dashboard/knowledge-base' },
       { label: knowledgeBase.title, href: `/dashboard/knowledge-base/${knowledgeBaseId}` },
-      { label: 'Import Options', href: `/dashboard/knowledge-base/${knowledgeBaseId}/import` },
-      { label: 'Select Crawl Request', href: `/dashboard/knowledge-base/${knowledgeBaseId}/import/select-crawl` },
-      { label: 'Select Crawl Results', href: `/dashboard/knowledge-base/${knowledgeBaseId}/import/${crawlRequestId}`, current: true },
+      { label: t('knowledgeBase.import.title'), href: `/dashboard/knowledge-base/${knowledgeBaseId}/import` },
+      { label: t('knowledgeBase.import.selectCrawl'), href: `/dashboard/knowledge-base/${knowledgeBaseId}/import/select-crawl` },
+      { label: t('knowledgeBase.import.selectResults'), href: `/dashboard/knowledge-base/${knowledgeBaseId}/import/${crawlRequestId}`, current: true },
     ]);
-  }, [knowledgeBase, knowledgeBaseId, crawlRequestId, setItems]);
+  }, [knowledgeBase, knowledgeBaseId, crawlRequestId, setItems, t]);
 
 
   useEffect(() => {
@@ -55,10 +59,10 @@ const SelectCrawlResultsPage: React.FC = () => {
     knowledgeBaseApi.get(knowledgeBaseId as string).then((response) => {
       setKnowledgeBase(response);
     }).catch(() => {
-      toast.error('Failed to load knowledge base');
+      toast.error(t('settings.knowledgeBase.toast.loadError'));
       navigate('/dashboard/knowledge-base');
     });
-  }, [knowledgeBaseId, navigate]);
+  }, [knowledgeBaseId, navigate, t]);
 
   // Load crawl request details
   useEffect(() => {
@@ -70,13 +74,13 @@ const SelectCrawlResultsPage: React.FC = () => {
         setCrawlRequest(data);
       } catch (error) {
         console.error('Failed to load crawl request:', error);
-        toast.error('Failed to load crawl request');
+        toast.error(t('activityLogs.errors.fetchFailed'));
         navigate(`/dashboard/knowledge-base/${knowledgeBaseId}/import/select-crawl`);
       }
     };
 
     fetchCrawlRequest();
-  }, [crawlRequestId, knowledgeBaseId, navigate]);
+  }, [crawlRequestId, knowledgeBaseId, navigate, t]);
 
   // Fetch paginated crawl results
   const fetchCrawlResults = useCallback(async (page: number) => {
@@ -93,11 +97,11 @@ const SelectCrawlResultsPage: React.FC = () => {
       setResultsData(data);
     } catch (error) {
       console.error('Failed to load crawl results:', error);
-      toast.error('Failed to load crawl results');
+      toast.error(t('activityLogs.errors.fetchFailed'));
     } finally {
       setIsLoading(false);
     }
-  }, [crawlRequestId]);
+  }, [crawlRequestId, t]);
 
   // When page changes, fetch new data 
   useEffect(() => {
@@ -148,12 +152,6 @@ const SelectCrawlResultsPage: React.FC = () => {
     return allSelectedResults.size;
   };
 
-  // Get selected count as formatted string with commas for thousands
-  const getFormattedSelectedCount = () => {
-    const count = getTotalSelectedCount();
-    return count.toLocaleString();
-  };
-
   // Import selected results
   const handleImportSelected = async () => {
     if (!knowledgeBaseId || !crawlRequestId) return;
@@ -162,7 +160,7 @@ const SelectCrawlResultsPage: React.FC = () => {
     const selectedUuids = Array.from(allSelectedResults);
     
     if (selectedUuids.length === 0) {
-      toast.error('No results selected');
+      toast.error(t('knowledgeBase.import.noResultsSelected'));
       return;
     }
     
@@ -170,16 +168,16 @@ const SelectCrawlResultsPage: React.FC = () => {
     try {
       await knowledgeBaseApi.importFromCrawlResults(knowledgeBaseId, selectedUuids);
       
-      toast.success(`Successfully imported ${selectedUuids.length} result(s)`);
+      toast.success(t('knowledgeBase.import.importSuccess', { count: selectedUuids.length }));
       navigate(`/dashboard/knowledge-base/${knowledgeBaseId}`);
     } catch (error) {
       const axiosError = error as AxiosError;
       console.error('Failed to import selected results:', error);
       
       if (axiosError.response?.status === 400) {
-        toast.error('Invalid request. Please check your selections and try again.');
+        toast.error(t('knowledgeBase.import.invalidRequest'));
       } else {
-        toast.error('Failed to import selected results');
+        toast.error(t('knowledgeBase.import.importFailed'));
       }
     } finally {
       setIsImporting(false);
@@ -189,7 +187,7 @@ const SelectCrawlResultsPage: React.FC = () => {
   // Import all results from the crawl request
   const handleImportAll = async () => {
     if (!knowledgeBaseId || !crawlRequestId) {
-      toast.error('Required IDs are missing');
+      toast.error(t('knowledgeBase.import.missingIds'));
       return;
     }
 
@@ -198,14 +196,14 @@ const SelectCrawlResultsPage: React.FC = () => {
       
       await knowledgeBaseApi.importAllFromCrawlRequest(knowledgeBaseId, crawlRequestId);
       
-      toast.success('Successfully imported all results');
+      toast.success(t('knowledgeBase.import.importAllSuccess'));
       navigate(`/dashboard/knowledge-base/${knowledgeBaseId}`);
     } catch (error) {
       if(error instanceof AxiosError){
-        toast.error(error.response?.data?.message || 'Failed to import all results');
+        toast.error(error.response?.data?.message || t('knowledgeBase.import.importAllFailed'));
       }
       console.error('Failed to import all results:', error);
-      toast.error('Failed to import all results');
+      toast.error(t('knowledgeBase.import.importAllFailed'));
     } finally {
       setIsImporting(false);
     }
@@ -233,15 +231,13 @@ const SelectCrawlResultsPage: React.FC = () => {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
-              Select Results to Import
+              {t('knowledgeBase.import.selectResultsTitle')}
             </h1>
             <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">
               {crawlRequest ? (
-                <>
-                  Choose which results from <span className="font-medium">{crawlRequest.url}</span> you want to import into your knowledge base
-                </>
+                t('knowledgeBase.import.selectResultsDescription', { url: crawlRequest.url })
               ) : (
-                'Loading crawl request information...'
+                t('common.loading')
               )}
             </p>
           </div>
@@ -252,9 +248,9 @@ const SelectCrawlResultsPage: React.FC = () => {
       <div className="bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700 rounded-lg mb-6">
         <div className="p-4 flex items-center justify-between">
           <div className="text-sm font-medium text-gray-700 dark:text-gray-300">
-            <span className="font-bold">{getTotalSelectedCount()}</span> results selected across all pages
+            {t('knowledgeBase.import.resultsSelected', { count: getTotalSelectedCount() })}
           </div>
-          <div className="flex space-x-3">
+          <div className="flex gap-x-3">
             <Button
               variant="outline"
               size="sm"
@@ -263,7 +259,7 @@ const SelectCrawlResultsPage: React.FC = () => {
               loading={isImporting}
               className="text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600"
             >
-              Import All Results
+              {t('knowledgeBase.import.importAll')}
             </Button>
             <Button
               variant="primary"
@@ -272,8 +268,8 @@ const SelectCrawlResultsPage: React.FC = () => {
               disabled={isImporting || getTotalSelectedCount() === 0}
               loading={isImporting}
             >
-              <CheckIcon className="h-4 w-4 mr-1" />
-              Import Selected ({getFormattedSelectedCount()})
+              <CheckIcon className="h-4 w-4 me-1" />
+              {t('knowledgeBase.import.importSelected', { count: getTotalSelectedCount() })}
             </Button>
           </div>
         </div>
@@ -292,10 +288,10 @@ const SelectCrawlResultsPage: React.FC = () => {
           <div className="text-center py-12 bg-white dark:bg-gray-800">
             <DocumentTextIcon className="mx-auto h-12 w-12 text-gray-400" />
             <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-gray-200">
-              No results found
+              {t('knowledgeBase.import.noResults')}
             </h3>
             <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-              This crawl request doesn't have any results.
+              {t('knowledgeBase.import.noResultsDescription')}
             </p>
           </div>
         ) : (
@@ -307,22 +303,22 @@ const SelectCrawlResultsPage: React.FC = () => {
                     type="checkbox"
                     checked={resultsData.results.some(r => r.uuid) ? resultsData.results.filter(r => r.uuid).every(r => allSelectedResults.has(r.uuid!)) : false}
                     onChange={handleSelectAllOnPage}
-                    className="absolute left-4 top-1/2 -mt-2 h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded dark:border-gray-700"
+                    className="absolute start-4 top-1/2 -mt-2 h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded dark:border-gray-700"
                   />
                 </th>
                 <th
                   scope="col"
-                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-200"
+                  className="px-3 py-3.5 text-start text-sm font-semibold text-gray-900 dark:text-gray-200"
                 >
-                  URL
+                  {t('common.url')}
                 </th>
                 <th
                   scope="col"
-                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-200"
+                  className="px-3 py-3.5 text-start text-sm font-semibold text-gray-900 dark:text-gray-200"
                 >
-                  Created
+                  {t('activityLogs.table.created')}
                 </th>
-                <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                <th scope="col" className="relative py-3.5 ps-3 pe-4 sm:pe-6">
                   <Button
                     variant="outline"
                     size="sm"
@@ -332,7 +328,7 @@ const SelectCrawlResultsPage: React.FC = () => {
                   >
                     <ArrowPathIcon className={`h-3 w-3 ${isLoading ? 'animate-spin' : ''}`} />
                   </Button>
-                  <span className="sr-only">Actions</span>
+                  <span className="sr-only">{t('common.actions')}</span>
                 </th>
               </tr>
             </thead>
@@ -347,23 +343,23 @@ const SelectCrawlResultsPage: React.FC = () => {
                       type="checkbox"
                       checked={allSelectedResults.has(result.uuid || '')}
                       onChange={() => result.uuid && toggleResultSelection(result.uuid)}
-                      className="absolute left-4 top-1/2 -mt-2 h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded dark:border-gray-700"
+                      className="absolute start-4 top-1/2 -mt-2 h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded dark:border-gray-700"
                       disabled={!result.uuid}
                     />
                   </td>
                   <td className="px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
                     <div className="flex items-center">
-                      <LinkIcon className="h-4 w-4 mr-2 flex-shrink-0" />
+                      <LinkIcon className="h-4 w-4 me-2 flex-shrink-0" />
                       <span className="truncate max-w-md" title={result.url}>{result.url}</span>
                     </div>
                   </td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
                     <div className="flex items-center">
-                      <CalendarIcon className="h-4 w-4 mr-2 flex-shrink-0" />
-                      {formatDistanceToNow(new Date(result.created_at), { addSuffix: true })}
+                      <CalendarIcon className="h-4 w-4 me-2 flex-shrink-0" />
+                      {formatDistanceToNowLocalized(new Date(result.created_at), dateLocale, { addSuffix: true })}
                     </div>
                   </td>
-                  <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                  <td className="relative whitespace-nowrap py-4 ps-3 pe-4 text-end text-sm font-medium sm:pe-6">
                     {/* Future: Add individual result actions here if needed */}
                   </td>
                 </tr>

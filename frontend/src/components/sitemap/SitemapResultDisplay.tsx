@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { SitemapRequest, SitemapStatus } from '../../types/sitemap';
 import { DocumentChartBarIcon, CodeBracketSquareIcon } from '@heroicons/react/24/outline';
 import SitemapGraphViewer from './SitemapGraphViewer';
@@ -19,6 +20,7 @@ export const SitemapResultDisplay: React.FC<SitemapResultDisplayProps> = ({
   result,
   loading = false,
 }) => {
+  const { t } = useTranslation();
   const [viewMode, setViewMode] = useState<ViewMode>('json');
   const [sitemapGraph, setSitemapGraph] = useState<SitemapGraph | null>(null);
   const [markdownContent, setMarkdownContent] = useState<string>('');
@@ -41,11 +43,11 @@ export const SitemapResultDisplay: React.FC<SitemapResultDisplayProps> = ({
       setViewMode('graph');
     } catch (error) {
       console.error('Error loading sitemap graph:', error);
-      toast.error('Failed to load sitemap graph');
+      toast.error(t('sitemap.errors.loadGraphFailed'));
     } finally {
       setIsLoadingGraph(false);
     }
-  }, [result]);
+  }, [result, t]);
 
   const fetchSitemapMarkdown = useCallback(async () => {
     if (!result || !result.uuid || result.status !== SitemapStatus.Finished) return;
@@ -57,13 +59,13 @@ export const SitemapResultDisplay: React.FC<SitemapResultDisplayProps> = ({
       setViewMode('markdown');
     } catch (error) {
       console.error('Error loading sitemap markdown:', error);
-      toast.error('Failed to load sitemap markdown');
+      toast.error(t('sitemap.errors.loadMarkdownFailed'));
       // Fall back to json view if markdown fails to load
       setViewMode('json');
     } finally {
       setIsLoadingMarkdown(false);
     }
-  }, [result]);
+  }, [result, t]);
 
   useEffect(() => {
     if (result && result.status === SitemapStatus.Finished) {
@@ -78,7 +80,7 @@ export const SitemapResultDisplay: React.FC<SitemapResultDisplayProps> = ({
   if (!result) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500 dark:text-gray-400">No sitemap generated yet. Use the form to generate a sitemap.</p>
+        <p className="text-gray-500 dark:text-gray-400">{t('sitemap.noSitemapYet')}</p>
       </div>
     );
   }
@@ -86,10 +88,10 @@ export const SitemapResultDisplay: React.FC<SitemapResultDisplayProps> = ({
   if (loading && result.status === SitemapStatus.Running) {
     return (
       <div className="flex items-center justify-center py-8">
-        <div className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-primary-500 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
-          <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">Loading...</span>
+        <div className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-primary-500 border-e-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
+          <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">{t('common.loading')}</span>
         </div>
-        <span className="ml-2 text-gray-700 dark:text-gray-300">Generating sitemap...</span>
+        <span className="ms-2 text-gray-700 dark:text-gray-300">{t('sitemap.generatingSitemap')}</span>
 
       </div>
     );
@@ -104,10 +106,10 @@ export const SitemapResultDisplay: React.FC<SitemapResultDisplayProps> = ({
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clipRule="evenodd" />
             </svg>
           </div>
-          <div className="ml-3">
-            <h3 className="text-sm font-medium text-red-800 dark:text-red-300">Sitemap generation failed</h3>
+          <div className="ms-3">
+            <h3 className="text-sm font-medium text-red-800 dark:text-red-300">{t('sitemap.generationFailed')}</h3>
             <div className="mt-2 text-sm text-red-700 dark:text-red-200">
-              <p>There was an error generating the sitemap. Please try again or check the URL.</p>
+              <p>{t('sitemap.generationError')}</p>
             </div>
           </div>
         </div>
@@ -124,10 +126,10 @@ export const SitemapResultDisplay: React.FC<SitemapResultDisplayProps> = ({
               <path fillRule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
             </svg>
           </div>
-          <div className="ml-3">
-            <h3 className="text-sm font-medium text-yellow-800 dark:text-yellow-300">Sitemap generation canceled</h3>
+          <div className="ms-3">
+            <h3 className="text-sm font-medium text-yellow-800 dark:text-yellow-300">{t('sitemap.generationCanceled')}</h3>
             <div className="mt-2 text-sm text-yellow-700 dark:text-yellow-200">
-              <p>The sitemap generation process was canceled.</p>
+              <p>{t('sitemap.generationCanceledMessage')}</p>
             </div>
           </div>
         </div>
@@ -137,13 +139,13 @@ export const SitemapResultDisplay: React.FC<SitemapResultDisplayProps> = ({
 
   if (result.status === SitemapStatus.Finished) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-6 ltr">
         {result.result && Array.isArray(result.result) && (
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-600 dark:text-gray-400">
-              Found {result.result.length} URLs
+              {t('sitemap.foundUrls', { count: result.result.length })}
             </span>
-            <div className="flex space-x-2">
+            <div className="flex gap-x-2">
 
 
               {/* View toggle buttons */}
@@ -183,7 +185,7 @@ export const SitemapResultDisplay: React.FC<SitemapResultDisplayProps> = ({
         {viewMode === 'json' && (
           <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
             <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
-              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">Sitemap URL List</h3>
+              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('sitemap.urlList')}</h3>
             </div>
             <div className="p-4 max-h-[60vh] overflow-y-auto">
               <pre className="text-sm text-gray-800 dark:text-gray-300 font-mono whitespace-pre-wrap break-all">
@@ -197,7 +199,7 @@ export const SitemapResultDisplay: React.FC<SitemapResultDisplayProps> = ({
         {viewMode === 'graph' && (
           <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
             <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
-              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">Sitemap Structure</h3>
+              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('sitemap.structure')}</h3>
             </div>
             <div className="p-4 max-h-[60vh] overflow-y-auto">
               <SitemapGraphViewer
@@ -206,8 +208,8 @@ export const SitemapResultDisplay: React.FC<SitemapResultDisplayProps> = ({
               />
             </div>
             <div className="px-4 py-3 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 text-xs text-gray-500 dark:text-gray-400">
-              <p>• Click on folders to expand/collapse the sitemap tree</p>
-              <p>• Click on links to open pages in a new tab</p>
+              <p>• {t('sitemap.tips.expandFolders')}</p>
+              <p>• {t('sitemap.tips.clickLinks')}</p>
             </div>
           </div>
         )}
@@ -215,7 +217,7 @@ export const SitemapResultDisplay: React.FC<SitemapResultDisplayProps> = ({
         {viewMode === 'markdown' && (
           <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
             <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
-              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">Sitemap Markdown</h3>
+              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('sitemap.markdown')}</h3>
             </div>
             <div className="max-h-[60vh] overflow-y-auto">
               <SitemapMarkdownViewer
@@ -232,7 +234,7 @@ export const SitemapResultDisplay: React.FC<SitemapResultDisplayProps> = ({
   return (
     <div className="text-center py-8">
       <p className="text-gray-500 dark:text-gray-400">
-        {result.status === SitemapStatus.New ? 'Waiting to start...' : 'Processing...'}
+        {result.status === SitemapStatus.New ? t('sitemap.waitingToStart') : t('common.loading')}
       </p>
     </div>
   );

@@ -61,7 +61,7 @@ export const ObjectField: React.FC<FieldProps> = ({
               </p>
             )}
           </div>
-          <div className="ml-4">
+          <div className="ms-4">
             <SwitchWidget
               schema={schema.properties.is_active}
               path={[...path, 'is_active']}
@@ -72,7 +72,7 @@ export const ObjectField: React.FC<FieldProps> = ({
           </div>
         </div>
         {value?.is_active && (
-          <div className="space-y-6 pl-4 border-l-2 border-gray-100 dark:border-gray-700">
+          <div className="space-y-6 ps-4 border-s-2 border-gray-100 dark:border-gray-700">
             {Object.entries(schema.properties)
               .filter(([propertyName]) => propertyName !== 'is_active')
               .map(([propertyName, propertySchema]) => (

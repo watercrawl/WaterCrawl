@@ -86,7 +86,7 @@ These settings control the Django backend application:
 | `API_ENCRYPTION_KEY` | API encryption key for security | *Long string* | **Yes** for production |
 | `DEBUG` | Debug mode (set to False in production) | `True` | No |
 | `ALLOWED_HOSTS` | Comma-separated list of allowed hosts | `*` | No |
-| `LANGUAGE_CODE` | Language code | `en-us` | No |
+| `LANGUAGE_CODE` | Language code | `en` | No |
 | `TIME_ZONE` | Time zone | `UTC` | No |
 | `USE_I18N` | Enable internationalization | `True` | No |
 | `USE_TZ` | Enable timezone support | `True` | No |

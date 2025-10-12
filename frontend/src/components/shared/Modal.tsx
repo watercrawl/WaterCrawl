@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
@@ -14,6 +15,7 @@ interface ModalProps {
 }
 
 export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, footer, size = 'md' }) => {
+  const { t } = useTranslation();
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-50" onClose={onClose}>
@@ -52,21 +54,21 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, 
                 '6xl': 'max-w-6xl',
                 '7xl': 'max-w-7xl',
                 '80vw': 'w-[80vw] max-w-[80vw]',
-              }[size]} transform overflow-hidden rounded-2xl bg-white dark:bg-gray-800 p-6 text-left align-middle shadow-xl transition-all`}>
+              }[size]} transform overflow-hidden rounded-2xl bg-white dark:bg-gray-800 p-6 text-start align-middle shadow-xl transition-all`}>
                 <Dialog.Title
                   as="h3"
-                  className="text-lg font-medium leading-6 text-gray-900 dark:text-gray-100 pr-8"
+                  className="text-lg font-medium leading-6 text-gray-900 dark:text-gray-100 pe-8"
                 >
                   {title}
                 </Dialog.Title>
 
-                <div className="absolute top-0 right-0 pt-4 pr-4">
+                <div className="absolute top-0 end-0 pt-4 pe-4">
                   <button
                     type="button"
                     className="rounded-md bg-white dark:bg-gray-800 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
                     onClick={onClose}
                   >
-                    <span className="sr-only">Close</span>
+                    <span className="sr-only">{t('common.close')}</span>
                     <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
                 </div>

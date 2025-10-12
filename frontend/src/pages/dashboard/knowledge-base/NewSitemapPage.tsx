@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { SitemapForm } from '../../../components/sitemap/SitemapForm';
 import { EventType, SitemapEvent, SitemapRequest, SitemapStatus } from '../../../types/sitemap';
 import { FeedMessage } from '../../../types/feed';
@@ -7,8 +8,10 @@ import { useBreadcrumbs } from '../../../contexts/BreadcrumbContext';
 import { knowledgeBaseApi } from '../../../services/api/knowledgeBase';
 import toast from 'react-hot-toast';
 import { KnowledgeBaseDetail } from '../../../types/knowledge';
+import { StatusBadge } from '../../../components/shared/StatusBadge';
 
 const NewSitemapPage: React.FC = () => {
+  const { t } = useTranslation();
   const { knowledgeBaseId } = useParams<{ knowledgeBaseId: string }>();
   const navigate = useNavigate();
   const { setItems } = useBreadcrumbs();
@@ -24,21 +27,21 @@ const NewSitemapPage: React.FC = () => {
     knowledgeBaseApi.get(knowledgeBaseId as string).then((response) => {
       setKnowledgeBase(response);
     }).catch(() => {
-      toast.error('Failed to load knowledge base');
+      toast.error(t('settings.knowledgeBase.toast.loadError'));
       navigate('/dashboard/knowledge-base');
     });
-  }, [knowledgeBaseId, navigate]);
+  }, [knowledgeBaseId, navigate, t]);
 
   useEffect(() => {
     if (!knowledgeBase) return;
     setItems([
-      { label: 'Dashboard', href: '/dashboard' },
-      { label: 'Knowledge Bases', href: '/dashboard/knowledge-base' },
+      { label: t('dashboard.navigation.dashboard'), href: '/dashboard' },
+      { label: t('knowledgeBase.list'), href: '/dashboard/knowledge-base' },
       { label: knowledgeBase.title, href: `/dashboard/knowledge-base/${knowledgeBaseId}`},
-      { label: 'Import Options', href: `/dashboard/knowledge-base/${knowledgeBaseId}/import`},
-      { label: 'New Sitemap', href: `/dashboard/knowledge-base/${knowledgeBaseId}/import/new-sitemap`, current: true },
+      { label: t('knowledgeBase.import.title'), href: `/dashboard/knowledge-base/${knowledgeBaseId}/import`},
+      { label: t('knowledgeBase.import.newSitemap'), href: `/dashboard/knowledge-base/${knowledgeBaseId}/import/new-sitemap`, current: true },
     ]);
-  }, [knowledgeBase, knowledgeBaseId, setItems]);
+  }, [knowledgeBase, knowledgeBaseId, setItems, t]);
 
   const handleSitemapEvent = (event: SitemapEvent) => {
 
@@ -60,10 +63,10 @@ const NewSitemapPage: React.FC = () => {
     <div className="py-6 px-4 sm:px-6 lg:px-8">
       <div className="mb-6">
         <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
-          Generate New Sitemap
+          {t('knowledgeBase.import.newSitemap')}
         </h1>
         <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">
-          Enter a URL to generate a sitemap and import into your knowledge base.
+          {t('knowledgeBase.import.newSitemapDesc')}
         </p>
       </div>
 
@@ -71,12 +74,12 @@ const NewSitemapPage: React.FC = () => {
         {activeSitemap ? (
           <div className="space-y-4">
             <div>
-              <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Generating sitemap...</h4>
+              <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('sitemap.generating')}</h4>
               <div className="relative pt-1">
                 <div className="flex mb-2 items-center justify-between">
                   <div>
                     <span className="text-xs font-semibold inline-block text-primary-600 dark:text-primary-400">
-                      status: {activeSitemap.status}
+                      {t('activityLogs.table.status')}: <StatusBadge status={activeSitemap.status as SitemapStatus} />
                     </span>
                   </div>
                 </div>
@@ -85,14 +88,14 @@ const NewSitemapPage: React.FC = () => {
                 </div>
               </div>
               <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                Your sitemap is being generated. You'll be redirected to select URLs when it completes.
+                {t('knowledgeBase.import.generatingProgress')}
               </p>
             </div>
           </div>
         ) : (
           <div className="space-y-4">
             <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">
-              Enter a URL to generate a sitemap and import into your knowledge base. After generation, you'll be able to select which pages to import.
+              {t('knowledgeBase.import.generatingInstructions')}
             </p>
 
             {/* Modified to capture the generated sitemap ID for redirection */}
@@ -101,8 +104,7 @@ const NewSitemapPage: React.FC = () => {
             {/* Add instructions for the user */}
             <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
               <p className="text-sm text-blue-800 dark:text-blue-300">
-                <strong>Note:</strong> After generating the sitemap, you'll be automatically redirected to the URL selector page
-                to choose which URLs to include in your knowledge base.
+                {t('knowledgeBase.import.generatingNote')}
               </p>
             </div>
           </div>
