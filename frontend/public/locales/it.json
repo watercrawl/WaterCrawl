@@ -61,7 +61,7 @@
   },
   "api": {
     "example": "Esempio",
-    "install": "Install",
+    "install": "Installa",
     "noRequestData": "Nessun dato di richiesta disponibile",
     "seeDocumentation": "Consulta la documentazione ufficiale per uso avanzato, autenticazione e altri esempi.",
     "selectApiKey": "Chiave API...",
@@ -247,7 +247,7 @@
     "upgradePlan": "Aggiorna Piano"
   },
   "common": {
-    "version": "Version",
+    "version": "Versione",
     "actions": "Azioni",
     "ago": "fa",
     "appName": "WaterCrawl",
