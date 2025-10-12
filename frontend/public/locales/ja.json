@@ -61,7 +61,7 @@
   },
   "api": {
     "example": "例",
-    "install": "Install",
+    "install": "インストール",
     "noRequestData": "リクエストデータがありません",
     "seeDocumentation": "高度な使用方法、認証、その他の例については、公式ドキュメントをご覧ください。",
     "selectApiKey": "APIキー...",
@@ -247,7 +247,7 @@
     "upgradePlan": "プランをアップグレード"
   },
   "common": {
-    "version": "Version",
+    "version": "バージョン",
     "actions": "アクション",
     "ago": "前",
     "appName": "WaterCrawl",
