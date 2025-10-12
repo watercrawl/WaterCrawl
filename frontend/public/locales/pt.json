@@ -61,6 +61,7 @@
   },
   "api": {
     "example": "Exemplo",
+    "install": "Install",
     "noRequestData": "Nenhum dado de solicitação disponível",
     "seeDocumentation": "Consulte a documentação oficial para uso avançado, autenticação e mais exemplos.",
     "selectApiKey": "Chave API...",
@@ -83,12 +84,6 @@
     }
   },
   "apiKeys": {
-    "actionsMenu": {
-      "cancel": "Cancel",
-      "copy": "Copy",
-      "revoke": "Revoke",
-      "revokeConfirm": "Are you sure you want to revoke this key?"
-    },
     "copyToClipboard": "Copiar para a Área de Transferência",
     "create": {
       "copyKey": "Copiar Chave",
@@ -252,6 +247,7 @@
     "upgradePlan": "Atualizar Plano"
   },
   "common": {
+    "version": "Version",
     "actions": "Ações",
     "ago": "atrás",
     "appName": "WaterCrawl",
@@ -484,6 +480,7 @@
     },
     "subtitle": "Digite uma URL para rastrear e extrair dados de páginas web",
     "title": "Rastreador Web",
+    "typeLabel": "Type",
     "type": {
       "batch": "Lote",
       "single": "Único"
