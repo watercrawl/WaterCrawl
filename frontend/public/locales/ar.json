@@ -61,7 +61,6 @@
   },
   "api": {
     "example": "مثال",
-    "install": "تثبيت",
     "noRequestData": "لا توجد بيانات طلب متاحة",
     "seeDocumentation": "راجع الوثائق الرسمية للاستخدام المتقدم والمصادقة والمزيد من الأمثلة.",
     "selectApiKey": "مفتاح API...",
@@ -84,11 +83,11 @@
     }
   },
   "apiKeys": {
-    "actions": {
-      "copied": "تم النسخ!",
-      "copy": "نسخ",
-      "revoke": "إلغاء",
-      "revokeConfirm": "هل أنت متأكد من إلغاء هذا المفتاح؟"
+    "actionsMenu": {
+      "cancel": "Cancel",
+      "copy": "Copy",
+      "revoke": "Revoke",
+      "revokeConfirm": "Are you sure you want to revoke this key?"
     },
     "copyToClipboard": "نسخ إلى الحافظة",
     "create": {
@@ -253,7 +252,6 @@
     "upgradePlan": "ترقية الخطة"
   },
   "common": {
-    "version": "الإصدار",
     "actions": "الإجراءات",
     "ago": "منذ",
     "appName": "WaterCrawl",
@@ -264,9 +262,6 @@
     "deselectAll": "إلغاء تحديد الكل",
     "importing": "جاري الاستيراد...",
     "url": "عنوان URL",
-    "common": {
-      "subtitle": "مرحبًا بعودتك! يرجى تسجيل الدخول إلى حسابك"
-    },
     "copiedToClipboard": "تم النسخ إلى الحافظة!",
     "copyFailed": "فشل النسخ إلى الحافظة",
     "crawls": "الزحف",
@@ -1676,7 +1671,6 @@
       },
       "updateButton": "تحديث"
     },
-    "subtitle": "تكوين تطبيقك",
     "team": {
       "billingTab": "الفوترة",
       "confirmRemove": "هل أنت متأكد من رغبتك في إزالة هذا العضو؟",
@@ -1717,6 +1711,7 @@
       "status": "الحالة",
       "title": "دعوات الفريق"
     },
+    "subtitle": "تكوين تطبيقك",
     "title": "الإعدادات"
   },
   "sitemap": {
@@ -1734,6 +1729,7 @@
       "cancelFailed": "فشل إلغاء إنشاء خريطة الموقع.",
       "download": "فشل تنزيل خريطة الموقع",
       "generateFailed": "فشل إنشاء خريطة الموقع.",
+      "loadFailed": "Failed to load sitemap data",
       "loadGraphFailed": "فشل تحميل رسم خريطة الموقع",
       "loadMarkdown": "فشل تحميل markdown",
       "loadMarkdownFailed": "فشل تحميل markdown خريطة الموقع",
