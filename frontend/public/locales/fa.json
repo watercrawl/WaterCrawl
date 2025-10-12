@@ -61,7 +61,7 @@
   },
   "api": {
     "example": "مثال",
-    "install": "Install",
+    "install": "نصب",
     "noRequestData": "داده درخواستی موجود نیست",
     "seeDocumentation": "برای استفاده پیشرفته، احراز هویت و مثال‌های بیشتر، مستندات رسمی را مشاهده کنید.",
     "selectApiKey": "کلید API...",
@@ -247,7 +247,7 @@
     "upgradePlan": "ارتقاء پلن"
   },
   "common": {
-    "version": "Version",
+    "version": "نسخه",
     "actions": "عملیات",
     "ago": "پیش",
     "appName": "WaterCrawl",
