@@ -61,7 +61,6 @@
   },
   "api": {
     "example": "Beispiel",
-    "install": "Installieren",
     "noRequestData": "Keine Anfragedaten verfügbar",
     "seeDocumentation": "Sehen Sie sich die offizielle Dokumentation für erweiterte Nutzung, Authentifizierung und weitere Beispiele an.",
     "selectApiKey": "API-Schlüssel...",
@@ -84,11 +83,11 @@
     }
   },
   "apiKeys": {
-    "actions": {
-      "copied": "Kopiert!",
-      "copy": "Kopieren",
-      "revoke": "Widerrufen",
-      "revokeConfirm": "Sind Sie sicher, dass Sie diesen Schlüssel widerrufen möchten?"
+    "actionsMenu": {
+      "cancel": "Cancel",
+      "copy": "Copy",
+      "revoke": "Revoke",
+      "revokeConfirm": "Are you sure you want to revoke this key?"
     },
     "copyToClipboard": "In Zwischenablage kopieren",
     "create": {
@@ -253,7 +252,6 @@
     "upgradePlan": "Plan upgraden"
   },
   "common": {
-    "version": "Version",
     "actions": "Aktionen",
     "ago": "vor",
     "appName": "WaterCrawl",
@@ -264,9 +262,6 @@
     "deselectAll": "Alle abwählen",
     "importing": "Importiere...",
     "url": "URL",
-    "common": {
-      "subtitle": "Willkommen zurück! Bitte melden Sie sich an"
-    },
     "copiedToClipboard": "In Zwischenablage kopiert!",
     "copyFailed": "Kopieren in Zwischenablage fehlgeschlagen",
     "crawls": "Crawls",
@@ -768,22 +763,22 @@
     },
     "complete": {
       "button": "Anmelden und WaterCrawl verwenden",
-      "message": "WaterCrawl wurde erfolgreich installiert. Sie k\u00f6nnen jetzt das System verwenden",
+      "message": "WaterCrawl wurde erfolgreich installiert. Sie können jetzt das System verwenden",
       "title": "Installation abgeschlossen"
     },
     "error": "Bei der Installation ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut",
     "form": {
-      "confirmPassword": "Passwort best\u00e4tigen",
+      "confirmPassword": "Passwort bestätigen",
       "email": "Admin-E-Mail-Adresse",
       "password": "Passwort"
     },
     "license": {
       "accept": "Ich akzeptiere und stimme zu, die Lizenzbestimmungen von WaterCrawl zu befolgen",
       "here": "hier",
-      "readVersion": "Sie k\u00f6nnen die neueste Version lesen"
+      "readVersion": "Sie können die neueste Version lesen"
     },
     "newsletter": {
-      "description": "Wir senden Ihnen WaterCrawl-Updates, neue Funktionen und wichtige Ank\u00fcndigungen",
+      "description": "Wir senden Ihnen WaterCrawl-Updates, neue Funktionen und wichtige Ankündigungen",
       "title": "Newsletter abonnieren"
     },
     "password": {
@@ -793,9 +788,9 @@
       "minChars": "Mindestens {{min}} Zeichen",
       "number": "Mindestens eine Zahl",
       "specialChar": "Mindestens ein Sonderzeichen",
-      "strength": "Passwortst\u00e4rke",
+      "strength": "Passwortstärke",
       "strong": "Stark",
-      "uppercase": "Mindestens ein Gro\u00dfbuchstabe",
+      "uppercase": "Mindestens ein Großbuchstabe",
       "veryStrong": "Sehr stark",
       "veryWeak": "Sehr schwach",
       "weak": "Schwach"
@@ -805,17 +800,17 @@
     "success": "System erfolgreich installiert!",
     "title": "WaterCrawl installieren",
     "validation": {
-      "acceptLicense": "Sie m\u00fcssen die Lizenzvereinbarung akzeptieren",
-      "confirmPassword": "Bitte best\u00e4tigen Sie Ihr Passwort",
+      "acceptLicense": "Sie müssen die Lizenzvereinbarung akzeptieren",
+      "confirmPassword": "Bitte bestätigen Sie Ihr Passwort",
       "emailRequired": "E-Mail ist erforderlich",
       "passwordLowercase": "Passwort muss mindestens einen Kleinbuchstaben enthalten",
       "passwordMinLength": "Passwort muss mindestens {{min}} Zeichen lang sein",
       "passwordNumber": "Passwort muss mindestens eine Zahl enthalten",
       "passwordRequired": "Passwort ist erforderlich",
-      "passwordsMatch": "Passw\u00f6rter m\u00fcssen \u00fcbereinstimmen",
+      "passwordsMatch": "Passwörter müssen übereinstimmen",
       "passwordSpecial": "Passwort muss mindestens ein Sonderzeichen enthalten",
-      "passwordUppercase": "Passwort muss mindestens einen Gro\u00dfbuchstaben enthalten",
-      "validEmail": "Bitte geben Sie eine g\u00fcltige E-Mail ein"
+      "passwordUppercase": "Passwort muss mindestens einen Großbuchstaben enthalten",
+      "validEmail": "Bitte geben Sie eine gültige E-Mail ein"
     }
   },
   "knowledgeBase": {
@@ -1021,9 +1016,9 @@
   },
   "profile": {
     "accountActions": "Konto-Aktionen",
-    "accountActionsSubtitle": "Verwalten Sie Ihre Kontoeinstellungen und -pr\u00e4ferenzen.",
+    "accountActionsSubtitle": "Verwalten Sie Ihre Kontoeinstellungen und -präferenzen.",
     "form": {
-      "emailInvalid": "Bitte geben Sie eine g\u00fcltige E-Mail-Adresse ein",
+      "emailInvalid": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
       "firstNameRequired": "Vorname ist erforderlich",
       "lastNameRequired": "Nachname ist erforderlich",
       "loadError": "Profil konnte nicht geladen werden",
@@ -1035,11 +1030,11 @@
     "info": {
       "avatar": "Avatar",
       "email": "E-Mail",
-      "emailCannotChange": "E-Mail-Adresse kann nicht ge\u00e4ndert werden.",
+      "emailCannotChange": "E-Mail-Adresse kann nicht geändert werden.",
       "firstName": "Vorname",
       "lastName": "Nachname",
       "phone": "Telefon",
-      "title": "Pers\u00f6nliche Informationen",
+      "title": "Persönliche Informationen",
       "updateButton": "Profil aktualisieren"
     },
     "invitations": {
@@ -1059,11 +1054,11 @@
       "tooltip": "Bleiben Sie auf dem Laufenden mit unseren neuesten Funktionen, Updates und exklusiven Angeboten!"
     },
     "password": {
-      "changeButton": "Passwort \u00e4ndern",
-      "confirm": "Passwort best\u00e4tigen",
+      "changeButton": "Passwort ändern",
+      "confirm": "Passwort bestätigen",
       "current": "Aktuelles Passwort",
       "new": "Neues Passwort",
-      "title": "Passwort \u00e4ndern"
+      "title": "Passwort ändern"
     },
     "security": {
       "loginHistory": "Anmeldeverlauf",
@@ -1071,7 +1066,7 @@
       "title": "Sicherheit",
       "twoFactor": "Zwei-Faktor-Authentifizierung"
     },
-    "subtitle": "Verwalten Sie Ihre pers\u00f6nlichen Informationen und Pr\u00e4ferenzen.",
+    "subtitle": "Verwalten Sie Ihre persönlichen Informationen und Präferenzen.",
     "teamInvitations": "Team-Einladungen",
     "title": "Profil"
   },
@@ -1676,7 +1671,6 @@
       },
       "updateButton": "Aktualisieren"
     },
-    "subtitle": "Konfigurieren Sie Ihre Anwendung",
     "team": {
       "billingTab": "Abrechnung",
       "confirmRemove": "Sind Sie sicher, dass Sie dieses Mitglied entfernen möchten?",
@@ -1717,6 +1711,7 @@
       "status": "Status",
       "title": "Team-Einladungen"
     },
+    "subtitle": "Konfigurieren Sie Ihre Anwendung",
     "title": "Einstellungen"
   },
   "sitemap": {
@@ -1734,6 +1729,7 @@
       "cancelFailed": "Abbrechen der Sitemap-Generierung fehlgeschlagen.",
       "download": "Herunterladen der Sitemap fehlgeschlagen",
       "generateFailed": "Generierung der Sitemap fehlgeschlagen.",
+      "loadFailed": "Failed to load sitemap data",
       "loadGraphFailed": "Laden des Sitemap-Graphen fehlgeschlagen",
       "loadMarkdown": "Laden von Markdown fehlgeschlagen",
       "loadMarkdownFailed": "Laden des Sitemap-Markdowns fehlgeschlagen",
