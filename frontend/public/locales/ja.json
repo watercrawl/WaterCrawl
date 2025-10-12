@@ -61,7 +61,6 @@
   },
   "api": {
     "example": "例",
-    "install": "インストール",
     "noRequestData": "リクエストデータがありません",
     "seeDocumentation": "高度な使用方法、認証、その他の例については、公式ドキュメントをご覧ください。",
     "selectApiKey": "APIキー...",
@@ -84,11 +83,11 @@
     }
   },
   "apiKeys": {
-    "actions": {
-      "copied": "コピーしました！",
-      "copy": "コピー",
-      "revoke": "無効化",
-      "revokeConfirm": "このキーを無効化してもよろしいですか？"
+    "actionsMenu": {
+      "cancel": "Cancel",
+      "copy": "Copy",
+      "revoke": "Revoke",
+      "revokeConfirm": "Are you sure you want to revoke this key?"
     },
     "copyToClipboard": "クリップボードにコピー",
     "create": {
@@ -253,7 +252,6 @@
     "upgradePlan": "プランをアップグレード"
   },
   "common": {
-    "version": "バージョン",
     "actions": "アクション",
     "ago": "前",
     "appName": "WaterCrawl",
@@ -264,9 +262,6 @@
     "deselectAll": "すべて選択解除",
     "importing": "インポート中...",
     "url": "URL",
-    "common": {
-      "subtitle": "おかえりなさい！アカウントにログインしてください"
-    },
     "copiedToClipboard": "クリップボードにコピーしました！",
     "copyFailed": "クリップボードへのコピーに失敗しました",
     "crawls": "クロール",
@@ -877,12 +872,16 @@
       "selectResultsTitle": "インポートする結果を選択",
       "selectResultsDescription": "{{url}} からナレッジベースにインポートする結果を選択してください",
       "resultsSelected": "すべてのページで {{count}} 件の結果が選択されています",
+      "resultsSelected_one": "{{count}} result selected across all pages",
+      "resultsSelected_other": "{{count}} results selected across all pages",
       "importAll": "すべての結果をインポート",
       "importSelected": "選択項目をインポート ({{count}})",
       "noResults": "結果が見つかりません",
       "noResultsDescription": "このクロールリクエストには結果がありません。",
       "noResultsSelected": "結果が選択されていません",
       "importSuccess": "{{count}} 件の結果を正常にインポートしました",
+      "importSuccess_one": "Successfully imported {{count}} result",
+      "importSuccess_other": "Successfully imported {{count}} results",
       "invalidRequest": "無効なリクエストです。選択内容を確認して、もう一度お試しください。",
       "importFailed": "選択した結果のインポートに失敗しました",
       "missingIds": "必須のIDが不足しています",
@@ -1672,7 +1671,6 @@
       },
       "updateButton": "更新"
     },
-    "subtitle": "アプリケーションを設定",
     "team": {
       "billingTab": "請求",
       "confirmRemove": "このメンバーを削除してもよろしいですか？",
@@ -1713,6 +1711,7 @@
       "status": "ステータス",
       "title": "チーム招待"
     },
+    "subtitle": "アプリケーションを設定",
     "title": "設定"
   },
   "sitemap": {
@@ -1730,6 +1729,7 @@
       "cancelFailed": "サイトマップ生成のキャンセルに失敗しました。",
       "download": "サイトマップのダウンロードに失敗しました",
       "generateFailed": "サイトマップの生成に失敗しました。",
+      "loadFailed": "Failed to load sitemap data",
       "loadGraphFailed": "サイトマップグラフの読み込みに失敗しました",
       "loadMarkdown": "Markdownの読み込みに失敗しました",
       "loadMarkdownFailed": "サイトマップMarkdownの読み込みに失敗しました",
