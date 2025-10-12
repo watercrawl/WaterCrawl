@@ -61,6 +61,7 @@
   },
   "api": {
     "example": "示例",
+    "install": "Install",
     "noRequestData": "无可用请求数据",
     "seeDocumentation": "查看官方文档以了解高级用法、身份验证和更多示例。",
     "selectApiKey": "API 密钥...",
@@ -83,12 +84,6 @@
     }
   },
   "apiKeys": {
-    "actionsMenu": {
-      "cancel": "Cancel",
-      "copy": "Copy",
-      "revoke": "Revoke",
-      "revokeConfirm": "Are you sure you want to revoke this key?"
-    },
     "copyToClipboard": "复制到剪贴板",
     "create": {
       "copyKey": "复制密钥",
@@ -252,6 +247,7 @@
     "upgradePlan": "升级计划"
   },
   "common": {
+    "version": "Version",
     "actions": "操作",
     "ago": "前",
     "appName": "WaterCrawl",
@@ -484,6 +480,7 @@
     },
     "subtitle": "输入 URL 以爬取并从网页提取数据",
     "title": "网络爬虫",
+    "typeLabel": "Type",
     "type": {
       "batch": "批量",
       "single": "单个"
