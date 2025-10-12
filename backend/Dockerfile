@@ -22,6 +22,7 @@ RUN apt-get update && apt-get install -y \
         build-essential \
         wget \
         git \
+        gettext \
         default-libmysqlclient-dev && \
         rm -rf /var/lib/apt/lists/* && \
         mkdir -p /var/www
@@ -36,7 +37,8 @@ FROM builder AS runtime
 
 ADD . /var/www
 
-RUN chmod +x /var/www/entrypoint.sh && mkdir .celery/ && echo ${APP_VERSION} > /var/www/VERSION
+RUN chmod +x /var/www/entrypoint.sh && mkdir .celery/ && echo ${APP_VERSION} > /var/www/VERSION && \
+    poetry run django-admin compilemessages
 
 ENV PATH="/var/www/.venv/bin:${PATH}"
 
