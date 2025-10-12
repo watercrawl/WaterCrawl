@@ -2,8 +2,8 @@ project_id: 819230
 
 files:
   # Frontend JSON
-  - source: /frontend/src/i18n/locales/en.json
-    translation: /frontend/src/i18n/locales/%two_letters_code%.json
+  - source: /frontend/public/locales/en.json
+    translation: /frontend/public/locales/%two_letters_code%.json
     skip_untranslated_strings: true
 
   # Django backend PO
