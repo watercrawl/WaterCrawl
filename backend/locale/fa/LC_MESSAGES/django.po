@@ -1,22 +1,21 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: watercrawl\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-08 13:07+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2025-10-12 19:43\n"
+"Last-Translator: \n"
+"Language-Team: Persian\n"
+"Language: fa_IR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: watercrawl\n"
+"X-Crowdin-Project-ID: 819230\n"
+"X-Crowdin-Language: fa\n"
+"X-Crowdin-File: /development/backend/locale/en/LC_MESSAGES/django.po\n"
+"X-Crowdin-File-ID: 26\n"
 
 #: backend/agent/models.py:9 backend/core/models.py:147 backend/llm/models.py:8
 #: backend/llm/models.py:102 backend/user/models.py:71
@@ -75,42 +74,27 @@ msgid "conversation"
 msgstr "مکالمه"
 
 #: backend/common/docs.py:3
-msgid ""
-"\n"
-"# Introduction\n"
-"\n"
-"This documentation covers all the external APIs that can be accessed using a "
-"Team API Key. These APIs are designed for integration with external systems "
-"and services.\n"
-"\n"
-"## Authentication\n"
-"\n"
-"All endpoints in this documentation require authentication using an API Key. "
-"To authenticate your requests:\n"
-"\n"
-"1. Generate an API Key from the [API Keys Dashboard](https://"
-"app.watercrawl.dev/dashboard/api-keys)\n"
-"2. Include the API Key in your requests using the `X-API-Key` header:\n"
-"\n"
+msgid "\n"
+"# Introduction\n\n"
+"This documentation covers all the external APIs that can be accessed using a Team API Key. These APIs are designed for integration with external systems and services.\n\n"
+"## Authentication\n\n"
+"All endpoints in this documentation require authentication using an API Key. To authenticate your requests:\n\n"
+"1. Generate an API Key from the [API Keys Dashboard](https://app.watercrawl.dev/dashboard/api-keys)\n"
+"2. Include the API Key in your requests using the `X-API-Key` header:\n\n"
 "```bash\n"
 "curl -H \"X-API-Key: your_api_key_here\" https://api.watercrawl.dev/v1/...\n"
-"```\n"
-"\n"
+"```\n\n"
 "### Important Notes:\n"
 "- Keep your API Key secure and never share it publicly\n"
 "- You can generate multiple API Keys for different purposes\n"
 "- You can revoke API Keys at any time from the dashboard\n"
-"- Each API Key is associated with a specific team\n"
-"\n"
+"- Each API Key is associated with a specific team\n\n"
 "## Rate Limiting\n"
-"API requests are rate-limited based on your team's plan. Please refer to "
-"your plan details for specific limits.\n"
+"API requests are rate-limited based on your team's plan. Please refer to your plan details for specific limits.\n"
 msgstr ""
 
 #: backend/common/docs.py:30
-msgid ""
-"API Key for team authentication. Generate from https://app.watercrawl.dev/"
-"dashboard/api-keys"
+msgid "API Key for team authentication. Generate from https://app.watercrawl.dev/dashboard/api-keys"
 msgstr ""
 
 #: backend/common/handlers.py:19
@@ -187,7 +171,7 @@ msgstr "ناموفق"
 
 #: backend/core/consts.py:154
 msgid "PDF"
-msgstr "PDF"
+msgstr ""
 
 #: backend/core/consts.py:155
 msgid "Screenshot"
@@ -231,15 +215,15 @@ msgstr "سال"
 
 #: backend/core/consts.py:191
 msgid "HTTP"
-msgstr "HTTP"
+msgstr ""
 
 #: backend/core/consts.py:192
 msgid "SOCKS4"
-msgstr "SOCKS4"
+msgstr ""
 
 #: backend/core/consts.py:193
 msgid "SOCKS5"
-msgstr "SOCKS5"
+msgstr ""
 
 #: backend/core/consts.py:201
 msgid "General"
@@ -286,9 +270,7 @@ msgid "Filter crawl results by date"
 msgstr "فیلتر نتایج خزش بر اساس تاریخ"
 
 #: backend/core/docs.py:312
-msgid ""
-"Format of the download file. Default: json. Available formats: markdown, "
-"json."
+msgid "Format of the download file. Default: json. Available formats: markdown, json."
 msgstr "فرمت فایل دانلود. پیش‌فرض: json. فرمت‌های موجود: markdown، json."
 
 #: backend/core/models.py:23
@@ -329,7 +311,7 @@ msgstr "درخواست‌های خزش"
 
 #: backend/core/models.py:74 backend/core/models.py:196
 msgid "URL"
-msgstr "URL"
+msgstr ""
 
 #: backend/core/models.py:76 backend/core/models.py:131
 #: backend/core/models.py:206
@@ -1169,11 +1151,11 @@ msgstr "حذف جاسازی ارائه‌دهنده"
 
 #: backend/llm/consts.py:7 backend/llm/consts.py:22
 msgid "OpenAI"
-msgstr "OpenAI"
+msgstr ""
 
 #: backend/llm/consts.py:10
 msgid "WaterCrawl"
-msgstr "WaterCrawl"
+msgstr ""
 
 #: backend/llm/consts.py:37
 msgid "Not Available"
@@ -1313,9 +1295,7 @@ msgid "List all provider configs (Global and Team-specific)"
 msgstr "فهرست همه پیکربندی‌های ارائه‌دهنده (عمومی و تیمی)"
 
 #: backend/llm/views.py:59
-msgid ""
-"Get all available provider configurations including global and team-specific "
-"ones."
+msgid "Get all available provider configurations including global and team-specific ones."
 msgstr "دریافت همه پیکربندی‌های موجود شامل عمومی و تیمی."
 
 #: backend/llm/views.py:65
@@ -1505,12 +1485,8 @@ msgid "Daily page credit"
 msgstr "اعتبار روزانه صفحه"
 
 #: backend/plan/models.py:40
-msgid ""
-"Number of pages that can be crawled per day. resets at midnight. -1 for "
-"unlimited"
-msgstr ""
-"تعداد صفحاتی که می‌توانند در روز خزش شوند. در نیمه‌شب بازنشانی می‌شود. -1 برای "
-"نامحدود"
+msgid "Number of pages that can be crawled per day. resets at midnight. -1 for unlimited"
+msgstr "تعداد صفحاتی که می‌توانند در روز خزش شوند. در نیمه‌شب بازنشانی می‌شود. -1 برای نامحدود"
 
 #: backend/plan/models.py:45
 msgid "Crawl max depth"
@@ -1719,122 +1695,70 @@ msgstr "نمی‌توان درخواستی بدون تیم متصل را محد�
 
 #: backend/plan/validators.py:42
 #, python-brace-format
-msgid ""
-"You have no more daily credit left in your plan. for current request you "
-"need {} credits."
-msgstr ""
-"اعتبار روزانه‌ای در پلن شما باقی نمانده. برای درخواست فعلی به {} اعتبار نیاز "
-"دارید."
+msgid "You have no more daily credit left in your plan. for current request you need {} credits."
+msgstr "اعتبار روزانه‌ای در پلن شما باقی نمانده. برای درخواست فعلی به {} اعتبار نیاز دارید."
 
 #: backend/plan/validators.py:49
 #, python-brace-format
-msgid ""
-"You just have {} daily credit left in your plan. for current request you "
-"need {} credits."
-msgstr ""
-"شما فقط {} اعتبار روزانه در پلن خود دارید. برای درخواست فعلی به {} اعتبار "
-"نیاز دارید."
+msgid "You just have {} daily credit left in your plan. for current request you need {} credits."
+msgstr "شما فقط {} اعتبار روزانه در پلن خود دارید. برای درخواست فعلی به {} اعتبار نیاز دارید."
 
 #: backend/plan/validators.py:62
 #, python-brace-format
-msgid ""
-"You have no more pages left in your plan. for current request you need {} "
-"credits."
-msgstr ""
-"صفحه‌ای در پلن شما باقی نمانده. برای درخواست فعلی به {} اعتبار نیاز دارید."
+msgid "You have no more pages left in your plan. for current request you need {} credits."
+msgstr "صفحه‌ای در پلن شما باقی نمانده. برای درخواست فعلی به {} اعتبار نیاز دارید."
 
 #: backend/plan/validators.py:69
 #, python-brace-format
-msgid ""
-"You just have {} credits left in your plan. for current request you need {} "
-"credits."
-msgstr ""
-"شما فقط {} اعتبار در پلن خود دارید. برای درخواست فعلی به {} اعتبار نیاز "
-"دارید."
+msgid "You just have {} credits left in your plan. for current request you need {} credits."
+msgstr "شما فقط {} اعتبار در پلن خود دارید. برای درخواست فعلی به {} اعتبار نیاز دارید."
 
 #: backend/plan/validators.py:111
-msgid ""
-"With the current plan you cannot use this proxy server. Upgrade your plan to "
-"use Premium proxy servers."
-msgstr ""
-"با پلن فعلی نمی‌توانید از این سرور پراکسی استفاده کنید. پلن خود را ارتقا دهید "
-"تا از سرورهای پراکسی پرمیوم استفاده کنید."
+msgid "With the current plan you cannot use this proxy server. Upgrade your plan to use Premium proxy servers."
+msgstr "با پلن فعلی نمی‌توانید از این سرور پراکسی استفاده کنید. پلن خود را ارتقا دهید تا از سرورهای پراکسی پرمیوم استفاده کنید."
 
 #: backend/plan/validators.py:125
 #, python-brace-format
-msgid ""
-"Your plan does not support more than {} depth. change the max depth in "
-"spider options."
-msgstr ""
-"پلن شما بیش از {} عمق را پشتیبانی نمی‌کند. حداکثر عمق را در گزینه‌های عنکبوت "
-"تغییر دهید."
+msgid "Your plan does not support more than {} depth. change the max depth in spider options."
+msgstr "پلن شما بیش از {} عمق را پشتیبانی نمی‌کند. حداکثر عمق را در گزینه‌های عنکبوت تغییر دهید."
 
 #: backend/plan/validators.py:138
 #, python-brace-format
-msgid ""
-"Your plan does not support more than {} pages per crawl. change the page "
-"limit in spider options."
-msgstr ""
-"پلن شما بیش از {} صفحه در هر خزش را پشتیبانی نمی‌کند. محدودیت صفحه را در "
-"گزینه‌های عنکبوت تغییر دهید."
+msgid "Your plan does not support more than {} pages per crawl. change the page limit in spider options."
+msgstr "پلن شما بیش از {} صفحه در هر خزش را پشتیبانی نمی‌کند. محدودیت صفحه را در گزینه‌های عنکبوت تغییر دهید."
 
 #: backend/plan/validators.py:160
 #, python-brace-format
-msgid ""
-"Your plan does not support more than {} concurrent crawls. Wait for them to "
-"finish."
-msgstr ""
-"پلن شما بیش از {} خزش همزمان را پشتیبانی نمی‌کند. منتظر بمانید تا آنها به "
-"پایان برسند."
+msgid "Your plan does not support more than {} concurrent crawls. Wait for them to finish."
+msgstr "پلن شما بیش از {} خزش همزمان را پشتیبانی نمی‌کند. منتظر بمانید تا آنها به پایان برسند."
 
 #: backend/plan/validators.py:196
 #, python-brace-format
-msgid ""
-"Your plan does not support more than {} concurrent searches. Wait for them "
-"to finish."
-msgstr ""
-"پلن شما بیش از {} جستجوی همزمان را پشتیبانی نمی‌کند. منتظر بمانید تا آنها به "
-"پایان برسند."
+msgid "Your plan does not support more than {} concurrent searches. Wait for them to finish."
+msgstr "پلن شما بیش از {} جستجوی همزمان را پشتیبانی نمی‌کند. منتظر بمانید تا آنها به پایان برسند."
 
 #: backend/plan/validators.py:229
 #, python-brace-format
-msgid ""
-"Your plan does not support more than {} concurrent sitemaps. Wait for them "
-"to finish."
-msgstr ""
-"پلن شما بیش از {} نقشه سایت همزمان را پشتیبانی نمی‌کند. منتظر بمانید تا آنها "
-"به پایان برسند."
+msgid "Your plan does not support more than {} concurrent sitemaps. Wait for them to finish."
+msgstr "پلن شما بیش از {} نقشه سایت همزمان را پشتیبانی نمی‌کند. منتظر بمانید تا آنها به پایان برسند."
 
 #: backend/plan/validators.py:258
 #, python-brace-format
-msgid ""
-"Your plan does not support more than {} knowledge bases. You can not create "
-"more."
-msgstr ""
-"پلن شما بیش از {} پایگاه دانش را پشتیبانی نمی‌کند. شما نمی‌توانید بیشتر ایجاد "
-"کنید."
+msgid "Your plan does not support more than {} knowledge bases. You can not create more."
+msgstr "پلن شما بیش از {} پایگاه دانش را پشتیبانی نمی‌کند. شما نمی‌توانید بیشتر ایجاد کنید."
 
 #: backend/plan/validators.py:291
 #, python-brace-format
-msgid ""
-"Your current plan does not support more than {} documents per knowledge "
-"base. This knowledge base has {} documents left. Your request will add {} "
-"documents."
-msgstr ""
-"پلن فعلی شما بیش از {} سند برای هر پایگاه دانش را پشتیبانی نمی‌کند. این "
-"پایگاه دانش {} سند باقیمانده دارد. درخواست شما {} سند اضافه خواهد کرد."
+msgid "Your current plan does not support more than {} documents per knowledge base. This knowledge base has {} documents left. Your request will add {} documents."
+msgstr "پلن فعلی شما بیش از {} سند برای هر پایگاه دانش را پشتیبانی نمی‌کند. این پایگاه دانش {} سند باقیمانده دارد. درخواست شما {} سند اضافه خواهد کرد."
 
 #: backend/plan/views.py:22
 msgid "List available plans"
 msgstr "فهرست پلن‌های موجود"
 
 #: backend/plan/views.py:24
-msgid ""
-"Returns a list of all active subscription plans with their details including "
-"pricing, features and limits."
-msgstr ""
-"لیست همه پلن‌های فعال اشتراک را با جزئیات شامل قیمت، ویژگی‌ها و محدودیت‌ها "
-"برمی‌گرداند."
+msgid "Returns a list of all active subscription plans with their details including pricing, features and limits."
+msgstr "لیست همه پلن‌های فعال اشتراک را با جزئیات شامل قیمت، ویژگی‌ها و محدودیت‌ها برمی‌گرداند."
 
 #: backend/plan/views.py:29
 msgid "Get plan details"
@@ -1905,10 +1829,8 @@ msgid "Handle Stripe webhooks"
 msgstr "مدیریت webhookهای Stripe"
 
 #: backend/plan/views.py:221
-msgid ""
-"Processes webhook events from Stripe for subscription and payment updates."
-msgstr ""
-"رویدادهای webhook از Stripe را برای به‌روزرسانی اشتراک و پرداخت پردازش می‌کند."
+msgid "Processes webhook events from Stripe for subscription and payment updates."
+msgstr "رویدادهای webhook از Stripe را برای به‌روزرسانی اشتراک و پرداخت پردازش می‌کند."
 
 #: backend/plan/views.py:243
 msgid "List usage history"
@@ -2206,3 +2128,4 @@ msgstr "تازه‌سازی توکن"
 #: backend/user/views.py:590 backend/user/views.py:591
 msgid "Verify token"
 msgstr "تأیید توکن"
+
