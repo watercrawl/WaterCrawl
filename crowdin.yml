@@ -10,3 +10,6 @@ files:
   - source: /backend/locale/en/LC_MESSAGES/django.po
     translation: /backend/locale/%two_letters_code%/LC_MESSAGES/django.po
     skip_untranslated_strings: true
+    translation_replace:
+      zh: zh-hans
+
