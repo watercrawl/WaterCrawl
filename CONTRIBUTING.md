@@ -58,9 +58,9 @@ Thank you for your interest in contributing to WaterCrawl! This document provide
     
     # Run migrations
     python manage.py migrate
-    
-    # Create a superuser (if needed)
-    python manage.py createsuperuser
+   
+   # Compile messages
+   python manage.py compilemessages
     ```
 
 5. Set up frontend:
