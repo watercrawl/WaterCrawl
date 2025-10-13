@@ -1179,22 +1179,22 @@
     },
     "title": "検索",
     "configuration": {
-      "title": "Activate Google Custom Search",
-      "description": "To enable the search playground, you need to configure Google Custom Search Engine (CSE) credentials. WaterCrawl uses these to perform searches via the Google API.",
+      "title": "Google カスタム検索を有効化",
+      "description": "検索プレイグラウンドを有効にするには、Google カスタム検索エンジン（CSE）の認証情報を設定する必要があります。WaterCrawl はこれらを使用して Google API 経由で検索を実行します。",
       "step1": {
-        "title": "Step 1: Get Your Credentials",
-        "description": "Obtain your API Key and CSE ID from Google Cloud Console and the Programmable Search Engine control panel.",
-        "apiDocs": "Google API Docs",
-        "csePanel": "CSE Control Panel"
+        "title": "ステップ 1: 認証情報を取得",
+        "description": "Google Cloud Console とプログラマブル検索エンジンのコントロールパネルから、API キーと CSE ID を取得してください。",
+        "apiDocs": "Google API ドキュメント",
+        "csePanel": "CSE コントロールパネル"
       },
       "step2": {
-        "title": "Step 2: Update Configuration",
-        "description": "Add the following lines to the <code>.env</code> file located in the <strong>backend</strong> root directory of your project:",
-        "note": "Replace the placeholder values with your actual credentials."
+        "title": "ステップ 2: 設定を更新",
+        "description": "プロジェクトの<strong>バックエンド</strong>ルートディレクトリにある <code>.env</code> ファイルに次の行を追加してください：",
+        "note": "プレースホルダーの値を実際の認証情報に置き換えてください。"
       },
       "step3": {
-        "title": "Step 3: Restart Backend",
-        "description": "After saving the <code>.env</code> file, restart your backend server for the changes to be applied."
+        "title": "ステップ 3: バックエンドを再起動",
+        "description": "<code>.env</code> ファイルを保存した後、変更を適用するためにバックエンドサーバーを再起動してください。"
       }
     }
   },
