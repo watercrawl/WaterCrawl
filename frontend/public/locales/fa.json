@@ -1179,22 +1179,22 @@
     },
     "title": "جستجو",
     "configuration": {
-      "title": "Activate Google Custom Search",
-      "description": "To enable the search playground, you need to configure Google Custom Search Engine (CSE) credentials. WaterCrawl uses these to perform searches via the Google API.",
+      "title": "فعال‌سازی جستجوی سفارشی گوگل",
+      "description": "برای فعال کردن محیط جستجو، باید اعتبارنامه‌های موتور جستجوی سفارشی گوگل (CSE) را پیکربندی کنید. WaterCrawl از این اطلاعات برای انجام جستجوها از طریق API گوگل استفاده می‌کند.",
       "step1": {
-        "title": "Step 1: Get Your Credentials",
-        "description": "Obtain your API Key and CSE ID from Google Cloud Console and the Programmable Search Engine control panel.",
-        "apiDocs": "Google API Docs",
-        "csePanel": "CSE Control Panel"
+        "title": "مرحله ۱: دریافت اعتبارنامه‌های خود",
+        "description": "کلید API و شناسه CSE خود را از کنسول Google Cloud و پنل کنترل موتور جستجوی قابل برنامه‌ریزی دریافت کنید.",
+        "apiDocs": "مستندات Google API",
+        "csePanel": "پنل کنترل CSE"
       },
       "step2": {
-        "title": "Step 2: Update Configuration",
-        "description": "Add the following lines to the <code>.env</code> file located in the <strong>backend</strong> root directory of your project:",
-        "note": "Replace the placeholder values with your actual credentials."
+        "title": "مرحله ۲: به‌روزرسانی پیکربندی",
+        "description": "خطوط زیر را به فایل <code>.env</code> واقع در دایرکتوری ریشه <strong>بک‌اند</strong> پروژه خود اضافه کنید:",
+        "note": "مقادیر جایگزین را با اعتبارنامه‌های واقعی خود جایگزین کنید."
       },
       "step3": {
-        "title": "Step 3: Restart Backend",
-        "description": "After saving the <code>.env</code> file, restart your backend server for the changes to be applied."
+        "title": "مرحله ۳: راه‌اندازی مجدد بک‌اند",
+        "description": "پس از ذخیره فایل <code>.env</code>، سرور بک‌اند خود را مجدداً راه‌اندازی کنید تا تغییرات اعمال شود."
       }
     }
   },
