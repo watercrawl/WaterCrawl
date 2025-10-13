@@ -1179,22 +1179,22 @@
     },
     "title": "Pesquisa",
     "configuration": {
-      "title": "Activate Google Custom Search",
-      "description": "To enable the search playground, you need to configure Google Custom Search Engine (CSE) credentials. WaterCrawl uses these to perform searches via the Google API.",
+      "title": "Ativar Google Custom Search",
+      "description": "Para ativar o playground de pesquisa, você precisa configurar as credenciais do Google Custom Search Engine (CSE). O WaterCrawl as utiliza para realizar pesquisas através da API do Google.",
       "step1": {
-        "title": "Step 1: Get Your Credentials",
-        "description": "Obtain your API Key and CSE ID from Google Cloud Console and the Programmable Search Engine control panel.",
-        "apiDocs": "Google API Docs",
-        "csePanel": "CSE Control Panel"
+        "title": "Passo 1: Obtenha suas credenciais",
+        "description": "Obtenha sua chave de API e ID do CSE no Google Cloud Console e no painel de controle do mecanismo de pesquisa programável.",
+        "apiDocs": "Documentação da API do Google",
+        "csePanel": "Painel de Controle CSE"
       },
       "step2": {
-        "title": "Step 2: Update Configuration",
-        "description": "Add the following lines to the <code>.env</code> file located in the <strong>backend</strong> root directory of your project:",
-        "note": "Replace the placeholder values with your actual credentials."
+        "title": "Passo 2: Atualizar configuração",
+        "description": "Adicione as seguintes linhas ao arquivo <code>.env</code> localizado no diretório raiz do <strong>backend</strong> do seu projeto:",
+        "note": "Substitua os valores de espaço reservado pelas suas credenciais reais."
       },
       "step3": {
-        "title": "Step 3: Restart Backend",
-        "description": "After saving the <code>.env</code> file, restart your backend server for the changes to be applied."
+        "title": "Passo 3: Reiniciar o backend",
+        "description": "Após salvar o arquivo <code>.env</code>, reinicie seu servidor backend para que as alterações sejam aplicadas."
       }
     }
   },
