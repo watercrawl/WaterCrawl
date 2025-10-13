@@ -1179,22 +1179,22 @@
     },
     "title": "بحث",
     "configuration": {
-      "title": "Activate Google Custom Search",
-      "description": "To enable the search playground, you need to configure Google Custom Search Engine (CSE) credentials. WaterCrawl uses these to perform searches via the Google API.",
+      "title": "تفعيل بحث جوجل المخصص",
+      "description": "لتمكين ساحة البحث، تحتاج إلى تكوين بيانات اعتماد محرك البحث المخصص من جوجل (CSE). يستخدم WaterCrawl هذه البيانات لإجراء عمليات البحث عبر واجهة برمجة تطبيقات جوجل.",
       "step1": {
-        "title": "Step 1: Get Your Credentials",
-        "description": "Obtain your API Key and CSE ID from Google Cloud Console and the Programmable Search Engine control panel.",
-        "apiDocs": "Google API Docs",
-        "csePanel": "CSE Control Panel"
+        "title": "الخطوة 1: احصل على بيانات الاعتماد الخاصة بك",
+        "description": "احصل على مفتاح API ومعرف CSE من Google Cloud Console ولوحة التحكم في محرك البحث القابل للبرمجة.",
+        "apiDocs": "وثائق Google API",
+        "csePanel": "لوحة تحكم CSE"
       },
       "step2": {
-        "title": "Step 2: Update Configuration",
-        "description": "Add the following lines to the <code>.env</code> file located in the <strong>backend</strong> root directory of your project:",
-        "note": "Replace the placeholder values with your actual credentials."
+        "title": "الخطوة 2: تحديث التكوين",
+        "description": "أضف السطور التالية إلى ملف <code>.env</code> الموجود في دليل الجذر <strong>للخلفية</strong> لمشروعك:",
+        "note": "استبدل القيم النائبة ببيانات الاعتماد الفعلية الخاصة بك."
       },
       "step3": {
-        "title": "Step 3: Restart Backend",
-        "description": "After saving the <code>.env</code> file, restart your backend server for the changes to be applied."
+        "title": "الخطوة 3: إعادة تشغيل الخلفية",
+        "description": "بعد حفظ ملف <code>.env</code>، أعد تشغيل خادم الخلفية لتطبيق التغييرات."
       }
     }
   },
