@@ -61,7 +61,7 @@ const SearchPage: React.FC = () => {
                         href="https://developers.google.com/custom-search/v1/overview" 
                         target="_blank" 
                         rel="noopener noreferrer" 
-                        className="font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+                        className="font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 me-4"
                       >
                         {t('search.configuration.step1.apiDocs')}
                       </a>
