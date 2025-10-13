@@ -1185,7 +1185,26 @@
       "week": "Ultima settimana",
       "year": "Ultimo anno"
     },
-    "title": "Ricerca"
+    "title": "Ricerca",
+    "configuration": {
+      "title": "Attiva Google Custom Search",
+      "description": "Per abilitare l'area di ricerca, è necessario configurare le credenziali del motore di ricerca personalizzato di Google (CSE). WaterCrawl le utilizza per eseguire ricerche tramite l'API di Google.",
+      "step1": {
+        "title": "Passaggio 1: Ottieni le tue credenziali",
+        "description": "Ottieni la tua chiave API e l'ID CSE dalla Google Cloud Console e dal pannello di controllo del motore di ricerca programmabile.",
+        "apiDocs": "Documentazione API Google",
+        "csePanel": "Pannello di controllo CSE"
+      },
+      "step2": {
+        "title": "Passaggio 2: Aggiorna la configurazione",
+        "description": "Aggiungi le seguenti righe al file <code>.env</code> situato nella directory principale del <strong>backend</strong> del tuo progetto:",
+        "note": "Sostituisci i valori segnaposto con le tue credenziali effettive."
+      },
+      "step3": {
+        "title": "Passaggio 3: Riavvia il backend",
+        "description": "Dopo aver salvato il file <code>.env</code>, riavvia il tuo server backend per applicare le modifiche."
+      }
+    }
   },
   "settings": {
     "general": {

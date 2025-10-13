@@ -1185,7 +1185,26 @@
       "week": "Última semana",
       "year": "Último ano"
     },
-    "title": "Pesquisa"
+    "title": "Pesquisa",
+    "configuration": {
+      "title": "Ativar Google Custom Search",
+      "description": "Para ativar o playground de pesquisa, você precisa configurar as credenciais do Google Custom Search Engine (CSE). O WaterCrawl as utiliza para realizar pesquisas através da API do Google.",
+      "step1": {
+        "title": "Passo 1: Obtenha suas credenciais",
+        "description": "Obtenha sua chave de API e ID do CSE no Google Cloud Console e no painel de controle do mecanismo de pesquisa programável.",
+        "apiDocs": "Documentação da API do Google",
+        "csePanel": "Painel de Controle CSE"
+      },
+      "step2": {
+        "title": "Passo 2: Atualizar configuração",
+        "description": "Adicione as seguintes linhas ao arquivo <code>.env</code> localizado no diretório raiz do <strong>backend</strong> do seu projeto:",
+        "note": "Substitua os valores de espaço reservado pelas suas credenciais reais."
+      },
+      "step3": {
+        "title": "Passo 3: Reiniciar o backend",
+        "description": "Após salvar o arquivo <code>.env</code>, reinicie seu servidor backend para que as alterações sejam aplicadas."
+      }
+    }
   },
   "settings": {
     "general": {

@@ -1181,7 +1181,26 @@
       "week": "过去一周",
       "year": "过去一年"
     },
-    "title": "搜索"
+    "title": "搜索",
+    "configuration": {
+      "title": "激活 Google 自定义搜索",
+      "description": "要启用搜索工作台，您需要配置 Google 自定义搜索引擎（CSE）凭据。WaterCrawl 使用这些凭据通过 Google API 执行搜索。",
+      "step1": {
+        "title": "步骤 1：获取您的凭据",
+        "description": "从 Google Cloud Console 和可编程搜索引擎控制面板获取您的 API 密钥和 CSE ID。",
+        "apiDocs": "Google API 文档",
+        "csePanel": "CSE 控制面板"
+      },
+      "step2": {
+        "title": "步骤 2：更新配置",
+        "description": "将以下行添加到项目<strong>后端</strong>根目录中的 <code>.env</code> 文件：",
+        "note": "将占位符值替换为您的实际凭据。"
+      },
+      "step3": {
+        "title": "步骤 3：重启后端",
+        "description": "保存 <code>.env</code> 文件后，重新启动后端服务器以应用更改。"
+      }
+    }
   },
   "settings": {
     "general": {

@@ -1185,7 +1185,26 @@
       "week": "La semaine dernière",
       "year": "L'année dernière"
     },
-    "title": "Recherche"
+    "title": "Recherche",
+    "configuration": {
+      "title": "Activer Google Custom Search",
+      "description": "Pour activer le terrain de jeu de recherche, vous devez configurer les informations d'identification du moteur de recherche personnalisé Google (CSE). WaterCrawl les utilise pour effectuer des recherches via l'API Google.",
+      "step1": {
+        "title": "Étape 1 : Obtenez vos identifiants",
+        "description": "Obtenez votre clé API et votre ID CSE depuis la Google Cloud Console et le panneau de configuration du moteur de recherche programmable.",
+        "apiDocs": "Documentation de l'API Google",
+        "csePanel": "Panneau de configuration CSE"
+      },
+      "step2": {
+        "title": "Étape 2 : Mettre à jour la configuration",
+        "description": "Ajoutez les lignes suivantes au fichier <code>.env</code> situé dans le répertoire racine du <strong>backend</strong> de votre projet :",
+        "note": "Remplacez les valeurs de remplacement par vos véritables identifiants."
+      },
+      "step3": {
+        "title": "Étape 3 : Redémarrer le backend",
+        "description": "Après avoir enregistré le fichier <code>.env</code>, redémarrez votre serveur backend pour que les modifications soient appliquées."
+      }
+    }
   },
   "settings": {
     "general": {

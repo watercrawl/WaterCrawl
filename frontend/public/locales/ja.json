@@ -1181,7 +1181,26 @@
       "week": "過去1週間",
       "year": "過去1年"
     },
-    "title": "検索"
+    "title": "検索",
+    "configuration": {
+      "title": "Google カスタム検索を有効化",
+      "description": "検索プレイグラウンドを有効にするには、Google カスタム検索エンジン（CSE）の認証情報を設定する必要があります。WaterCrawl はこれらを使用して Google API 経由で検索を実行します。",
+      "step1": {
+        "title": "ステップ 1: 認証情報を取得",
+        "description": "Google Cloud Console とプログラマブル検索エンジンのコントロールパネルから、API キーと CSE ID を取得してください。",
+        "apiDocs": "Google API ドキュメント",
+        "csePanel": "CSE コントロールパネル"
+      },
+      "step2": {
+        "title": "ステップ 2: 設定を更新",
+        "description": "プロジェクトの<strong>バックエンド</strong>ルートディレクトリにある <code>.env</code> ファイルに次の行を追加してください：",
+        "note": "プレースホルダーの値を実際の認証情報に置き換えてください。"
+      },
+      "step3": {
+        "title": "ステップ 3: バックエンドを再起動",
+        "description": "<code>.env</code> ファイルを保存した後、変更を適用するためにバックエンドサーバーを再起動してください。"
+      }
+    }
   },
   "settings": {
     "general": {

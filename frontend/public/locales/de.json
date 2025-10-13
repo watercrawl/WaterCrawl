@@ -1185,7 +1185,26 @@
       "week": "Letzte Woche",
       "year": "Letztes Jahr"
     },
-    "title": "Suche"
+    "title": "Suche",
+    "configuration": {
+      "title": "Google Custom Search aktivieren",
+      "description": "Um den Such-Spielplatz zu aktivieren, müssen Sie die Anmeldeinformationen für die benutzerdefinierte Google-Suchmaschine (CSE) konfigurieren. WaterCrawl verwendet diese, um Suchanfragen über die Google API durchzuführen.",
+      "step1": {
+        "title": "Schritt 1: Holen Sie sich Ihre Anmeldeinformationen",
+        "description": "Holen Sie sich Ihren API-Schlüssel und Ihre CSE-ID aus der Google Cloud Console und dem Control Panel der programmierbaren Suchmaschine.",
+        "apiDocs": "Google API-Dokumentation",
+        "csePanel": "CSE-Kontrollfeld"
+      },
+      "step2": {
+        "title": "Schritt 2: Konfiguration aktualisieren",
+        "description": "Fügen Sie die folgenden Zeilen zur <code>.env</code>-Datei im <strong>Backend</strong>-Stammverzeichnis Ihres Projekts hinzu:",
+        "note": "Ersetzen Sie die Platzhalterwerte durch Ihre tatsächlichen Anmeldeinformationen."
+      },
+      "step3": {
+        "title": "Schritt 3: Backend neu starten",
+        "description": "Nach dem Speichern der <code>.env</code>-Datei starten Sie Ihren Backend-Server neu, damit die Änderungen übernommen werden."
+      }
+    }
   },
   "settings": {
     "general": {
