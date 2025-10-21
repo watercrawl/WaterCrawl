@@ -20,12 +20,14 @@ const ManageLLMProvidersPage: React.FC = () => {
     count: 0,
     next: null,
     previous: null,
-    results: []
+    results: [],
   });
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingProviderConfig, setEditingProviderConfig] = useState<AdminProviderConfig | null>(null);
+  const [editingProviderConfig, setEditingProviderConfig] = useState<AdminProviderConfig | null>(
+    null
+  );
   const [deletingUuid, setDeletingUuid] = useState<string | null>(null);
   const [availableProviders, setAvailableProviders] = useState<Provider[]>([]);
 
@@ -84,7 +86,8 @@ const ManageLLMProvidersPage: React.FC = () => {
 
   // Function to update a provider config
   const handleUpdateProviderConfig = async (data: ProviderConfigFormData) => {
-    if (!editingProviderConfig) return Promise.reject(new Error('No provider config selected for editing'));
+    if (!editingProviderConfig)
+      return Promise.reject(new Error('No provider config selected for editing'));
 
     try {
       await adminProviderApi.providerConfiguration.update(editingProviderConfig.uuid, data);
@@ -150,11 +153,11 @@ const ManageLLMProvidersPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 mt-8">
+    <div className="mt-8 space-y-6">
       <div className="sm:flex sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-lg font-medium text-gray-900 dark:text-white">{t('providerConfig.title')}</h2>
-          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{t('providerConfig.subtitle')}</p>
+          <h2 className="text-lg font-medium text-foreground">{t('providerConfig.title')}</h2>
+          <p className="mt-1 text-sm text-muted-foreground">{t('providerConfig.subtitle')}</p>
         </div>
         <div className="mt-4 sm:mt-0">
           <Button
@@ -179,19 +182,21 @@ const ManageLLMProvidersPage: React.FC = () => {
         deletingUuid={deletingUuid}
         isTabletOrMobile={isTabletOrMobile}
         onPageChange={setCurrentPage}
-        onEdit={(providerConfig) => handleEditProviderConfig(providerConfig as AdminProviderConfig)}
+        onEdit={providerConfig => handleEditProviderConfig(providerConfig as AdminProviderConfig)}
         onDelete={handleDeleteProviderConfig}
-        onView={(providerConfig) => handleViewDetails(providerConfig as ListProviderConfig)}
+        onView={providerConfig => handleViewDetails(providerConfig as ListProviderConfig)}
       />
 
-      {isModalOpen && <ProviderConfigForm
-        isOpen={isModalOpen}
-        initialData={editingProviderConfig || undefined}
-        onClose={handleCloseModal}
-        onSubmit={editingProviderConfig ? handleUpdateProviderConfig : handleCreateProviderConfig}
-        onTest={handleTestProviderConfig}
-        availableProviders={availableProviders}
-      />}
+      {isModalOpen && (
+        <ProviderConfigForm
+          isOpen={isModalOpen}
+          initialData={editingProviderConfig || undefined}
+          onClose={handleCloseModal}
+          onSubmit={editingProviderConfig ? handleUpdateProviderConfig : handleCreateProviderConfig}
+          onTest={handleTestProviderConfig}
+          availableProviders={availableProviders}
+        />
+      )}
     </div>
   );
 };

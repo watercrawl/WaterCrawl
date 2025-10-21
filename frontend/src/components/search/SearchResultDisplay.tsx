@@ -9,8 +9,8 @@ interface SearchResultDisplayProps {
   onDownload?: (e: React.MouseEvent) => void;
 }
 
-export const SearchResultDisplay: React.FC<SearchResultDisplayProps> = ({ 
-  results, 
+export const SearchResultDisplay: React.FC<SearchResultDisplayProps> = ({
+  results,
   loading = false,
   onDownload,
 }) => {
@@ -18,21 +18,22 @@ export const SearchResultDisplay: React.FC<SearchResultDisplayProps> = ({
   if (loading) {
     return (
       <div className="flex items-center justify-center py-8">
-        <div className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-primary-500 border-e-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
-          <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">{t('common.loading')}</span>
+        <div
+          className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-primary-500 border-e-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+          role="status"
+        >
+          <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
+            {t('common.loading')}
+          </span>
         </div>
-        <p className="ms-2 text-gray-700 dark:text-gray-300">
-          {t('search.searching')}
-        </p>
+        <p className="ms-2 text-foreground">{t('search.searching')}</p>
       </div>
     );
   }
 
   if (results.length === 0) {
     return (
-      <div className="text-center py-6 text-gray-500 dark:text-gray-400">
-        {t('search.results.noResults')}
-      </div>
+      <div className="py-6 text-center text-muted-foreground">{t('search.results.noResults')}</div>
     );
   }
 
@@ -41,39 +42,30 @@ export const SearchResultDisplay: React.FC<SearchResultDisplayProps> = ({
       {onDownload && (
         <div className="flex justify-end">
           <button
-            onClick={(e) => onDownload(e)}
-            className="inline-flex items-center px-3 py-1.5 border border-gray-300 dark:border-gray-600 shadow-sm text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+            onClick={e => onDownload(e)}
+            className="inline-flex items-center rounded-md border border-input-border bg-card px-3 py-1.5 text-sm font-medium text-foreground shadow-sm hover:bg-muted focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
           >
-            <ArrowDownTrayIcon className="h-4 w-4 me-1.5" />
+            <ArrowDownTrayIcon className="me-1.5 h-4 w-4" />
             {t('search.downloadResults')}
           </button>
         </div>
       )}
-      
-      <div className="bg-white dark:bg-gray-800 shadow overflow-hidden rounded-lg divide-y divide-gray-200 dark:divide-gray-700">
+
+      <div className="divide-y divide-border overflow-hidden rounded-lg bg-card shadow">
         {results.map((result, idx) => (
-          <div key={idx} className="p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-            <a 
-              href={result.url} 
-              target="_blank"
-              rel="noopener noreferrer" 
-              className="block"
-            >
-              <h4 className="text-primary-600 dark:text-primary-400 font-medium hover:underline text-base flex items-center">
+          <div key={idx} className="p-4 transition-colors hover:bg-muted">
+            <a href={result.url} target="_blank" rel="noopener noreferrer" className="block">
+              <h4 className="flex items-center text-base font-medium text-primary hover:underline">
                 {result.title}
                 {result.depth && (
-                  <span className="ms-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                  <span className="ms-2 inline-flex items-center rounded border border-primary/20 bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
                     {result.depth}
                   </span>
                 )}
               </h4>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mb-1 truncate">
-                {result.url}
-              </p>
+              <p className="mb-1 truncate text-xs text-muted-foreground">{result.url}</p>
             </a>
-            <p className="text-sm text-gray-700 dark:text-gray-300">
-              {result.description || result.snippet}
-            </p>
+            <p className="text-sm text-foreground">{result.description || result.snippet}</p>
           </div>
         ))}
       </div>

@@ -39,6 +39,7 @@ function MyForm() {
 ## Schema Types
 
 ### String Fields
+
 ```json
 {
   "type": "string",
@@ -56,6 +57,7 @@ function MyForm() {
 ```
 
 Available string widgets:
+
 - `text`: Basic text input
 - `textarea`: Multiline text input
 - `password`: Password input
@@ -70,6 +72,7 @@ Available string widgets:
 - `code-editor`: Code editor
 
 ### Number Fields
+
 ```json
 {
   "type": "number",
@@ -84,17 +87,19 @@ Available string widgets:
 ```
 
 ### Boolean Fields
+
 ```json
 {
   "type": "boolean",
   "title": "Subscribe to newsletter",
   "ui": {
-    "widget": "switch"  // or "checkbox" or "radio"
+    "widget": "switch" // or "checkbox" or "radio"
   }
 }
 ```
 
 ### Enum Fields
+
 ```json
 {
   "type": "string",
@@ -102,13 +107,14 @@ Available string widgets:
   "enum": ["us", "uk", "ca"],
   "enumNames": ["United States", "United Kingdom", "Canada"],
   "ui": {
-    "widget": "select",  // or "radio"
+    "widget": "select", // or "radio"
     "placeholder": "Select your country"
   }
 }
 ```
 
 ### Array Fields
+
 ```json
 {
   "type": "array",
@@ -127,6 +133,7 @@ Available string widgets:
 ```
 
 ### Object Fields
+
 ```json
 {
   "type": "object",
@@ -146,6 +153,7 @@ Available string widgets:
 ```
 
 ### Dependent Fields
+
 ```json
 {
   "type": "object",
@@ -177,6 +185,7 @@ Available string widgets:
 ## UI Options
 
 ### Common UI Options
+
 ```typescript
 interface UIOptions {
   widget?: UIWidgetType;
@@ -191,6 +200,7 @@ interface UIOptions {
 ```
 
 ### TextArea Options
+
 ```typescript
 interface TextAreaUIOptions extends UIOptions {
   rows?: number;
@@ -199,6 +209,7 @@ interface TextAreaUIOptions extends UIOptions {
 ```
 
 ### Select/Radio Options
+
 ```typescript
 interface SelectUIOptions extends UIOptions {
   inline?: boolean;
@@ -211,6 +222,7 @@ interface SelectUIOptions extends UIOptions {
 ```
 
 ### Rich Text Editor Options
+
 ```typescript
 interface RichTextUIOptions extends UIOptions {
   toolbar?: string[];
@@ -218,6 +230,7 @@ interface RichTextUIOptions extends UIOptions {
 ```
 
 ### Code Editor Options
+
 ```typescript
 interface CodeEditorUIOptions extends UIOptions {
   language?: string;
@@ -225,6 +238,7 @@ interface CodeEditorUIOptions extends UIOptions {
 ```
 
 ### File Upload Options
+
 ```typescript
 interface FileUIOptions extends UIOptions {
   accept?: string;
@@ -235,6 +249,7 @@ interface FileUIOptions extends UIOptions {
 ## Validation
 
 The form automatically validates:
+
 - Required fields
 - String length (minLength, maxLength)
 - Number range (minimum, maximum)
@@ -255,6 +270,7 @@ The component uses Tailwind CSS for styling and supports dark mode. You can cust
 ## Accessibility
 
 The form components are built with accessibility in mind:
+
 - Proper ARIA attributes
 - Keyboard navigation
 - Focus management
@@ -265,6 +281,7 @@ The form components are built with accessibility in mind:
 ## Error Handling
 
 Errors are displayed:
+
 - Under each field
 - With proper styling
 - With clear messages
@@ -273,6 +290,7 @@ Errors are displayed:
 ## Future Enhancements
 
 Planned features:
+
 - More widget types
 - Custom validation functions
 - Conditional field visibility

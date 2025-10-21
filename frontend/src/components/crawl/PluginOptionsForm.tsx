@@ -10,30 +10,30 @@ interface PluginOptionsFormProps {
   value: any;
 }
 
-export default function PluginOptionsForm({ onChange, onValidation, schema, value }: PluginOptionsFormProps) {
+export default function PluginOptionsForm({
+  onChange,
+  onValidation,
+  schema,
+  value,
+}: PluginOptionsFormProps) {
   const { t } = useTranslation();
-  
+
   if (!schema) {
     return (
-      <div className="flex items-center justify-center h-32">
-        <div className="animate-pulse text-gray-500 dark:text-gray-400">
-          {t('plugin.loadingOptions')}
-        </div>
+      <div className="flex h-32 items-center justify-center">
+        <div className="animate-pulse text-muted-foreground">{t('plugin.loadingOptions')}</div>
       </div>
     );
   }
 
   return (
-    <OptionGroup
-      title={t('plugin.configuration')}
-      description={t('plugin.configureSettings')}
-    >
+    <OptionGroup title={t('plugin.configuration')} description={t('plugin.configureSettings')}>
       <div className="ltr">
         <JsonSchemaForm
           schema={schema}
           value={value}
           onChange={onChange}
-          onError={(errors) => {
+          onError={errors => {
             if (errors.length > 0) {
               console.log('Validation errors:', errors);
             }

@@ -5,7 +5,7 @@ import {
   COOKIE_CONFIG_KEY,
   CookieCategory,
   validateCookieConsent,
-  getCookieCategories
+  getCookieCategories,
 } from '../constants/cookieConfig';
 import { CookieConsentBanner } from '../components/CookieConsentBanner';
 import { useSettings } from '../../contexts/SettingsProvider';
@@ -24,7 +24,7 @@ interface CookieConsentContextType {
 const CookieConsentContext = createContext<CookieConsentContextType>({
   isConsentGiven: false,
   selectedCategories: [],
-  updateConsent: () => { },
+  updateConsent: () => {},
   categories: [],
   isClient: false,
   privacyUrl: '',
@@ -88,13 +88,12 @@ export const CookieConsentProvider: React.FC<{ children: React.ReactNode }> = ({
       const consentData = {
         given: true,
         categories: finalCategories,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
       localStorage.setItem(COOKIE_CONFIG_KEY, JSON.stringify(consentData));
 
       setIsConsentGiven(true);
       setSelectedCategories(finalCategories);
-
     } catch (error) {
       console.error('Error updating consent:', error);
     }
@@ -113,7 +112,14 @@ export const CookieConsentProvider: React.FC<{ children: React.ReactNode }> = ({
       initializeMarketing();
       setMarketingInitialized(true);
     }
-  }, [selectedCategories, settings?.is_enterprise_mode_active, initializeAnalytics, initializeMarketing, analyticsInitialized, marketingInitialized]);
+  }, [
+    selectedCategories,
+    settings?.is_enterprise_mode_active,
+    initializeAnalytics,
+    initializeMarketing,
+    analyticsInitialized,
+    marketingInitialized,
+  ]);
 
   return (
     <CookieConsentContext.Provider
@@ -123,7 +129,7 @@ export const CookieConsentProvider: React.FC<{ children: React.ReactNode }> = ({
         updateConsent,
         privacyUrl: settings?.policy_url || '',
         categories: translatedCategories,
-        isClient
+        isClient,
       }}
     >
       <CookieConsentBanner />

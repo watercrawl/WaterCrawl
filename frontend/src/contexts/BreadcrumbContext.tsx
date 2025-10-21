@@ -25,9 +25,7 @@ export const BreadcrumbProvider: React.FC<{ children: ReactNode }> = ({ children
   }, [location.pathname]);
 
   return (
-    <BreadcrumbContext.Provider value={{ items, setItems }}>
-      {children}
-    </BreadcrumbContext.Provider>
+    <BreadcrumbContext.Provider value={{ items, setItems }}>{children}</BreadcrumbContext.Provider>
   );
 };
 

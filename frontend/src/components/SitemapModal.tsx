@@ -1,7 +1,12 @@
 import React, { useEffect, useState, Fragment, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Dialog, Transition, Tab } from '@headlessui/react';
-import { XMarkIcon, DocumentArrowDownIcon, DocumentTextIcon, MapIcon } from '@heroicons/react/24/outline';
+import {
+  XMarkIcon,
+  DocumentArrowDownIcon,
+  DocumentTextIcon,
+  MapIcon,
+} from '@heroicons/react/24/outline';
 import { CrawlRequest, SitemapGraph } from '../types/crawl';
 import { crawlRequestApi } from '../services/api/crawl';
 import SitemapGraphViewer from './sitemap/SitemapGraphViewer';
@@ -19,11 +24,7 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-const SitemapModal: React.FC<SitemapModalProps> = ({
-  isOpen,
-  onClose,
-  request,
-}) => {
+const SitemapModal: React.FC<SitemapModalProps> = ({ isOpen, onClose, request }) => {
   const { t } = useTranslation();
   const requestId = request.uuid;
   const [sitemapData, setSitemapData] = useState<SitemapGraph | null>(null);
@@ -70,12 +71,10 @@ const SitemapModal: React.FC<SitemapModalProps> = ({
     }
   }, [isOpen, requestId, loadSitemap, loadMarkdownContent]);
 
-
   // Function to download the sitemap data
   const handleDownloadSitemap = (format: 'graph' | 'markdown') => {
     if (!sitemapData && format === 'graph') return;
     if (!markdownContent && format === 'markdown') return;
-
 
     try {
       let blob: Blob;
@@ -126,7 +125,7 @@ const SitemapModal: React.FC<SitemapModalProps> = ({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-black/25 dark:bg-black/40" />
+          <div className="fixed inset-0 bg-black/25" />
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
@@ -140,11 +139,11 @@ const SitemapModal: React.FC<SitemapModalProps> = ({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-4xl transform overflow-hidden rounded-2xl bg-white dark:bg-gray-900 p-6 text-start align-middle shadow-xl transition-all">
-                <div className="absolute top-0 end-0 pt-4 pe-4">
+              <Dialog.Panel className="w-full max-w-4xl transform overflow-hidden rounded-2xl bg-card p-6 text-start align-middle shadow-xl transition-all">
+                <div className="absolute end-0 top-0 pe-4 pt-4">
                   <button
                     type="button"
-                    className="bg-white dark:bg-gray-900 rounded-md text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                    className="rounded-md bg-card text-muted-foreground hover:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
                     onClick={onClose}
                   >
                     <span className="sr-only">Close</span>
@@ -153,56 +152,59 @@ const SitemapModal: React.FC<SitemapModalProps> = ({
                 </div>
 
                 <div>
-                  <div className="flex justify-between items-center mb-4">
-                    <Dialog.Title as="h3" className="text-xl leading-6 font-semibold text-gray-900 dark:text-white">
+                  <div className="mb-4 flex items-center justify-between">
+                    <Dialog.Title
+                      as="h3"
+                      className="text-xl font-semibold leading-6 text-foreground"
+                    >
                       {t('sitemap.explorer')}
                     </Dialog.Title>
 
-                    <div className="flex gap-x-2 me-6">
+                    <div className="me-6 flex gap-x-2">
                       <button
                         onClick={() => request.sitemap && window.open(request.sitemap, '_blank')}
-                        className="inline-flex items-center px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        className="inline-flex items-center rounded-md border border-input-border bg-card px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50"
                         title="Open JSON Sitemap in new tab"
                         disabled={!request.sitemap}
                       >
-                        <MapIcon className="h-4 w-4 me-1.5 text-blue-600 dark:text-blue-400" />
+                        <MapIcon className="me-1.5 h-4 w-4 text-primary" />
                         {t('sitemap.jsonSitemap')}
                       </button>
 
-                      <div className="h-6 border-s border-gray-300 dark:border-gray-600 mx-1"></div>
+                      <div className="mx-1 h-6 border-s border-input-border"></div>
 
                       <button
                         onClick={() => handleDownloadSitemap('graph')}
                         disabled={!sitemapData}
-                        className="inline-flex items-center px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        className="inline-flex items-center rounded-md border border-input-border bg-card px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50"
                         title="Download JSON Graph"
                       >
-                        <DocumentArrowDownIcon className="h-4 w-4 me-1.5 text-blue-600 dark:text-blue-400" />
+                        <DocumentArrowDownIcon className="me-1.5 h-4 w-4 text-primary" />
                         {t('sitemap.jsonGraph')}
                       </button>
 
                       <button
                         onClick={() => handleDownloadSitemap('markdown')}
                         disabled={!markdownContent}
-                        className="inline-flex items-center px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        className="inline-flex items-center rounded-md border border-input-border bg-card px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50"
                         title="Download Markdown"
                       >
-                        <DocumentTextIcon className="h-4 w-4 me-1.5 text-green-600 dark:text-green-400" />
+                        <DocumentTextIcon className="me-1.5 h-4 w-4 text-success" />
                         {t('results.markdown')}
                       </button>
                     </div>
                   </div>
 
                   <Tab.Group selectedIndex={activeTabIndex} onChange={setActiveTabIndex}>
-                    <Tab.List className="flex gap-x-1 rounded-xl bg-gray-100 dark:bg-gray-800 p-1 mb-4">
+                    <Tab.List className="mb-4 flex gap-x-1 rounded-xl bg-muted p-1">
                       <Tab
                         className={({ selected }: { selected: boolean }) =>
                           classNames(
                             'w-full rounded-lg py-2.5 text-sm font-medium leading-5 transition-colors',
-                            'focus:outline-none focus:ring-2 ring-offset-2 ring-offset-primary-400 ring-white/60 ring-opacity-60',
+                            'ring-white/60 ring-opacity-60 ring-offset-2 ring-offset-primary-400 focus:outline-none focus:ring-2',
                             selected
-                              ? 'bg-white dark:bg-gray-700 shadow text-primary-700 dark:text-white'
-                              : 'text-gray-600 dark:text-gray-400 hover:bg-white/[0.12] hover:text-primary-700 dark:hover:text-white'
+                              ? 'bg-card text-primary-dark shadow'
+                              : 'text-muted-foreground hover:bg-card/[0.12] hover:text-primary-dark'
                           )
                         }
                       >
@@ -212,10 +214,10 @@ const SitemapModal: React.FC<SitemapModalProps> = ({
                         className={({ selected }: { selected: boolean }) =>
                           classNames(
                             'w-full rounded-lg py-2.5 text-sm font-medium leading-5 transition-colors',
-                            'focus:outline-none focus:ring-2 ring-offset-2 ring-offset-primary-400 ring-white/60 ring-opacity-60',
+                            'ring-white/60 ring-opacity-60 ring-offset-2 ring-offset-primary-400 focus:outline-none focus:ring-2',
                             selected
-                              ? 'bg-white dark:bg-gray-700 shadow text-primary-700 dark:text-white'
-                              : 'text-gray-600 dark:text-gray-400 hover:bg-white/[0.12] hover:text-primary-700 dark:hover:text-white'
+                              ? 'bg-card text-primary-dark shadow'
+                              : 'text-muted-foreground hover:bg-card/[0.12] hover:text-primary-dark'
                           )
                         }
                       >
@@ -225,7 +227,7 @@ const SitemapModal: React.FC<SitemapModalProps> = ({
 
                     <Tab.Panels>
                       <Tab.Panel className="rounded-xl focus:outline-none">
-                        <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 max-h-[60vh] overflow-y-auto border border-gray-200 dark:border-gray-700 ltr">
+                        <div className="ltr max-h-[60vh] overflow-y-auto rounded-lg border border-border bg-muted p-4">
                           <SitemapGraphViewer
                             sitemapData={sitemapData}
                             isLoading={isLoadingSitemap}
@@ -233,7 +235,7 @@ const SitemapModal: React.FC<SitemapModalProps> = ({
                         </div>
                       </Tab.Panel>
                       <Tab.Panel className="rounded-xl focus:outline-none">
-                        <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 max-h-[60vh] overflow-y-auto border border-gray-200 dark:border-gray-700 ltr">
+                        <div className="ltr max-h-[60vh] overflow-y-auto rounded-lg border border-border bg-muted p-4">
                           <SitemapMarkdownViewer
                             markdownContent={markdownContent}
                             isLoading={isLoadingMarkdown}
@@ -243,8 +245,8 @@ const SitemapModal: React.FC<SitemapModalProps> = ({
                     </Tab.Panels>
                   </Tab.Group>
 
-                  <div className="mt-4 text-xs text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800/50 rounded-lg p-3 border border-gray-200 dark:border-gray-700/50">
-                    <h4 className="font-medium mb-1">{t('sitemap.tips.title')}</h4>
+                  <div className="mt-4 rounded-lg border border-border bg-muted p-3 text-xs text-muted-foreground">
+                    <h4 className="mb-1 font-medium">{t('sitemap.tips.title')}</h4>
                     <p>• {t('sitemap.tips.expandFolders')}</p>
                     <p>• {t('sitemap.tips.openLinks')}</p>
                     <p>• {t('sitemap.tips.queryChips')}</p>

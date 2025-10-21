@@ -7,10 +7,7 @@ interface SitemapGraphViewerProps {
   isLoading: boolean;
 }
 
-const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({
-  sitemapData,
-  isLoading
-}) => {
+const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({ sitemapData, isLoading }) => {
   const { t } = useTranslation();
   // Keep track of which nodes have been expanded
   const [expandedPaths, setExpandedPaths] = useState<Set<string>>(new Set());
@@ -66,22 +63,22 @@ const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({
   };
 
   // Recursive function to render the sitemap tree
-  const renderSitemapTree = (data: SitemapGraph | SitemapNode, path: string = "", level: number = 0) => {
+  const renderSitemapTree = (
+    data: SitemapGraph | SitemapNode,
+    path: string = '',
+    level: number = 0
+  ) => {
     if (!data) return null;
     // If it's a SitemapNode (has url and title properties)
     if ('url' in data && 'title' in data) {
       data = data as SitemapNode;
       return (
-        <div
-          key={data.url}
-          className="py-1.5"
-          style={{ paddingInlineStart: `${level * 1.5}rem` }}
-        >
+        <div key={data.url} className="py-1.5" style={{ paddingInlineStart: `${level * 1.5}rem` }}>
           <a
             href={data.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-600 dark:text-blue-400 hover:underline truncate inline-block max-w-xs"
+            className="inline-block max-w-xs truncate text-primary hover:underline"
             title={`${data.title || 'No title'}\n${data.url}`}
           >
             {data.title || data.url}
@@ -103,11 +100,10 @@ const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({
       const currentPath = path ? `${path}.${key}` : key;
 
       // Filter out __self__ and __query__ to determine if node has children
-      const hasChildren = value &&
+      const hasChildren =
+        value &&
         typeof value === 'object' &&
-        Object.keys(value)
-          .filter(k => k !== '__self__' && k !== '__query__')
-          .length > 0;
+        Object.keys(value).filter(k => k !== '__self__' && k !== '__query__').length > 0;
 
       const totalChildCount = hasChildren ? getTotalChildCount(value) : 0;
 
@@ -134,27 +130,28 @@ const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({
       components.push(
         <div key={currentPath}>
           <div
-            className={`py-1.5 flex items-center ${hasChildren || hasQueries ? 'cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50' : ''}`}
+            className={`flex items-center py-1.5 ${hasChildren || hasQueries ? 'cursor-pointer hover:bg-muted' : ''}`}
             style={{ paddingInlineStart: `${level * 1.5}rem` }}
-            onClick={(hasChildren || hasQueries) ? handleClick : undefined}
+            onClick={hasChildren || hasQueries ? handleClick : undefined}
           >
             {/* Only show expand/collapse icons for items with children or queries */}
             {(hasChildren || hasQueries) && (
-              <span className="me-1.5 text-gray-500 dark:text-gray-400">
-                {isExpanded ? '▼' : '►'}
-              </span>
+              <span className="me-1.5 text-muted-foreground">{isExpanded ? '▼' : '►'}</span>
             )}
 
             <div className="flex items-center">
               <span
-                className="font-medium text-gray-800 dark:text-gray-200 truncate max-w-[120px] inline-block"
+                className="inline-block max-w-[120px] truncate font-medium text-foreground"
                 title={key}
               >
                 {key}
               </span>
 
               {totalChildCount > 0 && (
-                <span className="text-gray-500 dark:text-gray-400 text-xs ms-1" title={`${totalChildCount} sub-items total`}>
+                <span
+                  className="ms-1 text-xs text-muted-foreground"
+                  title={`${totalChildCount} sub-items total`}
+                >
                   ({totalChildCount})
                 </span>
               )}
@@ -165,11 +162,11 @@ const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({
                   href={selfNode.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  className="text-blue-600 dark:text-blue-400 hover:underline truncate inline-block max-w-[150px] ms-2 text-sm"
+                  onClick={e => e.stopPropagation()}
+                  className="ms-2 inline-block max-w-[150px] truncate text-sm text-primary hover:underline"
                   title={`${selfNode.title || 'No title'}\n${selfNode.url}`}
                 >
-                  <span className="text-gray-400 dark:text-gray-500 me-1">→</span>
+                  <span className="me-1 text-muted-foreground">→</span>
                   {selfNode.title || selfNode.url}
                 </a>
               )}
@@ -182,17 +179,17 @@ const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({
               {(value as SitemapGraph).__query__?.map((queryNode, index) => (
                 <div
                   key={`${currentPath}-query-${index}`}
-                  className="py-1.5 flex items-center"
+                  className="flex items-center py-1.5"
                   style={{ paddingInlineStart: `${(level + 1) * 1.5}rem` }}
                 >
                   <a
                     href={queryNode.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-600 dark:text-blue-400 hover:underline truncate inline-block max-w-xs flex items-center"
+                    className="inline-block flex max-w-xs items-center truncate text-primary hover:underline"
                     title={`${queryNode.title || 'No title'}\n${queryNode.url}`}
                   >
-                    <span className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs rounded px-1.5 py-0.5 me-2 font-medium">
+                    <span className="me-2 rounded bg-primary-light px-1.5 py-0.5 text-xs font-medium text-primary-dark">
                       query
                     </span>
                     {queryNode.title || queryNode.url}
@@ -219,17 +216,17 @@ const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({
         components.push(
           <div
             key={`${path}-root-query-${index}`}
-            className="py-1.5 flex items-center"
+            className="flex items-center py-1.5"
             style={{ paddingInlineStart: `${level * 1.5}rem` }}
           >
             <a
               href={queryNode.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 dark:text-blue-400 hover:underline truncate inline-block max-w-xs flex items-center"
+              className="inline-block flex max-w-xs items-center truncate text-primary hover:underline"
               title={`${queryNode.title || 'No title'}\n${queryNode.url}`}
             >
-              <span className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs rounded px-1.5 py-0.5 me-2 font-medium">
+              <span className="me-2 rounded bg-primary-light px-1.5 py-0.5 text-xs font-medium text-primary-dark">
                 query
               </span>
               {queryNode.title || queryNode.url}
@@ -243,27 +240,21 @@ const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({
   };
 
   if (isLoading) {
-    return (
-      <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-        {t('sitemap.loading')}
-      </div>
-    );
+    return <div className="py-8 text-center text-muted-foreground">{t('sitemap.loading')}</div>;
   }
 
   if (!sitemapData) {
-    return (
-      <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-        {t('sitemap.noData')}
-      </div>
-    );
+    return <div className="py-8 text-center text-muted-foreground">{t('sitemap.noData')}</div>;
   }
 
   return (
     <div className="text-sm">
-      {rootExpanded ? renderSitemapTree(sitemapData) : (
+      {rootExpanded ? (
+        renderSitemapTree(sitemapData)
+      ) : (
         <button
           onClick={() => setRootExpanded(true)}
-          className="text-primary-600 hover:text-primary-700 font-medium"
+          className="font-medium text-primary hover:text-primary-dark"
         >
           {t('sitemap.showSitemap')}
         </button>

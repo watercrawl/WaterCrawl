@@ -14,7 +14,14 @@ interface ModalProps {
   size?: ModalSize;
 }
 
-export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, footer, size = 'md' }) => {
+export const Modal: React.FC<ModalProps> = ({
+  isOpen,
+  onClose,
+  title,
+  children,
+  footer,
+  size = 'md',
+}) => {
   const { t } = useTranslation();
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -42,30 +49,34 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, 
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className={`relative w-full ${{
-                sm: 'max-w-sm',
-                md: 'max-w-md',
-                lg: 'max-w-lg',
-                xl: 'max-w-xl',
-                '2xl': 'max-w-2xl',
-                '3xl': 'max-w-3xl',
-                '4xl': 'max-w-4xl',
-                '5xl': 'max-w-5xl',
-                '6xl': 'max-w-6xl',
-                '7xl': 'max-w-7xl',
-                '80vw': 'w-[80vw] max-w-[80vw]',
-              }[size]} transform overflow-hidden rounded-2xl bg-white dark:bg-gray-800 p-6 text-start align-middle shadow-xl transition-all`}>
+              <Dialog.Panel
+                className={`relative w-full ${
+                  {
+                    sm: 'max-w-sm',
+                    md: 'max-w-md',
+                    lg: 'max-w-lg',
+                    xl: 'max-w-xl',
+                    '2xl': 'max-w-2xl',
+                    '3xl': 'max-w-3xl',
+                    '4xl': 'max-w-4xl',
+                    '5xl': 'max-w-5xl',
+                    '6xl': 'max-w-6xl',
+                    '7xl': 'max-w-7xl',
+                    '80vw': 'w-[80vw] max-w-[80vw]',
+                  }[size]
+                } transform overflow-hidden rounded-2xl bg-card p-6 text-start align-middle shadow-xl transition-all`}
+              >
                 <Dialog.Title
                   as="h3"
-                  className="text-lg font-medium leading-6 text-gray-900 dark:text-gray-100 pe-8"
+                  className="pe-8 text-lg font-medium leading-6 text-foreground"
                 >
                   {title}
                 </Dialog.Title>
 
-                <div className="absolute top-0 end-0 pt-4 pe-4">
+                <div className="absolute end-0 top-0 pe-4 pt-4">
                   <button
                     type="button"
-                    className="rounded-md bg-white dark:bg-gray-800 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+                    className="rounded-md bg-card text-muted-foreground hover:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
                     onClick={onClose}
                   >
                     <span className="sr-only">{t('common.close')}</span>

@@ -47,7 +47,7 @@ export default function PlansPage() {
 
   return (
     <div className="py-12 sm:py-16">
-      <PlansDisplay 
+      <PlansDisplay
         plans={plans}
         showHeader={true}
         showEnterprisePlan={true}

@@ -41,9 +41,13 @@ const CrawlRequestDetailPage: React.FC = () => {
 
   useEffect(() => {
     setItems([
-      { label: t('dashboard.navigation.dashboard'), href: '/dashboard'},
+      { label: t('dashboard.navigation.dashboard'), href: '/dashboard' },
       { label: t('activityLogs.crawlLogs'), href: '/dashboard/logs/crawls' },
-      { label: t('activityLogs.table.url'), href: `/dashboard/logs/crawls/${requestId}`, current: true },
+      {
+        label: t('activityLogs.table.url'),
+        href: `/dashboard/logs/crawls/${requestId}`,
+        current: true,
+      },
     ]);
   }, [setItems, requestId, t]);
 
@@ -73,10 +77,8 @@ const CrawlRequestDetailPage: React.FC = () => {
       if (!requestId || !isSubscribed) return;
 
       try {
-        await crawlRequestApi.subscribeToStatus(
-          requestId,
-          handleCrawlEvent,
-          () => setLoading(false)
+        await crawlRequestApi.subscribeToStatus(requestId, handleCrawlEvent, () =>
+          setLoading(false)
         );
       } catch (error) {
         console.error('Error polling status:', error);
@@ -85,7 +87,6 @@ const CrawlRequestDetailPage: React.FC = () => {
     };
 
     pollStatus();
-
   }, [requestId, isSubscribed]);
 
   useEffect(() => {
@@ -136,7 +137,7 @@ const CrawlRequestDetailPage: React.FC = () => {
   }, [request, requestId, navigate, wasRunning, t]);
 
   const loadMore = async () => {
-    if (!requestId || !results?.next || loadingMore ) return;
+    if (!requestId || !results?.next || loadingMore) return;
 
     try {
       setLoadingMore(true);
@@ -160,7 +161,7 @@ const CrawlRequestDetailPage: React.FC = () => {
     try {
       await crawlRequestApi.cancelCrawl(request.uuid);
       toast.success(t('crawl.messages.cancelled'));
-      setRequest(prev => prev ? { ...prev, status: 'canceled' } : null);
+      setRequest(prev => (prev ? { ...prev, status: 'canceled' } : null));
     } catch (error) {
       console.error('Error canceling crawl:', error);
       toast.error(t('crawl.messages.cancelFailed'));
@@ -174,10 +175,10 @@ const CrawlRequestDetailPage: React.FC = () => {
 
   if (loading && !request) {
     return (
-      <div className="h-full flex items-center justify-center">
+      <div className="flex h-full items-center justify-center">
         <div className="flex flex-col items-center space-y-4">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
-          <p className="text-sm text-gray-500 dark:text-gray-400">{t('common.loading')}</p>
+          <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-border"></div>
+          <p className="text-sm text-muted-foreground">{t('common.loading')}</p>
         </div>
       </div>
     );
@@ -198,92 +199,110 @@ const CrawlRequestDetailPage: React.FC = () => {
     <div className="h-full">
       <div className="px-6 py-4">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-x-3">
             <button
               onClick={() => navigate('/dashboard/logs/crawls')}
-              className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+              className="text-muted-foreground hover:text-foreground"
             >
               <ArrowLeft className="h-5 w-5" />
             </button>
             <div>
-              <h1 className="text-xl font-semibold text-gray-900 dark:text-white">{t('crawl.results.details')}</h1>
-              <p className="text-sm text-gray-500 dark:text-gray-400 truncate max-w-lg">{request.url}</p>
+              <h1 className="text-xl font-semibold text-foreground">
+                {t('crawl.results.details')}
+              </h1>
+              <p className="max-w-lg truncate text-sm text-muted-foreground">{request.url}</p>
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-3">
             {request.status === 'running' && (
               <button
                 onClick={handleCancel}
-                className="inline-flex items-center px-3 py-1.5 text-sm rounded-md shadow-sm font-medium bg-red-600 text-white hover:bg-red-700 focus:outline-none focus:ring-red-500 focus:ring-offset-2 transition-colors"
+                className="inline-flex items-center rounded-md bg-error px-3 py-1.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-error-dark focus:outline-none focus:ring-error focus:ring-offset-2"
               >
                 <div className="flex items-center gap-x-2">
                   <span>{t('crawl.form.cancelCrawl')}</span>
                 </div>
               </button>
             )}
-            {request && <DownloadFormatSelector request={request} buttonWithText/>}
-            {request && <SitemapModalSelector request={request} buttonWithText/>}
+            {request && <DownloadFormatSelector request={request} buttonWithText />}
+            {request && <SitemapModalSelector request={request} buttonWithText />}
             <button
               onClick={handleTryInCrawl}
-              className="inline-flex items-center px-3 py-1.5 text-sm border border-primary-300 dark:border-primary-600 rounded-md shadow-sm font-medium text-primary-700 dark:text-primary-200 bg-white dark:bg-gray-800 hover:bg-primary-50 dark:hover:bg-primary-900/20 focus:outline-none focus:ring-primary-500 focus:ring-offset-2 transition-colors"
+              className="inline-flex items-center rounded-md border border-primary bg-card px-3 py-1.5 text-sm font-medium text-primary shadow-sm transition-colors hover:bg-primary/10 focus:outline-none focus:ring-primary focus:ring-offset-2"
             >
-              <ArrowRight className="h-4 w-4 me-1.5" />
+              <ArrowRight className="me-1.5 h-4 w-4" />
               {t('activityLogs.emptyState.goToCrawl')}
             </button>
           </div>
         </div>
 
         {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           {/* Right Column - Info Box (moves to top on mobile) */}
           <div className="order-1 lg:order-2 lg:col-span-1">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-              <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
-                <h2 className="text-base font-medium text-gray-900 dark:text-white">{t('common.info')}</h2>
+            <div className="rounded-lg border border-border bg-card shadow-sm">
+              <div className="border-b border-border px-4 py-3">
+                <h2 className="text-base font-medium text-foreground">{t('common.info')}</h2>
               </div>
               <div className="px-4 py-4">
                 <dl className="space-y-4">
                   <div>
-                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('crawl.form.url')}</dt>
-                    <dd className="mt-1 text-sm text-gray-900 dark:text-white break-all">{request.url}</dd>
+                    <dt className="text-sm font-medium text-muted-foreground">
+                      {t('crawl.form.url')}
+                    </dt>
+                    <dd className="mt-1 break-all text-sm text-foreground">{request.url}</dd>
                   </div>
                   <div>
-                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('activityLogs.table.status')}</dt>
+                    <dt className="text-sm font-medium text-muted-foreground">
+                      {t('activityLogs.table.status')}
+                    </dt>
                     <dd className="mt-1">
                       <StatusBadge status={request.status} />
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('crawl.typeLabel')}</dt>
+                    <dt className="text-sm font-medium text-muted-foreground">
+                      {t('crawl.typeLabel')}
+                    </dt>
                     <dd className="mt-1">
                       <CrawlTypeBadge type={request.crawl_type || 'single'} />
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('activityLogs.table.created')}</dt>
-                    <dd className="mt-1 text-sm text-gray-900 dark:text-white">
-                      {formatDistanceToNowLocalized(new Date(request.created_at), dateLocale, { addSuffix: true })}
+                    <dt className="text-sm font-medium text-muted-foreground">
+                      {t('activityLogs.table.created')}
+                    </dt>
+                    <dd className="mt-1 text-sm text-foreground">
+                      {formatDistanceToNowLocalized(new Date(request.created_at), dateLocale, {
+                        addSuffix: true,
+                      })}
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('activityLogs.table.duration')}</dt>
-                    <dd className="mt-1 text-sm text-gray-900 dark:text-white">
+                    <dt className="text-sm font-medium text-muted-foreground">
+                      {t('activityLogs.table.duration')}
+                    </dt>
+                    <dd className="mt-1 text-sm text-foreground">
                       {formatRequestDuration(request.duration)}
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('activityLogs.table.results')}</dt>
-                    <dd className="mt-1 text-sm text-gray-900 dark:text-white">
+                    <dt className="text-sm font-medium text-muted-foreground">
+                      {t('activityLogs.table.results')}
+                    </dt>
+                    <dd className="mt-1 text-sm text-foreground">
                       {request.number_of_documents || 0}
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('dashboard.settings.advanced')}</dt>
+                    <dt className="text-sm font-medium text-muted-foreground">
+                      {t('dashboard.settings.advanced')}
+                    </dt>
                     <dd className="mt-1">
                       <button
                         onClick={() => setShowParameters(!showParameters)}
-                        className="inline-flex items-center text-sm text-gray-900 dark:text-white"
+                        className="inline-flex items-center text-sm text-foreground"
                       >
                         <span className="me-1">{t('dashboard.actions.viewDetails')}</span>
                         {showParameters ? (
@@ -294,8 +313,8 @@ const CrawlRequestDetailPage: React.FC = () => {
                       </button>
                       {showParameters && (
                         <div className="mt-2 space-y-2">
-                          <div className="rounded-md bg-gray-50 dark:bg-gray-900 p-3 ltr">
-                            <pre className="text-xs text-gray-900 dark:text-white whitespace-pre-wrap">
+                          <div className="ltr rounded-md bg-muted p-3">
+                            <pre className="whitespace-pre-wrap text-xs text-foreground">
                               {JSON.stringify(request.options, null, 2)}
                             </pre>
                           </div>
@@ -310,27 +329,25 @@ const CrawlRequestDetailPage: React.FC = () => {
 
           {/* Left Column - Results Box (moves to bottom on mobile) */}
           <div className="order-2 lg:order-1 lg:col-span-2">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-              <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
-                <h2 className="text-base font-medium text-gray-900 dark:text-white">{t('crawl.form.results')}</h2>
+            <div className="overflow-hidden rounded-lg border border-border bg-card shadow-sm">
+              <div className="border-b border-border px-4 py-3">
+                <h2 className="text-base font-medium text-foreground">{t('crawl.form.results')}</h2>
               </div>
               <div className="p-4">
                 {request?.status === 'running' && (
-                  <div className="flex items-center justify-center w-full">
+                  <div className="flex w-full items-center justify-center">
                     <AnimatedProcessing />
                   </div>
                 )}
                 {loading && !allResults.length ? (
-                  <div className="flex flex-col items-center justify-center py-8 space-y-3">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                      {t('common.loading')}
-                    </p>
+                  <div className="flex flex-col items-center justify-center space-y-3 py-8">
+                    <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-border"></div>
+                    <p className="text-sm text-muted-foreground">{t('common.loading')}</p>
                   </div>
                 ) : (
                   <>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {allResults.map((result) => (
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                      {allResults.map(result => (
                         <CrawlResultCard
                           key={result.uuid}
                           result={result}
@@ -346,11 +363,11 @@ const CrawlRequestDetailPage: React.FC = () => {
                         <button
                           onClick={loadMore}
                           disabled={loadingMore}
-                          className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 shadow-sm text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50"
+                          className="inline-flex items-center rounded-md border border-input-border bg-card px-4 py-2 text-sm font-medium text-foreground shadow-sm hover:bg-muted focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50"
                         >
                           {loadingMore ? (
                             <>
-                              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-900 dark:border-white me-2"></div>
+                              <div className="me-2 h-4 w-4 animate-spin rounded-full border-b-2 border-border"></div>
                               {t('common.loading')}
                             </>
                           ) : (
@@ -358,14 +375,12 @@ const CrawlRequestDetailPage: React.FC = () => {
                           )}
                         </button>
                       ) : request.status !== 'running' && allResults && allResults.length > 0 ? (
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                        <p className="text-sm text-muted-foreground">
                           {t('pagination.showing')} {allResults.length} {t('pagination.results')}
                         </p>
                       ) : null}
                       {request.status === 'running' && (
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
-                          {t('crawl.form.crawling')}
-                        </p>
+                        <p className="text-sm text-muted-foreground">{t('crawl.form.crawling')}</p>
                       )}
                     </div>
                   </>

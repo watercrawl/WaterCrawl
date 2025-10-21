@@ -17,40 +17,24 @@ export const FormInput: React.FC<FormInputProps> = ({
 
   return (
     <div className="space-y-1">
-      <label htmlFor={name} className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+      <label htmlFor={name} className="block text-sm font-medium text-foreground">
         {label}
-        {required && <span className="text-red-500 ms-1">*</span>}
+        {required && <span className="ms-1 text-error">*</span>}
       </label>
-      <div className="relative ltr">
+      <div className="ltr relative">
         <input
           {...register(name)}
           type={type}
           id={name}
           placeholder={placeholder}
           disabled={disabled}
-          className={`
-            block w-full rounded-md shadow-sm
-            text-gray-900 dark:text-white
-            bg-white dark:bg-gray-700
-            border-gray-300 dark:border-gray-600
-            focus:border-primary-500 dark:focus:border-primary-400
-            focus:ring-primary-500 dark:focus:ring-primary-400
-            sm:text-sm
-            ${error ? 'border-red-500 dark:border-red-400' : 'border-gray-300 dark:border-gray-600'}
-            ${endAdornment ? 'pe-10' : ''}
-            ${className}
-            ${disabled && 'opacity-50 cursor-not-allowed'}
-          `}
+          className={`block w-full rounded-md border bg-input text-foreground shadow-sm placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary sm:text-sm ${error ? 'border-error focus:border-error focus:ring-error' : 'border-input-border'} ${endAdornment ? 'pe-10' : ''} ${className} ${disabled && 'cursor-not-allowed bg-muted opacity-50'} `}
         />
         {endAdornment && (
-          <div className="absolute inset-y-0 end-0 flex items-center">
-            {endAdornment}
-          </div>
+          <div className="absolute inset-y-0 end-0 flex items-center">{endAdornment}</div>
         )}
       </div>
-      {error && (
-        <p className="mt-1 text-sm text-red-600 dark:text-red-400">{error}</p>
-      )}
+      {error && <p className="mt-1 text-sm text-error">{error}</p>}
     </div>
   );
 };

@@ -17,11 +17,11 @@ interface EnhanceContextModalProps {
   temperature: number | null;
 }
 
-export const EnhanceContextModal: React.FC<EnhanceContextModalProps> = ({ 
-  isOpen, 
-  onClose, 
-  onEnhance, 
-  initialContext, 
+export const EnhanceContextModal: React.FC<EnhanceContextModalProps> = ({
+  isOpen,
+  onClose,
+  onEnhance,
+  initialContext,
   providerConfigId,
   modelId,
   temperature,
@@ -52,7 +52,7 @@ export const EnhanceContextModal: React.FC<EnhanceContextModalProps> = ({
         provider_config_id: providerConfigId,
         llm_model_id: modelId,
         content: context,
-        temperature: temperature
+        temperature: temperature,
       };
       const response = await knowledgeBaseApi.enhanceContextAware(data);
       toast.dismiss();
@@ -61,9 +61,9 @@ export const EnhanceContextModal: React.FC<EnhanceContextModalProps> = ({
       setIsEnhanced(true);
     } catch (error) {
       toast.dismiss();
-      if(error instanceof AxiosError){
+      if (error instanceof AxiosError) {
         toast.error(error.response?.data?.message || t('knowledgeBase.enhance.error'));
-      }else{
+      } else {
         toast.error(t('knowledgeBase.enhance.error'));
       }
     } finally {
@@ -99,14 +99,12 @@ export const EnhanceContextModal: React.FC<EnhanceContextModalProps> = ({
       }
     >
       <div className="space-y-4">
-        <p className="text-sm text-gray-600 dark:text-gray-400">
-          {t('knowledgeBase.enhance.description')}
-        </p>
+        <p className="text-sm text-muted-foreground">{t('knowledgeBase.enhance.description')}</p>
         <textarea
           value={context}
-          onChange={(e) => setContext(e.target.value)}
+          onChange={e => setContext(e.target.value)}
           rows={10}
-          className="w-full p-2 border rounded-md bg-white dark:bg-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600 focus:ring-primary-500 focus:border-primary-500"
+          className="w-full rounded-md border border-input-border bg-card p-2 focus:border-primary focus:ring-primary"
           placeholder={t('knowledgeBase.enhance.placeholder')}
         />
       </div>

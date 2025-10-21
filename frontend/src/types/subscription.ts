@@ -20,7 +20,6 @@ export interface Plan {
   max_concurrent_crawl: number;
   is_default: boolean;
   features: PlanFeature[];
-
 }
 
 /**
@@ -50,7 +49,6 @@ export interface CreateSubscriptionRequest {
 export interface CreateSubscriptionResponse {
   redirect_url: string;
 }
-
 
 export interface UpdatePaymentMethodResponse {
   redirect_url: string;

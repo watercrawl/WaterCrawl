@@ -5,7 +5,7 @@ import { EyeIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { AdminProviderConfig } from '../../types/admin/provider';
 
 interface ProviderConfigListProps {
-  providerConfigs:  ProviderConfig[] | AdminProviderConfig[];
+  providerConfigs: ProviderConfig[] | AdminProviderConfig[];
   currentPage: number;
   totalItems: number;
   hasNext: boolean;
@@ -38,78 +38,84 @@ const ProviderConfigList: React.FC<ProviderConfigListProps> = ({
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   return (
-    <div className="bg-white dark:bg-gray-900 shadow overflow-hidden sm:rounded-md">
+    <div className="overflow-hidden bg-card shadow sm:rounded-md">
       <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-          <thead className="bg-gray-50 dark:bg-gray-800">
+        <table className="min-w-full divide-y divide-border">
+          <thead className="bg-muted">
             <tr>
               <th
                 scope="col"
-                className="px-6 py-3 text-start text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+                className="px-6 py-3 text-start text-xs font-medium uppercase tracking-wider text-muted-foreground"
               >
                 {t('settings.providerConfig.table.title')}
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-start text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+                className="px-6 py-3 text-start text-xs font-medium uppercase tracking-wider text-muted-foreground"
               >
                 {t('settings.providerConfig.table.provider')}
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-start text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+                className="px-6 py-3 text-start text-xs font-medium uppercase tracking-wider text-muted-foreground"
               >
                 {t('settings.providerConfig.table.global')}
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-start text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+                className="px-6 py-3 text-start text-xs font-medium uppercase tracking-wider text-muted-foreground"
               >
                 {t('settings.providerConfig.table.actions')}
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
+          <tbody className="divide-y divide-border bg-card">
             {loading ? (
               <tr>
-                <td colSpan={4} className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500 dark:text-gray-400">
+                <td
+                  colSpan={4}
+                  className="whitespace-nowrap px-6 py-4 text-center text-sm text-muted-foreground"
+                >
                   {t('settings.providerConfig.loading')}
                 </td>
               </tr>
             ) : providerConfigs.length === 0 ? (
               <tr>
-                <td colSpan={4} className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500 dark:text-gray-400">
+                <td
+                  colSpan={4}
+                  className="whitespace-nowrap px-6 py-4 text-center text-sm text-muted-foreground"
+                >
                   {t('settings.providerConfig.noConfigs')}
                 </td>
               </tr>
             ) : (
-              providerConfigs.map((config) => (
+              providerConfigs.map(config => (
                 <tr key={config.uuid}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                  <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-foreground">
                     {config.title || t('settings.providerConfig.untitled')}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                  <td className="whitespace-nowrap px-6 py-4 text-sm text-muted-foreground">
                     {config.provider_name}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                  <td className="whitespace-nowrap px-6 py-4 text-sm text-muted-foreground">
                     <div className="flex gap-x-3">
                       {onView && (
                         <button
                           onClick={() => onView(config)}
-                          className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-200"
+                          className="text-primary hover:text-primary-dark"
                         >
                           <EyeIcon className="h-5 w-5" />
                         </button>
                       )}
                       <button
                         onClick={() => onEdit(config)}
-                        className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-200"
+                        className="text-primary hover:text-primary-dark"
                       >
                         <PencilIcon className="h-5 w-5" />
                       </button>
                       <button
                         onClick={() => onDelete(config.uuid)}
-                        className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-200"
+                        className="text-error hover:text-error"
                         disabled={deletingUuid === config.uuid}
                       >
                         {deletingUuid === config.uuid ? (
@@ -127,39 +133,46 @@ const ProviderConfigList: React.FC<ProviderConfigListProps> = ({
         </table>
       </div>
       {totalPages > 1 && (
-        <div className="bg-white dark:bg-gray-900 px-4 py-3 flex items-center justify-between border-t border-gray-200 dark:border-gray-700 sm:px-6">
-          <div className="flex-1 flex justify-between sm:hidden">
+        <div className="flex items-center justify-between border-t border-border bg-card px-4 py-3 sm:px-6">
+          <div className="flex flex-1 justify-between sm:hidden">
             <button
               onClick={() => onPageChange(currentPage - 1)}
               disabled={!hasPrevious || loading}
-              className="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50"
+              className="relative inline-flex items-center rounded-md border border-input-border bg-card px-4 py-2 text-sm font-medium text-foreground hover:bg-muted disabled:opacity-50"
             >
               {t('settings.providerConfig.table.previous')}
             </button>
             <button
               onClick={() => onPageChange(currentPage + 1)}
               disabled={!hasNext || loading}
-              className="ms-3 relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50"
+              className="relative ms-3 inline-flex items-center rounded-md border border-input-border bg-card px-4 py-2 text-sm font-medium text-foreground hover:bg-muted disabled:opacity-50"
             >
               {t('settings.providerConfig.table.next')}
             </button>
           </div>
-          <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+          <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
             <div>
-              <p className="text-sm text-gray-700 dark:text-gray-300">
-                {t('settings.providerConfig.table.showing')} <span className="font-medium">{(currentPage - 1) * itemsPerPage + 1}</span> {t('settings.providerConfig.table.to')}{' '}
+              <p className="text-sm text-foreground">
+                {t('settings.providerConfig.table.showing')}{' '}
+                <span className="font-medium">{(currentPage - 1) * itemsPerPage + 1}</span>{' '}
+                {t('settings.providerConfig.table.to')}{' '}
                 <span className="font-medium">
                   {Math.min(currentPage * itemsPerPage, totalItems)}
                 </span>{' '}
-                {t('settings.providerConfig.table.of')} <span className="font-medium">{totalItems}</span> {t('settings.providerConfig.table.results')}
+                {t('settings.providerConfig.table.of')}{' '}
+                <span className="font-medium">{totalItems}</span>{' '}
+                {t('settings.providerConfig.table.results')}
               </p>
             </div>
             <div>
-              <nav className="relative z-0 inline-flex rounded-md shadow-sm -gap-x-px" aria-label="Pagination">
+              <nav
+                className="-gap-x-px relative z-0 inline-flex rounded-md shadow-sm"
+                aria-label="Pagination"
+              >
                 <button
                   onClick={() => onPageChange(currentPage - 1)}
                   disabled={!hasPrevious || loading}
-                  className="relative inline-flex items-center px-2 py-2 rounded-s-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50"
+                  className="relative inline-flex items-center rounded-s-md border border-input-border bg-card px-2 py-2 text-sm font-medium text-muted-foreground hover:bg-muted disabled:opacity-50"
                 >
                   <span className="sr-only">{t('settings.providerConfig.table.previous')}</span>
                   &larr;
@@ -180,10 +193,10 @@ const ProviderConfigList: React.FC<ProviderConfigListProps> = ({
                       key={i}
                       onClick={() => onPageChange(pageNumber)}
                       disabled={loading}
-                      className={`relative inline-flex items-center px-4 py-2 border ${
+                      className={`relative inline-flex items-center border px-4 py-2 ${
                         currentPage === pageNumber
-                          ? 'z-10 bg-indigo-50 dark:bg-indigo-900 border-indigo-500 dark:border-indigo-500 text-indigo-600 dark:text-indigo-200'
-                          : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700'
+                          ? 'z-10 border-primary bg-primary/10 text-primary'
+                          : 'border-input-border bg-card text-muted-foreground hover:bg-muted'
                       } text-sm font-medium`}
                     >
                       {pageNumber}
@@ -193,7 +206,7 @@ const ProviderConfigList: React.FC<ProviderConfigListProps> = ({
                 <button
                   onClick={() => onPageChange(currentPage + 1)}
                   disabled={!hasNext || loading}
-                  className="relative inline-flex items-center px-2 py-2 rounded-e-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50"
+                  className="relative inline-flex items-center rounded-e-md border border-input-border bg-card px-2 py-2 text-sm font-medium text-muted-foreground hover:bg-muted disabled:opacity-50"
                 >
                   <span className="sr-only">{t('settings.providerConfig.table.next')}</span>
                   &rarr;

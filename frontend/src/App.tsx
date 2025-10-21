@@ -34,40 +34,80 @@ const ProfilePage = React.lazy(() => import('./pages/dashboard/ProfilePage'));
 const CrawlRequestDetailPage = React.lazy(() => import('./pages/dashboard/CrawlRequestDetailPage'));
 const SearchPage = React.lazy(() => import('./pages/dashboard/SearchPage'));
 const SearchLogsPage = React.lazy(() => import('./pages/dashboard/SearchLogsPage'));
-const SearchRequestDetailPage = React.lazy(() => import('./pages/dashboard/SearchRequestDetailPage'));
+const SearchRequestDetailPage = React.lazy(
+  () => import('./pages/dashboard/SearchRequestDetailPage')
+);
 const SitemapPage = React.lazy(() => import('./pages/dashboard/SitemapPage'));
 const SitemapLogsPage = React.lazy(() => import('./pages/dashboard/SitemapLogsPage'));
-const SitemapRequestDetailPage = React.lazy(() => import('./pages/dashboard/SitemapRequestDetailPage'));
+const SitemapRequestDetailPage = React.lazy(
+  () => import('./pages/dashboard/SitemapRequestDetailPage')
+);
 const ApiReferencePage = React.lazy(() => import('./pages/dashboard/ApiReferencePage'));
 const UsageHistoryPage = React.lazy(() => import('./pages/dashboard/UsageHistoryPage'));
 
-
 // Knowledge Base pages
-const KnowledgeBasePage = React.lazy(() => import('./pages/dashboard/knowledge-base/KnowledgeBasePage'));
-const KnowledgeBaseNewPage = React.lazy(() => import('./pages/dashboard/knowledge-base/KnowledgeBaseNewPage'));
-const KnowledgeBaseDetailPage = React.lazy(() => import('./pages/dashboard/knowledge-base/KnowledgeBaseDetailPage'));
-const KnowledgeBaseDocumentDetailPage = React.lazy(() => import('./pages/dashboard/knowledge-base/KnowledgeBaseDocumentDetailPage'));
-const KnowledgeBaseQueryPage = React.lazy(() => import('./pages/dashboard/knowledge-base/KnowledgeBaseQueryPage'));
-const KnowledgeBaseEditPage = React.lazy(() => import('./pages/dashboard/knowledge-base/KnowledgeBaseEditPage'));
+const KnowledgeBasePage = React.lazy(
+  () => import('./pages/dashboard/knowledge-base/KnowledgeBasePage')
+);
+const KnowledgeBaseNewPage = React.lazy(
+  () => import('./pages/dashboard/knowledge-base/KnowledgeBaseNewPage')
+);
+const KnowledgeBaseDetailPage = React.lazy(
+  () => import('./pages/dashboard/knowledge-base/KnowledgeBaseDetailPage')
+);
+const KnowledgeBaseDocumentDetailPage = React.lazy(
+  () => import('./pages/dashboard/knowledge-base/KnowledgeBaseDocumentDetailPage')
+);
+const KnowledgeBaseQueryPage = React.lazy(
+  () => import('./pages/dashboard/knowledge-base/KnowledgeBaseQueryPage')
+);
+const KnowledgeBaseEditPage = React.lazy(
+  () => import('./pages/dashboard/knowledge-base/KnowledgeBaseEditPage')
+);
 
 // Knowledge Base Import pages with modular structure
-const KnowledgeBaseImportOptionsPage = React.lazy(() => import('./pages/dashboard/knowledge-base/ImportOptionsPage'));
-const KnowledgeBaseSelectCrawlPage = React.lazy(() => import('./pages/dashboard/knowledge-base/SelectCrawlPage'));
-const KnowledgeBaseSelectSitemapPage = React.lazy(() => import('./pages/dashboard/knowledge-base/SelectSitemapPage'));
-const KnowledgeBaseSelectCrawlResultsPage = React.lazy(() => import('./pages/dashboard/knowledge-base/SelectCrawlResultsPage'));
-const KnowledgeBaseNewCrawlPage = React.lazy(() => import('./pages/dashboard/knowledge-base/NewCrawlPage'));
-const KnowledgeBaseNewSitemapPage = React.lazy(() => import('./pages/dashboard/knowledge-base/NewSitemapPage'));
-const KnowledgeBaseManualEntryPage = React.lazy(() => import('./pages/dashboard/knowledge-base/ManualEntryPage'));
-const KnowledgeBaseUploadDocumentsPage = React.lazy(() => import('./pages/dashboard/knowledge-base/UploadDocumentsPage'));
-const BatchUrlImportPage = React.lazy(() => import('./pages/dashboard/knowledge-base/BatchUrlImportPage'));
-const KnowledgeBaseUrlSelectorPage = React.lazy(() => import('./pages/dashboard/knowledge-base/UrlSelectorPage'));
-const KnowledgeBaseImportProgressPage = React.lazy(() => import('./pages/dashboard/knowledge-base/ImportProgressPage'));
+const KnowledgeBaseImportOptionsPage = React.lazy(
+  () => import('./pages/dashboard/knowledge-base/ImportOptionsPage')
+);
+const KnowledgeBaseSelectCrawlPage = React.lazy(
+  () => import('./pages/dashboard/knowledge-base/SelectCrawlPage')
+);
+const KnowledgeBaseSelectSitemapPage = React.lazy(
+  () => import('./pages/dashboard/knowledge-base/SelectSitemapPage')
+);
+const KnowledgeBaseSelectCrawlResultsPage = React.lazy(
+  () => import('./pages/dashboard/knowledge-base/SelectCrawlResultsPage')
+);
+const KnowledgeBaseNewCrawlPage = React.lazy(
+  () => import('./pages/dashboard/knowledge-base/NewCrawlPage')
+);
+const KnowledgeBaseNewSitemapPage = React.lazy(
+  () => import('./pages/dashboard/knowledge-base/NewSitemapPage')
+);
+const KnowledgeBaseManualEntryPage = React.lazy(
+  () => import('./pages/dashboard/knowledge-base/ManualEntryPage')
+);
+const KnowledgeBaseUploadDocumentsPage = React.lazy(
+  () => import('./pages/dashboard/knowledge-base/UploadDocumentsPage')
+);
+const BatchUrlImportPage = React.lazy(
+  () => import('./pages/dashboard/knowledge-base/BatchUrlImportPage')
+);
+const KnowledgeBaseUrlSelectorPage = React.lazy(
+  () => import('./pages/dashboard/knowledge-base/UrlSelectorPage')
+);
+const KnowledgeBaseImportProgressPage = React.lazy(
+  () => import('./pages/dashboard/knowledge-base/ImportProgressPage')
+);
 
 // Admin pages
 const AdminDashboard = React.lazy(() => import('./pages/manager/ManagerDashboard'));
 const ManageProxiesPage = React.lazy(() => import('./pages/manager/ManageProxiesPage'));
 const ManageLLMProvidersPage = React.lazy(() => import('./pages/manager/ManageLLMProvidersPage'));
-const ProviderConfigDetailPage = React.lazy(() => import('./pages/manager/ProviderConfigDetailPage'));
+const ProviderConfigDetailPage = React.lazy(
+  () => import('./pages/manager/ProviderConfigDetailPage')
+);
+const ColorPalettePage = React.lazy(() => import('./pages/ColorPalettePage'));
 
 // App Content Component (inside SettingsProvider)
 const AppContent: React.FC = () => {
@@ -84,17 +124,19 @@ const AppContent: React.FC = () => {
             <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
             <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
           </Route>
-          <Route element={
-            <AuthGuard>
-              <UserProvider>
-                <TeamProvider>
-                  <TeamScopedComponent>
-                    <DashboardLayout />
-                  </TeamScopedComponent>
-                </TeamProvider>
-              </UserProvider>
-            </AuthGuard>
-          }>
+          <Route
+            element={
+              <AuthGuard>
+                <UserProvider>
+                  <TeamProvider>
+                    <TeamScopedComponent>
+                      <DashboardLayout />
+                    </TeamScopedComponent>
+                  </TeamProvider>
+                </UserProvider>
+              </AuthGuard>
+            }
+          >
             <Route path="/dashboard">
               <Route index element={<DashboardPage />} />
               <Route path="playground" element={<Navigate to="/dashboard/crawl" replace />} />
@@ -120,44 +162,95 @@ const AppContent: React.FC = () => {
                 <>
                   <Route path="knowledge-base" element={<KnowledgeBasePage />} />
                   <Route path="knowledge-base/new" element={<KnowledgeBaseNewPage />} />
-                  <Route path="knowledge-base/:knowledgeBaseId" element={<KnowledgeBaseDetailPage />} />
-                  <Route path="knowledge-base/:knowledgeBaseId/documents/:documentId" element={<KnowledgeBaseDocumentDetailPage />} />
-                  <Route path="knowledge-base/:knowledgeBaseId/edit" element={<KnowledgeBaseEditPage />} />
+                  <Route
+                    path="knowledge-base/:knowledgeBaseId"
+                    element={<KnowledgeBaseDetailPage />}
+                  />
+                  <Route
+                    path="knowledge-base/:knowledgeBaseId/documents/:documentId"
+                    element={<KnowledgeBaseDocumentDetailPage />}
+                  />
+                  <Route
+                    path="knowledge-base/:knowledgeBaseId/edit"
+                    element={<KnowledgeBaseEditPage />}
+                  />
 
                   {/* Knowledge Base Import Routes with modular structure */}
-                  <Route path="knowledge-base/:knowledgeBaseId/import" element={<KnowledgeBaseImportOptionsPage />} />
-                  <Route path="knowledge-base/:knowledgeBaseId/import/select-crawl" element={<KnowledgeBaseSelectCrawlPage />} />
-                  <Route path="knowledge-base/:knowledgeBaseId/import/select-sitemap" element={<KnowledgeBaseSelectSitemapPage />} />
-                  <Route path="knowledge-base/:knowledgeBaseId/import/new-crawl" element={<KnowledgeBaseNewCrawlPage />} />
-                  <Route path="knowledge-base/:knowledgeBaseId/import/new-sitemap" element={<KnowledgeBaseNewSitemapPage />} />
-                  <Route path="knowledge-base/:knowledgeBaseId/import/manual" element={<KnowledgeBaseManualEntryPage />} />
-                  <Route path="knowledge-base/:knowledgeBaseId/import/upload" element={<KnowledgeBaseUploadDocumentsPage />} />
-                  <Route path="knowledge-base/:knowledgeBaseId/import/batch-urls" element={<BatchUrlImportPage />} />
-                  <Route path="knowledge-base/:knowledgeBaseId/import/select-crawl/:crawlRequestId" element={<KnowledgeBaseSelectCrawlResultsPage />} />
-                  <Route path="knowledge-base/:knowledgeBaseId/import/select-sitemap/:sitemapRequestId" element={<KnowledgeBaseUrlSelectorPage />} />
-                  <Route path="knowledge-base/:knowledgeBaseId/import-progress" element={<KnowledgeBaseImportProgressPage />} />
-                  <Route path="knowledge-base/:knowledgeBaseId/query" element={<KnowledgeBaseQueryPage />} />
+                  <Route
+                    path="knowledge-base/:knowledgeBaseId/import"
+                    element={<KnowledgeBaseImportOptionsPage />}
+                  />
+                  <Route
+                    path="knowledge-base/:knowledgeBaseId/import/select-crawl"
+                    element={<KnowledgeBaseSelectCrawlPage />}
+                  />
+                  <Route
+                    path="knowledge-base/:knowledgeBaseId/import/select-sitemap"
+                    element={<KnowledgeBaseSelectSitemapPage />}
+                  />
+                  <Route
+                    path="knowledge-base/:knowledgeBaseId/import/new-crawl"
+                    element={<KnowledgeBaseNewCrawlPage />}
+                  />
+                  <Route
+                    path="knowledge-base/:knowledgeBaseId/import/new-sitemap"
+                    element={<KnowledgeBaseNewSitemapPage />}
+                  />
+                  <Route
+                    path="knowledge-base/:knowledgeBaseId/import/manual"
+                    element={<KnowledgeBaseManualEntryPage />}
+                  />
+                  <Route
+                    path="knowledge-base/:knowledgeBaseId/import/upload"
+                    element={<KnowledgeBaseUploadDocumentsPage />}
+                  />
+                  <Route
+                    path="knowledge-base/:knowledgeBaseId/import/batch-urls"
+                    element={<BatchUrlImportPage />}
+                  />
+                  <Route
+                    path="knowledge-base/:knowledgeBaseId/import/select-crawl/:crawlRequestId"
+                    element={<KnowledgeBaseSelectCrawlResultsPage />}
+                  />
+                  <Route
+                    path="knowledge-base/:knowledgeBaseId/import/select-sitemap/:sitemapRequestId"
+                    element={<KnowledgeBaseUrlSelectorPage />}
+                  />
+                  <Route
+                    path="knowledge-base/:knowledgeBaseId/import-progress"
+                    element={<KnowledgeBaseImportProgressPage />}
+                  />
+                  <Route
+                    path="knowledge-base/:knowledgeBaseId/query"
+                    element={<KnowledgeBaseQueryPage />}
+                  />
                 </>
               )}
             </Route>
           </Route>
 
           {/* Admin Routes */}
-          <Route element={
-            <AuthGuard>
-              <UserProvider>
-                <AdminLayout />
-              </UserProvider>
-            </AuthGuard>
-          }>
+          <Route
+            element={
+              <AuthGuard>
+                <UserProvider>
+                  <AdminLayout />
+                </UserProvider>
+              </AuthGuard>
+            }
+          >
             <Route path="/manager">
               <Route index element={<AdminDashboard />} />
               <Route path="proxies" element={<ManageProxiesPage />} />
               <Route path="llm-providers" element={<ManageLLMProvidersPage />} />
-              <Route path="llm-providers/:providerConfigId" element={<ProviderConfigDetailPage />} />
+              <Route
+                path="llm-providers/:providerConfigId"
+                element={<ProviderConfigDetailPage />}
+              />
             </Route>
           </Route>
 
+          <Route path="/color-palette" element={<ColorPalettePage />} />
           <Route path="stripe-callback/" element={<StripeCallbackPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
@@ -202,7 +295,7 @@ const App: React.FC = () => {
           </SettingsProvider>
         </Router>
       </DirectionProvider>
-    </ThemeProvider >
+    </ThemeProvider>
   );
 };
 

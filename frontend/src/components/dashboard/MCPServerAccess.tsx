@@ -27,7 +27,9 @@ export const MCPServerAccess: React.FC = () => {
   const [copiedItem, setCopiedItem] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'apikeys' | 'mcp' | 'sse'>('apikeys');
   const [visibleKeys, setVisibleKeys] = useState<Set<string>>(new Set());
-  const [selectedApp, setSelectedApp] = useState<'windsurf' | 'cursor' | 'vscode' | 'claude-desktop' | 'claude-code' | 'general'>('general');
+  const [selectedApp, setSelectedApp] = useState<
+    'windsurf' | 'cursor' | 'vscode' | 'claude-desktop' | 'claude-code' | 'general'
+  >('general');
   const { settings } = useSettings();
 
   useEffect(() => {
@@ -95,64 +97,65 @@ export const MCPServerAccess: React.FC = () => {
 
     switch (selectedApp) {
       case 'vscode':
-        return JSON.stringify({
-          "servers": {
-            "watercrawl": {
-              "command": "npx",
-              "args": [
-                "@watercrawl/mcp",
-                "--api-key",
-                apiKey,
-                "--base-url",
-                baseUrl
-              ]
-            }
-          }
-        }, null, 2);
+        return JSON.stringify(
+          {
+            servers: {
+              watercrawl: {
+                command: 'npx',
+                args: ['@watercrawl/mcp', '--api-key', apiKey, '--base-url', baseUrl],
+              },
+            },
+          },
+          null,
+          2
+        );
 
       case 'windsurf':
-        return JSON.stringify({
-          "mcpServers": {
-            "watercrawl": {
-              "serverUrl": sseUrl
-            }
-          }
-        }, null, 2);
+        return JSON.stringify(
+          {
+            mcpServers: {
+              watercrawl: {
+                serverUrl: sseUrl,
+              },
+            },
+          },
+          null,
+          2
+        );
 
       case 'claude-code':
         return `claude mcp add watercrawl -e WATERCRAWL_API_KEY=${apiKey} -- npx -y @watercrawl/mcp --base-url ${baseUrl}`;
       default:
-        return JSON.stringify({
-          "mcpServers": {
-            "watercrawl": {
-              "command": "npx",
-              "args": [
-                "@watercrawl/mcp",
-                "--api-key",
-                apiKey,
-                "--base-url",
-                baseUrl
-              ]
-            }
-          }
-        }, null, 2);
+        return JSON.stringify(
+          {
+            mcpServers: {
+              watercrawl: {
+                command: 'npx',
+                args: ['@watercrawl/mcp', '--api-key', apiKey, '--base-url', baseUrl],
+              },
+            },
+          },
+          null,
+          2
+        );
     }
   };
 
   const getMCPInstallLink = useCallback(() => {
     switch (selectedApp) {
       case 'cursor':
-        return 'https://cursor.com/en/install-mcp?name=watercrawl&config=' + btoa(JSON.stringify({
-          "command": "npx",
-          "args": [
-            "@watercrawl/mcp",
-            "--base-url",
-            getBaseUrl(),
-          ],
-          "env": {
-            "WATERCRAWL_API_KEY": selectedApiKey,
-          }
-        }));
+        return (
+          'https://cursor.com/en/install-mcp?name=watercrawl&config=' +
+          btoa(
+            JSON.stringify({
+              command: 'npx',
+              args: ['@watercrawl/mcp', '--base-url', getBaseUrl()],
+              env: {
+                WATERCRAWL_API_KEY: selectedApiKey,
+              },
+            })
+          )
+        );
 
       case 'vscode':
         return `https://insiders.vscode.dev/redirect/mcp/install?name=watercrawl&config={"command":"npx","args":["-y","@watercrawl/mcp", "--base-url", "${getBaseUrl()}"],"env":{"WATERCRAWL_API_KEY":"${selectedApiKey}"}}`;
@@ -167,40 +170,70 @@ export const MCPServerAccess: React.FC = () => {
     switch (selectedApp) {
       case 'windsurf':
         return (
-          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-            {t('dashboard.mcp.windsurfDesc')} <Link className="underline" to="https://docs.windsurf.com/windsurf/cascade/mcp" target="_blank" rel="noopener noreferrer">
+          <p className="mb-4 text-sm text-muted-foreground">
+            {t('dashboard.mcp.windsurfDesc')}{' '}
+            <Link
+              className="underline"
+              to="https://docs.windsurf.com/windsurf/cascade/mcp"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {t('dashboard.mcp.moreInfo')}
             </Link>
           </p>
         );
       case 'cursor':
         return (
-          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-            {t('dashboard.mcp.cursorDesc')} <Link className="underline" to="https://docs.cursor.com/en/context/mcp" target="_blank" rel="noopener noreferrer">
+          <p className="mb-4 text-sm text-muted-foreground">
+            {t('dashboard.mcp.cursorDesc')}{' '}
+            <Link
+              className="underline"
+              to="https://docs.cursor.com/en/context/mcp"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {t('dashboard.mcp.moreInfo')}
             </Link>
           </p>
         );
       case 'vscode':
         return (
-          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-            {t('dashboard.mcp.vscodeDesc')} <Link className="underline" to="https://code.visualstudio.com/docs/copilot/customization/mcp-servers" target="_blank" rel="noopener noreferrer">
+          <p className="mb-4 text-sm text-muted-foreground">
+            {t('dashboard.mcp.vscodeDesc')}{' '}
+            <Link
+              className="underline"
+              to="https://code.visualstudio.com/docs/copilot/customization/mcp-servers"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {t('dashboard.mcp.moreInfo')}
             </Link>
           </p>
         );
       case 'claude-code':
         return (
-          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-            {t('dashboard.mcp.claudeCodeDesc')} <Link className="underline" to="https://docs.anthropic.com/en/docs/claude-code/mcp" target="_blank" rel="noopener noreferrer">
+          <p className="mb-4 text-sm text-muted-foreground">
+            {t('dashboard.mcp.claudeCodeDesc')}{' '}
+            <Link
+              className="underline"
+              to="https://docs.anthropic.com/en/docs/claude-code/mcp"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {t('dashboard.mcp.moreInfo')}
             </Link>
           </p>
         );
       case 'claude-desktop':
         return (
-          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-            {t('dashboard.mcp.claudeDesktopDesc')} <Link className="underline" to="https://www.anthropic.com/engineering/desktop-extensions" target="_blank" rel="noopener noreferrer">
+          <p className="mb-4 text-sm text-muted-foreground">
+            {t('dashboard.mcp.claudeDesktopDesc')}{' '}
+            <Link
+              className="underline"
+              to="https://www.anthropic.com/engineering/desktop-extensions"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {t('dashboard.mcp.moreInfo')}
             </Link>
           </p>
@@ -208,8 +241,14 @@ export const MCPServerAccess: React.FC = () => {
       case 'general':
       default:
         return (
-          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-            {t('dashboard.mcp.generalDesc')} <Link className="underline" to="https://modelcontextprotocol.io/docs/getting-started/intro" target="_blank" rel="noopener noreferrer">
+          <p className="mb-4 text-sm text-muted-foreground">
+            {t('dashboard.mcp.generalDesc')}{' '}
+            <Link
+              className="underline"
+              to="https://modelcontextprotocol.io/docs/getting-started/intro"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {t('dashboard.mcp.moreInfo')}
             </Link>
           </p>
@@ -229,26 +268,32 @@ export const MCPServerAccess: React.FC = () => {
 
   const maskKey = (key: string) => {
     if (key.length <= 9) return key;
-    return key.substring(0, 4) + '*'.repeat(Math.max(1, key.length - 9)) + key.substring(key.length - 5);
+    return (
+      key.substring(0, 4) + '*'.repeat(Math.max(1, key.length - 9)) + key.substring(key.length - 5)
+    );
   };
 
-
-  const CodeBlock: React.FC<{ code: string; language: string; copyId: string, apiKey: string }> = ({ code, language, copyId, apiKey }) => (
-    <div className="relative rounded-t-lg border border-gray-200 dark:border-gray-700 ltr">
-      <div className="flex items-center justify-between bg-gray-800 px-4 py-2 rounded-t-lg">
-        <span className="text-xs font-medium text-gray-300 uppercase">{language}</span>
+  const CodeBlock: React.FC<{ code: string; language: string; copyId: string; apiKey: string }> = ({
+    code,
+    language,
+    copyId,
+    apiKey,
+  }) => (
+    <div className="ltr relative rounded-t-lg border border-border">
+      <div className="flex items-center justify-between rounded-t-lg bg-card px-4 py-2">
+        <span className="text-xs font-medium uppercase text-muted-foreground">{language}</span>
         <button
           onClick={() => copyToClipboard(code, copyId)}
-          className="p-1 text-gray-400 hover:text-white transition-colors"
+          className="p-1 text-muted-foreground transition-colors hover:text-white"
         >
           {copiedItem === copyId ? (
-            <CheckIcon className="h-4 w-4 text-green-400" />
+            <CheckIcon className="h-4 w-4 text-success" />
           ) : (
             <ClipboardDocumentIcon className="h-4 w-4" />
           )}
         </button>
       </div>
-      <pre className="bg-gray-900 text-gray-100 p-4 rounded-b-lg overflow-x-auto text-sm">
+      <pre className="overflow-x-auto rounded-b-lg bg-background p-4 text-sm text-muted-foreground">
         <code>{code.replace(apiKey, maskKey(apiKey))}</code>
       </pre>
     </div>
@@ -256,50 +301,48 @@ export const MCPServerAccess: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
-        <div className="flex items-center gap-x-3 mb-4">
-          <ServerIcon className="h-6 w-6 text-primary-600" />
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('dashboard.mcp.title')}</h2>
+      <div className="rounded-xl border border-border bg-card p-6">
+        <div className="mb-4 flex items-center gap-x-3">
+          <ServerIcon className="h-6 w-6 text-primary" />
+          <h2 className="text-lg font-semibold text-foreground">{t('dashboard.mcp.title')}</h2>
         </div>
         <div className="animate-pulse space-y-4">
-          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
-          <div className="h-32 bg-gray-200 dark:bg-gray-700 rounded"></div>
+          <div className="h-4 w-3/4 rounded bg-muted"></div>
+          <div className="h-32 rounded bg-muted"></div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
-      <div className="flex items-center gap-x-3 mb-6">
-        <SparklesIcon className="h-6 w-6 text-primary-600" />
+    <div className="rounded-xl border border-border bg-card p-6">
+      <div className="mb-6 flex items-center gap-x-3">
+        <SparklesIcon className="h-6 w-6 text-primary" />
         <div>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('dashboard.mcp.hubTitle')}</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400">{t('dashboard.mcp.hubSubtitle')}</p>
+          <h2 className="text-lg font-semibold text-foreground">{t('dashboard.mcp.hubTitle')}</h2>
+          <p className="text-sm text-muted-foreground">{t('dashboard.mcp.hubSubtitle')}</p>
         </div>
       </div>
 
       {apiKeys.length === 0 ? (
-        <div className="text-center py-8 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
-          <ExclamationTriangleIcon className="h-12 w-12 text-yellow-500 mx-auto mb-3" />
-          <p className="text-yellow-800 dark:text-yellow-200 mb-2">{t('dashboard.mcp.noKeys')}</p>
-          <p className="text-sm text-yellow-600 dark:text-yellow-400">
-            {t('dashboard.mcp.noKeysMessage')}
-          </p>
+        <div className="rounded-lg border border-warning bg-warning-light py-8 text-center">
+          <ExclamationTriangleIcon className="mx-auto mb-3 h-12 w-12 text-warning" />
+          <p className="mb-2 text-warning-dark">{t('dashboard.mcp.noKeys')}</p>
+          <p className="text-sm text-warning">{t('dashboard.mcp.noKeysMessage')}</p>
         </div>
       ) : (
         <div className="space-y-6">
           {/* API Key Selector */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="mb-2 block text-sm font-medium text-foreground">
               {t('dashboard.mcp.selectKey')}
             </label>
             <select
               value={selectedApiKey}
-              onChange={(e) => setSelectedApiKey(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              onChange={e => setSelectedApiKey(e.target.value)}
+              className="w-full rounded-lg border border-input-border bg-background px-3 py-2 text-foreground focus:border-transparent focus:ring-2 focus:ring-primary"
             >
-              {apiKeys.map((key) => (
+              {apiKeys.map(key => (
                 <option key={key.uuid} value={key.key}>
                   {key.name} (***{key.key.slice(-4)})
                 </option>
@@ -307,16 +350,16 @@ export const MCPServerAccess: React.FC = () => {
             </select>
           </div>
 
-
           {/* Tab Navigation */}
-          <div className="border-b border-gray-200 dark:border-gray-700">
+          <div className="border-b border-border">
             <nav className="-mb-px flex gap-x-8">
               <button
                 onClick={() => setActiveTab('apikeys')}
-                className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${activeTab === 'apikeys'
-                  ? 'border-primary-500 text-primary-600 dark:text-primary-400'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 hover:border-gray-300'
-                  }`}
+                className={`border-b-2 px-1 py-2 text-sm font-medium transition-colors ${
+                  activeTab === 'apikeys'
+                    ? 'border-primary-500 text-primary'
+                    : 'border-transparent text-muted-foreground hover:border-input-border hover:text-foreground'
+                }`}
               >
                 <div className="flex items-center gap-x-2">
                   <KeyIcon className="h-4 w-4" />
@@ -325,10 +368,11 @@ export const MCPServerAccess: React.FC = () => {
               </button>
               <button
                 onClick={() => setActiveTab('mcp')}
-                className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${activeTab === 'mcp'
-                  ? 'border-primary-500 text-primary-600 dark:text-primary-400'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 hover:border-gray-300'
-                  }`}
+                className={`border-b-2 px-1 py-2 text-sm font-medium transition-colors ${
+                  activeTab === 'mcp'
+                    ? 'border-primary-500 text-primary'
+                    : 'border-transparent text-muted-foreground hover:border-input-border hover:text-foreground'
+                }`}
               >
                 <div className="flex items-center gap-x-2">
                   <CommandLineIcon className="h-4 w-4" />
@@ -342,17 +386,18 @@ export const MCPServerAccess: React.FC = () => {
           <div>
             {activeTab === 'apikeys' && (
               <div>
-
                 {apiKeys.length === 0 ? (
-                  <div className="text-center py-12 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg">
-                    <KeyIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                    <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-2">{t('dashboard.mcp.noKeysAvailable')}</h4>
-                    <p className="text-gray-500 dark:text-gray-400 mb-4 max-w-sm mx-auto">
+                  <div className="rounded-lg border-2 border-dashed border-input-border py-12 text-center">
+                    <KeyIcon className="mx-auto mb-4 h-12 w-12 text-muted-foreground" />
+                    <h4 className="mb-2 text-lg font-medium text-foreground">
+                      {t('dashboard.mcp.noKeysAvailable')}
+                    </h4>
+                    <p className="mx-auto mb-4 max-w-sm text-muted-foreground">
                       {t('dashboard.mcp.createKeyMessage')}
                     </p>
                     <a
                       href="/dashboard/api-keys"
-                      className="inline-flex items-center px-4 py-2 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 transition-colors"
+                      className="inline-flex items-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-hover"
                     >
                       {t('dashboard.mcp.goToApiKeys')}
                     </a>
@@ -365,20 +410,26 @@ export const MCPServerAccess: React.FC = () => {
 
                       return (
                         <div className="space-y-3">
-                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                          <label className="block text-sm font-medium text-foreground">
                             {t('dashboard.mcp.apiKey')}
                           </label>
                           <div className="flex items-center gap-x-3">
-                            <div className="flex-1 relative">
-                              <code className="block w-full text-sm bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-3 font-mono text-gray-900 dark:text-gray-100">
-                                {visibleKeys.has(selectedKey.uuid) ? selectedKey.key : maskKey(selectedKey.key)}
+                            <div className="relative flex-1">
+                              <code className="block w-full rounded-lg border border-border bg-muted px-4 py-3 font-mono text-sm text-foreground">
+                                {visibleKeys.has(selectedKey.uuid)
+                                  ? selectedKey.key
+                                  : maskKey(selectedKey.key)}
                               </code>
                             </div>
                             <div className="flex items-center gap-x-2">
                               <button
                                 onClick={() => toggleKeyVisibility(selectedKey.uuid)}
-                                className="inline-flex items-center justify-center w-10 h-10 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-                                title={visibleKeys.has(selectedKey.uuid) ? t('dashboard.mcp.hideKey') : t('dashboard.mcp.showKey')}
+                                className="inline-flex h-10 w-10 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-muted-foreground"
+                                title={
+                                  visibleKeys.has(selectedKey.uuid)
+                                    ? t('dashboard.mcp.hideKey')
+                                    : t('dashboard.mcp.showKey')
+                                }
                               >
                                 {visibleKeys.has(selectedKey.uuid) ? (
                                   <EyeSlashIcon className="h-5 w-5" />
@@ -388,11 +439,11 @@ export const MCPServerAccess: React.FC = () => {
                               </button>
                               <button
                                 onClick={() => copyToClipboard(selectedKey.key, selectedKey.uuid)}
-                                className="inline-flex items-center justify-center w-10 h-10 text-gray-400 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-lg transition-colors"
+                                className="inline-flex h-10 w-10 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-primary/10 hover:text-primary"
                                 title={t('dashboard.mcp.copyKey')}
                               >
                                 {copiedItem === selectedKey.uuid ? (
-                                  <CheckIcon className="h-5 w-5 text-green-600" />
+                                  <CheckIcon className="h-5 w-5 text-success" />
                                 ) : (
                                   <ClipboardDocumentIcon className="h-5 w-5" />
                                 )}
@@ -404,10 +455,10 @@ export const MCPServerAccess: React.FC = () => {
                     })()}
 
                     {/* Management Link */}
-                    <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+                    <div className="mt-6 border-t border-border pt-6">
                       <a
                         href="/dashboard/api-keys"
-                        className="inline-flex items-center text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium transition-colors"
+                        className="inline-flex items-center text-sm font-medium text-primary transition-colors hover:text-primary-dark"
                       >
                         <span>{t('dashboard.mcp.manageKeys')}</span>
                         <ArrowRight className="ms-1 h-4 w-4" />
@@ -420,18 +471,18 @@ export const MCPServerAccess: React.FC = () => {
 
             {activeTab === 'mcp' && (
               <div>
-
                 {/* Application Selector */}
                 <div className="mb-6">
                   <div className="flex flex-wrap gap-2">
-                    {applications.map((app) => (
+                    {applications.map(app => (
                       <button
                         key={app.id}
                         onClick={() => setSelectedApp(app.id as any)}
-                        className={`inline-flex items-center gap-x-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${selectedApp === app.id
-                          ? 'bg-primary-100 text-primary-800 border border-primary-200 dark:bg-primary-900/30 dark:text-primary-200 dark:border-primary-700'
-                          : 'bg-gray-100 text-gray-700 border border-gray-200 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600'
-                          }`}
+                        className={`inline-flex items-center gap-x-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
+                          selectedApp === app.id
+                            ? 'border border-alert-info-border bg-alert-info-bg text-alert-info-text'
+                            : 'border border-border bg-alert-info-bg/10 text-foreground hover:bg-alert-info-bg/20'
+                        }`}
                       >
                         {typeof app.icon === 'string' ? (
                           <span>{app.icon}</span>
@@ -471,9 +522,9 @@ export const MCPServerAccess: React.FC = () => {
                       {mcpInstallLink && (
                         <Link
                           to={mcpInstallLink}
-                          className="mb-4 inline-flex items-center justify-center px-6 py-3 bg-white dark:bg-gray-800 border-2 border-primary-300 dark:border-primary-600 rounded-lg text-primary-700 dark:text-primary-300 font-medium hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:border-primary-400 dark:hover:border-primary-500 transition-all duration-200 shadow-sm hover:shadow-md"
+                          className="mb-4 inline-flex items-center justify-center rounded-lg border-2 border-primary bg-background px-6 py-3 font-medium text-primary shadow-sm transition-all duration-200 hover:border-primary hover:bg-primary/10 hover:shadow-md"
                         >
-                          <span className="text-lg me-2">
+                          <span className="me-2 text-lg">
                             {selectedApp === 'cursor' && <CursorLogo className="h-6 w-6" />}
                             {selectedApp === 'windsurf' && <WindsurfLogo className="h-6 w-6" />}
                             {selectedApp === 'vscode' && <VSCodeLogo className="h-6 w-6" />}
@@ -490,14 +541,11 @@ export const MCPServerAccess: React.FC = () => {
                       copyId={`mcp-config-${selectedApp}`}
                       apiKey={selectedApiKey}
                     />
-
                   </>
                 )}
               </div>
             )}
-
           </div>
-
         </div>
       )}
     </div>

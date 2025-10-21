@@ -20,7 +20,7 @@ export enum DocumentStatus {
   Crawling = 'crawling',
   Processing = 'processing',
   Ready = 'ready',
-  Failed = 'failed'
+  Failed = 'failed',
 }
 
 export interface KnowledgeBaseDocument {
@@ -50,7 +50,7 @@ export interface KnowledgeBaseDetail extends KnowledgeBase {
 
 export enum SummarizerType {
   Standard = 'standard',
-  ContextAware = 'context_aware'
+  ContextAware = 'context_aware',
 }
 
 export interface KnowledgeBaseFormData {

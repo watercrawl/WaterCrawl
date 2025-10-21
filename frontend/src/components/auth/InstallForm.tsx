@@ -2,11 +2,18 @@ import React, { useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { EyeIcon, EyeSlashIcon, ShieldCheckIcon, EnvelopeIcon, UserIcon, ChartBarIcon } from '@heroicons/react/24/outline';
+import {
+  EyeIcon,
+  EyeSlashIcon,
+  ShieldCheckIcon,
+  EnvelopeIcon,
+  UserIcon,
+  ChartBarIcon,
+} from '@heroicons/react/24/outline';
 import { FormInput } from '../shared/FormInput';
 import { ValidationMessage } from '../shared/ValidationMessage';
 import toast from 'react-hot-toast';
-import { useSettings } from "../../contexts/SettingsProvider.tsx";
+import { useSettings } from '../../contexts/SettingsProvider.tsx';
 import { authApi } from '../../services/api/auth';
 import { AxiosError } from 'axios';
 import type { ApiError } from '../../types/common';
@@ -21,7 +28,6 @@ const passwordStrengthRegex = {
   minLength: 8,
 };
 
-
 export const InstallForm: React.FC = () => {
   const { t } = useTranslation();
   const [error, setError] = useState<string | null>(null);
@@ -29,47 +35,46 @@ export const InstallForm: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [installSuccess, setInstallSuccess] = useState(false);
-  const {reloadSettings} = useSettings();
+  const { reloadSettings } = useSettings();
 
-  const schema = yup.object({
-    email: yup
-      .string()
-      .email(t('install.validation.validEmail'))
-      .required(t('install.validation.emailRequired')),
-    password: yup
-      .string()
-      .min(passwordStrengthRegex.minLength, t('install.validation.passwordMinLength', { min: passwordStrengthRegex.minLength }))
-      .matches(passwordStrengthRegex.hasNumber, t('install.validation.passwordNumber'))
-      .matches(passwordStrengthRegex.hasUpperCase, t('install.validation.passwordUppercase'))
-      .matches(passwordStrengthRegex.hasLowerCase, t('install.validation.passwordLowercase'))
-      .matches(passwordStrengthRegex.hasSpecialChar, t('install.validation.passwordSpecial'))
-      .required(t('install.validation.passwordRequired')),
-    passwordConfirm: yup
-      .string()
-      .required(t('install.validation.confirmPassword'))
-      .oneOf([yup.ref('password')], t('install.validation.passwordsMatch')),
-    acceptLicense: yup
-      .boolean()
-      .oneOf([true], t('install.validation.acceptLicense'))
-      .required(t('install.validation.acceptLicense')),
-    joinNewsletter: yup
-      .boolean()
-      .default(false)
-      .required(),
-    allowAnalytics: yup
-      .boolean()
-      .default(false)
-      .required(),
-  }).required();
+  const schema = yup
+    .object({
+      email: yup
+        .string()
+        .email(t('install.validation.validEmail'))
+        .required(t('install.validation.emailRequired')),
+      password: yup
+        .string()
+        .min(
+          passwordStrengthRegex.minLength,
+          t('install.validation.passwordMinLength', { min: passwordStrengthRegex.minLength })
+        )
+        .matches(passwordStrengthRegex.hasNumber, t('install.validation.passwordNumber'))
+        .matches(passwordStrengthRegex.hasUpperCase, t('install.validation.passwordUppercase'))
+        .matches(passwordStrengthRegex.hasLowerCase, t('install.validation.passwordLowercase'))
+        .matches(passwordStrengthRegex.hasSpecialChar, t('install.validation.passwordSpecial'))
+        .required(t('install.validation.passwordRequired')),
+      passwordConfirm: yup
+        .string()
+        .required(t('install.validation.confirmPassword'))
+        .oneOf([yup.ref('password')], t('install.validation.passwordsMatch')),
+      acceptLicense: yup
+        .boolean()
+        .oneOf([true], t('install.validation.acceptLicense'))
+        .required(t('install.validation.acceptLicense')),
+      joinNewsletter: yup.boolean().default(false).required(),
+      allowAnalytics: yup.boolean().default(false).required(),
+    })
+    .required();
 
-type InstallFormData = {
-  email: string;
-  password: string;
-  passwordConfirm: string;
-  acceptLicense: boolean;
-  joinNewsletter: boolean;
-  allowAnalytics: boolean;
-};
+  type InstallFormData = {
+    email: string;
+    password: string;
+    passwordConfirm: string;
+    acceptLicense: boolean;
+    joinNewsletter: boolean;
+    allowAnalytics: boolean;
+  };
 
   const getPasswordStrength = (password: string): { score: number; message: string } => {
     let score = 0;
@@ -106,23 +111,28 @@ type InstallFormData = {
     defaultValues: {
       acceptLicense: false,
       joinNewsletter: false,
-      allowAnalytics: false
+      allowAnalytics: false,
     },
-    mode: 'onChange'
+    mode: 'onChange',
   });
 
-  const { handleSubmit, formState: { errors }, register, watch } = methods;
+  const {
+    handleSubmit,
+    formState: { errors },
+    register,
+    watch,
+  } = methods;
   const password = watch('password', '');
   const passwordStrength = password ? getPasswordStrength(password) : null;
 
   const getPasswordStrengthColor = (score: number) => {
     const colors = {
-      0: 'bg-red-500',
-      1: 'bg-red-400',
-      2: 'bg-yellow-500',
-      3: 'bg-yellow-400',
-      4: 'bg-green-500',
-      5: 'bg-green-400',
+      0: 'bg-error',
+      1: 'bg-error',
+      2: 'bg-warning',
+      3: 'bg-warning',
+      4: 'bg-success',
+      5: 'bg-success',
     };
     return colors[score as keyof typeof colors];
   };
@@ -136,11 +146,12 @@ type InstallFormData = {
       email: data.email,
       password: data.password,
       newsletter_confirmed: data.joinNewsletter,
-      analytics_confirmed: data.allowAnalytics
+      analytics_confirmed: data.allowAnalytics,
     };
 
     // Make API call to install endpoint
-    authApi.install(requestData)
+    authApi
+      .install(requestData)
       .then(() => {
         // Store auth tokens
         setInstallSuccess(true);
@@ -179,23 +190,21 @@ type InstallFormData = {
   if (installSuccess) {
     return (
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white dark:bg-gray-800 py-8 px-6 shadow sm:rounded-lg">
+        <div className="bg-card px-6 py-8 shadow sm:rounded-lg">
           <div className="text-center">
-            <div className="flex justify-center mb-4">
-              <div className="rounded-full bg-green-100 dark:bg-green-900 p-3">
-                <ShieldCheckIcon className="h-8 w-8 text-green-600 dark:text-green-400" />
+            <div className="mb-4 flex justify-center">
+              <div className="rounded-full bg-success-light p-3">
+                <ShieldCheckIcon className="h-8 w-8 text-success" />
               </div>
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+            <h2 className="mb-4 text-2xl font-bold text-foreground">
               {t('install.complete.title')}
             </h2>
-            <p className="text-gray-600 dark:text-gray-300 mb-6">
-              {t('install.complete.message')}
-            </p>
+            <p className="mb-6 text-muted-foreground">{t('install.complete.message')}</p>
             <button
               type="button"
               onClick={goToHome}
-              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-800 transition-colors duration-200"
+              className="flex w-full justify-center rounded-md border border-transparent bg-primary px-4 py-3 text-sm font-medium text-white shadow-sm transition-colors duration-200 hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
             >
               {t('install.complete.button')}
             </button>
@@ -208,14 +217,10 @@ type InstallFormData = {
   return (
     <FormProvider {...methods}>
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-xl">
-        <div className="bg-white dark:bg-gray-800 py-8 px-6 shadow sm:rounded-lg">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-              {t('install.title')}
-            </h2>
-            <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-              {t('install.subtitle')}
-            </p>
+        <div className="bg-card px-6 py-8 shadow sm:rounded-lg">
+          <div className="mb-8 text-center">
+            <h2 className="text-2xl font-bold text-foreground">{t('install.title')}</h2>
+            <p className="mt-2 text-sm text-muted-foreground">{t('install.subtitle')}</p>
           </div>
 
           {error && <ValidationMessage message={error} type="error" />}
@@ -224,10 +229,10 @@ type InstallFormData = {
             {/* Admin Account Section */}
             <div className="space-y-6">
               <div className="flex items-center">
-                <UserIcon className="h-5 w-5 text-primary-500 me-2" />
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white">{t('install.adminAccount')}</h3>
+                <UserIcon className="me-2 h-5 w-5 text-primary-500" />
+                <h3 className="text-lg font-medium text-foreground">{t('install.adminAccount')}</h3>
               </div>
-              <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-4 space-y-4">
+              <div className="space-y-4 rounded-lg bg-muted p-4">
                 <FormInput
                   label={t('install.form.email')}
                   name="email"
@@ -250,9 +255,9 @@ type InstallFormData = {
                         className="pe-3 focus:outline-none"
                       >
                         {showPassword ? (
-                          <EyeSlashIcon className="h-5 w-5 text-gray-400 hover:text-gray-500 dark:hover:text-gray-300" />
+                          <EyeSlashIcon className="h-5 w-5 text-muted-foreground hover:text-muted-foreground" />
                         ) : (
-                          <EyeIcon className="h-5 w-5 text-gray-400 hover:text-gray-500 dark:hover:text-gray-300" />
+                          <EyeIcon className="h-5 w-5 text-muted-foreground hover:text-muted-foreground" />
                         )}
                       </button>
                     }
@@ -261,15 +266,15 @@ type InstallFormData = {
                   {/* Password strength indicator */}
                   {password && (
                     <div className="mt-2">
-                      <div className="flex items-center justify-between mb-1">
-                        <div className="text-xs font-medium text-gray-500 dark:text-gray-400">
+                      <div className="mb-1 flex items-center justify-between">
+                        <div className="text-xs font-medium text-muted-foreground">
                           {t('install.password.strength')}: {passwordStrength?.message}
                         </div>
-                        <div className="text-xs font-medium text-gray-500 dark:text-gray-400">
+                        <div className="text-xs font-medium text-muted-foreground">
                           {passwordStrength?.score}/5
                         </div>
                       </div>
-                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
+                      <div className="h-1.5 w-full rounded-full bg-muted">
                         <div
                           className={`h-1.5 rounded-full ${passwordStrength ? getPasswordStrengthColor(passwordStrength.score) : ''}`}
                           style={{ width: `${(passwordStrength?.score || 0) * 20}%` }}
@@ -277,20 +282,43 @@ type InstallFormData = {
                       </div>
 
                       {/* Password requirements */}
-                      <div className="mt-2 text-xs text-gray-500 dark:text-gray-400 space-y-1">
-                        <p className={password.length >= passwordStrengthRegex.minLength ? "text-green-500 dark:text-green-400" : ""}>
-                          • {t('install.password.minChars', { min: passwordStrengthRegex.minLength })}
+                      <div className="mt-2 space-y-1 text-xs text-muted-foreground">
+                        <p
+                          className={
+                            password.length >= passwordStrengthRegex.minLength ? 'text-success' : ''
+                          }
+                        >
+                          •{' '}
+                          {t('install.password.minChars', { min: passwordStrengthRegex.minLength })}
                         </p>
-                        <p className={passwordStrengthRegex.hasUpperCase.test(password) ? "text-green-500 dark:text-green-400" : ""}>
+                        <p
+                          className={
+                            passwordStrengthRegex.hasUpperCase.test(password) ? 'text-success' : ''
+                          }
+                        >
                           • {t('install.password.uppercase')}
                         </p>
-                        <p className={passwordStrengthRegex.hasLowerCase.test(password) ? "text-green-500 dark:text-green-400" : ""}>
+                        <p
+                          className={
+                            passwordStrengthRegex.hasLowerCase.test(password) ? 'text-success' : ''
+                          }
+                        >
                           • {t('install.password.lowercase')}
                         </p>
-                        <p className={passwordStrengthRegex.hasNumber.test(password) ? "text-green-500 dark:text-green-400" : ""}>
+                        <p
+                          className={
+                            passwordStrengthRegex.hasNumber.test(password) ? 'text-success' : ''
+                          }
+                        >
                           • {t('install.password.number')}
                         </p>
-                        <p className={passwordStrengthRegex.hasSpecialChar.test(password) ? "text-green-500 dark:text-green-400" : ""}>
+                        <p
+                          className={
+                            passwordStrengthRegex.hasSpecialChar.test(password)
+                              ? 'text-success'
+                              : ''
+                          }
+                        >
                           • {t('install.password.specialChar')}
                         </p>
                       </div>
@@ -312,9 +340,9 @@ type InstallFormData = {
                         className="pe-3 focus:outline-none"
                       >
                         {showConfirmPassword ? (
-                          <EyeSlashIcon className="h-5 w-5 text-gray-400 hover:text-gray-500 dark:hover:text-gray-300" />
+                          <EyeSlashIcon className="h-5 w-5 text-muted-foreground hover:text-muted-foreground" />
                         ) : (
-                          <EyeIcon className="h-5 w-5 text-gray-400 hover:text-gray-500 dark:hover:text-gray-300" />
+                          <EyeIcon className="h-5 w-5 text-muted-foreground hover:text-muted-foreground" />
                         )}
                       </button>
                     }
@@ -326,51 +354,60 @@ type InstallFormData = {
             {/* Preferences Section */}
             <div className="space-y-6">
               <div className="flex items-center">
-                <ShieldCheckIcon className="h-5 w-5 text-primary-500 me-2" />
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white">{t('install.preferences')}</h3>
+                <ShieldCheckIcon className="me-2 h-5 w-5 text-primary-500" />
+                <h3 className="text-lg font-medium text-foreground">{t('install.preferences')}</h3>
               </div>
-              <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-4 space-y-5">
+              <div className="space-y-5 rounded-lg bg-muted p-4">
                 {/* License Agreement Checkbox - Required */}
-                <div className="flex items-start pb-4 border-b border-gray-200 dark:border-gray-600">
-                  <div className="flex items-center h-5 mt-1">
+                <div className="flex items-start border-b border-border pb-4">
+                  <div className="mt-1 flex h-5 items-center">
                     <input
                       id="acceptLicense"
                       type="checkbox"
                       {...register('acceptLicense')}
-                      className="focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300 rounded dark:focus:ring-primary-600 dark:focus:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
+                      className="h-4 w-4 rounded border-input-border text-primary focus:ring-primary"
                     />
                   </div>
                   <div className="ms-3 text-sm">
-                    <label htmlFor="acceptLicense" className="font-medium text-gray-700 dark:text-gray-300">
+                    <label htmlFor="acceptLicense" className="font-medium text-foreground">
                       {t('install.license.accept')}
                     </label>
-                    <p className="text-gray-500 dark:text-gray-400 mt-1">
-                      {t('install.license.readVersion')} <a href="https://github.com/watercrawl/WaterCrawl/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:text-primary-500 dark:text-primary-400 underline">{t('install.license.here')}</a>.
+                    <p className="mt-1 text-muted-foreground">
+                      {t('install.license.readVersion')}{' '}
+                      <a
+                        href="https://github.com/watercrawl/WaterCrawl/blob/main/LICENSE"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary underline hover:text-primary-500"
+                      >
+                        {t('install.license.here')}
+                      </a>
+                      .
                     </p>
                     {errors.acceptLicense && (
-                      <p className="mt-1 text-sm text-red-600 dark:text-red-500">{errors.acceptLicense.message}</p>
+                      <p className="mt-1 text-sm text-error">{errors.acceptLicense.message}</p>
                     )}
                   </div>
                 </div>
 
                 {/* Newsletter Opt-in Checkbox - Optional */}
-                <div className="flex items-start py-4 border-b border-gray-200 dark:border-gray-600">
-                  <div className="flex items-center h-5 mt-1">
+                <div className="flex items-start border-b border-border py-4">
+                  <div className="mt-1 flex h-5 items-center">
                     <input
                       id="joinNewsletter"
                       type="checkbox"
                       {...register('joinNewsletter')}
-                      className="focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300 rounded dark:focus:ring-primary-600 dark:focus:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
+                      className="h-4 w-4 rounded border-input-border text-primary focus:ring-primary"
                     />
                   </div>
                   <div className="ms-3 text-sm">
                     <div className="flex items-center">
-                      <EnvelopeIcon className="h-4 w-4 text-gray-500 dark:text-gray-400 me-1" />
-                      <label htmlFor="joinNewsletter" className="font-medium text-gray-700 dark:text-gray-300">
+                      <EnvelopeIcon className="me-1 h-4 w-4 text-muted-foreground" />
+                      <label htmlFor="joinNewsletter" className="font-medium text-foreground">
                         {t('install.newsletter.title')}
                       </label>
                     </div>
-                    <p className="text-gray-500 dark:text-gray-400 mt-1">
+                    <p className="mt-1 text-muted-foreground">
                       {t('install.newsletter.description')}
                     </p>
                   </div>
@@ -378,27 +415,27 @@ type InstallFormData = {
 
                 {/* Analytics Opt-in Checkbox - Optional */}
                 <div className="flex items-start pt-4">
-                  <div className="flex items-center h-5 mt-1">
+                  <div className="mt-1 flex h-5 items-center">
                     <input
                       id="allowAnalytics"
                       type="checkbox"
                       {...register('allowAnalytics')}
-                      className="focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300 rounded dark:focus:ring-primary-600 dark:focus:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
+                      className="h-4 w-4 rounded border-input-border text-primary focus:ring-primary"
                     />
                   </div>
                   <div className="ms-3 text-sm">
                     <div className="flex items-center">
-                      <ChartBarIcon className="h-4 w-4 text-gray-500 dark:text-gray-400 me-1" />
-                      <label htmlFor="allowAnalytics" className="font-medium text-gray-700 dark:text-gray-300">
+                      <ChartBarIcon className="me-1 h-4 w-4 text-muted-foreground" />
+                      <label htmlFor="allowAnalytics" className="font-medium text-foreground">
                         {t('install.analytics.title')}
                       </label>
                     </div>
-                    <p className="text-gray-500 dark:text-gray-400 mt-1">
+                    <p className="mt-1 text-muted-foreground">
                       {t('install.analytics.description')}
                     </p>
-                    <div className="mt-2 p-3 bg-gray-100 dark:bg-gray-800 rounded text-xs text-gray-600 dark:text-gray-400">
-                      <p className="font-medium mb-1">{t('install.analytics.collected')}:</p>
-                      <ul className="list-disc ps-4 space-y-1">
+                    <div className="mt-2 rounded bg-muted p-3 text-xs text-muted-foreground">
+                      <p className="mb-1 font-medium">{t('install.analytics.collected')}:</p>
+                      <ul className="list-disc space-y-1 ps-4">
                         <li>{t('install.analytics.os')}</li>
                         <li>{t('install.analytics.osVersion')}</li>
                         <li>{t('install.analytics.architecture')}</li>
@@ -416,18 +453,37 @@ type InstallFormData = {
             <button
               type="submit"
               disabled={isLoading}
-              className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-800 transition-colors duration-200 ${isLoading ? 'opacity-50 cursor-not-allowed' : ''
-                }`}
+              className={`flex w-full justify-center rounded-md border border-transparent bg-primary px-4 py-3 text-sm font-medium text-white shadow-sm transition-colors duration-200 hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
+                isLoading ? 'cursor-not-allowed opacity-50' : ''
+              }`}
             >
               {isLoading ? (
                 <span className="flex items-center">
-                  <svg className="animate-spin -ms-1 me-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  <svg
+                    className="-ms-1 me-2 h-4 w-4 animate-spin text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
                   </svg>
                   {t('install.button.installing')}
                 </span>
-              ) : t('install.button.install')}
+              ) : (
+                t('install.button.install')
+              )}
             </button>
           </form>
         </div>

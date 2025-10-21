@@ -13,7 +13,7 @@ const SignupPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [invitation, setInvitation] = useState<VerifyInvitationResponse | null>(null);
-  const {settings} = useSettings();
+  const { settings } = useSettings();
   const authService = AuthService.getInstance();
   const invitationCode = searchParams.get('invitation_code');
 
@@ -26,8 +26,9 @@ const SignupPage = () => {
 
   useEffect(() => {
     if (invitationCode) {
-      authApi.verifyInvitationCode(invitationCode)
-        .then((response) => {
+      authApi
+        .verifyInvitationCode(invitationCode)
+        .then(response => {
           if (!response.new_user) {
             toast.success(t('profile.invitations.acceptSuccess'), {
               duration: 3000,
@@ -37,7 +38,7 @@ const SignupPage = () => {
             setInvitation(response);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.error('Error verifying invitation code:', error);
           toast.error(t('profile.invitations.acceptError'), {
             duration: 3000,
@@ -51,7 +52,7 @@ const SignupPage = () => {
     }
   }, [invitationCode, navigate, settings?.is_signup_active, t]);
 
-  return (<SignupForm invitation={invitation} /> );
+  return <SignupForm invitation={invitation} />;
 };
 
 export default SignupPage;

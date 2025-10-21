@@ -18,7 +18,7 @@ const UsagePage: React.FC = () => {
 
   useEffect(() => {
     setItems([
-      { label: t('dashboard.title'), href: '/dashboard'},
+      { label: t('dashboard.title'), href: '/dashboard' },
       { label: t('usage.title'), href: '/dashboard/usage', current: true },
     ]);
   }, [setItems, t]);
@@ -45,26 +45,24 @@ const UsagePage: React.FC = () => {
 
   if (!loading && !data) {
     return (
-      <div className="flex items-center justify-center h-full">
-        <p className="text-gray-500 dark:text-gray-400">{t('usage.errors.loadFailed')}</p>
+      <div className="flex h-full items-center justify-center">
+        <p className="text-muted-foreground">{t('usage.errors.loadFailed')}</p>
       </div>
     );
   }
 
   return (
-    <div className="px-8 py-6 space-y-6">
+    <div className="space-y-6 px-8 py-6">
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">{t('usage.title')}</h1>
-            <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-              {t('usage.subtitle')}
-            </p>
+            <h1 className="text-2xl font-semibold text-foreground">{t('usage.title')}</h1>
+            <p className="mt-2 text-sm text-muted-foreground">{t('usage.subtitle')}</p>
           </div>
           <button
             onClick={fetchData}
             disabled={loading}
-            className="inline-flex items-center justify-center p-2 text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400 transition-colors duration-200 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
+            className="inline-flex items-center justify-center rounded-full p-2 text-muted-foreground transition-colors duration-200 hover:bg-muted hover:text-muted-foreground"
             title={t('usage.refresh')}
           >
             <ArrowPathIcon
@@ -77,24 +75,28 @@ const UsagePage: React.FC = () => {
       </div>
 
       {loading ? (
-        <div className="flex items-center justify-center h-full">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
+        <div className="flex h-full items-center justify-center">
+          <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-border"></div>
         </div>
       ) : (
         <>
-          {data && <UsageStatsGrid
-            totalCrawls={data.total_crawls}
-            totalDocuments={data.total_documents}
-            finishedCrawls={data.finished_crawls}
-          />}
+          {data && (
+            <UsageStatsGrid
+              totalCrawls={data.total_crawls}
+              totalDocuments={data.total_documents}
+              finishedCrawls={data.finished_crawls}
+            />
+          )}
 
           <SubscriptionStatusCard showRefreshButton={false} />
 
           {/* Usage Charts */}
-          {data && <UsageCharts
-            crawlHistory={data.crawl_history}
-            documentHistory={data.document_history}
-          />}
+          {data && (
+            <UsageCharts
+              crawlHistory={data.crawl_history}
+              documentHistory={data.document_history}
+            />
+          )}
         </>
       )}
     </div>

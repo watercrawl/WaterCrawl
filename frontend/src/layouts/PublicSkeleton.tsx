@@ -7,20 +7,16 @@ export const PublicSkeleton: React.FC<{ children: React.ReactNode }> = ({ childr
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="absolute top-4 end-16">
+    <div className="flex min-h-screen flex-col justify-center bg-muted py-12 sm:px-6 lg:px-8">
+      <div className="absolute end-16 top-4">
         <LanguageSelector />
       </div>
       <button
         onClick={toggleTheme}
-        className="absolute top-4 end-4 p-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+        className="absolute end-4 top-4 rounded-lg bg-muted p-2 text-foreground transition-colors hover:bg-muted"
         aria-label="Toggle theme"
       >
-        {theme === 'dark' ? (
-          <SunIcon className="h-5 w-5" />
-        ) : (
-          <MoonIcon className="h-5 w-5" />
-        )}
+        {theme === 'dark' ? <SunIcon className="h-5 w-5" /> : <MoonIcon className="h-5 w-5" />}
       </button>
 
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -30,7 +26,7 @@ export const PublicSkeleton: React.FC<{ children: React.ReactNode }> = ({ childr
               <img
                 src="/logo-dark.svg"
                 alt="WaterCrawl"
-                className="inline-block mx-2"
+                className="mx-2 inline-block"
                 width={42}
                 height={42}
               />
@@ -38,13 +34,15 @@ export const PublicSkeleton: React.FC<{ children: React.ReactNode }> = ({ childr
               <img
                 src="/logo.svg"
                 alt="WaterCrawl"
-                className="inline-block mx-2"
+                className="mx-2 inline-block"
                 width={42}
                 height={42}
               />
             )}
           </span>
-          <span className={`text-2xl font-semibold bg-gradient-to-r from-blue-700 to-blue-600 bg-clip-text text-transparent dark:from-blue-200 dark:to-blue-100`}>
+          <span
+            className={`bg-gradient-to-r from-primary-hover to-primary bg-clip-text text-2xl font-semibold text-transparent`}
+          >
             WaterCrawl
           </span>
         </h2>

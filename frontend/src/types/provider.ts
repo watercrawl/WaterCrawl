@@ -1,4 +1,3 @@
-
 /**
  * Model schema from the API
  */
@@ -25,9 +24,9 @@ export interface ProviderEmbedding {
 }
 
 export enum OPTIONS {
-    REQUIRED = 'required',
-    OPTIONAL = 'optional',
-    NOT_AVAILABLE = 'not_available',
+  REQUIRED = 'required',
+  OPTIONAL = 'optional',
+  NOT_AVAILABLE = 'not_available',
 }
 /**
  * Provider schema from the API
@@ -51,7 +50,6 @@ export interface ProviderConfig {
   base_url: string | null;
   is_global: boolean; // Read-only field from API
 }
-
 
 /**
  * Form data for creating/updating a provider config

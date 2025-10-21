@@ -14,9 +14,7 @@ interface SitemapApiDocumentationProps {
   request?: SitemapRequest | null;
 }
 
-export const SitemapApiDocumentation: React.FC<SitemapApiDocumentationProps> = ({
-  request
-}) => {
+export const SitemapApiDocumentation: React.FC<SitemapApiDocumentationProps> = ({ request }) => {
   const { t } = useTranslation();
   const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
   const [selectedApiKey, setSelectedApiKey] = useState<string>('');
@@ -86,7 +84,7 @@ client = WaterCrawlAPIClient(api_key='${apiKey}', base_url='${baseUrl}')
 
 # Create sitemap request
 sitemap_request = client.create_sitemap_request(
-    url='${request?.url || "https://example.com"}',
+    url='${request?.url || 'https://example.com'}',
     options={
         'include_subdomains': ${request?.options?.include_subdomains || 'True'},
         'ignore_sitemap_xml': ${request?.options?.ignore_sitemap_xml || 'False'}
@@ -108,7 +106,7 @@ print(f"Sitemap request ID: {request_uuid}")`;
 const client = new WaterCrawlAPIClient('${apiKey}', '${baseUrl}');
 
 const sitemapRequest = await client.createSitemapRequest({
-  url: '${request?.url || "https://example.com"}',
+  url: '${request?.url || 'https://example.com'}',
   options: {
     includeSubdomains: ${request?.options?.include_subdomains || 'true'},
     ignoreSitemapXml: ${request?.options?.ignore_sitemap_xml || 'false'}
@@ -120,9 +118,9 @@ console.log('Sitemap request created:', sitemapRequest.uuid);`;
 
   if (!request) {
     return (
-      <div className="border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 p-6">
-        <h3 className="text-lg font-medium text-gray-900 dark:text-white">{t('api.title')}</h3>
-        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">{t('api.sitemap.description')}</p>
+      <div className="rounded-lg border border-border bg-card p-6">
+        <h3 className="text-lg font-medium text-foreground">{t('api.title')}</h3>
+        <p className="mt-2 text-sm text-muted-foreground">{t('api.sitemap.description')}</p>
       </div>
     );
   }
@@ -134,24 +132,24 @@ console.log('Sitemap request created:', sitemapRequest.uuid);`;
   ];
 
   return (
-    <div className="border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800">
-      <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-        <h3 className="text-base font-semibold text-gray-900 dark:text-white">{t('api.title')}</h3>
-        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-          {t('api.sitemap.fullDescription')}
-        </p>
+    <div className="rounded-lg border border-border bg-card">
+      <div className="border-b border-border px-6 py-4">
+        <h3 className="text-base font-semibold text-foreground">{t('api.title')}</h3>
+        <p className="mt-1 text-sm text-muted-foreground">{t('api.sitemap.fullDescription')}</p>
       </div>
       <div className="p-6">
         <TabGroup selectedIndex={selectedTab} onChange={setSelectedTab}>
-          <TabList className="flex p-1 gap-x-1 bg-gray-100 dark:bg-gray-800 rounded-lg">
-            {tabs.map((tab) => (
+          <TabList className="flex gap-x-1 rounded-lg bg-muted p-1">
+            {tabs.map(tab => (
               <Tab
                 key={tab.name}
-                className={({ selected }) => classnames({
-                  'px-4 py-2.5 text-sm font-medium leading-5 focus:outline-none': true,
-                  'text-primary-600 dark:text-primary-400 border-b-2 border-primary-600 dark:border-primary-400': selected,
-                  'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300': !selected
-                })}
+                className={({ selected }) =>
+                  classnames({
+                    'px-4 py-2.5 text-sm font-medium leading-5 focus:outline-none': true,
+                    'border-b-2 border-primary-600 text-primary': selected,
+                    'text-muted-foreground hover:text-foreground': !selected,
+                  })
+                }
               >
                 {tab.name}
               </Tab>
@@ -160,40 +158,43 @@ console.log('Sitemap request created:', sitemapRequest.uuid);`;
           <TabPanels className="mt-6">
             {tabs.map((tab, idx) => (
               <TabPanel key={idx} className="focus:outline-none">
-                <div className="bg-[#1E1E1E] rounded-lg overflow-hidden">
-                  <div className="flex items-center justify-between px-4 py-2 bg-[#2D2D2D] border-b border-[#404040]">
-                    <div className="flex gap-x-2 items-center">
+                <div className="overflow-hidden rounded-lg bg-[#1E1E1E]">
+                  <div className="flex items-center justify-between border-b border-[#404040] bg-[#2D2D2D] px-4 py-2">
+                    <div className="flex items-center gap-x-2">
                       <div className="flex gap-x-2">
-                        <div className="w-3 h-3 rounded-full bg-[#FF5F56]"></div>
-                        <div className="w-3 h-3 rounded-full bg-[#FFBD2E]"></div>
-                        <div className="w-3 h-3 rounded-full bg-[#27C93F]"></div>
+                        <div className="h-3 w-3 rounded-full bg-[#FF5F56]"></div>
+                        <div className="h-3 w-3 rounded-full bg-[#FFBD2E]"></div>
+                        <div className="h-3 w-3 rounded-full bg-[#27C93F]"></div>
                       </div>
-                      <div className="text-xs text-gray-400 ms-4">{tab.name} {t('api.example')}</div>
+                      <div className="ms-4 text-xs text-muted-foreground">
+                        {tab.name} {t('api.example')}
+                      </div>
                     </div>
                     <div className="flex items-center gap-x-2">
                       {/* API Key Dropdown for cURL and Python panels */}
                       <select
                         id={`api-key-select-${tab.name}`}
-                        className="rounded-md border-gray-700 bg-[#23272b] text-gray-100 p-1 text-xs focus:outline-none focus:ring-2 focus:ring-primary-500 w-40"
+                        className="w-40 rounded-md border-border bg-muted p-1 text-xs text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
                         value={selectedApiKey}
                         onChange={e => setSelectedApiKey(e.target.value)}
                         disabled={loadingKeys}
                       >
                         <option value="">{t('api.selectApiKey')}</option>
                         {apiKeys.map(key => (
-                          <option key={key.uuid} value={key.uuid}>{key.name} ({key.key.slice(0, 6)}...)</option>
+                          <option key={key.uuid} value={key.uuid}>
+                            {key.name} ({key.key.slice(0, 6)}...)
+                          </option>
                         ))}
                       </select>
                       <button
                         type="button"
                         onClick={() => copyToClipboard(tab.content())}
-                        className="text-xs text-gray-400 hover:text-gray-300 focus:outline-none inline-flex items-center"
+                        className="inline-flex items-center text-xs text-muted-foreground hover:text-muted-foreground focus:outline-none"
                       >
                         <ClipboardIcon className="h-4 w-4" />
                       </button>
                     </div>
                   </div>
-
 
                   {/* Documentation info block */}
                   {tab.name === 'cURL' && (

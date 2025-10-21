@@ -10,12 +10,15 @@ import Loading from '../shared/Loading';
 import { EnvelopeOpenIcon, InformationCircleIcon } from '@heroicons/react/24/outline';
 import { Switch } from '../shared/Switch';
 
-const getSchema = (t: (key: string) => string) => yup.object({
-  first_name: yup.string().required(t('profile.form.firstNameRequired')),
-  last_name: yup.string().required(t('profile.form.lastNameRequired')),
-  email: yup.string().email(t('profile.form.emailInvalid')),
-  newsletter_confirmed: yup.boolean(),
-}).required();
+const getSchema = (t: (key: string) => string) =>
+  yup
+    .object({
+      first_name: yup.string().required(t('profile.form.firstNameRequired')),
+      last_name: yup.string().required(t('profile.form.lastNameRequired')),
+      email: yup.string().email(t('profile.form.emailInvalid')),
+      newsletter_confirmed: yup.boolean(),
+    })
+    .required();
 
 type FormData = yup.InferType<ReturnType<typeof getSchema>>;
 
@@ -30,15 +33,15 @@ export const ProfileForm: React.FC = () => {
       first_name: '',
       last_name: '',
       email: '',
-      newsletter_confirmed: false
-    }
+      newsletter_confirmed: false,
+    },
   });
 
   const {
     handleSubmit,
     reset,
     control,
-    formState: { errors, isSubmitting }
+    formState: { errors, isSubmitting },
   } = methods;
 
   useEffect(() => {
@@ -50,7 +53,7 @@ export const ProfileForm: React.FC = () => {
           first_name: profile.first_name,
           last_name: profile.last_name,
           email: profile.email,
-          newsletter_confirmed: profile.newsletter_confirmed
+          newsletter_confirmed: profile.newsletter_confirmed,
         });
       } catch (error: any) {
         toast.error(error.response?.data?.message || t('profile.form.loadError'));
@@ -68,7 +71,7 @@ export const ProfileForm: React.FC = () => {
       await profileApi.updateProfile({
         first_name: data.first_name,
         last_name: data.last_name,
-        newsletter_confirmed: data.newsletter_confirmed
+        newsletter_confirmed: data.newsletter_confirmed,
       });
       toast.success(t('profile.form.updateSuccess'));
     } catch (error: any) {
@@ -80,7 +83,7 @@ export const ProfileForm: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-64">
+      <div className="flex h-64 items-center justify-center">
         <Loading size="lg" />
       </div>
     );
@@ -120,25 +123,27 @@ export const ProfileForm: React.FC = () => {
                   error={errors.email?.message}
                   disabled
                 />
-                <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">{t('profile.info.emailCannotChange')}</p>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  {t('profile.info.emailCannotChange')}
+                </p>
               </div>
             </div>
 
-            <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
-              <div className="flex items-start gap-x-4 bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg">
-                <EnvelopeOpenIcon className="h-6 w-6 text-blue-500 flex-shrink-0 mt-1" />
+            <div className="border-t border-border pt-6">
+              <div className="flex items-start gap-x-4 rounded-lg border border-alert-info-border bg-alert-info-bg p-4">
+                <EnvelopeOpenIcon className="mt-1 h-6 w-6 flex-shrink-0 text-alert-info-icon" />
                 <div className="flex-1">
-                  <h3 className="text-sm font-semibold text-gray-900 dark:text-white flex items-center">
+                  <h3 className="flex items-center text-sm font-semibold text-alert-info-text">
                     {t('profile.newsletter.title')}
-                    <InformationCircleIcon 
-                      className="h-4 w-4 ms-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 cursor-help"
+                    <InformationCircleIcon
+                      className="ms-2 h-4 w-4 cursor-help text-alert-info-text/70 hover:text-alert-info-text"
                       title={t('profile.newsletter.tooltip')}
                     />
                   </h3>
-                  <p className="text-xs text-gray-600 dark:text-gray-300 mb-3">
+                  <p className="mb-3 text-xs text-alert-info-text/80">
                     {t('profile.newsletter.description')}
                   </p>
-                  
+
                   <div className="flex items-center">
                     <Controller
                       name="newsletter_confirmed"
@@ -160,7 +165,7 @@ export const ProfileForm: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSaving || isSubmitting}
-                className="ms-3 inline-flex justify-center rounded-md border border-transparent bg-primary-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50"
+                className="ms-3 inline-flex justify-center rounded-md border border-transparent bg-primary px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50"
               >
                 {isSaving ? <Loading size="sm" /> : t('profile.form.save')}
               </button>

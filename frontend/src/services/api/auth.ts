@@ -1,5 +1,12 @@
 import api from './api';
-import { AuthResponse, LoginRequest, RegisterRequest, InstallRequest, VerifyInvitationResponse, RegisterResponse } from '../../types/auth';
+import {
+  AuthResponse,
+  LoginRequest,
+  RegisterRequest,
+  InstallRequest,
+  VerifyInvitationResponse,
+  RegisterResponse,
+} from '../../types/auth';
 
 export const authApi = {
   async login(request: LoginRequest): Promise<AuthResponse> {
@@ -42,8 +49,13 @@ export const authApi = {
     return api.get(`/api/v1/user/auth/invitation/${invitationCode}/`).then(({ data }) => data);
   },
 
-  async registerWithInvitation(request: RegisterRequest, invitationCode: string): Promise<RegisterResponse> {
-    return api.post(`/api/v1/user/auth/invitation/${invitationCode}/`, { ...request }).then(({ data }) => data);
+  async registerWithInvitation(
+    request: RegisterRequest,
+    invitationCode: string
+  ): Promise<RegisterResponse> {
+    return api
+      .post(`/api/v1/user/auth/invitation/${invitationCode}/`, { ...request })
+      .then(({ data }) => data);
   },
 };
 

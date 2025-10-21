@@ -48,17 +48,13 @@ export const ObjectField: React.FC<FieldProps> = ({
   if (isPluginObject && hasIsActive) {
     return (
       <div className="space-y-6">
-        <div className="flex items-start justify-between border-b border-gray-200 dark:border-gray-700 pb-4">
+        <div className="flex items-start justify-between border-b border-border pb-4">
           <div className="flex-1">
             {schema.title && (
-              <h3 className="text-base font-medium text-gray-900 dark:text-white">
-                {schema.title}
-              </h3>
+              <h3 className="text-base font-medium text-foreground">{schema.title}</h3>
             )}
             {schema.description && (
-              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                {schema.description}
-              </p>
+              <p className="mt-1 text-sm text-muted-foreground">{schema.description}</p>
             )}
           </div>
           <div className="ms-4">
@@ -72,7 +68,7 @@ export const ObjectField: React.FC<FieldProps> = ({
           </div>
         </div>
         {value?.is_active && (
-          <div className="space-y-6 ps-4 border-s-2 border-gray-100 dark:border-gray-700">
+          <div className="space-y-6 border-s-2 border-border ps-4">
             {Object.entries(schema.properties)
               .filter(([propertyName]) => propertyName !== 'is_active')
               .map(([propertyName, propertySchema]) => (
@@ -95,16 +91,10 @@ export const ObjectField: React.FC<FieldProps> = ({
   return (
     <div className="space-y-6">
       {(schema.title || schema.description) && !isRootObject && (
-        <div className="border-b border-gray-200 dark:border-gray-700 pb-4">
-          {schema.title && (
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-              {schema.title}
-            </h3>
-          )}
+        <div className="border-b border-border pb-4">
+          {schema.title && <h3 className="text-lg font-medium text-foreground">{schema.title}</h3>}
           {schema.description && (
-            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-              {schema.description}
-            </p>
+            <p className="mt-1 text-sm text-muted-foreground">{schema.description}</p>
           )}
         </div>
       )}

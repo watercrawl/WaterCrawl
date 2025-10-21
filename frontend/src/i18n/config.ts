@@ -10,19 +10,19 @@ i18n
   .use(initReactI18next) // Pass i18n instance to react-i18next
   .init({
     backend: {
-      loadPath: '/locales/{{lng}}.json' // Path to translation files
+      loadPath: '/locales/{{lng}}.json', // Path to translation files
     },
     fallbackLng: 'en',
     supportedLngs: ['en', 'de', 'fr', 'es', 'it', 'pt', 'ja', 'zh', 'ar', 'fa'],
     nonExplicitSupportedLngs: true,
     load: 'languageOnly',
     debug: false,
-    
+
     // Fallback behavior
     returnNull: false,
     returnEmptyString: false,
     returnObjects: false,
-    
+
     interpolation: {
       escapeValue: false, // React already escapes values
     },
@@ -30,7 +30,7 @@ i18n
       order: ['localStorage', 'navigator'],
       caches: ['localStorage'],
     },
-    
+
     // React options
     react: {
       useSuspense: false,
@@ -38,7 +38,7 @@ i18n
   });
 
 // Apply font configuration when language changes
-i18n.on('languageChanged', (lng) => {
+i18n.on('languageChanged', lng => {
   applyFontConfig(lng);
 });
 

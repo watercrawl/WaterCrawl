@@ -1,6 +1,6 @@
 /**
  * Font Configuration for Different Languages
- * 
+ *
  * This file defines font families for each supported language.
  * When a language is selected, the appropriate font is applied to the document.
  */
@@ -15,7 +15,8 @@ export interface FontConfig {
 export const fontConfigs: Record<string, FontConfig> = {
   // English and other Latin-based languages
   en: {
-    family: 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+    family:
+      'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
     weights: [300, 400, 500, 600, 700, 800],
     lineHeight: 1.5,
     letterSpacing: 'normal',
@@ -55,7 +56,8 @@ export const fontConfigs: Record<string, FontConfig> = {
 
   // Spanish, French, German, etc. (use default)
   es: {
-    family: 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+    family:
+      'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
     weights: [300, 400, 500, 600, 700, 800],
     lineHeight: 1.5,
     letterSpacing: 'normal',

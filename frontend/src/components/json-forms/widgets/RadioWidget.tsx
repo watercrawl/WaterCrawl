@@ -18,7 +18,7 @@ export const RadioWidget: React.FC<FieldProps> = ({
       {options.map((option, index) => (
         <label
           key={index}
-          className={`inline-flex items-center ${schema.disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'} ${
+          className={`inline-flex items-center ${schema.disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'} ${
             ui.labelClassName || ''
           }`}
         >
@@ -26,15 +26,15 @@ export const RadioWidget: React.FC<FieldProps> = ({
             type="radio"
             value={option.value}
             checked={value === option.value}
-            onChange={(e) => onChange(e.target.value)}
+            onChange={e => onChange(e.target.value)}
             onBlur={onBlur}
             disabled={schema.disabled}
             required={required}
-            className={`h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 ${hasError ? 'border-red-500' : ''} ${
+            className={`h-4 w-4 border-input-border text-primary focus:ring-primary ${hasError ? 'border-error' : ''} ${
               ui.inputClassName || ''
             }`}
           />
-          <span className="ms-2 text-sm text-gray-700 dark:text-gray-300">{option.label}</span>
+          <span className="ms-2 text-sm text-foreground">{option.label}</span>
         </label>
       ))}
     </div>

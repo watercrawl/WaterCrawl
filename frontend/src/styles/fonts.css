@@ -4,32 +4,34 @@
 /* Font configuration for different languages */
 :root {
   /* Default font (English and LTR languages) */
-  --font-sans-default: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  
+  --font-sans-default:
+    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+
   /* Persian/Arabic font */
-  --font-sans-persian: "Vazirmatn", ui-sans-serif, system-ui, sans-serif;
-  
+  --font-sans-persian: 'Vazirmatn', ui-sans-serif, system-ui, sans-serif;
+
   /* Apply default font */
   font-family: var(--font-sans-default);
 }
 
 /* Persian language font */
-html[lang="fa"] {
+html[lang='fa'] {
   font-family: var(--font-sans-persian);
 }
 
 /* Arabic language font */
-html[lang="ar"] {
+html[lang='ar'] {
   font-family: var(--font-sans-persian);
 }
 
 /* Hebrew font (if needed) */
-html[lang="he"] {
+html[lang='he'] {
   font-family: var(--font-sans-persian);
 }
 
 /* Urdu font (if needed) */
-html[lang="ur"] {
+html[lang='ur'] {
   font-family: var(--font-sans-persian);
 }
 
@@ -44,7 +46,7 @@ body {
 }
 
 /* Optional: Specific font weights for better readability */
-html[lang="fa"] {
+html[lang='fa'] {
   --font-weight-normal: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
@@ -52,13 +54,13 @@ html[lang="fa"] {
 }
 
 /* Optional: Line height adjustments for Persian script */
-html[lang="fa"] p,
-html[lang="fa"] span,
-html[lang="fa"] div {
+html[lang='fa'] p,
+html[lang='fa'] span,
+html[lang='fa'] div {
   line-height: 1.8;
 }
 
 /* Optional: Better letter spacing for Persian */
-html[lang="fa"] {
+html[lang='fa'] {
   letter-spacing: 0.01em;
 }

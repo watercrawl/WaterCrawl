@@ -12,7 +12,7 @@ import { ArrayField } from './ArrayField';
 import { CheckboxWidget } from '../widgets/CheckboxWidget';
 import { InfoTooltip } from '../../shared/FormComponents';
 
-export const SchemaField: React.FC<FieldProps> = (props) => {
+export const SchemaField: React.FC<FieldProps> = props => {
   const { schema, errors = [] } = props;
   const hasError = errors.length > 0;
   const ui = schema.ui || {};
@@ -57,9 +57,17 @@ export const SchemaField: React.FC<FieldProps> = (props) => {
       case 'integer':
         return <NumberWidget {...props} />;
       case 'boolean':
-        return ui.widget === 'checkbox' as UIWidgetType ? <CheckboxWidget {...props} /> : <SwitchWidget {...props} />;
+        return ui.widget === ('checkbox' as UIWidgetType) ? (
+          <CheckboxWidget {...props} />
+        ) : (
+          <SwitchWidget {...props} />
+        );
       case 'object':
-        return ui.widget === 'json-editor' as UIWidgetType ? <JsonEditorWidget {...props} /> : <ObjectField {...props} />;
+        return ui.widget === ('json-editor' as UIWidgetType) ? (
+          <JsonEditorWidget {...props} />
+        ) : (
+          <ObjectField {...props} />
+        );
       case 'array':
         return <ArrayField {...props} />;
       default:
@@ -80,7 +88,7 @@ export const SchemaField: React.FC<FieldProps> = (props) => {
       <div className={`mb-4 ${ui.className || ''}`}>
         {renderWidget()}
         {hasError && (
-          <div className="mt-1 text-sm text-red-500">
+          <div className="mt-1 text-sm text-error">
             {errors.map((error, index) => (
               <div key={index}>{error.message}</div>
             ))}
@@ -93,11 +101,11 @@ export const SchemaField: React.FC<FieldProps> = (props) => {
   return (
     <div className={`mb-4 ${ui.className || ''}`}>
       {(schema.title || schema.description) && (
-        <div className="flex items-center gap-x-1 mb-1">
+        <div className="mb-1 flex items-center gap-x-1">
           {schema.title && (
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label className="block text-sm font-medium text-foreground">
               {schema.title}
-              {props.required && <span className="text-red-500 ms-1">*</span>}
+              {props.required && <span className="ms-1 text-error">*</span>}
             </label>
           )}
           {schema.description && <InfoTooltip content={schema.description} />}
@@ -105,7 +113,7 @@ export const SchemaField: React.FC<FieldProps> = (props) => {
       )}
       {renderWidget()}
       {hasError && (
-        <div className="mt-1 text-sm text-red-500">
+        <div className="mt-1 text-sm text-error">
           {errors.map((error, index) => (
             <div key={index}>{error.message}</div>
           ))}

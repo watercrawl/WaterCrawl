@@ -36,7 +36,6 @@ export interface TokenPayload {
   exp: number;
 }
 
-
 export interface VerifyInvitationResponse {
   invitation_code: string;
   new_user: boolean;

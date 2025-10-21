@@ -7,9 +7,6 @@ import {
   KeyIcon,
   Cog6ToothIcon,
   ClockIcon,
-  UserIcon,
-  SunIcon,
-  MoonIcon,
   ChevronDownIcon,
   MagnifyingGlassIcon,
   MapIcon,
@@ -21,7 +18,6 @@ import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { useDirection } from '../contexts/DirectionContext';
 import { useTranslation } from 'react-i18next';
 import { TeamSelector } from '../components/dashboard/TeamSelector';
-import { useTheme } from '../contexts/ThemeContext';
 import { useSettings } from '../contexts/SettingsProvider';
 import { useTeam } from '../contexts/TeamContext';
 import { useUser } from '../contexts/UserContext';
@@ -32,8 +28,7 @@ import Breadcrumbs from '../components/shared/Breadcrumbs';
 import { PlansModal } from '../components/plans/PlansModal';
 import { LanguageSelector } from '../components/shared/LanguageSelector';
 import { ArrowRight } from '../components/shared/DirectionalIcon';
-
-
+import { ProfileMenu } from '../components/shared/ProfileMenu';
 
 // Reusable Navigation component
 interface NavigationMenuProps {
@@ -51,81 +46,120 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
   toggleMenu,
   isMenuExpanded,
   isMenuActive,
-  closeSidebar
+  closeSidebar,
 }) => {
   const { user } = useUser();
   const { settings } = useSettings();
   const { direction } = useDirection();
   const { t } = useTranslation();
-  
+
   const navigation = [
-      { name: t('dashboard.navigation.dashboard'), href: '/dashboard', icon: HomeIcon, end: true },
-      { name: t('dashboard.navigation.crawl'), href: '/dashboard/crawl', icon: SpiderIcon },
-      { name: t('dashboard.navigation.search'), href: '/dashboard/search', icon: MagnifyingGlassIcon },
-      { name: t('dashboard.navigation.sitemap'), href: '/dashboard/sitemap', icon: MapIcon },
-      ...(settings?.is_knowledge_base_enabled ? [{
-        name: t('dashboard.navigation.knowledgeBase'),
-        href: '/dashboard/knowledge-base',
-        icon: BookOpenIcon,
-      }] : []),
-      {
-        name: t('dashboard.navigation.activityLogs'),
-        icon: ClockIcon,
-        children: [
-          { name: t('dashboard.navigation.crawls'), href: '/dashboard/logs/crawls', icon: SpiderIcon },
-          { name: t('dashboard.navigation.searches'), href: '/dashboard/logs/searches', icon: MagnifyingGlassIcon },
-          { name: t('dashboard.navigation.sitemaps'), href: '/dashboard/logs/sitemaps', icon: MapIcon },
-          { name: t('dashboard.navigation.usageHistory'), href: '/dashboard/logs/usage', icon: DocumentTextIcon },
+    { name: t('dashboard.navigation.dashboard'), href: '/dashboard', icon: HomeIcon, end: true },
+    { name: t('dashboard.navigation.crawl'), href: '/dashboard/crawl', icon: SpiderIcon },
+    {
+      name: t('dashboard.navigation.search'),
+      href: '/dashboard/search',
+      icon: MagnifyingGlassIcon,
+    },
+    { name: t('dashboard.navigation.sitemap'), href: '/dashboard/sitemap', icon: MapIcon },
+    ...(settings?.is_knowledge_base_enabled
+      ? [
+          {
+            name: t('dashboard.navigation.knowledgeBase'),
+            href: '/dashboard/knowledge-base',
+            icon: BookOpenIcon,
+          },
         ]
-      },
-      { name: t('dashboard.navigation.usage'), href: '/dashboard/usage', icon: ChartBarIcon },
-      { name: t('dashboard.navigation.apiKeys'), href: '/dashboard/api-keys', icon: KeyIcon },
-      { name: t('dashboard.navigation.settings'), href: '/dashboard/settings', icon: Cog6ToothIcon },
-      { name: t('dashboard.navigation.profile'), href: '/dashboard/profile', icon: UserIcon },
-      { name: t('dashboard.navigation.apiReference'), href: '/dashboard/api-reference', icon: DocumentTextIcon },
-    ];
+      : []),
+    {
+      name: t('dashboard.navigation.activityLogs'),
+      icon: ClockIcon,
+      children: [
+        {
+          name: t('dashboard.navigation.crawls'),
+          href: '/dashboard/logs/crawls',
+          icon: SpiderIcon,
+        },
+        {
+          name: t('dashboard.navigation.searches'),
+          href: '/dashboard/logs/searches',
+          icon: MagnifyingGlassIcon,
+        },
+        {
+          name: t('dashboard.navigation.sitemaps'),
+          href: '/dashboard/logs/sitemaps',
+          icon: MapIcon,
+        },
+        {
+          name: t('dashboard.navigation.usageHistory'),
+          href: '/dashboard/logs/usage',
+          icon: DocumentTextIcon,
+        },
+      ],
+    },
+    { name: t('dashboard.navigation.apiKeys'), href: '/dashboard/api-keys', icon: KeyIcon },
+    { name: t('dashboard.navigation.usage'), href: '/dashboard/usage', icon: ChartBarIcon },
+    { name: t('dashboard.navigation.settings'), href: '/dashboard/settings', icon: Cog6ToothIcon },
+    {
+      name: t('dashboard.navigation.apiReference'),
+      href: '/dashboard/api-reference',
+      icon: DocumentTextIcon,
+    },
+  ];
   return (
     <ul role="list" className="-mx-2 space-y-1">
-      {navigation.map((item) => (
+      {navigation.map(item => (
         <li key={item.name}>
           {item.children ? (
             <div className="space-y-1">
               <button
                 onClick={() => toggleMenu(item.name)}
-                className={`w-full flex justify-between items-center gap-x-3 rounded-md p-2 text-sm font-medium leading-6 transition-colors duration-200 ${isMenuActive(item)
-                  ? 'bg-blue-800/60 text-blue-100'
-                  : 'text-blue-200 hover:text-blue-100 hover:bg-blue-800/30'
-                  }`}
+                className={`flex w-full items-center justify-between gap-x-3 rounded-md p-2 text-sm font-medium leading-6 transition-colors duration-200 ${
+                  isMenuActive(item)
+                    ? 'bg-primary-dark/60 text-sidebar-active-text'
+                    : 'text-sidebar-text/80 hover:bg-primary-dark/30 hover:text-sidebar-active-text'
+                }`}
               >
                 <div className="flex items-center gap-x-3">
                   <item.icon
-                    className={`h-5 w-5 shrink-0 transition-colors duration-200 ${isMenuExpanded(item.name) ? 'text-blue-100' : ''}`}
+                    className={`h-5 w-5 shrink-0 transition-colors duration-200 ${isMenuExpanded(item.name) ? 'text-primary-foreground' : ''}`}
                     aria-hidden="true"
                   />
-                  <span className={isMenuExpanded(item.name) ? 'font-medium text-blue-100' : ''}>{item.name}</span>
+                  <span
+                    className={
+                      isMenuExpanded(item.name) ? 'font-medium text-primary-foreground' : ''
+                    }
+                  >
+                    {item.name}
+                  </span>
                 </div>
                 <ChevronDownIcon
-                  className={`h-5 w-5 shrink-0 text-blue-300 transition-transform duration-200 ease-in-out ${
-                    isMenuExpanded(item.name) 
-                      ? 'rotate-0' 
-                      : direction === 'rtl' ? 'rotate-90' : '-rotate-90'
+                  className={`h-5 w-5 shrink-0 text-primary transition-transform duration-200 ease-in-out ${
+                    isMenuExpanded(item.name)
+                      ? 'rotate-0'
+                      : direction === 'rtl'
+                        ? 'rotate-90'
+                        : '-rotate-90'
                   }`}
                   aria-hidden="true"
                 />
               </button>
 
-              <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isMenuExpanded(item.name) ? 'max-h-52 opacity-100' : 'max-h-0 opacity-0'}`}>
-                <ul className="ms-6 mt-2 space-y-2 ps-3 border-s border-blue-700/60">
+              <div
+                className={`overflow-hidden transition-all duration-300 ease-in-out ${isMenuExpanded(item.name) ? 'max-h-52 opacity-100' : 'max-h-0 opacity-0'}`}
+              >
+                <ul className="ms-6 mt-2 space-y-2 border-s border-primary/60 ps-3">
                   {item.children.map((child: any) => (
                     <li key={child.name} className="relative">
                       <NavLink
                         to={child.href}
                         onClick={isMobile && closeSidebar ? closeSidebar : undefined}
                         className={({ isActive }) => {
-                          return `group flex items-center gap-x-3 rounded-md px-3 py-2 text-sm font-medium leading-6 transition-all duration-150 ${isActive
-                            ? 'bg-blue-700/50 text-white shadow-sm'
-                            : 'text-blue-300 hover:text-blue-100 hover:bg-blue-800/40'
-                            }`;
+                          return `group flex items-center gap-x-3 rounded-md px-3 py-2 text-sm font-medium leading-6 transition-all duration-150 ${
+                            isActive
+                              ? 'bg-primary-hover/50 text-primary-foreground shadow-sm'
+                              : 'text-primary-foreground/80 hover:bg-primary-dark/40 hover:text-primary-foreground'
+                          }`;
                         }}
                       >
                         {({ isActive }) => (
@@ -149,16 +183,14 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
               end={item.end}
               onClick={isMobile && closeSidebar ? closeSidebar : undefined}
               className={({ isActive }) =>
-                `group flex gap-x-3 rounded-md p-2 text-sm font-medium leading-6 ${isActive
-                  ? 'bg-blue-800/50 text-blue-100'
-                  : 'text-blue-200 hover:text-blue-100 hover:bg-blue-800/30'
+                `group flex gap-x-3 rounded-md p-2 text-sm font-medium leading-6 ${
+                  isActive
+                    ? 'bg-primary-dark/50 text-sidebar-active-text'
+                    : 'text-sidebar-text/80 hover:bg-primary-dark/30 hover:text-sidebar-active-text'
                 }`
               }
             >
-              <item.icon
-                className="h-5 w-5 shrink-0"
-                aria-hidden="true"
-              />
+              <item.icon className="h-5 w-5 shrink-0" aria-hidden="true" />
               {item.name}
             </NavLink>
           )}
@@ -170,17 +202,15 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
             to="/manager"
             onClick={isMobile && closeSidebar ? closeSidebar : undefined}
             className={({ isActive }) =>
-              `group flex gap-x-3 rounded-md p-2 text-sm font-medium leading-6 ${isActive
-                ? 'bg-blue-800/50 text-blue-100'
-                : 'text-blue-200 hover:text-blue-100 hover:bg-blue-800/30'
-                }`
+              `group flex gap-x-3 rounded-md p-2 text-sm font-medium leading-6 ${
+                isActive
+                  ? 'bg-primary-dark/50 text-sidebar-active-text'
+                  : 'text-sidebar-text/80 hover:bg-primary-dark/30 hover:text-sidebar-active-text'
+              }`
             }
           >
-            <ServerIcon
-              className="h-5 w-5 shrink-0"
-              aria-hidden="true"
-            />
-            {t('dashboard.navigation.adminPanel')} <ArrowRight className="h-4 w-4 shrink-0 mt-1" />
+            <ServerIcon className="h-5 w-5 shrink-0" aria-hidden="true" />
+            {t('dashboard.navigation.adminPanel')} <ArrowRight className="mt-1 h-4 w-4 shrink-0" />
           </NavLink>
         </li>
       )}
@@ -189,21 +219,18 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
 };
 
 export const DashboardLayout = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [expandedMenus, setExpandedMenus] = useState<{ [key: string]: boolean }>({});
-  const { theme, toggleTheme } = useTheme();
-  const { settings } = useSettings();
+  const { t } = useTranslation();
   const location = useLocation();
   const { showSubscriptionBanner } = useTeam();
-  const { showPrivacyTermsModal } = useUser();
-  const { t } = useTranslation();
-  // Set breadcrumbs based on current path
-
+  const { settings } = useSettings();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [expandedMenus, setExpandedMenus] = useState<{ [key: string]: boolean }>({});
+  const [showPrivacyTermsModal, setShowPrivacyTermsModal] = useState(false);
 
   const toggleMenu = (menuName: string) => {
     setExpandedMenus(prev => ({
       ...prev,
-      [menuName]: !prev[menuName]
+      [menuName]: !prev[menuName],
     }));
   };
 
@@ -231,44 +258,45 @@ export const DashboardLayout = () => {
       <PrivacyTermsModal show={showPrivacyTermsModal} />
 
       {/* Subscription Modal */}
-      <PlansModal show={!showPrivacyTermsModal && showSubscriptionBanner} showEnterprisePlan={false}/>
+      <PlansModal
+        show={!showPrivacyTermsModal && showSubscriptionBanner}
+        showEnterprisePlan={false}
+      />
 
       {/* Mobile menu */}
       <div
-        className={`lg:hidden fixed inset-0 z-50 transition-all duration-200 ease-in-out ${sidebarOpen ? 'visible' : 'invisible'
-          }`}
+        className={`fixed inset-0 z-50 transition-all duration-200 ease-in-out lg:hidden ${
+          sidebarOpen ? 'visible' : 'invisible'
+        }`}
       >
         {/* Backdrop */}
         <div
-          className={`fixed inset-0 bg-gray-900/80 transition-opacity duration-200 ease-in-out ${sidebarOpen ? 'opacity-100' : 'opacity-0'
-            }`}
+          className={`fixed inset-0 bg-background/80 transition-opacity duration-200 ease-in-out ${
+            sidebarOpen ? 'opacity-100' : 'opacity-0'
+          }`}
           onClick={() => setSidebarOpen(false)}
         />
 
         {/* Sidebar */}
         <div
-          className={`fixed inset-y-0 start-0 z-50 flex w-full max-w-xs transform flex-col overflow-y-auto bg-blue-950 px-6 py-6 transition-transform duration-200 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-            }`}
+          className={`fixed inset-y-0 start-0 z-50 flex w-full max-w-xs transform flex-col overflow-y-auto bg-sidebar-bg px-6 py-6 transition-transform duration-200 ease-in-out ${
+            sidebarOpen ? 'translate-x-0' : 'ltr:-translate-x-full rtl:translate-x-full'
+          }`}
         >
-          <div className="flex items-center justify-between mb-6">
+          <div className="mb-6 flex items-center justify-between">
             <Link
               to="/dashboard"
               onClick={() => setSidebarOpen(false)}
               className="flex items-center gap-2"
             >
-              <img
-                src="/logo-dark.svg"
-                alt="WaterCrawl"
-                width={32}
-                height={32}
-              />
-              <span className="text-lg font-semibold bg-gradient-to-r from-blue-200 to-blue-100 bg-clip-text text-transparent">
+              <img src="/logo-dark.svg" alt="WaterCrawl" width={32} height={32} />
+              <span className="bg-gradient-to-r from-primary-light to-primary-light bg-clip-text text-lg font-semibold text-transparent">
                 WaterCrawl
               </span>
             </Link>
             <button
               type="button"
-              className="-m-2.5 rounded-md p-2.5 text-blue-200"
+              className="-m-2.5 rounded-md p-2.5 text-primary-foreground"
               onClick={() => setSidebarOpen(false)}
             >
               <span className="sr-only">Close sidebar</span>
@@ -288,9 +316,10 @@ export const DashboardLayout = () => {
                 />
               </li>
               <li className="mt-6">
-                <div className="text-xs font-semibold leading-6 text-blue-200">TeamSelector Area</div>
+                <div className="text-xs font-semibold leading-6 text-primary-foreground">
+                  TeamSelector Area
+                </div>
                 <TeamSelector />
-
               </li>
             </ul>
           </nav>
@@ -299,16 +328,11 @@ export const DashboardLayout = () => {
 
       {/* Static sidebar for desktop */}
       <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
-        <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-blue-950 px-6 pb-4">
+        <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-sidebar-bg px-6 pb-4">
           <div className="flex h-16 shrink-0 items-center gap-2">
             <Link to="/dashboard" className="flex items-center gap-2">
-              <img
-                src="/logo-dark.svg"
-                alt="WaterCrawl"
-                width={32}
-                height={32}
-              />
-              <span className="text-lg font-semibold bg-gradient-to-r from-blue-200 to-blue-100 bg-clip-text text-transparent">
+              <img src="/logo-dark.svg" alt="WaterCrawl" width={32} height={32} />
+              <span className="bg-gradient-to-r from-primary-light to-primary-light bg-clip-text text-lg font-semibold text-transparent">
                 WaterCrawl
               </span>
             </Link>
@@ -326,26 +350,20 @@ export const DashboardLayout = () => {
             </ul>
           </nav>
 
-
-          <div className="text-blue-200/60 text-xs text-center pb-2">
+          <div className="pb-2 text-center text-xs text-sidebar-text/60">
             {/* GitHub Stars */}
-            <div className="mt-3 mb-3 px-2">
-              <GitHubStars
-                owner="watercrawl"
-                repo="watercrawl"
-              />
+            <div className="mb-3 mt-3 px-2">
+              <GitHubStars owner="watercrawl" repo="watercrawl" />
             </div>
-
             {t('common.version')}: <b>{settings?.api_version}</b>
-
             {/* Copyright */}
-            <p className="text-xs leading-6 text-blue-200/60 pt-2">
+            <p className="pt-2 text-xs leading-6 text-sidebar-text/60">
               &copy;{new Date().getFullYear()} - Made with ❤️ by{' '}
               <a
                 href="https://watercrawl.dev"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-200/60 hover:text-blue-100"
+                className="text-sidebar-text/60 hover:text-primary-foreground"
               >
                 <b>WaterCrawl</b>
               </a>
@@ -354,12 +372,12 @@ export const DashboardLayout = () => {
         </div>
       </div>
 
-      <div className="lg:ps-72 min-h-screen flex flex-col">
-        <main className="bg-gray-50 dark:bg-gray-900 flex-1">
-          <div className="sticky top-0 z-40 flex h-16 items-center gap-x-4 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 px-4 sm:px-6 lg:px-8 shadow-sm">
+      <div className="flex min-h-screen flex-col lg:ps-72">
+        <main className="flex-1 bg-background">
+          <div className="sticky top-0 z-40 flex h-16 items-center gap-x-4 border-b border-border bg-background px-4 shadow-sm sm:px-6 lg:px-8">
             <button
               type="button"
-              className="-m-2.5 p-2.5 text-gray-700 dark:text-gray-200 lg:hidden"
+              className="-m-2.5 p-2.5 text-foreground lg:hidden"
               onClick={() => setSidebarOpen(true)}
             >
               <span className="sr-only">Open sidebar</span>
@@ -367,32 +385,20 @@ export const DashboardLayout = () => {
             </button>
 
             {/* Separator */}
-            <div className="h-6 w-px bg-gray-200 dark:bg-gray-700 lg:hidden" aria-hidden="true" />
+            <div className="h-6 w-px bg-muted lg:hidden" aria-hidden="true" />
 
             <div className="flex flex-1 items-center">
               <div className="flex-1">
-                <div className="flex items-center justify-between w-full">
-                  <div className="flex items-center gap-x-2 sm:gap-x-3 overflow-hidden">
+                <div className="flex w-full items-center justify-between">
+                  <div className="flex items-center gap-x-2 overflow-hidden sm:gap-x-3">
                     <div className="flex-shrink-0">
                       <TeamSelector />
                     </div>
-                    <div className="overflow-x-auto py-1 no-scrollbar">
-
-                    </div>
+                    <div className="no-scrollbar overflow-x-auto py-1"></div>
                   </div>
-                  <div className="flex items-center gap-x-2">
+                  <div className="flex items-center gap-x-4">
                     <LanguageSelector />
-                    <button
-                      onClick={toggleTheme}
-                      className="flex-shrink-0 p-1.5 sm:p-2 rounded-md bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"
-                      aria-label="Toggle theme"
-                    >
-                      {theme === 'dark' ? (
-                        <SunIcon className="h-4 w-4 sm:h-5 sm:w-5" />
-                      ) : (
-                        <MoonIcon className="h-4 w-4 sm:h-5 sm:w-5" />
-                      )}
-                    </button>
+                    <ProfileMenu />
                   </div>
                 </div>
               </div>

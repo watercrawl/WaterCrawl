@@ -2,15 +2,10 @@ import React, { useCallback, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
 import { FieldProps } from '../types/schema';
 
-export const JsonEditorWidget: React.FC<FieldProps> = ({
-  schema,
-  value,
-  onChange,
-  errors,
-}) => {
+export const JsonEditorWidget: React.FC<FieldProps> = ({ schema, value, onChange, errors }) => {
   const hasError = errors && errors.length > 0;
   const ui = schema.ui || {};
-  
+
   // Initialize default value
   useEffect(() => {
     if (value === undefined) {
@@ -31,19 +26,22 @@ export const JsonEditorWidget: React.FC<FieldProps> = ({
     }
   }, [schema, value, onChange]);
 
-  const handleEditorChange = useCallback((value: string | undefined) => {
-    try {
-      if (!value) {
-        onChange({});
-        return;
+  const handleEditorChange = useCallback(
+    (value: string | undefined) => {
+      try {
+        if (!value) {
+          onChange({});
+          return;
+        }
+        const parsedValue = JSON.parse(value);
+        onChange(parsedValue);
+      } catch (_error) {
+        // Don't update the value if JSON is invalid
+        console.error('Invalid JSON:', _error);
       }
-      const parsedValue = JSON.parse(value);
-      onChange(parsedValue);
-    } catch (_error) {
-      // Don't update the value if JSON is invalid
-      console.error('Invalid JSON:', _error);
-    }
-  }, [onChange]);
+    },
+    [onChange]
+  );
 
   const stringifiedValue = React.useMemo(() => {
     try {
@@ -54,9 +52,9 @@ export const JsonEditorWidget: React.FC<FieldProps> = ({
   }, [value]);
 
   return (
-    <div className={`relative ${hasError ? 'border border-red-500 rounded-md' : ''}`}>
+    <div className={`relative ${hasError ? 'rounded-md border border-error' : ''}`}>
       <Editor
-        height={ui.editorHeight || "200px"}
+        height={ui.editorHeight || '200px'}
         defaultLanguage="json"
         value={stringifiedValue}
         onChange={handleEditorChange}

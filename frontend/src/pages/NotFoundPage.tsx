@@ -6,33 +6,33 @@ export const NotFoundPage = () => {
   const { t } = useTranslation();
   const token = AuthService.getInstance().getToken();
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full text-center">
+    <div className="flex min-h-screen items-center justify-center bg-card px-4 py-12 sm:px-6 lg:px-8">
+      <div className="w-full max-w-md text-center">
         {/* Error Message */}
         <div className="mb-16">
-          <h1 className="text-9xl font-bold text-gray-900 dark:text-white">404</h1>
-          <h2 className="mt-8 text-3xl font-semibold text-gray-900 dark:text-white">{t('errors.notFound.title')}</h2>
-          <p className="mt-4 text-lg text-gray-500 dark:text-gray-400">
-            {t('errors.notFound.message')}
-          </p>
+          <h1 className="text-9xl font-bold text-foreground">404</h1>
+          <h2 className="mt-8 text-3xl font-semibold text-foreground">
+            {t('errors.notFound.title')}
+          </h2>
+          <p className="mt-4 text-lg text-muted-foreground">{t('errors.notFound.message')}</p>
         </div>
 
         {/* Navigation Links */}
-        <div className="flex flex-col space-y-4 max-w-xs mx-auto">
+        <div className="mx-auto flex max-w-xs flex-col space-y-4">
           {!token ? (
-          <Link
-            to="/"
-            className="inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-900 transition-colors duration-200"
-          >
-            {t('errors.notFound.backHome')}
-          </Link>
+            <Link
+              to="/"
+              className="inline-flex items-center justify-center rounded-md border border-transparent bg-primary px-6 py-3 text-base font-medium text-white shadow-sm transition-colors duration-200 hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+            >
+              {t('errors.notFound.backHome')}
+            </Link>
           ) : (
-          <Link
-            to="/dashboard"
-            className="inline-flex items-center justify-center px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-base font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-900 transition-colors duration-200"
-          >
-            {t('errors.notFound.goToDashboard')}
-          </Link>
+            <Link
+              to="/dashboard"
+              className="inline-flex items-center justify-center rounded-md border border-input-border bg-card px-6 py-3 text-base font-medium text-foreground shadow-sm transition-colors duration-200 hover:bg-muted focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+            >
+              {t('errors.notFound.goToDashboard')}
+            </Link>
           )}
         </div>
       </div>

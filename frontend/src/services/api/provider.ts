@@ -14,10 +14,10 @@ export const providerApi = {
     if (page) params.append('page', page.toString());
     if (pageSize) params.append('page_size', pageSize.toString());
 
-    return api.get<Provider[]>('/api/v1/llm/provider-configs/providers/', { params })
+    return api
+      .get<Provider[]>('/api/v1/llm/provider-configs/providers/', { params })
       .then(({ data }) => data);
   },
-
 
   // Provider Config endpoints
   async listProviderConfigs(page?: number, pageSize?: number) {
@@ -25,7 +25,8 @@ export const providerApi = {
     if (page) params.append('page', page.toString());
     if (pageSize) params.append('page_size', pageSize.toString());
 
-    return api.get<PaginatedResponse<ProviderConfig>>('/api/v1/llm/provider-configs/', { params })
+    return api
+      .get<PaginatedResponse<ProviderConfig>>('/api/v1/llm/provider-configs/', { params })
       .then(({ data }) => data);
   },
 
@@ -34,22 +35,22 @@ export const providerApi = {
     if (page) params.append('page', page.toString());
     if (pageSize) params.append('page_size', pageSize.toString());
 
-    return api.get<ListProviderConfig[]>('/api/v1/llm/provider-configs/list-all/', { params })
+    return api
+      .get<ListProviderConfig[]>('/api/v1/llm/provider-configs/list-all/', { params })
       .then(({ data }) => data);
   },
 
   async getProviderConfig(id: string) {
-    return api.get<ProviderConfig>(`/api/v1/llm/provider-configs/${id}/`)
-      .then(({ data }) => data);
+    return api.get<ProviderConfig>(`/api/v1/llm/provider-configs/${id}/`).then(({ data }) => data);
   },
 
   async createProviderConfig(data: ProviderConfigFormData) {
-    return api.post<ProviderConfig>('/api/v1/llm/provider-configs/', data)
-      .then(({ data }) => data);
+    return api.post<ProviderConfig>('/api/v1/llm/provider-configs/', data).then(({ data }) => data);
   },
 
   async updateProviderConfig(id: string, data: Partial<ProviderConfigFormData>) {
-    return api.patch<ProviderConfig>(`/api/v1/llm/provider-configs/${id}/`, data)
+    return api
+      .patch<ProviderConfig>(`/api/v1/llm/provider-configs/${id}/`, data)
       .then(({ data }) => data);
   },
 
@@ -58,9 +59,13 @@ export const providerApi = {
   },
 
   async testProviderConfig(data: ProviderConfigFormData) {
-    return api.post<{ success: boolean; message: string }>('/api/v1/llm/provider-configs/test-config/', data)
+    return api
+      .post<{
+        success: boolean;
+        message: string;
+      }>('/api/v1/llm/provider-configs/test-config/', data)
       .then(({ data }) => data);
-  }
+  },
 };
 
 export default providerApi;

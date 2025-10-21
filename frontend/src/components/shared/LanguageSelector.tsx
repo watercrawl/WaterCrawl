@@ -28,10 +28,10 @@ export const LanguageSelector: React.FC = () => {
   const { i18n, t } = useTranslation();
   const { setDirection } = useDirection();
 
-  const currentLanguage = languages.find((lang) => lang.code === i18n.language) || languages[0];
+  const currentLanguage = languages.find(lang => lang.code === i18n.language) || languages[0];
 
   const changeLanguage = async (languageCode: string) => {
-    const selectedLang = languages.find((lang) => lang.code === languageCode);
+    const selectedLang = languages.find(lang => lang.code === languageCode);
     if (selectedLang) {
       await i18n.changeLanguage(languageCode);
       setDirection(selectedLang.direction);
@@ -42,7 +42,7 @@ export const LanguageSelector: React.FC = () => {
 
   return (
     <Menu as="div" className="relative inline-block text-start">
-      <Menu.Button className="inline-flex items-center gap-x-2 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+      <Menu.Button className="inline-flex items-center gap-x-2 rounded-lg px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted">
         <LanguageIcon className="h-5 w-5" />
         <span className="hidden sm:inline">{currentLanguage.nativeName}</span>
       </Menu.Button>
@@ -56,32 +56,30 @@ export const LanguageSelector: React.FC = () => {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute end-0 z-10 mt-2 w-56 origin-top-end rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <Menu.Items className="origin-top-end absolute end-0 z-10 mt-2 w-56 rounded-md bg-card shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="py-1">
-            <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700">
-              <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">
+            <div className="border-b border-border px-4 py-2">
+              <p className="text-xs font-semibold uppercase text-muted-foreground">
                 {t('dashboard.languages.selectLanguage')}
               </p>
             </div>
-            {languages.map((language) => (
+            {languages.map(language => (
               <Menu.Item key={language.code}>
                 {({ active }) => (
                   <button
                     onClick={() => changeLanguage(language.code)}
                     className={`${
-                      active ? 'bg-gray-100 dark:bg-gray-700' : ''
-                    } group flex w-full items-center justify-between px-4 py-2 text-sm text-gray-700 dark:text-gray-300 transition-colors`}
+                      active ? 'bg-muted' : ''
+                    } group flex w-full items-center justify-between px-4 py-2 text-sm text-foreground transition-colors`}
                   >
                     <span className="flex items-center gap-x-2">
                       <span>{language.nativeName}</span>
                       {language.name !== language.nativeName && (
-                        <span className="text-xs text-gray-500 dark:text-gray-400">
-                          ({language.name})
-                        </span>
+                        <span className="text-xs text-muted-foreground">({language.name})</span>
                       )}
                     </span>
                     {currentLanguage.code === language.code && (
-                      <CheckIcon className="h-4 w-4 text-primary-600 dark:text-primary-400" />
+                      <CheckIcon className="h-4 w-4 text-primary" />
                     )}
                   </button>
                 )}

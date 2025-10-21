@@ -11,25 +11,23 @@ const DashboardPage: React.FC = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    setItems([
-      { label: t('common.dashboard'), href: '/dashboard', current: true },
-    ]);
+    setItems([{ label: t('common.dashboard'), href: '/dashboard', current: true }]);
   }, [setItems, t]);
-  
+
   return (
     <div className="h-full">
       <div className="px-8 py-6">
         {/* Header */}
         <div className="mb-8">
-          <div className="flex items-center gap-x-3 mb-2">
-            <div className="p-2 bg-gradient-to-r from-primary-500 to-primary-600 rounded-lg">
+          <div className="mb-2 flex items-center gap-x-3">
+            <div className="rounded-lg bg-gradient-to-r from-primary-500 to-primary-600 p-2">
               <SparklesIcon className="h-6 w-6 text-white" />
             </div>
-            <h1 className="text-xl sm:text-3xl font-bold text-gray-900 dark:text-white">
+            <h1 className="text-xl font-bold text-foreground sm:text-3xl">
               {t('dashboard.welcome')} WaterCrawl
             </h1>
           </div>
-          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl">
+          <p className="max-w-2xl text-lg text-muted-foreground">
             {t('dashboard.messages.welcome')}
           </p>
         </div>
@@ -38,7 +36,7 @@ const DashboardPage: React.FC = () => {
         <QuickNavigation />
 
         {/* Main Content Grid */}
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 gap-8 xl:grid-cols-2">
           {/* Left Column */}
           <div className="space-y-8">
             <ResourcesShortcuts />

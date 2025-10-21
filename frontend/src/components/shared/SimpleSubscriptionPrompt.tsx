@@ -3,29 +3,24 @@ import { Link } from 'react-router-dom';
 import { ArrowRight } from '../../components/shared/DirectionalIcon';
 import { useTranslation } from 'react-i18next';
 
-
 export const SimpleSubscriptionPrompt: React.FC = () => {
   const { t } = useTranslation();
   return (
-    <div className="relative overflow-hidden rounded-lg bg-white dark:bg-gray-800 shadow-lg">
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 opacity-50" />
-      
-      <div className="relative p-6">
-        <div className="flex flex-col items-center text-center space-y-4">
-          <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-            {t('subscription.prompt.title')}
-          </h3>
+    <div className="relative overflow-hidden rounded-lg bg-card shadow-lg">
+      <div className="absolute inset-0 bg-gradient-to-r from-primary-light to-primary-light opacity-50" />
 
-          <p className="text-gray-600 dark:text-gray-300">
-            {t('subscription.prompt.description')}
-          </p>
+      <div className="relative p-6">
+        <div className="flex flex-col items-center space-y-4 text-center">
+          <h3 className="text-xl font-bold text-foreground">{t('subscription.prompt.title')}</h3>
+
+          <p className="text-muted-foreground">{t('subscription.prompt.description')}</p>
 
           <Link
             to="/dashboard/plans"
-            className="group inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-lg text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg"
+            className="group inline-flex transform items-center justify-center rounded-lg bg-gradient-to-r from-primary to-primary px-6 py-3 text-base font-medium text-white shadow-md transition-all duration-300 hover:scale-105 hover:from-primary-hover hover:to-primary-hover hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
           >
             {t('subscription.prompt.viewPlans')}
-            <ArrowRight className="ms-2 -me-1 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+            <ArrowRight className="-me-1 ms-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         </div>
       </div>

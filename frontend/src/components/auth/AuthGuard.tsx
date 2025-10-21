@@ -8,13 +8,9 @@ interface AuthGuardProps {
 
 export const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   const navigate = useNavigate();
-  if(!AuthService.getInstance().getToken()) {
+  if (!AuthService.getInstance().getToken()) {
     navigate('/', { replace: true });
   }
 
-  return (
-    <div>
-      {children}
-    </div>
-  );
+  return <div>{children}</div>;
 };
