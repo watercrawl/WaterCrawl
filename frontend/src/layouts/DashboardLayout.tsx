@@ -225,7 +225,7 @@ export const DashboardLayout = () => {
   const { settings } = useSettings();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [expandedMenus, setExpandedMenus] = useState<{ [key: string]: boolean }>({});
-  const [showPrivacyTermsModal, setShowPrivacyTermsModal] = useState(false);
+  const { showPrivacyTermsModal } = useUser();
 
   const toggleMenu = (menuName: string) => {
     setExpandedMenus(prev => ({

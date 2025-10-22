@@ -96,46 +96,42 @@ export const AdminLayout: React.FC = () => {
             sidebarOpen ? 'translate-x-0' : 'ltr:-translate-x-full rtl:translate-x-full'
           }`}
         >
-              {/* Close button */}
-              <div className="absolute end-4 top-4">
+          {/* Close button */}
+          <div className="absolute end-4 top-4">
+            <button type="button" className="-m-2.5 p-2.5 text-sidebar-text" onClick={closeSidebar}>
+              <span className="sr-only">{t('common.close')}</span>
+              <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+            </button>
+          </div>
+
+          {/* Logo */}
+          <div className="flex h-16 items-center px-6">
+            <Link to="/manager" className="flex items-center gap-2">
+              <img src="/logo-dark.svg" alt="WaterCrawl Admin" width={32} height={32} />
+              <span className="text-lg font-semibold text-sidebar-text">
+                {t('admin.panelTitle')}
+              </span>
+            </Link>
+          </div>
+
+          {/* Navigation */}
+          <div className="flex-1 overflow-y-auto px-6 py-4">
+            <nav className="flex flex-1 flex-col">
+              <NavigationMenu isMobile={true} closeSidebar={closeSidebar} />
+
+              <div className="mt-8">
                 <button
-                  type="button"
-                  className="-m-2.5 p-2.5 text-sidebar-text"
-                  onClick={closeSidebar}
+                  onClick={() => navigate('/dashboard')}
+                  className="flex w-full items-center gap-x-3 rounded-md bg-muted p-2 text-sm font-medium leading-6 text-foreground transition-colors hover:bg-muted/80"
                 >
-                  <span className="sr-only">{t('common.close')}</span>
-                  <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                  <ArrowLeft className="h-5 w-5" />
+                  {t('admin.exitAdmin')}
                 </button>
               </div>
-
-              {/* Logo */}
-              <div className="flex h-16 items-center px-6">
-                <Link to="/manager" className="flex items-center gap-2">
-                  <img src="/logo-dark.svg" alt="WaterCrawl Admin" width={32} height={32} />
-                  <span className="text-lg font-semibold text-sidebar-text">
-                    {t('admin.panelTitle')}
-                  </span>
-                </Link>
-              </div>
-
-              {/* Navigation */}
-              <div className="flex-1 overflow-y-auto px-6 py-4">
-                <nav className="flex flex-1 flex-col">
-                  <NavigationMenu isMobile={true} closeSidebar={closeSidebar} />
-
-                  <div className="mt-8">
-                    <button
-                      onClick={() => navigate('/dashboard')}
-                      className="flex w-full items-center gap-x-3 rounded-md bg-muted p-2 text-sm font-medium leading-6 text-foreground transition-colors hover:bg-muted/80"
-                    >
-                      <ArrowLeft className="h-5 w-5" />
-                      {t('admin.exitAdmin')}
-                    </button>
-                  </div>
-                </nav>
-              </div>
-            </div>
+            </nav>
           </div>
+        </div>
+      </div>
 
       {/* Desktop sidebar */}
       <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">

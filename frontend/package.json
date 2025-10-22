@@ -13,12 +13,7 @@
     "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json,css,md}\"",
     "preview": "vite preview",
     "i18n:extract": "npx i18next-parser",
-    "i18n:check": "npx i18next-parser --fail-on-update",
-    "colors:check": "node scripts/migrate-colors.mjs --dry-run",
-    "colors:migrate": "node scripts/migrate-colors.mjs",
-    "colors:cleanup": "node scripts/cleanup-classes.mjs",
-    "colors:remove-dark": "node scripts/remove-dark-classes.mjs",
-    "colors:migrate-hardcoded": "node scripts/migrate-hardcoded-colors.mjs"
+    "i18n:check": "npx i18next-parser --fail-on-update"
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.3.0",
