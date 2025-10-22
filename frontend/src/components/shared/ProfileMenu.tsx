@@ -100,7 +100,7 @@ export const ProfileMenu: React.FC = () => {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Menu.Items className="absolute end-0 z-50 mt-2 w-72 origin-top-end rounded-md bg-card shadow-lg ring-1 ring-border focus:outline-none">
+          <Menu.Items className="origin-top-end absolute end-0 z-50 mt-2 w-72 rounded-md bg-card shadow-lg ring-1 ring-border focus:outline-none">
             {/* User Info Section */}
             <div className="border-b border-border px-4 py-3">
               <p className="text-sm font-medium text-foreground">
@@ -146,9 +146,7 @@ export const ProfileMenu: React.FC = () => {
                     >
                       <option.icon className="h-5 w-5" />
                       {option.label}
-                      {theme === option.value && (
-                        <span className="ms-auto text-primary">✓</span>
-                      )}
+                      {theme === option.value && <span className="ms-auto text-primary">✓</span>}
                     </button>
                   )}
                 </Menu.Item>

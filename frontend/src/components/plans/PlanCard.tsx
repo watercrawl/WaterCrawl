@@ -167,10 +167,10 @@ const PlanFeature: React.FC<PlanFeatureProps> = ({ label, helpText, icon }) => (
       <div className="group relative">
         <InformationCircleIcon className="h-5 w-5 text-muted-foreground hover:text-muted-foreground" />
         <div className="pointer-events-none absolute -top-2 left-1/2 z-50 -translate-x-1/2 -translate-y-full opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-          <div className="min-w-[200px] max-w-[300px] whitespace-normal rounded bg-muted px-2 py-1 text-xs text-muted-foreground shadow-lg border border-border">
+          <div className="min-w-[200px] max-w-[300px] whitespace-normal rounded border border-border bg-muted px-2 py-1 text-xs text-muted-foreground shadow-lg">
             {helpText}
             <div className="absolute left-1/2 top-full -translate-x-1/2">
-              <div className="border-4 border-transparent border-border" />
+              <div className="border-4 border-border border-transparent" />
             </div>
           </div>
         </div>
