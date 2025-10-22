@@ -16,7 +16,8 @@ const ResetPasswordPage = () => {
       return;
     }
 
-    authApi.validateResetToken(token)
+    authApi
+      .validateResetToken(token)
       .then(() => {
         setIsValid(true);
       })
@@ -30,7 +31,7 @@ const ResetPasswordPage = () => {
 
   if (isValidating) {
     return (
-      <div className="flex justify-center items-center">
+      <div className="flex items-center justify-center">
         <Loading size="lg" />
       </div>
     );

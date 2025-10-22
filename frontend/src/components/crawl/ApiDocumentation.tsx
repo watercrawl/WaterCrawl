@@ -43,9 +43,13 @@ function toPythonDict(obj: any, indent = 4, level = 1): string {
     const keys = Object.keys(obj);
     if (keys.length === 0) return '{}';
     const pad = ' '.repeat(indent * level);
-    return '{\n' +
+    return (
+      '{\n' +
       keys.map(k => `${pad}'${k}': ${toPythonDict(obj[k], indent, level + 1)}`).join(',\n') +
-      '\n' + ' '.repeat(indent * (level - 1)) + '}';
+      '\n' +
+      ' '.repeat(indent * (level - 1)) +
+      '}'
+    );
   }
   return 'None';
 }
@@ -65,9 +69,13 @@ function toNodeJsOptions(obj: any, indent = 2, level = 1): string {
     const keys = Object.keys(obj);
     if (keys.length === 0) return '{}';
     const pad = ' '.repeat(indent * level);
-    return '{\n' +
+    return (
+      '{\n' +
       keys.map(k => `${pad}${k}: ${toNodeJsOptions(obj[k], indent, level + 1)}`).join(',\n') +
-      '\n' + ' '.repeat(indent * (level - 1)) + '}';
+      '\n' +
+      ' '.repeat(indent * (level - 1)) +
+      '}'
+    );
   }
   return 'null';
 }
@@ -132,35 +140,39 @@ export const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ request, isB
     return 'TEAM_API_KEY';
   }, [apiKeys, selectedApiKey]);
 
-  const generateCurlCommand = useCallback((request: CrawlRequest | null) => {
-    if (!request) return t('api.noRequestData');
-    const data = isBatch
-      ? {
-        urls: request.urls,
-        options: request.options
-      }
-      : {
-        url: request.url,
-        options: request.options
-      };
-    return `curl -X POST \\
+  const generateCurlCommand = useCallback(
+    (request: CrawlRequest | null) => {
+      if (!request) return t('api.noRequestData');
+      const data = isBatch
+        ? {
+            urls: request.urls,
+            options: request.options,
+          }
+        : {
+            url: request.url,
+            options: request.options,
+          };
+      return `curl -X POST \\
   "${getBaseUrl()}/api/v1/core/crawl-requests/${isBatch ? 'batch/' : ''}" \\
   -H "Content-Type: application/json" \\
   -H "X-API-Key: ${getApiKeyValue()}" \\
   -d '${JSON.stringify(data, null, 2)}'`;
-  }, [getApiKeyValue, getBaseUrl, isBatch, t]);
+    },
+    [getApiKeyValue, getBaseUrl, isBatch, t]
+  );
 
-  const generatePythonCode = useCallback((request: CrawlRequest | null) => {
-    const apiKey = getApiKeyValue();
-    const baseUrl = getBaseUrl();
-    // Build options objects (show as empty dicts or with real data if present)
-    const spiderOptions = request?.options?.spider_options || {};
-    const pageOptions = request?.options?.page_options || {};
-    const pluginOptions = request?.options?.plugin_options || {};
+  const generatePythonCode = useCallback(
+    (request: CrawlRequest | null) => {
+      const apiKey = getApiKeyValue();
+      const baseUrl = getBaseUrl();
+      // Build options objects (show as empty dicts or with real data if present)
+      const spiderOptions = request?.options?.spider_options || {};
+      const pageOptions = request?.options?.page_options || {};
+      const pluginOptions = request?.options?.plugin_options || {};
 
-    if (isBatch) {
-      const urls = request?.urls || ['https://example.com', 'https://example.org'];
-      return `from watercrawl import WaterCrawlAPIClient
+      if (isBatch) {
+        const urls = request?.urls || ['https://example.com', 'https://example.org'];
+        return `from watercrawl import WaterCrawlAPIClient
 
 # Initialize the client
 client = WaterCrawlAPIClient(api_key='${apiKey}', base_url='${baseUrl}')
@@ -172,9 +184,9 @@ crawl_request = client.create_batch_crawl_request(
     page_options=${toPythonDict(pageOptions, 4, 2)},
     plugin_options=${toPythonDict(pluginOptions, 4, 2)}
 )`;
-    } else {
-      const url = request?.url || 'https://example.com';
-      return `from watercrawl import WaterCrawlAPIClient
+      } else {
+        const url = request?.url || 'https://example.com';
+        return `from watercrawl import WaterCrawlAPIClient
 
 # Initialize the client
 client = WaterCrawlAPIClient(api_key='${apiKey}', base_url='${baseUrl}')
@@ -186,19 +198,22 @@ crawl_request = client.create_crawl_request(
     page_options=${toPythonDict(pageOptions, 4, 2)},
     plugin_options=${toPythonDict(pluginOptions, 4, 2)}
 )`;
-    }
-  }, [getApiKeyValue, getBaseUrl, isBatch]);
+      }
+    },
+    [getApiKeyValue, getBaseUrl, isBatch]
+  );
 
-  const generateNodeCode = useCallback((request: CrawlRequest | null) => {
-    const apiKey = getApiKeyValue();
-    const baseUrl = getBaseUrl();
-    const spiderOptions = request?.options?.spider_options || {};
-    const pageOptions = request?.options?.page_options || {};
-    const pluginOptions = request?.options?.plugin_options || {};
+  const generateNodeCode = useCallback(
+    (request: CrawlRequest | null) => {
+      const apiKey = getApiKeyValue();
+      const baseUrl = getBaseUrl();
+      const spiderOptions = request?.options?.spider_options || {};
+      const pageOptions = request?.options?.page_options || {};
+      const pluginOptions = request?.options?.plugin_options || {};
 
-    if (isBatch) {
-      const urls = request?.urls || ['https://example.com', 'https://example.org'];
-      return `import { WaterCrawlAPIClient } from '@watercrawl/nodejs';
+      if (isBatch) {
+        const urls = request?.urls || ['https://example.com', 'https://example.org'];
+        return `import { WaterCrawlAPIClient } from '@watercrawl/nodejs';
 
 // Initialize the client with your API key
 const client = new WaterCrawlAPIClient('${apiKey}', '${baseUrl}');
@@ -210,9 +225,9 @@ const crawlRequest = await client.createBatchCrawlRequest(
   ${toNodeJsOptions(pluginOptions, 2, 2)}
 );
 console.log(crawlRequest);`;
-    } else {
-      const url = request?.url || 'https://example.com';
-      return `import { WaterCrawlAPIClient } from '@watercrawl/nodejs';
+      } else {
+        const url = request?.url || 'https://example.com';
+        return `import { WaterCrawlAPIClient } from '@watercrawl/nodejs';
 
 // Initialize the client with your API key
 const client = new WaterCrawlAPIClient('${apiKey}', '${baseUrl}');
@@ -224,19 +239,22 @@ const crawlRequest = await client.createCrawlRequest(
   ${toNodeJsOptions(pluginOptions, 2, 2)}
 );
 console.log(crawlRequest);`;
-    }
-  }, [getApiKeyValue, getBaseUrl, isBatch]);
+      }
+    },
+    [getApiKeyValue, getBaseUrl, isBatch]
+  );
 
-  const generateGoCode = useCallback((request: CrawlRequest | null) => {
-    const apiKey = getApiKeyValue();
-    const baseUrl = getBaseUrl();
-    const spiderOptions = request?.options?.spider_options || {};
-    const pageOptions = request?.options?.page_options || {};
-    const pluginOptions = request?.options?.plugin_options || {};
+  const generateGoCode = useCallback(
+    (request: CrawlRequest | null) => {
+      const apiKey = getApiKeyValue();
+      const baseUrl = getBaseUrl();
+      const spiderOptions = request?.options?.spider_options || {};
+      const pageOptions = request?.options?.page_options || {};
+      const pluginOptions = request?.options?.plugin_options || {};
 
-    if (isBatch) {
-      const urls = request?.urls || ['https://example.com', 'https://example.org'];
-      return `import "github.com/watercrawl/watercrawl-go"
+      if (isBatch) {
+        const urls = request?.urls || ['https://example.com', 'https://example.org'];
+        return `import "github.com/watercrawl/watercrawl-go"
 
 client := watercrawl.NewClient("${apiKey}", "${baseUrl}")  // Empty string uses default base URL
 
@@ -254,9 +272,9 @@ result, err := client.CreateBatchCrawlRequest(ctx, input)
 if err != nil {
     log.Fatal(err)
 }`;
-    } else {
-      const url = request?.url || 'https://example.com';
-      return `import "github.com/watercrawl/watercrawl-go"
+      } else {
+        const url = request?.url || 'https://example.com';
+        return `import "github.com/watercrawl/watercrawl-go"
 
 client := watercrawl.NewClient("${apiKey}", "${baseUrl}")  // Empty string uses default base URL
 
@@ -274,45 +292,48 @@ result, err := client.CreateCrawlRequest(ctx, input)
 if err != nil {
     log.Fatal(err)
 }`;
-    }
-  }, [getApiKeyValue, getBaseUrl, isBatch]);
+      }
+    },
+    [getApiKeyValue, getBaseUrl, isBatch]
+  );
 
-  const tabs = useMemo(() => [
-    { name: 'cURL', content: generateCurlCommand(request) },
-    { name: 'Python', content: generatePythonCode(request) },
-    { name: 'Node.js', content: generateNodeCode(request) },
-    { name: 'Go', content: generateGoCode(request) },
-  ], [request, generateCurlCommand, generatePythonCode, generateNodeCode, generateGoCode]);
+  const tabs = useMemo(
+    () => [
+      { name: 'cURL', content: generateCurlCommand(request) },
+      { name: 'Python', content: generatePythonCode(request) },
+      { name: 'Node.js', content: generateNodeCode(request) },
+      { name: 'Go', content: generateGoCode(request) },
+    ],
+    [request, generateCurlCommand, generatePythonCode, generateNodeCode, generateGoCode]
+  );
 
   if (!request) {
     return (
-      <div className="border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 p-6">
-        <h3 className="text-lg font-medium text-gray-900 dark:text-white">{t('api.title')}</h3>
-        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">{t('api.crawl.description')}</p>
+      <div className="rounded-lg border border-border bg-card p-6">
+        <h3 className="text-lg font-medium text-foreground">{t('api.title')}</h3>
+        <p className="mt-2 text-sm text-muted-foreground">{t('api.crawl.description')}</p>
       </div>
     );
   }
 
   return (
-    <div className="border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800">
-      <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-        <h3 className="text-base font-semibold text-gray-900 dark:text-white">{t('api.title')}</h3>
-        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-          {t('api.crawl.fullDescription')}
-        </p>
+    <div className="rounded-lg border border-border bg-card">
+      <div className="border-b border-border px-6 py-4">
+        <h3 className="text-base font-semibold text-foreground">{t('api.title')}</h3>
+        <p className="mt-1 text-sm text-muted-foreground">{t('api.crawl.fullDescription')}</p>
       </div>
       <div className="p-6">
         <TabGroup>
-          <TabList className="flex p-1 gap-x-1 bg-gray-100 dark:bg-gray-800 rounded-lg">
-            {tabs.map((tab) => (
+          <TabList className="flex gap-x-1 rounded-lg bg-muted p-1">
+            {tabs.map(tab => (
               <Tab
                 key={tab.name}
                 className={({ selected }: { selected: boolean }) =>
                   classNames(
                     'px-4 py-2.5 text-sm font-medium leading-5 focus:outline-none',
                     selected
-                      ? 'text-primary-600 dark:text-primary-400 border-b-2 border-primary-600 dark:border-primary-400'
-                      : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                      ? 'border-b-2 border-primary-600 text-primary'
+                      : 'text-muted-foreground hover:text-foreground'
                   )
                 }
               >
@@ -323,34 +344,38 @@ if err != nil {
           <TabPanels className="mt-6">
             {tabs.map((tab, idx) => (
               <TabPanel key={idx}>
-                <div className="bg-[#1E1E1E] rounded-lg overflow-hidden ">
-                  <div className="flex items-center justify-between px-4 py-2 bg-[#2D2D2D] border-b border-[#404040]">
-                    <div className="flex gap-x-2 items-center">
+                <div className="overflow-hidden rounded-lg bg-[#1E1E1E]">
+                  <div className="flex items-center justify-between border-b border-[#404040] bg-[#2D2D2D] px-4 py-2">
+                    <div className="flex items-center gap-x-2">
                       <div className="flex gap-x-2">
-                        <div className="w-3 h-3 rounded-full bg-[#FF5F56]"></div>
-                        <div className="w-3 h-3 rounded-full bg-[#FFBD2E]"></div>
-                        <div className="w-3 h-3 rounded-full bg-[#27C93F]"></div>
+                        <div className="h-3 w-3 rounded-full bg-[#FF5F56]"></div>
+                        <div className="h-3 w-3 rounded-full bg-[#FFBD2E]"></div>
+                        <div className="h-3 w-3 rounded-full bg-[#27C93F]"></div>
                       </div>
-                      <div className="text-xs text-gray-400 ms-4">{tab.name} {t('api.example')}</div>
+                      <div className="ms-4 text-xs text-muted-foreground">
+                        {tab.name} {t('api.example')}
+                      </div>
                     </div>
                     <div className="flex items-center gap-x-2">
                       {/* API Key Dropdown for cURL and Python panels */}
                       <select
                         id={`api-key-select-${tab.name}`}
-                        className="rounded-md border-gray-700 bg-[#23272b] text-gray-100 p-1 text-xs focus:outline-none focus:ring-2 focus:ring-primary-500 w-40"
+                        className="w-40 rounded-md border-border bg-muted p-1 text-xs text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
                         value={selectedApiKey}
                         onChange={e => setSelectedApiKey(e.target.value)}
                         disabled={loadingKeys}
                       >
                         <option value="">{t('api.selectApiKey')}</option>
                         {apiKeys.map(key => (
-                          <option key={key.uuid} value={key.uuid}>{key.name} ({key.key.slice(0, 6)}...)</option>
+                          <option key={key.uuid} value={key.uuid}>
+                            {key.name} ({key.key.slice(0, 6)}...)
+                          </option>
                         ))}
                       </select>
                       <button
                         type="button"
                         onClick={() => copyToClipboard(tab.content, t)}
-                        className="text-xs text-gray-400 hover:text-gray-300 focus:outline-none inline-flex items-center"
+                        className="inline-flex items-center text-xs text-muted-foreground hover:text-muted-foreground focus:outline-none"
                       >
                         <ClipboardIcon className="h-4 w-4" />
                       </button>
@@ -397,7 +422,6 @@ if err != nil {
                       language="go"
                     />
                   )}
-
                 </div>
               </TabPanel>
             ))}

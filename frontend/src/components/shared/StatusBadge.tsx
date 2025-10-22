@@ -1,6 +1,15 @@
 import React from 'react';
 import { CrawlStatus } from '../../types/crawl';
-import { PlusIcon, ArrowPathIcon, XMarkIcon, CheckIcon, BeakerIcon, ArchiveBoxIcon, TrashIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import {
+  PlusIcon,
+  ArrowPathIcon,
+  XMarkIcon,
+  CheckIcon,
+  BeakerIcon,
+  ArchiveBoxIcon,
+  TrashIcon,
+  ExclamationTriangleIcon,
+} from '@heroicons/react/24/outline';
 import { useTranslation } from 'react-i18next';
 
 interface StatusBadgeProps {
@@ -22,91 +31,53 @@ const STATUS_ICONS = {
   deleted: <TrashIcon className="h-4 w-4" />,
 };
 
-const STATUS_COLORS = {
-  new: {
-    light: { bg: 'bg-indigo-50', text: 'text-indigo-700', border: 'border-indigo-200' },
-    dark: { bg: 'dark:bg-indigo-900/10', text: 'dark:text-indigo-400', border: 'dark:border-indigo-900/30' },
-  },
-  running: {
-    light: { bg: 'bg-sky-50', text: 'text-sky-700', border: 'border-sky-200' },
-    dark: { bg: 'dark:bg-sky-900/10', text: 'dark:text-sky-400', border: 'dark:border-sky-900/30' },
-  },
-  canceled: {
-    light: { bg: 'bg-slate-50', text: 'text-slate-700', border: 'border-slate-200' },
-    dark: { bg: 'dark:bg-slate-900/10', text: 'dark:text-slate-400', border: 'dark:border-slate-900/30' },
-  },
-  canceling: {
-    light: { bg: 'bg-zinc-50', text: 'text-zinc-700', border: 'border-zinc-200' },
-    dark: { bg: 'dark:bg-zinc-900/10', text: 'dark:text-zinc-400', border: 'dark:border-zinc-900/30' },
-  },
-  failed: {
-    light: { bg: 'bg-rose-50', text: 'text-rose-700', border: 'border-rose-200' },
-    dark: { bg: 'dark:bg-rose-900/10', text: 'dark:text-rose-400', border: 'dark:border-rose-900/30' },
-  },
-  finished: {
-    light: { bg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-200' },
-    dark: { bg: 'dark:bg-emerald-900/10', text: 'dark:text-emerald-400', border: 'dark:border-emerald-900/30' },
-  },
-  ready: {
-    light: { bg: 'bg-green-50', text: 'text-green-700', border: 'border-green-200' },
-    dark: { bg: 'dark:bg-green-900/10', text: 'dark:text-green-400', border: 'dark:border-green-900/30' },
-  },
-  processing: {
-    light: { bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-200' },
-    dark: { bg: 'dark:bg-blue-900/10', text: 'dark:text-blue-400', border: 'dark:border-blue-900/30' },
-  },
-  active: {
-    light: { bg: 'bg-green-50', text: 'text-green-700', border: 'border-green-200' },
-    dark: { bg: 'dark:bg-green-900/10', text: 'dark:text-green-400', border: 'dark:border-green-900/30' },
-  },
-  archived: {
-    light: { bg: 'bg-yellow-50', text: 'text-yellow-700', border: 'border-yellow-200' },
-    dark: { bg: 'dark:bg-yellow-900/10', text: 'dark:text-yellow-400', border: 'dark:border-yellow-900/30' },
-  },
-  deleted: {
-    light: { bg: 'bg-red-50', text: 'text-red-700', border: 'border-red-200' },
-    dark: { bg: 'dark:bg-red-900/10', text: 'dark:text-red-400', border: 'dark:border-red-900/30' },
-  },
+const STATUS_COLORS: Record<string, string> = {
+  new: 'bg-alert-info-bg text-alert-info-text border-alert-info-border',
+  running: 'bg-alert-info-bg text-alert-info-text border-alert-info-border',
+  canceled: 'bg-muted text-muted-foreground border-border',
+  canceling: 'bg-muted text-muted-foreground border-border',
+  failed: 'bg-alert-error-bg text-alert-error-text border-alert-error-border',
+  finished: 'bg-alert-success-bg text-alert-success-text border-alert-success-border',
+  ready: 'bg-alert-success-bg text-alert-success-text border-alert-success-border',
+  processing: 'bg-alert-info-bg text-alert-info-text border-alert-info-border',
+  active: 'bg-alert-success-bg text-alert-success-text border-alert-success-border',
+  archived: 'bg-alert-warning-bg text-alert-warning-text border-alert-warning-border',
+  deleted: 'bg-alert-error-bg text-alert-error-text border-alert-error-border',
 } as const;
 
-const getStatusColor = (status: string) => {
-  const colors = STATUS_COLORS[status as keyof typeof STATUS_COLORS] || STATUS_COLORS.canceling;
-  return `${colors.light.bg} ${colors.light.text} ${colors.light.border} ${colors.dark.bg} ${colors.dark.text} ${colors.dark.border}`;
+const getStatusColor = (status: string): string => {
+  return STATUS_COLORS[status.toLowerCase()] || STATUS_COLORS.canceling;
 };
-
 const getStatusIcon = (status: string) => {
   const icon = STATUS_ICONS[status as keyof typeof STATUS_ICONS] || STATUS_ICONS.canceling;
   return icon;
 };
-
 export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, showIcon = false }) => {
   const { t } = useTranslation();
-  
   const getStatusLabel = (status: string) => {
     const statusMap: Record<string, string> = {
-      'new': t('status.new'),
-      'running': t('status.running'),
-      'canceled': t('status.canceled'),
-      'canceling': t('status.canceling'),
-      'failed': t('status.failed'),
-      'finished': t('status.finished'),
-      'ready': t('status.ready'),
-      'processing': t('status.processing'),
-      'active': t('status.active'),
-      'archived': t('status.archived'),
-      'deleted': t('status.deleted'),
+      new: t('status.new'),
+      running: t('status.running'),
+      canceled: t('status.canceled'),
+      canceling: t('status.canceling'),
+      failed: t('status.failed'),
+      finished: t('status.finished'),
+      ready: t('status.ready'),
+      processing: t('status.processing'),
+      active: t('status.active'),
+      archived: t('status.archived'),
+      deleted: t('status.deleted'),
     };
     return statusMap[status.toLowerCase()] || status;
   };
-  
   return (
     <>
+      {' '}
       <span
-        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(
-          status
-        )}`}
-        >
-        {getStatusLabel(status)}
+        className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${getStatusColor(status)}`}
+      >
+        {' '}
+        {getStatusLabel(status)}{' '}
         {showIcon && <span className="ms-0.5">{getStatusIcon(status)}</span>}
       </span>
     </>

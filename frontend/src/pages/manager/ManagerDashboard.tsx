@@ -9,18 +9,14 @@ const AdminDashboard: React.FC = () => {
   const { setItems } = useBreadcrumbs();
 
   useEffect(() => {
-    setItems([
-      { label: t('dashboard.navigation.adminPanel'), href: '/manage', current: true },
-    ]);
+    setItems([{ label: t('dashboard.navigation.adminPanel'), href: '/manage', current: true }]);
   }, [setItems, t]);
 
   return (
     <div className="py-6">
-      <h1 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">
-        {t('admin.dashboard')}
-      </h1>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <h1 className="mb-6 text-2xl font-semibold text-foreground">{t('admin.dashboard')}</h1>
+
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {/* Proxies Card */}
         <AdminCard
           icon={ServerIcon}
@@ -38,7 +34,6 @@ const AdminDashboard: React.FC = () => {
           linkText={t('common.actions')}
           linkTo="/manager/llm-providers"
         />
-
       </div>
     </div>
   );

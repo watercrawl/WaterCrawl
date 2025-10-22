@@ -31,8 +31,8 @@ export function Table<T>({
     return (
       <div className="flex items-center justify-center py-8">
         <div className="flex flex-col items-center space-y-4">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
-          <p className="text-sm text-gray-500 dark:text-gray-400">{t('common.loading')}</p>
+          <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-border"></div>
+          <p className="text-sm text-muted-foreground">{t('common.loading')}</p>
         </div>
       </div>
     );
@@ -45,17 +45,17 @@ export function Table<T>({
   return (
     <div className="mt-8 flex flex-col">
       <div className="-mx-4 sm:-mx-6 lg:-mx-8">
-        <div className="inline-block min-w-full py-2 align-middle px-4 sm:px-6 lg:px-8">
-          <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 dark:ring-gray-700 rounded-lg">
-            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-              <thead className="bg-gray-50 dark:bg-gray-800">
+        <div className="inline-block min-w-full px-4 py-2 align-middle sm:px-6 lg:px-8">
+          <div className="overflow-hidden rounded-lg shadow ring-1 ring-black ring-opacity-5">
+            <table className="min-w-full divide-y divide-border">
+              <thead className="bg-muted">
                 <tr>
-                  {columns.map((column) => (
+                  {columns.map(column => (
                     <th
                       key={column.key}
                       scope="col"
                       className={twMerge(
-                        'px-6 py-3 text-start text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider',
+                        'px-6 py-3 text-start text-xs font-medium uppercase tracking-wider text-muted-foreground',
                         column.className
                       )}
                     >
@@ -64,10 +64,11 @@ export function Table<T>({
                   ))}
                 </tr>
               </thead>
-              <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
+              <tbody className="divide-y divide-border bg-card">
                 {data.map((item, index) => {
-                  const baseRowClass = 'hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200';
-                  const customRowClass = typeof rowClassName === 'function' ? rowClassName(item) : rowClassName;
+                  const baseRowClass = 'hover:bg-muted transition-colors duration-200';
+                  const customRowClass =
+                    typeof rowClassName === 'function' ? rowClassName(item) : rowClassName;
                   const finalRowClass = twMerge(baseRowClass, customRowClass);
 
                   return (
@@ -77,18 +78,18 @@ export function Table<T>({
                       onClick={() => onRowClick?.(item)}
                       role={onRowClick ? 'button' : undefined}
                     >
-                      {columns.map((column) => (
+                      {columns.map(column => (
                         <td
                           key={column.key}
                           className={twMerge(
-                            'px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100',
+                            'whitespace-nowrap px-6 py-4 text-sm text-foreground',
                             column.className
                           )}
                         >
                           {column.render
                             ? column.render(item)
-                            // @ts-ignore - We know this is safe because the key exists in the item
-                            : item[column.key]}
+                            : // @ts-ignore - We know this is safe because the key exists in the item
+                              item[column.key]}
                         </td>
                       ))}
                     </tr>

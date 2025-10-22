@@ -20,22 +20,31 @@ const passwordStrengthRegex = {
   minLength: 8,
 };
 
-const getSchema = (t: (key: string) => string) => yup.object({
-  first_name: yup.string().required(t('validation.required')),
-  last_name: yup.string().required(t('validation.required')),
-  email: yup
-    .string()
-    .email(t('validation.email'))
-    .required(t('validation.required')),
-  password: yup
-    .string()
-    .min(8, 'Password must be at least 8 characters')
-    .matches(passwordStrengthRegex.hasNumber, 'Password must contain at least one number')
-    .matches(passwordStrengthRegex.hasUpperCase, 'Password must contain at least one uppercase letter')
-    .matches(passwordStrengthRegex.hasLowerCase, 'Password must contain at least one lowercase letter')
-    .matches(passwordStrengthRegex.hasSpecialChar, 'Password must contain at least one special character')
-    .required(t('validation.required')),
-}).required();
+const getSchema = (t: (key: string) => string) =>
+  yup
+    .object({
+      first_name: yup.string().required(t('validation.required')),
+      last_name: yup.string().required(t('validation.required')),
+      email: yup.string().email(t('validation.email')).required(t('validation.required')),
+      password: yup
+        .string()
+        .min(8, 'Password must be at least 8 characters')
+        .matches(passwordStrengthRegex.hasNumber, 'Password must contain at least one number')
+        .matches(
+          passwordStrengthRegex.hasUpperCase,
+          'Password must contain at least one uppercase letter'
+        )
+        .matches(
+          passwordStrengthRegex.hasLowerCase,
+          'Password must contain at least one lowercase letter'
+        )
+        .matches(
+          passwordStrengthRegex.hasSpecialChar,
+          'Password must contain at least one special character'
+        )
+        .required(t('validation.required')),
+    })
+    .required();
 
 type FormData = {
   first_name: string;
@@ -89,7 +98,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ invitation }) => {
   const defaultValues = React.useMemo(() => {
     if (invitation) {
       return {
-        email: invitation.email
+        email: invitation.email,
       };
     }
     return {};
@@ -98,19 +107,24 @@ export const SignupForm: React.FC<SignupFormProps> = ({ invitation }) => {
   const methods = useForm<FormData>({
     resolver: yupResolver(getSchema(t)),
     mode: 'onChange',
-    defaultValues
+    defaultValues,
   });
 
   useEffect(() => {
     if (invitation) {
       methods.reset({
         ...methods.getValues(),
-        email: invitation.email
+        email: invitation.email,
       });
     }
   }, [invitation, methods]);
 
-  const { handleSubmit, formState: { errors }, watch, setError: setFieldError } = methods;
+  const {
+    handleSubmit,
+    formState: { errors },
+    watch,
+    setError: setFieldError,
+  } = methods;
   const password = watch('password', '');
   const passwordStrength = password ? getPasswordStrength(password) : null;
 
@@ -119,7 +133,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ invitation }) => {
     setError(null);
 
     // Clear any previous field errors
-    Object.keys(data).forEach((field) => {
+    Object.keys(data).forEach(field => {
       setFieldError(field as keyof FormData, { type: 'manual', message: '' });
     });
 
@@ -135,7 +149,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ invitation }) => {
     }
 
     request
-      .then((response) => {
+      .then(response => {
         if (response.email_verified) {
           toast.success(t('auth.signup.success'), {
             duration: 3000,
@@ -178,12 +192,12 @@ export const SignupForm: React.FC<SignupFormProps> = ({ invitation }) => {
 
   const getPasswordStrengthColor = (score: number) => {
     const colors = {
-      0: 'bg-red-500',
-      1: 'bg-red-400',
-      2: 'bg-yellow-500',
-      3: 'bg-yellow-400',
-      4: 'bg-green-500',
-      5: 'bg-green-400',
+      0: 'bg-error',
+      1: 'bg-error',
+      2: 'bg-warning',
+      3: 'bg-warning',
+      4: 'bg-success',
+      5: 'bg-success',
     };
     return colors[score as keyof typeof colors];
   };
@@ -191,18 +205,15 @@ export const SignupForm: React.FC<SignupFormProps> = ({ invitation }) => {
   if (success) {
     return (
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white dark:bg-gray-800 px-4 py-8 shadow sm:rounded-lg sm:px-10">
-          <h2 className="mb-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
+        <div className="bg-card px-4 py-8 shadow sm:rounded-lg sm:px-10">
+          <h2 className="mb-6 text-center text-3xl font-extrabold text-foreground">
             {t('auth.signup.checkEmail')}
           </h2>
-          <p className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
+          <p className="mt-4 text-center text-sm text-muted-foreground">
             {t('auth.signup.verificationSent')}
           </p>
           <div className="mt-6 text-center">
-            <Link
-              to="/"
-              className="font-medium text-primary-600 hover:text-primary-500 dark:text-primary-400"
-            >
+            <Link to="/" className="font-medium text-primary hover:text-primary-500">
               {t('auth.signup.returnToLogin')}
             </Link>
           </div>
@@ -214,7 +225,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ invitation }) => {
   return (
     <FormProvider {...methods}>
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white dark:bg-gray-800 py-8 px-4 shadow sm:rounded-lg sm:px-10">
+        <div className="bg-card px-4 py-8 shadow sm:rounded-lg sm:px-10">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {error && <ValidationMessage message={error} type="error" />}
 
@@ -259,9 +270,9 @@ export const SignupForm: React.FC<SignupFormProps> = ({ invitation }) => {
                     className="pe-3 focus:outline-none"
                   >
                     {showPassword ? (
-                      <EyeSlashIcon className="h-5 w-5 text-gray-400 hover:text-gray-500 dark:hover:text-gray-300" />
+                      <EyeSlashIcon className="h-5 w-5 text-muted-foreground hover:text-muted-foreground" />
                     ) : (
-                      <EyeIcon className="h-5 w-5 text-gray-400 hover:text-gray-500 dark:hover:text-gray-300" />
+                      <EyeIcon className="h-5 w-5 text-muted-foreground hover:text-muted-foreground" />
                     )}
                   </button>
                 }
@@ -270,7 +281,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ invitation }) => {
               {passwordStrength && (
                 <div className="mt-2">
                   <div className="flex items-center gap-x-2">
-                    <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+                    <div className="h-2 flex-1 overflow-hidden rounded-full bg-muted">
                       <div
                         className={`h-full ${getPasswordStrengthColor(
                           passwordStrength.score
@@ -278,7 +289,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ invitation }) => {
                         style={{ width: `${(passwordStrength.score / 5) * 100}%` }}
                       />
                     </div>
-                    <span className="text-sm text-gray-500 dark:text-gray-400 min-w-[80px]">
+                    <span className="min-w-[80px] text-sm text-muted-foreground">
                       {passwordStrength.message}
                     </span>
                   </div>
@@ -288,10 +299,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ invitation }) => {
 
             <div className="flex items-center justify-between">
               <div className="text-sm">
-                <Link
-                  to="/"
-                  className="font-medium text-primary-600 hover:text-primary-500 dark:text-primary-400 dark:hover:text-primary-300"
-                >
+                <Link to="/" className="font-medium text-primary hover:text-primary-500">
                   {t('auth.signup.hasAccount')}
                 </Link>
               </div>
@@ -300,8 +308,9 @@ export const SignupForm: React.FC<SignupFormProps> = ({ invitation }) => {
             <button
               type="submit"
               disabled={isLoading}
-              className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-800 ${isLoading ? 'opacity-50 cursor-not-allowed' : ''
-                }`}
+              className={`flex w-full justify-center rounded-md border border-transparent bg-primary px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
+                isLoading ? 'cursor-not-allowed opacity-50' : ''
+              }`}
             >
               {isLoading ? t('auth.signup.creating') : t('auth.signup.signupButton')}
             </button>
@@ -310,12 +319,10 @@ export const SignupForm: React.FC<SignupFormProps> = ({ invitation }) => {
           <div className="mt-6">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300 dark:border-gray-600" />
+                <div className="w-full border-t border-input-border" />
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">
-                  {t('auth.login.or')}
-                </span>
+                <span className="bg-card px-2 text-muted-foreground">{t('auth.login.or')}</span>
               </div>
             </div>
 

@@ -30,9 +30,11 @@ export const teamApi = {
   },
 
   async listMembers(page: number = 1): Promise<PaginatedResponse<TeamMember>> {
-    return api.get<PaginatedResponse<TeamMember>>('/api/v1/user/teams/current/members/', {
-      params: { page },
-    }).then(({ data }) => data);
+    return api
+      .get<PaginatedResponse<TeamMember>>('/api/v1/user/teams/current/members/', {
+        params: { page },
+      })
+      .then(({ data }) => data);
   },
 
   async removeMember(memberId: string): Promise<void> {
@@ -40,6 +42,8 @@ export const teamApi = {
   },
 
   async getInvitations(): Promise<TeamInvitation[]> {
-    return api.get<TeamInvitation[]>('/api/v1/user/teams/current/invitations/').then(({ data }) => data);
+    return api
+      .get<TeamInvitation[]>('/api/v1/user/teams/current/invitations/')
+      .then(({ data }) => data);
   },
 };

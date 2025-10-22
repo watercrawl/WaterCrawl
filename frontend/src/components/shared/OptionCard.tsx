@@ -27,43 +27,43 @@ const OptionCard: React.FC<OptionCardProps> = ({
   const getBadgeColors = (color: string) => {
     switch (color) {
       case 'primary':
-        return 'bg-primary-100 text-primary-800 dark:bg-primary-800/30 dark:text-primary-300';
+        return 'bg-primary-100 text-primary-800';
       case 'success':
-        return 'bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-300';
+        return 'bg-success-light text-success-dark';
       case 'warning':
-        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-800/30 dark:text-yellow-300';
+        return 'bg-warning-light text-warning-dark';
       case 'danger':
-        return 'bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-300';
+        return 'bg-error-light text-error';
       case 'info':
-        return 'bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-300';
+        return 'bg-alert-info-bg text-alert-info-text border-alert-info-border';
       default:
-        return 'bg-primary-100 text-primary-800 dark:bg-primary-800/30 dark:text-primary-300';
+        return 'bg-primary-100 text-primary-800';
     }
   };
 
   return (
     <div
       onClick={onClick}
-      className={`flex flex-col p-2 border ${
-        isSelected 
-          ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20' 
-          : 'border-gray-200 dark:border-gray-700'
-      } rounded-lg cursor-pointer transition-all hover:border-primary-300 dark:hover:border-primary-700`}
+      className={`flex flex-col border p-2 ${
+        isSelected ? 'border-primary-500 bg-primary-50' : 'border-border'
+      } cursor-pointer rounded-lg transition-all hover:border-primary`}
     >
       <div className="flex items-center">
-        <div className={`flex-shrink-0 h-5 w-5 ${iconBgColor} ${iconDarkBgColor} rounded-full flex items-center justify-center me-1.5`}>
+        <div
+          className={`h-5 w-5 flex-shrink-0 ${iconBgColor} ${iconDarkBgColor} me-1.5 flex items-center justify-center rounded-full`}
+        >
           {icon}
         </div>
-        <h3 className="text-xs font-medium text-gray-900 dark:text-white me-1.5">{title}</h3>
+        <h3 className="me-1.5 text-xs font-medium text-foreground">{title}</h3>
         {badge && (
-          <span className={`inline-flex items-center justify-center rounded px-1 py-0.5 text-xs font-medium ${getBadgeColors(badge.color)}`}>
+          <span
+            className={`inline-flex items-center justify-center rounded px-1 py-0.5 text-xs font-medium ${getBadgeColors(badge.color)}`}
+          >
             {badge.text}
           </span>
         )}
       </div>
-      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-        {description}
-      </p>
+      <p className="mt-1 text-xs text-muted-foreground">{description}</p>
     </div>
   );
 };

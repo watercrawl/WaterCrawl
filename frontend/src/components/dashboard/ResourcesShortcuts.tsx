@@ -6,7 +6,7 @@ import {
   ChatBubbleLeftRightIcon,
   BugAntIcon,
   GlobeAltIcon,
-  LanguageIcon
+  LanguageIcon,
 } from '@heroicons/react/24/outline';
 import { useSettings } from '../../contexts/SettingsProvider';
 import { useTranslation } from 'react-i18next';
@@ -20,12 +20,10 @@ interface ResourceLink {
   color: string;
 }
 
-
-
 export const ResourcesShortcuts: React.FC = () => {
   const { t } = useTranslation();
   const { settings } = useSettings();
-  
+
   const resources: ResourceLink[] = [
     {
       title: t('dashboard.resources.apiDocs'),
@@ -33,7 +31,7 @@ export const ResourcesShortcuts: React.FC = () => {
       href: '/dashboard/api-reference',
       icon: DocumentTextIcon,
       external: false,
-      color: 'text-blue-600 dark:text-blue-400'
+      color: 'text-primary',
     },
     {
       title: t('dashboard.resources.devGuides'),
@@ -41,7 +39,7 @@ export const ResourcesShortcuts: React.FC = () => {
       href: 'https://docs.watercrawl.dev/api/overview',
       icon: BookOpenIcon,
       external: true,
-      color: 'text-purple-600 dark:text-purple-400'
+      color: 'text-primary',
     },
     {
       title: t('dashboard.resources.codeExamples'),
@@ -49,7 +47,7 @@ export const ResourcesShortcuts: React.FC = () => {
       href: 'https://github.com/watercrawl/WaterCrawl/tree/main/tutorials',
       icon: CodeBracketIcon,
       external: true,
-      color: 'text-gray-600 dark:text-gray-400'
+      color: 'text-muted-foreground',
     },
     {
       title: t('dashboard.resources.discussions'),
@@ -57,7 +55,7 @@ export const ResourcesShortcuts: React.FC = () => {
       href: 'https://github.com/watercrawl/WaterCrawl/discussions',
       icon: ChatBubbleLeftRightIcon,
       external: true,
-      color: 'text-pink-600 dark:text-pink-400'
+      color: 'text-primary',
     },
     {
       title: t('dashboard.resources.bugReports'),
@@ -65,7 +63,7 @@ export const ResourcesShortcuts: React.FC = () => {
       href: 'https://github.com/watercrawl/watercrawl/issues',
       icon: BugAntIcon,
       external: true,
-      color: 'text-red-600 dark:text-red-400'
+      color: 'text-error',
     },
     {
       title: t('dashboard.resources.translations'),
@@ -73,30 +71,35 @@ export const ResourcesShortcuts: React.FC = () => {
       href: 'https://crowdin.com/project/watercrawl',
       icon: LanguageIcon,
       external: true,
-      color: 'text-yellow-600 dark:text-yellow-400'
+      color: 'text-warning',
     },
-    ...(settings?.is_enterprise_mode_active ? [
-      {
-        title: t('dashboard.resources.statusPage'),
-        description: t('dashboard.resources.statusPageDesc'),
-        href: 'https://status.watercrawl.dev',
-        icon: GlobeAltIcon,
-        external: true,
-      color: 'text-indigo-600 dark:text-indigo-400'
-    }] : []),
+    ...(settings?.is_enterprise_mode_active
+      ? [
+          {
+            title: t('dashboard.resources.statusPage'),
+            description: t('dashboard.resources.statusPageDesc'),
+            href: 'https://status.watercrawl.dev',
+            icon: GlobeAltIcon,
+            external: true,
+            color: 'text-primary',
+          },
+        ]
+      : []),
   ];
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
-      <div className="flex items-center gap-x-3 mb-6">
-        <BookOpenIcon className="h-6 w-6 text-primary-600" />
+    <div className="rounded-xl border border-border bg-card p-6">
+      <div className="mb-6 flex items-center gap-x-3">
+        <BookOpenIcon className="h-6 w-6 text-primary" />
         <div>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('dashboard.resources.title')}</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400">{t('dashboard.resources.subtitle')}</p>
+          <h2 className="text-lg font-semibold text-foreground">
+            {t('dashboard.resources.title')}
+          </h2>
+          <p className="text-sm text-muted-foreground">{t('dashboard.resources.subtitle')}</p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {resources.map((resource) => {
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        {resources.map(resource => {
           const IconComponent = resource.icon;
           const linkProps = resource.external
             ? { target: '_blank', rel: 'noopener noreferrer' }
@@ -107,25 +110,39 @@ export const ResourcesShortcuts: React.FC = () => {
               key={resource.title}
               href={resource.href}
               {...linkProps}
-              className="group p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-600 hover:shadow-md transition-all duration-200"
+              className="group rounded-lg border border-border bg-muted p-4 transition-all duration-200 hover:border-primary hover:shadow-md"
             >
               <div className="flex items-start gap-x-3">
-                <div className={`p-2 rounded-lg bg-white dark:bg-gray-800 shadow-sm group-hover:shadow-md transition-shadow`}>
+                <div
+                  className={`rounded-lg bg-background p-2 shadow-sm transition-shadow group-hover:shadow-md`}
+                >
                   <IconComponent className={`h-5 w-5 ${resource.color}`} />
                 </div>
-                <div className="flex-1 min-w-0">
+                <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-x-1">
-                    <h3 className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                    <h3 className="text-sm font-medium text-foreground transition-colors group-hover:text-primary">
                       {resource.title}
                     </h3>
                     {resource.external && (
-                      <svg className="h-3 w-3 text-gray-400 group-hover:text-primary-500" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5z" clipRule="evenodd" />
-                        <path fillRule="evenodd" d="M6.194 12.753a.75.75 0 001.06.053L16.5 4.44v2.81a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.553l-9.056 8.194a.75.75 0 00-.053 1.06z" clipRule="evenodd" />
+                      <svg
+                        className="h-3 w-3 text-muted-foreground group-hover:text-primary"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5z"
+                          clipRule="evenodd"
+                        />
+                        <path
+                          fillRule="evenodd"
+                          d="M6.194 12.753a.75.75 0 001.06.053L16.5 4.44v2.81a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.553l-9.056 8.194a.75.75 0 00-.053 1.06z"
+                          clipRule="evenodd"
+                        />
                       </svg>
                     )}
                   </div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">
+                  <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">
                     {resource.description}
                   </p>
                 </div>
@@ -136,31 +153,31 @@ export const ResourcesShortcuts: React.FC = () => {
       </div>
 
       {/* Quick Actions */}
-      <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-600">
+      <div className="mt-6 border-t border-border pt-6">
         <div className="flex flex-wrap gap-3">
           <a
             href="https://docs.watercrawl.dev"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center px-3 py-2 text-sm font-medium text-primary-700 dark:text-primary-300 bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/30 transition-colors"
+            className="inline-flex items-center rounded-lg border border-primary bg-primary/10 px-3 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary/20"
           >
-            <DocumentTextIcon className="h-4 w-4 me-2" />
+            <DocumentTextIcon className="me-2 h-4 w-4" />
             {t('dashboard.resources.fullDocs')}
           </a>
           <a
             href="https://github.com/watercrawl/watercrawl"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+            className="inline-flex items-center rounded-lg border border-border bg-muted px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted"
           >
-            <CodeBracketIcon className="h-4 w-4 me-2" />
+            <CodeBracketIcon className="me-2 h-4 w-4" />
             {t('dashboard.resources.githubRepo')}
           </a>
           <a
             href="mailto:support@watercrawl.dev"
-            className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+            className="inline-flex items-center rounded-lg border border-border bg-muted px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted"
           >
-            <ChatBubbleLeftRightIcon className="h-4 w-4 me-2" />
+            <ChatBubbleLeftRightIcon className="me-2 h-4 w-4" />
             {t('dashboard.resources.contactSupport')}
           </a>
         </div>

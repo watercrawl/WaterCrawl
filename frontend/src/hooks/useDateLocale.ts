@@ -22,6 +22,6 @@ const localeMap: Record<string, Locale> = {
 export const useDateLocale = (): Locale => {
   const { i18n } = useTranslation();
   const currentLang = i18n.language.split('-')[0]; // Handle cases like 'en-US'
-  
+
   return localeMap[currentLang] || enUS;
 };

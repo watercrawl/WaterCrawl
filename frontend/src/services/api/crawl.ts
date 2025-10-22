@@ -7,7 +7,9 @@ export const crawlRequestApi = {
   },
 
   async createBatchCrawlRequest(request: BatchCrawlRequest) {
-    return api.post<CrawlRequest>('/api/v1/core/crawl-requests/batch/', request).then(({ data }) => data);
+    return api
+      .post<CrawlRequest>('/api/v1/core/crawl-requests/batch/', request)
+      .then(({ data }) => data);
   },
 
   async getCrawlRequest(uuid: string) {
@@ -23,18 +25,27 @@ export const crawlRequestApi = {
   },
 
   async sitmapGraph(uuid: string) {
-    return api.get<SitemapGraph>(`/api/v1/core/crawl-requests/${uuid}/sitemap/graph/`).then(({ data }) => data);
+    return api
+      .get<SitemapGraph>(`/api/v1/core/crawl-requests/${uuid}/sitemap/graph/`)
+      .then(({ data }) => data);
   },
 
   async sitmapMarkdown(uuid: string) {
-    return api.get<string>(`/api/v1/core/crawl-requests/${uuid}/sitemap/markdown/`).then(({ data }) => data);
+    return api
+      .get<string>(`/api/v1/core/crawl-requests/${uuid}/sitemap/markdown/`)
+      .then(({ data }) => data);
   },
 
   async subscribeToStatus(uuid: string, onEvent: (data: CrawlEvent) => void, onEnd?: () => void) {
-    return api.subscribeToSSE<CrawlEvent>(`/api/v1/core/crawl-requests/${uuid}/status/`, {
-      params: {
-        prefetched: 'true'
-      }
-    }, onEvent, onEnd);
+    return api.subscribeToSSE<CrawlEvent>(
+      `/api/v1/core/crawl-requests/${uuid}/status/`,
+      {
+        params: {
+          prefetched: 'true',
+        },
+      },
+      onEvent,
+      onEnd
+    );
   },
 };

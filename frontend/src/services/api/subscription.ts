@@ -1,9 +1,13 @@
 import api from './api';
-import { Subscription, CreateSubscriptionRequest, CreateSubscriptionResponse, Plan, CurrentSubscription, CancelSubscriptionResponse, UpdatePaymentMethodResponse } from '../../types/subscription';
-
-
-
-
+import {
+  Subscription,
+  CreateSubscriptionRequest,
+  CreateSubscriptionResponse,
+  Plan,
+  CurrentSubscription,
+  CancelSubscriptionResponse,
+  UpdatePaymentMethodResponse,
+} from '../../types/subscription';
 
 export const subscriptionApi = {
   /**
@@ -24,17 +28,22 @@ export const subscriptionApi = {
   },
 
   /**
- * Create a new subscription for a plan
- * @param request - Subscription creation request
- * @returns Promise with subscription details
- */
-  async createSubscription(request: CreateSubscriptionRequest): Promise<CreateSubscriptionResponse | null> {
-    return api.post<CreateSubscriptionResponse>('/api/v1/plan/subscriptions/start/', request).then(({ data }) => data);
+   * Create a new subscription for a plan
+   * @param request - Subscription creation request
+   * @returns Promise with subscription details
+   */
+  async createSubscription(
+    request: CreateSubscriptionRequest
+  ): Promise<CreateSubscriptionResponse | null> {
+    return api
+      .post<CreateSubscriptionResponse>('/api/v1/plan/subscriptions/start/', request)
+      .then(({ data }) => data);
   },
 
-
   async currentSubscription(): Promise<CurrentSubscription | null> {
-    return api.get<CurrentSubscription>('/api/v1/plan/subscriptions/current/').then(({ data }) => data);
+    return api
+      .get<CurrentSubscription>('/api/v1/plan/subscriptions/current/')
+      .then(({ data }) => data);
   },
 
   /**
@@ -43,9 +52,12 @@ export const subscriptionApi = {
    * @returns Promise with cancellation response
    */
   async cancelSubscription(immediately = false): Promise<CancelSubscriptionResponse> {
-    return api.delete<CancelSubscriptionResponse>(`/api/v1/plan/subscriptions/cancel/`, { data: { immediately } }).then(({ data }) => data);
+    return api
+      .delete<CancelSubscriptionResponse>(`/api/v1/plan/subscriptions/cancel/`, {
+        data: { immediately },
+      })
+      .then(({ data }) => data);
   },
-
 
   /**
    * Renew a subscription
@@ -60,7 +72,9 @@ export const subscriptionApi = {
    * @returns Promise with update payment method response
    */
   async manageSubscription(): Promise<UpdatePaymentMethodResponse> {
-    return api.post<UpdatePaymentMethodResponse>('/api/v1/plan/subscriptions/manage-subscription/').then(({ data }) => data);
+    return api
+      .post<UpdatePaymentMethodResponse>('/api/v1/plan/subscriptions/manage-subscription/')
+      .then(({ data }) => data);
   },
 
   /**
@@ -79,7 +93,6 @@ export const subscriptionApi = {
   async getPlan(id: string): Promise<Plan> {
     return api.get<Plan>(`/api/v1/plan/plans/${id}/`).then(({ data }) => data);
   },
-
 };
 
 export default subscriptionApi;

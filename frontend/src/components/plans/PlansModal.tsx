@@ -18,7 +18,7 @@ interface PlansModalProps {
 export const PlansModal: React.FC<PlansModalProps> = ({
   show,
   onClose,
-  showEnterprisePlan = true
+  showEnterprisePlan = true,
 }) => {
   const { t } = useTranslation();
   const [plans, setPlans] = useState<Plan[]>([]);
@@ -28,7 +28,8 @@ export const PlansModal: React.FC<PlansModalProps> = ({
   useEffect(() => {
     if (show && settings?.is_enterprise_mode_active) {
       setIsLoading(true);
-      subscriptionApi.getPlans()
+      subscriptionApi
+        .getPlans()
         .then(setPlans)
         .finally(() => setIsLoading(false));
     }
@@ -41,38 +42,32 @@ export const PlansModal: React.FC<PlansModalProps> = ({
   }
 
   return (
-    <div className="fixed inset-0 z-[100] overflow-y-auto bg-black/50 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-6 py-4 flex justify-between items-center rounded-t-2xl">
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-            {t('plans.choosePlan')}
-          </h3>
+    <div className="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-black/50 p-4">
+      <div className="max-h-[90vh] w-full max-w-6xl overflow-y-auto rounded-2xl bg-card shadow-2xl">
+        <div className="sticky top-0 flex items-center justify-between rounded-t-2xl border-b border-border bg-card px-6 py-4">
+          <h3 className="text-xl font-semibold text-foreground">{t('plans.choosePlan')}</h3>
           <div className="flex items-center gap-x-2">
-            <div className="text-gray-500 dark:text-gray-400">{t('dashboard.settings.team')}:</div>
+            <div className="text-muted-foreground">{t('dashboard.settings.team')}:</div>
             <TeamSelector />
           </div>
           {onClose && (
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+              className="text-muted-foreground transition-colors hover:text-muted-foreground"
             >
               <XMarkIcon className="h-6 w-6" />
             </button>
           )}
         </div>
-        
+
         <div className="pb-6">
           {isLoading ? (
             <div className="flex items-center justify-center py-12">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
-              <span className="ms-3 text-gray-600 dark:text-gray-300">{t('plans.loadingPlans')}</span>
+              <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-primary-600"></div>
+              <span className="ms-3 text-muted-foreground">{t('plans.loadingPlans')}</span>
             </div>
           ) : (
-            <PlansDisplay
-              plans={plans}
-              showHeader={true}
-              showEnterprisePlan={showEnterprisePlan}
-            />
+            <PlansDisplay plans={plans} showHeader={true} showEnterprisePlan={showEnterprisePlan} />
           )}
         </div>
       </div>

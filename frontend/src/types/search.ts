@@ -1,4 +1,4 @@
-import { FeedMessage } from "./feed";
+import { FeedMessage } from './feed';
 
 export enum SearchType {
   Web = 'web',
@@ -9,13 +9,13 @@ export enum SearchStatus {
   Running = 'running',
   Finished = 'finished',
   Failed = 'failed',
-  Canceled = 'canceled'
+  Canceled = 'canceled',
 }
 
 export enum Depth {
   Basic = 'basic',
   Advanced = 'advanced',
-  Ultimate = 'ultimate'
+  Ultimate = 'ultimate',
 }
 
 export enum TimeRange {
@@ -23,7 +23,7 @@ export enum TimeRange {
   Day = 'day',
   Week = 'week',
   Month = 'month',
-  Year = 'year'
+  Year = 'year',
 }
 
 export interface SearchOptions {

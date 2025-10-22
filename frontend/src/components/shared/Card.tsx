@@ -34,7 +34,7 @@ const Card: React.FC<CardProps> & {
   Footer: React.FC<FooterProps>;
 } = ({ children, className = '' }) => {
   return (
-    <div className={twMerge('bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 space-y-4', className)}>
+    <div className={twMerge('space-y-4 rounded-lg bg-card p-4 shadow-sm', className)}>
       {children}
     </div>
   );
@@ -43,8 +43,8 @@ const Card: React.FC<CardProps> & {
 // Title Component
 const Title: React.FC<TitleProps> = ({ children, className = '', icon }) => {
   return (
-    <div className="pb-2 mb-2">
-      <h2 className={twMerge('text-lg font-medium text-gray-900 dark:text-white flex items-center', className)}>
+    <div className="mb-2 pb-2">
+      <h2 className={twMerge('flex items-center text-lg font-medium text-foreground', className)}>
         {icon && <span className="me-2">{icon}</span>}
         {children}
       </h2>
@@ -54,21 +54,13 @@ const Title: React.FC<TitleProps> = ({ children, className = '', icon }) => {
 
 // Body Component
 const Body: React.FC<BodyProps> = ({ children, className = '' }) => {
-  return (
-    <div className={twMerge('py-2', className)}>
-      {children}
-    </div>
-  );
+  return <div className={twMerge('py-2', className)}>{children}</div>;
 };
 
 // Footer Component
 const Footer: React.FC<FooterProps> = ({ children, className = '', bordered = true }) => {
   return (
-    <div className={twMerge(
-      'pt-2 mt-2', 
-      bordered ? 'border-t border-gray-100 dark:border-gray-700' : '',
-      className
-    )}>
+    <div className={twMerge('mt-2 pt-2', bordered ? 'border-t border-border' : '', className)}>
       {children}
     </div>
   );

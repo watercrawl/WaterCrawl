@@ -1,7 +1,13 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { CheckIcon, DocumentTextIcon, LinkIcon, GlobeAltIcon, FolderArrowDownIcon } from '@heroicons/react/24/outline';
+import {
+  CheckIcon,
+  DocumentTextIcon,
+  LinkIcon,
+  GlobeAltIcon,
+  FolderArrowDownIcon,
+} from '@heroicons/react/24/outline';
 // Navigation components
 import { SitemapGraph, SitemapNode } from '../../../types/crawl';
 import { knowledgeBaseApi } from '../../../services/api/knowledgeBase';
@@ -15,7 +21,10 @@ import { ChevronRight } from '../../../components/shared/DirectionalIcon';
 
 const UrlSelectorPage: React.FC = () => {
   const { t } = useTranslation();
-  const { knowledgeBaseId, sitemapRequestId } = useParams<{ knowledgeBaseId: string, sitemapRequestId: string }>();
+  const { knowledgeBaseId, sitemapRequestId } = useParams<{
+    knowledgeBaseId: string;
+    sitemapRequestId: string;
+  }>();
   const navigate = useNavigate();
   const { setItems } = useBreadcrumbs();
   const [knowledgeBase, setKnowledgeBase] = useState<KnowledgeBaseDetail | null>(null);
@@ -29,12 +38,15 @@ const UrlSelectorPage: React.FC = () => {
     if (!knowledgeBaseId) {
       navigate('/dashboard/knowledge-base');
     }
-    knowledgeBaseApi.get(knowledgeBaseId as string).then((response) => {
-      setKnowledgeBase(response);
-    }).catch(() => {
-      toast.error(t('settings.knowledgeBase.toast.loadError'));
-      navigate('/dashboard/knowledge-base');
-    });
+    knowledgeBaseApi
+      .get(knowledgeBaseId as string)
+      .then(response => {
+        setKnowledgeBase(response);
+      })
+      .catch(() => {
+        toast.error(t('settings.knowledgeBase.toast.loadError'));
+        navigate('/dashboard/knowledge-base');
+      });
   }, [knowledgeBaseId, navigate, t]);
 
   useEffect(() => {
@@ -42,13 +54,23 @@ const UrlSelectorPage: React.FC = () => {
     setItems([
       { label: t('dashboard.navigation.dashboard'), href: '/dashboard' },
       { label: t('knowledgeBase.list'), href: '/dashboard/knowledge-base' },
-      { label: knowledgeBase.title, href: `/dashboard/knowledge-base/${knowledgeBaseId}`},
-      { label: t('knowledgeBase.import.title'), href: `/dashboard/knowledge-base/${knowledgeBaseId}/import`},
-      { label: t('knowledgeBase.import.selectSitemap'), href: `/dashboard/knowledge-base/${knowledgeBaseId}/import/select-sitemap`},
-      { label: t('knowledgeBase.import.selectUrls'), href: `/dashboard/knowledge-base/${knowledgeBaseId}/import/select-urls`, current: true },
+      { label: knowledgeBase.title, href: `/dashboard/knowledge-base/${knowledgeBaseId}` },
+      {
+        label: t('knowledgeBase.import.title'),
+        href: `/dashboard/knowledge-base/${knowledgeBaseId}/import`,
+      },
+      {
+        label: t('knowledgeBase.import.selectSitemap'),
+        href: `/dashboard/knowledge-base/${knowledgeBaseId}/import/select-sitemap`,
+      },
+      {
+        label: t('knowledgeBase.import.selectUrls'),
+        href: `/dashboard/knowledge-base/${knowledgeBaseId}/import/select-urls`,
+        current: true,
+      },
     ]);
   }, [knowledgeBase, knowledgeBaseId, setItems, t]);
-  
+
   // Load crawl request data
   useEffect(() => {
     const fetchCrawlData = async () => {
@@ -65,15 +87,15 @@ const UrlSelectorPage: React.FC = () => {
 
     fetchCrawlData();
   }, [sitemapRequestId, t]);
-  
+
   // Load sitemap data
   const loadSitemap = useCallback(async () => {
     try {
       setIsLoadingSitemap(true);
-      const data = await sitemapApi.getGraph(sitemapRequestId || "");
+      const data = await sitemapApi.getGraph(sitemapRequestId || '');
       console.log('Sitemap data received:', data);
       setSitemapData(data);
-      
+
       // Auto-expand all domains
       if (data) {
         const roots = new Set<string>();
@@ -90,7 +112,6 @@ const UrlSelectorPage: React.FC = () => {
         console.log('Auto-expanded paths:', Array.from(roots));
         setExpandedPaths(roots);
       }
-
     } catch (error) {
       console.error('Failed to load sitemap:', error);
       toast.error(t('sitemap.errors.loadFailed'));
@@ -133,10 +154,10 @@ const UrlSelectorPage: React.FC = () => {
   const selectSubtree = (node: SitemapGraph | SitemapNode, select: boolean = true) => {
     const allUrls = new Set<string>();
     getAllUrls(node, allUrls);
-    
+
     setSelectedUrls(prev => {
       const newSet = new Set(prev);
-      
+
       allUrls.forEach(url => {
         if (select) {
           newSet.add(url);
@@ -144,20 +165,23 @@ const UrlSelectorPage: React.FC = () => {
           newSet.delete(url);
         }
       });
-      
+
       return newSet;
     });
   };
 
   // Recursive function to collect all URLs from the sitemap
-  const getAllUrls = (node: SitemapGraph | SitemapNode | undefined, allUrls: Set<string> = new Set()) => {
+  const getAllUrls = (
+    node: SitemapGraph | SitemapNode | undefined,
+    allUrls: Set<string> = new Set()
+  ) => {
     if (!node) return allUrls;
     if (typeof node === 'object' && node !== null) {
       // Check if this is a SitemapNode with a URL
       if ('url' in node && typeof node.url === 'string') {
         allUrls.add(node.url);
       }
-      
+
       // Iterate through children if this is a SitemapGraph
       if (!('url' in node)) {
         for (const key in node) {
@@ -178,20 +202,25 @@ const UrlSelectorPage: React.FC = () => {
           }
         }
       }
-      
+
       // Check __self__ node
       if ('__self__' in node && node.__self__ && typeof node.__self__ === 'object') {
         if ('url' in node.__self__ && typeof node.__self__.url === 'string') {
           allUrls.add(node.__self__.url);
         }
       }
-      
+
       // Check __query__ nodes
       if ('__query__' in node && node.__query__) {
         // Ensure node.__query__ is an array
         const queryNodes = Array.isArray(node.__query__) ? node.__query__ : [node.__query__];
         queryNodes.forEach(queryNode => {
-          if (queryNode && typeof queryNode === 'object' && 'url' in queryNode && typeof queryNode.url === 'string') {
+          if (
+            queryNode &&
+            typeof queryNode === 'object' &&
+            'url' in queryNode &&
+            typeof queryNode.url === 'string'
+          ) {
             allUrls.add(queryNode.url);
           }
         });
@@ -227,14 +256,14 @@ const UrlSelectorPage: React.FC = () => {
 
     setIsSubmitting(true);
     const urlsToImport = Array.from(selectedUrls);
-    
+
     try {
-      await knowledgeBaseApi.importFromUrls(knowledgeBaseId, { 
+      await knowledgeBaseApi.importFromUrls(knowledgeBaseId, {
         urls: urlsToImport,
       });
       toast.success(t('knowledgeBase.import.importUrlsSuccess', { count: selectedUrls.size }));
       console.log('Importing URLs:', urlsToImport);
-      
+
       // Navigate back to knowledge base detail page
       navigate(`/dashboard/knowledge-base/${knowledgeBaseId}`);
     } catch (error) {
@@ -252,7 +281,7 @@ const UrlSelectorPage: React.FC = () => {
   // Render a URL node with checkbox
   const renderUrlNode = (url: string | undefined, title: string | undefined, level: number) => {
     if (!url) return null;
-    
+
     return (
       <div className="flex items-center py-1" style={{ marginInlineStart: `${level * 1.5}rem` }}>
         <input
@@ -260,20 +289,20 @@ const UrlSelectorPage: React.FC = () => {
           id={`url-${url}`}
           checked={selectedUrls.has(url)}
           onChange={() => toggleUrl(url)}
-          className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 me-2"
+          className="me-2 h-4 w-4 rounded border-input-border text-primary focus:ring-primary"
         />
         <div className="flex items-center">
-          <GlobeAltIcon className="h-5 w-5 text-blue-500 me-1.5" />
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300 line-clamp-1" title={title || url}>
+          <GlobeAltIcon className="me-1.5 h-5 w-5 text-primary" />
+          <span className="line-clamp-1 text-sm font-medium text-foreground" title={title || url}>
             {title || url}
           </span>
           <a
             href={url}
             target="_blank"
             rel="noopener noreferrer"
-            className="ms-2 text-gray-400 hover:text-blue-500 dark:hover:text-blue-400"
+            className="ms-2 text-muted-foreground hover:text-primary"
             title={url}
-            onClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
           >
             <LinkIcon className="h-4 w-4" />
           </a>
@@ -283,7 +312,11 @@ const UrlSelectorPage: React.FC = () => {
   };
 
   // Recursive function to render the sitemap tree with checkboxes
-  const renderSitemapTree = (data: SitemapGraph | SitemapNode | undefined, path: string = "", level: number = 0) => {
+  const renderSitemapTree = (
+    data: SitemapGraph | SitemapNode | undefined,
+    path: string = '',
+    level: number = 0
+  ) => {
     if (!data || typeof data !== 'object') {
       return null;
     }
@@ -292,70 +325,72 @@ const UrlSelectorPage: React.FC = () => {
     if ('url' in data) {
       return renderUrlNode(data.url as string, data.title as string | undefined, level);
     }
-    
+
     // Handle SitemapGraph (object with potential children)
-    const filteredEntries = Object.entries(data as Record<string, any>)
-      .filter(([key]) => key !== '__self__' && key !== '__query__');
-    
+    const filteredEntries = Object.entries(data as Record<string, any>).filter(
+      ([key]) => key !== '__self__' && key !== '__query__'
+    );
+
     // Sort entries to show folders first, then links
     filteredEntries.sort((a, b) => {
       const [, valueA] = a;
       const [, valueB] = b;
-      
+
       // Check if item A is a folder (has child items)
-      const isAFolder = valueA && 
-        typeof valueA === 'object' && 
+      const isAFolder =
+        valueA &&
+        typeof valueA === 'object' &&
         Object.keys(valueA).filter(k => k !== '__self__' && k !== '__query__').length > 0;
-      
+
       // Check if item B is a folder (has child items)
-      const isBFolder = valueB && 
-        typeof valueB === 'object' && 
+      const isBFolder =
+        valueB &&
+        typeof valueB === 'object' &&
         Object.keys(valueB).filter(k => k !== '__self__' && k !== '__query__').length > 0;
-      
+
       // If one is a folder and the other isn't, folder comes first
       if (isAFolder && !isBFolder) return -1;
       if (!isAFolder && isBFolder) return 1;
-      
+
       // If both are the same type, sort alphabetically
       return a[0].localeCompare(b[0]);
     });
-    
+
     // Prepare components array to collect all rendered elements
     const components: JSX.Element[] = [];
-    
+
     // Process each entry using a for loop instead of map
     for (const [key, value] of filteredEntries) {
       // Build the path string for this node
       const currentPath = path ? `${path}/${key}` : key;
       const isExpanded = expandedPaths.has(currentPath);
-      
+
       // Check if this node has children (excluding special properties)
-      const hasChildren = value && 
-        typeof value === 'object' && 
-        Object.keys(value || {})
-          .filter(k => k !== '__self__' && k !== '__query__')
-          .length > 0;
-      
+      const hasChildren =
+        value &&
+        typeof value === 'object' &&
+        Object.keys(value || {}).filter(k => k !== '__self__' && k !== '__query__').length > 0;
+
       // Get the self node which contains URL and title
-      const selfNode = value && 
-        typeof value === 'object' && 
-        '__self__' in value ? 
-        value.__self__ as SitemapNode : 
-        null;
-      
+      const selfNode =
+        value && typeof value === 'object' && '__self__' in value
+          ? (value.__self__ as SitemapNode)
+          : null;
+
       // Check if this node has query parameters
-      const hasQueries = value && 
-        typeof value === 'object' && 
-        '__query__' in value && 
-        Array.isArray(value.__query__) && 
+      const hasQueries =
+        value &&
+        typeof value === 'object' &&
+        '__query__' in value &&
+        Array.isArray(value.__query__) &&
         value.__query__.length > 0;
-        
+
       // Determine if we should render children
       const shouldRenderChildren = hasChildren && isExpanded;
 
       // Create a div for this node
       components.push(
-        <div key={currentPath} className="py-1 border-b border-gray-200 dark:border-gray-700 last:border-0">
+        <div key={currentPath} className="border-b border-border py-1 last:border-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               {/* Checkbox with proper spacing */}
@@ -365,47 +400,47 @@ const UrlSelectorPage: React.FC = () => {
                   id={`url-${selfNode.url}`}
                   checked={selectedUrls.has(selfNode.url)}
                   onChange={() => toggleUrl(selfNode.url)}
-                  className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 me-1"
-                  onClick={(e) => e.stopPropagation()}
+                  className="me-1 h-4 w-4 rounded border-input-border text-primary focus:ring-primary"
+                  onClick={e => e.stopPropagation()}
                   style={{ marginInlineStart: `${level * 1.5 + 0.5}rem` }}
                 />
               )}
 
               <div
-                className="flex items-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 py-1.5"
+                className="flex cursor-pointer items-center py-1.5 hover:bg-muted"
                 onClick={() => hasChildren && togglePath(currentPath)}
                 style={{ marginInlineStart: selfNode ? '0.25rem' : `${level * 1.5 + 0.5}rem` }}
               >
                 {hasChildren ? (
-                  <ChevronRight 
-                    className={`h-4 w-4 text-gray-400 dark:text-gray-500 me-1 transition-transform ${isExpanded ? 'transform rotate-90' : ''}`}
+                  <ChevronRight
+                    className={`me-1 h-4 w-4 text-muted-foreground transition-transform ${isExpanded ? 'rotate-90 transform' : ''}`}
                   />
                 ) : (
-                  <span className="w-5"></span> 
+                  <span className="w-5"></span>
                 )}
                 {hasChildren ? (
-                  <FolderArrowDownIcon className="h-5 w-5 text-gray-400 dark:text-gray-500 me-1.5" />
+                  <FolderArrowDownIcon className="me-1.5 h-5 w-5 text-muted-foreground" />
                 ) : (
-                  <DocumentTextIcon className="h-5 w-5 text-gray-400 dark:text-gray-500 me-1.5" />
+                  <DocumentTextIcon className="me-1.5 h-5 w-5 text-muted-foreground" />
                 )}
-                <span className="font-medium text-gray-700 dark:text-gray-300">{key}</span>
-                
+                <span className="font-medium text-foreground">{key}</span>
+
                 {/* Show URL icon if this node has a self URL */}
                 {selfNode && selfNode.url && (
                   <a
                     href={selfNode.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="ms-2 text-gray-400 hover:text-blue-500 dark:hover:text-blue-400"
+                    className="ms-2 text-muted-foreground hover:text-primary"
                     title={`${selfNode.title || key} - ${selfNode.url}`}
-                    onClick={(e) => e.stopPropagation()}
+                    onClick={e => e.stopPropagation()}
                   >
                     <LinkIcon className="h-4 w-4" />
                   </a>
                 )}
 
                 {hasChildren && (
-                  <span className="text-xs text-gray-500 dark:text-gray-400 ms-2">
+                  <span className="ms-2 text-xs text-muted-foreground">
                     ({Object.keys(value).filter(k => k !== '__self__' && k !== '__query__').length})
                   </span>
                 )}
@@ -414,24 +449,24 @@ const UrlSelectorPage: React.FC = () => {
 
             {/* Select/Deselect buttons for subtree */}
             {hasChildren && (
-              <div className="flex gap-x-2 me-4">
+              <div className="me-4 flex gap-x-2">
                 <button
                   type="button"
-                  onClick={(e) => {
+                  onClick={e => {
                     e.stopPropagation();
                     selectSubtree(value as SitemapGraph, true);
                   }}
-                  className="text-xs text-primary-600 hover:text-primary-900 dark:text-primary-400 dark:hover:text-primary-300"
+                  className="text-xs text-primary hover:text-primary-900"
                 >
                   {t('knowledgeBase.import.selectTree')}
                 </button>
                 <button
                   type="button"
-                  onClick={(e) => {
+                  onClick={e => {
                     e.stopPropagation();
                     selectSubtree(value as SitemapGraph, false);
                   }}
-                  className="text-xs text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
+                  className="text-xs text-error hover:text-error"
                 >
                   {t('knowledgeBase.import.deselectTree')}
                 </button>
@@ -442,12 +477,18 @@ const UrlSelectorPage: React.FC = () => {
           {isExpanded && (
             <>
               {/* Render query parameters with checkboxes if this node is expanded */}
-              {hasQueries && Array.isArray(value.__query__) && value.__query__.map((queryNode: SitemapNode, index: number) => (
-                <div key={`${currentPath}-query-${index}`} className="ms-8">
-                  {renderUrlNode(queryNode.url as string, queryNode.title as string | undefined, level + 1)}
-                </div>
-              ))}
-                
+              {hasQueries &&
+                Array.isArray(value.__query__) &&
+                value.__query__.map((queryNode: SitemapNode, index: number) => (
+                  <div key={`${currentPath}-query-${index}`} className="ms-8">
+                    {renderUrlNode(
+                      queryNode.url as string,
+                      queryNode.title as string | undefined,
+                      level + 1
+                    )}
+                  </div>
+                ))}
+
               {/* Render children recursively */}
               {shouldRenderChildren && (
                 <div className="ms-4">
@@ -459,13 +500,17 @@ const UrlSelectorPage: React.FC = () => {
         </div>
       );
     }
-    
+
     // Handle root-level query parameters if they exist
     if ('__query__' in data && Array.isArray(data.__query__) && data.__query__?.length > 0) {
       data.__query__.forEach((queryNode, index) => {
         components.push(
           <div key={`${path}-root-query-${index}`} className="ms-8">
-            {renderUrlNode(queryNode.url as string, queryNode.title as string | undefined, level + 1)}
+            {renderUrlNode(
+              queryNode.url as string,
+              queryNode.title as string | undefined,
+              level + 1
+            )}
           </div>
         );
       });
@@ -476,13 +521,13 @@ const UrlSelectorPage: React.FC = () => {
 
   if (isLoadingSitemap) {
     return (
-      <div className="py-6 px-4 sm:px-6 lg:px-8">
+      <div className="px-4 py-6 sm:px-6 lg:px-8">
         <div className="animate-pulse">
-          <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/4 mb-4"></div>
-          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-8"></div>
+          <div className="mb-4 h-6 w-1/4 rounded bg-muted"></div>
+          <div className="mb-8 h-4 w-1/2 rounded bg-muted"></div>
           <div className="space-y-4">
             {[...Array(5)].map((_, i) => (
-              <div key={i} className="h-16 bg-gray-200 dark:bg-gray-700 rounded"></div>
+              <div key={i} className="h-16 rounded bg-muted"></div>
             ))}
           </div>
         </div>
@@ -491,14 +536,14 @@ const UrlSelectorPage: React.FC = () => {
   }
 
   return (
-    <div className="py-6 px-4 sm:px-6 lg:px-8">
+    <div className="px-4 py-6 sm:px-6 lg:px-8">
       <div className="mb-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
+            <h1 className="text-xl font-semibold text-foreground">
               {t('knowledgeBase.import.selectUrlsTitle')}
             </h1>
-            <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">
+            <p className="mt-2 text-sm text-foreground">
               {t('knowledgeBase.import.selectUrlsDescription', { url: sitemapRequest?.url })}
             </p>
           </div>
@@ -507,19 +552,35 @@ const UrlSelectorPage: React.FC = () => {
               type="button"
               onClick={handleSubmit}
               disabled={selectedUrls.size === 0 || isSubmitting}
-              className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="inline-flex items-center rounded-md border border-transparent bg-primary px-3 py-2 text-sm font-medium leading-4 text-white shadow-sm hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isSubmitting ? (
                 <>
-                  <svg className="animate-spin h-4 w-4 me-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  <svg
+                    className="me-2 h-4 w-4 animate-spin text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
                   </svg>
                   {t('common.importing')}
                 </>
               ) : (
                 <>
-                  <CheckIcon className="h-4 w-4 me-2" />
+                  <CheckIcon className="me-2 h-4 w-4" />
                   {selectedUrls.size === 0
                     ? t('knowledgeBase.import.selectUrlsToContinue')
                     : t('knowledgeBase.import.importUrls', { count: selectedUrls.size })}
@@ -531,43 +592,40 @@ const UrlSelectorPage: React.FC = () => {
       </div>
 
       {/* Sitemap tree */}
-      <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg overflow-hidden">
-        <div className="border-b border-gray-200 dark:border-gray-700 p-4 flex items-center justify-between bg-gray-50 dark:bg-gray-900">
-          <h2 className="text-lg font-medium text-gray-900 dark:text-white">
+      <div className="overflow-hidden rounded-lg bg-card shadow-sm">
+        <div className="flex items-center justify-between border-b border-border bg-muted p-4">
+          <h2 className="text-lg font-medium text-foreground">
             {t('knowledgeBase.import.websiteStructure')}
           </h2>
           <div className="flex gap-x-2">
             <button
               type="button"
               onClick={handleSelectAll}
-              className="text-xs font-medium text-primary-600 hover:text-primary-900 dark:text-primary-400 dark:hover:text-primary-300"
+              className="text-xs font-medium text-primary hover:text-primary-900"
             >
               {t('common.selectAll')}
             </button>
             <button
               type="button"
               onClick={handleDeselectAll}
-              className="text-xs font-medium text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 ms-2"
+              className="ms-2 text-xs font-medium text-error hover:text-error"
             >
               {t('common.deselectAll')}
             </button>
           </div>
         </div>
-        
+
         <div className="p-4">
           {/* Selected URL counter */}
-          <div className="mb-4 text-sm text-gray-500 dark:text-gray-400">
-            <span className="font-medium text-gray-700 dark:text-gray-300">
-              {selectedUrls.size}
-            </span> {t('knowledgeBase.import.urlsSelected')}
+          <div className="mb-4 text-sm text-muted-foreground">
+            <span className="font-medium text-foreground">{selectedUrls.size}</span>{' '}
+            {t('knowledgeBase.import.urlsSelected')}
           </div>
-          
+
           {!sitemapData ? (
-            <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-              {t('sitemap.noData')}
-            </div>
+            <div className="py-8 text-center text-muted-foreground">{t('sitemap.noData')}</div>
           ) : (
-            <div className="text-sm border border-gray-200 dark:border-gray-700 rounded-lg max-h-[600px] overflow-y-auto dark:text-gray-300">
+            <div className="max-h-[600px] overflow-y-auto rounded-lg border border-border text-sm">
               {renderSitemapTree(sitemapData)}
             </div>
           )}

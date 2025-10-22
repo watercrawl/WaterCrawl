@@ -39,26 +39,28 @@ export const ProviderConfigForm: React.FC<ProviderConfigFormProps> = ({
 
   // Check if we're in edit mode
   const isEditMode = Boolean(initialData);
-  
+
   // Check if fields should be shown based on provider configuration
-  const shouldShowApiKey = formData.provider_name && selectedProvider?.api_key !== OPTIONS.NOT_AVAILABLE;
-  const shouldShowBaseUrl = formData.provider_name && selectedProvider?.base_url !== OPTIONS.NOT_AVAILABLE;
+  const shouldShowApiKey =
+    formData.provider_name && selectedProvider?.api_key !== OPTIONS.NOT_AVAILABLE;
+  const shouldShowBaseUrl =
+    formData.provider_name && selectedProvider?.base_url !== OPTIONS.NOT_AVAILABLE;
   const isApiKeyRequired = selectedProvider?.api_key === OPTIONS.REQUIRED;
   const isBaseUrlRequired = selectedProvider?.base_url === OPTIONS.REQUIRED;
 
   // In edit mode, check if user has made changes to test connection
   const hasChangesToTest = useMemo(() => {
     if (!isEditMode) return true; // Always allow testing in create mode
-    
+
     // Check if API key has been changed (user entered a new value)
     const hasApiKeyChange = formData.api_key && formData.api_key.trim() !== '';
-    
+
     // Check if base URL has been changed from initial value
-    const hasBaseUrlChange = shouldShowBaseUrl && formData.base_url !== (initialData?.base_url || '');
-    
+    const hasBaseUrlChange =
+      shouldShowBaseUrl && formData.base_url !== (initialData?.base_url || '');
+
     return hasApiKeyChange || hasBaseUrlChange;
   }, [isEditMode, formData.api_key, formData.base_url, shouldShowBaseUrl, initialData?.base_url]);
-
 
   const [loading, setLoading] = useState(false);
   const [testing, setTesting] = useState(false);
@@ -70,14 +72,14 @@ export const ProviderConfigForm: React.FC<ProviderConfigFormProps> = ({
     const checked = isCheckbox ? (e.target as HTMLInputElement).checked : false;
 
     // Handle all form inputs with appropriate type conversion if needed
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
       [name]: isCheckbox ? checked : value,
     }));
 
     // Clear error when field is changed
     if (errors[name]) {
-      setErrors((prev) => {
+      setErrors(prev => {
         const updated = { ...prev };
         delete updated[name];
         return updated;
@@ -87,25 +89,25 @@ export const ProviderConfigForm: React.FC<ProviderConfigFormProps> = ({
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
-    
+
     if (!formData.title.trim()) {
       newErrors.title = t('settings.providerConfig.form.titleRequired');
     }
-    
+
     if (!formData.provider_name || formData.provider_name.trim() === '') {
       newErrors.provider_name = t('settings.providerConfig.form.providerRequired');
     }
-    
+
     // Only validate API key if it should be shown and is required
     if (shouldShowApiKey && isApiKeyRequired && !formData.api_key?.trim() && !isEditMode) {
       newErrors.api_key = t('settings.providerConfig.form.apiKeyRequired');
     }
-    
+
     // Only validate base URL if it should be shown and is required
     if (shouldShowBaseUrl && isBaseUrlRequired && !formData.base_url?.trim()) {
       newErrors.base_url = t('settings.providerConfig.form.baseUrlRequired');
     }
-    
+
     setErrors(newErrors);
     console.log('Form validation result:', newErrors);
     return Object.keys(newErrors).length === 0;
@@ -120,24 +122,24 @@ export const ProviderConfigForm: React.FC<ProviderConfigFormProps> = ({
 
     try {
       setLoading(true);
-      
+
       // Create a filtered form data object that excludes unavailable fields
       const filteredFormData: ProviderConfigFormData = {
         title: formData.title,
         provider_name: formData.provider_name,
       };
-      
+
       // Only include api_key if it should be shown and has a value
       // In edit mode, only send if user actually entered a new value
       if (shouldShowApiKey && formData.api_key && formData.api_key.trim()) {
         filteredFormData.api_key = formData.api_key;
       }
-      
+
       // Only include base_url if it should be shown
       if (shouldShowBaseUrl) {
         filteredFormData.base_url = formData.base_url || '';
       }
-      
+
       await onSubmit(filteredFormData);
       onClose();
     } catch (error: any) {
@@ -167,24 +169,24 @@ export const ProviderConfigForm: React.FC<ProviderConfigFormProps> = ({
 
     try {
       setTesting(true);
-      
+
       // Create a filtered form data object for testing
       const filteredFormData: ProviderConfigFormData = {
         title: formData.title,
         provider_name: formData.provider_name,
       };
-      
+
       // Only include api_key if it should be shown and has a value
       // In edit mode, only send if user actually entered a new value
       if (shouldShowApiKey && formData.api_key && formData.api_key.trim()) {
         filteredFormData.api_key = formData.api_key;
       }
-      
+
       // Only include base_url if it should be shown
       if (shouldShowBaseUrl) {
         filteredFormData.base_url = formData.base_url || '';
       }
-      
+
       await onTest(filteredFormData);
     } catch (error) {
       console.error('Test failed:', error);
@@ -198,12 +200,17 @@ export const ProviderConfigForm: React.FC<ProviderConfigFormProps> = ({
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
 
       <div className="fixed inset-0 flex items-center justify-center p-4">
-        <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-gray-900 p-6 text-start align-middle shadow-xl transition-all">
-          <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900 dark:text-white flex justify-between items-center">
-            {initialData ? t('settings.providerConfig.editTitle') : t('settings.providerConfig.createTitle')}
+        <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-card p-6 text-start align-middle shadow-xl transition-all">
+          <Dialog.Title
+            as="h3"
+            className="flex items-center justify-between text-lg font-medium leading-6 text-foreground"
+          >
+            {initialData
+              ? t('settings.providerConfig.editTitle')
+              : t('settings.providerConfig.createTitle')}
             <button
               type="button"
-              className="rounded-md text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 focus:outline-none"
+              className="rounded-md text-muted-foreground hover:text-muted-foreground focus:outline-none"
               onClick={onClose}
             >
               <XMarkIcon className="h-6 w-6" aria-hidden="true" />
@@ -212,7 +219,7 @@ export const ProviderConfigForm: React.FC<ProviderConfigFormProps> = ({
 
           <form onSubmit={handleSubmit} className="mt-4 space-y-4">
             <div>
-              <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label htmlFor="title" className="block text-sm font-medium text-foreground">
                 {t('settings.providerConfig.form.title')}
               </label>
               <input
@@ -224,56 +231,68 @@ export const ProviderConfigForm: React.FC<ProviderConfigFormProps> = ({
                 disabled={loading}
                 placeholder={t('settings.providerConfig.form.titlePlaceholder')}
                 className={classnames({
-                  'mt-1 block w-full rounded-md shadow-sm dark:bg-gray-800 dark:text-white sm:text-sm': true,
-                  'border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500': !!errors.title,
-                  'border-gray-300 dark:border-gray-700 focus:border-indigo-500 focus:ring-indigo-500': !errors.title,
+                  'mt-1 block w-full rounded-md border bg-input text-foreground shadow-sm sm:text-sm': true,
+                  'border-error placeholder:text-error/50 focus:border-error focus:ring-1 focus:ring-error':
+                    !!errors.title,
+                  'border-input-border focus:border-primary focus:ring-1 focus:ring-primary':
+                    !errors.title,
                 })}
               />
-              {errors.title && (
-                <p className="mt-1 text-sm text-red-600 dark:text-red-500">{errors.title}</p>
-              )}
+              {errors.title && <p className="mt-1 text-sm text-error">{errors.title}</p>}
             </div>
 
             <div>
-              <label htmlFor="provider_name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label htmlFor="provider_name" className="block text-sm font-medium text-foreground">
                 {t('settings.providerConfig.form.provider')}
               </label>
               <select
                 id="provider_name"
                 name="provider_name"
-                value={formData.provider_name || ""}
+                value={formData.provider_name || ''}
                 onChange={handleChange}
                 disabled={loading || isEditMode}
                 className={classnames({
-                  'mt-1 block w-full rounded-md shadow-sm dark:bg-gray-800 dark:text-white sm:text-sm': true,
-                  'border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500': !!errors.provider_name,
-                  'border-gray-300 dark:border-gray-700 focus:border-indigo-500 focus:ring-indigo-500': !errors.provider_name,
-                  'border-gray-300 dark:border-gray-700 focus:border-indigo-500 focus:ring-indigo-500 cursor-not-allowed opacity-50': isEditMode,
+                  'mt-1 block w-full rounded-md border bg-input text-foreground shadow-sm sm:text-sm': true,
+                  'border-error placeholder:text-error/50 focus:border-error focus:ring-1 focus:ring-error':
+                    !!errors.provider_name,
+                  'border-input-border focus:border-primary focus:ring-1 focus:ring-primary':
+                    !errors.provider_name,
+                  'cursor-not-allowed opacity-50': isEditMode,
                 })}
                 required
               >
                 <option value="">{t('settings.providerConfig.form.providerPlaceholder')}</option>
                 {availableProviders && availableProviders.length > 0 ? (
-                  availableProviders.map((provider) => (
+                  availableProviders.map(provider => (
                     <option key={provider.key} value={provider.key}>
                       {provider.title}
                     </option>
                   ))
                 ) : (
-                  <option value="" disabled>{t('settings.providerConfig.form.loadingProviders')}</option>
+                  <option value="" disabled>
+                    {t('settings.providerConfig.form.loadingProviders')}
+                  </option>
                 )}
               </select>
               {errors.provider_name && (
-                <p className="mt-1 text-sm text-red-600 dark:text-red-500">{errors.provider_name}</p>
+                <p className="mt-1 text-sm text-error">{errors.provider_name}</p>
               )}
             </div>
 
             {shouldShowApiKey && (
               <div>
-                <label htmlFor="api_key" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label htmlFor="api_key" className="block text-sm font-medium text-foreground">
                   {t('settings.providerConfig.form.apiKey')}
-                  {!isApiKeyRequired && !isEditMode && <span className="text-xs text-gray-500 ms-1">{t('settings.providerConfig.form.apiKeyOptional')}</span>}
-                  {isEditMode && <span className="text-xs text-gray-500 ms-1">{t('settings.providerConfig.form.apiKeyKeepCurrent')}</span>}
+                  {!isApiKeyRequired && !isEditMode && (
+                    <span className="ms-1 text-xs text-muted-foreground">
+                      {t('settings.providerConfig.form.apiKeyOptional')}
+                    </span>
+                  )}
+                  {isEditMode && (
+                    <span className="ms-1 text-xs text-muted-foreground">
+                      {t('settings.providerConfig.form.apiKeyKeepCurrent')}
+                    </span>
+                  )}
                 </label>
                 <input
                   type="password"
@@ -282,25 +301,33 @@ export const ProviderConfigForm: React.FC<ProviderConfigFormProps> = ({
                   value={formData.api_key}
                   onChange={handleChange}
                   disabled={loading}
-                  placeholder={isEditMode ? t('settings.providerConfig.form.apiKeyPlaceholderEdit') : t('settings.providerConfig.form.apiKeyPlaceholder')}
+                  placeholder={
+                    isEditMode
+                      ? t('settings.providerConfig.form.apiKeyPlaceholderEdit')
+                      : t('settings.providerConfig.form.apiKeyPlaceholder')
+                  }
                   className={classnames({
-                    'mt-1 block w-full rounded-md shadow-sm dark:bg-gray-800 dark:text-white sm:text-sm': true,
-                    'border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500': !!errors.api_key,
-                    'border-gray-300 dark:border-gray-700 focus:border-indigo-500 focus:ring-indigo-500': !errors.api_key,
+                    'mt-1 block w-full rounded-md border bg-input text-foreground shadow-sm sm:text-sm': true,
+                    'border-error placeholder:text-error/50 focus:border-error focus:ring-1 focus:ring-error':
+                      !!errors.api_key,
+                    'border-input-border focus:border-primary focus:ring-1 focus:ring-primary':
+                      !errors.api_key,
                   })}
                 />
-                {errors.api_key && (
-                  <p className="mt-1 text-sm text-red-600 dark:text-red-500">{errors.api_key}</p>
-                )}
+                {errors.api_key && <p className="mt-1 text-sm text-error">{errors.api_key}</p>}
               </div>
             )}
 
             {shouldShowBaseUrl && (
               <div>
-                <label htmlFor="base_url" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label htmlFor="base_url" className="block text-sm font-medium text-foreground">
                   {t('settings.providerConfig.form.baseUrl')}
-                  {!isBaseUrlRequired && <span className="text-xs text-gray-500 ms-1">{t('settings.providerConfig.form.baseUrlOptional')}</span>}
-                  {isBaseUrlRequired && <span className="text-xs text-red-500 ms-1">*</span>}
+                  {!isBaseUrlRequired && (
+                    <span className="ms-1 text-xs text-muted-foreground">
+                      {t('settings.providerConfig.form.baseUrlOptional')}
+                    </span>
+                  )}
+                  {isBaseUrlRequired && <span className="ms-1 text-xs text-error">*</span>}
                 </label>
                 <input
                   type="text"
@@ -309,20 +336,20 @@ export const ProviderConfigForm: React.FC<ProviderConfigFormProps> = ({
                   value={formData.base_url || ''}
                   onChange={handleChange}
                   disabled={loading}
-                  placeholder={selectedProvider?.default_base_url || "https://api.example.com"}
+                  placeholder={selectedProvider?.default_base_url || 'https://api.example.com'}
                   className={classnames({
-                    'mt-1 block w-full rounded-md shadow-sm dark:bg-gray-800 dark:text-white sm:text-sm': true,
-                    'border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500': !!errors.base_url,
-                    'border-gray-300 dark:border-gray-700 focus:border-indigo-500 focus:ring-indigo-500': !errors.base_url
+                    'mt-1 block w-full rounded-md border bg-input text-foreground shadow-sm sm:text-sm': true,
+                    'border-error placeholder:text-error/50 focus:border-error focus:ring-1 focus:ring-error':
+                      !!errors.base_url,
+                    'border-input-border focus:border-primary focus:ring-1 focus:ring-primary':
+                      !errors.base_url,
                   })}
                 />
-                {errors.base_url && (
-                  <p className="mt-1 text-sm text-red-600 dark:text-red-500">{errors.base_url}</p>
-                )}
+                {errors.base_url && <p className="mt-1 text-sm text-error">{errors.base_url}</p>}
               </div>
             )}
 
-            <div className="flex justify-between gap-x-3 mt-5">
+            <div className="mt-5 flex justify-between gap-x-3">
               <Button
                 type="button"
                 onClick={handleTest}
@@ -330,14 +357,16 @@ export const ProviderConfigForm: React.FC<ProviderConfigFormProps> = ({
                 variant="secondary"
                 className="flex-1"
               >
-                {testing ? t('settings.providerConfig.form.testing') : t('settings.providerConfig.form.testButton')}
+                {testing
+                  ? t('settings.providerConfig.form.testing')
+                  : t('settings.providerConfig.form.testButton')}
               </Button>
-              <Button
-                type="submit"
-                disabled={loading}
-                className="flex-1"
-              >
-                {loading ? t('settings.providerConfig.form.saving') : initialData ? t('settings.providerConfig.form.updateButton') : t('settings.providerConfig.form.saveButton')}
+              <Button type="submit" disabled={loading} className="flex-1">
+                {loading
+                  ? t('settings.providerConfig.form.saving')
+                  : initialData
+                    ? t('settings.providerConfig.form.updateButton')
+                    : t('settings.providerConfig.form.saveButton')}
               </Button>
             </div>
           </form>

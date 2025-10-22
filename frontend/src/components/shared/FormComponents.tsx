@@ -8,12 +8,12 @@ export const OptionGroup: React.FC<{
   children: React.ReactNode;
   className?: string;
 }> = ({ title, subtitle, description, children, className = '' }) => (
-  <div className={`bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 space-y-4 ${className}`}>
+  <div className={`space-y-4 rounded-lg border border-border bg-card p-4 shadow-sm ${className}`}>
     <div className="space-y-1">
-      <h3 className="text-sm font-medium text-gray-900 dark:text-white">{title} {subtitle}</h3>
-      {description && (
-        <p className="text-sm text-gray-500 dark:text-gray-400">{description}</p>
-      )}
+      <h3 className="text-sm font-medium text-foreground">
+        {title} {subtitle}
+      </h3>
+      {description && <p className="text-sm text-muted-foreground">{description}</p>}
     </div>
     {children}
   </div>
@@ -28,20 +28,27 @@ export const FormInput: React.FC<{
   disabled?: boolean;
   type?: string;
   className?: string;
-}> = ({ label, value, onChange, placeholder, helpText, disabled, type = 'text', className = '' }) => (
+}> = ({
+  label,
+  value,
+  onChange,
+  placeholder,
+  helpText,
+  disabled,
+  type = 'text',
+  className = '',
+}) => (
   <div className={className}>
-    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-      {label}
-    </label>
+    <label className="mb-1 block text-sm font-medium text-foreground">{label}</label>
     <input
       type={type}
       value={value}
-      onChange={(e) => onChange(e.target.value)}
+      onChange={e => onChange(e.target.value)}
       disabled={disabled}
-      className="w-full h-10 px-3 bg-transparent border border-gray-200 dark:border-gray-700 rounded-md text-gray-900 dark:text-white focus:outline-none focus:border-gray-400 dark:focus:border-gray-500 disabled:bg-gray-100 dark:disabled:bg-gray-700 ltr"
+      className="ltr h-10 w-full rounded-md border border-border bg-transparent px-3 text-foreground focus:border-border focus:outline-none disabled:bg-muted"
       placeholder={placeholder}
     />
-    {helpText && <p className="mt-1 text-xs text-gray-500">{helpText}</p>}
+    {helpText && <p className="mt-1 text-xs text-muted-foreground">{helpText}</p>}
   </div>
 );
 
@@ -53,10 +60,8 @@ export const FormSection: React.FC<{
 }> = ({ title, description, children, className = '' }) => (
   <div className={`space-y-6 ${className}`}>
     <div className="space-y-1">
-      <h2 className="text-lg font-medium text-gray-900 dark:text-white">{title}</h2>
-      {description && (
-        <p className="text-sm text-gray-500 dark:text-gray-400">{description}</p>
-      )}
+      <h2 className="text-lg font-medium text-foreground">{title}</h2>
+      {description && <p className="text-sm text-muted-foreground">{description}</p>}
     </div>
     {children}
   </div>
@@ -67,8 +72,8 @@ export const InfoTooltip: React.FC<{
 }> = ({ content }) => {
   return (
     <div className="group relative inline-block">
-      <QuestionMarkCircleIcon className="h-4 w-4 text-gray-400 hover:text-gray-500 dark:hover:text-gray-300" />
-      <div className="hidden group-hover:block absolute z-10 w-64 p-2 text-sm text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 left-1/2 -translate-x-1/2 mt-1">
+      <QuestionMarkCircleIcon className="h-4 w-4 text-muted-foreground hover:text-muted-foreground" />
+      <div className="absolute left-1/2 z-10 mt-1 hidden w-64 -translate-x-1/2 rounded-md border border-border bg-card p-2 text-sm text-muted-foreground shadow-lg group-hover:block">
         {content}
       </div>
     </div>

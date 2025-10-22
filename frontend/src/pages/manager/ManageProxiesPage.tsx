@@ -17,7 +17,7 @@ const ManageProxiesPage: React.FC = () => {
     count: 0,
     next: null,
     previous: null,
-    results: []
+    results: [],
   });
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -120,11 +120,11 @@ const ManageProxiesPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 mt-8">
+    <div className="mt-8 space-y-6">
       <div className="sm:flex sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-lg font-medium text-gray-900 dark:text-white">{t('settings.proxy.title')}</h2>
-          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{t('settings.proxy.subtitle')}</p>
+          <h2 className="text-lg font-medium text-foreground">{t('settings.proxy.title')}</h2>
+          <p className="mt-1 text-sm text-muted-foreground">{t('settings.proxy.subtitle')}</p>
         </div>
         <div className="mt-4 sm:mt-0">
           <Button

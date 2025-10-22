@@ -41,10 +41,8 @@ const ArrayStringField: React.FC<ArrayStringFieldProps> = ({
 
   return (
     <div className={className}>
-      <div className="flex items-center gap-x-1 mb-1">
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-          {label}
-        </label>
+      <div className="mb-1 flex items-center gap-x-1">
+        <label className="block text-sm font-medium text-foreground">{label}</label>
         {tooltipContent && <InfoTooltip content={tooltipContent} />}
       </div>
       <div className="flex gap-x-2">
@@ -61,7 +59,7 @@ const ArrayStringField: React.FC<ArrayStringFieldProps> = ({
         <Button
           size="sm"
           variant="outline"
-          className='!px-3 !py-2 h-[40px] mt-1'
+          className="mt-1 h-[40px] !px-3 !py-2"
           onClick={handleAddValue}
           disabled={!newValue.trim()}
         >
@@ -75,13 +73,13 @@ const ArrayStringField: React.FC<ArrayStringFieldProps> = ({
             {values.map((value, index) => (
               <span
                 key={`${label}-${index}`}
-                className="inline-flex items-center px-2.5 py-0.5 rounded-md bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-sm"
+                className="inline-flex items-center rounded-md border border-primary/20 bg-primary/10 px-2.5 py-0.5 text-sm text-primary"
               >
                 {value}
                 <button
                   type="button"
                   onClick={() => handleRemoveValue(value)}
-                  className="ms-1.5 inline-flex items-center justify-center rounded-full h-4 w-4 bg-blue-200 dark:bg-blue-800 hover:bg-blue-300 dark:hover:bg-blue-700 transition-colors"
+                  className="ms-1.5 inline-flex h-4 w-4 items-center justify-center rounded-full transition-colors hover:bg-primary/20"
                   aria-label={t('common.remove')}
                 >
                   <XMarkIcon className="h-3 w-3" />

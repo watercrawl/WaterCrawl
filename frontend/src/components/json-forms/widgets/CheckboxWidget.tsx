@@ -16,25 +16,15 @@ export const CheckboxWidget: React.FC<FieldProps> = ({
       <input
         type="checkbox"
         checked={value || false}
-        onChange={(e) => onChange(e.target.checked)}
-        className={`
-          h-4 w-4 rounded border-gray-300 text-primary-600 
-          focus:ring-primary-600 dark:border-gray-600 
-          dark:focus:ring-primary-500 dark:ring-offset-gray-800
-          ${hasError ? 'border-red-500 dark:border-red-500' : ''}
-          ${ui.inputClassName || ''}
-        `}
+        onChange={e => onChange(e.target.checked)}
+        className={`h-4 w-4 rounded border-input-border text-primary focus:ring-primary ${hasError ? 'border-error' : ''} ${ui.inputClassName || ''} `}
         required={required}
         disabled={schema.readOnly}
       />
       {schema.title && (
-        <label
-          className={`ms-2 block text-sm text-gray-900 dark:text-white ${
-            ui.labelClassName || ''
-          }`}
-        >
+        <label className={`ms-2 block text-sm text-foreground ${ui.labelClassName || ''}`}>
           {schema.title}
-          {required && <span className="text-red-500 ms-1">*</span>}
+          {required && <span className="ms-1 text-error">*</span>}
         </label>
       )}
     </div>

@@ -18,12 +18,15 @@ const KnowledgeBaseQueryPage: React.FC = () => {
     if (!knowledgeBaseId) {
       navigate('/dashboard/knowledge-base');
     }
-    knowledgeBaseApi.get(knowledgeBaseId as string).then((response) => {
-      setKnowledgeBase(response);
-    }).catch(() => {
-      toast.error(t('settings.knowledgeBase.toast.loadError'));
-      navigate('/dashboard/knowledge-base');
-    });
+    knowledgeBaseApi
+      .get(knowledgeBaseId as string)
+      .then(response => {
+        setKnowledgeBase(response);
+      })
+      .catch(() => {
+        toast.error(t('settings.knowledgeBase.toast.loadError'));
+        navigate('/dashboard/knowledge-base');
+      });
   }, [knowledgeBaseId, navigate, t]);
 
   useEffect(() => {
@@ -31,27 +34,28 @@ const KnowledgeBaseQueryPage: React.FC = () => {
     setItems([
       { label: t('common.dashboard'), href: '/dashboard' },
       { label: t('settings.knowledgeBase.title'), href: '/dashboard/knowledge-base' },
-      { label: knowledgeBase.title, href: `/dashboard/knowledge-base/${knowledgeBaseId}`},
-      { label: t('settings.knowledgeBase.query.title'), href: `/dashboard/knowledge-base/${knowledgeBaseId}/query`, current: true },
+      { label: knowledgeBase.title, href: `/dashboard/knowledge-base/${knowledgeBaseId}` },
+      {
+        label: t('settings.knowledgeBase.query.title'),
+        href: `/dashboard/knowledge-base/${knowledgeBaseId}/query`,
+        current: true,
+      },
     ]);
   }, [knowledgeBase, setItems, knowledgeBaseId, t]);
 
-
-
   return (
-    <div className="px-8 py-6 space-y-6">
+    <div className="space-y-6 px-8 py-6">
       <div>
-        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">{t('settings.knowledgeBase.playground.title')}</h1>
-        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+        <h1 className="text-2xl font-semibold text-foreground">
+          {t('settings.knowledgeBase.playground.title')}
+        </h1>
+        <p className="mt-1 text-sm text-muted-foreground">
           {t('settings.knowledgeBase.playground.subtitle')}
         </p>
       </div>
 
       <div className="grid grid-cols-1 gap-6">
-        <KnowledgeBaseQueryForm
-          knowledgeBaseId={knowledgeBaseId!}
-        />
-
+        <KnowledgeBaseQueryForm knowledgeBaseId={knowledgeBaseId!} />
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ interface CookieConsentModalProps {
 
 export const CookieConsentModal: React.FC<CookieConsentModalProps & { gtag?: string }> = ({
   isOpen,
-  onClose
+  onClose,
 }) => {
   const { t } = useTranslation();
   const { isConsentGiven, updateConsent, privacyUrl, categories } = useCookieConsent();
@@ -25,9 +25,7 @@ export const CookieConsentModal: React.FC<CookieConsentModalProps & { gtag?: str
     setIsClient(true);
 
     // Pre-select non-essential categories that are not essential
-    const defaultSelectedCategories = categories
-      .filter(cat => !cat.essential)
-      .map(cat => cat.id);
+    const defaultSelectedCategories = categories.filter(cat => !cat.essential).map(cat => cat.id);
 
     setSelectedCategories(defaultSelectedCategories);
   }, [categories]);
@@ -36,16 +34,12 @@ export const CookieConsentModal: React.FC<CookieConsentModalProps & { gtag?: str
 
   const handleCategoryToggle = (categoryId: string) => {
     setSelectedCategories(prev =>
-      prev.includes(categoryId)
-        ? prev.filter(cat => cat !== categoryId)
-        : [...prev, categoryId]
+      prev.includes(categoryId) ? prev.filter(cat => cat !== categoryId) : [...prev, categoryId]
     );
   };
 
   const handleAcceptAll = () => {
-    const allNonEssentialCategories = categories
-      .filter(cat => !cat.essential)
-      .map(cat => cat.id);
+    const allNonEssentialCategories = categories.filter(cat => !cat.essential).map(cat => cat.id);
     updateConsent(allNonEssentialCategories);
 
     // No need to separately initialize Google Analytics here
@@ -71,48 +65,29 @@ export const CookieConsentModal: React.FC<CookieConsentModalProps & { gtag?: str
   };
 
   return (
-    <div
-      className='fixed inset-0 z-[150] flex items-center justify-center bg-black bg-opacity-50 p-4'
-    >
-      <div
-        className="w-full max-w-lg rounded-lg shadow-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-6 relative max-h-[90vh] overflow-y-auto"
-      >
+    <div className="fixed inset-0 z-[150] flex items-center justify-center bg-black bg-opacity-50 p-4">
+      <div className="relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-lg bg-card p-6 text-foreground shadow-xl">
         <button
           onClick={onClose}
-          className="absolute top-4 end-4 text-gray-600 hover:text-black dark:text-gray-300 dark:hover:text-white transition-colors"
+          className="absolute end-4 top-4 text-muted-foreground transition-colors hover:text-black"
         >
-          <X className="w-6 h-6" />
+          <X className="h-6 w-6" />
         </button>
 
-        <h2 className="
-          text-2xl font-bold mb-4 flex items-center
-          text-gray-900 dark:text-white
-        ">
-          <Cookie className="me-3 w-8 h-8 text-blue-500" />
+        <h2 className="mb-4 flex items-center text-2xl font-bold text-foreground">
+          <Cookie className="me-3 h-8 w-8 text-primary" />
           {t('cookieConsent.modal.title')}
         </h2>
 
-        <p className="
-          mb-4 
-          text-gray-600 dark:text-gray-300
-        ">
-          {t('cookieConsent.modal.description')}
-        </p>
+        <p className="mb-4 text-muted-foreground">{t('cookieConsent.modal.description')}</p>
 
-        {categories.map((category) => (
+        {categories.map(category => (
           <div
             key={category.id}
-            className={`
-              mb-4 p-3 rounded-lg relative
-              bg-gray-100 hover:bg-gray-200 
-              dark:bg-gray-800 dark:hover:bg-gray-700 
-              border border-gray-200 dark:border-gray-700
-              ${category.essential ? 'opacity-60' : ''}
-              transition-colors
-            `}
+            className={`relative mb-4 rounded-lg border border-border bg-muted p-3 hover:bg-muted ${category.essential ? 'opacity-60' : ''} transition-colors`}
           >
             {!category.essential && (
-              <div className="absolute top-4 end-3">
+              <div className="absolute end-3 top-4">
                 <Switch
                   checked={selectedCategories.includes(category.id)}
                   onChange={() => handleCategoryToggle(category.id)}
@@ -122,24 +97,14 @@ export const CookieConsentModal: React.FC<CookieConsentModalProps & { gtag?: str
             <div className="flex items-center justify-between">
               <div>
                 <div className="flex items-center">
-                  <h3 className="
-                    font-semibold me-2
-                    text-gray-900 dark:text-white
-                  ">
-                    {category.name}
-                  </h3>
+                  <h3 className="me-2 font-semibold text-foreground">{category.name}</h3>
                   {category.essential && (
-                    <span className="text-green-600 font-semibold text-xs">
+                    <span className="text-xs font-semibold text-success">
                       {t('cookieConsent.modal.alwaysActive')}
                     </span>
                   )}
                 </div>
-                <p className="
-                  text-sm 
-                  text-gray-600 dark:text-gray-400
-                ">
-                  {category.description}
-                </p>
+                <p className="text-sm text-muted-foreground">{category.description}</p>
               </div>
             </div>
           </div>
@@ -149,54 +114,34 @@ export const CookieConsentModal: React.FC<CookieConsentModalProps & { gtag?: str
           <div className="flex justify-center">
             <button
               onClick={handlePrivacyPolicyNavigation}
-              className="
-                hover:underline text-center w-full
-                text-blue-600 hover:text-blue-700
-                dark:text-blue-400 dark:hover:text-blue-300
-                text-sm
-              "
+              className="w-full text-center text-sm text-primary hover:text-primary-dark hover:underline"
             >
               {t('cookieConsent.modal.privacyPolicyLink')}
             </button>
           </div>
-          <div className="flex flex-col sm:flex-row sm:justify-between gap-2">
+          <div className="flex flex-col gap-2 sm:flex-row sm:justify-between">
             <div className="order-last sm:order-first">
               <button
                 onClick={handleSavePreferences}
-                className="
-                  w-full sm:w-auto px-4 py-2 rounded-md flex items-center justify-center
-                  bg-blue-500 hover:bg-blue-600 text-white
-                  dark:bg-blue-700 dark:hover:bg-blue-600
-                  text-sm font-medium transition-colors whitespace-nowrap
-                "
+                className="flex w-full items-center justify-center whitespace-nowrap rounded-md bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-hover sm:w-auto"
               >
-                <Settings className="w-4 h-4 me-2" />
+                <Settings className="me-2 h-4 w-4" />
                 {t('cookieConsent.modal.savePreferences')}
               </button>
             </div>
-            <div className="flex flex-col-reverse sm:flex-row gap-2">
+            <div className="flex flex-col-reverse gap-2 sm:flex-row">
               <button
                 onClick={handleReject}
-                className="
-                  w-full sm:w-auto px-4 py-2 rounded-md flex items-center justify-center
-                  bg-gray-200 hover:bg-gray-300 text-gray-700
-                  dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-300
-                  text-sm font-medium transition-colors whitespace-nowrap
-                "
+                className="flex w-full items-center justify-center whitespace-nowrap rounded-md bg-muted px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted sm:w-auto"
               >
-                <XCircle className="w-4 h-4 me-2" />
+                <XCircle className="me-2 h-4 w-4" />
                 {t('cookieConsent.modal.reject')}
               </button>
               <button
                 onClick={handleAcceptAll}
-                className="
-                  w-full sm:w-auto px-4 py-2 rounded-md flex items-center justify-center
-                  bg-green-500 hover:bg-green-600 text-white
-                  dark:bg-green-700 dark:hover:bg-green-600
-                  text-sm font-medium transition-colors whitespace-nowrap
-                "
+                className="flex w-full items-center justify-center whitespace-nowrap rounded-md bg-success px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-success sm:w-auto"
               >
-                <CheckCircle className="w-4 h-4 me-2" />
+                <CheckCircle className="me-2 h-4 w-4" />
                 {t('cookieConsent.modal.acceptAll')}
               </button>
             </div>

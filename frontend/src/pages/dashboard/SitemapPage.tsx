@@ -16,20 +16,16 @@ const SitemapPage: React.FC = () => {
   const { setItems } = useBreadcrumbs();
   useEffect(() => {
     setItems([
-      { label: t('dashboard.title'), href: '/dashboard'},
+      { label: t('dashboard.title'), href: '/dashboard' },
       { label: t('sitemap.title'), href: '/dashboard/sitemap', current: true },
     ]);
   }, [setItems, t]);
 
   return (
-    <div className="px-8 py-6 space-y-6">
+    <div className="space-y-6 px-8 py-6">
       <div>
-        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
-          {t('sitemap.title')}
-        </h1>
-        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-          {t('sitemap.subtitle')}
-        </p>
+        <h1 className="text-2xl font-semibold text-foreground">{t('sitemap.title')}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{t('sitemap.subtitle')}</p>
       </div>
 
       <div className="grid grid-cols-1 gap-6">

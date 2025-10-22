@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  GlobeAltIcon,
-  MagnifyingGlassIcon,
-  DocumentTextIcon
-} from '@heroicons/react/24/outline';
+import { GlobeAltIcon, MagnifyingGlassIcon, DocumentTextIcon } from '@heroicons/react/24/outline';
 import { useTranslation } from 'react-i18next';
 
 interface NavigationItem {
@@ -18,55 +14,55 @@ interface NavigationItem {
 
 export const QuickNavigation: React.FC = () => {
   const { t } = useTranslation();
-  
+
   const navigationItems: NavigationItem[] = [
     {
       href: '/dashboard/crawl',
       title: t('dashboard.quickActions.startCrawling'),
       description: t('dashboard.quickActions.crawlDescription'),
       icon: GlobeAltIcon,
-      borderColor: 'hover:border-blue-200 dark:hover:border-blue-700',
-      iconBgColor: 'bg-blue-50 dark:bg-blue-900/20 group-hover:bg-blue-100 dark:group-hover:bg-blue-900/30',
-      iconColor: 'text-blue-600 dark:text-blue-400'
+      borderColor: 'hover:border-primary',
+      iconBgColor: 'bg-primary/10 group-hover:bg-primary/15',
+      iconColor: 'text-primary',
     },
     {
       href: '/dashboard/search',
       title: t('dashboard.quickActions.smartSearch'),
       description: t('dashboard.quickActions.searchDescription'),
       icon: MagnifyingGlassIcon,
-      borderColor: 'hover:border-green-200 dark:hover:border-green-700',
-      iconBgColor: 'bg-green-50 dark:bg-green-900/20 group-hover:bg-green-100 dark:group-hover:bg-green-900/30',
-      iconColor: 'text-green-600 dark:text-green-400'
+      borderColor: 'hover:border-secondary',
+      iconBgColor: 'bg-secondary/10 group-hover:bg-secondary/15',
+      iconColor: 'text-secondary',
     },
     {
       href: '/dashboard/sitemap',
       title: t('dashboard.quickActions.generateSitemap'),
       description: t('dashboard.quickActions.sitemapDescription'),
       icon: DocumentTextIcon,
-      borderColor: 'hover:border-purple-200 dark:hover:border-purple-700',
-      iconBgColor: 'bg-purple-50 dark:bg-purple-900/20 group-hover:bg-purple-100 dark:group-hover:bg-purple-900/30',
-      iconColor: 'text-purple-600 dark:text-purple-400'
-    }
+      borderColor: 'hover:border-tertiary',
+      iconBgColor: 'bg-tertiary/10 group-hover:bg-tertiary/15',
+      iconColor: 'text-tertiary',
+    },
   ];
 
   return (
     <div className="mb-8">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {navigationItems.map((item) => {
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        {navigationItems.map(item => {
           const IconComponent = item.icon;
           return (
             <a
               key={item.href}
               href={item.href}
-              className={`group p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 transition-colors ${item.borderColor}`}
+              className={`group rounded-xl border border-border bg-card p-4 transition-colors ${item.borderColor}`}
             >
               <div className="flex items-center gap-x-3">
-                <div className={`p-2 rounded-lg transition-colors ${item.iconBgColor}`}>
+                <div className={`rounded-lg p-2 transition-colors ${item.iconBgColor}`}>
                   <IconComponent className={`h-5 w-5 ${item.iconColor}`} />
                 </div>
                 <div>
-                  <h3 className="text-sm font-medium text-gray-900 dark:text-white">{item.title}</h3>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">{item.description}</p>
+                  <h3 className="text-sm font-medium text-foreground">{item.title}</h3>
+                  <p className="text-xs text-muted-foreground">{item.description}</p>
                 </div>
               </div>
             </a>

@@ -24,8 +24,8 @@ export const Slider: React.FC<SliderProps> = ({
   disabled = false,
   className = '',
   showValue = true,
-  formatValue = (val) => val.toString(),
-  description
+  formatValue = val => val.toString(),
+  description,
 }) => {
   // If min == max, show as read-only
   const isReadOnly = min === max;
@@ -39,12 +39,10 @@ export const Slider: React.FC<SliderProps> = ({
   return (
     <div className={`w-full ${className}`}>
       {label && (
-        <div className="flex items-center justify-between mb-2">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-            {label}
-          </label>
+        <div className="mb-2 flex items-center justify-between">
+          <label className="block text-sm font-medium text-foreground">{label}</label>
           {showValue && (
-            <span className="text-sm text-gray-500 dark:text-gray-400 font-mono">
+            <span className="font-mono text-sm text-muted-foreground">
               {formatValue(displayValue)}
             </span>
           )}
@@ -53,16 +51,12 @@ export const Slider: React.FC<SliderProps> = ({
 
       {isReadOnly ? (
         <div className="w-full">
-          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-lg h-2 relative">
+          <div className="relative h-2 w-full rounded-lg bg-muted">
             {/* Single position indicator for read-only */}
-            <div 
-              className="absolute top-0 start-1/2 transform -translate-x-1/2 w-4 h-4 bg-gray-400 dark:bg-gray-500 rounded-full -mt-1 border-2 border-white dark:border-gray-800"
-            />
+            <div className="absolute start-1/2 top-0 -mt-1 h-4 w-4 -translate-x-1/2 transform rounded-full border-2 border-white bg-muted" />
           </div>
-          <div className="flex justify-center mt-1">
-            <span className="text-xs text-gray-500 dark:text-gray-400">
-              Fixed at {formatValue(min)}
-            </span>
+          <div className="mt-1 flex justify-center">
+            <span className="text-xs text-muted-foreground">Fixed at {formatValue(min)}</span>
           </div>
         </div>
       ) : (
@@ -76,50 +70,19 @@ export const Slider: React.FC<SliderProps> = ({
               value={value}
               onChange={handleSliderChange}
               disabled={disabled}
-              className={`
-                w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer
-                focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-opacity-50
-                disabled:cursor-not-allowed disabled:opacity-50
-                [&::-webkit-slider-thumb]:appearance-none
-                [&::-webkit-slider-thumb]:w-4
-                [&::-webkit-slider-thumb]:h-4
-                [&::-webkit-slider-thumb]:rounded-full
-                [&::-webkit-slider-thumb]:bg-primary-600
-                [&::-webkit-slider-thumb]:cursor-pointer
-                [&::-webkit-slider-thumb]:border-2
-                [&::-webkit-slider-thumb]:border-white
-                [&::-webkit-slider-thumb]:shadow-md
-                [&::-webkit-slider-thumb]:hover:bg-primary-700
-                [&::-webkit-slider-thumb]:transition-colors
-                [&::-moz-range-thumb]:w-4
-                [&::-moz-range-thumb]:h-4
-                [&::-moz-range-thumb]:rounded-full
-                [&::-moz-range-thumb]:bg-primary-600
-                [&::-moz-range-thumb]:cursor-pointer
-                [&::-moz-range-thumb]:border-2
-                [&::-moz-range-thumb]:border-white
-                [&::-moz-range-thumb]:shadow-md
-                [&::-moz-range-thumb]:hover:bg-primary-700
-                [&::-moz-range-thumb]:transition-colors
-                [&::-moz-range-thumb]:border-none
-                [&::-moz-range-track]:bg-transparent
-              `}
+              className={`h-2 w-full cursor-pointer appearance-none rounded-lg bg-muted focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 disabled:cursor-not-allowed disabled:opacity-50 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-none [&::-moz-range-thumb]:border-white [&::-moz-range-thumb]:bg-primary [&::-moz-range-thumb]:shadow-md [&::-moz-range-thumb]:transition-colors [&::-moz-range-thumb]:hover:bg-primary-hover [&::-moz-range-track]:bg-transparent [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:transition-colors [&::-webkit-slider-thumb]:hover:bg-primary-hover`}
             />
           </div>
-          
+
           {/* Min/Max labels */}
-          <div className="flex justify-between mt-1 text-xs text-gray-500 dark:text-gray-400">
+          <div className="mt-1 flex justify-between text-xs text-muted-foreground">
             <span>{formatValue(min)}</span>
             <span>{formatValue(max)}</span>
           </div>
         </div>
       )}
 
-      {description && (
-        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-          {description}
-        </p>
-      )}
+      {description && <p className="mt-2 text-sm text-muted-foreground">{description}</p>}
     </div>
   );
 };

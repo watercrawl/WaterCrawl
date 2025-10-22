@@ -24,8 +24,8 @@ export const initializeGoogleAnalytics = (gtagId?: string) => {
     // Configure Google Analytics
     window.gtag('js', new Date());
     window.gtag('config', gtagId, {
-      'anonymize_ip': true,
-      'cookie_flags': 'SameSite=Strict'
+      anonymize_ip: true,
+      cookie_flags: 'SameSite=Strict',
     });
 
     console.log(`Google Analytics initialized with ID: ${gtagId}`);

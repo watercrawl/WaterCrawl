@@ -37,7 +37,7 @@ const VerifyEmailPage = () => {
 
   if (isVerifying) {
     return (
-      <div className="flex justify-center items-center">
+      <div className="flex items-center justify-center">
         <Loading size="lg" />
       </div>
     );
@@ -45,36 +45,33 @@ const VerifyEmailPage = () => {
 
   return (
     <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-      <div className="bg-white dark:bg-gray-800 px-4 py-8 shadow sm:rounded-lg sm:px-10">
+      <div className="bg-card px-4 py-8 shadow sm:rounded-lg sm:px-10">
         {error ? (
           <>
-            <h2 className="mb-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
+            <h2 className="mb-6 text-center text-3xl font-extrabold text-foreground">
               {t('auth.verifyEmail.verificationFailed')}
             </h2>
-            <p className="text-center text-sm text-gray-600 dark:text-gray-400 mb-6">
+            <p className="mb-6 text-center text-sm text-muted-foreground">
               {t('auth.verifyEmail.verificationFailedMessage', { error })}
             </p>
             <div className="flex items-center justify-center">
-              <Link
-                to="/"
-                className="font-medium text-primary-600 hover:text-primary-500 dark:text-primary-400"
-              >
+              <Link to="/" className="font-medium text-primary hover:text-primary-500">
                 {t('auth.forgotPassword.backToLogin')}
               </Link>
             </div>
           </>
         ) : (
           <>
-            <h2 className="mb-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
+            <h2 className="mb-6 text-center text-3xl font-extrabold text-foreground">
               {t('auth.verifyEmail.successTitle')}
             </h2>
-            <p className="text-center text-sm text-gray-600 dark:text-gray-400 mb-6">
+            <p className="mb-6 text-center text-sm text-muted-foreground">
               {t('auth.verifyEmail.successMessage')}
             </p>
             <div>
               <button
                 onClick={() => navigate('/dashboard')}
-                className="flex w-full justify-center rounded-md bg-primary-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
+                className="flex w-full justify-center rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
               >
                 {t('dashboard.navigation.dashboard')}
               </button>
@@ -84,6 +81,6 @@ const VerifyEmailPage = () => {
       </div>
     </div>
   );
-}
+};
 
 export default VerifyEmailPage;

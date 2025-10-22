@@ -19,9 +19,7 @@ export const GitHubStars = ({ owner, repo, className = '' }: GitHubStarsProps) =
     const fetchStars = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get(
-          `https://api.github.com/repos/${owner}/${repo}`
-        );
+        const response = await axios.get(`https://api.github.com/repos/${owner}/${repo}`);
         setStars(response.data.stargazers_count);
       } catch (error) {
         console.error('Error fetching GitHub stars:', error);
@@ -39,17 +37,19 @@ export const GitHubStars = ({ owner, repo, className = '' }: GitHubStarsProps) =
   const repoUrl = `https://github.com/${owner}/${repo}`;
 
   return (
-    <div className={`overflow-hidden rounded-lg border border-blue-800/30 bg-blue-900/20 shadow-md hover:shadow-lg transition-shadow ${className}`}>
+    <div
+      className={`overflow-hidden rounded-lg border border-primary/30 bg-sidebar-active-bg/5 shadow-md transition-shadow hover:shadow-lg ${className}`}
+    >
       <div className="px-4 py-3">
-        <h3 className="text-sm font-medium text-blue-100 drop-shadow">{t('github.support')}</h3>
-        <p className="mt-1 text-xs text-blue-300">
-          {t('github.message')}
-        </p>
+        <h3 className="text-sm font-medium text-sidebar-active-text drop-shadow">
+          {t('github.support')}
+        </h3>
+        <p className="mt-1 text-xs text-sidebar-text/70">{t('github.message')}</p>
       </div>
-      <div className="flex items-center justify-between bg-blue-800/30 px-4 py-2">
+      <div className="flex items-center justify-between bg-sidebar-active-bg/10 px-4 py-2">
         <div className="flex items-center gap-1">
-          <StarSolidIcon className="h-4 w-4 text-yellow-400 drop-shadow-md" aria-hidden="true" />
-          <span className="text-xs font-medium text-blue-200">
+          <StarSolidIcon className="h-4 w-4 text-warning drop-shadow-md" aria-hidden="true" />
+          <span className="text-xs font-medium text-sidebar-text">
             {isLoading ? t('common.loading') : t('github.starsCount', { count: stars || 0 })}
           </span>
         </div>
@@ -57,7 +57,7 @@ export const GitHubStars = ({ owner, repo, className = '' }: GitHubStarsProps) =
           href={repoUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 rounded-md bg-blue-800 px-2.5 py-1 text-xs font-medium text-blue-100 shadow-sm hover:bg-blue-700 hover:shadow transition-all"
+          className="hover:bg-primary-dark-hover inline-flex items-center gap-1 rounded-md bg-primary-dark px-2.5 py-1 text-xs font-medium text-primary-foreground shadow-sm transition-all hover:shadow"
           aria-label={`Star ${owner}/${repo} on GitHub`}
         >
           <StarIcon className="h-3.5 w-3.5" aria-hidden="true" />

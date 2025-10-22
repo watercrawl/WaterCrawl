@@ -1,12 +1,12 @@
 export const getStatusColor = (status: string) => {
   switch (status.toLowerCase()) {
     case 'pending':
-      return 'bg-yellow-100 text-yellow-800';
+      return 'bg-warning-light text-warning-dark';
     case 'completed':
-      return 'bg-green-100 text-green-800';
+      return 'bg-success-light text-success-dark';
     case 'failed':
-      return 'bg-red-100 text-red-800';
+      return 'bg-error-light text-error';
     default:
-      return 'bg-gray-100 text-gray-800';
+      return 'bg-muted text-foreground';
   }
 };

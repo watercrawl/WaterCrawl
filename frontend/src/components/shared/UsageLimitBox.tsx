@@ -8,7 +8,12 @@ interface UsageLimitBoxProps {
   className?: string;
 }
 
-export const UsageLimitBox: React.FC<UsageLimitBoxProps> = ({ label = 'Usage', current, limit, className = '' }) => {
+export const UsageLimitBox: React.FC<UsageLimitBoxProps> = ({
+  label = 'Usage',
+  current,
+  limit,
+  className = '',
+}) => {
   const { t } = useTranslation();
   const isUnlimited = limit === -1;
   const percent = !isUnlimited && limit > 0 ? Math.min(100, (current / limit) * 100) : 0;
@@ -16,16 +21,14 @@ export const UsageLimitBox: React.FC<UsageLimitBoxProps> = ({ label = 'Usage', c
   const danger = !isUnlimited && limit > 0 && current >= limit;
 
   return (
-    <div className={`w-[250px] border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 rounded-lg px-3 py-2 ${className}`}>
+    <div className={`w-[250px] rounded-lg border border-border bg-muted px-3 py-2 ${className}`}>
       <div className="flex items-center justify-between">
-        <div className="text-xs text-gray-600 dark:text-gray-400">{label}</div>
-        <div className={`text-sm font-semibold ${
-          danger
-            ? 'text-red-600 dark:text-red-400'
-            : warn
-            ? 'text-yellow-600 dark:text-yellow-400'
-            : 'text-gray-800 dark:text-gray-200'
-        }`}>
+        <div className="text-xs text-muted-foreground">{label}</div>
+        <div
+          className={`text-sm font-semibold ${
+            danger ? 'text-error' : warn ? 'text-warning' : 'text-foreground'
+          }`}
+        >
           {isUnlimited ? (
             <>
               {current}/{t('usage.unlimited')}
@@ -39,10 +42,10 @@ export const UsageLimitBox: React.FC<UsageLimitBoxProps> = ({ label = 'Usage', c
       </div>
 
       {!isUnlimited && (
-        <div className="mt-2 w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+        <div className="mt-2 h-2 w-full rounded-full border border-border/50 bg-muted/50">
           <div
             className={`h-2 rounded-full transition-all duration-300 ${
-              danger ? 'bg-red-500' : warn ? 'bg-yellow-500' : 'bg-primary-500'
+              danger ? 'bg-error' : warn ? 'bg-warning' : 'bg-primary'
             }`}
             style={{ width: `${percent}%` }}
           />
@@ -50,7 +53,7 @@ export const UsageLimitBox: React.FC<UsageLimitBoxProps> = ({ label = 'Usage', c
       )}
 
       {isUnlimited && (
-        <div className="mt-2 text-[10px] text-gray-500 dark:text-gray-400">{t('usage.noLimit')}</div>
+        <div className="mt-2 text-[10px] text-muted-foreground">{t('usage.noLimit')}</div>
       )}
     </div>
   );

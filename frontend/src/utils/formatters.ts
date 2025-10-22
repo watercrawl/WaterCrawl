@@ -5,7 +5,8 @@
  */
 export function capFirst(str: string): string {
   if (!str) return '';
-  return str.split(' ')
+  return str
+    .split(' ')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join(' ');
 }
@@ -30,7 +31,7 @@ export function formatDuration(duration: string | null, startTime?: string): str
     hours = String(Math.floor(_minutes / 60));
     minutes = String(_minutes % 60);
     seconds = String(_seconds % 60);
-  } 
+  }
   // Parse provided duration string
   else {
     if (!duration) {

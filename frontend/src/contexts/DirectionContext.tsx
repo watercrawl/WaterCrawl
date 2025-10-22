@@ -22,17 +22,17 @@ export const DirectionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   useEffect(() => {
     const root = window.document.documentElement;
     const body = window.document.body;
-    
+
     // Set dir attribute on both html and body
     root.setAttribute('dir', direction);
     body.setAttribute('dir', direction);
-    
+
     // Save to localStorage
     localStorage.setItem('direction', direction);
   }, [direction]);
 
   const toggleDirection = () => {
-    setDirectionState(prev => prev === 'rtl' ? 'ltr' : 'rtl');
+    setDirectionState(prev => (prev === 'rtl' ? 'ltr' : 'rtl'));
   };
 
   const setDirection = (newDirection: Direction) => {

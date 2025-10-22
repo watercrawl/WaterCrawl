@@ -4,8 +4,8 @@ import api from './api';
 
 export const apiKeysApi = {
   async list(page: number): Promise<PaginatedResponse<ApiKey>> {
-    const { data } = await api.get<PaginatedResponse<ApiKey>>('/api/v1/user/api-keys/',{
-      params: { page }
+    const { data } = await api.get<PaginatedResponse<ApiKey>>('/api/v1/user/api-keys/', {
+      params: { page },
     });
     return data;
   },

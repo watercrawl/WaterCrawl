@@ -26,19 +26,22 @@ const SelectSitemapPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   // Fetch sitemap requests from the API
-  const fetchSitemapRequests = useCallback(async (page: number) => {
-    try {
-      setIsLoading(true);
-      // Only get finished sitemaps
-      const data = await sitemapApi.list(page, 'finished');
-      setSitemapData(data);
-    } catch (error) {
-      console.error('Failed to load sitemap data:', error);
-      toast.error(t('settings.knowledgeBase.selectSitemap.loadError'));
-    } finally {
-      setIsLoading(false);
-    }
-  }, [t]);
+  const fetchSitemapRequests = useCallback(
+    async (page: number) => {
+      try {
+        setIsLoading(true);
+        // Only get finished sitemaps
+        const data = await sitemapApi.list(page, 'finished');
+        setSitemapData(data);
+      } catch (error) {
+        console.error('Failed to load sitemap data:', error);
+        toast.error(t('settings.knowledgeBase.selectSitemap.loadError'));
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [t]
+  );
 
   useEffect(() => {
     fetchSitemapRequests(currentPage);
@@ -55,12 +58,15 @@ const SelectSitemapPage: React.FC = () => {
     if (!knowledgeBaseId) {
       navigate('/dashboard/knowledge-base');
     }
-    knowledgeBaseApi.get(knowledgeBaseId as string).then((response) => {
-      setKnowledgeBase(response);
-    }).catch(() => {
-      toast.error(t('settings.knowledgeBase.toast.loadError'));
-      navigate('/dashboard/knowledge-base');
-    });
+    knowledgeBaseApi
+      .get(knowledgeBaseId as string)
+      .then(response => {
+        setKnowledgeBase(response);
+      })
+      .catch(() => {
+        toast.error(t('settings.knowledgeBase.toast.loadError'));
+        navigate('/dashboard/knowledge-base');
+      });
   }, [knowledgeBaseId, navigate, t]);
 
   useEffect(() => {
@@ -68,23 +74,28 @@ const SelectSitemapPage: React.FC = () => {
     setItems([
       { label: t('common.dashboard'), href: '/dashboard' },
       { label: t('settings.knowledgeBase.title'), href: '/dashboard/knowledge-base' },
-      { label: knowledgeBase.title, href: `/dashboard/knowledge-base/${knowledgeBaseId}`},
-      { label: t('settings.knowledgeBase.import.title'), href: `/dashboard/knowledge-base/${knowledgeBaseId}/import`},
-      { label: t('settings.knowledgeBase.selectSitemap.title'), href: `/dashboard/knowledge-base/${knowledgeBaseId}/import/select-sitemap`, current: true },
+      { label: knowledgeBase.title, href: `/dashboard/knowledge-base/${knowledgeBaseId}` },
+      {
+        label: t('settings.knowledgeBase.import.title'),
+        href: `/dashboard/knowledge-base/${knowledgeBaseId}/import`,
+      },
+      {
+        label: t('settings.knowledgeBase.selectSitemap.title'),
+        href: `/dashboard/knowledge-base/${knowledgeBaseId}/import/select-sitemap`,
+        current: true,
+      },
     ]);
   }, [knowledgeBase, knowledgeBaseId, setItems, t]);
 
-
-
   if (isLoading) {
     return (
-      <div className="py-6 px-4 sm:px-6 lg:px-8">
+      <div className="px-4 py-6 sm:px-6 lg:px-8">
         <div className="animate-pulse">
-          <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/4 mb-4"></div>
-          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-8"></div>
+          <div className="mb-4 h-6 w-1/4 rounded bg-muted"></div>
+          <div className="mb-8 h-4 w-1/2 rounded bg-muted"></div>
           <div className="space-y-4">
             {[...Array(3)].map((_, i) => (
-              <div key={i} className="h-16 bg-gray-200 dark:bg-gray-700 rounded"></div>
+              <div key={i} className="h-16 rounded bg-muted"></div>
             ))}
           </div>
         </div>
@@ -93,12 +104,12 @@ const SelectSitemapPage: React.FC = () => {
   }
 
   return (
-    <div className="py-6 px-4 sm:px-6 lg:px-8">
+    <div className="px-4 py-6 sm:px-6 lg:px-8">
       <div className="mb-6">
-        <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
+        <h1 className="text-xl font-semibold text-foreground">
           {t('settings.knowledgeBase.selectSitemap.pageTitle')}
         </h1>
-        <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">
+        <p className="mt-2 text-sm text-foreground">
           {t('settings.knowledgeBase.selectSitemap.pageSubtitle')}
         </p>
       </div>
@@ -106,83 +117,87 @@ const SelectSitemapPage: React.FC = () => {
       <div className="mt-8 overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
         {isLoading ? (
           <div className="p-6 text-center">
-            <div className="animate-pulse flex flex-col items-center">
-              <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/4 mb-4"></div>
-              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+            <div className="flex animate-pulse flex-col items-center">
+              <div className="mb-4 h-6 w-1/4 rounded bg-muted"></div>
+              <div className="h-4 w-1/2 rounded bg-muted"></div>
             </div>
           </div>
         ) : !sitemapData || sitemapData.results.length === 0 ? (
-          <div className="text-center py-12 bg-white dark:bg-gray-800">
-            <MapIcon className="mx-auto h-12 w-12 text-gray-400" />
-            <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-gray-200">
+          <div className="bg-card py-12 text-center">
+            <MapIcon className="mx-auto h-12 w-12 text-muted-foreground" />
+            <h3 className="mt-2 text-sm font-medium text-foreground">
               {t('settings.knowledgeBase.selectSitemap.noSitemaps')}
             </h3>
-            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+            <p className="mt-1 text-sm text-muted-foreground">
               {t('settings.knowledgeBase.selectSitemap.generateFirst')}
             </p>
           </div>
         ) : (
-          <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
-            <thead className="bg-gray-50 dark:bg-gray-700">
+          <table className="min-w-full divide-y divide-border">
+            <thead className="bg-muted">
               <tr>
                 <th
                   scope="col"
-                  className="py-3.5 ps-4 pe-3 text-start text-sm font-semibold text-gray-900 dark:text-gray-200 sm:ps-6"
+                  className="py-3.5 pe-3 ps-4 text-start text-sm font-semibold text-foreground sm:ps-6"
                 >
                   {t('settings.knowledgeBase.selectSitemap.url')}
                 </th>
                 <th
                   scope="col"
-                  className="px-3 py-3.5 text-start text-sm font-semibold text-gray-900 dark:text-gray-200"
+                  className="px-3 py-3.5 text-start text-sm font-semibold text-foreground"
                 >
                   {t('settings.knowledgeBase.selectSitemap.created')}
                 </th>
                 <th
                   scope="col"
-                  className="px-3 py-3.5 text-start text-sm font-semibold text-gray-900 dark:text-gray-200"
+                  className="px-3 py-3.5 text-start text-sm font-semibold text-foreground"
                 >
                   {t('settings.knowledgeBase.selectSitemap.duration')}
                 </th>
-                <th scope="col" className="relative py-3.5 ps-3 pe-4 sm:pe-6">
-                  <span className="sr-only">{t('settings.knowledgeBase.selectSitemap.select')}</span>
+                <th scope="col" className="relative py-3.5 pe-4 ps-3 sm:pe-6">
+                  <span className="sr-only">
+                    {t('settings.knowledgeBase.selectSitemap.select')}
+                  </span>
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800">
-              {sitemapData.results.map((sitemap) => (
-                <tr key={sitemap.uuid} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                  <td className="whitespace-nowrap py-4 ps-4 pe-3 text-sm font-medium text-gray-900 dark:text-gray-200 sm:ps-6">
+            <tbody className="divide-y divide-border bg-card">
+              {sitemapData.results.map(sitemap => (
+                <tr key={sitemap.uuid} className="hover:bg-muted">
+                  <td className="whitespace-nowrap py-4 pe-3 ps-4 text-sm font-medium text-foreground sm:ps-6">
                     <div className="flex items-center">
-                      <MapIcon className="h-5 w-5 text-gray-400 me-3 flex-shrink-0" />
-                      <div className="truncate max-w-md" title={sitemap.url}>
+                      <MapIcon className="me-3 h-5 w-5 flex-shrink-0 text-muted-foreground" />
+                      <div className="max-w-md truncate" title={sitemap.url}>
                         {sitemap.url}
                       </div>
                     </div>
                   </td>
-                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
+                  <td className="whitespace-nowrap px-3 py-4 text-sm text-muted-foreground">
                     {sitemap.created_at && (
                       <div className="flex items-center">
-                        <CalendarIcon className="h-4 w-4 me-2 flex-shrink-0" />
-                        {formatDistanceToNowLocalized(new Date(sitemap.created_at), dateLocale, { addSuffix: true })}
+                        <CalendarIcon className="me-2 h-4 w-4 flex-shrink-0" />
+                        {formatDistanceToNowLocalized(new Date(sitemap.created_at), dateLocale, {
+                          addSuffix: true,
+                        })}
                       </div>
                     )}
                   </td>
-                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
+                  <td className="whitespace-nowrap px-3 py-4 text-sm text-muted-foreground">
                     {sitemap.duration && (
                       <div className="flex items-center">
-                        <ClockIcon className="h-4 w-4 me-2 flex-shrink-0" />
+                        <ClockIcon className="me-2 h-4 w-4 flex-shrink-0" />
                         {sitemap.duration}s
                       </div>
                     )}
                   </td>
-                  <td className="relative whitespace-nowrap py-4 ps-3 pe-4 text-end text-sm font-medium sm:pe-6">
+                  <td className="relative whitespace-nowrap py-4 pe-4 ps-3 text-end text-sm font-medium sm:pe-6">
                     <button
                       type="button"
                       onClick={() => handleSitemapSelect(sitemap.uuid as string)}
-                      className="text-primary-600 hover:text-primary-900 dark:text-primary-400 dark:hover:text-primary-300 flex items-center"
+                      className="flex items-center text-primary hover:text-primary-900"
                     >
                       {t('settings.knowledgeBase.selectSitemap.select')}
-                      <ChevronRight className="h-4 w-4 ms-1" />
+                      <ChevronRight className="ms-1 h-4 w-4" />
                     </button>
                   </td>
                 </tr>
@@ -191,7 +206,7 @@ const SelectSitemapPage: React.FC = () => {
           </table>
         )}
       </div>
-      
+
       {/* Pagination */}
       {sitemapData && sitemapData.count > 0 && (
         <Pagination
@@ -204,11 +219,9 @@ const SelectSitemapPage: React.FC = () => {
           loading={isLoading}
         />
       )}
-      
-      <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-        <p>
-          {t('settings.knowledgeBase.selectSitemap.helpText')}
-        </p>
+
+      <div className="mt-4 text-sm text-muted-foreground">
+        <p>{t('settings.knowledgeBase.selectSitemap.helpText')}</p>
       </div>
     </div>
   );

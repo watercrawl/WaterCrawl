@@ -9,9 +9,16 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,md}\"",
+    "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json,css,md}\"",
     "preview": "vite preview",
     "i18n:extract": "npx i18next-parser",
-    "i18n:check": "npx i18next-parser --fail-on-update"
+    "i18n:check": "npx i18next-parser --fail-on-update",
+    "colors:check": "node scripts/migrate-colors.mjs --dry-run",
+    "colors:migrate": "node scripts/migrate-colors.mjs",
+    "colors:cleanup": "node scripts/cleanup-classes.mjs",
+    "colors:remove-dark": "node scripts/remove-dark-classes.mjs",
+    "colors:migrate-hardcoded": "node scripts/migrate-hardcoded-colors.mjs"
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.3.0",
@@ -63,6 +70,8 @@
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^15.15.0",
     "i18next-parser": "^9.3.0",
+    "prettier": "^3.4.2",
+    "prettier-plugin-tailwindcss": "^0.6.11",
     "typescript": "~5.6.3",
     "typescript-eslint": "^8.34.1",
     "vite": "^6.3.5"

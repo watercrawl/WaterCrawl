@@ -6,30 +6,26 @@ interface SitemapMarkdownViewerProps {
   isLoading: boolean;
 }
 
-const SitemapMarkdownViewer: React.FC<SitemapMarkdownViewerProps> = ({ 
+const SitemapMarkdownViewer: React.FC<SitemapMarkdownViewerProps> = ({
   markdownContent,
-  isLoading
+  isLoading,
 }) => {
   const { t } = useTranslation();
-  
+
   if (isLoading) {
     return (
-      <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-        {t('sitemap.loadingMarkdown')}
-      </div>
+      <div className="py-8 text-center text-muted-foreground">{t('sitemap.loadingMarkdown')}</div>
     );
   }
 
   if (!markdownContent) {
     return (
-      <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-        {t('sitemap.noMarkdownContent')}
-      </div>
+      <div className="py-8 text-center text-muted-foreground">{t('sitemap.noMarkdownContent')}</div>
     );
   }
 
   return (
-    <pre className="text-sm font-mono whitespace-pre-wrap p-4 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 rounded-md shadow-inner overflow-auto">
+    <pre className="overflow-auto whitespace-pre-wrap rounded-md bg-card p-4 font-mono text-sm text-foreground shadow-inner">
       {markdownContent}
     </pre>
   );

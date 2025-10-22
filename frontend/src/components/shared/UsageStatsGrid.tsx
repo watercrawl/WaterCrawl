@@ -1,5 +1,10 @@
 import React from 'react';
-import { ArrowTrendingUpIcon, DocumentTextIcon, ClockIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
+import {
+  ArrowTrendingUpIcon,
+  DocumentTextIcon,
+  ClockIcon,
+  CheckCircleIcon,
+} from '@heroicons/react/24/outline';
 import { useTranslation } from 'react-i18next';
 
 interface UsageStatsGridProps {
@@ -15,59 +20,59 @@ export const UsageStatsGrid: React.FC<UsageStatsGridProps> = ({
 }) => {
   const { t } = useTranslation();
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-      <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="rounded-lg border border-border p-4">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-gray-500 dark:text-gray-400">{t('usage.stats.totalCrawlRequests')}</p>
-            <p className="mt-1 text-2xl font-semibold text-gray-900 dark:text-white">
+            <p className="text-sm text-muted-foreground">{t('usage.stats.totalCrawlRequests')}</p>
+            <p className="mt-1 text-2xl font-semibold text-foreground">
               {totalCrawls?.toLocaleString()}
             </p>
           </div>
-          <div className="text-gray-400 dark:text-gray-500">
+          <div className="text-muted-foreground">
             <ArrowTrendingUpIcon className="h-5 w-5" />
           </div>
         </div>
       </div>
 
-      <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+      <div className="rounded-lg border border-border p-4">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-gray-500 dark:text-gray-400">{t('usage.stats.totalResults')}</p>
-            <p className="mt-1 text-2xl font-semibold text-gray-900 dark:text-white">
+            <p className="text-sm text-muted-foreground">{t('usage.stats.totalResults')}</p>
+            <p className="mt-1 text-2xl font-semibold text-foreground">
               {totalDocuments?.toLocaleString()}
             </p>
           </div>
-          <div className="text-gray-400 dark:text-gray-500">
+          <div className="text-muted-foreground">
             <DocumentTextIcon className="h-5 w-5" />
           </div>
         </div>
       </div>
 
-      <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 md:block hidden">
+      <div className="hidden rounded-lg border border-border p-4 md:block">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-gray-500 dark:text-gray-400">{t('usage.stats.finishedCrawls')}</p>
-            <p className="mt-1 text-2xl font-semibold text-gray-900 dark:text-white">
+            <p className="text-sm text-muted-foreground">{t('usage.stats.finishedCrawls')}</p>
+            <p className="mt-1 text-2xl font-semibold text-foreground">
               {finishedCrawls?.toLocaleString()}
             </p>
           </div>
-          <div className="text-gray-400 dark:text-gray-500">
+          <div className="text-muted-foreground">
             <ClockIcon className="h-5 w-5" />
           </div>
         </div>
       </div>
 
-      <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 md:block hidden">
+      <div className="hidden rounded-lg border border-border p-4 md:block">
         <div className="flex items-center justify-between gap-x-4">
           <div>
-            <p className="text-sm text-gray-500 dark:text-gray-400">{t('usage.stats.successRate')}</p>
-            <p className="mt-1 text-2xl font-semibold text-gray-900 dark:text-white">
+            <p className="text-sm text-muted-foreground">{t('usage.stats.successRate')}</p>
+            <p className="mt-1 text-2xl font-semibold text-foreground">
               {Math.round((finishedCrawls / totalCrawls) * 100)}%
             </p>
           </div>
           <div className="flex items-center">
-            <div className="flex items-center text-green-500">
+            <div className="flex items-center text-success">
               <CheckCircleIcon className="h-5 w-5" />
               <span className="ms-1 text-sm">{finishedCrawls}</span>
             </div>

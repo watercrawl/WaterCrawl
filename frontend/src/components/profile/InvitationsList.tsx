@@ -1,4 +1,4 @@
-import  { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { format } from 'date-fns';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
@@ -45,7 +45,7 @@ export function InvitationsList() {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-32">
+      <div className="flex h-32 items-center justify-center">
         <Loading size="lg" />
       </div>
     );
@@ -53,7 +53,7 @@ export function InvitationsList() {
 
   if (invitations.length === 0) {
     return (
-      <div className="text-center py-6 text-gray-500 dark:text-gray-400">
+      <div className="py-6 text-center text-muted-foreground">
         {t('profile.invitations.noPending')}
       </div>
     );
@@ -61,16 +61,14 @@ export function InvitationsList() {
 
   return (
     <div className="space-y-4">
-      {invitations.map((invitation) => (
+      {invitations.map(invitation => (
         <div
           key={invitation.uuid}
-          className="bg-white dark:bg-gray-700 shadow rounded-lg p-4 flex items-center justify-between"
+          className="flex items-center justify-between rounded-lg bg-card p-4 shadow"
         >
           <div className="flex-1">
-            <h4 className="text-sm font-medium text-gray-900 dark:text-white">
-              {invitation.team.name}
-            </h4>
-            <p className="mt-1 text-xs text-gray-400 dark:text-gray-500">
+            <h4 className="text-sm font-medium text-foreground">{invitation.team.name}</h4>
+            <p className="mt-1 text-xs text-muted-foreground">
               {format(new Date(invitation.created_at), 'PPpp')}
             </p>
           </div>
@@ -78,9 +76,13 @@ export function InvitationsList() {
             <button
               onClick={() => handleAccept(invitation.uuid)}
               disabled={processingInvitation === invitation.uuid}
-              className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50"
+              className="inline-flex items-center rounded border border-transparent bg-primary px-3 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50"
             >
-              {processingInvitation === invitation.uuid ? <Loading size="sm" /> : t('profile.invitations.acceptButton')}
+              {processingInvitation === invitation.uuid ? (
+                <Loading size="sm" />
+              ) : (
+                t('profile.invitations.acceptButton')
+              )}
             </button>
           </div>
         </div>
