@@ -57,7 +57,7 @@ export const GitHubStars = ({ owner, repo, className = '' }: GitHubStarsProps) =
           href={repoUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="hover:bg-primary-dark-hover inline-flex items-center gap-1 rounded-md bg-primary-dark px-2.5 py-1 text-xs font-medium text-primary-foreground shadow-sm transition-all hover:shadow"
+          className="inline-flex items-center gap-1 rounded-md bg-sidebar-bg px-2.5 py-1 text-xs font-medium text-sidebar-text shadow-sm transition-all hover:shadow"
           aria-label={`Star ${owner}/${repo} on GitHub`}
         >
           <StarIcon className="h-3.5 w-3.5" aria-hidden="true" />

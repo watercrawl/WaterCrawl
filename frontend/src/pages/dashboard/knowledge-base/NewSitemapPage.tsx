@@ -116,10 +116,8 @@ const NewSitemapPage: React.FC = () => {
             />
 
             {/* Add instructions for the user */}
-            <div className="mt-6 rounded-lg border border-alert-info-border bg-alert-info-bg p-4">
-              <p className="text-sm text-alert-info-text">
-                {t('knowledgeBase.import.generatingNote')}
-              </p>
+            <div className="mt-6 rounded-lg border border-info-dark bg-info-light p-4">
+              <p className="text-sm text-info-dark">{t('knowledgeBase.import.generatingNote')}</p>
             </div>
           </div>
         )}

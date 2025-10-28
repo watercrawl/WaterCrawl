@@ -23,10 +23,6 @@
     /* White - Card background (stands out from background) */
     --card-foreground: 17 24 39;
     /* Gray-900 - Card text */
-    --popover: 255 255 255;
-    /* White - Popover background */
-    --popover-foreground: 17 24 39;
-    /* Gray-900 - Popover text */
     --muted: 243 244 246;
     /* Gray-100 - Muted backgrounds (more contrast than background) */
     --muted-foreground: 107 114 128;
@@ -40,8 +36,8 @@
     /* Sky-600 - Primary hover state */
     --primary-light: 224 242 254;
     /* Sky-100 - Primary light variant */
-    --primary-dark: 7 89 133;
-    /* Sky-800 - Primary dark variant */
+    --primary-dark: 3 105 161;
+    /* Sky-700 - Primary dark variant */
     /* ============================================ SECONDARY/TERTIARY BRAND COLORS =========================================== */
     /* Secondary - Green */
     --secondary: 34 197 94;
@@ -107,55 +103,11 @@
     /* Gray-200 - Default borders */
     --input-border: 209 213 219;
     /* Gray-300 - Input borders */
-    --card-border: 229 231 235;
-    /* Gray-200 - Card borders */
-    /* ============================================ LINK COLORS =========================================== */
-    --text-link: 37 99 235;
-    /* Blue-600 - Links */
-    --text-link-hover: 29 78 216;
-    /* Blue-700 - Link hover */
     /* ============================================ INPUT/FORM COLORS =========================================== */
     --input: 255 255 255;
     /* White - Input background */
     --ring: 14 165 233;
     /* Sky-500 - Focus ring */
-    /* ============================================ ALERT/NOTIFICATION BOX COLORS - Light Mode Semantic pairs that adapt to theme =========================================== */
-    /* Info boxes (blue/sky theme) */
-    --alert-info-bg: 224 242 254;
-    /* Sky-100 - Info box background */
-    --alert-info-border: 125 211 252;
-    /* Sky-300 - Info box border */
-    --alert-info-text: 7 89 133;
-    /* Sky-800 - Info box text */
-    --alert-info-icon: 14 165 233;
-    /* Sky-500 - Info box icon */
-    /* Success boxes (green theme) */
-    --alert-success-bg: 220 252 231;
-    /* Green-100 - Success box background */
-    --alert-success-border: 134 239 172;
-    /* Green-300 - Success box border */
-    --alert-success-text: 21 128 61;
-    /* Green-700 - Success box text */
-    --alert-success-icon: 34 197 94;
-    /* Green-500 - Success box icon */
-    /* Warning boxes (yellow theme) */
-    --alert-warning-bg: 254 249 195;
-    /* Yellow-100 - Warning box background */
-    --alert-warning-border: 253 224 71;
-    /* Yellow-300 - Warning box border */
-    --alert-warning-text: 161 98 7;
-    /* Yellow-700 - Warning box text */
-    --alert-warning-icon: 234 179 8;
-    /* Yellow-500 - Warning box icon */
-    /* Error boxes (red theme) */
-    --alert-error-bg: 254 226 226;
-    /* Red-100 - Error box background */
-    --alert-error-border: 252 165 165;
-    /* Red-300 - Error box border */
-    --alert-error-text: 185 28 28;
-    /* Red-700 - Error box text */
-    --alert-error-icon: 239 68 68;
-    /* Red-500 - Error box icon */
     /* ============================================ SIDEBAR COLORS (Always Dark Blue) =========================================== */
     --sidebar-bg: 23 37 84;
     /* Blue-950 - Sidebar background */
@@ -184,10 +136,6 @@
     /* Gray-800 - Card background */
     --card-foreground: 243 244 246;
     /* Gray-100 - Card text */
-    --popover: 31 41 55;
-    /* Gray-800 - Popover background */
-    --popover-foreground: 243 244 246;
-    /* Gray-100 - Popover text */
     --muted: 43 53 68;
     /* Gray-750 - Muted backgrounds (lighter for better contrast) */
     --muted-foreground: 156 163 175;
@@ -200,9 +148,9 @@
     --primary-hover: 2 132 199;
     /* Sky-600 */
     --primary-light: 12 74 110;
-    /* Sky-900 - Dark but with primary tint, works well for backgrounds */
-    --primary-dark: 7 89 133;
-    /* Sky-800 - Medium dark, good for darker accents */
+    /* Sky-900 - Darkest, closest to background, subtle */
+    --primary-dark: 186 230 253;
+    /* Sky-200 - Bright, readable text/accent */
     /* ============================================ SECONDARY/TERTIARY BRAND COLORS - Dark Mode =========================================== */
     /* Secondary - Green */
     --secondary: 34 197 94;
@@ -212,9 +160,9 @@
     --secondary-hover: 22 163 74;
     /* Green-600 */
     --secondary-light: 20 83 45;
-    /* Green-900 - Dark but with green tint, works well for backgrounds */
-    --secondary-dark: 22 101 52;
-    /* Green-800 - Medium dark, good for darker accents */
+    /* Green-900 - Darkest, closest to background, subtle */
+    --secondary-dark: 187 247 208;
+    /* Green-200 - Bright, readable text/accent */
     /* Tertiary - Pink */
     --tertiary: 236 72 153;
     /* Pink-500 */
@@ -223,9 +171,9 @@
     --tertiary-hover: 219 39 119;
     /* Pink-600 */
     --tertiary-light: 131 24 67;
-    /* Pink-900 - Dark but with pink tint, works well for backgrounds */
-    --tertiary-dark: 157 23 77;
-    /* Pink-800 - Medium dark, good for darker accents */
+    /* Pink-900 - Darkest, closest to background, subtle */
+    --tertiary-dark: 251 207 232;
+    /* Pink-200 - Bright, readable text/accent */
     /* ============================================ STATUS/FEEDBACK COLORS - Dark Mode =========================================== */
     /* Success - Green */
     --success: 34 197 94;
@@ -233,90 +181,46 @@
     --success-foreground: 255 255 255;
     /* White */
     --success-light: 20 83 45;
-    /* Green-900 - Dark but with green tint, works well for backgrounds */
-    --success-dark: 22 101 52;
-    /* Green-800 - Medium dark, good for darker accents */
+    /* Green-900 - Darkest, closest to background, subtle */
+    --success-dark: 187 247 208;
+    /* Green-200 - Bright, readable text on dark success backgrounds */
     /* Error - Red */
     --error: 239 68 68;
     /* Red-500 */
     --error-foreground: 255 255 255;
     /* White */
     --error-light: 127 29 29;
-    /* Red-900 - Dark but with red tint, works well for backgrounds */
-    --error-dark: 153 27 27;
-    /* Red-800 - Medium dark, good for darker accents */
+    /* Red-900 - Darkest, closest to background, subtle */
+    --error-dark: 254 202 202;
+    /* Red-200 - Bright, readable text on dark error backgrounds */
     /* Warning - Yellow */
     --warning: 234 179 8;
     /* Yellow-500 */
     --warning-foreground: 255 255 255;
     /* White */
     --warning-light: 113 63 18;
-    /* Yellow-900 - Dark but with yellow tint, works well for backgrounds */
-    --warning-dark: 133 77 14;
-    /* Yellow-800 - Medium dark, good for darker accents */
+    /* Yellow-900 - Darkest, closest to background, subtle */
+    --warning-dark: 254 240 138;
+    /* Yellow-200 - Bright, readable text on dark warning backgrounds */
     /* Info - Blue */
     --info: 59 130 246;
     /* Blue-500 */
     --info-foreground: 255 255 255;
     /* White */
     --info-light: 30 58 138;
-    /* Blue-900 - Dark but with blue tint, works well for backgrounds */
-    --info-dark: 29 78 216;
-    /* Blue-700 - Medium dark, good for darker accents */
+    /* Blue-900 - Darkest, closest to background, subtle */
+    --info-dark: 191 219 254;
+    /* Blue-200 - Bright, readable text on dark info backgrounds */
     /* ============================================ BORDER COLORS - Dark Mode =========================================== */
     --border: 55 65 81;
     /* Gray-700 - Default borders */
     --input-border: 75 85 99;
     /* Gray-600 - Input borders */
-    --card-border: 55 65 81;
-    /* Gray-700 - Card borders */
-    /* ============================================ LINK COLORS - Dark Mode =========================================== */
-    --text-link: 96 165 250;
-    /* Blue-400 - Links */
-    --text-link-hover: 147 197 253;
-    /* Blue-300 - Link hover */
     /* ============================================ INPUT/FORM COLORS - Dark Mode =========================================== */
     --input: 31 41 55;
     /* Gray-800 - Input background */
     --ring: 14 165 233;
     /* Sky-500 - Focus ring */
-    /* ============================================ ALERT/NOTIFICATION BOX COLORS - Dark Mode Darker backgrounds with lighter text for dark mode =========================================== */
-    /* Info boxes (blue/sky theme) - Dark mode */
-    --alert-info-bg: 7 89 133;
-    /* Sky-800 - Info box background (darker) */
-    --alert-info-border: 14 165 233;
-    /* Sky-500 - Info box border */
-    --alert-info-text: 224 242 254;
-    /* Sky-100 - Info box text (lighter) */
-    --alert-info-icon: 125 211 252;
-    /* Sky-300 - Info box icon (lighter) */
-    /* Success boxes (green theme) - Dark mode */
-    --alert-success-bg: 21 128 61;
-    /* Green-700 - Success box background (darker) */
-    --alert-success-border: 34 197 94;
-    /* Green-500 - Success box border */
-    --alert-success-text: 220 252 231;
-    /* Green-100 - Success box text (lighter) */
-    --alert-success-icon: 134 239 172;
-    /* Green-300 - Success box icon (lighter) */
-    /* Warning boxes (yellow theme) - Dark mode */
-    --alert-warning-bg: 161 98 7;
-    /* Yellow-700 - Warning box background (darker) */
-    --alert-warning-border: 234 179 8;
-    /* Yellow-500 - Warning box border */
-    --alert-warning-text: 254 249 195;
-    /* Yellow-100 - Warning box text (lighter) */
-    --alert-warning-icon: 253 224 71;
-    /* Yellow-300 - Warning box icon (lighter) */
-    /* Error boxes (red theme) - Dark mode */
-    --alert-error-bg: 185 28 28;
-    /* Red-700 - Error box background (darker) */
-    --alert-error-border: 239 68 68;
-    /* Red-500 - Error box border */
-    --alert-error-text: 254 226 226;
-    /* Red-100 - Error box text (lighter) */
-    --alert-error-icon: 252 165 165;
-    /* Red-300 - Error box icon (lighter) */
     /* ============================================ SIDEBAR COLORS (Same as light mode - Always dark blue) =========================================== */
     --sidebar-bg: 23 37 84;
     /* Blue-950 */
