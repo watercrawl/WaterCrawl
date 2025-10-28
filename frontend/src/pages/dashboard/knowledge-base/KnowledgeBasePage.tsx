@@ -62,7 +62,7 @@ const KnowledgeBasePage: React.FC = () => {
             <div>
               <h1 className="text-xl font-semibold text-foreground">
                 {t('settings.knowledgeBase.title')}
-                <small className="ms-2 inline-flex items-center rounded-full border border-alert-info-border bg-alert-info-bg px-2.5 py-0.5 text-xs font-medium text-alert-info-text">
+                <small className="ms-2 inline-flex items-center rounded-full border border-info bg-info-light px-2.5 py-0.5 text-xs font-medium text-info-dark">
                   {t('settings.knowledgeBase.beta')}
                 </small>
               </h1>
@@ -104,10 +104,10 @@ const KnowledgeBasePage: React.FC = () => {
       </div>
 
       {/* Beta Notice Box */}
-      <div className="mt-6 rounded-md border border-warning bg-warning-light p-4">
+      <div className="mt-6 rounded-md border border-warning-dark bg-warning-light p-4">
         <div className="flex">
           <div className="flex-shrink-0">
-            <ExclamationTriangleIcon className="h-5 w-5 text-warning" aria-hidden="true" />
+            <ExclamationTriangleIcon className="h-5 w-5 text-warning-dark" aria-hidden="true" />
           </div>
           <div className="ms-3">
             <h3 className="text-sm font-medium text-warning-dark">

@@ -32,17 +32,17 @@ const STATUS_ICONS = {
 };
 
 const STATUS_COLORS: Record<string, string> = {
-  new: 'bg-alert-info-bg text-alert-info-text border-alert-info-border',
-  running: 'bg-alert-info-bg text-alert-info-text border-alert-info-border',
+  new: 'bg-info-light text-info-dark border-info-light',
+  running: 'bg-info-light text-info-dark border-info-light',
   canceled: 'bg-muted text-muted-foreground border-border',
   canceling: 'bg-muted text-muted-foreground border-border',
-  failed: 'bg-alert-error-bg text-alert-error-text border-alert-error-border',
-  finished: 'bg-alert-success-bg text-alert-success-text border-alert-success-border',
-  ready: 'bg-alert-success-bg text-alert-success-text border-alert-success-border',
-  processing: 'bg-alert-info-bg text-alert-info-text border-alert-info-border',
-  active: 'bg-alert-success-bg text-alert-success-text border-alert-success-border',
-  archived: 'bg-alert-warning-bg text-alert-warning-text border-alert-warning-border',
-  deleted: 'bg-alert-error-bg text-alert-error-text border-alert-error-border',
+  failed: 'bg-error-light text-error-dark border-error-light',
+  finished: 'bg-success-light text-success-dark border-success-light',
+  ready: 'bg-success-light text-success-dark border-success-light',
+  processing: 'bg-info-light text-info-dark border-info-light',
+  active: 'bg-success-light text-success-dark border-success-light',
+  archived: 'bg-warning-light text-warning-dark border-warning-light',
+  deleted: 'bg-error-light text-error-dark border-error-light',
 } as const;
 
 const getStatusColor = (status: string): string => {

@@ -480,8 +480,8 @@ export const MCPServerAccess: React.FC = () => {
                         onClick={() => setSelectedApp(app.id as any)}
                         className={`inline-flex items-center gap-x-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
                           selectedApp === app.id
-                            ? 'border border-alert-info-border bg-alert-info-bg text-alert-info-text'
-                            : 'border border-border bg-alert-info-bg/10 text-foreground hover:bg-alert-info-bg/20'
+                            ? 'border border-primary bg-primary-light text-primary-dark'
+                            : 'border border-border bg-primary-light/10 text-foreground hover:bg-primary-light/20'
                         }`}
                       >
                         {typeof app.icon === 'string' ? (

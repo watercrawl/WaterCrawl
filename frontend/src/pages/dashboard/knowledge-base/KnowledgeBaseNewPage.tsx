@@ -24,6 +24,16 @@ import { ListProviderConfig, Model } from '../../../types/provider';
 import { useBreadcrumbs } from '../../../contexts/BreadcrumbContext';
 import { useTeam } from '../../../contexts/TeamContext';
 import { useTranslation } from 'react-i18next';
+import {
+  InformationCircleIcon,
+  Squares2X2Icon,
+  Square3Stack3DIcon,
+  Bars3Icon,
+  CheckCircleIcon,
+  XCircleIcon,
+  BoltIcon,
+  TagIcon,
+} from '@heroicons/react/24/outline';
 
 // Create validation schema for form - translations will be applied at runtime
 const createSchema = (t: any) =>
@@ -299,22 +309,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
               <div className="space-y-8">
                 {/* Basic Information Section */}
                 <Card>
-                  <Card.Title
-                    icon={
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 text-primary-500"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    }
-                  >
+                  <Card.Title icon={<InformationCircleIcon className="h-5 w-5 text-primary" />}>
                     {t('settings.knowledgeBase.form.basicInfo.title')}
                   </Card.Title>
                   <Card.Body>
@@ -331,7 +326,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                             type="text"
                             id="title"
                             {...register('title')}
-                            className={`block w-full rounded-md border-input-border shadow-sm focus:border-primary focus:ring-primary sm:text-sm ${errors.title ? 'border-error' : ''}`}
+                            className={`block w-full rounded-md border-input-border bg-input shadow-sm focus:border-primary focus:ring-primary sm:text-sm ${errors.title ? 'border-error' : ''}`}
                             placeholder={t('settings.knowledgeBase.form.basicInfo.namePlaceholder')}
                           />
                           {errors.title && (
@@ -352,7 +347,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                             id="description"
                             rows={3}
                             {...register('description')}
-                            className="block w-full rounded-md border-input-border shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
+                            className={`block w-full rounded-md border-input-border bg-input shadow-sm focus:border-primary focus:ring-primary sm:text-sm ${errors.description ? 'border-error' : ''}`}
                             placeholder={t(
                               'settings.knowledgeBase.form.basicInfo.descriptionPlaceholder'
                             )}
@@ -368,23 +363,12 @@ const KnowledgeBaseNewPage: React.FC = () => {
 
                 {/* Embedding Configuration Section */}
                 <Card>
-                  <Card.Title
-                    icon={
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 text-primary-500"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
-                      </svg>
-                    }
-                  >
+                  <Card.Title icon={<Squares2X2Icon className="h-5 w-5 text-primary" />}>
                     {t('settings.knowledgeBase.form.embedding.title')}
                   </Card.Title>
                   <Card.Body>
-                    <div className="mb-4 rounded border-s-4 border-alert-info-border bg-alert-info-bg p-3">
-                      <p className="text-sm text-alert-info-text">
+                    <div className="mb-4 rounded border-s-4 border-info-dark bg-info-light p-3">
+                      <p className="text-sm text-info-dark">
                         {t('settings.knowledgeBase.form.embedding.description')}
                       </p>
                     </div>
@@ -399,16 +383,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                           description={t(
                             'settings.knowledgeBase.form.embedding.semanticDescription'
                           )}
-                          icon={
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="h-3 w-3 text-success"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                            >
-                              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                          }
+                          icon={<CheckCircleIcon className="h-3 w-3 text-success" />}
                           isSelected={watchEmbeddingEnabled}
                           onClick={() => setValue('embeddingEnabled', true)}
                           badge={{
@@ -423,20 +398,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                           description={t(
                             'settings.knowledgeBase.form.embedding.textOnlyDescription'
                           )}
-                          icon={
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="h-3 w-3 text-muted-foreground"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                          }
+                          icon={<XCircleIcon className="h-3 w-3 text-muted-foreground" />}
                           isSelected={!watchEmbeddingEnabled}
                           onClick={() => setValue('embeddingEnabled', false)}
                           iconBgColor="bg-muted"
@@ -541,23 +503,12 @@ const KnowledgeBaseNewPage: React.FC = () => {
 
                 {/* Chunking Configuration Section */}
                 <Card>
-                  <Card.Title
-                    icon={
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 text-primary-500"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM14 11a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z" />
-                      </svg>
-                    }
-                  >
+                  <Card.Title icon={<Square3Stack3DIcon className="h-5 w-5 text-primary" />}>
                     {t('settings.knowledgeBase.form.chunking.title')}
                   </Card.Title>
                   <Card.Body>
-                    <div className="mb-4 rounded border-s-4 border-alert-info-border bg-alert-info-bg p-3">
-                      <p className="text-sm text-alert-info-text">
+                    <div className="mb-4 rounded border-s-4 border-info-dark bg-info-light p-3">
+                      <p className="text-sm text-info-dark">
                         {t('settings.knowledgeBase.form.chunking.description')}
                       </p>
                     </div>
@@ -577,7 +528,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                             min="1"
                             step="1"
                             {...register('chunk_size', { valueAsNumber: true })}
-                            className={`block w-full rounded-md border-input-border shadow-sm focus:border-primary focus:ring-primary sm:text-sm ${errors.chunk_size ? 'border-error' : ''}`}
+                            className={`block w-full rounded-md border-input-border bg-input shadow-sm focus:border-primary focus:ring-primary sm:text-sm ${errors.chunk_size ? 'border-error' : ''}`}
                           />
                           {errors.chunk_size && (
                             <p className="mt-1 text-sm text-error">{errors.chunk_size.message}</p>
@@ -599,7 +550,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                           <Controller
                             name="autoChunkOverlap"
                             control={control}
-                            render={({ field }) => (
+                            render={({ field: { value, onChange, ...field } }) => (
                               <div className="flex items-center gap-2">
                                 <label
                                   htmlFor="autoChunkOverlap"
@@ -610,10 +561,11 @@ const KnowledgeBaseNewPage: React.FC = () => {
                                 <input
                                   type="checkbox"
                                   id="autoChunkOverlap"
-                                  checked={field.value}
-                                  onChange={e => field.onChange(e.target.checked)}
+                                  checked={!!value}
+                                  onChange={e => onChange(e.target.checked)}
                                   className="h-4 w-4 rounded border-input-border text-primary focus:ring-primary"
                                   title={t('settings.knowledgeBase.form.chunking.automaticTooltip')}
+                                  {...field}
                                 />
                               </div>
                             )}
@@ -626,7 +578,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                           step="1"
                           disabled={watchAutoChunkOverlap}
                           {...register('chunk_overlap', { valueAsNumber: true })}
-                          className={`block w-full rounded-md border-input-border shadow-sm focus:border-primary focus:ring-primary sm:text-sm ${watchAutoChunkOverlap ? 'bg-muted' : ''} ${errors.chunk_overlap ? 'border-error' : ''}`}
+                          className={`block w-full rounded-md border-input-border shadow-sm focus:border-primary focus:ring-primary sm:text-sm ${watchAutoChunkOverlap ? 'bg-muted' : 'bg-input'} ${errors.chunk_overlap ? 'border-error' : ''}`}
                         />
                         {errors.chunk_overlap && (
                           <p className="mt-1 text-sm text-error">{errors.chunk_overlap.message}</p>
@@ -647,7 +599,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                       id="chunk_separator"
                       placeholder="Enter separator"
                       {...register('chunk_separator')}
-                      className={`mt-2 shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-input-border rounded-md ${errors.chunk_separator ? 'border-error' : ''}`}
+                      className={`block w-full rounded-md border-input-border bg-input shadow-sm focus:border-primary focus:ring-primary sm:text-sm ${errors.chunk_separator ? 'border-error' : ''}`}
                     />
                     {errors.chunk_separator && (
                       <p className="mt-1 text-sm text-error">{errors.chunk_separator.message}</p>
@@ -664,27 +616,12 @@ const KnowledgeBaseNewPage: React.FC = () => {
 
                 {/* Summarization Configuration Section */}
                 <Card>
-                  <Card.Title
-                    icon={
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 text-primary-500"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    }
-                  >
+                  <Card.Title icon={<Bars3Icon className="h-5 w-5 text-primary" />}>
                     {t('settings.knowledgeBase.form.summarization.title')}
                   </Card.Title>
                   <Card.Body>
-                    <div className="mb-4 rounded border-s-4 border-alert-info-border bg-alert-info-bg p-3">
-                      <p className="text-sm text-alert-info-text">
+                    <div className="mb-4 rounded border-s-4 border-info-dark bg-info-light p-3">
+                      <p className="text-sm text-info-dark">
                         {t('settings.knowledgeBase.form.summarization.description')}
                       </p>
                     </div>
@@ -699,27 +636,14 @@ const KnowledgeBaseNewPage: React.FC = () => {
                           description={t(
                             'settings.knowledgeBase.form.summarization.enabledDescription'
                           )}
-                          icon={
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="h-3 w-3 text-orange-500"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 011.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                          }
+                          icon={<BoltIcon className="h-3 w-3 text-warning" />}
                           isSelected={watchEnhancementEnabled}
                           onClick={() => setValue('enhancementEnabled', true)}
                           badge={{
                             text: t('settings.knowledgeBase.form.embedding.recommended'),
                             color: 'primary',
                           }}
-                          iconBgColor="bg-orange-100"
+                          iconBgColor="bg-warning-light"
                           iconDarkBgColor=""
                         />{' '}
                         <OptionCard
@@ -727,23 +651,10 @@ const KnowledgeBaseNewPage: React.FC = () => {
                           description={t(
                             'settings.knowledgeBase.form.summarization.disabledDescription'
                           )}
-                          icon={
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="h-3 w-3 text-primary"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                          }
+                          icon={<TagIcon className="h-3 w-3 text-muted-foreground" />}
                           isSelected={!watchEnhancementEnabled}
                           onClick={() => setValue('enhancementEnabled', false)}
-                          iconBgColor="bg-primary-light"
+                          iconBgColor="bg-muted"
                           iconDarkBgColor=""
                         />{' '}
                       </div>{' '}
@@ -951,7 +862,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                                     id="summarizer_context"
                                     {...register('summarizer_context')}
                                     rows={4}
-                                    className={`block w-full rounded-md border-input-border shadow-sm focus:border-primary focus:ring-primary sm:text-sm ${errors.summarizer_context ? 'border-error' : ''}`}
+                                    className={`block w-full rounded-md border-input-border bg-input shadow-sm focus:border-primary focus:ring-primary sm:text-sm ${errors.summarizer_context ? 'border-error' : ''}`}
                                     placeholder={t(
                                       'settings.knowledgeBase.form.summarization.contextPlaceholder'
                                     )}

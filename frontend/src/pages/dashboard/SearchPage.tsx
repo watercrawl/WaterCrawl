@@ -37,17 +37,17 @@ const SearchPage: React.FC = () => {
 
       <div className="grid grid-cols-1 gap-6">
         {!settings || !settings?.is_search_configured ? (
-          <div className="rounded-lg border border-alert-info-border bg-alert-info-bg p-5 shadow-sm">
+          <div className="rounded-lg border border-info bg-info-light p-5 shadow-sm">
             <div className="flex items-start">
               <InformationCircleIcon
-                className="me-3 h-6 w-6 flex-shrink-0 text-alert-info-icon"
+                className="me-3 h-6 w-6 flex-shrink-0 text-info-dark"
                 aria-hidden="true"
               />
               <div>
-                <h3 className="text-lg font-medium text-alert-info-text">
+                <h3 className="text-lg font-medium text-info-dark">
                   {t('search.configuration.title')}
                 </h3>
-                <p className="mt-1 text-sm text-alert-info-text/90">
+                <p className="mt-1 text-sm text-info-dark/90">
                   {t('search.configuration.description')}
                 </p>
                 <div className="mt-4 space-y-3">

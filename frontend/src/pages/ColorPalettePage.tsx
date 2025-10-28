@@ -4,7 +4,7 @@ import { SunIcon, MoonIcon, ComputerDesktopIcon } from '@heroicons/react/24/outl
 
 interface ColorItem {
   name: string;
-  cssVar: string;
+  className: string;
   description: string;
 }
 
@@ -12,237 +12,192 @@ const colorGroups = [
   {
     title: 'Background Colors',
     colors: [
-      { name: 'Background', cssVar: '--background', description: 'Page background' },
-      { name: 'Foreground', cssVar: '--foreground', description: 'Primary text' },
-      { name: 'Card', cssVar: '--card', description: 'Card background' },
-      { name: 'Card Foreground', cssVar: '--card-foreground', description: 'Card text' },
-      { name: 'Muted', cssVar: '--muted', description: 'Muted backgrounds' },
-      { name: 'Muted Foreground', cssVar: '--muted-foreground', description: 'Muted text' },
+      { name: 'Background', className: 'bg-background', description: 'Page background' },
+      { name: 'Foreground', className: 'text-foreground', description: 'Primary text' },
+      { name: 'Card', className: 'bg-card', description: 'Card background' },
+      { name: 'Card Foreground', className: 'text-card-foreground', description: 'Card text' },
+      { name: 'Muted', className: 'bg-muted', description: 'Muted backgrounds' },
+      { name: 'Muted Foreground', className: 'text-muted-foreground', description: 'Muted text' },
     ],
   },
   {
     title: 'Brand Colors',
     colors: [
-      { name: 'Primary', cssVar: '--primary', description: 'Primary brand color' },
+      { name: 'Primary', className: 'bg-primary', description: 'Primary brand color' },
       {
         name: 'Primary Foreground',
-        cssVar: '--primary-foreground',
+        className: 'text-primary-foreground',
         description: 'Text on primary',
       },
-      { name: 'Primary Hover', cssVar: '--primary-hover', description: 'Primary hover state' },
-      { name: 'Primary Light', cssVar: '--primary-light', description: 'Primary light variant' },
-      { name: 'Primary Dark', cssVar: '--primary-dark', description: 'Primary dark variant' },
+      { name: 'Primary Hover', className: 'bg-primary-hover', description: 'Primary hover state' },
+      {
+        name: 'Primary Light',
+        className: 'bg-primary-light',
+        description: 'Primary light variant',
+      },
+      { name: 'Primary Dark', className: 'text-primary-dark', description: 'Primary dark variant' },
     ],
   },
   {
     title: 'Secondary Colors',
     colors: [
-      { name: 'Secondary', cssVar: '--secondary', description: 'Secondary brand color' },
+      { name: 'Secondary', className: 'bg-secondary', description: 'Secondary brand color' },
       {
         name: 'Secondary Foreground',
-        cssVar: '--secondary-foreground',
+        className: 'text-secondary-foreground',
         description: 'Text on secondary',
       },
       {
         name: 'Secondary Hover',
-        cssVar: '--secondary-hover',
+        className: 'bg-secondary-hover',
         description: 'Secondary hover state',
       },
       {
         name: 'Secondary Light',
-        cssVar: '--secondary-light',
+        className: 'bg-secondary-light',
         description: 'Secondary light variant',
       },
-      { name: 'Secondary Dark', cssVar: '--secondary-dark', description: 'Secondary dark variant' },
+      {
+        name: 'Secondary Dark',
+        className: 'text-secondary-dark',
+        description: 'Secondary dark variant',
+      },
     ],
   },
   {
     title: 'Tertiary Colors',
     colors: [
-      { name: 'Tertiary', cssVar: '--tertiary', description: 'Tertiary brand color' },
+      { name: 'Tertiary', className: 'bg-tertiary', description: 'Tertiary brand color' },
       {
         name: 'Tertiary Foreground',
-        cssVar: '--tertiary-foreground',
+        className: 'text-tertiary-foreground',
         description: 'Text on tertiary',
       },
-      { name: 'Tertiary Hover', cssVar: '--tertiary-hover', description: 'Tertiary hover state' },
-      { name: 'Tertiary Light', cssVar: '--tertiary-light', description: 'Tertiary light variant' },
-      { name: 'Tertiary Dark', cssVar: '--tertiary-dark', description: 'Tertiary dark variant' },
+      {
+        name: 'Tertiary Hover',
+        className: 'bg-tertiary-hover',
+        description: 'Tertiary hover state',
+      },
+      {
+        name: 'Tertiary Light',
+        className: 'bg-tertiary-light',
+        description: 'Tertiary light variant',
+      },
+      {
+        name: 'Tertiary Dark',
+        className: 'text-tertiary-dark',
+        description: 'Tertiary dark variant',
+      },
     ],
   },
   {
     title: 'Status Colors - Success',
     colors: [
-      { name: 'Success', cssVar: '--success', description: 'Success state' },
+      { name: 'Success', className: 'bg-success', description: 'Success state' },
       {
         name: 'Success Foreground',
-        cssVar: '--success-foreground',
+        className: 'text-success-foreground',
         description: 'Text on success',
       },
-      { name: 'Success Light', cssVar: '--success-light', description: 'Success light variant' },
-      { name: 'Success Dark', cssVar: '--success-dark', description: 'Success dark variant' },
+      {
+        name: 'Success Light',
+        className: 'bg-success-light',
+        description: 'Success light variant',
+      },
+      { name: 'Success Dark', className: 'text-success-dark', description: 'Success dark variant' },
     ],
   },
   {
     title: 'Status Colors - Error',
     colors: [
-      { name: 'Error', cssVar: '--error', description: 'Error state' },
-      { name: 'Error Foreground', cssVar: '--error-foreground', description: 'Text on error' },
-      { name: 'Error Light', cssVar: '--error-light', description: 'Error light variant' },
-      { name: 'Error Dark', cssVar: '--error-dark', description: 'Error dark variant' },
+      { name: 'Error', className: 'bg-error', description: 'Error state' },
+      {
+        name: 'Error Foreground',
+        className: 'text-error-foreground',
+        description: 'Text on error',
+      },
+      { name: 'Error Light', className: 'bg-error-light', description: 'Error light variant' },
+      { name: 'Error Dark', className: 'text-error-dark', description: 'Error dark variant' },
     ],
   },
   {
     title: 'Status Colors - Warning',
     colors: [
-      { name: 'Warning', cssVar: '--warning', description: 'Warning state' },
+      { name: 'Warning', className: 'bg-warning', description: 'Warning state' },
       {
         name: 'Warning Foreground',
-        cssVar: '--warning-foreground',
+        className: 'text-warning-foreground',
         description: 'Text on warning',
       },
-      { name: 'Warning Light', cssVar: '--warning-light', description: 'Warning light variant' },
-      { name: 'Warning Dark', cssVar: '--warning-dark', description: 'Warning dark variant' },
+      {
+        name: 'Warning Light',
+        className: 'bg-warning-light',
+        description: 'Warning light variant',
+      },
+      { name: 'Warning Dark', className: 'text-warning-dark', description: 'Warning dark variant' },
     ],
   },
   {
     title: 'Status Colors - Info',
     colors: [
-      { name: 'Info', cssVar: '--info', description: 'Info state' },
-      { name: 'Info Foreground', cssVar: '--info-foreground', description: 'Text on info' },
-      { name: 'Info Light', cssVar: '--info-light', description: 'Info light variant' },
-      { name: 'Info Dark', cssVar: '--info-dark', description: 'Info dark variant' },
+      { name: 'Info', className: 'bg-info', description: 'Info state' },
+      { name: 'Info Foreground', className: 'text-info-foreground', description: 'Text on info' },
+      { name: 'Info Light', className: 'bg-info-light', description: 'Info light variant' },
+      { name: 'Info Dark', className: 'text-info-dark', description: 'Info dark variant' },
     ],
   },
   {
     title: 'Border Colors',
     colors: [
-      { name: 'Border', cssVar: '--border', description: 'Default borders' },
-      { name: 'Input Border', cssVar: '--input-border', description: 'Input borders' },
-      { name: 'Card Border', cssVar: '--card-border', description: 'Card borders' },
-    ],
-  },
-  {
-    title: 'Link Colors',
-    colors: [
-      { name: 'Link', cssVar: '--text-link', description: 'Link color' },
-      { name: 'Link Hover', cssVar: '--text-link-hover', description: 'Link hover state' },
+      { name: 'Border', className: 'border-border', description: 'Default borders' },
+      { name: 'Input Border', className: 'border-input-border', description: 'Input borders' },
     ],
   },
   {
     title: 'Input/Form Colors',
     colors: [
-      { name: 'Input', cssVar: '--input', description: 'Input background' },
-      { name: 'Ring', cssVar: '--ring', description: 'Focus ring' },
+      { name: 'Input', className: 'bg-input', description: 'Input background' },
+      { name: 'Ring', className: 'ring-ring', description: 'Focus ring' },
     ],
   },
   {
     title: 'Sidebar Colors',
     colors: [
-      { name: 'Sidebar Background', cssVar: '--sidebar-bg', description: 'Sidebar background' },
-      { name: 'Sidebar Text', cssVar: '--sidebar-text', description: 'Sidebar text' },
+      { name: 'Sidebar Background', className: 'bg-sidebar-bg', description: 'Sidebar background' },
+      { name: 'Sidebar Text', className: 'text-sidebar-text', description: 'Sidebar text' },
       {
         name: 'Sidebar Text Muted',
-        cssVar: '--sidebar-text-muted',
+        className: 'text-sidebar-text-muted',
         description: 'Sidebar muted text',
       },
       {
         name: 'Sidebar Active BG',
-        cssVar: '--sidebar-active-bg',
+        className: 'bg-sidebar-active-bg',
         description: 'Sidebar active background',
       },
       {
         name: 'Sidebar Active Text',
-        cssVar: '--sidebar-active-text',
+        className: 'text-sidebar-active-text',
         description: 'Sidebar active text',
       },
       {
         name: 'Sidebar Hover BG',
-        cssVar: '--sidebar-hover-bg',
+        className: 'bg-sidebar-hover-bg',
         description: 'Sidebar hover background',
       },
-      { name: 'Sidebar Border', cssVar: '--sidebar-border', description: 'Sidebar border' },
-    ],
-  },
-  {
-    title: 'Alert Colors - Info',
-    colors: [
-      { name: 'Alert Info BG', cssVar: '--alert-info-bg', description: 'Info alert background' },
-      {
-        name: 'Alert Info Border',
-        cssVar: '--alert-info-border',
-        description: 'Info alert border',
-      },
-      { name: 'Alert Info Text', cssVar: '--alert-info-text', description: 'Info alert text' },
-      { name: 'Alert Info Icon', cssVar: '--alert-info-icon', description: 'Info alert icon' },
-    ],
-  },
-  {
-    title: 'Alert Colors - Success',
-    colors: [
-      {
-        name: 'Alert Success BG',
-        cssVar: '--alert-success-bg',
-        description: 'Success alert background',
-      },
-      {
-        name: 'Alert Success Border',
-        cssVar: '--alert-success-border',
-        description: 'Success alert border',
-      },
-      {
-        name: 'Alert Success Text',
-        cssVar: '--alert-success-text',
-        description: 'Success alert text',
-      },
-      {
-        name: 'Alert Success Icon',
-        cssVar: '--alert-success-icon',
-        description: 'Success alert icon',
-      },
-    ],
-  },
-  {
-    title: 'Alert Colors - Warning',
-    colors: [
-      {
-        name: 'Alert Warning BG',
-        cssVar: '--alert-warning-bg',
-        description: 'Warning alert background',
-      },
-      {
-        name: 'Alert Warning Border',
-        cssVar: '--alert-warning-border',
-        description: 'Warning alert border',
-      },
-      {
-        name: 'Alert Warning Text',
-        cssVar: '--alert-warning-text',
-        description: 'Warning alert text',
-      },
-      {
-        name: 'Alert Warning Icon',
-        cssVar: '--alert-warning-icon',
-        description: 'Warning alert icon',
-      },
-    ],
-  },
-  {
-    title: 'Alert Colors - Error',
-    colors: [
-      { name: 'Alert Error BG', cssVar: '--alert-error-bg', description: 'Error alert background' },
-      {
-        name: 'Alert Error Border',
-        cssVar: '--alert-error-border',
-        description: 'Error alert border',
-      },
-      { name: 'Alert Error Text', cssVar: '--alert-error-text', description: 'Error alert text' },
-      { name: 'Alert Error Icon', cssVar: '--alert-error-icon', description: 'Error alert icon' },
+      { name: 'Sidebar Border', className: 'border-sidebar-border', description: 'Sidebar border' },
     ],
   },
 ];
 
-const ColorSwatch: React.FC<ColorItem> = ({ name, cssVar, description }) => {
+const ColorSwatch: React.FC<ColorItem> = ({ name, className, description }) => {
+  // Extract CSS variable from Tailwind className
+  const getCSSVarFromClassName = (cls: string): string => {
+    // Remove prefix (bg-, text-, border-, ring-) to get the variable name
+    const varName = cls.replace(/^(bg-|text-|border-|ring-)/, '');
+    return `--${varName}`;
+  };
+
   const getCSSValue = (varName: string) => {
     const value = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
     return value ? `rgb(${value})` : 'transparent';
@@ -252,6 +207,7 @@ const ColorSwatch: React.FC<ColorItem> = ({ name, cssVar, description }) => {
     navigator.clipboard.writeText(text);
   };
 
+  const cssVar = getCSSVarFromClassName(className);
   const rgbValue = getCSSValue(cssVar);
 
   return (
@@ -264,14 +220,15 @@ const ColorSwatch: React.FC<ColorItem> = ({ name, cssVar, description }) => {
         <div className="flex items-center justify-between">
           <h3 className="text-sm font-semibold text-foreground">{name}</h3>
           <button
-            onClick={() => copyToClipboard(cssVar)}
+            onClick={() => copyToClipboard(className)}
             className="rounded px-2 py-0.5 text-xs text-muted-foreground hover:bg-muted hover:text-foreground"
-            title="Copy CSS variable"
+            title="Copy Tailwind class"
           >
             Copy
           </button>
         </div>
         <p className="text-xs text-muted-foreground">{description}</p>
+        <code className="block text-[10px] text-muted-foreground">{className}</code>
         <code className="block text-[10px] text-muted-foreground">{cssVar}</code>
         <code className="block text-[10px] text-muted-foreground">{rgbValue}</code>
       </div>
@@ -281,6 +238,16 @@ const ColorSwatch: React.FC<ColorItem> = ({ name, cssVar, description }) => {
 
 export const ColorPalettePage: React.FC = () => {
   const { theme, setTheme } = useTheme();
+  const [, forceUpdate] = React.useReducer(x => x + 1, 0);
+
+  // Force re-render when theme changes to update CSS variable values
+  React.useEffect(() => {
+    // Small delay to ensure CSS has been applied
+    const timer = setTimeout(() => {
+      forceUpdate();
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [theme]);
 
   const themeOptions = [
     { value: 'light' as const, label: 'Light', icon: SunIcon },
@@ -289,14 +256,19 @@ export const ColorPalettePage: React.FC = () => {
   ];
 
   const mainColors = [
-    { name: 'Primary', cssVar: '--primary', description: 'Primary brand color' },
-    { name: 'Secondary', cssVar: '--secondary', description: 'Secondary brand color' },
-    { name: 'Tertiary', cssVar: '--tertiary', description: 'Tertiary brand color' },
-    { name: 'Success', cssVar: '--success', description: 'Success state' },
-    { name: 'Error', cssVar: '--error', description: 'Error state' },
-    { name: 'Warning', cssVar: '--warning', description: 'Warning state' },
-    { name: 'Info', cssVar: '--info', description: 'Info state' },
+    { name: 'Primary', className: 'bg-primary', description: 'Primary brand color' },
+    { name: 'Secondary', className: 'bg-secondary', description: 'Secondary brand color' },
+    { name: 'Tertiary', className: 'bg-tertiary', description: 'Tertiary brand color' },
+    { name: 'Success', className: 'bg-success', description: 'Success state' },
+    { name: 'Error', className: 'bg-error', description: 'Error state' },
+    { name: 'Warning', className: 'bg-warning', description: 'Warning state' },
+    { name: 'Info', className: 'bg-info', description: 'Info state' },
   ];
+
+  const getCSSVarFromClassName = (cls: string): string => {
+    const varName = cls.replace(/^(bg-|text-|border-|ring-)/, '');
+    return `--${varName}`;
+  };
 
   const getCSSValue = (varName: string) => {
     const value = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
@@ -314,7 +286,7 @@ export const ColorPalettePage: React.FC = () => {
     <div className="min-h-screen bg-background p-8">
       <div className="mx-auto max-w-7xl">
         {/* Header */}
-        <div className="mb-8 flex items-center justify-between">
+        <div className="sticky top-10 z-50 mb-8 flex items-center justify-between rounded-lg border border-border bg-background p-4">
           <div>
             <h1 className="text-3xl font-bold text-foreground">WaterCrawl Color Palette</h1>
             <p className="mt-2 text-sm text-muted-foreground">
@@ -350,11 +322,12 @@ export const ColorPalettePage: React.FC = () => {
           <h2 className="mb-6 text-2xl font-bold text-foreground">Main Colors</h2>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7">
             {mainColors.map(color => {
-              const rgbValue = getCSSValue(color.cssVar);
+              const cssVar = getCSSVarFromClassName(color.className);
+              const rgbValue = getCSSValue(cssVar);
               return (
                 <button
-                  key={color.cssVar}
-                  onClick={() => scrollToSection(color.cssVar)}
+                  key={color.className}
+                  onClick={() => scrollToSection(cssVar)}
                   className="group flex flex-col items-center gap-3 rounded-lg border border-border bg-background p-4 transition-all hover:border-primary hover:shadow-md"
                 >
                   <div
@@ -373,21 +346,27 @@ export const ColorPalettePage: React.FC = () => {
 
         {/* Detailed Color Groups */}
         <div className="space-y-12">
-          {colorGroups.map(group => (
-            <div key={group.title} id={group.colors[0]?.cssVar} className="scroll-mt-8">
-              <div className="mb-6 flex items-center gap-3">
-                <h2 className="text-2xl font-bold text-foreground">{group.title}</h2>
-                <span className="rounded-full bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
-                  {group.colors.length} colors
-                </span>
+          {colorGroups.map(group => {
+            const firstColor = group.colors[0];
+            const sectionId = firstColor
+              ? getCSSVarFromClassName(firstColor.className)
+              : group.title;
+            return (
+              <div key={group.title} id={sectionId} className="scroll-mt-8">
+                <div className="mb-6 flex items-center gap-3">
+                  <h2 className="text-2xl font-bold text-foreground">{group.title}</h2>
+                  <span className="rounded-full bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
+                    {group.colors.length} colors
+                  </span>
+                </div>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                  {group.colors.map(color => (
+                    <ColorSwatch key={color.className} {...color} />
+                  ))}
+                </div>
               </div>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                {group.colors.map(color => (
-                  <ColorSwatch key={color.cssVar} {...color} />
-                ))}
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Footer Info */}

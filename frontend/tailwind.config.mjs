@@ -54,10 +54,6 @@ export default {
           light: 'rgb(var(--tertiary-light) / <alpha-value>)',
           dark: 'rgb(var(--tertiary-dark) / <alpha-value>)',
         },
-        accent: {
-          DEFAULT: 'rgb(var(--accent) / <alpha-value>)',
-          foreground: 'rgb(var(--accent-foreground) / <alpha-value>)',
-        },
         success: {
           DEFAULT: 'rgb(var(--success) / <alpha-value>)',
           foreground: 'rgb(var(--success-foreground) / <alpha-value>)',
@@ -82,22 +78,12 @@ export default {
           light: 'rgb(var(--info-light) / <alpha-value>)',
           dark: 'rgb(var(--info-dark) / <alpha-value>)',
         },
-        border: {
-          DEFAULT: 'rgb(var(--border) / <alpha-value>)',
-          focus: 'rgb(var(--border-focus) / <alpha-value>)',
-        },
+        border: 'rgb(var(--border) / <alpha-value>)',
         input: {
           DEFAULT: 'rgb(var(--input) / <alpha-value>)',
           border: 'rgb(var(--input-border) / <alpha-value>)',
         },
         ring: 'rgb(var(--ring) / <alpha-value>)',
-        text: {
-          primary: 'rgb(var(--text-primary) / <alpha-value>)',
-          secondary: 'rgb(var(--text-secondary) / <alpha-value>)',
-          muted: 'rgb(var(--text-muted) / <alpha-value>)',
-          link: 'rgb(var(--text-link) / <alpha-value>)',
-          'link-hover': 'rgb(var(--text-link-hover) / <alpha-value>)',
-        },
         sidebar: {
           bg: 'rgb(var(--sidebar-bg) / <alpha-value>)',
           text: 'rgb(var(--sidebar-text) / <alpha-value>)',
@@ -106,32 +92,6 @@ export default {
           'active-text': 'rgb(var(--sidebar-active-text) / <alpha-value>)',
           'hover-bg': 'rgb(var(--sidebar-hover-bg) / <alpha-value>)',
           border: 'rgb(var(--sidebar-border) / <alpha-value>)',
-        },
-        alert: {
-          info: {
-            bg: 'rgb(var(--alert-info-bg) / <alpha-value>)',
-            border: 'rgb(var(--alert-info-border) / <alpha-value>)',
-            text: 'rgb(var(--alert-info-text) / <alpha-value>)',
-            icon: 'rgb(var(--alert-info-icon) / <alpha-value>)',
-          },
-          success: {
-            bg: 'rgb(var(--alert-success-bg) / <alpha-value>)',
-            border: 'rgb(var(--alert-success-border) / <alpha-value>)',
-            text: 'rgb(var(--alert-success-text) / <alpha-value>)',
-            icon: 'rgb(var(--alert-success-icon) / <alpha-value>)',
-          },
-          warning: {
-            bg: 'rgb(var(--alert-warning-bg) / <alpha-value>)',
-            border: 'rgb(var(--alert-warning-border) / <alpha-value>)',
-            text: 'rgb(var(--alert-warning-text) / <alpha-value>)',
-            icon: 'rgb(var(--alert-warning-icon) / <alpha-value>)',
-          },
-          error: {
-            bg: 'rgb(var(--alert-error-bg) / <alpha-value>)',
-            border: 'rgb(var(--alert-error-border) / <alpha-value>)',
-            text: 'rgb(var(--alert-error-text) / <alpha-value>)',
-            icon: 'rgb(var(--alert-error-icon) / <alpha-value>)',
-          },
         },
       },
       fontFamily: {

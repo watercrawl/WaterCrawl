@@ -116,8 +116,8 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
                 onClick={() => toggleMenu(item.name)}
                 className={`flex w-full items-center justify-between gap-x-3 rounded-md p-2 text-sm font-medium leading-6 transition-colors duration-200 ${
                   isMenuActive(item)
-                    ? 'bg-primary-dark/60 text-sidebar-active-text'
-                    : 'text-sidebar-text/80 hover:bg-primary-dark/30 hover:text-sidebar-active-text'
+                    ? 'bg-sidebar-active-bg/50 text-sidebar-active-text shadow-sm'
+                    : 'text-sidebar-text/80 hover:bg-sidebar-active-bg/50 hover:text-sidebar-active-text'
                 }`}
               >
                 <div className="flex items-center gap-x-3">
@@ -157,8 +157,8 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
                         className={({ isActive }) => {
                           return `group flex items-center gap-x-3 rounded-md px-3 py-2 text-sm font-medium leading-6 transition-all duration-150 ${
                             isActive
-                              ? 'bg-primary-hover/50 text-primary-foreground shadow-sm'
-                              : 'text-primary-foreground/80 hover:bg-primary-dark/40 hover:text-primary-foreground'
+                              ? 'bg-sidebar-active-bg/50 text-sidebar-active-text/80 shadow-sm'
+                              : 'text-sidebar-text/80 hover:bg-sidebar-active-bg/50 hover:text-sidebar-active-text'
                           }`;
                         }}
                       >
@@ -185,8 +185,8 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
               className={({ isActive }) =>
                 `group flex gap-x-3 rounded-md p-2 text-sm font-medium leading-6 ${
                   isActive
-                    ? 'bg-primary-dark/50 text-sidebar-active-text'
-                    : 'text-sidebar-text/80 hover:bg-primary-dark/30 hover:text-sidebar-active-text'
+                    ? 'bg-sidebar-active-bg/50 text-sidebar-active-text/80'
+                    : 'text-sidebar-text/80 hover:bg-sidebar-active-bg/50 hover:text-sidebar-active-text/80'
                 }`
               }
             >
@@ -204,8 +204,8 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
             className={({ isActive }) =>
               `group flex gap-x-3 rounded-md p-2 text-sm font-medium leading-6 ${
                 isActive
-                  ? 'bg-primary-dark/50 text-sidebar-active-text'
-                  : 'text-sidebar-text/80 hover:bg-primary-dark/30 hover:text-sidebar-active-text'
+                  ? 'bg-sidebar-active-bg/50 text-sidebar-active-text/80'
+                  : 'text-sidebar-text/80 hover:bg-sidebar-active-bg/50 hover:text-sidebar-active-text/80'
               }`
             }
           >
@@ -332,9 +332,7 @@ export const DashboardLayout = () => {
           <div className="flex h-16 shrink-0 items-center gap-2">
             <Link to="/dashboard" className="flex items-center gap-2">
               <img src="/logo-dark.svg" alt="WaterCrawl" width={32} height={32} />
-              <span className="bg-gradient-to-r from-primary-light to-primary-light bg-clip-text text-lg font-semibold text-transparent">
-                WaterCrawl
-              </span>
+              <span className="text-lg font-semibold text-sidebar-text">WaterCrawl</span>
             </Link>
           </div>
           <nav className="flex flex-1 flex-col">
