@@ -5,6 +5,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.10.2] - 2025-09-02
+
+### Added
+- **API Reference Page** - New comprehensive API reference page with dynamic theming and schema display
+- **MCP Server** - Added MCP server
+- **MCP Integration** - Added MCPServerAccess component to facilitate access to MCP (Model Context Protocol) features
+- **Subscription Management** - PlansDisplay and PlansModal components for improved subscription management
+- **BM25 Search Scoring** - Implemented BM25 scoring for URL path relevance in sitemap search filtering with URL decoding support
+
+
+### Changed
+- **Dashboard Redesign** - Completely revamped dashboard layout with new welcome header, QuickNavigation, and ResourcesShortcuts sections
+- **Improved User Experience** - Enhanced overall user onboarding experience and access to new platform capabilities
+- **Responsive Design** - Made DashboardPage heading responsive with appropriate sizing for mobile and desktop
+
+
+### Fixed
+- **Dependency Updates** - Upgraded watercrawl-openai to v0.1.1 and openai to v1.102.0 for compatibility and new model support
+- **Middleware Bug** - Fixed LimitRequestsMiddleware to properly skip requests containing robots.txt or robot.txt
+- **Docker Configuration** - Improved Docker and reverse proxy configuration with better SSE support
+  - Added VERSION build ARG support in backend Dockerfile
+  - Added MCP service connection to docker-compose.yml
+  - Refined Nginx location regex for SSE/messages endpoints with proper proxy settings
+- **Sitemap Validation** - Added path validation to sitemap handling for allowed URLs
+- **UI Assets** - Added missing cursor SVG asset to public logos
+
+### Infrastructure
+- **Enhanced SSE Support** - Improved Server-Sent Events configuration with disabled buffering, extended timeouts, and HTTP/1.1 support
+- **Build Improvements** - Better Docker build context and versioning support
+- **Proxy Configuration** - Enhanced reverse proxy settings for more efficient real-time communication
+
 ## [0.10.1] - 2025-08-26
 
 ### Fixed

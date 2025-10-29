@@ -146,6 +146,10 @@ class LimitRequestsMiddleware:
         self.dispatched = 0
 
     def process_request(self, request, spider):
+        if "robots.txt" in request.url:
+            return None
+        if "robot.txt" in request.url:
+            return None
         if self.dispatched >= self.max_requests:
             raise IgnoreRequest("Maximum requests reached")
 
