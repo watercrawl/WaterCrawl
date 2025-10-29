@@ -89,8 +89,8 @@ const ComboboxComponent: React.FC<ComboboxComponentProps> = ({
       )}
       <Combobox 
         value={value} 
-        onChange={(newValue: string) => {
-          onChange(newValue);
+        onChange={(newValue: string | null) => {
+          onChange(newValue || '');
           updateDropdownPosition();
         }}
         disabled={disabled} 
