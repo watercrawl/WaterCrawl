@@ -1,3 +1,11 @@
 node_modules/
 dist/
 yarn-error.log
+
+# Environment files (should not be copied to Docker)
+# Runtime config is injected via docker-entrypoint.sh
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production

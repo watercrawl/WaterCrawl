@@ -29,13 +29,13 @@ jobs:
       - name: Set Environment Variables
         id: vars-backend
         run: |
-          DATE=$(date +'%Y%m%d')
+          TIMESTAMP=$(date +'%Y%m%d-%H%M%S')
           if [[ ${{ github.ref }} == refs/heads/development ]]; then
-            VERSION="alpha-${DATE}"
+            VERSION="alpha-${TIMESTAMP}"
             echo "TAG=$VERSION" >> $GITHUB_ENV
             echo "DOCKER_TAGS=${{ secrets.DOCKER_USERNAME }}/watercrawl:$VERSION,${{ secrets.DOCKER_USERNAME }}/watercrawl:$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           elif [[ ${{ github.ref }} == refs/heads/main ]]; then
-            VERSION="beta-${DATE}"
+            VERSION="beta-${TIMESTAMP}"
             echo "TAG=$VERSION" >> $GITHUB_ENV
             echo "DOCKER_TAGS=${{ secrets.DOCKER_USERNAME }}/watercrawl:$VERSION,${{ secrets.DOCKER_USERNAME }}/watercrawl:$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           elif [[ ${{ github.ref }} == refs/tags/* ]]; then
@@ -82,13 +82,13 @@ jobs:
       - name: Set Environment Variables
         id: vars-frontend
         run: |
-          DATE=$(date +'%Y%m%d')
+          TIMESTAMP=$(date +'%Y%m%d-%H%M%S')
           if [[ ${{ github.ref }} == refs/heads/development ]]; then
-            VERSION="alpha-${DATE}"
+            VERSION="alpha-${TIMESTAMP}"
             echo "TAG=$VERSION" >> $GITHUB_ENV
             echo "DOCKER_TAGS=${{ secrets.DOCKER_USERNAME }}/frontend:$VERSION,${{ secrets.DOCKER_USERNAME }}/frontend:$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           elif [[ ${{ github.ref }} == refs/heads/main ]]; then
-            VERSION="beta-${DATE}"
+            VERSION="beta-${TIMESTAMP}"
             echo "TAG=$VERSION" >> $GITHUB_ENV
             echo "DOCKER_TAGS=${{ secrets.DOCKER_USERNAME }}/frontend:$VERSION,${{ secrets.DOCKER_USERNAME }}/frontend:$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           elif [[ ${{ github.ref }} == refs/tags/* ]]; then
@@ -106,7 +106,10 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           build-args: |
-            APP_VERSION=${{ env.VERSION }}
+            VITE_VERSION=${{ env.VERSION }}
+            SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
+            SENTRY_ORG=${{ secrets.SENTRY_ORG }}
+            SENTRY_PROJECT=${{ secrets.SENTRY_PROJECT }}
           cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/frontend:buildcache
           cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/frontend:buildcache,mode=max
           tags: ${{ env.DOCKER_TAGS }}

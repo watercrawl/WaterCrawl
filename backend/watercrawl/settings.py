@@ -392,3 +392,28 @@ API_ENCRYPTION_KEY = env(
 )
 
 MCP_SERVER = env("MCP_SERVER", cast=str, default="/sse")
+
+SENTRY_DSN = env("SENTRY_DSN", cast=str, default="")
+if SENTRY_DSN:
+    import sentry_sdk
+
+    def __get_version():
+        from . import __version__
+
+        return __version__
+
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        # integrations=[
+        #     DjangoIntegration(),
+        #     CeleryIntegration()
+        # ],
+        traces_sample_rate=env.float("SENTRY_TRACES_SAMPLE_RATE", default=1.0),
+        send_default_pii=env.bool("SENTRY_SEND_DEFAULT_PII", default=True),
+        enable_logs=env.bool("SENTRY_ENABLE_LOGS", default=True),
+        release=__get_version(),
+        http_proxy=env("SENTRY_HTTP_PROXY", cast=str, default="") or None,
+        https_proxy=env("SENTRY_HTTPS_PROXY", cast=str, default="") or None,
+        environment=env("SENTRY_ENVIRONMENT", cast=str, default="development"),
+        debug=True,
+    )
