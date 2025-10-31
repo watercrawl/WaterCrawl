@@ -18,7 +18,7 @@ export default defineConfig(({ mode }) => {
   if (sentryEnabled) {
     console.log('   Organization:', env.SENTRY_ORG);
     console.log('   Project:', env.SENTRY_PROJECT);
-    console.log('   Release:', env.VITE_VERSION || env.VITE_APP_VERSION || 'not set');
+    console.log('   Release:', env.VITE_APP_VERSION || 'not set');
   }
 
   return {
@@ -29,7 +29,7 @@ export default defineConfig(({ mode }) => {
         project: env.SENTRY_PROJECT,
         authToken: env.SENTRY_AUTH_TOKEN,
         release: {
-          name: env.VITE_VERSION || env.VITE_APP_VERSION || 'development',
+          name: env.VITE_APP_VERSION || 'development',
         },
         sourcemaps: {
           assets: "./dist/**",
