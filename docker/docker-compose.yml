@@ -107,10 +107,21 @@ x-app: &app
     # MCP
     - MCP_SERVER=${MCP_SERVER:-http://localhost/sse}
 
+    # Sentry Settings
+    # ---------------
+    - SENTRY_DSN=${SENTRY_DSN:-}
+    - SENTRY_TRACES_SAMPLE_RATE=${SENTRY_TRACES_SAMPLE_RATE:-1.0}
+    - SENTRY_SEND_DEFAULT_PII=${SENTRY_SEND_DEFAULT_PII:-True}
+    - SENTRY_ENABLE_LOGS=${SENTRY_ENABLE_LOGS:-True}
+    - SENTRY_HTTP_PROXY=${SENTRY_HTTP_PROXY:-}
+    - SENTRY_HTTPS_PROXY=${SENTRY_HTTPS_PROXY:-}
+    - SENTRY_ENVIRONMENT=${SENTRY_ENVIRONMENT:-}
+
 x-frontend: &frontend
   image: watercrawl/frontend:${VERSION:-v0.10.2}
   environment:
     - VITE_API_BASE_URL=${API_BASE_URL:-http://localhost/api}
+    - VITE_SENTRY_DSN=${SENTRY_FRONTEND_DSN:-}
   depends_on:
     - app
 

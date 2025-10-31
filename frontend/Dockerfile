@@ -4,9 +4,21 @@ FROM node:20-alpine AS builder
 # Set working directory
 WORKDIR /app
 
+
 # Set the dummy API URL that will be replaced at runtime
 ENV VITE_API_URL=http://DUMMY_URL_FOR_REPLACE
+
+# Sentry build-time configuration
 ARG VITE_VERSION=unknown
+ARG SENTRY_AUTH_TOKEN
+ARG SENTRY_ORG
+ARG SENTRY_PROJECT
+
+# Convert ARGs to ENVs so they're available during build
+ENV VITE_VERSION=$VITE_VERSION
+ENV SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN
+ENV SENTRY_ORG=$SENTRY_ORG
+ENV SENTRY_PROJECT=$SENTRY_PROJECT
 
 # Install pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
@@ -22,6 +34,9 @@ COPY . .
 
 # Build the application
 RUN pnpm build
+
+# Remove source maps
+RUN find dist -name "*.map" -type f -delete
 
 # Production stage
 FROM nginx:alpine

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useState, useContext, useEffect, useCallback, useMemo } from 'react';
+import React, { createContext, useState, useContext, useEffect, useCallback, useRef, useMemo } from 'react';
 import {
   COOKIE_CONFIG_KEY,
   CookieCategory,
@@ -10,6 +10,7 @@ import {
 import { CookieConsentBanner } from '../components/CookieConsentBanner';
 import { useSettings } from '../../contexts/SettingsProvider';
 import { initializeGoogleAnalytics } from '../utils/analytics';
+import { initSentry } from '../../sentry';
 import { useTranslation } from 'react-i18next';
 
 interface CookieConsentContextType {
@@ -38,6 +39,7 @@ export const CookieConsentProvider: React.FC<{ children: React.ReactNode }> = ({
   const [analyticsInitialized, setAnalyticsInitialized] = useState(false);
   const [marketingInitialized, setMarketingInitialized] = useState(false);
   const { settings } = useSettings();
+  const sentryRef = useRef<boolean>(false);
 
   // Get translated cookie categories
   const translatedCategories = useMemo(() => getCookieCategories(t), [t]);
@@ -63,10 +65,22 @@ export const CookieConsentProvider: React.FC<{ children: React.ReactNode }> = ({
     setIsClient(true);
   }, []);
 
+  useEffect(() => {
+    if (!settings || settings.is_enterprise_mode_active) return;
+    if (!sentryRef.current) {
+      sentryRef.current = true;
+      initSentry();
+    }
+  }, [settings?.is_enterprise_mode_active, settings]);
+
   const initializeAnalytics = useCallback(() => {
     console.log('Initializing analytics');
     if (settings?.google_analytics_id) {
       initializeGoogleAnalytics(settings.google_analytics_id);
+    }
+    if (!sentryRef.current) {
+      sentryRef.current = true;
+      initSentry();
     }
   }, [settings?.google_analytics_id]);
 
