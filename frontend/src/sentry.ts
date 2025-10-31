@@ -23,7 +23,7 @@ declare global {
 export function initSentry() {
     const cfg = window.__APP_CONFIG__;
     const dsn = cfg?.SENTRY_DSN || import.meta.env.VITE_SENTRY_DSN;
-    const release = import.meta.env.VITE_VERSION;
+    const release = import.meta.env.VITE_APP_VERSION;
 
     // Check for empty or missing DSN
     if (!dsn || dsn.trim() === '') {
