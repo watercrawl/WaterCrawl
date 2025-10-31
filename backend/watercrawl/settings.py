@@ -420,26 +420,10 @@ KNOWLEDGE_BASE_OPENSEARCH_URL = env.list(
 )
 
 SENTRY_DSN = env("SENTRY_DSN", cast=str, default="")
-if SENTRY_DSN:
-    import sentry_sdk
-
-    def __get_version():
-        from . import __version__
-
-        return __version__
-
-    sentry_sdk.init(
-        dsn=SENTRY_DSN,
-        # integrations=[
-        #     DjangoIntegration(),
-        #     CeleryIntegration()
-        # ],
-        traces_sample_rate=env.float("SENTRY_TRACES_SAMPLE_RATE", default=1.0),
-        send_default_pii=env.bool("SENTRY_SEND_DEFAULT_PII", default=True),
-        enable_logs=env.bool("SENTRY_ENABLE_LOGS", default=True),
-        release=__get_version(),
-        http_proxy=env("SENTRY_HTTP_PROXY", cast=str, default="") or None,
-        https_proxy=env("SENTRY_HTTPS_PROXY", cast=str, default="") or None,
-        environment=env("SENTRY_ENVIRONMENT", cast=str, default="development"),
-        debug=True,
-    )
+SENTRY_TRACES_SAMPLE_RATE = env("SENTRY_TRACES_SAMPLE_RATE", cast=float, default=1.0)
+SENTRY_SEND_DEFAULT_PII = env("SENTRY_SEND_DEFAULT_PII", cast=bool, default=False)
+SENTRY_ENABLE_LOGS = env("SENTRY_ENABLE_LOGS", cast=bool, default=True)
+SENTRY_HTTP_PROXY = env("SENTRY_HTTP_PROXY", cast=str, default="")
+SENTRY_HTTPS_PROXY = env("SENTRY_HTTPS_PROXY", cast=str, default="")
+SENTRY_ENVIRONMENT = env("SENTRY_ENVIRONMENT", cast=str, default="development")
+SENTRY_DEBUG = env("SENTRY_DEBUG", cast=bool, default=False)
