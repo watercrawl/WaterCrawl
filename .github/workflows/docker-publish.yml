@@ -106,7 +106,7 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           build-args: |
-            VITE_VERSION=${{ env.VERSION }}
+            VITE_APP_VERSION=${{ env.VERSION }}
             SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
             SENTRY_ORG=${{ secrets.SENTRY_ORG }}
             SENTRY_PROJECT=${{ secrets.SENTRY_PROJECT }}
