@@ -31,7 +31,7 @@ dependencies = [
     "stripe (==11.5.0)",
     "django-filter (==25.1)",
     "django-redis (==5.4.0)",
-    "sentry-sdk[aiohttp,celery,django] (>=2.43.0,<3.0.0)"
+    "sentry-sdk[aiohttp,celery,django] (==2.43.0)"
 ]
 
 

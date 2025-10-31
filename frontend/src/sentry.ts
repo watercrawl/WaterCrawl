@@ -7,6 +7,7 @@ declare global {
         __APP_CONFIG__?: {
             APP_VERSION?: string;
             SENTRY_DSN?: string;
+            ENVIRONMENT?: string;
             SENTRY_TRACES_SAMPLE_RATE?: number;
             SENTRY_REPLAYS_SESSION_SAMPLE_RATE?: number;
             SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE?: number;
@@ -21,8 +22,8 @@ declare global {
 
 export function initSentry() {
     const cfg = window.__APP_CONFIG__;
-    const dsn = cfg?.SENTRY_DSN ? cfg.SENTRY_DSN : import.meta.env.VITE_SENTRY_DSN;
-    const release = cfg?.APP_VERSION ? cfg.APP_VERSION : import.meta.env.VITE_APP_VERSION;
+    const dsn = cfg?.SENTRY_DSN || import.meta.env.VITE_SENTRY_DSN;
+    const release = import.meta.env.VITE_VERSION;
 
     // Check for empty or missing DSN
     if (!dsn || dsn.trim() === '') {
@@ -39,11 +40,11 @@ export function initSentry() {
             browserTracingIntegration(),
             replayIntegration()
         ],
-        tracesSampleRate: cfg?.SENTRY_TRACES_SAMPLE_RATE ? cfg.SENTRY_TRACES_SAMPLE_RATE : import.meta.env.VITE_SENTRY_TRACES_SAMPLE_RATE,
-        replaysSessionSampleRate: cfg?.SENTRY_REPLAYS_SESSION_SAMPLE_RATE ? cfg.SENTRY_REPLAYS_SESSION_SAMPLE_RATE : import.meta.env.VITE_SENTRY_REPLAYS_SESSION_SAMPLE_RATE,
-        replaysOnErrorSampleRate: cfg?.SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE ? cfg.SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE : import.meta.env.VITE_SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE,
-        environment: import.meta.env.MODE,
-        sendDefaultPii: cfg?.SENTRY_SEND_DEFAULT_PII ? cfg.SENTRY_SEND_DEFAULT_PII : import.meta.env.VITE_SENTRY_SEND_DEFAULT_PII,
-        enableLogs: cfg?.SENTRY_ENABLE_LOGS ? cfg.SENTRY_ENABLE_LOGS : import.meta.env.VITE_SENTRY_ENABLE_LOGS,
+        tracesSampleRate: cfg?.SENTRY_TRACES_SAMPLE_RATE || import.meta.env.VITE_SENTRY_TRACES_SAMPLE_RATE,
+        replaysSessionSampleRate: cfg?.SENTRY_REPLAYS_SESSION_SAMPLE_RATE || import.meta.env.VITE_SENTRY_REPLAYS_SESSION_SAMPLE_RATE,
+        replaysOnErrorSampleRate: cfg?.SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE || import.meta.env.VITE_SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE,
+        environment: cfg?.ENVIRONMENT || import.meta.env.VITE_SENTRY_ENVIRONMENT,
+        sendDefaultPii: cfg?.SENTRY_SEND_DEFAULT_PII || import.meta.env.VITE_SENTRY_SEND_DEFAULT_PII,
+        enableLogs: cfg?.SENTRY_ENABLE_LOGS || import.meta.env.VITE_SENTRY_ENABLE_LOGS,
     });
 }
