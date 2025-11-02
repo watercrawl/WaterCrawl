@@ -392,3 +392,12 @@ API_ENCRYPTION_KEY = env(
 )
 
 MCP_SERVER = env("MCP_SERVER", cast=str, default="/sse")
+
+SENTRY_DSN = env("SENTRY_DSN", cast=str, default="")
+SENTRY_TRACES_SAMPLE_RATE = env("SENTRY_TRACES_SAMPLE_RATE", cast=float, default=1.0)
+SENTRY_SEND_DEFAULT_PII = env("SENTRY_SEND_DEFAULT_PII", cast=bool, default=False)
+SENTRY_ENABLE_LOGS = env("SENTRY_ENABLE_LOGS", cast=bool, default=True)
+SENTRY_HTTP_PROXY = env("SENTRY_HTTP_PROXY", cast=str, default="")
+SENTRY_HTTPS_PROXY = env("SENTRY_HTTPS_PROXY", cast=str, default="")
+SENTRY_ENVIRONMENT = env("SENTRY_ENVIRONMENT", cast=str, default="development")
+SENTRY_DEBUG = env("SENTRY_DEBUG", cast=bool, default=False)

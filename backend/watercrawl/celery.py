@@ -1,6 +1,9 @@
 from __future__ import absolute_import, unicode_literals
 import os
 from celery import Celery
+from celery.signals import worker_process_init
+
+from .sentry import init_sentry
 
 # Set the default Django settings module for the 'celery' program.
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "watercrawl.settings")
@@ -14,3 +17,9 @@ app.config_from_object("django.conf:settings", namespace="CELERY")
 
 # Look for task modules in Django apps.
 app.autodiscover_tasks()
+
+
+# Initialize Sentry safely in forked workers
+@worker_process_init.connect
+def init_sentry_in_worker(**kwargs):
+    init_sentry()

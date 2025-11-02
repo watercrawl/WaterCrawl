@@ -107,10 +107,28 @@ x-app: &app
     # MCP
     - MCP_SERVER=${MCP_SERVER:-http://localhost/sse}
 
+    # Sentry Settings
+    # ---------------
+    - SENTRY_DSN=${SENTRY_DSN:-}
+    - SENTRY_TRACES_SAMPLE_RATE=${SENTRY_TRACES_SAMPLE_RATE:-1.0}
+    - SENTRY_SEND_DEFAULT_PII=${SENTRY_SEND_DEFAULT_PII:-False}
+    - SENTRY_ENABLE_LOGS=${SENTRY_ENABLE_LOGS:-True}
+    - SENTRY_HTTP_PROXY=${SENTRY_HTTP_PROXY:-}
+    - SENTRY_HTTPS_PROXY=${SENTRY_HTTPS_PROXY:-}
+    - SENTRY_ENVIRONMENT=${SENTRY_ENVIRONMENT:-development}
+    - SENTRY_DEBUG=${SENTRY_DEBUG:-False}
+
 x-frontend: &frontend
   image: watercrawl/frontend:${VERSION:-v0.10.2}
   environment:
     - VITE_API_BASE_URL=${API_BASE_URL:-http://localhost/api}
+    - VITE_SENTRY_DSN=${SENTRY_FRONTEND_DSN:-}
+    - VITE_SENTRY_ENVIRONMENT=${SENTRY_ENVIRONMENT:-development}
+    - VITE_SENTRY_TRACES_SAMPLE_RATE=${SENTRY_TRACES_SAMPLE_RATE:-1.0}
+    - VITE_SENTRY_REPLAYS_SESSION_SAMPLE_RATE=${SENTRY_REPLAYS_SESSION_SAMPLE_RATE:-1.0}
+    - VITE_SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE=${SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE:-1.0}
+    - VITE_SENTRY_SEND_DEFAULT_PII=${SENTRY_SEND_DEFAULT_PII:-False}
+    - VITE_SENTRY_ENABLE_LOGS=${SENTRY_ENABLE_LOGS:-True}
   depends_on:
     - app
 
@@ -125,7 +143,7 @@ services:
     environment:
       - MINIO_PRIVATE_BUCKET=${MINIO_PRIVATE_BUCKET:-private}
       - MINIO_PUBLIC_BUCKET=${MINIO_PUBLIC_BUCKET:-public}
-    command: ["/bin/sh", "/entrypoint.sh"]
+    command: [ "/bin/sh", "/entrypoint.sh" ]
     depends_on:
       - app
       - frontend
@@ -159,7 +177,7 @@ services:
       - MINIO_SERVER_URL=${MINIO_SERVER_URL:-http://localhost/}
       - MINIO_ROOT_USER=${MINIO_ACCESS_KEY:-minio}
       - MINIO_ROOT_PASSWORD=${MINIO_SECRET_KEY:-minio123}
-    
+
   playwright:
     image: watercrawl/playwright:1.1
     restart: always

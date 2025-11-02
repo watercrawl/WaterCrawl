@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
+import React, { createContext, useState, useContext, useEffect, useCallback, useRef } from 'react';
 import {
   COOKIE_CATEGORIES,
   COOKIE_CONFIG_KEY,
@@ -10,6 +10,7 @@ import {
 import { CookieConsentBanner } from '../components/CookieConsentBanner';
 import { useSettings } from '../../contexts/SettingsProvider';
 import { initializeGoogleAnalytics } from '../utils/analytics';
+import { initSentry } from '../../sentry';
 
 interface CookieConsentContextType {
   isConsentGiven: boolean;
@@ -36,6 +37,7 @@ export const CookieConsentProvider: React.FC<{ children: React.ReactNode }> = ({
   const [analyticsInitialized, setAnalyticsInitialized] = useState(false);
   const [marketingInitialized, setMarketingInitialized] = useState(false);
   const { settings } = useSettings();
+  const sentryRef = useRef<boolean>(false);
 
   useEffect(() => {
     // Check if consent was previously given
@@ -58,10 +60,22 @@ export const CookieConsentProvider: React.FC<{ children: React.ReactNode }> = ({
     setIsClient(true);
   }, []);
 
+  useEffect(() => {
+    if (!settings || settings.is_enterprise_mode_active) return;
+    if (!sentryRef.current) {
+      sentryRef.current = true;
+      initSentry();
+    }
+  }, [settings?.is_enterprise_mode_active, settings]);
+
   const initializeAnalytics = useCallback(() => {
     console.log('Initializing analytics');
     if (settings?.google_analytics_id) {
       initializeGoogleAnalytics(settings.google_analytics_id);
+    }
+    if (!sentryRef.current) {
+      sentryRef.current = true;
+      initSentry();
     }
   }, [settings?.google_analytics_id]);
 
