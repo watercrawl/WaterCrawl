@@ -5,9 +5,6 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 
 
-# Set the dummy API URL that will be replaced at runtime
-ENV VITE_API_URL=http://DUMMY_URL_FOR_REPLACE
-
 # Sentry build-time configuration
 ARG VITE_APP_VERSION=unknown
 ARG SENTRY_AUTH_TOKEN
@@ -35,8 +32,6 @@ COPY . .
 # Build the application
 RUN pnpm build
 
-# Remove source maps
-RUN find dist -name "*.map" -type f -delete
 
 # Production stage
 FROM nginx:alpine

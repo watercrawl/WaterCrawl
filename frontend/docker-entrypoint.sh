@@ -1,8 +1,18 @@
 #!/bin/sh
-envsubst < /usr/share/nginx/html/config.template.js > /usr/share/nginx/html/config.js
 
-# Replace the dummy URL with the actual API URL in all JS files
-find /usr/share/nginx/html -type f -name "*.js" -exec sed -i "s|http://DUMMY_URL_FOR_REPLACE|${VITE_API_URL}|g" {} +
+if [ -e "/run/secrets/app.secret" ]; then
+  set -a;
+  . /run/secrets/app.secret
+  set +a
+fi
+
+if [ -e "/app.env" ]; then
+  set -a;
+  . /app.env
+  set +a
+fi
+
+envsubst < /usr/share/nginx/html/config.template.js > /usr/share/nginx/html/config.js
 
 # Start nginx
 exec nginx -g 'daemon off;'
