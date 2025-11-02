@@ -8,7 +8,7 @@ export default defineConfig(({ mode }) => {
   // By default, only env variables prefixed with `VITE_` are exposed.
   // We need to load all env vars for Sentry plugin configuration.
   const env = loadEnv(mode, process.cwd(), '');
-  
+
   const sentryEnabled =
     !!env.SENTRY_AUTH_TOKEN &&
     !!env.SENTRY_ORG &&
@@ -23,13 +23,19 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [
-      react(), 
+      {
+        name: 'html-random-version',
+        transformIndexHtml(html: string) {
+          return html.replace('%VITE_APP_VERSION%', env.VITE_APP_VERSION || 'local');
+        },
+      },
+      react(),
       sentryEnabled && sentryVitePlugin({
         org: env.SENTRY_ORG,
         project: env.SENTRY_PROJECT,
         authToken: env.SENTRY_AUTH_TOKEN,
         release: {
-          name: env.VITE_APP_VERSION || 'development',
+          name: env.VITE_APP_VERSION || 'local',
         },
         sourcemaps: {
           assets: "./dist/**",
