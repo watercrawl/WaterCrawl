@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
@@ -13,18 +13,7 @@ interface AboutModalProps {
 export const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
   const { t } = useTranslation();
   const { settings } = useSettings();
-  const { theme } = useTheme();
-  const [isDark, setIsDark] = useState(false);
-
-  useEffect(() => {
-    // Detect actual applied theme (considering system preference for 'system' theme)
-    if (theme === 'system') {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      setIsDark(prefersDark);
-    } else {
-      setIsDark(theme === 'dark');
-    }
-  }, [theme]);
+  const { isDark } = useTheme();
 
   return (
     <Transition appear show={isOpen} as={Fragment}>

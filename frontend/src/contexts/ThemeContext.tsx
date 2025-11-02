@@ -4,6 +4,7 @@ type Theme = 'dark' | 'light' | 'system';
 
 interface ThemeContextType {
   theme: Theme;
+  isDark: boolean;
   toggleTheme: () => void;
   setTheme: (theme: Theme) => void;
 }
@@ -18,6 +19,18 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
     return 'system';
   });
+  const [isDark, setIsDark] = useState(false);
+
+
+  useEffect(() => {
+    // Detect actual applied theme (considering system preference for 'system' theme)
+    if (theme === 'system') {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      setIsDark(prefersDark);
+    } else {
+      setIsDark(theme === 'dark');
+    }
+  }, [theme]);
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -53,7 +66,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
+    <ThemeContext.Provider value={{ theme, isDark, toggleTheme, setTheme }}>
       {children}
     </ThemeContext.Provider>
   );

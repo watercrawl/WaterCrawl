@@ -5,7 +5,7 @@ import { API_URL } from '../../utils/env';
 import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
 const ApiReferencePage: React.FC = () => {
   const { setItems } = useBreadcrumbs();
-  const { theme } = useTheme();
+  const { isDark } = useTheme();
   const getBaseUrl = useCallback(() => {
     let url = API_URL;
     if (!/^https?:\/\//i.test(url)) {
@@ -19,7 +19,7 @@ const ApiReferencePage: React.FC = () => {
       theme: {
         colors: {
           primary: { main: '#1e40af' },
-          ...(theme === 'dark' && {
+          ...(isDark && {
             tonalOffset: 0.2,
             primary: { main: '#60a5fa' },
             text: { primary: '#f8fafc', secondary: '#e2e8f0' },
@@ -28,7 +28,7 @@ const ApiReferencePage: React.FC = () => {
           }),
         },
         sidebar: {
-          ...(theme === 'dark' && {
+          ...(isDark && {
             backgroundColor: '#0f172a',
             textColor: '#f8fafc',
             activeTextColor: '#60a5fa',
@@ -43,7 +43,7 @@ const ApiReferencePage: React.FC = () => {
           }),
         },
         rightPanel: {
-          ...(theme === 'dark' && {
+          ...(isDark && {
             backgroundColor: '#1e293b',
             textColor: '#9ca3af',
             servers: {
@@ -53,18 +53,18 @@ const ApiReferencePage: React.FC = () => {
           }),
         },
         codeBlock: {
-          ...(theme === 'dark' && {
+          ...(isDark && {
             backgroundColor: '#0f172a',
             border: '1px solid #475569',
             color: '#f8fafc',
           }),
         },
-        fab: { ...(theme === 'dark' && { backgroundColor: '#1e40af', color: '#f8fafc' }) },
-        schema: { ...(theme === 'dark' && { nestedBackground: '#1e293b' }) },
+        fab: { ...(isDark && { backgroundColor: '#1e40af', color: '#f8fafc' }) },
+        schema: { ...(isDark && { nestedBackground: '#1e293b' }) },
       },
     };
     return baseTheme;
-  }, [theme]);
+  }, [isDark]);
   useEffect(() => {
     setItems([]);
   }, [setItems]);
@@ -73,7 +73,7 @@ const ApiReferencePage: React.FC = () => {
       <style>
         {`
                     .redoc-wrap h5{
-                        color: ${theme === 'dark' ? '#f8fafc' : '#1e293b'};
+                        color: ${isDark ? '#f8fafc' : '#1e293b'};
                     }
                 `}
       </style>
