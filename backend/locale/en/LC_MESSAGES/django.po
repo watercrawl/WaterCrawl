@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: watercrawl\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-11-03 22:05+0000\n"
-"PO-Revision-Date: 2025-10-12 19:43\n"
+"PO-Revision-Date: 2025-11-03 23:22\n"
 "Last-Translator: \n"
 "Language-Team: English\n"
 "Language: en_US\n"
@@ -70,42 +70,27 @@ msgid "conversation"
 msgstr ""
 
 #: common/docs.py:3
-msgid ""
-"\n"
-"# Introduction\n"
-"\n"
-"This documentation covers all the external APIs that can be accessed using a "
-"Team API Key. These APIs are designed for integration with external systems "
-"and services.\n"
-"\n"
-"## Authentication\n"
-"\n"
-"All endpoints in this documentation require authentication using an API Key. "
-"To authenticate your requests:\n"
-"\n"
-"1. Generate an API Key from the [API Keys Dashboard](https://"
-"app.watercrawl.dev/dashboard/api-keys)\n"
-"2. Include the API Key in your requests using the `X-API-Key` header:\n"
-"\n"
+msgid "\n"
+"# Introduction\n\n"
+"This documentation covers all the external APIs that can be accessed using a Team API Key. These APIs are designed for integration with external systems and services.\n\n"
+"## Authentication\n\n"
+"All endpoints in this documentation require authentication using an API Key. To authenticate your requests:\n\n"
+"1. Generate an API Key from the [API Keys Dashboard](https://app.watercrawl.dev/dashboard/api-keys)\n"
+"2. Include the API Key in your requests using the `X-API-Key` header:\n\n"
 "```bash\n"
 "curl -H \"X-API-Key: your_api_key_here\" https://api.watercrawl.dev/v1/...\n"
-"```\n"
-"\n"
+"```\n\n"
 "### Important Notes:\n"
 "- Keep your API Key secure and never share it publicly\n"
 "- You can generate multiple API Keys for different purposes\n"
 "- You can revoke API Keys at any time from the dashboard\n"
-"- Each API Key is associated with a specific team\n"
-"\n"
+"- Each API Key is associated with a specific team\n\n"
 "## Rate Limiting\n"
-"API requests are rate-limited based on your team's plan. Please refer to "
-"your plan details for specific limits.\n"
+"API requests are rate-limited based on your team's plan. Please refer to your plan details for specific limits.\n"
 msgstr ""
 
 #: common/docs.py:30
-msgid ""
-"API Key for team authentication. Generate from https://app.watercrawl.dev/"
-"dashboard/api-keys"
+msgid "API Key for team authentication. Generate from https://app.watercrawl.dev/dashboard/api-keys"
 msgstr ""
 
 #: common/handlers.py:20
@@ -281,9 +266,7 @@ msgid "Filter crawl results by date"
 msgstr ""
 
 #: core/docs.py:312
-msgid ""
-"Format of the download file. Default: json. Available formats: markdown, "
-"json."
+msgid "Format of the download file. Default: json. Available formats: markdown, json."
 msgstr ""
 
 #: core/models.py:23
@@ -1299,9 +1282,7 @@ msgid "List all provider configs (Global and Team-specific)"
 msgstr ""
 
 #: llm/views.py:59
-msgid ""
-"Get all available provider configurations including global and team-specific "
-"ones."
+msgid "Get all available provider configurations including global and team-specific ones."
 msgstr ""
 
 #: llm/views.py:65
@@ -1490,9 +1471,7 @@ msgid "Daily page credit"
 msgstr ""
 
 #: plan/models.py:40
-msgid ""
-"Number of pages that can be crawled per day. resets at midnight. -1 for "
-"unlimited"
+msgid "Number of pages that can be crawled per day. resets at midnight. -1 for unlimited"
 msgstr ""
 
 #: plan/models.py:45
@@ -1701,86 +1680,61 @@ msgstr ""
 
 #: plan/validators.py:42
 #, python-brace-format
-msgid ""
-"You have no more daily credit left in your plan. for current request you "
-"need {} credits."
+msgid "You have no more daily credit left in your plan. for current request you need {} credits."
 msgstr ""
 
 #: plan/validators.py:49
 #, python-brace-format
-msgid ""
-"You just have {} daily credit left in your plan. for current request you "
-"need {} credits."
+msgid "You just have {} daily credit left in your plan. for current request you need {} credits."
 msgstr ""
 
 #: plan/validators.py:62
 #, python-brace-format
-msgid ""
-"You have no more pages left in your plan. for current request you need {} "
-"credits."
+msgid "You have no more pages left in your plan. for current request you need {} credits."
 msgstr ""
 
 #: plan/validators.py:69
 #, python-brace-format
-msgid ""
-"You just have {} credits left in your plan. for current request you need {} "
-"credits."
+msgid "You just have {} credits left in your plan. for current request you need {} credits."
 msgstr ""
 
 #: plan/validators.py:111
-msgid ""
-"With the current plan you cannot use this proxy server. Upgrade your plan to "
-"use Premium proxy servers."
+msgid "With the current plan you cannot use this proxy server. Upgrade your plan to use Premium proxy servers."
 msgstr ""
 
 #: plan/validators.py:125
 #, python-brace-format
-msgid ""
-"Your plan does not support more than {} depth. change the max depth in "
-"spider options."
+msgid "Your plan does not support more than {} depth. change the max depth in spider options."
 msgstr ""
 
 #: plan/validators.py:138
 #, python-brace-format
-msgid ""
-"Your plan does not support more than {} pages per crawl. change the page "
-"limit in spider options."
+msgid "Your plan does not support more than {} pages per crawl. change the page limit in spider options."
 msgstr ""
 
 #: plan/validators.py:160
 #, python-brace-format
-msgid ""
-"Your plan does not support more than {} concurrent crawls. Wait for them to "
-"finish."
+msgid "Your plan does not support more than {} concurrent crawls. Wait for them to finish."
 msgstr ""
 
 #: plan/validators.py:196
 #, python-brace-format
-msgid ""
-"Your plan does not support more than {} concurrent searches. Wait for them "
-"to finish."
+msgid "Your plan does not support more than {} concurrent searches. Wait for them to finish."
 msgstr ""
 
 #: plan/validators.py:229
 #, python-brace-format
-msgid ""
-"Your plan does not support more than {} concurrent sitemaps. Wait for them "
-"to finish."
+msgid "Your plan does not support more than {} concurrent sitemaps. Wait for them to finish."
 msgstr ""
 
 #: plan/validators.py:258
 #, python-brace-format
-msgid ""
-"Your plan does not support more than {} knowledge bases. You can not create "
-"more."
+msgid "Your plan does not support more than {} knowledge bases. You can not create more."
 msgstr ""
 
 #: plan/validators.py:291
 #, python-brace-format
-msgid ""
-"Your current plan does not support more than {} documents per knowledge "
-"base. This knowledge base has {} documents left. Your request will add {} "
-"documents."
+msgid "Your current plan does not support more than {} documents per knowledge base. This knowledge base has {} documents left. Your request will add {} documents."
 msgstr ""
 
 #: plan/validators.py:386
@@ -1792,9 +1746,7 @@ msgid "List available plans"
 msgstr ""
 
 #: plan/views.py:24
-msgid ""
-"Returns a list of all active subscription plans with their details including "
-"pricing, features and limits."
+msgid "Returns a list of all active subscription plans with their details including pricing, features and limits."
 msgstr ""
 
 #: plan/views.py:29
@@ -1866,8 +1818,7 @@ msgid "Handle Stripe webhooks"
 msgstr ""
 
 #: plan/views.py:221
-msgid ""
-"Processes webhook events from Stripe for subscription and payment updates."
+msgid "Processes webhook events from Stripe for subscription and payment updates."
 msgstr ""
 
 #: plan/views.py:243
@@ -2051,9 +2002,7 @@ msgid "You can not register you already have an account"
 msgstr ""
 
 #: user/views.py:150
-msgid ""
-"Emails do not match the invitation email. you have to register with the "
-"email that was invited"
+msgid "Emails do not match the invitation email. you have to register with the email that was invited"
 msgstr ""
 
 #: user/views.py:168 user/views.py:169
@@ -2191,3 +2140,4 @@ msgstr ""
 #: user/views.py:658 user/views.py:659
 msgid "Verify token"
 msgstr ""
+
