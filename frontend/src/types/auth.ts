@@ -37,14 +37,14 @@ export interface TokenPayload {
 }
 
 export interface VerifyInvitationResponse {
+  uuid: string;
   invitation_code: string;
   new_user: boolean;
-  email: string;
+  matched_email: boolean;
 }
 
 export interface RegisterResponse {
   first_name: string;
   last_name: string;
   email: string;
-  email_verified: boolean;
 }

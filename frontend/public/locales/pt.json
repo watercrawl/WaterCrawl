@@ -95,6 +95,9 @@
     },
     "created": "Criada",
     "createNew": "Criar Nova Chave API",
+    "deleteConfirmTitle": "Excluir Chave API",
+    "deleteConfirmMessage": "Tem certeza de que deseja excluir a chave API \"{{name}}\"?",
+    "deleteWarning": "Esta ação não pode ser desfeita. Qualquer aplicação que usar esta chave vai parar de funcionar imediatamente.",
     "deleteKey": "Excluir Chave API",
     "hideKey": "Ocultar Chave API",
     "keyName": "Nome da Chave",
@@ -280,6 +283,7 @@
     "create": "Criar",
     "dashboard": "Painel",
     "delete": "Excluir",
+    "deleting": "Excluindo...",
     "dismiss": "Dispensar",
     "documents": "Documentos",
     "download": "Baixar",
@@ -1021,6 +1025,16 @@
     "title": "Atualização de Privacidade e Termos",
     "updateMessage": "Atualizamos nossa Política de Privacidade e Termos de Serviço. Por favor, revise e aceite para continuar usando o WaterCrawl."
   },
+  "notifications": {
+    "title": "Notificações",
+    "openMenu": "Abrir notificações",
+    "noNotifications": "Nenhuma nova notificação",
+    "viewAll": "Ver todas as notificações",
+    "invitation": {
+      "title": "Convite para equipe",
+      "message": "Você foi convidado para se juntar a {{teamName}}"
+    }
+  },
   "processing": {
     "almostThere": "🎯 Quase lá",
     "analyzing": "🔍 Analisando conteúdo",
@@ -1255,8 +1269,9 @@
         "confirm": "Excluir Base de Conhecimento",
         "confirmError": "Por favor, digite o título correto da base de conhecimento para confirmar a exclusão",
         "confirmPrompt": "Por favor, digite o título da base de conhecimento {{title}} para confirmar:",
-        "confirmTitle": "Tem certeza que deseja excluir esta base de conhecimento?",
+        "confirmTitle": "Tem certeza de que deseja excluir esta base de conhecimento?",
         "deleting": "Excluindo...",
+        "inputLabel": "Digite o título da base de conhecimento para confirmar",
         "title": "Excluir Base de Conhecimento",
         "warningMessage": "Esta ação não pode ser desfeita. Isso excluirá permanentemente a base de conhecimento {{title}} e removerá todos os documentos e fragmentos associados."
       },
@@ -1734,14 +1749,25 @@
       "title": "Configurações da Equipe"
     },
     "teamInvitations": {
-      "cancelTooltip": "Funcionalidade de cancelar convite em breve...",
+      "cancelTooltip": "Revogar convite",
+      "copyUrl": "Copiar URL do convite",
       "date": "Data",
       "invitedUser": "Usuário Convidado",
       "loadError": "Falha ao carregar convites",
       "noPending": "Nenhum convite pendente",
       "pending": "Pendente",
+      "resendEmail": "Reenviar e-mail de convite",
+      "resendError": "Falha ao reenviar e-mail de convite",
+      "resendSuccess": "E-mail de convite enviado com sucesso",
+      "revokeConfirmButton": "Revogar Convite",
+      "revokeConfirmMessage": "Tem certeza de que deseja revogar o convite para {{email}}? Esta ação não pode ser desfeita.",
+      "revokeConfirmTitle": "Revogar Convite",
+      "revokeError": "Falha ao revogar convite",
+      "revokeSuccess": "Convite revogado com sucesso",
       "status": "Status",
-      "title": "Convites da Equipe"
+      "title": "Convites da Equipe",
+      "urlCopied": "URL do convite copiada para a área de transferência",
+      "urlCopyError": "Falha ao copiar URL do convite"
     },
     "subtitle": "Configure sua aplicação",
     "title": "Configurações"
@@ -1777,6 +1803,19 @@
       "maxUrls": "Máx. URLs",
       "url": "URL do Site",
       "urlPlaceholder": "https://exemplo.com"
+    },
+    "options": {
+      "includeSubdomains": "Incluir Subdomínios",
+      "includeSubdomainsDesc": "Incluir todos os subdomínios do site alvo",
+      "ignoreSitemapXml": "Ignorar sitemap.xml",
+      "ignoreSitemapXmlDesc": "Rastrear o site diretamente em vez de usar o arquivo sitemap.xml (mais lento, mas mais completo)",
+      "searchFilter": "Filtro de URL",
+      "searchFilterDesc": "Filtrar URLs do sitemap por termo de busca (ex: 'blog', '/produtos')",
+      "searchFilterPlaceholder": "Digite o termo de busca para filtrar URLs...",
+      "generalSettings": "Configurações Gerais",
+      "generalSettingsDesc": "Opções básicas de geração do sitemap",
+      "pathFilters": "Filtros de Caminho",
+      "pathFiltersDesc": "Incluir ou excluir caminhos de URL específicos"
     },
     "foundUrls": "Encontradas {{count}} URLs",
     "foundUrls_one": "Encontrada {{count}} URL",

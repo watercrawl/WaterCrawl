@@ -377,7 +377,7 @@ const KnowledgeBaseDocumentDetailPage: React.FC = () => {
         size="80vw"
       >
         <div className="mt-4">
-          <MarkdownRenderer content={previewContent} />
+          <MarkdownRenderer content={previewContent}/>
         </div>
       </Modal>
     </div>

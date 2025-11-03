@@ -144,6 +144,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
     watch,
     setValue,
     control,
+    setError,
     formState: { errors },
   } = useForm<FormData>({
     resolver: yupResolver(createSchema(t)) as any,
@@ -256,20 +257,49 @@ const KnowledgeBaseNewPage: React.FC = () => {
       navigate(`/dashboard/knowledge-base/${response.uuid}`);
     } catch (error: any) {
       console.error('Failed to create knowledge base:', error);
-      // Handle specific API errors if available
-      if (error.response?.data) {
+      
+      // Handle 400 validation errors from server
+      if (error.response?.status === 400 && error.response?.data?.errors) {
+        const serverErrors = error.response.data.errors;
+        let firstErrorField: string | null = null;
+        
+        // Map server errors to form fields
+        Object.entries(serverErrors).forEach(([field, messages]) => {
+          const errorMessage = Array.isArray(messages) ? messages[0] : messages;
+          
+          // Track first error for scrolling
+          if (!firstErrorField) {
+            firstErrorField = field;
+          }
+          
+          // Set error for the field
+          setError(field as any, {
+            type: 'server',
+            message: errorMessage as string,
+          });
+        });
+        
+        // Scroll to the first error field
+        if (firstErrorField) {
+          setTimeout(() => {
+            const errorElement = document.querySelector(`[name="${firstErrorField}"]`) as HTMLElement;
+            if (errorElement) {
+              errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              errorElement.focus();
+            }
+          }, 100);
+        }
+        
+        toast.error(error.response.data.message || t('settings.knowledgeBase.toast.createError'));
+      } else if (error.response?.data) {
+        // Handle other types of errors
         const errorData = error.response.data;
-        if (typeof errorData === 'object') {
-          // Display detailed validation errors if available
-          const errorMessages = Object.entries(errorData)
-            .map(
-              ([field, messages]) =>
-                `${field}: ${Array.isArray(messages) ? messages.join(', ') : messages}`
-            )
-            .join('\n');
-          toast.error(`Failed to create knowledge base: ${errorMessages}`);
+        if (typeof errorData === 'object' && errorData.message) {
+          toast.error(errorData.message);
+        } else if (typeof errorData === 'string') {
+          toast.error(errorData);
         } else {
-          toast.error(`Failed to create knowledge base: ${errorData}`);
+          toast.error(t('settings.knowledgeBase.toast.createError'));
         }
       } else {
         toast.error(t('settings.knowledgeBase.toast.createError'));

@@ -49,6 +49,7 @@ export const authApi = {
     return api.get(`/api/v1/user/auth/invitation/${invitationCode}/`).then(({ data }) => data);
   },
 
+  // deprecated
   async registerWithInvitation(
     request: RegisterRequest,
     invitationCode: string

@@ -125,7 +125,7 @@ export const TeamSelector: React.FC = () => {
                       value={newTeamName}
                       onChange={e => setNewTeamName(e.target.value)}
                       placeholder={t('team.teamNamePlaceholder')}
-                      className="block w-full rounded-md border-0 py-1.5 text-foreground shadow-sm ring-1 ring-inset ring-border placeholder:text-muted-foreground focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 py-1.5 text-foreground bg-card shadow-sm ring-1 ring-inset ring-border placeholder:text-muted-foreground focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
                     />
                   </div>
 

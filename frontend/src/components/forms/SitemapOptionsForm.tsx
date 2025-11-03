@@ -49,12 +49,12 @@ export const SitemapOptionsForm: React.FC<SitemapOptionsFormProps> = ({ options,
       <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
         {/* Left Column - Basic Settings */}
         <div>
-          <OptionGroup title={t('dashboard.settings.general')} description={t('sitemap.subtitle')}>
+          <OptionGroup title={t('sitemap.options.generalSettings')} description={t('sitemap.options.generalSettingsDesc')}>
             <div className="space-y-4">
               <div className="flex items-center">
                 <Switch
-                  label={t('crawl.spiderOptions.allowedDomains')}
-                  description={t('crawl.spiderOptions.allowedDomainsTooltip')}
+                  label={t('sitemap.options.includeSubdomains')}
+                  description={t('sitemap.options.includeSubdomainsDesc')}
                   checked={includeSubdomains}
                   onChange={checked => handleToggleChange('include_subdomains', checked)}
                 />
@@ -62,8 +62,8 @@ export const SitemapOptionsForm: React.FC<SitemapOptionsFormProps> = ({ options,
 
               <div className="flex items-center">
                 <Switch
-                  label={t('dashboard.settings.advanced')}
-                  description={t('sitemap.subtitle')}
+                  label={t('sitemap.options.ignoreSitemapXml')}
+                  description={t('sitemap.options.ignoreSitemapXmlDesc')}
                   checked={ignoreSitemapXml}
                   onChange={checked => handleToggleChange('ignore_sitemap_xml', checked)}
                 />
@@ -73,16 +73,16 @@ export const SitemapOptionsForm: React.FC<SitemapOptionsFormProps> = ({ options,
               <div className="space-y-2">
                 <div className="mb-1 flex items-center gap-x-1">
                   <label className="block text-sm font-medium text-foreground">
-                    {t('search.form.query')}
+                    {t('sitemap.options.searchFilter')}
                   </label>
-                  <InfoTooltip content={t('search.form.filters')} />
+                  <InfoTooltip content={t('sitemap.options.searchFilterDesc')} />
                 </div>
                 <FormInput
                   label=""
                   value={searchTerm || ''}
                   onChange={handleSearchChange}
                   type="text"
-                  placeholder={t('search.form.queryPlaceholder')}
+                  placeholder={t('sitemap.options.searchFilterPlaceholder')}
                 />
               </div>
             </div>
@@ -92,8 +92,8 @@ export const SitemapOptionsForm: React.FC<SitemapOptionsFormProps> = ({ options,
         {/* Right Column - Path Settings */}
         <div>
           <OptionGroup
-            title={t('crawl.spiderOptions.pathFilters')}
-            description={t('crawl.spiderOptions.pathFiltersDesc')}
+            title={t('sitemap.options.pathFilters')}
+            description={t('sitemap.options.pathFiltersDesc')}
           >
             <div className="space-y-4">
               {/* Include paths */}

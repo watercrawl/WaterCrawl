@@ -29,6 +29,7 @@ import { PlansModal } from '../components/plans/PlansModal';
 import { LanguageSelector } from '../components/shared/LanguageSelector';
 import { ArrowRight } from '../components/shared/DirectionalIcon';
 import { ProfileMenu } from '../components/shared/ProfileMenu';
+import NotificationBell from '../components/shared/NotificationBell';
 
 // Reusable Navigation component
 interface NavigationMenuProps {
@@ -396,6 +397,7 @@ export const DashboardLayout = () => {
                   </div>
                   <div className="flex items-center gap-x-4">
                     <LanguageSelector />
+                    <NotificationBell />
                     <ProfileMenu />
                   </div>
                 </div>

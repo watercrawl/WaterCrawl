@@ -95,6 +95,9 @@
     },
     "created": "Creada",
     "createNew": "Crear Nueva Clave API",
+    "deleteConfirmTitle": "Eliminar Clave API",
+    "deleteConfirmMessage": "¿Está seguro de que desea eliminar la clave API \"{{name}}\"?",
+    "deleteWarning": "Esta acción no se puede deshacer. Cualquier aplicación que use esta clave dejará de funcionar inmediatamente.",
     "deleteKey": "Eliminar Clave API",
     "hideKey": "Ocultar Clave API",
     "keyName": "Nombre de la Clave",
@@ -280,6 +283,7 @@
     "create": "Crear",
     "dashboard": "Panel de Control",
     "delete": "Eliminar",
+    "deleting": "Eliminando...",
     "dismiss": "Descartar",
     "documents": "Documentos",
     "download": "Descargar",
@@ -1021,6 +1025,30 @@
     "title": "Actualización de Privacidad y Términos",
     "updateMessage": "Hemos actualizado nuestra Política de Privacidad y Términos de Servicio. Por favor revísalos y acéptalos para continuar usando WaterCrawl."
   },
+  "notifications": {
+    "title": "Notificaciones",
+    "openMenu": "Abrir notificaciones",
+    "noNotifications": "No hay notificaciones nuevas",
+    "viewAll": "Ver todas las notificaciones",
+    "invitation": {
+      "title": "Invitación al equipo",
+      "message": "Has sido invitado a unirte a {{teamName}}",
+      "verifying": "Verificando invitación...",
+      "invalidTitle": "Invitación inválida",
+      "invalidMessage": "Este código de invitación no es válido o ha caducado.",
+      "loginRequired": "Por favor, inicia sesión con la dirección de correo electrónico invitada para aceptar esta invitación.",
+      "mismatchLoginTitle": "Cuenta no coincide",
+      "mismatchLoginMessage": "Esta invitación es para una cuenta diferente. Por favor, cierra sesión e inicia sesión con la cuenta correcta.",
+      "mismatchRegisterTitle": "Cuenta no coincide",
+      "mismatchRegisterMessage": "Esta invitación es para un nuevo usuario. Por favor, cierra sesión y regístrate con el correo electrónico invitado.",
+      "logoutAndLogin": "Cerrar sesión e iniciar sesión con la cuenta correcta",
+      "logoutAndRegister": "Cerrar sesión y registrarse con el correo invitado",
+      "acceptedTitle": "¡Invitación aceptada!",
+      "acceptedMessage": "Te has unido al equipo con éxito. Redirigiendo al panel de control...",
+      "confirmTitle": "Aceptar invitación al equipo",
+      "confirmMessage": "Estás a punto de aceptar una invitación para unirte a un equipo."
+    }
+  },
   "processing": {
     "almostThere": "🎯 Casi listo",
     "analyzing": "🔍 Analizando contenido",
@@ -1254,9 +1282,10 @@
       "delete": {
         "confirm": "Eliminar Base de Conocimientos",
         "confirmError": "Por favor ingresa el título correcto de la base de conocimientos para confirmar la eliminación",
-        "confirmPrompt": "Por favor escribe el título de la base de conocimientos {{title}} para confirmar:",
-        "confirmTitle": "¿Estás seguro de que quieres eliminar esta base de conocimientos?",
+        "confirmPrompt": "Por favor, escriba el título de la base de conocimientos {{title}} para confirmar:",
+        "confirmTitle": "¿Está seguro de que desea eliminar esta base de conocimientos?",
         "deleting": "Eliminando...",
+        "inputLabel": "Escriba el título de la base de conocimientos para confirmar",
         "title": "Eliminar Base de Conocimientos",
         "warningMessage": "Esta acción no se puede deshacer. Esto eliminará permanentemente la base de conocimientos {{title}} y removerá todos los documentos y fragmentos asociados."
       },
@@ -1734,14 +1763,25 @@
       "title": "Configuración del Equipo"
     },
     "teamInvitations": {
-      "cancelTooltip": "Funcionalidad de cancelar invitación próximamente...",
+      "cancelTooltip": "Revocar invitación",
+      "copyUrl": "Copiar URL de invitación",
       "date": "Fecha",
       "invitedUser": "Usuario Invitado",
       "loadError": "Error al cargar invitaciones",
       "noPending": "No hay invitaciones pendientes",
       "pending": "Pendiente",
+      "resendEmail": "Reenviar correo de invitación",
+      "resendError": "Error al reenviar el correo de invitación",
+      "resendSuccess": "Correo de invitación enviado exitosamente",
+      "revokeConfirmButton": "Revocar Invitación",
+      "revokeConfirmMessage": "¿Estás seguro de que deseas revocar la invitación para {{email}}? Esta acción no se puede deshacer.",
+      "revokeConfirmTitle": "Revocar Invitación",
+      "revokeError": "Error al revocar la invitación",
+      "revokeSuccess": "Invitación revocada exitosamente",
       "status": "Estado",
-      "title": "Invitaciones de Equipo"
+      "title": "Invitaciones de Equipo",
+      "urlCopied": "URL de invitación copiada al portapapeles",
+      "urlCopyError": "Error al copiar la URL de invitación"
     },
     "subtitle": "Configura tu aplicación",
     "title": "Configuración"
@@ -1777,6 +1817,19 @@
       "maxUrls": "Máx URLs",
       "url": "URL del Sitio Web",
       "urlPlaceholder": "https://ejemplo.com"
+    },
+    "options": {
+      "includeSubdomains": "Incluir Subdominios",
+      "includeSubdomainsDesc": "Incluir todos los subdominios del sitio web objetivo",
+      "ignoreSitemapXml": "Ignorar sitemap.xml",
+      "ignoreSitemapXmlDesc": "Rastrear el sitio web directamente en lugar de usar el archivo sitemap.xml (más lento pero más exhaustivo)",
+      "searchFilter": "Filtro de URL",
+      "searchFilterDesc": "Filtrar URLs del sitemap por término de búsqueda (ej. 'blog', '/productos')",
+      "searchFilterPlaceholder": "Ingresa término de búsqueda para filtrar URLs...",
+      "generalSettings": "Configuración General",
+      "generalSettingsDesc": "Opciones básicas de generación del sitemap",
+      "pathFilters": "Filtros de Ruta",
+      "pathFiltersDesc": "Incluir o excluir rutas de URL específicas"
     },
     "foundUrls": "Se encontraron {{count}} URLs",
     "foundUrls_one": "Se encontró {{count}} URL",

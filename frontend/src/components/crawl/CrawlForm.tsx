@@ -466,7 +466,7 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({
               <button
                 type="button"
                 onClick={handleCancel}
-                className="w-full rounded-lg bg-error px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-error-dark focus:outline-none focus:ring-error focus:ring-offset-2 md:w-auto"
+                className="w-full rounded-lg bg-error px-6 py-2.5 text-sm font-medium text-error-foreground transition-colors hover:bg-error-light hover:text-error-dark focus:outline-none focus:ring-error focus:ring-offset-2 md:w-auto"
               >
                 {t('crawl.form.cancelCrawl')}
               </button>
@@ -474,7 +474,7 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({
               <button
                 type="submit"
                 disabled={isLoading || formErrors.plugin}
-                className="w-full rounded-lg bg-primary px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-hover focus:outline-none focus:ring-primary focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto"
+                className="w-full rounded-lg bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover focus:outline-none focus:ring-primary focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto"
               >
                 {isLoading ? t('crawl.form.starting') : t('crawl.form.startCrawl')}
               </button>
