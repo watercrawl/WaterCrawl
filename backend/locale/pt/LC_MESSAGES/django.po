@@ -2218,10 +2218,8 @@ msgid "List invitations to the current team"
 msgstr "Listar convites para a equipe atual"
 
 #: user/views.py:456 user/views.py:457
-#, fuzzy
-#| msgid "Accept an invitation"
 msgid "Revoke an invitation"
-msgstr "Aceitar um convite"
+msgstr "Revogar um convite"
 
 #: user/views.py:462
 #, fuzzy
