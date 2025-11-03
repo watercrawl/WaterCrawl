@@ -544,7 +544,9 @@ class TeamViewSet(
         url_name="revoke-invitation",
     )
     def revoke_invitation(self, request, uuid):
-        invitation = TeamInvitation.objects.filter(activated=False).get(pk=uuid)
+        invitation = request.current_team.invitations.filter(activated=False).get(
+            pk=uuid
+        )
         TeamInvitationService(invitation).revoke()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -555,7 +557,9 @@ class TeamViewSet(
         url_name="invitation-url",
     )
     def invitation_url(self, request, uuid):
-        invitation = TeamInvitation.objects.filter(activated=False).get(pk=uuid)
+        invitation = request.current_team.invitations.filter(activated=False).get(
+            pk=uuid
+        )
         return Response(
             data={
                 "url": TeamInvitationService(invitation).get_link(),
@@ -570,7 +574,9 @@ class TeamViewSet(
         url_name="resend-invitation-email",
     )
     def resend_invitation_email(self, request, uuid):
-        invitation = TeamInvitation.objects.filter(activated=False).get(pk=uuid)
+        invitation = request.current_team.invitations.filter(activated=False).get(
+            pk=uuid
+        )
         send_invitation_email.delay(str(invitation.pk))
         return Response(status=status.HTTP_204_NO_CONTENT)
 
