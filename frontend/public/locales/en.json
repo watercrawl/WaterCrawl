@@ -96,6 +96,9 @@
     "created": "Created",
     "createNew": "Create New API Key",
     "deleteKey": "Delete API Key",
+    "deleteConfirmTitle": "Delete API Key",
+    "deleteConfirmMessage": "Are you sure you want to delete the API key \"{{name}}\"?",
+    "deleteWarning": "This action cannot be undone. Any applications using this key will stop working immediately.",
     "hideKey": "Hide API Key",
     "keyName": "Key Name",
     "keyNamePlaceholder": "Enter a name for your API key",
@@ -267,8 +270,10 @@
       "dark": "Dark",
       "system": "System"
     },
+    "backToHome": "Back to Home",
     "cancel": "Cancel",
     "close": "Close",
+    "confirmError": "Please enter the correct value to confirm deletion",
     "select": "Select",
     "selectAll": "Select All",
     "deselectAll": "Deselect All",
@@ -280,6 +285,7 @@
     "create": "Create",
     "dashboard": "Dashboard",
     "delete": "Delete",
+    "deleting": "Deleting...",
     "dismiss": "Dismiss",
     "documents": "Documents",
     "download": "Download",
@@ -1021,6 +1027,30 @@
     "title": "Privacy & Terms Update",
     "updateMessage": "We've updated our Privacy Policy and Terms of Service. Please review and accept to continue using WaterCrawl."
   },
+  "notifications": {
+    "title": "Notifications",
+    "openMenu": "Open notifications",
+    "noNotifications": "No new notifications",
+    "viewAll": "View all notifications",
+    "invitation": {
+      "title": "Team Invitation",
+      "message": "You've been invited to join {{teamName}}",
+      "verifying": "Verifying invitation...",
+      "invalidTitle": "Invalid Invitation",
+      "invalidMessage": "This invitation code is invalid or has expired.",
+      "loginRequired": "Please login with the invited email address to accept this invitation.",
+      "mismatchLoginTitle": "Account Mismatch",
+      "mismatchLoginMessage": "This invitation is for a different account. Please logout and login with the correct account.",
+      "mismatchRegisterTitle": "Account Mismatch",
+      "mismatchRegisterMessage": "This invitation is for a new user. Please logout and register with the invited email address.",
+      "logoutAndLogin": "Logout and Login with Correct Account",
+      "logoutAndRegister": "Logout and Register with Invited Email",
+      "acceptedTitle": "Invitation Accepted!",
+      "acceptedMessage": "You have successfully joined the team. Redirecting to dashboard...",
+      "confirmTitle": "Accept Team Invitation",
+      "confirmMessage": "You're about to accept an invitation to join a team."
+    }
+  },
   "processing": {
     "almostThere": "🎯 Almost there",
     "analyzing": "🔍 Analyzing content",
@@ -1052,6 +1082,7 @@
     },
     "invitations": {
       "acceptButton": "Accept",
+      "accepting": "Accepting...",
       "acceptError": "Failed to accept invitation",
       "acceptSuccess": "Invitation accepted successfully",
       "loadError": "Failed to load invitations",
@@ -1257,6 +1288,7 @@
         "confirmPrompt": "Please type the knowledge base title {{title}} to confirm:",
         "confirmTitle": "Are you sure you want to delete this knowledge base?",
         "deleting": "Deleting...",
+        "inputLabel": "Type knowledge base title to confirm",
         "title": "Delete Knowledge Base",
         "warningMessage": "This action cannot be undone. This will permanently delete the knowledge base {{title}} and remove all associated documents and chunks."
       },
@@ -1734,14 +1766,25 @@
       "title": "Team Settings"
     },
     "teamInvitations": {
-      "cancelTooltip": "Cancel invitation functionality coming soon...",
+      "cancelTooltip": "Revoke invitation",
+      "copyUrl": "Copy invitation URL",
       "date": "Date",
       "invitedUser": "Invited User",
       "loadError": "Failed to load invitations",
       "noPending": "No pending invitations",
       "pending": "Pending",
+      "resendEmail": "Resend invitation email",
+      "resendError": "Failed to resend invitation email",
+      "resendSuccess": "Invitation email sent successfully",
+      "revokeConfirmButton": "Revoke Invitation",
+      "revokeConfirmMessage": "Are you sure you want to revoke the invitation for {{email}}? This action cannot be undone.",
+      "revokeConfirmTitle": "Revoke Invitation",
+      "revokeError": "Failed to revoke invitation",
+      "revokeSuccess": "Invitation revoked successfully",
       "status": "Status",
-      "title": "Team Invitations"
+      "title": "Team Invitations",
+      "urlCopied": "Invitation URL copied to clipboard",
+      "urlCopyError": "Failed to copy invitation URL"
     },
     "subtitle": "Configure your application",
     "title": "Settings"
@@ -1777,6 +1820,19 @@
       "maxUrls": "Max URLs",
       "url": "Website URL",
       "urlPlaceholder": "https://example.com"
+    },
+    "options": {
+      "includeSubdomains": "Include Subdomains",
+      "includeSubdomainsDesc": "Include all subdomains of the target website",
+      "ignoreSitemapXml": "Ignore sitemap.xml",
+      "ignoreSitemapXmlDesc": "Crawl the website directly instead of using the sitemap.xml file (slower but more thorough)",
+      "searchFilter": "URL Filter",
+      "searchFilterDesc": "Filter sitemap URLs by search term (e.g., 'blog', '/products')",
+      "searchFilterPlaceholder": "Enter search term to filter URLs...",
+      "generalSettings": "General Settings",
+      "generalSettingsDesc": "Basic sitemap generation options",
+      "pathFilters": "Path Filters",
+      "pathFiltersDesc": "Include or exclude specific URL paths"
     },
     "foundUrls": "Found {{count}} URLs",
     "foundUrls_one": "Found {{count}} URL",

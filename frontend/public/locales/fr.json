@@ -95,6 +95,9 @@
     },
     "created": "Créée",
     "createNew": "Créer une nouvelle clé API",
+    "deleteConfirmTitle": "Supprimer la clé API",
+    "deleteConfirmMessage": "Êtes-vous sûr de vouloir supprimer la clé API \"{{name}}\" ?",
+    "deleteWarning": "Cette action ne peut pas être annulée. Toute application utilisant cette clé cessera de fonctionner immédiatement.",
     "deleteKey": "Supprimer la clé API",
     "hideKey": "Masquer la clé API",
     "keyName": "Nom de la clé",
@@ -280,6 +283,7 @@
     "create": "Créer",
     "dashboard": "Tableau de bord",
     "delete": "Supprimer",
+    "deleting": "Suppression...",
     "dismiss": "Ignorer",
     "documents": "Documents",
     "download": "Télécharger",
@@ -1021,6 +1025,30 @@
     "title": "Mise à jour de la confidentialité et des conditions",
     "updateMessage": "Nous avons mis à jour notre Politique de confidentialité et nos Conditions d'utilisation. Veuillez les consulter et les accepter pour continuer à utiliser WaterCrawl."
   },
+  "notifications": {
+    "title": "Notifications",
+    "openMenu": "Ouvrir les notifications",
+    "noNotifications": "Aucune nouvelle notification",
+    "viewAll": "Voir toutes les notifications",
+    "invitation": {
+      "title": "Invitation d'équipe",
+      "message": "Vous avez été invité à rejoindre {{teamName}}",
+      "verifying": "Vérification de l'invitation...",
+      "invalidTitle": "Invitation invalide",
+      "invalidMessage": "Ce code d'invitation est invalide ou a expiré.",
+      "loginRequired": "Veuillez vous connecter avec l'adresse e-mail invitée pour accepter cette invitation.",
+      "mismatchLoginTitle": "Compte incompatible",
+      "mismatchLoginMessage": "Cette invitation est pour un compte différent. Veuillez vous déconnecter et vous connecter avec le bon compte.",
+      "mismatchRegisterTitle": "Compte incompatible",
+      "mismatchRegisterMessage": "Cette invitation est pour un nouvel utilisateur. Veuillez vous déconnecter et vous inscrire avec l'e-mail invité.",
+      "logoutAndLogin": "Se déconnecter et se connecter avec le bon compte",
+      "logoutAndRegister": "Se déconnecter et s'inscrire avec l'e-mail invité",
+      "acceptedTitle": "Invitation acceptée !",
+      "acceptedMessage": "Vous avez rejoint l'équipe avec succès. Redirection vers le tableau de bord...",
+      "confirmTitle": "Accepter l'invitation d'équipe",
+      "confirmMessage": "Vous êtes sur le point d'accepter une invitation à rejoindre une équipe."
+    }
+  },
   "processing": {
     "almostThere": "🎯 Presque terminé",
     "analyzing": "🔍 Analyse du contenu",
@@ -1257,6 +1285,7 @@
         "confirmPrompt": "Veuillez taper le titre de la base de connaissances {{title}} pour confirmer :",
         "confirmTitle": "Êtes-vous sûr de vouloir supprimer cette base de connaissances ?",
         "deleting": "Suppression...",
+        "inputLabel": "Tapez le titre de la base de connaissances pour confirmer",
         "title": "Supprimer la base de connaissances",
         "warningMessage": "Cette action est irréversible. Cela supprimera définitivement la base de connaissances {{title}} et supprimera tous les documents et fragments associés."
       },
@@ -1734,14 +1763,25 @@
       "title": "Paramètres de l'équipe"
     },
     "teamInvitations": {
-      "cancelTooltip": "Fonctionnalité d'annulation d'invitation bientôt disponible...",
+      "cancelTooltip": "Révoquer l'invitation",
+      "copyUrl": "Copier l'URL d'invitation",
       "date": "Date",
       "invitedUser": "Utilisateur invité",
       "loadError": "Échec du chargement des invitations",
       "noPending": "Aucune invitation en attente",
       "pending": "En attente",
+      "resendEmail": "Renvoyer l'e-mail d'invitation",
+      "resendError": "Échec du renvoi de l'e-mail d'invitation",
+      "resendSuccess": "E-mail d'invitation envoyé avec succès",
+      "revokeConfirmButton": "Révoquer l'invitation",
+      "revokeConfirmMessage": "Êtes-vous sûr de vouloir révoquer l'invitation pour {{email}} ? Cette action ne peut pas être annulée.",
+      "revokeConfirmTitle": "Révoquer l'invitation",
+      "revokeError": "Échec de la révocation de l'invitation",
+      "revokeSuccess": "Invitation révoquée avec succès",
       "status": "Statut",
-      "title": "Invitations d'équipe"
+      "title": "Invitations d'équipe",
+      "urlCopied": "URL d'invitation copiée dans le presse-papiers",
+      "urlCopyError": "Échec de la copie de l'URL d'invitation"
     },
     "subtitle": "Configurez votre application",
     "title": "Paramètres"
@@ -1777,6 +1817,19 @@
       "maxUrls": "URLs maximum",
       "url": "URL du site web",
       "urlPlaceholder": "https://example.com"
+    },
+    "options": {
+      "includeSubdomains": "Inclure les sous-domaines",
+      "includeSubdomainsDesc": "Inclure tous les sous-domaines du site web cible",
+      "ignoreSitemapXml": "Ignorer sitemap.xml",
+      "ignoreSitemapXmlDesc": "Crawler le site directement au lieu d'utiliser le fichier sitemap.xml (plus lent mais plus approfondi)",
+      "searchFilter": "Filtre d'URL",
+      "searchFilterDesc": "Filtrer les URLs du sitemap par terme de recherche (par ex. 'blog', '/produits')",
+      "searchFilterPlaceholder": "Entrez un terme de recherche pour filtrer les URLs...",
+      "generalSettings": "Paramètres généraux",
+      "generalSettingsDesc": "Options de base pour la génération du sitemap",
+      "pathFilters": "Filtres de chemin",
+      "pathFiltersDesc": "Inclure ou exclure des chemins d'URL spécifiques"
     },
     "foundUrls": "{{count}} URLs trouvées",
     "foundUrls_one": "{{count}} URL trouvée",

@@ -369,11 +369,30 @@ class KnowledgeBaseRequestValidatorMixin(PlanValidatorInterface):
         return attrs
 
 
+class CanInviteNewMemberValidatorMixin(PlanValidatorInterface):
+    def can_add_new_member(self):
+        number_of_current_members = (
+            self.team.members.count()
+            + self.team.invitations.filter(activated=False).count()
+        )
+
+        if self.team_plan_service.plan_number_users == -1:
+            return
+
+        if self.team_plan_service.plan_number_users > number_of_current_members:
+            return
+
+        raise PermissionDenied(
+            _("You have reached the maximum number of users for your plan.")
+        )
+
+
 class PlanLimitValidator(
     CrawlRequestValidatorMixin,
     SearchRequestValidatorMixin,
     SitemapRequestValidatorMixin,
     KnowledgeBaseRequestValidatorMixin,
+    CanInviteNewMemberValidatorMixin,
     PlanValidator,
 ):
     pass

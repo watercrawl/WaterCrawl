@@ -82,7 +82,7 @@ export const ProfileMenu: React.FC = () => {
   return (
     <>
       <Menu as="div" className="relative">
-        <Menu.Button className="flex items-center rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
+        <Menu.Button className="flex items-center rounded-full">
           <span className="sr-only">{t('common.openUserMenu')}</span>
           <div
             className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold text-white ${colorClass}`}

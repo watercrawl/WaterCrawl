@@ -38,6 +38,9 @@ class KnowledgeBaseDetailSerializer(serializers.ModelSerializer):
     summarization_provider_config_id = serializers.UUIDField(
         write_only=True, required=False, allow_null=True
     )
+    chunk_size = serializers.IntegerField(
+        required=False, allow_null=True, min_value=800
+    )
 
     class Meta:
         model = KnowledgeBase

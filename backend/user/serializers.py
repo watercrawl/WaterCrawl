@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError as DjangoValidationError
 from django.utils import timezone
@@ -5,6 +6,7 @@ from django.utils.translation import gettext as _
 from rest_framework import serializers
 from rest_framework.exceptions import PermissionDenied
 
+from plan.validators import PlanLimitValidator
 from user.models import User, Team, TeamAPIKey, TeamMember, TeamInvitation
 
 
@@ -15,8 +17,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["email", "password", "first_name", "last_name", "email_verified"]
-        read_only_fields = ["email_verified"]
+        fields = ["email", "password", "first_name", "last_name"]
 
     def validate_email(self, value):
         if User.objects.filter(email__iexact=value).exists():
@@ -75,7 +76,7 @@ class LoginSerializer(serializers.Serializer):
         if not user.check_password(attrs.get("password")):
             raise serializers.ValidationError({"email": _("Invalid email or password")})
 
-        if not user.email_verified:
+        if settings.IS_EMAIL_VERIFICATION_ACTIVE and not user.email_verified:
             raise PermissionDenied(_("Email is not verified"))
 
         return {"user": user}
@@ -136,6 +137,10 @@ class TeamInvitationSerializer(serializers.ModelSerializer):
             "created_at",
         ]
         read_only_fields = ["uuid", "created_at"]
+
+    def validate(self, attrs):
+        PlanLimitValidator(team=self.context["team"]).can_add_new_member()
+        return attrs
 
 
 class MyTeamInvitationSerializer(serializers.ModelSerializer):

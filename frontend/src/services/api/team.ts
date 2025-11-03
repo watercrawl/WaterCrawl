@@ -1,12 +1,8 @@
 import { PaginatedResponse } from '../../types/common';
-import { Team, TeamMember } from '../../types/team';
+import { Team, TeamMember, TeamInvitation, TeamInvitationURL } from '../../types/team';
 import api from './api';
 
-export interface TeamInvitation {
-  uuid: string;
-  email: string;
-  created_at: string;
-}
+
 
 export const teamApi = {
   async getCurrentTeam(): Promise<Team> {
@@ -35,6 +31,18 @@ export const teamApi = {
         params: { page },
       })
       .then(({ data }) => data);
+  },
+
+  async revokeInvitation(invitationId: string): Promise<void> {
+    return api.delete(`/api/v1/user/teams/current/invitations/${invitationId}/`);
+  },
+
+  async getInvitationURL(invitationId: string): Promise<TeamInvitationURL> {
+    return api.get<TeamInvitationURL>(`/api/v1/user/teams/current/invitations/${invitationId}/url/`).then(({ data }) => data);
+  },
+
+  async resendInvitationEmail(invitationId: string): Promise<void> {
+    return api.post(`/api/v1/user/teams/current/invitations/${invitationId}/resend/`);
   },
 
   async removeMember(memberId: string): Promise<void> {
