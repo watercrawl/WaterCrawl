@@ -95,10 +95,10 @@
     },
     "created": "تم الإنشاء",
     "createNew": "إنشاء مفتاح API جديد",
-    "deleteConfirmTitle": "حذف مفتاح API",
-    "deleteConfirmMessage": "هل أنت متأكد من حذف مفتاح API \"{{name}}\"؟",
-    "deleteWarning": "لا يمكن التراجع عن هذا الإجراء. ستتوقف أي تطبيقات تستخدم هذا المفتاح عن العمل فورًا.",
     "deleteKey": "حذف مفتاح API",
+    "deleteConfirmTitle": "Delete API Key",
+    "deleteConfirmMessage": "Are you sure you want to delete the API key \"{{name}}\"?",
+    "deleteWarning": "This action cannot be undone. Any applications using this key will stop working immediately.",
     "hideKey": "إخفاء مفتاح API",
     "keyName": "اسم المفتاح",
     "keyNamePlaceholder": "أدخل اسمًا لمفتاح API",
@@ -270,8 +270,10 @@
       "dark": "داكن",
       "system": "النظام"
     },
+    "backToHome": "Back to Home",
     "cancel": "إلغاء",
     "close": "إغلاق",
+    "confirmError": "Please enter the correct value to confirm deletion",
     "select": "اختيار",
     "selectAll": "تحديد الكل",
     "deselectAll": "إلغاء تحديد الكل",
@@ -283,7 +285,7 @@
     "create": "إنشاء",
     "dashboard": "لوحة التحكم",
     "delete": "حذف",
-    "deleting": "جاري الحذف...",
+    "deleting": "Deleting...",
     "dismiss": "إغلاق",
     "documents": "المستندات",
     "download": "تنزيل",
@@ -1026,31 +1028,31 @@
     "updateMessage": "لقد قمنا بتحديث سياسة الخصوصية وشروط الخدمة. يرجى المراجعة والقبول لمتابعة استخدام WaterCrawl."
   },
   "notifications": {
-    "title": "الإشعارات",
-    "openMenu": "فتح الإشعارات",
-    "noNotifications": "لا توجد إشعارات جديدة",
-    "viewAll": "عرض جميع الإشعارات",
+    "title": "Notifications",
+    "openMenu": "Open notifications",
+    "noNotifications": "No new notifications",
+    "viewAll": "View all notifications",
     "invitation": {
-      "title": "دعوة فريق",
-      "message": "تمت دعوتك للانضمام إلى {{teamName}}",
-      "verifying": "التحقق من الدعوة...",
-      "invalidTitle": "دعوة غير صالحة",
-      "invalidMessage": "رمز الدعوة هذا غير صالح أو منتهي الصلاحية.",
-      "loginRequired": "يرجى تسجيل الدخول باستخدام عنوان البريد الإلكتروني المدعو لقبول هذه الدعوة.",
-      "mismatchLoginTitle": "عدم تطابق الحساب",
-      "mismatchLoginMessage": "هذه الدعوة لحساب مختلف. يرجى تسجيل الخروج وتسجيل الدخول بالحساب الصحيح.",
-      "mismatchRegisterTitle": "عدم تطابق الحساب",
-      "mismatchRegisterMessage": "هذه الدعوة لمستخدم جديد. يرجى تسجيل الخروج والتسجيل باستخدام البريد الإلكتروني المدعو.",
-      "logoutAndLogin": "تسجيل الخروج وتسجيل الدخول بالحساب الصحيح",
-      "logoutAndRegister": "تسجيل الخروج والتسجيل بالبريد الإلكتروني المدعو",
-      "acceptedTitle": "تم قبول الدعوة!",
-      "acceptedMessage": "لقد انضممت بنجاح إلى الفريق. جارٍ إعادة التوجيه إلى لوحة التحكم...",
-      "confirmTitle": "قبول دعوة الفريق",
-      "confirmMessage": "أنت على وشك قبول دعوة للانضمام إلى فريق."
+      "title": "Team Invitation",
+      "message": "You've been invited to join {{teamName}}",
+      "verifying": "Verifying invitation...",
+      "invalidTitle": "Invalid Invitation",
+      "invalidMessage": "This invitation code is invalid or has expired.",
+      "loginRequired": "Please login with the invited email address to accept this invitation.",
+      "mismatchLoginTitle": "Account Mismatch",
+      "mismatchLoginMessage": "This invitation is for a different account. Please logout and login with the correct account.",
+      "mismatchRegisterTitle": "Account Mismatch",
+      "mismatchRegisterMessage": "This invitation is for a new user. Please logout and register with the invited email address.",
+      "logoutAndLogin": "Logout and Login with Correct Account",
+      "logoutAndRegister": "Logout and Register with Invited Email",
+      "acceptedTitle": "Invitation Accepted!",
+      "acceptedMessage": "You have successfully joined the team. Redirecting to dashboard...",
+      "confirmTitle": "Accept Team Invitation",
+      "confirmMessage": "You're about to accept an invitation to join a team."
     }
   },
   "processing": {
-    "almostThere": "🎯 تقريبًا انتهينا",
+    "almostThere": "🎯 قريبًا من الانتهاء",
     "analyzing": "🔍 تحليل المحتوى",
     "converting": "❄️ تحويل البيانات",
     "crawling": "🕷️ زحف الويب"
@@ -1080,6 +1082,7 @@
     },
     "invitations": {
       "acceptButton": "قبول",
+      "accepting": "Accepting...",
       "acceptError": "فشل قبول الدعوة",
       "acceptSuccess": "تم قبول الدعوة بنجاح",
       "loadError": "فشل تحميل الدعوات",
@@ -1285,7 +1288,7 @@
         "confirmPrompt": "يرجى كتابة عنوان قاعدة المعرفة {{title}} للتأكيد:",
         "confirmTitle": "هل أنت متأكد من حذف قاعدة المعرفة هذه؟",
         "deleting": "جاري الحذف...",
-        "inputLabel": "اكتب عنوان قاعدة المعرفة للتأكيد",
+        "inputLabel": "Type knowledge base title to confirm",
         "title": "حذف قاعدة المعرفة",
         "warningMessage": "لا يمكن التراجع عن هذا الإجراء. سيتم حذف قاعدة المعرفة {{title}} بشكل دائم وإزالة جميع المستندات والقطع المرتبطة."
       },
@@ -1763,25 +1766,25 @@
       "title": "إعدادات الفريق"
     },
     "teamInvitations": {
-      "cancelTooltip": "إلغاء الدعوة",
-      "copyUrl": "نسخ رابط الدعوة",
+      "cancelTooltip": "Revoke invitation",
+      "copyUrl": "Copy invitation URL",
       "date": "التاريخ",
       "invitedUser": "المستخدم المدعو",
       "loadError": "فشل تحميل الدعوات",
       "noPending": "لا توجد دعوات معلقة",
       "pending": "معلّق",
-      "resendEmail": "إعادة إرسال بريد الدعوة",
-      "resendError": "فشل في إعادة إرسال بريد الدعوة",
-      "resendSuccess": "تم إرسال بريد الدعوة بنجاح",
-      "revokeConfirmButton": "إلغاء الدعوة",
-      "revokeConfirmMessage": "هل أنت متأكد من رغبتك في إلغاء الدعوة لـ {{email}}؟ لا يمكن التراجع عن هذا الإجراء.",
-      "revokeConfirmTitle": "إلغاء الدعوة",
-      "revokeError": "فشل إلغاء الدعوة",
-      "revokeSuccess": "تم إلغاء الدعوة بنجاح",
+      "resendEmail": "Resend invitation email",
+      "resendError": "Failed to resend invitation email",
+      "resendSuccess": "Invitation email sent successfully",
+      "revokeConfirmButton": "Revoke Invitation",
+      "revokeConfirmMessage": "Are you sure you want to revoke the invitation for {{email}}? This action cannot be undone.",
+      "revokeConfirmTitle": "Revoke Invitation",
+      "revokeError": "Failed to revoke invitation",
+      "revokeSuccess": "Invitation revoked successfully",
       "status": "الحالة",
       "title": "دعوات الفريق",
-      "urlCopied": "تم نسخ رابط الدعوة إلى الحافظة",
-      "urlCopyError": "فشل نسخ رابط الدعوة"
+      "urlCopied": "Invitation URL copied to clipboard",
+      "urlCopyError": "Failed to copy invitation URL"
     },
     "subtitle": "تكوين تطبيقك",
     "title": "الإعدادات"
@@ -1819,17 +1822,17 @@
       "urlPlaceholder": "https://example.com"
     },
     "options": {
-      "includeSubdomains": "تضمين النطاقات الفرعية",
-      "includeSubdomainsDesc": "تضمين جميع النطاقات الفرعية للموقع المستهدف",
-      "ignoreSitemapXml": "تجاهل sitemap.xml",
-      "ignoreSitemapXmlDesc": "الزحف إلى الموقع مباشرة بدلاً من استخدام ملف sitemap.xml (أبطأ ولكن أكثر شمولاً)",
-      "searchFilter": "فلتر URL",
-      "searchFilterDesc": "تصفية عناوين URL لخريطة الموقع حسب مصطلح البحث (مثل 'مدونة'، '/منتجات')",
-      "searchFilterPlaceholder": "أدخل مصطلح البحث لتصفية عناوين URL...",
-      "generalSettings": "الإعدادات العامة",
-      "generalSettingsDesc": "خيارات إنشاء خريطة الموقع الأساسية",
-      "pathFilters": "فلاتر المسار",
-      "pathFiltersDesc": "تضمين أو استبعاد مسارات URL محددة"
+      "includeSubdomains": "Include Subdomains",
+      "includeSubdomainsDesc": "Include all subdomains of the target website",
+      "ignoreSitemapXml": "Ignore sitemap.xml",
+      "ignoreSitemapXmlDesc": "Crawl the website directly instead of using the sitemap.xml file (slower but more thorough)",
+      "searchFilter": "URL Filter",
+      "searchFilterDesc": "Filter sitemap URLs by search term (e.g., 'blog', '/products')",
+      "searchFilterPlaceholder": "Enter search term to filter URLs...",
+      "generalSettings": "General Settings",
+      "generalSettingsDesc": "Basic sitemap generation options",
+      "pathFilters": "Path Filters",
+      "pathFiltersDesc": "Include or exclude specific URL paths"
     },
     "foundUrls": "تم العثور على {{count}} عنوان URL",
     "foundUrls_one": "تم العثور على {{count}} عنوان URL",
