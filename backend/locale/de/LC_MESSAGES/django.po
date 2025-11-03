@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: watercrawl\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-11-03 22:05+0000\n"
-"PO-Revision-Date: 2025-10-12 19:43\n"
+"PO-Revision-Date: 2025-11-03 23:22\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Language: de_DE\n"
@@ -70,42 +70,27 @@ msgid "conversation"
 msgstr "Konversation"
 
 #: common/docs.py:3
-msgid ""
-"\n"
-"# Introduction\n"
-"\n"
-"This documentation covers all the external APIs that can be accessed using a "
-"Team API Key. These APIs are designed for integration with external systems "
-"and services.\n"
-"\n"
-"## Authentication\n"
-"\n"
-"All endpoints in this documentation require authentication using an API Key. "
-"To authenticate your requests:\n"
-"\n"
-"1. Generate an API Key from the [API Keys Dashboard](https://"
-"app.watercrawl.dev/dashboard/api-keys)\n"
-"2. Include the API Key in your requests using the `X-API-Key` header:\n"
-"\n"
+msgid "\n"
+"# Introduction\n\n"
+"This documentation covers all the external APIs that can be accessed using a Team API Key. These APIs are designed for integration with external systems and services.\n\n"
+"## Authentication\n\n"
+"All endpoints in this documentation require authentication using an API Key. To authenticate your requests:\n\n"
+"1. Generate an API Key from the [API Keys Dashboard](https://app.watercrawl.dev/dashboard/api-keys)\n"
+"2. Include the API Key in your requests using the `X-API-Key` header:\n\n"
 "```bash\n"
 "curl -H \"X-API-Key: your_api_key_here\" https://api.watercrawl.dev/v1/...\n"
-"```\n"
-"\n"
+"```\n\n"
 "### Important Notes:\n"
 "- Keep your API Key secure and never share it publicly\n"
 "- You can generate multiple API Keys for different purposes\n"
 "- You can revoke API Keys at any time from the dashboard\n"
-"- Each API Key is associated with a specific team\n"
-"\n"
+"- Each API Key is associated with a specific team\n\n"
 "## Rate Limiting\n"
-"API requests are rate-limited based on your team's plan. Please refer to "
-"your plan details for specific limits.\n"
+"API requests are rate-limited based on your team's plan. Please refer to your plan details for specific limits.\n"
 msgstr ""
 
 #: common/docs.py:30
-msgid ""
-"API Key for team authentication. Generate from https://app.watercrawl.dev/"
-"dashboard/api-keys"
+msgid "API Key for team authentication. Generate from https://app.watercrawl.dev/dashboard/api-keys"
 msgstr ""
 
 #: common/handlers.py:20
@@ -281,12 +266,8 @@ msgid "Filter crawl results by date"
 msgstr "Crawl-Ergebnisse nach Datum filtern"
 
 #: core/docs.py:312
-msgid ""
-"Format of the download file. Default: json. Available formats: markdown, "
-"json."
-msgstr ""
-"Format der Download-Datei. Standard: json. Verfügbare Formate: markdown, "
-"json."
+msgid "Format of the download file. Default: json. Available formats: markdown, json."
+msgstr "Format der Download-Datei. Standard: json. Verfügbare Formate: markdown, json."
 
 #: core/models.py:23
 msgid "urls"
@@ -1022,8 +1003,7 @@ msgstr "Dateien verarbeiten"
 
 #: knowledge_base/views.py:248
 msgid "Process a list of files and add them to the knowledge base."
-msgstr ""
-"Eine Liste von Dateien verarbeiten und zur Wissensdatenbank hinzufügen."
+msgstr "Eine Liste von Dateien verarbeiten und zur Wissensdatenbank hinzufügen."
 
 #: knowledge_base/views.py:256
 msgid "Retry document"
@@ -1031,8 +1011,7 @@ msgstr "Dokument erneut versuchen"
 
 #: knowledge_base/views.py:257
 msgid "Retry a failed document. to index it again."
-msgstr ""
-"Ein fehlgeschlagenes Dokument erneut versuchen, um es erneut zu indizieren."
+msgstr "Ein fehlgeschlagenes Dokument erneut versuchen, um es erneut zu indizieren."
 
 #: knowledge_base/views.py:296 knowledge_base/views.py:337
 #: knowledge_base/views.py:365 knowledge_base/views.py:397
@@ -1280,8 +1259,7 @@ msgstr "Eine neue Anbieterkonfiguration für das aktuelle Team erstellen."
 
 #: llm/views.py:31
 msgid "Get detailed information about a specific provider configuration."
-msgstr ""
-"Detaillierte Informationen über eine bestimmte Anbieterkonfiguration abrufen."
+msgstr "Detaillierte Informationen über eine bestimmte Anbieterkonfiguration abrufen."
 
 #: llm/views.py:37
 msgid "Delete a provider configuration."
@@ -1304,12 +1282,8 @@ msgid "List all provider configs (Global and Team-specific)"
 msgstr "Alle Anbieterkonfigurationen auflisten (Global und teamspezifisch)"
 
 #: llm/views.py:59
-msgid ""
-"Get all available provider configurations including global and team-specific "
-"ones."
-msgstr ""
-"Alle verfügbaren Anbieterkonfigurationen einschließlich globaler und "
-"teamspezifischer abrufen."
+msgid "Get all available provider configurations including global and team-specific ones."
+msgstr "Alle verfügbaren Anbieterkonfigurationen einschließlich globaler und teamspezifischer abrufen."
 
 #: llm/views.py:65
 msgid "Test provider config"
@@ -1333,9 +1307,7 @@ msgstr "Anbieter-Embedding-Modelle abrufen"
 
 #: llm/views.py:80
 msgid "Get all embedding models supported by a specific provider."
-msgstr ""
-"Alle Embedding-Modelle abrufen, die von einem bestimmten Anbieter "
-"unterstützt werden."
+msgstr "Alle Embedding-Modelle abrufen, die von einem bestimmten Anbieter unterstützt werden."
 
 #: llm/views.py:178
 msgid "Test failed"
@@ -1344,9 +1316,7 @@ msgstr "Test fehlgeschlagen"
 #: locker/helpers.py:44
 #, python-brace-format
 msgid "Failed to acquire lock '{lock_name}' within {wait_time} seconds"
-msgstr ""
-"Lock '{lock_name}' konnte nicht innerhalb von {wait_time} Sekunden erworben "
-"werden"
+msgstr "Lock '{lock_name}' konnte nicht innerhalb von {wait_time} Sekunden erworben werden"
 
 #: plan/admin.py:50
 msgid "Stripe Configuration"
@@ -1501,12 +1471,8 @@ msgid "Daily page credit"
 msgstr "Tägliches Seiten-Credit"
 
 #: plan/models.py:40
-msgid ""
-"Number of pages that can be crawled per day. resets at midnight. -1 for "
-"unlimited"
-msgstr ""
-"Anzahl der Seiten, die pro Tag gecrawlt werden können. Wird um Mitternacht "
-"zurückgesetzt. -1 für unbegrenzt"
+msgid "Number of pages that can be crawled per day. resets at midnight. -1 for unlimited"
+msgstr "Anzahl der Seiten, die pro Tag gecrawlt werden können. Wird um Mitternacht zurückgesetzt. -1 für unbegrenzt"
 
 #: plan/models.py:45
 msgid "Crawl max depth"
@@ -1714,112 +1680,62 @@ msgstr "Eine Anfrage ohne zugeordnetes Team kann nicht gedrosselt werden."
 
 #: plan/validators.py:42
 #, python-brace-format
-msgid ""
-"You have no more daily credit left in your plan. for current request you "
-"need {} credits."
-msgstr ""
-"Sie haben kein tägliches Credit mehr in Ihrem Plan. Für die aktuelle Anfrage "
-"benötigen Sie {} Credits."
+msgid "You have no more daily credit left in your plan. for current request you need {} credits."
+msgstr "Sie haben kein tägliches Credit mehr in Ihrem Plan. Für die aktuelle Anfrage benötigen Sie {} Credits."
 
 #: plan/validators.py:49
 #, python-brace-format
-msgid ""
-"You just have {} daily credit left in your plan. for current request you "
-"need {} credits."
-msgstr ""
-"Sie haben nur noch {} tägliches Credit in Ihrem Plan. Für die aktuelle "
-"Anfrage benötigen Sie {} Credits."
+msgid "You just have {} daily credit left in your plan. for current request you need {} credits."
+msgstr "Sie haben nur noch {} tägliches Credit in Ihrem Plan. Für die aktuelle Anfrage benötigen Sie {} Credits."
 
 #: plan/validators.py:62
 #, python-brace-format
-msgid ""
-"You have no more pages left in your plan. for current request you need {} "
-"credits."
-msgstr ""
-"Sie haben keine Seiten mehr in Ihrem Plan. Für die aktuelle Anfrage "
-"benötigen Sie {} Credits."
+msgid "You have no more pages left in your plan. for current request you need {} credits."
+msgstr "Sie haben keine Seiten mehr in Ihrem Plan. Für die aktuelle Anfrage benötigen Sie {} Credits."
 
 #: plan/validators.py:69
 #, python-brace-format
-msgid ""
-"You just have {} credits left in your plan. for current request you need {} "
-"credits."
-msgstr ""
-"Sie haben nur noch {} Credits in Ihrem Plan. Für die aktuelle Anfrage "
-"benötigen Sie {} Credits."
+msgid "You just have {} credits left in your plan. for current request you need {} credits."
+msgstr "Sie haben nur noch {} Credits in Ihrem Plan. Für die aktuelle Anfrage benötigen Sie {} Credits."
 
 #: plan/validators.py:111
-msgid ""
-"With the current plan you cannot use this proxy server. Upgrade your plan to "
-"use Premium proxy servers."
-msgstr ""
-"Mit dem aktuellen Plan können Sie diesen Proxy-Server nicht verwenden. "
-"Aktualisieren Sie Ihren Plan, um Premium-Proxy-Server zu nutzen."
+msgid "With the current plan you cannot use this proxy server. Upgrade your plan to use Premium proxy servers."
+msgstr "Mit dem aktuellen Plan können Sie diesen Proxy-Server nicht verwenden. Aktualisieren Sie Ihren Plan, um Premium-Proxy-Server zu nutzen."
 
 #: plan/validators.py:125
 #, python-brace-format
-msgid ""
-"Your plan does not support more than {} depth. change the max depth in "
-"spider options."
-msgstr ""
-"Ihr Plan unterstützt nicht mehr als {} Tiefe. Ändern Sie die maximale Tiefe "
-"in den Spider-Optionen."
+msgid "Your plan does not support more than {} depth. change the max depth in spider options."
+msgstr "Ihr Plan unterstützt nicht mehr als {} Tiefe. Ändern Sie die maximale Tiefe in den Spider-Optionen."
 
 #: plan/validators.py:138
 #, python-brace-format
-msgid ""
-"Your plan does not support more than {} pages per crawl. change the page "
-"limit in spider options."
-msgstr ""
-"Ihr Plan unterstützt nicht mehr als {} Seiten pro Crawl. Ändern Sie das "
-"Seitenlimit in den Spider-Optionen."
+msgid "Your plan does not support more than {} pages per crawl. change the page limit in spider options."
+msgstr "Ihr Plan unterstützt nicht mehr als {} Seiten pro Crawl. Ändern Sie das Seitenlimit in den Spider-Optionen."
 
 #: plan/validators.py:160
 #, python-brace-format
-msgid ""
-"Your plan does not support more than {} concurrent crawls. Wait for them to "
-"finish."
-msgstr ""
-"Ihr Plan unterstützt nicht mehr als {} gleichzeitige Crawls. Warten Sie, bis "
-"diese abgeschlossen sind."
+msgid "Your plan does not support more than {} concurrent crawls. Wait for them to finish."
+msgstr "Ihr Plan unterstützt nicht mehr als {} gleichzeitige Crawls. Warten Sie, bis diese abgeschlossen sind."
 
 #: plan/validators.py:196
 #, python-brace-format
-msgid ""
-"Your plan does not support more than {} concurrent searches. Wait for them "
-"to finish."
-msgstr ""
-"Ihr Plan unterstützt nicht mehr als {} gleichzeitige Suchen. Warten Sie, bis "
-"diese abgeschlossen sind."
+msgid "Your plan does not support more than {} concurrent searches. Wait for them to finish."
+msgstr "Ihr Plan unterstützt nicht mehr als {} gleichzeitige Suchen. Warten Sie, bis diese abgeschlossen sind."
 
 #: plan/validators.py:229
 #, python-brace-format
-msgid ""
-"Your plan does not support more than {} concurrent sitemaps. Wait for them "
-"to finish."
-msgstr ""
-"Ihr Plan unterstützt nicht mehr als {} gleichzeitige Sitemaps. Warten Sie, "
-"bis diese abgeschlossen sind."
+msgid "Your plan does not support more than {} concurrent sitemaps. Wait for them to finish."
+msgstr "Ihr Plan unterstützt nicht mehr als {} gleichzeitige Sitemaps. Warten Sie, bis diese abgeschlossen sind."
 
 #: plan/validators.py:258
 #, python-brace-format
-msgid ""
-"Your plan does not support more than {} knowledge bases. You can not create "
-"more."
-msgstr ""
-"Ihr Plan unterstützt nicht mehr als {} Wissensdatenbanken. Sie können keine "
-"weiteren erstellen."
+msgid "Your plan does not support more than {} knowledge bases. You can not create more."
+msgstr "Ihr Plan unterstützt nicht mehr als {} Wissensdatenbanken. Sie können keine weiteren erstellen."
 
 #: plan/validators.py:291
 #, python-brace-format
-msgid ""
-"Your current plan does not support more than {} documents per knowledge "
-"base. This knowledge base has {} documents left. Your request will add {} "
-"documents."
-msgstr ""
-"Ihr aktueller Plan unterstützt nicht mehr als {} Dokumente pro "
-"Wissensdatenbank. Diese Wissensdatenbank hat noch {} Dokumente übrig. Ihre "
-"Anfrage wird {} Dokumente hinzufügen."
+msgid "Your current plan does not support more than {} documents per knowledge base. This knowledge base has {} documents left. Your request will add {} documents."
+msgstr "Ihr aktueller Plan unterstützt nicht mehr als {} Dokumente pro Wissensdatenbank. Diese Wissensdatenbank hat noch {} Dokumente übrig. Ihre Anfrage wird {} Dokumente hinzufügen."
 
 #: plan/validators.py:386
 msgid "You have reached the maximum number of users for your plan."
@@ -1830,12 +1746,8 @@ msgid "List available plans"
 msgstr "Verfügbare Pläne auflisten"
 
 #: plan/views.py:24
-msgid ""
-"Returns a list of all active subscription plans with their details including "
-"pricing, features and limits."
-msgstr ""
-"Gibt eine Liste aller aktiven Abonnementpläne mit ihren Details "
-"einschließlich Preisen, Funktionen und Limits zurück."
+msgid "Returns a list of all active subscription plans with their details including pricing, features and limits."
+msgstr "Gibt eine Liste aller aktiven Abonnementpläne mit ihren Details einschließlich Preisen, Funktionen und Limits zurück."
 
 #: plan/views.py:29
 msgid "Get plan details"
@@ -1843,8 +1755,7 @@ msgstr "Plandetails abrufen"
 
 #: plan/views.py:31
 msgid "Returns detailed information about a specific subscription plan."
-msgstr ""
-"Gibt detaillierte Informationen über einen bestimmten Abonnementplan zurück."
+msgstr "Gibt detaillierte Informationen über einen bestimmten Abonnementplan zurück."
 
 #: plan/views.py:49
 msgid "Get current subscription details"
@@ -1852,9 +1763,7 @@ msgstr "Aktuelle Abonnementdetails abrufen"
 
 #: plan/views.py:51 plan/views.py:63
 msgid "Returns detailed information about the team's current subscription."
-msgstr ""
-"Gibt detaillierte Informationen über das aktuelle Abonnement des Teams "
-"zurück."
+msgstr "Gibt detaillierte Informationen über das aktuelle Abonnement des Teams zurück."
 
 #: plan/views.py:61
 msgid "Get subscription details"
@@ -1882,14 +1791,11 @@ msgstr "Abonnement erfolgreich gestartet."
 
 #: plan/views.py:85 plan/views.py:115
 msgid "The URL to redirect the user to for payment processing."
-msgstr ""
-"Die URL, zu der der Benutzer zur Zahlungsabwicklung weitergeleitet wird."
+msgstr "Die URL, zu der der Benutzer zur Zahlungsabwicklung weitergeleitet wird."
 
 #: plan/views.py:91 plan/views.py:104 plan/views.py:121
 msgid "Returns the URL to redirect the user to for payment processing."
-msgstr ""
-"Gibt die URL zurück, zu der der Benutzer zur Zahlungsabwicklung "
-"weitergeleitet wird."
+msgstr "Gibt die URL zurück, zu der der Benutzer zur Zahlungsabwicklung weitergeleitet wird."
 
 #: plan/views.py:97
 msgid "Cancel subscription"
@@ -1912,11 +1818,8 @@ msgid "Handle Stripe webhooks"
 msgstr "Stripe-Webhooks verarbeiten"
 
 #: plan/views.py:221
-msgid ""
-"Processes webhook events from Stripe for subscription and payment updates."
-msgstr ""
-"Verarbeitet Webhook-Ereignisse von Stripe für Abonnement- und "
-"Zahlungsaktualisierungen."
+msgid "Processes webhook events from Stripe for subscription and payment updates."
+msgstr "Verarbeitet Webhook-Ereignisse von Stripe für Abonnement- und Zahlungsaktualisierungen."
 
 #: plan/views.py:243
 msgid "List usage history"
@@ -2080,7 +1983,7 @@ msgstr "Benutzer existiert nicht"
 
 #: user/services.py:304
 msgid "Signup is not active"
-msgstr "Registrierung ist nicht aktiv"
+msgstr ""
 
 #: user/views.py:41 user/views.py:42
 msgid "Install WaterCrawl"
@@ -2099,12 +2002,8 @@ msgid "You can not register you already have an account"
 msgstr "Sie können sich nicht registrieren, Sie haben bereits ein Konto"
 
 #: user/views.py:150
-msgid ""
-"Emails do not match the invitation email. you have to register with the "
-"email that was invited"
+msgid "Emails do not match the invitation email. you have to register with the email that was invited"
 msgstr ""
-"E-Mail-Adressen stimmen nicht mit der Einladungs-E-Mail überein. Sie müssen "
-"sich mit der E-Mail-Adresse registrieren, die eingeladen wurde"
 
 #: user/views.py:168 user/views.py:169
 msgid "Authenticate using email and password"
@@ -2191,32 +2090,24 @@ msgid "List invitations to the current team"
 msgstr "Einladungen zum aktuellen Team auflisten"
 
 #: user/views.py:456 user/views.py:457
-#, fuzzy
-#| msgid "Accept an invitation"
 msgid "Revoke an invitation"
-msgstr "Eine Einladung annehmen"
+msgstr ""
 
 #: user/views.py:462
-#, fuzzy
-#| msgid "Get my invitations"
 msgid "Get the invitation URL"
-msgstr "Meine Einladungen abrufen"
+msgstr ""
 
 #: user/views.py:463
 msgid "Get the invitation URL for the selected invitation"
 msgstr ""
 
 #: user/views.py:468
-#, fuzzy
-#| msgid "Send a verification email"
 msgid "Resend the invitation email"
-msgstr "Eine Verifizierungs-E-Mail senden"
+msgstr ""
 
 #: user/views.py:469
-#, fuzzy
-#| msgid "List invitations to the current team"
 msgid "Resend the invitation email to the invited user"
-msgstr "Einladungen zum aktuellen Team auflisten"
+msgstr ""
 
 #: user/views.py:580 user/views.py:581
 msgid "Create a new API key"
@@ -2249,3 +2140,4 @@ msgstr "Token aktualisieren"
 #: user/views.py:658 user/views.py:659
 msgid "Verify token"
 msgstr "Token überprüfen"
+
