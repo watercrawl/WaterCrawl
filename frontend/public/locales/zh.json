@@ -95,10 +95,10 @@
     },
     "created": "已创建",
     "createNew": "创建新 API 密钥",
+    "deleteKey": "删除 API 密钥",
     "deleteConfirmTitle": "删除 API 密钥",
     "deleteConfirmMessage": "您确定要删除 API 密钥 \"{{name}}\" 吗？",
     "deleteWarning": "此操作不可撤销。使用此密钥的任何应用程序将立即停止工作。",
-    "deleteKey": "删除 API 密钥",
     "hideKey": "隐藏 API 密钥",
     "keyName": "密钥名称",
     "keyNamePlaceholder": "输入您的 API 密钥名称",
@@ -270,8 +270,10 @@
       "dark": "深色",
       "system": "系统"
     },
+    "backToHome": "Back to Home",
     "cancel": "取消",
     "close": "关闭",
+    "confirmError": "Please enter the correct value to confirm deletion",
     "select": "选择",
     "selectAll": "全选",
     "deselectAll": "取消全选",
@@ -1032,7 +1034,21 @@
     "viewAll": "查看所有通知",
     "invitation": {
       "title": "团队邀请",
-      "message": "您已被邀请加入 {{teamName}}"
+      "message": "您已被邀请加入 {{teamName}}",
+      "verifying": "Verifying invitation...",
+      "invalidTitle": "Invalid Invitation",
+      "invalidMessage": "This invitation code is invalid or has expired.",
+      "loginRequired": "Please login with the invited email address to accept this invitation.",
+      "mismatchLoginTitle": "Account Mismatch",
+      "mismatchLoginMessage": "This invitation is for a different account. Please logout and login with the correct account.",
+      "mismatchRegisterTitle": "Account Mismatch",
+      "mismatchRegisterMessage": "This invitation is for a new user. Please logout and register with the invited email address.",
+      "logoutAndLogin": "Logout and Login with Correct Account",
+      "logoutAndRegister": "Logout and Register with Invited Email",
+      "acceptedTitle": "Invitation Accepted!",
+      "acceptedMessage": "You have successfully joined the team. Redirecting to dashboard...",
+      "confirmTitle": "Accept Team Invitation",
+      "confirmMessage": "You're about to accept an invitation to join a team."
     }
   },
   "processing": {
@@ -1066,6 +1082,7 @@
     },
     "invitations": {
       "acceptButton": "接受",
+      "accepting": "Accepting...",
       "acceptError": "接受邀请失败",
       "acceptSuccess": "邀请接受成功",
       "loadError": "加载邀请失败",

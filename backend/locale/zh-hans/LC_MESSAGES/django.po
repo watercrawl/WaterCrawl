@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: watercrawl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-08 13:07+0200\n"
-"PO-Revision-Date: 2025-10-12 21:01\n"
+"POT-Creation-Date: 2025-11-03 22:05+0000\n"
+"PO-Revision-Date: 2025-11-03 23:22\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh_CN\n"
@@ -17,63 +17,59 @@ msgstr ""
 "X-Crowdin-File: /development/backend/locale/en/LC_MESSAGES/django.po\n"
 "X-Crowdin-File-ID: 26\n"
 
-#: backend/agent/models.py:9 backend/core/models.py:147 backend/llm/models.py:8
-#: backend/llm/models.py:102 backend/user/models.py:71
-#: backend/user/models.py:160
+#: agent/models.py:8 core/models.py:147 llm/models.py:8 llm/models.py:102
+#: user/models.py:71 user/models.py:160
 msgid "Name"
 msgstr "名称"
 
-#: backend/agent/models.py:14
+#: agent/models.py:10
 msgid "System Prompt"
 msgstr "系统提示"
 
-#: backend/agent/models.py:21
+#: agent/models.py:15
 msgid "Config Provider"
 msgstr "配置提供商"
 
-#: backend/agent/models.py:29
+#: agent/models.py:23
 msgid "LLM Model"
 msgstr "LLM模型"
 
-#: backend/agent/models.py:37 backend/core/consts.py:203
-#: backend/knowledge_base/models.py:15 backend/llm/models.py:56
-#: backend/plan/models.py:115 backend/plan/models.py:194
-#: backend/user/models.py:92 backend/user/models.py:110
-#: backend/user/models.py:130 backend/user/models.py:165
+#: agent/models.py:31 core/consts.py:203 knowledge_base/models.py:15
+#: llm/models.py:56 plan/models.py:115 plan/models.py:197 user/models.py:92
+#: user/models.py:110 user/models.py:130 user/models.py:165
 msgid "Team"
 msgstr "团队"
 
-#: backend/agent/models.py:47 backend/agent/models.py:59
+#: agent/models.py:41 agent/models.py:50
 msgid "Agent"
 msgstr "代理"
 
-#: backend/agent/models.py:48
+#: agent/models.py:42
 msgid "Agents"
 msgstr "代理列表"
 
-#: backend/agent/models.py:53
+#: agent/models.py:46
 msgid "Tool Type"
 msgstr "工具类型"
 
-#: backend/agent/models.py:63
+#: agent/models.py:53
 msgid "Config"
 msgstr "配置"
 
-#: backend/agent/models.py:75
+#: agent/models.py:62
 msgid "agent"
 msgstr "代理"
 
-#: backend/agent/models.py:83 backend/core/models.py:19
-#: backend/core/models.py:117 backend/core/models.py:172
-#: backend/core/models.py:193
+#: agent/models.py:70 core/models.py:19 core/models.py:117 core/models.py:172
+#: core/models.py:193
 msgid "team"
 msgstr "团队"
 
-#: backend/agent/models.py:92
+#: agent/models.py:79
 msgid "conversation"
 msgstr "对话"
 
-#: backend/common/docs.py:3
+#: common/docs.py:3
 msgid "\n"
 "# Introduction\n\n"
 "This documentation covers all the external APIs that can be accessed using a Team API Key. These APIs are designed for integration with external systems and services.\n\n"
@@ -109,2039 +105,2055 @@ msgstr "\n"
 "## 频率限制\n"
 "API请求根据您团队的计划进行频率限制。请参阅您的计划详细信息以了解具体限制。\n"
 
-#: backend/common/docs.py:30
+#: common/docs.py:30
 msgid "API Key for team authentication. Generate from https://app.watercrawl.dev/dashboard/api-keys"
 msgstr "用于团队身份验证的API密钥。从https://app.watercrawl.dev/dashboard/api-keys生成"
 
-#: backend/common/handlers.py:19
+#: common/handlers.py:20
 msgid "An unexpected error occurred."
 msgstr "发生了意外错误。"
 
-#: backend/common/handlers.py:27 backend/common/handlers.py:36
+#: common/handlers.py:28 common/handlers.py:37
 msgid "Invalid input data."
 msgstr "无效的输入数据。"
 
-#: backend/common/handlers.py:58 backend/common/handlers.py:62
+#: common/handlers.py:59 common/handlers.py:63
 msgid "Not found."
 msgstr "未找到。"
 
-#: backend/common/schema.py:30
+#: common/schema.py:30
 msgid "Bad Request"
 msgstr "错误请求"
 
-#: backend/common/schema.py:40
+#: common/schema.py:40
 msgid "Not Found"
 msgstr "未找到"
 
-#: backend/common/schema.py:48
+#: common/schema.py:48
 msgid "Internal Server Error"
 msgstr "内部服务器错误"
 
-#: backend/common/services.py:125
+#: common/services.py:129
 msgid "No recipient provided"
 msgstr "未提供收件人"
 
-#: backend/common/services.py:127
+#: common/services.py:131
 msgid "No subject provided"
 msgstr "未提供主题"
 
-#: backend/common/services.py:129
+#: common/services.py:133
 msgid "No body or html provided"
 msgstr "未提供正文或HTML"
 
-#: backend/common/views.py:17
+#: common/views.py:17
 msgid "Frontend Setting"
 msgstr "前端设置"
 
-#: backend/common/views.py:18
+#: common/views.py:18
 msgid "Retrieve the frontend setting."
 msgstr "获取前端设置。"
 
-#: backend/core/admin.py:38 backend/core/admin.py:41
+#: core/admin.py:41 core/admin.py:44
 msgid "Duplicate"
 msgstr "复制"
 
-#: backend/core/consts.py:41 backend/knowledge_base/consts.py:11
+#: core/consts.py:41 knowledge_base/consts.py:11
 msgid "New"
 msgstr "新建"
 
-#: backend/core/consts.py:42
+#: core/consts.py:42
 msgid "Running"
 msgstr "运行中"
 
-#: backend/core/consts.py:43
+#: core/consts.py:43
 msgid "Finished"
 msgstr "已完成"
 
-#: backend/core/consts.py:44
+#: core/consts.py:44
 msgid "Canceling"
 msgstr "取消中"
 
-#: backend/core/consts.py:45 backend/plan/consts.py:22
+#: core/consts.py:45 plan/consts.py:22
 msgid "Canceled"
 msgstr "已取消"
 
-#: backend/core/consts.py:46 backend/knowledge_base/consts.py:16
+#: core/consts.py:46 knowledge_base/consts.py:16
 msgid "Failed"
 msgstr "失败"
 
-#: backend/core/consts.py:154
+#: core/consts.py:154
 msgid "PDF"
 msgstr ""
 
-#: backend/core/consts.py:155
+#: core/consts.py:155
 msgid "Screenshot"
 msgstr "截图"
 
-#: backend/core/consts.py:160
+#: core/consts.py:160
 msgid "Web"
 msgstr "网页"
 
-#: backend/core/consts.py:167
+#: core/consts.py:167
 msgid "Basic"
 msgstr "基础"
 
-#: backend/core/consts.py:168
+#: core/consts.py:168
 msgid "Advanced"
 msgstr "高级"
 
-#: backend/core/consts.py:169
+#: core/consts.py:169
 msgid "Ultimate"
 msgstr "终极"
 
-#: backend/core/consts.py:179
+#: core/consts.py:179
 msgid "Any"
 msgstr "任何"
 
-#: backend/core/consts.py:180
+#: core/consts.py:180
 msgid "Day"
 msgstr "天"
 
-#: backend/core/consts.py:181
+#: core/consts.py:181
 msgid "Week"
 msgstr "周"
 
-#: backend/core/consts.py:182
+#: core/consts.py:182
 msgid "Month"
 msgstr "月"
 
-#: backend/core/consts.py:183
+#: core/consts.py:183
 msgid "Year"
 msgstr "年"
 
-#: backend/core/consts.py:191
+#: core/consts.py:191
 msgid "HTTP"
 msgstr ""
 
-#: backend/core/consts.py:192
+#: core/consts.py:192
 msgid "SOCKS4"
 msgstr ""
 
-#: backend/core/consts.py:193
+#: core/consts.py:193
 msgid "SOCKS5"
 msgstr ""
 
-#: backend/core/consts.py:201
+#: core/consts.py:201
 msgid "General"
 msgstr "通用"
 
-#: backend/core/consts.py:202 backend/llm/consts.py:40
+#: core/consts.py:202 llm/consts.py:40
 msgid "Premium"
 msgstr "高级"
 
-#: backend/core/consts.py:210
+#: core/consts.py:210
 msgid "Single"
 msgstr "单个"
 
-#: backend/core/consts.py:211
+#: core/consts.py:211
 msgid "Batch"
 msgstr "批量"
 
-#: backend/core/docs.py:253
+#: core/docs.py:253
 msgid "Filter crawl requests by UUID."
 msgstr "根据UUID过滤爬虫请求。"
 
-#: backend/core/docs.py:259
+#: core/docs.py:259
 msgid "Filter crawl requests by start URL."
 msgstr "根据起始URL过滤爬虫请求。"
 
-#: backend/core/docs.py:265
+#: core/docs.py:265
 msgid "Filter crawl requests by status."
 msgstr "根据状态过滤爬虫请求。"
 
-#: backend/core/docs.py:271
+#: core/docs.py:271
 msgid "Filter crawl requests by date"
 msgstr "根据日期过滤爬虫请求"
 
-#: backend/core/docs.py:280 backend/core/docs.py:301
+#: core/docs.py:280 core/docs.py:301
 msgid "Prefetch crawl results. Default: False."
 msgstr "预取爬虫结果。默认：False。"
 
-#: backend/core/docs.py:286
+#: core/docs.py:286
 msgid "Filter crawl results by URL."
 msgstr "根据URL过滤爬虫结果。"
 
-#: backend/core/docs.py:292
+#: core/docs.py:292
 msgid "Filter crawl results by date"
 msgstr "根据日期过滤爬虫结果"
 
-#: backend/core/docs.py:312
+#: core/docs.py:312
 msgid "Format of the download file. Default: json. Available formats: markdown, json."
 msgstr "下载文件的格式。默认：json。可用格式：markdown、json。"
 
-#: backend/core/models.py:23
+#: core/models.py:23
 msgid "urls"
 msgstr "URL列表"
 
-#: backend/core/models.py:25
+#: core/models.py:25
 msgid "crawl type"
 msgstr "爬虫类型"
 
-#: backend/core/models.py:31
+#: core/models.py:31
 msgid "status"
 msgstr "状态"
 
-#: backend/core/models.py:36
+#: core/models.py:36
 msgid "options"
 msgstr "选项"
 
-#: backend/core/models.py:37
+#: core/models.py:37
 msgid "duration"
 msgstr "持续时间"
 
-#: backend/core/models.py:39
+#: core/models.py:39
 msgid "sitemap"
 msgstr "网站地图"
 
-#: backend/core/models.py:57
+#: core/models.py:57
 msgid "URL must be a string."
 msgstr "URL必须是字符串。"
 
-#: backend/core/models.py:63 backend/core/models.py:70
+#: core/models.py:63 core/models.py:70
 msgid "Crawl Request"
 msgstr "爬虫请求"
 
-#: backend/core/models.py:64
+#: core/models.py:64
 msgid "Crawl Requests"
 msgstr "爬虫请求列表"
 
-#: backend/core/models.py:74 backend/core/models.py:196
+#: core/models.py:74 core/models.py:196
 msgid "URL"
 msgstr ""
 
-#: backend/core/models.py:76 backend/core/models.py:131
-#: backend/core/models.py:206
+#: core/models.py:76 core/models.py:131 core/models.py:206
 msgid "Result"
 msgstr "结果"
 
-#: backend/core/models.py:81 backend/core/models.py:88
+#: core/models.py:81 core/models.py:88
 msgid "Crawl Result"
 msgstr "爬虫结果"
 
-#: backend/core/models.py:82
+#: core/models.py:82
 msgid "Crawl Results"
 msgstr "爬虫结果列表"
 
-#: backend/core/models.py:93
+#: core/models.py:93
 msgid "Attachment Type"
 msgstr "附件类型"
 
-#: backend/core/models.py:98
+#: core/models.py:98
 msgid "Attachment"
 msgstr "附件"
 
-#: backend/core/models.py:102
+#: core/models.py:102
 msgid "Crawl Result Attachment"
 msgstr "爬虫结果附件"
 
-#: backend/core/models.py:103
+#: core/models.py:103
 msgid "Crawl Result Attachments"
 msgstr "爬虫结果附件列表"
 
-#: backend/core/models.py:120
+#: core/models.py:120
 msgid "Query"
 msgstr "查询"
 
-#: backend/core/models.py:121
+#: core/models.py:121
 msgid "Search Options"
 msgstr "搜索选项"
 
-#: backend/core/models.py:122
+#: core/models.py:122
 msgid "Result Limit"
 msgstr "结果限制"
 
-#: backend/core/models.py:123 backend/core/models.py:204
+#: core/models.py:123 core/models.py:204
 msgid "Duration"
 msgstr "持续时间"
 
-#: backend/core/models.py:125 backend/core/models.py:199
-#: backend/knowledge_base/models.py:88 backend/knowledge_base/models.py:130
-#: backend/plan/models.py:144 backend/plan/models.py:163
+#: core/models.py:125 core/models.py:199 knowledge_base/models.py:88
+#: knowledge_base/models.py:130 plan/models.py:144 plan/models.py:166
 msgid "Status"
 msgstr "状态"
 
-#: backend/core/models.py:142
+#: core/models.py:142
 msgid "Search Request"
 msgstr "搜索请求"
 
-#: backend/core/models.py:143
+#: core/models.py:143
 msgid "Search Requests"
 msgstr "搜索请求列表"
 
-#: backend/core/models.py:148 backend/llm/models.py:9 backend/llm/models.py:103
-#: backend/user/models.py:170
+#: core/models.py:148 llm/models.py:9 llm/models.py:103 user/models.py:170
 msgid "Key"
 msgstr "密钥"
 
-#: backend/core/models.py:149 backend/user/models.py:84
+#: core/models.py:149 user/models.py:84
 msgid "Is Default"
 msgstr "是否默认"
 
-#: backend/core/models.py:151
+#: core/models.py:151
 msgid "Proxy Category"
 msgstr "代理分类"
 
-#: backend/core/models.py:157
+#: core/models.py:157
 msgid "Proxy Type"
 msgstr "代理类型"
 
-#: backend/core/models.py:163
+#: core/models.py:163
 msgid "Host"
 msgstr "主机"
 
-#: backend/core/models.py:166
+#: core/models.py:166
 msgid "Port"
 msgstr "端口"
 
-#: backend/core/models.py:167
+#: core/models.py:167
 msgid "Username"
 msgstr "用户名"
 
-#: backend/core/models.py:168
+#: core/models.py:168
 msgid "Password"
 msgstr "密码"
 
-#: backend/core/models.py:179
+#: core/models.py:179
 msgid "Proxy Server"
 msgstr "代理服务器"
 
-#: backend/core/models.py:180
+#: core/models.py:180
 msgid "Proxy Servers"
 msgstr "代理服务器列表"
 
-#: backend/core/models.py:197
+#: core/models.py:197
 msgid "Options"
 msgstr "选项"
 
-#: backend/core/models.py:214
+#: core/models.py:214
 msgid "Sitemap Request"
 msgstr "网站地图请求"
 
-#: backend/core/models.py:215
+#: core/models.py:215
 msgid "Sitemap Requests"
 msgstr "网站地图请求列表"
 
-#: backend/core/serializers.py:82 backend/core/serializers.py:356
+#: core/serializers.py:82 core/serializers.py:356
 msgid "Proxy server does not exist"
 msgstr "代理服务器不存在"
 
-#: backend/core/serializers.py:376
+#: core/serializers.py:376
 msgid "This field is required"
 msgstr "此字段是必填的"
 
-#: backend/core/services.py:769
+#: core/services.py:769
 msgid "At least one URL is required for the crawl request."
 msgstr "爬虫请求至少需要一个URL。"
 
-#: backend/core/views.py:44
+#: core/views.py:44
 msgid "Start a new crawl request"
 msgstr "开始新的爬虫请求"
 
-#: backend/core/views.py:49
+#: core/views.py:49
 msgid "Batch create crawl requests"
 msgstr "批量创建爬虫请求"
 
-#: backend/core/views.py:56
+#: core/views.py:56
 msgid "List crawl requests"
 msgstr "列出爬虫请求"
 
-#: backend/core/views.py:62
+#: core/views.py:62
 msgid "Get crawl request"
 msgstr "获取爬虫请求"
 
-#: backend/core/views.py:67
+#: core/views.py:67
 msgid "Cancel a running crawl"
 msgstr "取消正在运行的爬虫"
 
-#: backend/core/views.py:72
+#: core/views.py:72
 msgid "Download crawl result"
 msgstr "下载爬虫结果"
 
-#: backend/core/views.py:79
+#: core/views.py:79
 msgid "Check crawl status"
 msgstr "检查爬虫状态"
 
-#: backend/core/views.py:91 backend/core/views.py:492
+#: core/views.py:91 core/views.py:492
 msgid "Get sitemap graph"
 msgstr "获取网站地图图表"
 
-#: backend/core/views.py:97
+#: core/views.py:97
 msgid "Get markdown report"
 msgstr "获取Markdown报告"
 
-#: backend/core/views.py:141
+#: core/views.py:141
 msgid "Only running crawl requests can be deleted"
 msgstr "只能删除正在运行的爬虫请求"
 
-#: backend/core/views.py:161
+#: core/views.py:161
 msgid "Invalid output format"
 msgstr "无效的输出格式"
 
-#: backend/core/views.py:187 backend/core/views.py:200
+#: core/views.py:187 core/views.py:200
 msgid "Sitemap for this crawl request does not exist"
 msgstr "此爬虫请求的网站地图不存在"
 
-#: backend/core/views.py:213
+#: core/views.py:213
 msgid "List crawl results"
 msgstr "列出爬虫结果"
 
-#: backend/core/views.py:219
+#: core/views.py:219
 msgid "Get crawl result"
 msgstr "获取爬虫结果"
 
-#: backend/core/views.py:250
+#: core/views.py:250
 msgid "Usage Report"
 msgstr "使用报告"
 
-#: backend/core/views.py:268
+#: core/views.py:268
 msgid "Plugin Form"
 msgstr "插件表单"
 
-#: backend/core/views.py:281
+#: core/views.py:281
 msgid "List search requests"
 msgstr "列出搜索请求"
 
-#: backend/core/views.py:286
+#: core/views.py:286
 msgid "Get search request"
 msgstr "获取搜索请求"
 
-#: backend/core/views.py:292
+#: core/views.py:292
 msgid "Create search request"
 msgstr "创建搜索请求"
 
-#: backend/core/views.py:297
+#: core/views.py:297
 msgid "Stop search request"
 msgstr "停止搜索请求"
 
-#: backend/core/views.py:302
+#: core/views.py:302
 msgid "Check search request status"
 msgstr "检查搜索请求状态"
 
-#: backend/core/views.py:340
+#: core/views.py:340
 msgid "Only running search requests can be deleted"
 msgstr "只能删除正在运行的搜索请求"
 
-#: backend/core/views.py:360
+#: core/views.py:360
 msgid "List proxy servers"
 msgstr "列出代理服务器"
 
-#: backend/core/views.py:365
+#: core/views.py:365
 msgid "Create proxy server"
 msgstr "创建代理服务器"
 
-#: backend/core/views.py:370
+#: core/views.py:370
 msgid "Get proxy server"
 msgstr "获取代理服务器"
 
-#: backend/core/views.py:375
+#: core/views.py:375
 msgid "Delete proxy server"
 msgstr "删除代理服务器"
 
-#: backend/core/views.py:380 backend/core/views.py:385
+#: core/views.py:380 core/views.py:385
 msgid "Update proxy server"
 msgstr "更新代理服务器"
 
-#: backend/core/views.py:390
+#: core/views.py:390
 msgid "List all proxy servers (Global and Private proxies)"
 msgstr "列出所有代理服务器（全局和私有代理）"
 
-#: backend/core/views.py:396
+#: core/views.py:396
 msgid "Test proxy"
 msgstr "测试代理"
 
-#: backend/core/views.py:460
+#: core/views.py:460
 msgid "List sitemap requests"
 msgstr "列出网站地图请求"
 
-#: backend/core/views.py:465
+#: core/views.py:465
 msgid "Create sitemap request"
 msgstr "创建网站地图请求"
 
-#: backend/core/views.py:470
+#: core/views.py:470
 msgid "Get sitemap request"
 msgstr "获取网站地图请求"
 
-#: backend/core/views.py:475
+#: core/views.py:475
 msgid "Delete sitemap request"
 msgstr "删除网站地图请求"
 
-#: backend/core/views.py:480
+#: core/views.py:480
 msgid "Check sitemap request status"
 msgstr "检查网站地图请求状态"
 
-#: backend/core/views.py:498
+#: core/views.py:498
 msgid "Get sitemap markdown"
 msgstr "获取网站地图Markdown"
 
-#: backend/core/views.py:537
+#: core/views.py:537
 msgid "Only running sitemap requests can be deleted"
 msgstr "只能删除正在运行的网站地图请求"
 
-#: backend/core/views.py:563 backend/core/views.py:576
+#: core/views.py:563 core/views.py:576
 msgid "Sitemap for this request does not exist"
 msgstr "此请求的网站地图不存在"
 
-#: backend/knowledge_base/admin.py:26
+#: knowledge_base/admin.py:26
 msgid "Chunking Configuration"
 msgstr "分块配置"
 
-#: backend/knowledge_base/admin.py:32
+#: knowledge_base/admin.py:32
 msgid "Embedding Configuration"
 msgstr "嵌入配置"
 
-#: backend/knowledge_base/admin.py:38
+#: knowledge_base/admin.py:38
 msgid "Chunk Enhancement"
 msgstr "分块增强"
 
-#: backend/knowledge_base/admin.py:49 backend/knowledge_base/admin.py:73
-#: backend/knowledge_base/admin.py:98 backend/knowledge_base/models.py:128
-#: backend/llm/admin.py:51
+#: knowledge_base/admin.py:49 knowledge_base/admin.py:73
+#: knowledge_base/admin.py:98 knowledge_base/models.py:128 llm/admin.py:51
 msgid "Metadata"
 msgstr "元数据"
 
-#: backend/knowledge_base/admin.py:67 backend/knowledge_base/models.py:119
-#: backend/knowledge_base/models.py:158
+#: knowledge_base/admin.py:67 knowledge_base/models.py:119
+#: knowledge_base/models.py:158
 msgid "Content"
 msgstr "内容"
 
-#: backend/knowledge_base/admin.py:91
+#: knowledge_base/admin.py:91
 msgid "Embedding"
 msgstr "嵌入"
 
-#: backend/knowledge_base/consts.py:12
+#: knowledge_base/consts.py:12
 msgid "Reindexing"
 msgstr "重新索引"
 
-#: backend/knowledge_base/consts.py:13
+#: knowledge_base/consts.py:13
 msgid "Crawling"
 msgstr "爬取中"
 
-#: backend/knowledge_base/consts.py:14
+#: knowledge_base/consts.py:14
 msgid "Processing"
 msgstr "处理中"
 
-#: backend/knowledge_base/consts.py:15
+#: knowledge_base/consts.py:15
 msgid "Ready"
 msgstr "就绪"
 
-#: backend/knowledge_base/consts.py:23 backend/plan/consts.py:21
+#: knowledge_base/consts.py:23 plan/consts.py:21
 msgid "Active"
 msgstr "活跃"
 
-#: backend/knowledge_base/consts.py:24
+#: knowledge_base/consts.py:24
 msgid "Archived"
 msgstr "已归档"
 
-#: backend/knowledge_base/consts.py:25
+#: knowledge_base/consts.py:25
 msgid "Deleted"
 msgstr "已删除"
 
-#: backend/knowledge_base/consts.py:32
+#: knowledge_base/consts.py:32
 msgid "Standard"
 msgstr "标准"
 
-#: backend/knowledge_base/consts.py:33
+#: knowledge_base/consts.py:33
 msgid "Context-Aware"
 msgstr "上下文感知"
 
-#: backend/knowledge_base/consts.py:40
+#: knowledge_base/consts.py:40
 msgid "Manual"
 msgstr "手动"
 
-#: backend/knowledge_base/consts.py:41
+#: knowledge_base/consts.py:41
 msgid "File"
 msgstr "文件"
 
-#: backend/knowledge_base/consts.py:42
+#: knowledge_base/consts.py:42
 msgid "Crawl"
 msgstr "爬虫"
 
-#: backend/knowledge_base/factories.py:71
+#: knowledge_base/factories.py:72
 #, python-brace-format
 msgid "Text splitter type '{splitter_type}' not supported"
 msgstr "不支持文本分割器类型 '{splitter_type}'"
 
-#: backend/knowledge_base/factories.py:124
+#: knowledge_base/factories.py:129
 #, python-brace-format
 msgid "Unsupported embedding provider: {provider_name}"
 msgstr "不支持的嵌入提供商：{provider_name}"
 
-#: backend/knowledge_base/factories.py:177
+#: knowledge_base/factories.py:186
 #, python-brace-format
 msgid "Vector store type '{vector_store_type}' not supported"
 msgstr "不支持向量存储类型 '{vector_store_type}'"
 
-#: backend/knowledge_base/factories.py:250
+#: knowledge_base/factories.py:263
 #, python-brace-format
 msgid "Unsupported document type: {extension}"
 msgstr "不支持的文档类型：{extension}"
 
-#: backend/knowledge_base/models.py:10 backend/knowledge_base/models.py:118
-#: backend/llm/models.py:41 backend/plan/models.py:98
+#: knowledge_base/models.py:10 knowledge_base/models.py:118 llm/models.py:41
+#: plan/models.py:98
 msgid "Title"
 msgstr "标题"
 
-#: backend/knowledge_base/models.py:11 backend/llm/models.py:104
-#: backend/plan/models.py:15
+#: knowledge_base/models.py:11 llm/models.py:104 plan/models.py:15
 msgid "Description"
 msgstr "描述"
 
-#: backend/knowledge_base/models.py:19
+#: knowledge_base/models.py:19
 msgid "Chunk size"
 msgstr "分块大小"
 
-#: backend/knowledge_base/models.py:20
+#: knowledge_base/models.py:20
 msgid "Number of documents to be processed in each chunk"
 msgstr "每个分块中要处理的文档数量"
 
-#: backend/knowledge_base/models.py:24
+#: knowledge_base/models.py:24
 msgid "Chunk overlap"
 msgstr "分块重叠"
 
-#: backend/knowledge_base/models.py:25
+#: knowledge_base/models.py:25
 msgid "Number of overlapping documents in each chunk"
 msgstr "每个分块中重叠的文档数量"
 
-#: backend/knowledge_base/models.py:29
+#: knowledge_base/models.py:29
 msgid "Chunk separator"
 msgstr "分块分隔符"
 
-#: backend/knowledge_base/models.py:30
+#: knowledge_base/models.py:30
 msgid "Separator used to split documents into chunks"
 msgstr "用于将文档分割成块的分隔符"
 
-#: backend/knowledge_base/models.py:36
+#: knowledge_base/models.py:36
 msgid "Embedding Model"
 msgstr "嵌入模型"
 
-#: backend/knowledge_base/models.py:44
+#: knowledge_base/models.py:44
 msgid "Embedding Provider Config"
 msgstr "嵌入提供商配置"
 
-#: backend/knowledge_base/models.py:48
+#: knowledge_base/models.py:48
 msgid "Provider configuration for embedding models"
 msgstr "嵌入模型的提供商配置"
 
-#: backend/knowledge_base/models.py:53
+#: knowledge_base/models.py:53
 msgid "Summarization Provider Config"
 msgstr "摘要提供商配置"
 
-#: backend/knowledge_base/models.py:57
+#: knowledge_base/models.py:57
 msgid "Provider configuration for summarization models"
 msgstr "摘要模型的提供商配置"
 
-#: backend/knowledge_base/models.py:62
+#: knowledge_base/models.py:62
 msgid "Summarization Model"
 msgstr "摘要模型"
 
-#: backend/knowledge_base/models.py:68
+#: knowledge_base/models.py:68
 msgid "Summarizer Context"
 msgstr "摘要上下文"
 
-#: backend/knowledge_base/models.py:71
+#: knowledge_base/models.py:71
 msgid "Context to be provided to the summarizer"
 msgstr "提供给摘要器的上下文"
 
-#: backend/knowledge_base/models.py:74
+#: knowledge_base/models.py:74
 msgid "Summarizer Type"
 msgstr "摘要类型"
 
-#: backend/knowledge_base/models.py:78
+#: knowledge_base/models.py:78
 msgid "The type of summarizer to use for document summarization"
 msgstr "用于文档摘要的摘要器类型"
 
-#: backend/knowledge_base/models.py:81
+#: knowledge_base/models.py:81
 msgid "Summarizer Temperature"
 msgstr "摘要器温度"
 
-#: backend/knowledge_base/models.py:85
+#: knowledge_base/models.py:85
 msgid "Temperature to be provided to the summarizer"
 msgstr "提供给摘要器的温度"
 
-#: backend/knowledge_base/models.py:94
+#: knowledge_base/models.py:94
 msgid "Knowledge Base Each Document Cost"
 msgstr "知识库每个文档成本"
 
-#: backend/knowledge_base/models.py:95
+#: knowledge_base/models.py:95
 msgid "The cost of each document in the knowledge base"
 msgstr "知识库中每个文档的成本"
 
-#: backend/knowledge_base/models.py:100 backend/knowledge_base/models.py:115
+#: knowledge_base/models.py:100 knowledge_base/models.py:115
 msgid "Knowledge Base"
 msgstr "知识库"
 
-#: backend/knowledge_base/models.py:101
+#: knowledge_base/models.py:101
 msgid "Knowledge Bases"
 msgstr "知识库列表"
 
-#: backend/knowledge_base/models.py:121
+#: knowledge_base/models.py:121
 msgid "Source Type"
 msgstr "来源类型"
 
-#: backend/knowledge_base/models.py:126
+#: knowledge_base/models.py:126
 msgid "Source"
 msgstr "来源"
 
-#: backend/knowledge_base/models.py:127
+#: knowledge_base/models.py:127
 msgid "Error"
 msgstr "错误"
 
-#: backend/knowledge_base/models.py:137 backend/knowledge_base/models.py:154
+#: knowledge_base/models.py:137 knowledge_base/models.py:154
 msgid "Document"
 msgstr "文档"
 
-#: backend/knowledge_base/models.py:138
+#: knowledge_base/models.py:138
 msgid "Documents"
 msgstr "文档列表"
 
-#: backend/knowledge_base/models.py:157
+#: knowledge_base/models.py:157
 msgid "Index"
 msgstr "索引"
 
-#: backend/knowledge_base/models.py:159
+#: knowledge_base/models.py:159
 msgid "Keywords"
 msgstr "关键词"
 
-#: backend/knowledge_base/models.py:162
+#: knowledge_base/models.py:162
 msgid "Chunk"
 msgstr "分块"
 
-#: backend/knowledge_base/models.py:163
+#: knowledge_base/models.py:163
 msgid "Chunks"
 msgstr "分块列表"
 
-#: backend/knowledge_base/serializers.py:86
+#: knowledge_base/serializers.py:89
 msgid "Invalid embedding provider config id."
 msgstr "无效的嵌入提供商配置ID。"
 
-#: backend/knowledge_base/serializers.py:101
+#: knowledge_base/serializers.py:104
 msgid "Invalid summarization provider config id."
 msgstr "无效的摘要提供商配置ID。"
 
-#: backend/knowledge_base/serializers.py:118
+#: knowledge_base/serializers.py:121
 msgid "Invalid embedding model id."
 msgstr "无效的嵌入模型ID。"
 
-#: backend/knowledge_base/serializers.py:124
+#: knowledge_base/serializers.py:127
 msgid "Summarization model id is required."
 msgstr "需要摘要模型ID。"
 
-#: backend/knowledge_base/serializers.py:132
+#: knowledge_base/serializers.py:135
 msgid "Invalid summarization model id."
 msgstr "无效的摘要模型ID。"
 
-#: backend/knowledge_base/serializers.py:139
+#: knowledge_base/serializers.py:142
 msgid "Invalid summarizer temperature."
 msgstr "无效的摘要器温度。"
 
-#: backend/knowledge_base/serializers.py:232
+#: knowledge_base/serializers.py:235
 msgid "crawl_result_uuids cannot be empty."
 msgstr "crawl_result_uuids不能为空。"
 
-#: backend/knowledge_base/serializers.py:239
+#: knowledge_base/serializers.py:242
 msgid "No valid crawl results found for the provided UUIDs."
 msgstr "未找到提供的UUID的有效爬虫结果。"
 
-#: backend/knowledge_base/serializers.py:259
+#: knowledge_base/serializers.py:262
 msgid "Invalid crawl request UUID."
 msgstr "无效的爬虫请求UUID。"
 
-#: backend/knowledge_base/serializers.py:277
+#: knowledge_base/serializers.py:280
 msgid "Files cannot be empty."
 msgstr "文件不能为空。"
 
-#: backend/knowledge_base/serializers.py:283
+#: knowledge_base/serializers.py:286
 msgid "File must be a pdf, docx, image, or text."
 msgstr "文件必须是pdf、docx、图像或文本。"
 
-#: backend/knowledge_base/serializers.py:310
+#: knowledge_base/serializers.py:313
 msgid "Invalid provider config id."
 msgstr "无效的提供商配置ID。"
 
-#: backend/knowledge_base/serializers.py:321
+#: knowledge_base/serializers.py:324
 msgid "Invalid temperature."
 msgstr "无效的温度。"
 
-#: backend/knowledge_base/serializers.py:326
+#: knowledge_base/serializers.py:329
 msgid "Invalid llm model id."
 msgstr "无效的LLM模型ID。"
 
-#: backend/knowledge_base/views.py:46
+#: knowledge_base/views.py:46
 msgid "List knowledge bases"
 msgstr "列出知识库"
 
-#: backend/knowledge_base/views.py:47
+#: knowledge_base/views.py:47
 msgid "List all knowledge bases for the current team."
 msgstr "列出当前团队的所有知识库。"
 
-#: backend/knowledge_base/views.py:51
+#: knowledge_base/views.py:51
 msgid "Get knowledge base details"
 msgstr "获取知识库详情"
 
-#: backend/knowledge_base/views.py:52
+#: knowledge_base/views.py:52
 msgid "Get details for a specific knowledge base."
 msgstr "获取特定知识库的详情。"
 
-#: backend/knowledge_base/views.py:59
+#: knowledge_base/views.py:59
 msgid "Create knowledge base"
 msgstr "创建知识库"
 
-#: backend/knowledge_base/views.py:60
+#: knowledge_base/views.py:60
 msgid "Create a new knowledge base for the current team."
 msgstr "为当前团队创建新的知识库。"
 
-#: backend/knowledge_base/views.py:68
+#: knowledge_base/views.py:68
 msgid "Update knowledge base"
 msgstr "更新知识库"
 
-#: backend/knowledge_base/views.py:69
+#: knowledge_base/views.py:69
 msgid "Update an existing knowledge base."
 msgstr "更新现有知识库。"
 
-#: backend/knowledge_base/views.py:73
+#: knowledge_base/views.py:73
 msgid "Partially update knowledge base"
 msgstr "部分更新知识库"
 
-#: backend/knowledge_base/views.py:74
+#: knowledge_base/views.py:74
 msgid "Partially update an existing knowledge base."
 msgstr "部分更新现有知识库。"
 
-#: backend/knowledge_base/views.py:78
+#: knowledge_base/views.py:78
 msgid "Delete knowledge base"
 msgstr "删除知识库"
 
-#: backend/knowledge_base/views.py:79
+#: knowledge_base/views.py:79
 msgid "Delete an existing knowledge base."
 msgstr "删除现有知识库。"
 
-#: backend/knowledge_base/views.py:83
+#: knowledge_base/views.py:83
 msgid "Enhance knowledge base context aware text"
 msgstr "增强知识库上下文感知文本"
 
-#: backend/knowledge_base/views.py:84
+#: knowledge_base/views.py:84
 msgid "Enhance documents using context-aware summarization."
 msgstr "使用上下文感知摘要增强文档。"
 
-#: backend/knowledge_base/views.py:90
+#: knowledge_base/views.py:90
 msgid "Query knowledge base"
 msgstr "查询知识库"
 
-#: backend/knowledge_base/views.py:91
+#: knowledge_base/views.py:91
 msgid "Execute a query against the knowledge base."
 msgstr "对知识库执行查询。"
 
-#: backend/knowledge_base/views.py:187
+#: knowledge_base/views.py:187
 msgid "List documents"
 msgstr "列出文档"
 
-#: backend/knowledge_base/views.py:188
+#: knowledge_base/views.py:188
 msgid "List all documents for a knowledge base."
 msgstr "列出知识库的所有文档。"
 
-#: backend/knowledge_base/views.py:195
+#: knowledge_base/views.py:195
 msgid "Get document details"
 msgstr "获取文档详情"
 
-#: backend/knowledge_base/views.py:196
+#: knowledge_base/views.py:196
 msgid "Get details for a specific document."
 msgstr "获取特定文档的详情。"
 
-#: backend/knowledge_base/views.py:200
+#: knowledge_base/views.py:200
 msgid "Create document"
 msgstr "创建文档"
 
-#: backend/knowledge_base/views.py:201
+#: knowledge_base/views.py:201
 msgid "Create a new document for a knowledge base."
 msgstr "为知识库创建新文档。"
 
-#: backend/knowledge_base/views.py:205
+#: knowledge_base/views.py:205
 msgid "Update document"
 msgstr "更新文档"
 
-#: backend/knowledge_base/views.py:206
+#: knowledge_base/views.py:206
 msgid "Update an existing document."
 msgstr "更新现有文档。"
 
-#: backend/knowledge_base/views.py:210
+#: knowledge_base/views.py:210
 msgid "Partially update document"
 msgstr "部分更新文档"
 
-#: backend/knowledge_base/views.py:211
+#: knowledge_base/views.py:211
 msgid "Partially update an existing document."
 msgstr "部分更新现有文档。"
 
-#: backend/knowledge_base/views.py:215
+#: knowledge_base/views.py:215
 msgid "Delete document"
 msgstr "删除文档"
 
-#: backend/knowledge_base/views.py:216
+#: knowledge_base/views.py:216
 msgid "Delete an existing document."
 msgstr "删除现有文档。"
 
-#: backend/knowledge_base/views.py:220
+#: knowledge_base/views.py:220
 msgid "Process URLs"
 msgstr "处理URL"
 
-#: backend/knowledge_base/views.py:221
+#: knowledge_base/views.py:221
 msgid "Process a list of URLs and add them to the knowledge base."
 msgstr "处理URL列表并将它们添加到知识库。"
 
-#: backend/knowledge_base/views.py:229
+#: knowledge_base/views.py:229
 msgid "Process crawl results"
 msgstr "处理爬虫结果"
 
-#: backend/knowledge_base/views.py:230
+#: knowledge_base/views.py:230
 msgid "Process crawl results and add them to the knowledge base."
 msgstr "处理爬虫结果并将它们添加到知识库。"
 
-#: backend/knowledge_base/views.py:238
+#: knowledge_base/views.py:238
 msgid "Process crawl request"
 msgstr "处理爬虫请求"
 
-#: backend/knowledge_base/views.py:239
+#: knowledge_base/views.py:239
 msgid "Process a crawl request and add it to the knowledge base."
 msgstr "处理爬虫请求并将其添加到知识库。"
 
-#: backend/knowledge_base/views.py:247
+#: knowledge_base/views.py:247
 msgid "Process files"
 msgstr "处理文件"
 
-#: backend/knowledge_base/views.py:248
+#: knowledge_base/views.py:248
 msgid "Process a list of files and add them to the knowledge base."
 msgstr "处理文件列表并将它们添加到知识库。"
 
-#: backend/knowledge_base/views.py:256
+#: knowledge_base/views.py:256
 msgid "Retry document"
 msgstr "重试文档"
 
-#: backend/knowledge_base/views.py:257
+#: knowledge_base/views.py:257
 msgid "Retry a failed document. to index it again."
 msgstr "重试失败的文档以重新索引。"
 
-#: backend/knowledge_base/views.py:296 backend/knowledge_base/views.py:337
-#: backend/knowledge_base/views.py:365 backend/knowledge_base/views.py:397
-#: backend/knowledge_base/views.py:428
+#: knowledge_base/views.py:296 knowledge_base/views.py:337
+#: knowledge_base/views.py:365 knowledge_base/views.py:397
+#: knowledge_base/views.py:428
 msgid "You cannot add documents to this knowledge base."
 msgstr "您无法向此知识库添加文档。"
 
-#: backend/knowledge_base/views.py:457
+#: knowledge_base/views.py:457
 msgid "You can only retry just failed documents."
 msgstr "您只能重试失败的文档。"
 
-#: backend/knowledge_base/views.py:459
+#: knowledge_base/views.py:459
 msgid "You cannot make changes to this knowledge base."
 msgstr "您无法对此知识库进行更改。"
 
-#: backend/knowledge_base/views.py:467
+#: knowledge_base/views.py:467
 msgid "List document chunks"
 msgstr "列出文档分块"
 
-#: backend/knowledge_base/views.py:468
+#: knowledge_base/views.py:468
 msgid "List all chunks for a document."
 msgstr "列出文档的所有分块。"
 
-#: backend/llm/admin.py:44
+#: llm/admin.py:44
 msgid "API Configuration"
 msgstr "API配置"
 
-#: backend/llm/admin_api/serializers.py:54 backend/llm/serializers.py:70
+#: llm/admin_api/serializers.py:54 llm/serializers.py:70
 msgid "API key is required"
 msgstr "需要API密钥"
 
-#: backend/llm/admin_api/serializers.py:56 backend/llm/serializers.py:72
+#: llm/admin_api/serializers.py:56 llm/serializers.py:72
 msgid "Base URL is required"
 msgstr "需要基础URL"
 
-#: backend/llm/admin_api/serializers.py:73
-#: backend/llm/admin_api/serializers.py:74 backend/llm/serializers.py:89
-#: backend/llm/serializers.py:90
+#: llm/admin_api/serializers.py:73 llm/admin_api/serializers.py:74
+#: llm/serializers.py:89 llm/serializers.py:90
 msgid "Invalid API key or base URL. Test failed"
 msgstr "无效的API密钥或基础URL。测试失败"
 
-#: backend/llm/admin_api/views.py:17 backend/llm/admin_api/views.py:18
+#: llm/admin_api/views.py:17 llm/admin_api/views.py:18
 msgid "List provider configs"
 msgstr "列出提供商配置"
 
-#: backend/llm/admin_api/views.py:22 backend/llm/admin_api/views.py:23
-#: backend/llm/views.py:24
+#: llm/admin_api/views.py:22 llm/admin_api/views.py:23 llm/views.py:24
 msgid "Create provider config"
 msgstr "创建提供商配置"
 
-#: backend/llm/admin_api/views.py:27 backend/llm/admin_api/views.py:28
-#: backend/llm/views.py:29
+#: llm/admin_api/views.py:27 llm/admin_api/views.py:28 llm/views.py:29
 msgid "Get provider config"
 msgstr "获取提供商配置"
 
-#: backend/llm/admin_api/views.py:32 backend/llm/admin_api/views.py:33
-#: backend/llm/admin_api/views.py:37 backend/llm/admin_api/views.py:38
-#: backend/llm/views.py:41 backend/llm/views.py:46
+#: llm/admin_api/views.py:32 llm/admin_api/views.py:33
+#: llm/admin_api/views.py:37 llm/admin_api/views.py:38 llm/views.py:41
+#: llm/views.py:46
 msgid "Update provider config"
 msgstr "更新提供商配置"
 
-#: backend/llm/admin_api/views.py:42 backend/llm/admin_api/views.py:43
-#: backend/llm/views.py:36
+#: llm/admin_api/views.py:42 llm/admin_api/views.py:43 llm/views.py:36
 msgid "Delete provider config"
 msgstr "删除提供商配置"
 
-#: backend/llm/admin_api/views.py:47 backend/llm/admin_api/views.py:48
+#: llm/admin_api/views.py:47 llm/admin_api/views.py:48
 msgid "Sync embeddings"
 msgstr "同步嵌入"
 
-#: backend/llm/admin_api/views.py:54 backend/llm/admin_api/views.py:55
+#: llm/admin_api/views.py:54 llm/admin_api/views.py:55
 msgid "Sync LLM models"
 msgstr "同步LLM模型"
 
-#: backend/llm/admin_api/views.py:61 backend/llm/admin_api/views.py:62
+#: llm/admin_api/views.py:61 llm/admin_api/views.py:62
 msgid "Test config"
 msgstr "测试配置"
 
-#: backend/llm/admin_api/views.py:68 backend/llm/admin_api/views.py:69
+#: llm/admin_api/views.py:68 llm/admin_api/views.py:69
 msgid "List providers"
 msgstr "列出提供商"
 
-#: backend/llm/admin_api/views.py:74 backend/llm/views.py:89
+#: llm/admin_api/views.py:74 llm/views.py:89
 msgid "List of available providers"
 msgstr "可用提供商列表"
 
-#: backend/llm/admin_api/views.py:157 backend/llm/admin_api/views.py:158
+#: llm/admin_api/views.py:157 llm/admin_api/views.py:158
 msgid "List LLM models"
 msgstr "列出LLM模型"
 
-#: backend/llm/admin_api/views.py:162 backend/llm/admin_api/views.py:163
+#: llm/admin_api/views.py:162 llm/admin_api/views.py:163
 msgid "Create LLM model"
 msgstr "创建LLM模型"
 
-#: backend/llm/admin_api/views.py:167 backend/llm/admin_api/views.py:168
+#: llm/admin_api/views.py:167 llm/admin_api/views.py:168
 msgid "Get LLM model"
 msgstr "获取LLM模型"
 
-#: backend/llm/admin_api/views.py:172 backend/llm/admin_api/views.py:173
-#: backend/llm/admin_api/views.py:177 backend/llm/admin_api/views.py:178
+#: llm/admin_api/views.py:172 llm/admin_api/views.py:173
+#: llm/admin_api/views.py:177 llm/admin_api/views.py:178
 msgid "Update LLM model"
 msgstr "更新LLM模型"
 
-#: backend/llm/admin_api/views.py:182 backend/llm/admin_api/views.py:183
+#: llm/admin_api/views.py:182 llm/admin_api/views.py:183
 msgid "Delete LLM model"
 msgstr "删除LLM模型"
 
-#: backend/llm/admin_api/views.py:196 backend/llm/admin_api/views.py:197
+#: llm/admin_api/views.py:196 llm/admin_api/views.py:197
 msgid "List provider embeddings"
 msgstr "列出提供商嵌入"
 
-#: backend/llm/admin_api/views.py:201 backend/llm/admin_api/views.py:202
+#: llm/admin_api/views.py:201 llm/admin_api/views.py:202
 msgid "Create provider embedding"
 msgstr "创建提供商嵌入"
 
-#: backend/llm/admin_api/views.py:206 backend/llm/admin_api/views.py:207
+#: llm/admin_api/views.py:206 llm/admin_api/views.py:207
 msgid "Get provider embedding"
 msgstr "获取提供商嵌入"
 
-#: backend/llm/admin_api/views.py:211 backend/llm/admin_api/views.py:212
-#: backend/llm/admin_api/views.py:216 backend/llm/admin_api/views.py:217
+#: llm/admin_api/views.py:211 llm/admin_api/views.py:212
+#: llm/admin_api/views.py:216 llm/admin_api/views.py:217
 msgid "Update provider embedding"
 msgstr "更新提供商嵌入"
 
-#: backend/llm/admin_api/views.py:221 backend/llm/admin_api/views.py:222
+#: llm/admin_api/views.py:221 llm/admin_api/views.py:222
 msgid "Delete provider embedding"
 msgstr "删除提供商嵌入"
 
-#: backend/llm/consts.py:7 backend/llm/consts.py:22
+#: llm/consts.py:7 llm/consts.py:22
 msgid "OpenAI"
 msgstr ""
 
-#: backend/llm/consts.py:10
+#: llm/consts.py:10
 msgid "WaterCrawl"
 msgstr ""
 
-#: backend/llm/consts.py:37
+#: llm/consts.py:37
 msgid "Not Available"
 msgstr "不可用"
 
-#: backend/llm/consts.py:38
+#: llm/consts.py:38
 msgid "Available"
 msgstr "可用"
 
-#: backend/llm/consts.py:39
+#: llm/consts.py:39
 msgid "Team Only"
 msgstr "仅团队"
 
-#: backend/llm/consts.py:46
+#: llm/consts.py:46
 msgid "Start"
 msgstr "开始"
 
-#: backend/llm/consts.py:47
+#: llm/consts.py:47
 msgid "End"
 msgstr "结束"
 
-#: backend/llm/factories.py:39
+#: llm/factories.py:39
 msgid "Provider config is required"
 msgstr "需要提供商配置"
 
-#: backend/llm/factories.py:60 backend/llm/providers.py:90
+#: llm/factories.py:61 llm/providers.py:90
 msgid "WaterCrawlLLM is not installed. Please install it"
 msgstr "WaterCrawlLLM未安装。请安装它"
 
-#: backend/llm/factories.py:68 backend/llm/factories.py:90
+#: llm/factories.py:71 llm/factories.py:97
 #, python-brace-format
 msgid "Unsupported provider: {provider_name}"
 msgstr "不支持的提供商：{provider_name}"
 
-#: backend/llm/models.py:11 backend/llm/models.py:43 backend/llm/models.py:97
+#: llm/models.py:11 llm/models.py:43 llm/models.py:97
 msgid "Provider"
 msgstr "提供商"
 
-#: backend/llm/models.py:17 backend/llm/models.py:114
+#: llm/models.py:17 llm/models.py:114
 msgid "Visibility Level"
 msgstr "可见性级别"
 
-#: backend/llm/models.py:23
+#: llm/models.py:23
 msgid "Min Temperature"
 msgstr "最低温度"
 
-#: backend/llm/models.py:26
+#: llm/models.py:26
 msgid "Max Temperature"
 msgstr "最高温度"
 
-#: backend/llm/models.py:29
+#: llm/models.py:29
 msgid "Default Temperature"
 msgstr "默认温度"
 
-#: backend/llm/models.py:33
+#: llm/models.py:33
 msgid "Model"
 msgstr "模型"
 
-#: backend/llm/models.py:34
+#: llm/models.py:34
 msgid "Models"
 msgstr "模型列表"
 
-#: backend/llm/models.py:48 backend/plan/models.py:217
+#: llm/models.py:48 plan/models.py:220
 msgid "API Key"
 msgstr "API密钥"
 
-#: backend/llm/models.py:50
+#: llm/models.py:50
 msgid "API Base URL"
 msgstr "API基础URL"
 
-#: backend/llm/models.py:52
+#: llm/models.py:52
 msgid "Temperature"
 msgstr "温度"
 
-#: backend/llm/models.py:86
+#: llm/models.py:86
 msgid "Provider Config"
 msgstr "提供商配置"
 
-#: backend/llm/models.py:87
+#: llm/models.py:87
 msgid "Provider Configs"
 msgstr "提供商配置列表"
 
-#: backend/llm/models.py:105
+#: llm/models.py:105
 msgid "Dimensions"
 msgstr "维度"
 
-#: backend/llm/models.py:106
+#: llm/models.py:106
 msgid "Max Input Length"
 msgstr "最大输入长度"
 
-#: backend/llm/models.py:108
+#: llm/models.py:108
 msgid "Truncate"
 msgstr "截断"
 
-#: backend/llm/models.py:121
+#: llm/models.py:121
 msgid "Provider Embedding"
 msgstr "提供商嵌入"
 
-#: backend/llm/models.py:122
+#: llm/models.py:122
 msgid "Provider Embeddings"
 msgstr "提供商嵌入列表"
 
-#: backend/llm/views.py:19
+#: llm/views.py:19
 msgid "List team provider configs"
 msgstr "列出团队提供商配置"
 
-#: backend/llm/views.py:20
+#: llm/views.py:20
 msgid "Get all provider configurations for the current team."
 msgstr "获取当前团队的所有提供商配置。"
 
-#: backend/llm/views.py:25
+#: llm/views.py:25
 msgid "Create a new provider configuration for the current team."
 msgstr "为当前团队创建新的提供商配置。"
 
-#: backend/llm/views.py:31
+#: llm/views.py:31
 msgid "Get detailed information about a specific provider configuration."
 msgstr "获取特定提供商配置的详细信息。"
 
-#: backend/llm/views.py:37
+#: llm/views.py:37
 msgid "Delete a provider configuration."
 msgstr "删除提供商配置。"
 
-#: backend/llm/views.py:42 backend/llm/views.py:47
+#: llm/views.py:42 llm/views.py:47
 msgid "Update a provider configuration."
 msgstr "更新提供商配置。"
 
-#: backend/llm/views.py:51 backend/llm/views.py:84
+#: llm/views.py:51 llm/views.py:84
 msgid "List available providers"
 msgstr "列出可用提供商"
 
-#: backend/llm/views.py:52 backend/llm/views.py:85
+#: llm/views.py:52 llm/views.py:85
 msgid "Get a list of available LLM providers."
 msgstr "获取可用LLM提供商列表。"
 
-#: backend/llm/views.py:57
+#: llm/views.py:57
 msgid "List all provider configs (Global and Team-specific)"
 msgstr "列出所有提供商配置（全局和团队特定）"
 
-#: backend/llm/views.py:59
+#: llm/views.py:59
 msgid "Get all available provider configurations including global and team-specific ones."
 msgstr "获取所有可用的提供商配置，包括全局和团队特定的配置。"
 
-#: backend/llm/views.py:65
+#: llm/views.py:65
 msgid "Test provider config"
 msgstr "测试提供商配置"
 
-#: backend/llm/views.py:66
+#: llm/views.py:66
 msgid "Test a provider configuration without saving it."
 msgstr "测试提供商配置而不保存它。"
 
-#: backend/llm/views.py:74
+#: llm/views.py:74
 msgid "Get provider models"
 msgstr "获取提供商模型"
 
-#: backend/llm/views.py:75
+#: llm/views.py:75
 msgid "Get all models supported by a specific provider."
 msgstr "获取特定提供商支持的所有模型。"
 
-#: backend/llm/views.py:79
+#: llm/views.py:79
 msgid "Get provider embedding models"
 msgstr "获取提供商嵌入模型"
 
-#: backend/llm/views.py:80
+#: llm/views.py:80
 msgid "Get all embedding models supported by a specific provider."
 msgstr "获取特定提供商支持的所有嵌入模型。"
 
-#: backend/llm/views.py:178
+#: llm/views.py:178
 msgid "Test failed"
 msgstr "测试失败"
 
-#: backend/locker/helpers.py:43
+#: locker/helpers.py:44
 #, python-brace-format
 msgid "Failed to acquire lock '{lock_name}' within {wait_time} seconds"
 msgstr "在{wait_time}秒内未能获取锁'{lock_name}'"
 
-#: backend/plan/admin.py:50
+#: plan/admin.py:50
 msgid "Stripe Configuration"
 msgstr "Stripe配置"
 
-#: backend/plan/admin.py:52
+#: plan/admin.py:52
 msgid "Plan Limits"
 msgstr "计划限制"
 
-#: backend/plan/admin.py:67 backend/plan/admin.py:102 backend/plan/admin.py:119
-#: backend/plan/admin.py:130
+#: plan/admin.py:67 plan/admin.py:102 plan/admin.py:119 plan/admin.py:130
 msgid "Timestamps"
 msgstr "时间戳"
 
-#: backend/plan/admin.py:89
+#: plan/admin.py:89
 msgid "Credits"
 msgstr "额度"
 
-#: backend/plan/admin.py:91
+#: plan/admin.py:91
 msgid "Subscription Details"
 msgstr "订阅详情"
 
-#: backend/plan/admin.py:118
+#: plan/admin.py:118
 msgid "Payment Details"
 msgstr "支付详情"
 
-#: backend/plan/authentication.py:18
+#: plan/authentication.py:18
 msgid "No Stripe signature found"
 msgstr "未找到Stripe签名"
 
-#: backend/plan/authentication.py:30
+#: plan/authentication.py:30
 msgid "Invalid Stripe signature"
 msgstr "无效的Stripe签名"
 
-#: backend/plan/consts.py:7
+#: plan/consts.py:7
 msgid "Yearly"
 msgstr "每年"
 
-#: backend/plan/consts.py:8
+#: plan/consts.py:8
 msgid "Monthly"
 msgstr "每月"
 
-#: backend/plan/consts.py:23
+#: plan/consts.py:23
 msgid "Incomplete"
 msgstr "未完成"
 
-#: backend/plan/consts.py:24
+#: plan/consts.py:24
 msgid "Incomplete Expired"
 msgstr "未完成已过期"
 
-#: backend/plan/consts.py:25
+#: plan/consts.py:25
 msgid "Past Due"
 msgstr "逾期"
 
-#: backend/plan/consts.py:26
+#: plan/consts.py:26
 msgid "Paused"
 msgstr "已暂停"
 
-#: backend/plan/consts.py:27
+#: plan/consts.py:27
 msgid "Trialing"
 msgstr "试用中"
 
-#: backend/plan/consts.py:28
+#: plan/consts.py:28
 msgid "Unpaid"
 msgstr "未支付"
 
-#: backend/plan/consts.py:35
+#: plan/consts.py:35
 msgid "Default"
 msgstr "默认"
 
-#: backend/plan/consts.py:36
+#: plan/consts.py:36
 msgid "Info"
 msgstr "信息"
 
-#: backend/plan/consts.py:37
+#: plan/consts.py:37
 msgid "Cross"
 msgstr "删除线"
 
-#: backend/plan/consts.py:38
+#: plan/consts.py:38
 msgid "Check"
 msgstr "勾选"
 
-#: backend/plan/filters.py:11 backend/plan/models.py:200
+#: plan/filters.py:11 plan/models.py:203
 msgid "Content type"
 msgstr "内容类型"
 
-#: backend/plan/filters.py:13
+#: plan/filters.py:13
 msgid "Crawl request"
 msgstr "爬虫请求"
 
-#: backend/plan/filters.py:14
+#: plan/filters.py:14
 msgid "Search request"
 msgstr "搜索请求"
 
-#: backend/plan/filters.py:15
+#: plan/filters.py:15
 msgid "Sitemap request"
 msgstr "网站地图请求"
 
-#: backend/plan/filters.py:16
+#: plan/filters.py:16
 msgid "Knowledge base document"
 msgstr "知识库文档"
 
-#: backend/plan/filters.py:21
+#: plan/filters.py:21
 msgid "API key"
 msgstr "API密钥"
 
-#: backend/plan/filters.py:33
+#: plan/filters.py:33
 msgid "Invalid value. Expected format: app_label.model"
 msgstr "无效值。期望格式：app_label.model"
 
-#: backend/plan/models.py:10
+#: plan/models.py:10
 msgid "name"
 msgstr "名称"
 
-#: backend/plan/models.py:11
+#: plan/models.py:11
 msgid "Label"
 msgstr "标签"
 
-#: backend/plan/models.py:13
+#: plan/models.py:13
 msgid "Group"
 msgstr "组"
 
-#: backend/plan/models.py:17
+#: plan/models.py:17
 msgid "Price before discount"
 msgstr "折扣前价格"
 
-#: backend/plan/models.py:23
+#: plan/models.py:23
 msgid "Price"
 msgstr "价格"
 
-#: backend/plan/models.py:25
+#: plan/models.py:25
 msgid "Stripe price id"
 msgstr "Stripe价格ID"
 
-#: backend/plan/models.py:28
+#: plan/models.py:28
 msgid "Number of users"
 msgstr "用户数量"
 
-#: backend/plan/models.py:29
+#: plan/models.py:29
 msgid "Number of users that can be added to the team."
 msgstr "可以添加到团队的用户数量。"
 
-#: backend/plan/models.py:33
+#: plan/models.py:33
 msgid "Page credit"
 msgstr "页面额度"
 
-#: backend/plan/models.py:34
+#: plan/models.py:34
 msgid "Number of pages that can be crawled in plan duration."
 msgstr "在计划期间内可以爬取的页面数量。"
 
-#: backend/plan/models.py:38
+#: plan/models.py:38
 msgid "Daily page credit"
 msgstr "每日页面额度"
 
-#: backend/plan/models.py:40
+#: plan/models.py:40
 msgid "Number of pages that can be crawled per day. resets at midnight. -1 for unlimited"
 msgstr "每天可以爬取的页面数量。午夜重置。-1表示无限制"
 
-#: backend/plan/models.py:45
+#: plan/models.py:45
 msgid "Crawl max depth"
 msgstr "爬虫最大深度"
 
-#: backend/plan/models.py:45
+#: plan/models.py:45
 msgid "Max depth of crawling."
 msgstr "爬虫的最大深度。"
 
-#: backend/plan/models.py:48
+#: plan/models.py:48
 msgid "Crawl max limit"
 msgstr "爬虫最大限制"
 
-#: backend/plan/models.py:48
+#: plan/models.py:48
 msgid "Max number of pages to crawl."
 msgstr "爬取的最大页面数。"
 
-#: backend/plan/models.py:51
+#: plan/models.py:51
 msgid "Max concurrent crawl"
 msgstr "最大并发爬虫"
 
-#: backend/plan/models.py:52
+#: plan/models.py:52
 msgid "Max Number of concurrent crawling."
 msgstr "最大并发爬虫数量。"
 
-#: backend/plan/models.py:56
+#: plan/models.py:56
 msgid "Number of knowledge bases"
 msgstr "知识库数量"
 
-#: backend/plan/models.py:59
+#: plan/models.py:59
 msgid "Number of each knowledge base documents"
 msgstr "每个知识库的文档数量"
 
-#: backend/plan/models.py:62
+#: plan/models.py:62
 msgid "Knowledge base retrival rate limit"
 msgstr "知识库检索速率限制"
 
-#: backend/plan/models.py:63
+#: plan/models.py:63
 msgid "DRF-style rate string, e.g. '100/min', '500/day'"
 msgstr "DRF风格的速率字符串，例如 '100/min', '500/day'"
 
-#: backend/plan/models.py:69
+#: plan/models.py:69
 msgid "Is default"
 msgstr "是否默认"
 
-#: backend/plan/models.py:70 backend/plan/models.py:89
+#: plan/models.py:70 plan/models.py:89
 msgid "Order"
 msgstr "排序"
 
-#: backend/plan/models.py:71
+#: plan/models.py:71
 msgid "Is active"
 msgstr "是否活跃"
 
-#: backend/plan/models.py:74 backend/plan/models.py:124
+#: plan/models.py:74 plan/models.py:124
 msgid "Plan"
 msgstr "计划"
 
-#: backend/plan/models.py:75
+#: plan/models.py:75
 msgid "Plans"
 msgstr "计划列表"
 
-#: backend/plan/models.py:91
+#: plan/models.py:91
 msgid "Icon"
 msgstr "图标"
 
-#: backend/plan/models.py:101
+#: plan/models.py:101
 msgid "Help text"
 msgstr "帮助文本"
 
-#: backend/plan/models.py:104
+#: plan/models.py:104
 msgid "Plan Feature"
 msgstr "计划功能"
 
-#: backend/plan/models.py:105
+#: plan/models.py:105
 msgid "Plan Features"
 msgstr "计划功能列表"
 
-#: backend/plan/models.py:120
+#: plan/models.py:120
 msgid "Stripe subscription id"
 msgstr "Stripe订阅ID"
 
-#: backend/plan/models.py:128
+#: plan/models.py:128
 msgid "Remain page credit"
 msgstr "剩余页面额度"
 
-#: backend/plan/models.py:130
+#: plan/models.py:130
 msgid "Remain daily page credit"
 msgstr "剩余每日页面额度"
 
-#: backend/plan/models.py:133
+#: plan/models.py:133
 msgid "Start datetime"
 msgstr "开始时间"
 
-#: backend/plan/models.py:135
+#: plan/models.py:135
 msgid "Current period start datetime"
 msgstr "当前期间开始时间"
 
-#: backend/plan/models.py:138
+#: plan/models.py:138
 msgid "Current period end datetime"
 msgstr "当前期间结束时间"
 
-#: backend/plan/models.py:140
+#: plan/models.py:140
 msgid "Canceled at"
 msgstr "取消时间"
 
-#: backend/plan/models.py:148 backend/plan/models.py:157
+#: plan/models.py:148 plan/models.py:159
 msgid "Subscription"
 msgstr "订阅"
 
-#: backend/plan/models.py:149
+#: plan/models.py:149
 msgid "Subscriptions"
 msgstr "订阅列表"
 
-#: backend/plan/models.py:159
+#: plan/models.py:162
 msgid "Amount"
 msgstr "金额"
 
-#: backend/plan/models.py:161
+#: plan/models.py:164
 msgid "Stripe payment id"
 msgstr "Stripe支付ID"
 
-#: backend/plan/models.py:171
+#: plan/models.py:174
 msgid "Subscription Payment"
 msgstr "订阅支付"
 
-#: backend/plan/models.py:172
+#: plan/models.py:175
 msgid "Subscription Payments"
 msgstr "订阅支付列表"
 
-#: backend/plan/models.py:180
+#: plan/models.py:183
 msgid "Data"
 msgstr "数据"
 
-#: backend/plan/models.py:183
+#: plan/models.py:186
 msgid "Stripe webhook history"
 msgstr "Stripe webhook历史"
 
-#: backend/plan/models.py:184
+#: plan/models.py:187
 msgid "Stripe webhook histories"
 msgstr "Stripe webhook历史列表"
 
-#: backend/plan/models.py:207
+#: plan/models.py:210
 msgid "Content ID"
 msgstr "内容ID"
 
-#: backend/plan/models.py:223
+#: plan/models.py:226
 msgid "Requested Page Credit"
 msgstr "请求的页面额度"
 
-#: backend/plan/models.py:226
+#: plan/models.py:229
 msgid "Actual Page Credit Used"
 msgstr "实际使用的页面额度"
 
-#: backend/plan/models.py:230
+#: plan/models.py:233
 msgid "Usage History"
 msgstr "使用历史"
 
-#: backend/plan/models.py:231
+#: plan/models.py:234
 msgid "Usage Histories"
 msgstr "使用历史列表"
 
-#: backend/plan/serializers.py:73
+#: plan/serializers.py:73
 msgid "Plan not found"
 msgstr "未找到计划"
 
-#: backend/plan/services.py:147
+#: plan/services.py:147
 msgid "Unlimited"
 msgstr "无限制"
 
-#: backend/plan/services.py:243 backend/plan/views.py:57
+#: plan/services.py:243 plan/views.py:57
 msgid "You have no active subscription"
 msgstr "您没有活跃的订阅"
 
-#: backend/plan/services.py:630
+#: plan/services.py:630
 msgid "You can't downgrade your plan."
 msgstr "您不能降级您的计划。"
 
-#: backend/plan/services.py:677
+#: plan/services.py:677
 msgid "Team already has an active subscription."
 msgstr "团队已经有活跃的订阅。"
 
-#: backend/plan/services.py:711 backend/plan/services.py:741
-#: backend/plan/services.py:764
+#: plan/services.py:711 plan/services.py:741 plan/services.py:764
 msgid "Team does not have an active subscription."
 msgstr "团队没有活跃的订阅。"
 
-#: backend/plan/services.py:714 backend/plan/services.py:744
+#: plan/services.py:714 plan/services.py:744
 msgid "You cannot cancel freemium plan."
 msgstr "您不能取消免费计划。"
 
-#: backend/plan/services.py:767
+#: plan/services.py:767
 msgid "You cannot renew freemium plan."
 msgstr "您不能续订免费计划。"
 
-#: backend/plan/services.py:770
+#: plan/services.py:770
 msgid "This plan is already active."
 msgstr "此计划已经处于活跃状态。"
 
-#: backend/plan/services.py:817 backend/plan/services.py:834
+#: plan/services.py:818 plan/services.py:839
 msgid "get_actual_credits: Unhandled type {type(request)}"
 msgstr "get_actual_credits: 未处理的类型 {type(request)}"
 
-#: backend/plan/throttle.py:18 backend/plan/throttle.py:33
+#: plan/throttle.py:18 plan/throttle.py:33
 msgid "Cannot throttle a request without a team attached to it."
 msgstr "无法对没有团队关联的请求进行限流。"
 
-#: backend/plan/validators.py:42
+#: plan/validators.py:42
 #, python-brace-format
 msgid "You have no more daily credit left in your plan. for current request you need {} credits."
 msgstr "您的计划中没有剩余的每日额度。当前请求需要 {} 额度。"
 
-#: backend/plan/validators.py:49
+#: plan/validators.py:49
 #, python-brace-format
 msgid "You just have {} daily credit left in your plan. for current request you need {} credits."
 msgstr "您的计划中仅剩 {} 每日额度。当前请求需要 {} 额度。"
 
-#: backend/plan/validators.py:62
+#: plan/validators.py:62
 #, python-brace-format
 msgid "You have no more pages left in your plan. for current request you need {} credits."
 msgstr "您的计划中没有剩余的页面额度。当前请求需要 {} 额度。"
 
-#: backend/plan/validators.py:69
+#: plan/validators.py:69
 #, python-brace-format
 msgid "You just have {} credits left in your plan. for current request you need {} credits."
 msgstr "您的计划中仅剩 {} 额度。当前请求需要 {} 额度。"
 
-#: backend/plan/validators.py:111
+#: plan/validators.py:111
 msgid "With the current plan you cannot use this proxy server. Upgrade your plan to use Premium proxy servers."
 msgstr "使用当前计划无法使用此代理服务器。升级您的计划以使用高级代理服务器。"
 
-#: backend/plan/validators.py:125
+#: plan/validators.py:125
 #, python-brace-format
 msgid "Your plan does not support more than {} depth. change the max depth in spider options."
 msgstr "您的计划不支持超过 {} 的深度。请在爬虫选项中修改最大深度。"
 
-#: backend/plan/validators.py:138
+#: plan/validators.py:138
 #, python-brace-format
 msgid "Your plan does not support more than {} pages per crawl. change the page limit in spider options."
 msgstr "您的计划不支持每次爬虫超过 {} 页。请在爬虫选项中修改页面限制。"
 
-#: backend/plan/validators.py:160
+#: plan/validators.py:160
 #, python-brace-format
 msgid "Your plan does not support more than {} concurrent crawls. Wait for them to finish."
 msgstr "您的计划不支持超过 {} 个并发爬虫。请等待它们完成。"
 
-#: backend/plan/validators.py:196
+#: plan/validators.py:196
 #, python-brace-format
 msgid "Your plan does not support more than {} concurrent searches. Wait for them to finish."
 msgstr "您的计划不支持超过 {} 个并发搜索。请等待它们完成。"
 
-#: backend/plan/validators.py:229
+#: plan/validators.py:229
 #, python-brace-format
 msgid "Your plan does not support more than {} concurrent sitemaps. Wait for them to finish."
 msgstr "您的计划不支持超过 {} 个并发网站地图。请等待它们完成。"
 
-#: backend/plan/validators.py:258
+#: plan/validators.py:258
 #, python-brace-format
 msgid "Your plan does not support more than {} knowledge bases. You can not create more."
 msgstr "您的计划不支持超过 {} 个知识库。您无法创建更多。"
 
-#: backend/plan/validators.py:291
+#: plan/validators.py:291
 #, python-brace-format
 msgid "Your current plan does not support more than {} documents per knowledge base. This knowledge base has {} documents left. Your request will add {} documents."
 msgstr "您当前的计划不支持每个知识库超过 {} 个文档。此知识库剩余 {} 个文档。您的请求将添加 {} 个文档。"
 
-#: backend/plan/views.py:22
+#: plan/validators.py:386
+msgid "You have reached the maximum number of users for your plan."
+msgstr ""
+
+#: plan/views.py:22
 msgid "List available plans"
 msgstr "列出可用计划"
 
-#: backend/plan/views.py:24
+#: plan/views.py:24
 msgid "Returns a list of all active subscription plans with their details including pricing, features and limits."
 msgstr "返回所有活跃订阅计划的列表，包括它们的详情、定价、功能和限制。"
 
-#: backend/plan/views.py:29
+#: plan/views.py:29
 msgid "Get plan details"
 msgstr "获取计划详情"
 
-#: backend/plan/views.py:31
+#: plan/views.py:31
 msgid "Returns detailed information about a specific subscription plan."
 msgstr "返回特定订阅计划的详细信息。"
 
-#: backend/plan/views.py:49
+#: plan/views.py:49
 msgid "Get current subscription details"
 msgstr "获取当前订阅详情"
 
-#: backend/plan/views.py:51 backend/plan/views.py:63
+#: plan/views.py:51 plan/views.py:63
 msgid "Returns detailed information about the team's current subscription."
 msgstr "返回团队当前订阅的详细信息。"
 
-#: backend/plan/views.py:61
+#: plan/views.py:61
 msgid "Get subscription details"
 msgstr "获取订阅详情"
 
-#: backend/plan/views.py:68
+#: plan/views.py:68
 msgid "List team subscriptions"
 msgstr "列出团队订阅"
 
-#: backend/plan/views.py:69
+#: plan/views.py:69
 msgid "Returns a list of all active subscriptions for the team."
 msgstr "返回团队的所有活跃订阅列表。"
 
-#: backend/plan/views.py:73
+#: plan/views.py:73
 msgid "Start a new subscription"
 msgstr "开始新订阅"
 
-#: backend/plan/views.py:74
+#: plan/views.py:74
 msgid "Starts a new subscription for the team."
 msgstr "为团队开始新订阅。"
 
-#: backend/plan/views.py:77
+#: plan/views.py:77
 msgid "Subscription started successfully."
 msgstr "订阅开始成功。"
 
-#: backend/plan/views.py:85 backend/plan/views.py:115
+#: plan/views.py:85 plan/views.py:115
 msgid "The URL to redirect the user to for payment processing."
 msgstr "用于支付处理的用户重定向URL。"
 
-#: backend/plan/views.py:91 backend/plan/views.py:104 backend/plan/views.py:121
+#: plan/views.py:91 plan/views.py:104 plan/views.py:121
 msgid "Returns the URL to redirect the user to for payment processing."
 msgstr "返回用于支付处理的用户重定向URL。"
 
-#: backend/plan/views.py:97
+#: plan/views.py:97
 msgid "Cancel subscription"
 msgstr "取消订阅"
 
-#: backend/plan/views.py:98
+#: plan/views.py:98
 msgid "Cancels the active subscription for the team."
 msgstr "取消团队的活跃订阅。"
 
-#: backend/plan/views.py:102
+#: plan/views.py:102
 msgid "Get customer session URL"
 msgstr "获取客户会话URL"
 
-#: backend/plan/views.py:167
+#: plan/views.py:167
 msgid "You cannot start freemium plan for this team"
 msgstr "您无法为此团队开始免费计划"
 
-#: backend/plan/views.py:219
+#: plan/views.py:219
 msgid "Handle Stripe webhooks"
 msgstr "处理Stripe webhooks"
 
-#: backend/plan/views.py:221
+#: plan/views.py:221
 msgid "Processes webhook events from Stripe for subscription and payment updates."
 msgstr "处理来自Stripe的订阅和支付更新的webhook事件。"
 
-#: backend/plan/views.py:243
+#: plan/views.py:243
 msgid "List usage history"
 msgstr "列出使用历史"
 
-#: backend/plan/views.py:244
+#: plan/views.py:244
 msgid "List usage history for the team."
 msgstr "列出团队的使用历史。"
 
-#: backend/plan/views.py:248
+#: plan/views.py:248
 msgid "Get usage history"
 msgstr "获取使用历史"
 
-#: backend/plan/views.py:249
+#: plan/views.py:249
 msgid "Get usage history for the team."
 msgstr "获取团队的使用历史。"
 
-#: backend/user/admin.py:20
+#: user/admin.py:20
 msgid "Personal info"
 msgstr "个人信息"
 
-#: backend/user/admin.py:22
+#: user/admin.py:22
 msgid "Permissions"
 msgstr "权限"
 
-#: backend/user/admin.py:34
+#: user/admin.py:34
 msgid "Email verification"
 msgstr "邮箱验证"
 
-#: backend/user/admin.py:38
+#: user/admin.py:38
 msgid "Password reset"
 msgstr "密码重置"
 
-#: backend/user/decorators.py:51
+#: user/decorators.py:51
 msgid "Invalid API key"
 msgstr "无效的API密钥"
 
-#: backend/user/managers.py:11
+#: user/managers.py:11
 msgid "Superuser must have is_staff=True."
 msgstr "超级用户必须设置is_staff=True。"
 
-#: backend/user/managers.py:13
+#: user/managers.py:13
 msgid "Superuser must have is_superuser=True."
 msgstr "超级用户必须设置is_superuser=True。"
 
-#: backend/user/managers.py:24
+#: user/managers.py:24
 msgid "The given email must be set"
 msgstr "必须设置给定的邮箱"
 
-#: backend/user/models.py:15 backend/user/models.py:141
+#: user/models.py:15 user/models.py:141
 msgid "Email Address"
 msgstr "邮箱地址"
 
-#: backend/user/models.py:17
+#: user/models.py:17
 msgid "Reset Password Expires At"
 msgstr "密码重置到期时间"
 
-#: backend/user/models.py:22
+#: user/models.py:22
 msgid "Reset Password Token"
 msgstr "密码重置令牌"
 
-#: backend/user/models.py:28
+#: user/models.py:28
 msgid "Email Verification Token"
 msgstr "邮箱验证令牌"
 
-#: backend/user/models.py:34
+#: user/models.py:34
 msgid "Email Verified"
 msgstr "邮箱已验证"
 
-#: backend/user/models.py:38
+#: user/models.py:38
 msgid "Privacy Confirmed At"
 msgstr "隐私确认时间"
 
-#: backend/user/models.py:43
+#: user/models.py:43
 msgid "Terms Confirmed At"
 msgstr "条款确认时间"
 
-#: backend/user/models.py:48
+#: user/models.py:48
 msgid "Newsletter Confirmed"
 msgstr "通讯订阅已确认"
 
-#: backend/user/models.py:59 backend/user/models.py:104
+#: user/models.py:59 user/models.py:104
 msgid "User"
 msgstr "用户"
 
-#: backend/user/models.py:60
+#: user/models.py:60
 msgid "Users"
 msgstr "用户列表"
 
-#: backend/user/models.py:76
+#: user/models.py:76
 msgid "Members"
 msgstr "成员"
 
-#: backend/user/models.py:81
+#: user/models.py:81
 msgid "Stripe Customer ID"
 msgstr "Stripe客户ID"
 
-#: backend/user/models.py:93
+#: user/models.py:93
 msgid "Teams"
 msgstr "团队列表"
 
-#: backend/user/models.py:115
+#: user/models.py:115
 msgid "Is Owner"
 msgstr "是否为所有者"
 
-#: backend/user/models.py:123
+#: user/models.py:123
 msgid "Team Member"
 msgstr "团队成员"
 
-#: backend/user/models.py:124
+#: user/models.py:124
 msgid "Team Members"
 msgstr "团队成员列表"
 
-#: backend/user/models.py:135
+#: user/models.py:135
 msgid "Invitation Token"
 msgstr "邀请令牌"
 
-#: backend/user/models.py:145
+#: user/models.py:145
 msgid "Activated"
 msgstr "已激活"
 
-#: backend/user/models.py:153
+#: user/models.py:153
 msgid "Team Invitation"
 msgstr "团队邀请"
 
-#: backend/user/models.py:154
+#: user/models.py:154
 msgid "Team Invitations"
 msgstr "团队邀请列表"
 
-#: backend/user/models.py:173
+#: user/models.py:173
 msgid "Last Used At"
 msgstr "最后使用时间"
 
-#: backend/user/models.py:182
+#: user/models.py:182
 msgid "Team API Key"
 msgstr "团队API密钥"
 
-#: backend/user/models.py:183
+#: user/models.py:183
 msgid "Team API Keys"
 msgstr "团队API密钥列表"
 
-#: backend/user/serializers.py:23
+#: user/serializers.py:24
 msgid "Email already exists"
 msgstr "邮箱已存在"
 
-#: backend/user/serializers.py:74 backend/user/serializers.py:76
+#: user/serializers.py:75 user/serializers.py:77
 msgid "Invalid email or password"
 msgstr "无效的邮箱或密码"
 
-#: backend/user/serializers.py:79
+#: user/serializers.py:80
 msgid "Email is not verified"
 msgstr "邮箱未验证"
 
-#: backend/user/services.py:146
+#: user/services.py:171
 msgid "User is already a member of the team"
 msgstr ""
 
-#: backend/user/services.py:237
+#: user/services.py:266
 msgid "User does not exist"
 msgstr "用户不存在"
 
-#: backend/user/views.py:40 backend/user/views.py:41
+#: user/services.py:304
+msgid "Signup is not active"
+msgstr ""
+
+#: user/views.py:41 user/views.py:42
 msgid "Install WaterCrawl"
 msgstr "安装WaterCrawl"
 
-#: backend/user/views.py:69 backend/user/views.py:70 backend/user/views.py:109
-#: backend/user/views.py:110
+#: user/views.py:70 user/views.py:71 user/views.py:111 user/views.py:112
 msgid "Register a new user"
 msgstr "注册新用户"
 
-#: backend/user/views.py:94 backend/user/views.py:95
+#: user/views.py:96 user/views.py:97
 msgid "Verify invitation"
 msgstr "验证邀请"
 
-#: backend/user/views.py:138
+#: user/views.py:142
 msgid "You can not register you already have an account"
 msgstr "您无法注册，您已经有一个账户"
 
-#: backend/user/views.py:144
-msgid "Emails do not match"
-msgstr "邮箱不匹配"
+#: user/views.py:150
+msgid "Emails do not match the invitation email. you have to register with the email that was invited"
+msgstr ""
 
-#: backend/user/views.py:159 backend/user/views.py:160
+#: user/views.py:168 user/views.py:169
 msgid "Authenticate using email and password"
 msgstr "使用邮箱和密码进行身份验证"
 
-#: backend/user/views.py:191 backend/user/views.py:192
+#: user/views.py:200 user/views.py:201
 msgid "Send a verification email"
 msgstr "发送验证邮件"
 
-#: backend/user/views.py:218 backend/user/views.py:219
+#: user/views.py:227 user/views.py:228
 msgid "Authenticate using OAuth"
 msgstr "使用OAuth进行身份验证"
 
-#: backend/user/views.py:244
+#: user/views.py:253
 msgid "Invalid token"
 msgstr "无效的令牌"
 
-#: backend/user/views.py:257 backend/user/views.py:258
+#: user/views.py:266 user/views.py:267
 msgid "Send a forgot password email"
 msgstr "发送忘记密码邮件"
 
-#: backend/user/views.py:278 backend/user/views.py:279
+#: user/views.py:287 user/views.py:288
 msgid "Verify reset password token"
 msgstr "验证密码重置令牌"
 
-#: backend/user/views.py:285 backend/user/views.py:286
+#: user/views.py:294 user/views.py:295
 msgid "Reset password"
 msgstr "重置密码"
 
-#: backend/user/views.py:314 backend/user/views.py:315
+#: user/views.py:323 user/views.py:324
 msgid "Verify email"
 msgstr "验证邮箱"
 
-#: backend/user/views.py:348
+#: user/views.py:357
 msgid "Get user profile"
 msgstr "获取用户资料"
 
-#: backend/user/views.py:349
+#: user/views.py:358
 msgid "Get the current user profile"
 msgstr "获取当前用户资料"
 
-#: backend/user/views.py:353 backend/user/views.py:354
+#: user/views.py:362 user/views.py:363
 msgid "Update user profile"
 msgstr "更新用户资料"
 
-#: backend/user/views.py:376 backend/user/views.py:377
+#: user/views.py:385 user/views.py:386
 msgid "Get my invitations"
 msgstr "获取我的邀请"
 
-#: backend/user/views.py:381 backend/user/views.py:382
+#: user/views.py:390 user/views.py:391
 msgid "Accept an invitation"
 msgstr "接受邀请"
 
-#: backend/user/views.py:408 backend/user/views.py:409
+#: user/views.py:417 user/views.py:418
 msgid "Create a new team"
 msgstr "创建新团队"
 
-#: backend/user/views.py:413 backend/user/views.py:414
+#: user/views.py:422 user/views.py:423
 msgid "Get a team"
 msgstr "获取团队"
 
-#: backend/user/views.py:418 backend/user/views.py:419
+#: user/views.py:427 user/views.py:428
 msgid "Update a team"
 msgstr "更新团队"
 
-#: backend/user/views.py:423 backend/user/views.py:424
+#: user/views.py:432 user/views.py:433
 msgid "List teams"
 msgstr "列出团队"
 
-#: backend/user/views.py:428
+#: user/views.py:437
 msgid "Get/Update the current team"
 msgstr "获取/更新当前团队"
 
-#: backend/user/views.py:429
+#: user/views.py:438
 msgid "Get the current team"
 msgstr "获取当前团队"
 
-#: backend/user/views.py:434 backend/user/views.py:435
+#: user/views.py:443 user/views.py:444
 msgid "Invite a user to the current team"
 msgstr "邀请用户加入当前团队"
 
-#: backend/user/views.py:441 backend/user/views.py:442
+#: user/views.py:450 user/views.py:451
 msgid "List invitations to the current team"
 msgstr "列出当前团队的邀请"
 
-#: backend/user/views.py:512 backend/user/views.py:513
+#: user/views.py:456 user/views.py:457
+msgid "Revoke an invitation"
+msgstr ""
+
+#: user/views.py:462
+msgid "Get the invitation URL"
+msgstr ""
+
+#: user/views.py:463
+msgid "Get the invitation URL for the selected invitation"
+msgstr ""
+
+#: user/views.py:468
+msgid "Resend the invitation email"
+msgstr ""
+
+#: user/views.py:469
+msgid "Resend the invitation email to the invited user"
+msgstr ""
+
+#: user/views.py:580 user/views.py:581
 msgid "Create a new API key"
 msgstr "创建新的API密钥"
 
-#: backend/user/views.py:517 backend/user/views.py:518
+#: user/views.py:585 user/views.py:586
 msgid "List API keys"
 msgstr "列出API密钥"
 
-#: backend/user/views.py:522 backend/user/views.py:523
+#: user/views.py:590 user/views.py:591
 msgid "Delete an API key"
 msgstr "删除API密钥"
 
-#: backend/user/views.py:550 backend/user/views.py:551
+#: user/views.py:618 user/views.py:619
 msgid "List team members"
 msgstr "列出团队成员"
 
-#: backend/user/views.py:555 backend/user/views.py:556
+#: user/views.py:623 user/views.py:624
 msgid "Delete a team member"
 msgstr "删除团队成员"
 
-#: backend/user/views.py:573
+#: user/views.py:641
 msgid "You can not delete the owner of the team"
 msgstr "您不能删除团队所有者"
 
-#: backend/user/views.py:579 backend/user/views.py:580
+#: user/views.py:647 user/views.py:648
 msgid "Refresh token"
 msgstr "刷新令牌"
 
-#: backend/user/views.py:590 backend/user/views.py:591
+#: user/views.py:658 user/views.py:659
 msgid "Verify token"
 msgstr "验证令牌"
 

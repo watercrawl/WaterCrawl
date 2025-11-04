@@ -95,10 +95,10 @@
     },
     "created": "Criada",
     "createNew": "Criar Nova Chave API",
+    "deleteKey": "Excluir Chave API",
     "deleteConfirmTitle": "Excluir Chave API",
     "deleteConfirmMessage": "Tem certeza de que deseja excluir a chave API \"{{name}}\"?",
     "deleteWarning": "Esta ação não pode ser desfeita. Qualquer aplicação que usar esta chave vai parar de funcionar imediatamente.",
-    "deleteKey": "Excluir Chave API",
     "hideKey": "Ocultar Chave API",
     "keyName": "Nome da Chave",
     "keyNamePlaceholder": "Digite um nome para sua chave API",
@@ -270,8 +270,10 @@
       "dark": "Escuro",
       "system": "Sistema"
     },
+    "backToHome": "Back to Home",
     "cancel": "Cancelar",
     "close": "Fechar",
+    "confirmError": "Please enter the correct value to confirm deletion",
     "select": "Selecionar",
     "selectAll": "Selecionar tudo",
     "deselectAll": "Desselecionar tudo",
@@ -1032,7 +1034,21 @@
     "viewAll": "Ver todas as notificações",
     "invitation": {
       "title": "Convite para equipe",
-      "message": "Você foi convidado para se juntar a {{teamName}}"
+      "message": "Você foi convidado para se juntar a {{teamName}}",
+      "verifying": "Verifying invitation...",
+      "invalidTitle": "Invalid Invitation",
+      "invalidMessage": "This invitation code is invalid or has expired.",
+      "loginRequired": "Please login with the invited email address to accept this invitation.",
+      "mismatchLoginTitle": "Account Mismatch",
+      "mismatchLoginMessage": "This invitation is for a different account. Please logout and login with the correct account.",
+      "mismatchRegisterTitle": "Account Mismatch",
+      "mismatchRegisterMessage": "This invitation is for a new user. Please logout and register with the invited email address.",
+      "logoutAndLogin": "Logout and Login with Correct Account",
+      "logoutAndRegister": "Logout and Register with Invited Email",
+      "acceptedTitle": "Invitation Accepted!",
+      "acceptedMessage": "You have successfully joined the team. Redirecting to dashboard...",
+      "confirmTitle": "Accept Team Invitation",
+      "confirmMessage": "You're about to accept an invitation to join a team."
     }
   },
   "processing": {
@@ -1066,6 +1082,7 @@
     },
     "invitations": {
       "acceptButton": "Aceitar",
+      "accepting": "Accepting...",
       "acceptError": "Falha ao aceitar convite",
       "acceptSuccess": "Convite aceito com sucesso",
       "loadError": "Falha ao carregar convites",

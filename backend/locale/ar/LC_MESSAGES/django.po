@@ -3,15 +3,14 @@ msgstr ""
 "Project-Id-Version: watercrawl\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-11-03 22:05+0000\n"
-"PO-Revision-Date: 2025-10-12 19:43\n"
+"PO-Revision-Date: 2025-11-04 19:22\n"
 "Last-Translator: \n"
 "Language-Team: Arabic\n"
 "Language: ar_SA\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
-"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5);\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5);\n"
 "X-Crowdin-Project: watercrawl\n"
 "X-Crowdin-Project-ID: 819230\n"
 "X-Crowdin-Language: ar\n"
@@ -71,74 +70,44 @@ msgid "conversation"
 msgstr "المحادثة"
 
 #: common/docs.py:3
-msgid ""
-"\n"
-"# Introduction\n"
-"\n"
-"This documentation covers all the external APIs that can be accessed using a "
-"Team API Key. These APIs are designed for integration with external systems "
-"and services.\n"
-"\n"
-"## Authentication\n"
-"\n"
-"All endpoints in this documentation require authentication using an API Key. "
-"To authenticate your requests:\n"
-"\n"
-"1. Generate an API Key from the [API Keys Dashboard](https://"
-"app.watercrawl.dev/dashboard/api-keys)\n"
-"2. Include the API Key in your requests using the `X-API-Key` header:\n"
-"\n"
+msgid "\n"
+"# Introduction\n\n"
+"This documentation covers all the external APIs that can be accessed using a Team API Key. These APIs are designed for integration with external systems and services.\n\n"
+"## Authentication\n\n"
+"All endpoints in this documentation require authentication using an API Key. To authenticate your requests:\n\n"
+"1. Generate an API Key from the [API Keys Dashboard](https://app.watercrawl.dev/dashboard/api-keys)\n"
+"2. Include the API Key in your requests using the `X-API-Key` header:\n\n"
 "```bash\n"
 "curl -H \"X-API-Key: your_api_key_here\" https://api.watercrawl.dev/v1/...\n"
-"```\n"
-"\n"
+"```\n\n"
 "### Important Notes:\n"
 "- Keep your API Key secure and never share it publicly\n"
 "- You can generate multiple API Keys for different purposes\n"
 "- You can revoke API Keys at any time from the dashboard\n"
-"- Each API Key is associated with a specific team\n"
-"\n"
+"- Each API Key is associated with a specific team\n\n"
 "## Rate Limiting\n"
-"API requests are rate-limited based on your team's plan. Please refer to "
-"your plan details for specific limits.\n"
-msgstr ""
-"\n"
-"# مقدمة\n"
-"\n"
-"تغطي هذه الوثائق جميع واجهات API الخارجية التي يمكن الوصول إليها باستخدام "
-"مفتاح API للفريق. تم تصميم هذه واجهات API للتكامل مع الأنظمة الخارجية "
-"والخدمات.\n"
-"\n"
-"## المصادقة\n"
-"\n"
-"تتطلب جميع نقاط النهاية في هذه الوثائق المصادقة باستخدام مفتاح API. للمصادقة "
-"على طلباتك:\n"
-"\n"
-"1. أنشئ مفتاح API من [لوحة مفاتيح API](https://app.watercrawl.dev/dashboard/"
-"api-keys)\n"
-"2. قم بتضمين مفتاح API في طلباتك باستخدام رأس `X-API-Key`:\n"
-"\n"
+"API requests are rate-limited based on your team's plan. Please refer to your plan details for specific limits.\n"
+msgstr "\n"
+"# مقدمة\n\n"
+"تغطي هذه الوثائق جميع واجهات API الخارجية التي يمكن الوصول إليها باستخدام مفتاح API للفريق. تم تصميم هذه واجهات API للتكامل مع الأنظمة الخارجية والخدمات.\n\n"
+"## المصادقة\n\n"
+"تتطلب جميع نقاط النهاية في هذه الوثائق المصادقة باستخدام مفتاح API. للمصادقة على طلباتك:\n\n"
+"1. أنشئ مفتاح API من [لوحة مفاتيح API](https://app.watercrawl.dev/dashboard/api-keys)\n"
+"2. قم بتضمين مفتاح API في طلباتك باستخدام رأس `X-API-Key`:\n\n"
 "```bash\n"
 "curl -H \"X-API-Key: your_api_key_here\" https://api.watercrawl.dev/v1/...\n"
-"```\n"
-"\n"
+"```\n\n"
 "### ملاحظات هامة:\n"
 "- حافظ على مفتاح API الخاص بك آمناً ولا تشاركه علناً\n"
 "- يمكنك إنشاء مفاتيح API متعددة لأغراض مختلفة\n"
 "- يمكنك إلغاء مفاتيح API في أي وقت من لوحة التحكم\n"
-"- كل مفتاح API مرتبط بفريق محدد\n"
-"\n"
+"- كل مفتاح API مرتبط بفريق محدد\n\n"
 "## تحديد المعدل\n"
-"تخضع طلبات API لتحديد المعدل بناءً على خطة فريقك. يرجى الرجوع إلى تفاصيل خطتك "
-"للحدود المحددة.\n"
+"تخضع طلبات API لتحديد المعدل بناءً على خطة فريقك. يرجى الرجوع إلى تفاصيل خطتك للحدود المحددة.\n"
 
 #: common/docs.py:30
-msgid ""
-"API Key for team authentication. Generate from https://app.watercrawl.dev/"
-"dashboard/api-keys"
-msgstr ""
-"مفتاح API لمصادقة الفريق. قم بإنشائه من https://app.watercrawl.dev/dashboard/"
-"api-keys"
+msgid "API Key for team authentication. Generate from https://app.watercrawl.dev/dashboard/api-keys"
+msgstr "مفتاح API لمصادقة الفريق. قم بإنشائه من https://app.watercrawl.dev/dashboard/api-keys"
 
 #: common/handlers.py:20
 msgid "An unexpected error occurred."
@@ -313,9 +282,7 @@ msgid "Filter crawl results by date"
 msgstr "تصفية نتائج الزحف حسب التاريخ"
 
 #: core/docs.py:312
-msgid ""
-"Format of the download file. Default: json. Available formats: markdown, "
-"json."
+msgid "Format of the download file. Default: json. Available formats: markdown, json."
 msgstr "تنسيق ملف التنزيل. افتراضي: json. التنسيقات المتاحة: markdown, json."
 
 #: core/models.py:23
@@ -1331,11 +1298,8 @@ msgid "List all provider configs (Global and Team-specific)"
 msgstr "عرض جميع تهيئات المزود (عامة وخاصة بالفريق)"
 
 #: llm/views.py:59
-msgid ""
-"Get all available provider configurations including global and team-specific "
-"ones."
-msgstr ""
-"الحصول على جميع تهيئات المزود المتاحة بما في ذلك العامة والخاصة بالفريق."
+msgid "Get all available provider configurations including global and team-specific ones."
+msgstr "الحصول على جميع تهيئات المزود المتاحة بما في ذلك العامة والخاصة بالفريق."
 
 #: llm/views.py:65
 msgid "Test provider config"
@@ -1523,11 +1487,8 @@ msgid "Daily page credit"
 msgstr "رصيد الصفحات اليومي"
 
 #: plan/models.py:40
-msgid ""
-"Number of pages that can be crawled per day. resets at midnight. -1 for "
-"unlimited"
-msgstr ""
-"عدد الصفحات التي يمكن زحفها يومياً. يتم التصفير عند منتصف الليل. -1 لغير محدود"
+msgid "Number of pages that can be crawled per day. resets at midnight. -1 for unlimited"
+msgstr "عدد الصفحات التي يمكن زحفها يومياً. يتم التصفير عند منتصف الليل. -1 لغير محدود"
 
 #: plan/models.py:45
 msgid "Crawl max depth"
@@ -1735,92 +1696,62 @@ msgstr "لا يمكن تقييد طلب دون فريق مرفق به."
 
 #: plan/validators.py:42
 #, python-brace-format
-msgid ""
-"You have no more daily credit left in your plan. for current request you "
-"need {} credits."
+msgid "You have no more daily credit left in your plan. for current request you need {} credits."
 msgstr "لم يتبق لديك رصيد يومي في خطتك. للطلب الحالي تحتاج إلى {} رصيد."
 
 #: plan/validators.py:49
 #, python-brace-format
-msgid ""
-"You just have {} daily credit left in your plan. for current request you "
-"need {} credits."
+msgid "You just have {} daily credit left in your plan. for current request you need {} credits."
 msgstr "لديك فقط {} رصيد يومي متبقٍ في خطتك. للطلب الحالي تحتاج إلى {} رصيد."
 
 #: plan/validators.py:62
 #, python-brace-format
-msgid ""
-"You have no more pages left in your plan. for current request you need {} "
-"credits."
+msgid "You have no more pages left in your plan. for current request you need {} credits."
 msgstr "لم يتبق لديك صفحات في خطتك. للطلب الحالي تحتاج إلى {} رصيد."
 
 #: plan/validators.py:69
 #, python-brace-format
-msgid ""
-"You just have {} credits left in your plan. for current request you need {} "
-"credits."
+msgid "You just have {} credits left in your plan. for current request you need {} credits."
 msgstr "لديك فقط {} رصيد متبقٍ في خطتك. للطلب الحالي تحتاج إلى {} رصيد."
 
 #: plan/validators.py:111
-msgid ""
-"With the current plan you cannot use this proxy server. Upgrade your plan to "
-"use Premium proxy servers."
-msgstr ""
-"مع الخطة الحالية لا يمكنك استخدام خادم البروكسي هذا. قم بترقية خطتك لاستخدام "
-"خوادم بروكسي مميزة."
+msgid "With the current plan you cannot use this proxy server. Upgrade your plan to use Premium proxy servers."
+msgstr "مع الخطة الحالية لا يمكنك استخدام خادم البروكسي هذا. قم بترقية خطتك لاستخدام خوادم بروكسي مميزة."
 
 #: plan/validators.py:125
 #, python-brace-format
-msgid ""
-"Your plan does not support more than {} depth. change the max depth in "
-"spider options."
+msgid "Your plan does not support more than {} depth. change the max depth in spider options."
 msgstr "خطتك لا تدعم أكثر من {} عمق. غيّر الحد الأقصى للعمق في خيارات العنكبوت."
 
 #: plan/validators.py:138
 #, python-brace-format
-msgid ""
-"Your plan does not support more than {} pages per crawl. change the page "
-"limit in spider options."
-msgstr ""
-"خطتك لا تدعم أكثر من {} صفحة لكل زحف. غيّر حد الصفحات في خيارات العنكبوت."
+msgid "Your plan does not support more than {} pages per crawl. change the page limit in spider options."
+msgstr "خطتك لا تدعم أكثر من {} صفحة لكل زحف. غيّر حد الصفحات في خيارات العنكبوت."
 
 #: plan/validators.py:160
 #, python-brace-format
-msgid ""
-"Your plan does not support more than {} concurrent crawls. Wait for them to "
-"finish."
+msgid "Your plan does not support more than {} concurrent crawls. Wait for them to finish."
 msgstr "خطتك لا تدعم أكثر من {} زحف متزامن. انتظر حتى ينتهوا."
 
 #: plan/validators.py:196
 #, python-brace-format
-msgid ""
-"Your plan does not support more than {} concurrent searches. Wait for them "
-"to finish."
+msgid "Your plan does not support more than {} concurrent searches. Wait for them to finish."
 msgstr "خطتك لا تدعم أكثر من {} بحث متزامن. انتظر حتى ينتهوا."
 
 #: plan/validators.py:229
 #, python-brace-format
-msgid ""
-"Your plan does not support more than {} concurrent sitemaps. Wait for them "
-"to finish."
+msgid "Your plan does not support more than {} concurrent sitemaps. Wait for them to finish."
 msgstr "خطتك لا تدعم أكثر من {} خريطة موقع متزامنة. انتظر حتى ينتهوا."
 
 #: plan/validators.py:258
 #, python-brace-format
-msgid ""
-"Your plan does not support more than {} knowledge bases. You can not create "
-"more."
+msgid "Your plan does not support more than {} knowledge bases. You can not create more."
 msgstr "خطتك لا تدعم أكثر من {} قاعدة معرفة. لا يمكنك إنشاء المزيد."
 
 #: plan/validators.py:291
 #, python-brace-format
-msgid ""
-"Your current plan does not support more than {} documents per knowledge "
-"base. This knowledge base has {} documents left. Your request will add {} "
-"documents."
-msgstr ""
-"خطتك الحالية لا تدعم أكثر من {} مستند لكل قاعدة معرفة. هذه القاعدة تبقى لها "
-"{} مستند. طلبك سيضيف {} مستند."
+msgid "Your current plan does not support more than {} documents per knowledge base. This knowledge base has {} documents left. Your request will add {} documents."
+msgstr "خطتك الحالية لا تدعم أكثر من {} مستند لكل قاعدة معرفة. هذه القاعدة تبقى لها {} مستند. طلبك سيضيف {} مستند."
 
 #: plan/validators.py:386
 msgid "You have reached the maximum number of users for your plan."
@@ -1831,12 +1762,8 @@ msgid "List available plans"
 msgstr "عرض الخطط المتاحة"
 
 #: plan/views.py:24
-msgid ""
-"Returns a list of all active subscription plans with their details including "
-"pricing, features and limits."
-msgstr ""
-"يعيد قائمة بجميع خطط الاشتراك النشطة مع تفاصيلها بما في ذلك الأسعار والميزات "
-"والحدود."
+msgid "Returns a list of all active subscription plans with their details including pricing, features and limits."
+msgstr "يعيد قائمة بجميع خطط الاشتراك النشطة مع تفاصيلها بما في ذلك الأسعار والميزات والحدود."
 
 #: plan/views.py:29
 msgid "Get plan details"
@@ -1907,8 +1834,7 @@ msgid "Handle Stripe webhooks"
 msgstr "معالجة webhooks لـ Stripe"
 
 #: plan/views.py:221
-msgid ""
-"Processes webhook events from Stripe for subscription and payment updates."
+msgid "Processes webhook events from Stripe for subscription and payment updates."
 msgstr "يعالج أحداث webhook من Stripe لتحديثات الاشتراك والدفع."
 
 #: plan/views.py:243
@@ -2092,12 +2018,8 @@ msgid "You can not register you already have an account"
 msgstr "لا يمكنك التسجيل لديك بالفعل حساب"
 
 #: user/views.py:150
-msgid ""
-"Emails do not match the invitation email. you have to register with the "
-"email that was invited"
-msgstr ""
-"البريد الإلكتروني لا يطابق بريد الدعوة. يجب عليك التسجيل بالبريد الإلكتروني "
-"الذي تم دعوته"
+msgid "Emails do not match the invitation email. you have to register with the email that was invited"
+msgstr "البريد الإلكتروني لا يطابق بريد الدعوة. يجب عليك التسجيل بالبريد الإلكتروني الذي تم دعوته"
 
 #: user/views.py:168 user/views.py:169
 msgid "Authenticate using email and password"
@@ -2184,32 +2106,24 @@ msgid "List invitations to the current team"
 msgstr "عرض الدعوات إلى الفريق الحالي"
 
 #: user/views.py:456 user/views.py:457
-#, fuzzy
-#| msgid "Accept an invitation"
 msgid "Revoke an invitation"
-msgstr "قبول دعوة"
+msgstr ""
 
 #: user/views.py:462
-#, fuzzy
-#| msgid "Get my invitations"
 msgid "Get the invitation URL"
-msgstr "الحصول على دعواتي"
+msgstr ""
 
 #: user/views.py:463
 msgid "Get the invitation URL for the selected invitation"
 msgstr ""
 
 #: user/views.py:468
-#, fuzzy
-#| msgid "Send a verification email"
 msgid "Resend the invitation email"
-msgstr "إرسال بريد إلكتروني للتحقق"
+msgstr ""
 
 #: user/views.py:469
-#, fuzzy
-#| msgid "List invitations to the current team"
 msgid "Resend the invitation email to the invited user"
-msgstr "عرض الدعوات إلى الفريق الحالي"
+msgstr ""
 
 #: user/views.py:580 user/views.py:581
 msgid "Create a new API key"
@@ -2242,3 +2156,4 @@ msgstr "تحديث الرمز"
 #: user/views.py:658 user/views.py:659
 msgid "Verify token"
 msgstr "التحقق من الرمز"
+
