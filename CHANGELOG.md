@@ -5,6 +5,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.11.0] - 2025-01-04
+
+### Added
+- **Sentry Error Tracking** - Integrated Sentry SDK for comprehensive error tracking and monitoring
+  - Added Sentry integration for both frontend and backend
+  - Configured Sentry for ASGI and Celery workers for complete error coverage
+  - Added source map uploads in Docker build for better error diagnostics
+  - Enhanced error handler to properly report unhandled exceptions to Sentry
+  - Added Sentry environment variables and configuration to docker-compose and .env files
+
+### Changed
+- **Docker Build Workflow** - Improved Docker build process and frontend caching
+  - Enhanced Docker build workflow with better caching strategies
+  - Added timestamp precision to Docker image tags (YYYYMMDD-HHMMSS format)
+  - Optimized frontend build caching for faster deployments
+- **Runtime Configuration** - Enhanced runtime environment handling
+  - Added support for loading environment variables from `/run/secrets/app.secret` and `/app.env` files
+  - Removed hardcoded DUMMY_URL placeholder approach in favor of runtime configuration
+  - Implemented `window.__APP_CONFIG__` for dynamic frontend configuration
+  - Moved global TypeScript interface declaration for `window.__APP_CONFIG__` to env.ts
+  - Simplified API_URL configuration with runtime loading
+- **Frontend Version Handling** - Replaced version with build-time version
+  - Build-time version injection for better reliability
+  - Eliminated need for separate config.js endpoint
+
+
+### Fixed
+- **API Base URL** - Standardized API base URL environment variable naming for consistency
+- **App Version** - Fixed app version display and tracking issues
+- **Dependencies** - Updated frontend and backend dependencies for compatibility and security
+
+### Infrastructure
+- **Enhanced Error Tracking** - Comprehensive Sentry integration across all services
+- **Improved Deployment** - Better Docker image tagging and version management
+- **Configuration Management** - Flexible runtime configuration with secret file support
+
 ## [0.10.2] - 2025-09-02
 
 ### Added
