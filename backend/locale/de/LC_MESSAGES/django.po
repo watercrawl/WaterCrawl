@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: watercrawl\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-11-03 22:05+0000\n"
-"PO-Revision-Date: 2025-11-03 23:22\n"
+"PO-Revision-Date: 2025-11-04 19:22\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Language: de_DE\n"
@@ -1983,7 +1983,7 @@ msgstr "Benutzer existiert nicht"
 
 #: user/services.py:304
 msgid "Signup is not active"
-msgstr ""
+msgstr "Registrierung ist nicht aktiv"
 
 #: user/views.py:41 user/views.py:42
 msgid "Install WaterCrawl"
@@ -2003,7 +2003,7 @@ msgstr "Sie können sich nicht registrieren, Sie haben bereits ein Konto"
 
 #: user/views.py:150
 msgid "Emails do not match the invitation email. you have to register with the email that was invited"
-msgstr ""
+msgstr "E-Mail-Adressen stimmen nicht mit der Einladungs-E-Mail überein. Sie müssen sich mit der E-Mail-Adresse registrieren, die eingeladen wurde"
 
 #: user/views.py:168 user/views.py:169
 msgid "Authenticate using email and password"
