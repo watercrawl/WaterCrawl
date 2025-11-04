@@ -199,7 +199,7 @@ const SettingsPage: React.FC = () => {
         invitationsListRef.current?.reloadInvitations();
       })
       .catch(error => {
-        if (error.response?.status === 400) {
+        if (error.response?.status === 400 || error.response?.status === 403) {
           const errorData = error.response.data as ErrorResponse;
           toast.error(errorData.message);
         } else {

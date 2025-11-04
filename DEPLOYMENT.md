@@ -202,6 +202,7 @@ These settings control user authentication:
 | `IS_ENTERPRISE_MODE_ACTIVE` | Enterprise mode | `False` | No |
 | `IS_LOGIN_ACTIVE` | Enable login functionality | `True` | No |
 | `IS_SIGNUP_ACTIVE` | Enable signup functionality | `False` | No |
+| `IS_EMAIL_VERIFICATION_ACTIVE` | Enable email verification | `True` | No |
 | `IS_GITHUB_LOGIN_ACTIVE` | Enable GitHub login | `False` | No |
 | `IS_GOOGLE_LOGIN_ACTIVE` | Enable Google login | `False` | No |
 | `GITHUB_CLIENT_ID` | GitHub OAuth client ID | Empty | Required for GitHub login |
@@ -313,11 +314,11 @@ These settings control the React frontend:
 
 | Variable | Description | Default | Required? |
 |----------|-------------|---------|-----------|
-| `API_BASE_URL` | API base URL for frontend | `/api` | No |
+| `API_BASE_URL` | API base URL for frontend | `""` | No |
 
 **Setup Steps:**
-1. The default value `/api` works with the Nginx configuration
-2. You can use an absolute URL (e.g., `http://localhost/api`) or a relative URL (e.g., `/api`)
+1. The default value `""` works with the Nginx configuration
+2. You can use an absolute URL (e.g., `http://localhost/`) or a relative URL (e.g., `"/api"`)
 
 ## Deployment Steps
 

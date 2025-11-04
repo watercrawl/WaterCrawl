@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -8,9 +8,10 @@ import { FormInput } from '../shared/FormInput';
 import { ValidationMessage } from '../shared/ValidationMessage';
 import { OAuthButtons } from './OAuthButtons';
 import { authApi } from '../../services/api/auth';
-import { RegisterRequest, VerifyInvitationResponse } from '../../types/auth';
+import { RegisterRequest } from '../../types/auth';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import { useSettings } from '../../contexts/SettingsProvider';
 
 const passwordStrengthRegex = {
   hasNumber: /\d/,
@@ -54,7 +55,7 @@ type FormData = {
 };
 
 interface SignupFormProps {
-  invitation?: VerifyInvitationResponse | null;
+  invitationCode?: string;
 }
 
 const getPasswordStrength = (password: string): { score: number; message: string } => {
@@ -87,37 +88,22 @@ const getPasswordStrength = (password: string): { score: number; message: string
   };
 };
 
-export const SignupForm: React.FC<SignupFormProps> = ({ invitation }) => {
+export const SignupForm: React.FC<SignupFormProps> = ({ invitationCode }) => {
   const { t } = useTranslation();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
+  const { settings } = useSettings();
 
-  const defaultValues = React.useMemo(() => {
-    if (invitation) {
-      return {
-        email: invitation.email,
-      };
-    }
-    return {};
-  }, [invitation]);
+
 
   const methods = useForm<FormData>({
     resolver: yupResolver(getSchema(t)),
     mode: 'onChange',
-    defaultValues,
   });
 
-  useEffect(() => {
-    if (invitation) {
-      methods.reset({
-        ...methods.getValues(),
-        email: invitation.email,
-      });
-    }
-  }, [invitation, methods]);
 
   const {
     handleSubmit,
@@ -142,15 +128,15 @@ export const SignupForm: React.FC<SignupFormProps> = ({ invitation }) => {
     };
 
     let request;
-    if (invitation) {
-      request = authApi.registerWithInvitation(registerRequest, invitation.invitation_code);
+    if (invitationCode) {
+      request = authApi.registerWithInvitation(registerRequest, invitationCode);
     } else {
       request = authApi.register(registerRequest);
     }
 
     request
-      .then(response => {
-        if (response.email_verified) {
+      .then(_response => {
+        if (!settings?.is_email_verification_active) {
           toast.success(t('auth.signup.success'), {
             duration: 3000,
           });
@@ -252,7 +238,6 @@ export const SignupForm: React.FC<SignupFormProps> = ({ invitation }) => {
               name="email"
               type="email"
               error={errors.email?.message}
-              disabled={!!invitation}
               required
             />
 
@@ -308,9 +293,8 @@ export const SignupForm: React.FC<SignupFormProps> = ({ invitation }) => {
             <button
               type="submit"
               disabled={isLoading}
-              className={`flex w-full justify-center rounded-md border border-transparent bg-primary px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
-                isLoading ? 'cursor-not-allowed opacity-50' : ''
-              }`}
+              className={`flex w-full justify-center rounded-md border border-transparent bg-primary px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${isLoading ? 'cursor-not-allowed opacity-50' : ''
+                }`}
             >
               {isLoading ? t('auth.signup.creating') : t('auth.signup.signupButton')}
             </button>
@@ -327,7 +311,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ invitation }) => {
             </div>
 
             <div className="mt-6">
-              <OAuthButtons />
+              {settings?.is_signup_active && <OAuthButtons />}
             </div>
           </div>
         </div>

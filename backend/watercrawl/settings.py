@@ -289,6 +289,9 @@ IS_ENTERPRISE_MODE_ACTIVE = env("IS_ENTERPRISE_MODE_ACTIVE", cast=bool, default=
 FRONTEND_URL = env("FRONTEND_URL", cast=str, default="http://localhost:5173")
 IS_LOGIN_ACTIVE = env("IS_LOGIN_ACTIVE", cast=bool, default=True)
 IS_SIGNUP_ACTIVE = env("IS_SIGNUP_ACTIVE", cast=bool, default=True)
+IS_EMAIL_VERIFICATION_ACTIVE = env(
+    "IS_EMAIL_VERIFICATION_ACTIVE", cast=bool, default=True
+)
 IS_GITHUB_LOGIN_ACTIVE = env("IS_GITHUB_LOGIN_ACTIVE", cast=bool, default=True)
 IS_GOOGLE_LOGIN_ACTIVE = env("IS_GOOGLE_LOGIN_ACTIVE", cast=bool, default=True)
 
@@ -418,3 +421,12 @@ KNOWLEDGE_BASE_KEYWORD_COUNT = env("KNOWLEDGE_BASE_KEYWORD_COUNT", cast=int, def
 KNOWLEDGE_BASE_OPENSEARCH_URL = env.list(
     "KNOWLEDGE_BASE_OPENSEARCH_URL", cast=str, default=[]
 )
+
+SENTRY_DSN = env("SENTRY_DSN", cast=str, default="")
+SENTRY_TRACES_SAMPLE_RATE = env("SENTRY_TRACES_SAMPLE_RATE", cast=float, default=1.0)
+SENTRY_SEND_DEFAULT_PII = env("SENTRY_SEND_DEFAULT_PII", cast=bool, default=False)
+SENTRY_ENABLE_LOGS = env("SENTRY_ENABLE_LOGS", cast=bool, default=True)
+SENTRY_HTTP_PROXY = env("SENTRY_HTTP_PROXY", cast=str, default="")
+SENTRY_HTTPS_PROXY = env("SENTRY_HTTPS_PROXY", cast=str, default="")
+SENTRY_ENVIRONMENT = env("SENTRY_ENVIRONMENT", cast=str, default="development")
+SENTRY_DEBUG = env("SENTRY_DEBUG", cast=bool, default=False)

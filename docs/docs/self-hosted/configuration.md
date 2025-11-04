@@ -86,6 +86,7 @@ WaterCrawl uses a single `.env` file in the `docker` directory for all configura
 | `IS_ENTERPRISE_MODE_ACTIVE` | `False` | Enable enterprise mode features |
 | `IS_LOGIN_ACTIVE` | `True` | Enable login functionality |
 | `IS_SIGNUP_ACTIVE` | `False` | Enable signup functionality |
+| `IS_EMAIL_VERIFICATION_ACTIVE` | `True` | Enable email verification |
 | `IS_GITHUB_LOGIN_ACTIVE` | `False` | Enable GitHub OAuth login |
 | `IS_GOOGLE_LOGIN_ACTIVE` | `False` | Enable Google OAuth login |
 | `GITHUB_CLIENT_ID` | `` | GitHub OAuth client ID |

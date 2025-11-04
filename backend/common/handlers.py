@@ -1,5 +1,6 @@
 import traceback
 
+import sentry_sdk
 from django.http import Http404
 from django.utils.translation import gettext_lazy as _
 from rest_framework import status, exceptions
@@ -63,6 +64,15 @@ def water_crawl_exception_handler(exc, context):
 
     else:
         traceback.print_exc()
+        # Mark the exception as unhandled for Sentry
+        event, hint = sentry_sdk.utils.event_from_exception(
+            exc,
+            client_options=sentry_sdk.Hub.current.client.options
+            if sentry_sdk.Hub.current.client
+            else None,
+            mechanism={"type": "django", "handled": False},  # <— key part
+        )
+        sentry_sdk.capture_event(event, hint=hint)
 
     # Override the default response with the custom response structure
     return Response(custom_response_data, status=custom_response_data["code"])

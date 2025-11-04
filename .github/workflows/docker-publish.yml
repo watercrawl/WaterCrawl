@@ -9,9 +9,37 @@ on:
       - '*'
 
 jobs:
+  generate-version:
+    name: Generate Version
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.vars.outputs.version }}
+      commit_hash: ${{ steps.vars.outputs.commit_hash }}
+      build_date: ${{ steps.vars.outputs.build_date }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set Version Variables
+        id: vars
+        run: |
+          TIMESTAMP=$(date +'%Y%m%d-%H%M%S')
+          if [[ ${{ github.ref }} == refs/heads/development ]]; then
+            VERSION="alpha-${TIMESTAMP}"
+          elif [[ ${{ github.ref }} == refs/heads/main ]]; then
+            VERSION="beta-${TIMESTAMP}"
+          elif [[ ${{ github.ref }} == refs/tags/* ]]; then
+            VERSION=${GITHUB_REF#refs/tags/}
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "commit_hash=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+          echo "build_date=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
+
   build-and-push-backend:
     name: Build and Push Backend Docker Image
     runs-on: ubuntu-latest
+    needs: generate-version
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -29,23 +57,17 @@ jobs:
       - name: Set Environment Variables
         id: vars-backend
         run: |
-          DATE=$(date +'%Y%m%d')
-          if [[ ${{ github.ref }} == refs/heads/development ]]; then
-            VERSION="alpha-${DATE}"
-            echo "TAG=$VERSION" >> $GITHUB_ENV
-            echo "DOCKER_TAGS=${{ secrets.DOCKER_USERNAME }}/watercrawl:$VERSION,${{ secrets.DOCKER_USERNAME }}/watercrawl:$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-          elif [[ ${{ github.ref }} == refs/heads/main ]]; then
-            VERSION="beta-${DATE}"
-            echo "TAG=$VERSION" >> $GITHUB_ENV
-            echo "DOCKER_TAGS=${{ secrets.DOCKER_USERNAME }}/watercrawl:$VERSION,${{ secrets.DOCKER_USERNAME }}/watercrawl:$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          VERSION="${{ needs.generate-version.outputs.version }}"
+          COMMIT_HASH="${{ needs.generate-version.outputs.commit_hash }}"
+          if [[ ${{ github.ref }} == refs/heads/development ]] || [[ ${{ github.ref }} == refs/heads/main ]]; then
+            echo "DOCKER_TAGS=${{ secrets.DOCKER_USERNAME }}/watercrawl:$VERSION,${{ secrets.DOCKER_USERNAME }}/watercrawl:$COMMIT_HASH" >> $GITHUB_ENV
           elif [[ ${{ github.ref }} == refs/tags/* ]]; then
-            VERSION=${GITHUB_REF#refs/tags/}
-            echo "TAG=$VERSION" >> $GITHUB_ENV
-            echo "DOCKER_TAGS=${{ secrets.DOCKER_USERNAME }}/watercrawl:$VERSION,${{ secrets.DOCKER_USERNAME }}/watercrawl:$(git rev-parse --short HEAD),${{ secrets.DOCKER_USERNAME }}/watercrawl:latest" >> $GITHUB_ENV
+            echo "DOCKER_TAGS=${{ secrets.DOCKER_USERNAME }}/watercrawl:$VERSION,${{ secrets.DOCKER_USERNAME }}/watercrawl:$COMMIT_HASH,${{ secrets.DOCKER_USERNAME }}/watercrawl:latest" >> $GITHUB_ENV
           fi
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-          echo "BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_ENV
+          echo "TAG=$VERSION" >> $GITHUB_ENV
+          echo "COMMIT_HASH=$COMMIT_HASH" >> $GITHUB_ENV
+          echo "BUILD_DATE=${{ needs.generate-version.outputs.build_date }}" >> $GITHUB_ENV
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v4
         with:
@@ -65,6 +87,7 @@ jobs:
   build-and-push-frontend:
     name: Build and Push Frontend Docker Image
     runs-on: ubuntu-latest
+    needs: generate-version
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -82,23 +105,17 @@ jobs:
       - name: Set Environment Variables
         id: vars-frontend
         run: |
-          DATE=$(date +'%Y%m%d')
-          if [[ ${{ github.ref }} == refs/heads/development ]]; then
-            VERSION="alpha-${DATE}"
-            echo "TAG=$VERSION" >> $GITHUB_ENV
-            echo "DOCKER_TAGS=${{ secrets.DOCKER_USERNAME }}/frontend:$VERSION,${{ secrets.DOCKER_USERNAME }}/frontend:$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-          elif [[ ${{ github.ref }} == refs/heads/main ]]; then
-            VERSION="beta-${DATE}"
-            echo "TAG=$VERSION" >> $GITHUB_ENV
-            echo "DOCKER_TAGS=${{ secrets.DOCKER_USERNAME }}/frontend:$VERSION,${{ secrets.DOCKER_USERNAME }}/frontend:$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          VERSION="${{ needs.generate-version.outputs.version }}"
+          COMMIT_HASH="${{ needs.generate-version.outputs.commit_hash }}"
+          if [[ ${{ github.ref }} == refs/heads/development ]] || [[ ${{ github.ref }} == refs/heads/main ]]; then
+            echo "DOCKER_TAGS=${{ secrets.DOCKER_USERNAME }}/frontend:$VERSION,${{ secrets.DOCKER_USERNAME }}/frontend:$COMMIT_HASH" >> $GITHUB_ENV
           elif [[ ${{ github.ref }} == refs/tags/* ]]; then
-            VERSION=${GITHUB_REF#refs/tags/}
-            echo "TAG=$VERSION" >> $GITHUB_ENV
-            echo "DOCKER_TAGS=${{ secrets.DOCKER_USERNAME }}/frontend:$VERSION,${{ secrets.DOCKER_USERNAME }}/frontend:$(git rev-parse --short HEAD),${{ secrets.DOCKER_USERNAME }}/frontend:latest" >> $GITHUB_ENV
+            echo "DOCKER_TAGS=${{ secrets.DOCKER_USERNAME }}/frontend:$VERSION,${{ secrets.DOCKER_USERNAME }}/frontend:$COMMIT_HASH,${{ secrets.DOCKER_USERNAME }}/frontend:latest" >> $GITHUB_ENV
           fi
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-          echo "BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_ENV
+          echo "TAG=$VERSION" >> $GITHUB_ENV
+          echo "COMMIT_HASH=$COMMIT_HASH" >> $GITHUB_ENV
+          echo "BUILD_DATE=${{ needs.generate-version.outputs.build_date }}" >> $GITHUB_ENV
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v4
         with:
@@ -106,7 +123,10 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           build-args: |
-            APP_VERSION=${{ env.VERSION }}
+            VITE_APP_VERSION=${{ env.VERSION }}
+            SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
+            SENTRY_ORG=${{ secrets.SENTRY_ORG }}
+            SENTRY_PROJECT=${{ secrets.SENTRY_PROJECT }}
           cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/frontend:buildcache
           cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/frontend:buildcache,mode=max
           tags: ${{ env.DOCKER_TAGS }}

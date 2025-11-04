@@ -96,6 +96,9 @@
     "created": "已创建",
     "createNew": "创建新 API 密钥",
     "deleteKey": "删除 API 密钥",
+    "deleteConfirmTitle": "删除 API 密钥",
+    "deleteConfirmMessage": "您确定要删除 API 密钥 \"{{name}}\" 吗？",
+    "deleteWarning": "此操作不可撤销。使用此密钥的任何应用程序将立即停止工作。",
     "hideKey": "隐藏 API 密钥",
     "keyName": "密钥名称",
     "keyNamePlaceholder": "输入您的 API 密钥名称",
@@ -267,8 +270,10 @@
       "dark": "深色",
       "system": "系统"
     },
+    "backToHome": "Back to Home",
     "cancel": "取消",
     "close": "关闭",
+    "confirmError": "Please enter the correct value to confirm deletion",
     "select": "选择",
     "selectAll": "全选",
     "deselectAll": "取消全选",
@@ -280,6 +285,7 @@
     "create": "创建",
     "dashboard": "仪表板",
     "delete": "删除",
+    "deleting": "删除中...",
     "dismiss": "关闭",
     "documents": "文档",
     "download": "下载",
@@ -1021,6 +1027,30 @@
     "title": "隐私和条款更新",
     "updateMessage": "我们已更新我们的隐私政策和服务条款。请查看并接受以继续使用 WaterCrawl。"
   },
+  "notifications": {
+    "title": "通知",
+    "openMenu": "打开通知",
+    "noNotifications": "没有新通知",
+    "viewAll": "查看所有通知",
+    "invitation": {
+      "title": "团队邀请",
+      "message": "您已被邀请加入 {{teamName}}",
+      "verifying": "Verifying invitation...",
+      "invalidTitle": "Invalid Invitation",
+      "invalidMessage": "This invitation code is invalid or has expired.",
+      "loginRequired": "Please login with the invited email address to accept this invitation.",
+      "mismatchLoginTitle": "Account Mismatch",
+      "mismatchLoginMessage": "This invitation is for a different account. Please logout and login with the correct account.",
+      "mismatchRegisterTitle": "Account Mismatch",
+      "mismatchRegisterMessage": "This invitation is for a new user. Please logout and register with the invited email address.",
+      "logoutAndLogin": "Logout and Login with Correct Account",
+      "logoutAndRegister": "Logout and Register with Invited Email",
+      "acceptedTitle": "Invitation Accepted!",
+      "acceptedMessage": "You have successfully joined the team. Redirecting to dashboard...",
+      "confirmTitle": "Accept Team Invitation",
+      "confirmMessage": "You're about to accept an invitation to join a team."
+    }
+  },
   "processing": {
     "almostThere": "🎯 快完成了",
     "analyzing": "🔍 分析内容中",
@@ -1052,6 +1082,7 @@
     },
     "invitations": {
       "acceptButton": "接受",
+      "accepting": "Accepting...",
       "acceptError": "接受邀请失败",
       "acceptSuccess": "邀请接受成功",
       "loadError": "加载邀请失败",
@@ -1257,6 +1288,7 @@
         "confirmPrompt": "请输入知识库标题 {{title}} 以确认：",
         "confirmTitle": "您确定要删除此知识库吗？",
         "deleting": "删除中...",
+        "inputLabel": "输入知识库标题以确认",
         "title": "删除知识库",
         "warningMessage": "此操作无法撤销。这将永久删除知识库 {{title}} 并移除所有相关文档和分块。"
       },
@@ -1734,14 +1766,25 @@
       "title": "团队设置"
     },
     "teamInvitations": {
-      "cancelTooltip": "取消邀请功能即将推出...",
+      "cancelTooltip": "撤销邀请",
+      "copyUrl": "复制邀请链接",
       "date": "日期",
       "invitedUser": "受邀用户",
       "loadError": "加载邀请失败",
       "noPending": "没有待处理的邀请",
       "pending": "待处理",
+      "resendEmail": "重新发送邀请邮件",
+      "resendError": "重新发送邀请邮件失败",
+      "resendSuccess": "邀请邮件已成功发送",
+      "revokeConfirmButton": "撤销邀请",
+      "revokeConfirmMessage": "确定要撤销 {{email}} 的邀请吗？此操作无法撤销。",
+      "revokeConfirmTitle": "撤销邀请",
+      "revokeError": "撤销邀请失败",
+      "revokeSuccess": "邀请已成功撤销",
       "status": "状态",
-      "title": "团队邀请"
+      "title": "团队邀请",
+      "urlCopied": "邀请链接已复制到剪贴板",
+      "urlCopyError": "复制邀请链接失败"
     },
     "subtitle": "配置您的应用程序",
     "title": "设置"
@@ -1777,6 +1820,19 @@
       "maxUrls": "最大 URL 数",
       "url": "网站 URL",
       "urlPlaceholder": "https://example.com"
+    },
+    "options": {
+      "includeSubdomains": "包含子域名",
+      "includeSubdomainsDesc": "包含目标网站的所有子域名",
+      "ignoreSitemapXml": "忽略 sitemap.xml",
+      "ignoreSitemapXmlDesc": "直接爬取网站而不是使用 sitemap.xml 文件（较慢但更全面）",
+      "searchFilter": "URL 筛选",
+      "searchFilterDesc": "按搜索词筛选站点地图 URL（例如 'blog'，'/products'）",
+      "searchFilterPlaceholder": "输入搜索词以筛选 URL...",
+      "generalSettings": "常规设置",
+      "generalSettingsDesc": "基本站点地图生成选项",
+      "pathFilters": "路径筛选",
+      "pathFiltersDesc": "包含或排除特定的 URL 路径"
     },
     "foundUrls": "找到 {{count}} 个 URL",
     "foundUrls_one": "找到 {{count}} 个 URL",
