@@ -1,12 +1,11 @@
-import { FeedMessage } from "./feed";
-
+import { FeedMessage } from './feed';
 
 export enum SitemapStatus {
   New = 'new',
   Running = 'running',
   Finished = 'finished',
   Failed = 'failed',
-  Canceled = 'canceled'
+  Canceled = 'canceled',
 }
 
 export interface SitemapOptions {
@@ -29,9 +28,8 @@ export interface SitemapRequest {
 }
 export enum EventType {
   Feed = 'feed',
-  State = 'state'
+  State = 'state',
 }
-
 
 export interface SitemapEvent {
   type: EventType;

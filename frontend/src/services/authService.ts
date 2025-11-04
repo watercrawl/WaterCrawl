@@ -2,12 +2,11 @@ import { jwtDecode } from 'jwt-decode';
 import { API_URL } from '../utils/env';
 import { TokenPayload } from '../types/user';
 
-
 export class AuthService {
   private static instance: AuthService;
   private refreshPromise: Promise<string> | null = null;
 
-  private constructor() { }
+  private constructor() {}
 
   static getInstance(): AuthService {
     if (!AuthService.instance) {

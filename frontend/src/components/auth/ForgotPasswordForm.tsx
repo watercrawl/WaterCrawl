@@ -7,17 +7,22 @@ import Loading from '../shared/Loading';
 import { authApi } from '../../services/api/auth';
 import { FormInput } from '../shared/FormInput';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 
-const schema = yup.object({
-  email: yup.string().email('Please enter a valid email').required('Email is required'),
-});
+const getSchema = (t: (key: string) => string) =>
+  yup.object({
+    email: yup.string().email(t('validation.email')).required(t('validation.required')),
+  });
 
-type FormData = yup.InferType<typeof schema>;
+type FormData = {
+  email: string;
+};
 
 export function ForgotPasswordForm() {
+  const { t } = useTranslation();
   const [success, setSuccess] = useState(false);
   const methods = useForm<FormData>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(getSchema(t)),
   });
 
   const {
@@ -30,26 +35,23 @@ export function ForgotPasswordForm() {
       await authApi.forgotPassword(data.email);
       setSuccess(true);
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Failed to send reset instructions');
+      toast.error(error.response?.data?.message || t('auth.forgotPassword.error'));
     }
   };
 
   if (success) {
     return (
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white dark:bg-gray-800 px-4 py-8 shadow sm:rounded-lg sm:px-10">
-          <h2 className="mb-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
-            Check your email
+        <div className="bg-card px-4 py-8 shadow sm:rounded-lg sm:px-10">
+          <h2 className="mb-6 text-center text-3xl font-extrabold text-foreground">
+            {t('auth.forgotPassword.checkEmail')}
           </h2>
-          <p className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
-            If an account exists with that email address, we've sent instructions to reset your password.
+          <p className="mt-4 text-center text-sm text-muted-foreground">
+            {t('auth.forgotPassword.success')}
           </p>
           <div className="mt-6 text-center">
-            <Link
-              to="/"
-              className="font-medium text-primary-600 hover:text-primary-500 dark:text-primary-400"
-            >
-              Return to login
+            <Link to="/" className="font-medium text-primary hover:text-primary-500">
+              {t('auth.forgotPassword.backToLogin')}
             </Link>
           </div>
         </div>
@@ -59,18 +61,18 @@ export function ForgotPasswordForm() {
 
   return (
     <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-      <div className="bg-white dark:bg-gray-800 px-4 py-8 shadow sm:rounded-lg sm:px-10">
-        <h2 className="mb-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
-          Forgot Password
+      <div className="bg-card px-4 py-8 shadow sm:rounded-lg sm:px-10">
+        <h2 className="mb-6 text-center text-3xl font-extrabold text-foreground">
+          {t('auth.forgotPassword.title')}
         </h2>
-        <p className="mt-2 mb-6 text-center text-sm text-gray-600 dark:text-gray-400">
-          Enter your email address and we'll send you instructions to reset your password.
+        <p className="mb-6 mt-2 text-center text-sm text-muted-foreground">
+          {t('auth.forgotPassword.subtitle')}
         </p>
 
         <FormProvider {...methods}>
           <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
             <FormInput
-              label="Email address"
+              label={t('auth.forgotPassword.email')}
               name="email"
               type="email"
               error={errors.email?.message}
@@ -81,19 +83,16 @@ export function ForgotPasswordForm() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="flex w-full justify-center rounded-md bg-primary-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 disabled:opacity-50"
+                className="flex w-full justify-center rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 disabled:opacity-50"
               >
-                {isSubmitting ? <Loading size="sm" /> : 'Send reset instructions'}
+                {isSubmitting ? <Loading size="sm" /> : t('auth.forgotPassword.sendButton')}
               </button>
             </div>
 
             <div className="flex items-center justify-center">
               <div className="text-sm">
-                <Link
-                  to="/"
-                  className="font-medium text-primary-600 hover:text-primary-500 dark:text-primary-400"
-                >
-                  Back to login
+                <Link to="/" className="font-medium text-primary hover:text-primary-500">
+                  {t('auth.forgotPassword.backToLogin')}
                 </Link>
               </div>
             </div>

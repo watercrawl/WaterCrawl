@@ -61,11 +61,14 @@ INSTALLED_APPS = [
     "core",
     "user",
     "plan",
+    "llm",
+    "knowledge_base",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -79,7 +82,7 @@ ROOT_URLCONF = "watercrawl.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -130,13 +133,29 @@ REDIS_LOCKER_CONFIG = env.db_url("REDIS_LOCKER_URL", default="redis://redis:6379
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = env("LANGUAGE_CODE", cast=str, default="en-us")
+LANGUAGE_CODE = env("LANGUAGE_CODE", cast=str, default="en")
 
 TIME_ZONE = env("TIME_ZONE", cast=str, default="UTC")
 
 USE_I18N = env("USE_I18N", cast=bool, default=True)
 
 USE_TZ = env("USE_TZ", cast=bool, default=True)
+
+LOCALE_PATHS = [
+    BASE_DIR / "locale",
+]
+LANGUAGES = [
+    ("en", "English"),
+    ("de", "German"),
+    ("fr", "French"),
+    ("es", "Spanish"),
+    ("it", "Italian"),
+    ("pt", "Portuguese"),
+    ("ja", "Japanese"),
+    ("zh-hans", "Chinese"),
+    ("ar", "Arabic"),
+    ("fa", "Persian"),
+]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
@@ -270,6 +289,9 @@ IS_ENTERPRISE_MODE_ACTIVE = env("IS_ENTERPRISE_MODE_ACTIVE", cast=bool, default=
 FRONTEND_URL = env("FRONTEND_URL", cast=str, default="http://localhost:5173")
 IS_LOGIN_ACTIVE = env("IS_LOGIN_ACTIVE", cast=bool, default=True)
 IS_SIGNUP_ACTIVE = env("IS_SIGNUP_ACTIVE", cast=bool, default=True)
+IS_EMAIL_VERIFICATION_ACTIVE = env(
+    "IS_EMAIL_VERIFICATION_ACTIVE", cast=bool, default=True
+)
 IS_GITHUB_LOGIN_ACTIVE = env("IS_GITHUB_LOGIN_ACTIVE", cast=bool, default=True)
 IS_GOOGLE_LOGIN_ACTIVE = env("IS_GOOGLE_LOGIN_ACTIVE", cast=bool, default=True)
 
@@ -392,6 +414,13 @@ API_ENCRYPTION_KEY = env(
 )
 
 MCP_SERVER = env("MCP_SERVER", cast=str, default="/sse")
+
+# Knowledge Base settings
+KNOWLEDGE_BASE_ENABLED = env.bool("KNOWLEDGE_BASE_ENABLED", default=False)
+KNOWLEDGE_BASE_KEYWORD_COUNT = env("KNOWLEDGE_BASE_KEYWORD_COUNT", cast=int, default=10)
+KNOWLEDGE_BASE_OPENSEARCH_URL = env.list(
+    "KNOWLEDGE_BASE_OPENSEARCH_URL", cast=str, default=[]
+)
 
 SENTRY_DSN = env("SENTRY_DSN", cast=str, default="")
 SENTRY_TRACES_SAMPLE_RATE = env("SENTRY_TRACES_SAMPLE_RATE", cast=float, default=1.0)

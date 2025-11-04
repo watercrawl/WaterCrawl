@@ -1,0 +1,15 @@
+project_id: 819230
+
+files:
+  # Frontend JSON
+  - source: /frontend/public/locales/en.json
+    translation: /frontend/public/locales/%two_letters_code%.json
+    skip_untranslated_strings: true
+
+  # Django backend PO
+  - source: /backend/locale/en/LC_MESSAGES/django.po
+    translation: /backend/locale/%two_letters_code%/LC_MESSAGES/django.po
+    skip_untranslated_strings: true
+    translation_replace:
+      zh: zh-hans
+

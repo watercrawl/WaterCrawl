@@ -7,10 +7,10 @@ interface CursorLogoProps {
 
 export const CursorLogo: React.FC<CursorLogoProps> = ({ className, size = 24 }) => {
   return (
-    <img 
-      src="/logos/cursor.svg" 
-      alt="Cursor Logo" 
-      width={size} 
+    <img
+      src="/logos/cursor.svg"
+      alt="Cursor Logo"
+      width={size}
       height={size}
       className={className}
     />

@@ -1,0 +1,2143 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: watercrawl\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-03 22:05+0000\n"
+"PO-Revision-Date: 2025-11-04 19:22\n"
+"Last-Translator: \n"
+"Language-Team: Persian\n"
+"Language: fa_IR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: watercrawl\n"
+"X-Crowdin-Project-ID: 819230\n"
+"X-Crowdin-Language: fa\n"
+"X-Crowdin-File: /development/backend/locale/en/LC_MESSAGES/django.po\n"
+"X-Crowdin-File-ID: 26\n"
+
+#: agent/models.py:8 core/models.py:147 llm/models.py:8 llm/models.py:102
+#: user/models.py:71 user/models.py:160
+msgid "Name"
+msgstr "نام"
+
+#: agent/models.py:10
+msgid "System Prompt"
+msgstr "پرامپت سیستم"
+
+#: agent/models.py:15
+msgid "Config Provider"
+msgstr "ارائه‌دهنده پیکربندی"
+
+#: agent/models.py:23
+msgid "LLM Model"
+msgstr "مدل LLM"
+
+#: agent/models.py:31 core/consts.py:203 knowledge_base/models.py:15
+#: llm/models.py:56 plan/models.py:115 plan/models.py:197 user/models.py:92
+#: user/models.py:110 user/models.py:130 user/models.py:165
+msgid "Team"
+msgstr "تیم"
+
+#: agent/models.py:41 agent/models.py:50
+msgid "Agent"
+msgstr "عامل"
+
+#: agent/models.py:42
+msgid "Agents"
+msgstr "عوامل"
+
+#: agent/models.py:46
+msgid "Tool Type"
+msgstr "نوع ابزار"
+
+#: agent/models.py:53
+msgid "Config"
+msgstr "پیکربندی"
+
+#: agent/models.py:62
+msgid "agent"
+msgstr "عامل"
+
+#: agent/models.py:70 core/models.py:19 core/models.py:117 core/models.py:172
+#: core/models.py:193
+msgid "team"
+msgstr "تیم"
+
+#: agent/models.py:79
+msgid "conversation"
+msgstr "مکالمه"
+
+#: common/docs.py:3
+msgid "\n"
+"# Introduction\n\n"
+"This documentation covers all the external APIs that can be accessed using a Team API Key. These APIs are designed for integration with external systems and services.\n\n"
+"## Authentication\n\n"
+"All endpoints in this documentation require authentication using an API Key. To authenticate your requests:\n\n"
+"1. Generate an API Key from the [API Keys Dashboard](https://app.watercrawl.dev/dashboard/api-keys)\n"
+"2. Include the API Key in your requests using the `X-API-Key` header:\n\n"
+"```bash\n"
+"curl -H \"X-API-Key: your_api_key_here\" https://api.watercrawl.dev/v1/...\n"
+"```\n\n"
+"### Important Notes:\n"
+"- Keep your API Key secure and never share it publicly\n"
+"- You can generate multiple API Keys for different purposes\n"
+"- You can revoke API Keys at any time from the dashboard\n"
+"- Each API Key is associated with a specific team\n\n"
+"## Rate Limiting\n"
+"API requests are rate-limited based on your team's plan. Please refer to your plan details for specific limits.\n"
+msgstr ""
+
+#: common/docs.py:30
+msgid "API Key for team authentication. Generate from https://app.watercrawl.dev/dashboard/api-keys"
+msgstr ""
+
+#: common/handlers.py:20
+msgid "An unexpected error occurred."
+msgstr "خطای غیرمنتظره‌ای رخ داد."
+
+#: common/handlers.py:28 common/handlers.py:37
+msgid "Invalid input data."
+msgstr "داده ورودی نامعتبر است."
+
+#: common/handlers.py:59 common/handlers.py:63
+msgid "Not found."
+msgstr "یافت نشد."
+
+#: common/schema.py:30
+msgid "Bad Request"
+msgstr "درخواست نامعتبر"
+
+#: common/schema.py:40
+msgid "Not Found"
+msgstr "یافت نشد"
+
+#: common/schema.py:48
+msgid "Internal Server Error"
+msgstr "خطای داخلی سرور"
+
+#: common/services.py:129
+msgid "No recipient provided"
+msgstr "گیرنده مشخص نشده است"
+
+#: common/services.py:131
+msgid "No subject provided"
+msgstr "موضوع مشخص نشده است"
+
+#: common/services.py:133
+msgid "No body or html provided"
+msgstr "متن یا HTML ارائه نشده است"
+
+#: common/views.py:17
+msgid "Frontend Setting"
+msgstr "تنظیمات فرانت‌اند"
+
+#: common/views.py:18
+msgid "Retrieve the frontend setting."
+msgstr "دریافت تنظیمات فرانت‌اند."
+
+#: core/admin.py:41 core/admin.py:44
+msgid "Duplicate"
+msgstr "تکرار"
+
+#: core/consts.py:41 knowledge_base/consts.py:11
+msgid "New"
+msgstr "جدید"
+
+#: core/consts.py:42
+msgid "Running"
+msgstr "در حال اجرا"
+
+#: core/consts.py:43
+msgid "Finished"
+msgstr "تکمیل شده"
+
+#: core/consts.py:44
+msgid "Canceling"
+msgstr "در حال لغو"
+
+#: core/consts.py:45 plan/consts.py:22
+msgid "Canceled"
+msgstr "لغو شده"
+
+#: core/consts.py:46 knowledge_base/consts.py:16
+msgid "Failed"
+msgstr "ناموفق"
+
+#: core/consts.py:154
+msgid "PDF"
+msgstr ""
+
+#: core/consts.py:155
+msgid "Screenshot"
+msgstr "اسکرین‌شات"
+
+#: core/consts.py:160
+msgid "Web"
+msgstr "وب"
+
+#: core/consts.py:167
+msgid "Basic"
+msgstr "پایه"
+
+#: core/consts.py:168
+msgid "Advanced"
+msgstr "پیشرفته"
+
+#: core/consts.py:169
+msgid "Ultimate"
+msgstr "نهایی"
+
+#: core/consts.py:179
+msgid "Any"
+msgstr "هر کدام"
+
+#: core/consts.py:180
+msgid "Day"
+msgstr "روز"
+
+#: core/consts.py:181
+msgid "Week"
+msgstr "هفته"
+
+#: core/consts.py:182
+msgid "Month"
+msgstr "ماه"
+
+#: core/consts.py:183
+msgid "Year"
+msgstr "سال"
+
+#: core/consts.py:191
+msgid "HTTP"
+msgstr ""
+
+#: core/consts.py:192
+msgid "SOCKS4"
+msgstr ""
+
+#: core/consts.py:193
+msgid "SOCKS5"
+msgstr ""
+
+#: core/consts.py:201
+msgid "General"
+msgstr "عمومی"
+
+#: core/consts.py:202 llm/consts.py:40
+msgid "Premium"
+msgstr "پرمیوم"
+
+#: core/consts.py:210
+msgid "Single"
+msgstr "تکی"
+
+#: core/consts.py:211
+msgid "Batch"
+msgstr "دسته‌ای"
+
+#: core/docs.py:253
+msgid "Filter crawl requests by UUID."
+msgstr "فیلتر درخواست‌های خزش بر اساس UUID."
+
+#: core/docs.py:259
+msgid "Filter crawl requests by start URL."
+msgstr "فیلتر درخواست‌های خزش بر اساس URL شروع."
+
+#: core/docs.py:265
+msgid "Filter crawl requests by status."
+msgstr "فیلتر درخواست‌های خزش بر اساس وضعیت."
+
+#: core/docs.py:271
+msgid "Filter crawl requests by date"
+msgstr "فیلتر درخواست‌های خزش بر اساس تاریخ"
+
+#: core/docs.py:280 core/docs.py:301
+msgid "Prefetch crawl results. Default: False."
+msgstr "پیش‌بارگیری نتایج خزش. پیش‌فرض: False."
+
+#: core/docs.py:286
+msgid "Filter crawl results by URL."
+msgstr "فیلتر نتایج خزش بر اساس URL."
+
+#: core/docs.py:292
+msgid "Filter crawl results by date"
+msgstr "فیلتر نتایج خزش بر اساس تاریخ"
+
+#: core/docs.py:312
+msgid "Format of the download file. Default: json. Available formats: markdown, json."
+msgstr "فرمت فایل دانلود. پیش‌فرض: json. فرمت‌های موجود: markdown، json."
+
+#: core/models.py:23
+msgid "urls"
+msgstr "URLها"
+
+#: core/models.py:25
+msgid "crawl type"
+msgstr "نوع خزش"
+
+#: core/models.py:31
+msgid "status"
+msgstr "وضعیت"
+
+#: core/models.py:36
+msgid "options"
+msgstr "گزینه‌ها"
+
+#: core/models.py:37
+msgid "duration"
+msgstr "مدت زمان"
+
+#: core/models.py:39
+msgid "sitemap"
+msgstr "نقشه سایت"
+
+#: core/models.py:57
+msgid "URL must be a string."
+msgstr "URL باید یک رشته باشد."
+
+#: core/models.py:63 core/models.py:70
+msgid "Crawl Request"
+msgstr "درخواست خزش"
+
+#: core/models.py:64
+msgid "Crawl Requests"
+msgstr "درخواست‌های خزش"
+
+#: core/models.py:74 core/models.py:196
+msgid "URL"
+msgstr ""
+
+#: core/models.py:76 core/models.py:131 core/models.py:206
+msgid "Result"
+msgstr "نتیجه"
+
+#: core/models.py:81 core/models.py:88
+msgid "Crawl Result"
+msgstr "نتیجه خزش"
+
+#: core/models.py:82
+msgid "Crawl Results"
+msgstr "نتایج خزش"
+
+#: core/models.py:93
+msgid "Attachment Type"
+msgstr "نوع پیوست"
+
+#: core/models.py:98
+msgid "Attachment"
+msgstr "پیوست"
+
+#: core/models.py:102
+msgid "Crawl Result Attachment"
+msgstr "پیوست نتیجه خزش"
+
+#: core/models.py:103
+msgid "Crawl Result Attachments"
+msgstr "پیوست‌های نتیجه خزش"
+
+#: core/models.py:120
+msgid "Query"
+msgstr "جستجو"
+
+#: core/models.py:121
+msgid "Search Options"
+msgstr "گزینه‌های جستجو"
+
+#: core/models.py:122
+msgid "Result Limit"
+msgstr "محدودیت نتایج"
+
+#: core/models.py:123 core/models.py:204
+msgid "Duration"
+msgstr "مدت زمان"
+
+#: core/models.py:125 core/models.py:199 knowledge_base/models.py:88
+#: knowledge_base/models.py:130 plan/models.py:144 plan/models.py:166
+msgid "Status"
+msgstr "وضعیت"
+
+#: core/models.py:142
+msgid "Search Request"
+msgstr "درخواست جستجو"
+
+#: core/models.py:143
+msgid "Search Requests"
+msgstr "درخواست‌های جستجو"
+
+#: core/models.py:148 llm/models.py:9 llm/models.py:103 user/models.py:170
+msgid "Key"
+msgstr "کلید"
+
+#: core/models.py:149 user/models.py:84
+msgid "Is Default"
+msgstr "پیش‌فرض است"
+
+#: core/models.py:151
+msgid "Proxy Category"
+msgstr "دسته پراکسی"
+
+#: core/models.py:157
+msgid "Proxy Type"
+msgstr "نوع پراکسی"
+
+#: core/models.py:163
+msgid "Host"
+msgstr "میزبان"
+
+#: core/models.py:166
+msgid "Port"
+msgstr "پورت"
+
+#: core/models.py:167
+msgid "Username"
+msgstr "نام کاربری"
+
+#: core/models.py:168
+msgid "Password"
+msgstr "رمز عبور"
+
+#: core/models.py:179
+msgid "Proxy Server"
+msgstr "سرور پراکسی"
+
+#: core/models.py:180
+msgid "Proxy Servers"
+msgstr "سرورهای پراکسی"
+
+#: core/models.py:197
+msgid "Options"
+msgstr "گزینه‌ها"
+
+#: core/models.py:214
+msgid "Sitemap Request"
+msgstr "درخواست نقشه سایت"
+
+#: core/models.py:215
+msgid "Sitemap Requests"
+msgstr "درخواست‌های نقشه سایت"
+
+#: core/serializers.py:82 core/serializers.py:356
+msgid "Proxy server does not exist"
+msgstr "سرور پراکسی وجود ندارد"
+
+#: core/serializers.py:376
+msgid "This field is required"
+msgstr "این فیلد ضروری است"
+
+#: core/services.py:769
+msgid "At least one URL is required for the crawl request."
+msgstr "حداقل یک URL برای درخواست خزش ضروری است."
+
+#: core/views.py:44
+msgid "Start a new crawl request"
+msgstr "شروع درخواست خزش جدید"
+
+#: core/views.py:49
+msgid "Batch create crawl requests"
+msgstr "ایجاد دسته‌ای درخواست‌های خزش"
+
+#: core/views.py:56
+msgid "List crawl requests"
+msgstr "فهرست درخواست‌های خزش"
+
+#: core/views.py:62
+msgid "Get crawl request"
+msgstr "دریافت درخواست خزش"
+
+#: core/views.py:67
+msgid "Cancel a running crawl"
+msgstr "لغو خزش در حال اجرا"
+
+#: core/views.py:72
+msgid "Download crawl result"
+msgstr "دانلود نتیجه خزش"
+
+#: core/views.py:79
+msgid "Check crawl status"
+msgstr "بررسی وضعیت خزش"
+
+#: core/views.py:91 core/views.py:492
+msgid "Get sitemap graph"
+msgstr "دریافت نمودار نقشه سایت"
+
+#: core/views.py:97
+msgid "Get markdown report"
+msgstr "دریافت گزارش Markdown"
+
+#: core/views.py:141
+msgid "Only running crawl requests can be deleted"
+msgstr "فقط درخواست‌های خزش در حال اجرا قابل حذف هستند"
+
+#: core/views.py:161
+msgid "Invalid output format"
+msgstr "فرمت خروجی نامعتبر"
+
+#: core/views.py:187 core/views.py:200
+msgid "Sitemap for this crawl request does not exist"
+msgstr "نقشه سایت برای این درخواست خزش وجود ندارد"
+
+#: core/views.py:213
+msgid "List crawl results"
+msgstr "فهرست نتایج خزش"
+
+#: core/views.py:219
+msgid "Get crawl result"
+msgstr "دریافت نتیجه خزش"
+
+#: core/views.py:250
+msgid "Usage Report"
+msgstr "گزارش استفاده"
+
+#: core/views.py:268
+msgid "Plugin Form"
+msgstr "فرم افزونه"
+
+#: core/views.py:281
+msgid "List search requests"
+msgstr "فهرست درخواست‌های جستجو"
+
+#: core/views.py:286
+msgid "Get search request"
+msgstr "دریافت درخواست جستجو"
+
+#: core/views.py:292
+msgid "Create search request"
+msgstr "ایجاد درخواست جستجو"
+
+#: core/views.py:297
+msgid "Stop search request"
+msgstr "توقف درخواست جستجو"
+
+#: core/views.py:302
+msgid "Check search request status"
+msgstr "بررسی وضعیت درخواست جستجو"
+
+#: core/views.py:340
+msgid "Only running search requests can be deleted"
+msgstr "فقط درخواست‌های جستجو در حال اجرا قابل حذف هستند"
+
+#: core/views.py:360
+msgid "List proxy servers"
+msgstr "فهرست سرورهای پراکسی"
+
+#: core/views.py:365
+msgid "Create proxy server"
+msgstr "ایجاد سرور پراکسی"
+
+#: core/views.py:370
+msgid "Get proxy server"
+msgstr "دریافت سرور پراکسی"
+
+#: core/views.py:375
+msgid "Delete proxy server"
+msgstr "حذف سرور پراکسی"
+
+#: core/views.py:380 core/views.py:385
+msgid "Update proxy server"
+msgstr "به‌روزرسانی سرور پراکسی"
+
+#: core/views.py:390
+msgid "List all proxy servers (Global and Private proxies)"
+msgstr "فهرست همه سرورهای پراکسی (عمومی و خصوصی)"
+
+#: core/views.py:396
+msgid "Test proxy"
+msgstr "تست پراکسی"
+
+#: core/views.py:460
+msgid "List sitemap requests"
+msgstr "فهرست درخواست‌های نقشه سایت"
+
+#: core/views.py:465
+msgid "Create sitemap request"
+msgstr "ایجاد درخواست نقشه سایت"
+
+#: core/views.py:470
+msgid "Get sitemap request"
+msgstr "دریافت درخواست نقشه سایت"
+
+#: core/views.py:475
+msgid "Delete sitemap request"
+msgstr "حذف درخواست نقشه سایت"
+
+#: core/views.py:480
+msgid "Check sitemap request status"
+msgstr "بررسی وضعیت درخواست نقشه سایت"
+
+#: core/views.py:498
+msgid "Get sitemap markdown"
+msgstr "دریافت Markdown نقشه سایت"
+
+#: core/views.py:537
+msgid "Only running sitemap requests can be deleted"
+msgstr "فقط درخواست‌های نقشه سایت در حال اجرا قابل حذف هستند"
+
+#: core/views.py:563 core/views.py:576
+msgid "Sitemap for this request does not exist"
+msgstr "نقشه سایت برای این درخواست وجود ندارد"
+
+#: knowledge_base/admin.py:26
+msgid "Chunking Configuration"
+msgstr "پیکربندی بخش‌بندی"
+
+#: knowledge_base/admin.py:32
+msgid "Embedding Configuration"
+msgstr "پیکربندی جاسازی"
+
+#: knowledge_base/admin.py:38
+msgid "Chunk Enhancement"
+msgstr "بهبود بخش"
+
+#: knowledge_base/admin.py:49 knowledge_base/admin.py:73
+#: knowledge_base/admin.py:98 knowledge_base/models.py:128 llm/admin.py:51
+msgid "Metadata"
+msgstr "فراداده"
+
+#: knowledge_base/admin.py:67 knowledge_base/models.py:119
+#: knowledge_base/models.py:158
+msgid "Content"
+msgstr "محتوا"
+
+#: knowledge_base/admin.py:91
+msgid "Embedding"
+msgstr "جاسازی"
+
+#: knowledge_base/consts.py:12
+msgid "Reindexing"
+msgstr "نمایه‌سازی مجدد"
+
+#: knowledge_base/consts.py:13
+msgid "Crawling"
+msgstr "خزش"
+
+#: knowledge_base/consts.py:14
+msgid "Processing"
+msgstr "پردازش"
+
+#: knowledge_base/consts.py:15
+msgid "Ready"
+msgstr "آماده"
+
+#: knowledge_base/consts.py:23 plan/consts.py:21
+msgid "Active"
+msgstr "فعال"
+
+#: knowledge_base/consts.py:24
+msgid "Archived"
+msgstr "بایگانی شده"
+
+#: knowledge_base/consts.py:25
+msgid "Deleted"
+msgstr "حذف شده"
+
+#: knowledge_base/consts.py:32
+msgid "Standard"
+msgstr "استاندارد"
+
+#: knowledge_base/consts.py:33
+msgid "Context-Aware"
+msgstr "زمینه‌آگاه"
+
+#: knowledge_base/consts.py:40
+msgid "Manual"
+msgstr "دستی"
+
+#: knowledge_base/consts.py:41
+msgid "File"
+msgstr "فایل"
+
+#: knowledge_base/consts.py:42
+msgid "Crawl"
+msgstr "خزش"
+
+#: knowledge_base/factories.py:72
+#, python-brace-format
+msgid "Text splitter type '{splitter_type}' not supported"
+msgstr "نوع تقسیم‌کننده متن '{splitter_type}' پشتیبانی نمی‌شود"
+
+#: knowledge_base/factories.py:129
+#, python-brace-format
+msgid "Unsupported embedding provider: {provider_name}"
+msgstr "ارائه‌دهنده جاسازی پشتیبانی نمی‌شود: {provider_name}"
+
+#: knowledge_base/factories.py:186
+#, python-brace-format
+msgid "Vector store type '{vector_store_type}' not supported"
+msgstr "نوع ذخیره‌سازی برداری '{vector_store_type}' پشتیبانی نمی‌شود"
+
+#: knowledge_base/factories.py:263
+#, python-brace-format
+msgid "Unsupported document type: {extension}"
+msgstr "نوع سند پشتیبانی نمی‌شود: {extension}"
+
+#: knowledge_base/models.py:10 knowledge_base/models.py:118 llm/models.py:41
+#: plan/models.py:98
+msgid "Title"
+msgstr "عنوان"
+
+#: knowledge_base/models.py:11 llm/models.py:104 plan/models.py:15
+msgid "Description"
+msgstr "توضیحات"
+
+#: knowledge_base/models.py:19
+msgid "Chunk size"
+msgstr "اندازه بخش"
+
+#: knowledge_base/models.py:20
+msgid "Number of documents to be processed in each chunk"
+msgstr "تعداد اسناد قابل پردازش در هر بخش"
+
+#: knowledge_base/models.py:24
+msgid "Chunk overlap"
+msgstr "همپوشانی بخش"
+
+#: knowledge_base/models.py:25
+msgid "Number of overlapping documents in each chunk"
+msgstr "تعداد اسناد همپوشانی در هر بخش"
+
+#: knowledge_base/models.py:29
+msgid "Chunk separator"
+msgstr "جداکننده بخش"
+
+#: knowledge_base/models.py:30
+msgid "Separator used to split documents into chunks"
+msgstr "جداکننده مورد استفاده برای تقسیم اسناد به بخش‌ها"
+
+#: knowledge_base/models.py:36
+msgid "Embedding Model"
+msgstr "مدل جاسازی"
+
+#: knowledge_base/models.py:44
+msgid "Embedding Provider Config"
+msgstr "پیکربندی ارائه‌دهنده جاسازی"
+
+#: knowledge_base/models.py:48
+msgid "Provider configuration for embedding models"
+msgstr "پیکربندی ارائه‌دهنده برای مدل‌های جاسازی"
+
+#: knowledge_base/models.py:53
+msgid "Summarization Provider Config"
+msgstr "پیکربندی ارائه‌دهنده خلاصه‌سازی"
+
+#: knowledge_base/models.py:57
+msgid "Provider configuration for summarization models"
+msgstr "پیکربندی ارائه‌دهنده برای مدل‌های خلاصه‌سازی"
+
+#: knowledge_base/models.py:62
+msgid "Summarization Model"
+msgstr "مدل خلاصه‌سازی"
+
+#: knowledge_base/models.py:68
+msgid "Summarizer Context"
+msgstr "زمینه خلاصه‌ساز"
+
+#: knowledge_base/models.py:71
+msgid "Context to be provided to the summarizer"
+msgstr "زمینه ارائه شده به خلاصه‌ساز"
+
+#: knowledge_base/models.py:74
+msgid "Summarizer Type"
+msgstr "نوع خلاصه‌ساز"
+
+#: knowledge_base/models.py:78
+msgid "The type of summarizer to use for document summarization"
+msgstr "نوع خلاصه‌ساز مورد استفاده برای خلاصه‌سازی اسناد"
+
+#: knowledge_base/models.py:81
+msgid "Summarizer Temperature"
+msgstr "دمای خلاصه‌ساز"
+
+#: knowledge_base/models.py:85
+msgid "Temperature to be provided to the summarizer"
+msgstr "دمای ارائه شده به خلاصه‌ساز"
+
+#: knowledge_base/models.py:94
+msgid "Knowledge Base Each Document Cost"
+msgstr "هزینه هر سند پایگاه دانش"
+
+#: knowledge_base/models.py:95
+msgid "The cost of each document in the knowledge base"
+msgstr "هزینه هر سند در پایگاه دانش"
+
+#: knowledge_base/models.py:100 knowledge_base/models.py:115
+msgid "Knowledge Base"
+msgstr "پایگاه دانش"
+
+#: knowledge_base/models.py:101
+msgid "Knowledge Bases"
+msgstr "پایگاه‌های دانش"
+
+#: knowledge_base/models.py:121
+msgid "Source Type"
+msgstr "نوع منبع"
+
+#: knowledge_base/models.py:126
+msgid "Source"
+msgstr "منبع"
+
+#: knowledge_base/models.py:127
+msgid "Error"
+msgstr "خطا"
+
+#: knowledge_base/models.py:137 knowledge_base/models.py:154
+msgid "Document"
+msgstr "سند"
+
+#: knowledge_base/models.py:138
+msgid "Documents"
+msgstr "اسناد"
+
+#: knowledge_base/models.py:157
+msgid "Index"
+msgstr "نمایه"
+
+#: knowledge_base/models.py:159
+msgid "Keywords"
+msgstr "کلمات کلیدی"
+
+#: knowledge_base/models.py:162
+msgid "Chunk"
+msgstr "بخش"
+
+#: knowledge_base/models.py:163
+msgid "Chunks"
+msgstr "بخش‌ها"
+
+#: knowledge_base/serializers.py:89
+msgid "Invalid embedding provider config id."
+msgstr "شناسه پیکربندی ارائه‌دهنده جاسازی نامعتبر."
+
+#: knowledge_base/serializers.py:104
+msgid "Invalid summarization provider config id."
+msgstr "شناسه پیکربندی ارائه‌دهنده خلاصه‌سازی نامعتبر."
+
+#: knowledge_base/serializers.py:121
+msgid "Invalid embedding model id."
+msgstr "شناسه مدل جاسازی نامعتبر."
+
+#: knowledge_base/serializers.py:127
+msgid "Summarization model id is required."
+msgstr "شناسه مدل خلاصه‌سازی ضروری است."
+
+#: knowledge_base/serializers.py:135
+msgid "Invalid summarization model id."
+msgstr "شناسه مدل خلاصه‌سازی نامعتبر."
+
+#: knowledge_base/serializers.py:142
+msgid "Invalid summarizer temperature."
+msgstr "دمای خلاصه‌ساز نامعتبر."
+
+#: knowledge_base/serializers.py:235
+msgid "crawl_result_uuids cannot be empty."
+msgstr "crawl_result_uuids نمی‌تواند خالی باشد."
+
+#: knowledge_base/serializers.py:242
+msgid "No valid crawl results found for the provided UUIDs."
+msgstr "هیچ نتیجه خزش معتبری برای UUIDهای ارائه شده یافت نشد."
+
+#: knowledge_base/serializers.py:262
+msgid "Invalid crawl request UUID."
+msgstr "UUID درخواست خزش نامعتبر."
+
+#: knowledge_base/serializers.py:280
+msgid "Files cannot be empty."
+msgstr "فایل‌ها نمی‌توانند خالی باشند."
+
+#: knowledge_base/serializers.py:286
+msgid "File must be a pdf, docx, image, or text."
+msgstr "فایل باید pdf، docx، تصویر یا متن باشد."
+
+#: knowledge_base/serializers.py:313
+msgid "Invalid provider config id."
+msgstr "شناسه پیکربندی ارائه‌دهنده نامعتبر."
+
+#: knowledge_base/serializers.py:324
+msgid "Invalid temperature."
+msgstr "دما نامعتبر."
+
+#: knowledge_base/serializers.py:329
+msgid "Invalid llm model id."
+msgstr "شناسه مدل LLM نامعتبر."
+
+#: knowledge_base/views.py:46
+msgid "List knowledge bases"
+msgstr "فهرست پایگاه‌های دانش"
+
+#: knowledge_base/views.py:47
+msgid "List all knowledge bases for the current team."
+msgstr "فهرست همه پایگاه‌های دانش برای تیم فعلی."
+
+#: knowledge_base/views.py:51
+msgid "Get knowledge base details"
+msgstr "دریافت جزئیات پایگاه دانش"
+
+#: knowledge_base/views.py:52
+msgid "Get details for a specific knowledge base."
+msgstr "دریافت جزئیات برای پایگاه دانش خاص."
+
+#: knowledge_base/views.py:59
+msgid "Create knowledge base"
+msgstr "ایجاد پایگاه دانش"
+
+#: knowledge_base/views.py:60
+msgid "Create a new knowledge base for the current team."
+msgstr "ایجاد پایگاه دانش جدید برای تیم فعلی."
+
+#: knowledge_base/views.py:68
+msgid "Update knowledge base"
+msgstr "به‌روزرسانی پایگاه دانش"
+
+#: knowledge_base/views.py:69
+msgid "Update an existing knowledge base."
+msgstr "به‌روزرسانی پایگاه دانش موجود."
+
+#: knowledge_base/views.py:73
+msgid "Partially update knowledge base"
+msgstr "به‌روزرسانی جزئی پایگاه دانش"
+
+#: knowledge_base/views.py:74
+msgid "Partially update an existing knowledge base."
+msgstr "به‌روزرسانی جزئی پایگاه دانش موجود."
+
+#: knowledge_base/views.py:78
+msgid "Delete knowledge base"
+msgstr "حذف پایگاه دانش"
+
+#: knowledge_base/views.py:79
+msgid "Delete an existing knowledge base."
+msgstr "حذف پایگاه دانش موجود."
+
+#: knowledge_base/views.py:83
+msgid "Enhance knowledge base context aware text"
+msgstr "بهبود متن زمینه‌آگاه پایگاه دانش"
+
+#: knowledge_base/views.py:84
+msgid "Enhance documents using context-aware summarization."
+msgstr "بهبود اسناد با استفاده از خلاصه‌سازی زمینه‌آگاه."
+
+#: knowledge_base/views.py:90
+msgid "Query knowledge base"
+msgstr "جستجوی پایگاه دانش"
+
+#: knowledge_base/views.py:91
+msgid "Execute a query against the knowledge base."
+msgstr "اجرای جستجو در پایگاه دانش."
+
+#: knowledge_base/views.py:187
+msgid "List documents"
+msgstr "فهرست اسناد"
+
+#: knowledge_base/views.py:188
+msgid "List all documents for a knowledge base."
+msgstr "فهرست همه اسناد برای پایگاه دانش."
+
+#: knowledge_base/views.py:195
+msgid "Get document details"
+msgstr "دریافت جزئیات سند"
+
+#: knowledge_base/views.py:196
+msgid "Get details for a specific document."
+msgstr "دریافت جزئیات برای سند خاص."
+
+#: knowledge_base/views.py:200
+msgid "Create document"
+msgstr "ایجاد سند"
+
+#: knowledge_base/views.py:201
+msgid "Create a new document for a knowledge base."
+msgstr "ایجاد سند جدید برای پایگاه دانش."
+
+#: knowledge_base/views.py:205
+msgid "Update document"
+msgstr "به‌روزرسانی سند"
+
+#: knowledge_base/views.py:206
+msgid "Update an existing document."
+msgstr "به‌روزرسانی سند موجود."
+
+#: knowledge_base/views.py:210
+msgid "Partially update document"
+msgstr "به‌روزرسانی جزئی سند"
+
+#: knowledge_base/views.py:211
+msgid "Partially update an existing document."
+msgstr "به‌روزرسانی جزئی سند موجود."
+
+#: knowledge_base/views.py:215
+msgid "Delete document"
+msgstr "حذف سند"
+
+#: knowledge_base/views.py:216
+msgid "Delete an existing document."
+msgstr "حذف سند موجود."
+
+#: knowledge_base/views.py:220
+msgid "Process URLs"
+msgstr "پردازش URLها"
+
+#: knowledge_base/views.py:221
+msgid "Process a list of URLs and add them to the knowledge base."
+msgstr "پردازش لیست URLها و اضافه آنها به پایگاه دانش."
+
+#: knowledge_base/views.py:229
+msgid "Process crawl results"
+msgstr "پردازش نتایج خزش"
+
+#: knowledge_base/views.py:230
+msgid "Process crawl results and add them to the knowledge base."
+msgstr "پردازش نتایج خزش و اضافه آنها به پایگاه دانش."
+
+#: knowledge_base/views.py:238
+msgid "Process crawl request"
+msgstr "پردازش درخواست خزش"
+
+#: knowledge_base/views.py:239
+msgid "Process a crawl request and add it to the knowledge base."
+msgstr "پردازش درخواست خزش و اضافه آن به پایگاه دانش."
+
+#: knowledge_base/views.py:247
+msgid "Process files"
+msgstr "پردازش فایل‌ها"
+
+#: knowledge_base/views.py:248
+msgid "Process a list of files and add them to the knowledge base."
+msgstr "پردازش لیست فایل‌ها و اضافه آنها به پایگاه دانش."
+
+#: knowledge_base/views.py:256
+msgid "Retry document"
+msgstr "تلاش مجدد سند"
+
+#: knowledge_base/views.py:257
+msgid "Retry a failed document. to index it again."
+msgstr "تلاش مجدد سند ناموفق برای نمایه‌سازی مجدد."
+
+#: knowledge_base/views.py:296 knowledge_base/views.py:337
+#: knowledge_base/views.py:365 knowledge_base/views.py:397
+#: knowledge_base/views.py:428
+msgid "You cannot add documents to this knowledge base."
+msgstr "شما نمی‌توانید اسناد به این پایگاه دانش اضافه کنید."
+
+#: knowledge_base/views.py:457
+msgid "You can only retry just failed documents."
+msgstr "شما فقط می‌توانید اسناد ناموفق را مجدداً تلاش کنید."
+
+#: knowledge_base/views.py:459
+msgid "You cannot make changes to this knowledge base."
+msgstr "شما نمی‌توانید تغییراتی در این پایگاه دانش ایجاد کنید."
+
+#: knowledge_base/views.py:467
+msgid "List document chunks"
+msgstr "فهرست بخش‌های سند"
+
+#: knowledge_base/views.py:468
+msgid "List all chunks for a document."
+msgstr "فهرست همه بخش‌ها برای سند."
+
+#: llm/admin.py:44
+msgid "API Configuration"
+msgstr "پیکربندی API"
+
+#: llm/admin_api/serializers.py:54 llm/serializers.py:70
+msgid "API key is required"
+msgstr "کلید API ضروری است"
+
+#: llm/admin_api/serializers.py:56 llm/serializers.py:72
+msgid "Base URL is required"
+msgstr "URL پایه ضروری است"
+
+#: llm/admin_api/serializers.py:73 llm/admin_api/serializers.py:74
+#: llm/serializers.py:89 llm/serializers.py:90
+msgid "Invalid API key or base URL. Test failed"
+msgstr "کلید API یا URL پایه نامعتبر. تست ناموفق"
+
+#: llm/admin_api/views.py:17 llm/admin_api/views.py:18
+msgid "List provider configs"
+msgstr "فهرست پیکربندی‌های ارائه‌دهنده"
+
+#: llm/admin_api/views.py:22 llm/admin_api/views.py:23 llm/views.py:24
+msgid "Create provider config"
+msgstr "ایجاد پیکربندی ارائه‌دهنده"
+
+#: llm/admin_api/views.py:27 llm/admin_api/views.py:28 llm/views.py:29
+msgid "Get provider config"
+msgstr "دریافت پیکربندی ارائه‌دهنده"
+
+#: llm/admin_api/views.py:32 llm/admin_api/views.py:33
+#: llm/admin_api/views.py:37 llm/admin_api/views.py:38 llm/views.py:41
+#: llm/views.py:46
+msgid "Update provider config"
+msgstr "به‌روزرسانی پیکربندی ارائه‌دهنده"
+
+#: llm/admin_api/views.py:42 llm/admin_api/views.py:43 llm/views.py:36
+msgid "Delete provider config"
+msgstr "حذف پیکربندی ارائه‌دهنده"
+
+#: llm/admin_api/views.py:47 llm/admin_api/views.py:48
+msgid "Sync embeddings"
+msgstr "همگام‌سازی جاسازی‌ها"
+
+#: llm/admin_api/views.py:54 llm/admin_api/views.py:55
+msgid "Sync LLM models"
+msgstr "همگام‌سازی مدل‌های LLM"
+
+#: llm/admin_api/views.py:61 llm/admin_api/views.py:62
+msgid "Test config"
+msgstr "تست پیکربندی"
+
+#: llm/admin_api/views.py:68 llm/admin_api/views.py:69
+msgid "List providers"
+msgstr "فهرست ارائه‌دهندگان"
+
+#: llm/admin_api/views.py:74 llm/views.py:89
+msgid "List of available providers"
+msgstr "فهرست ارائه‌دهندگان موجود"
+
+#: llm/admin_api/views.py:157 llm/admin_api/views.py:158
+msgid "List LLM models"
+msgstr "فهرست مدل‌های LLM"
+
+#: llm/admin_api/views.py:162 llm/admin_api/views.py:163
+msgid "Create LLM model"
+msgstr "ایجاد مدل LLM"
+
+#: llm/admin_api/views.py:167 llm/admin_api/views.py:168
+msgid "Get LLM model"
+msgstr "دریافت مدل LLM"
+
+#: llm/admin_api/views.py:172 llm/admin_api/views.py:173
+#: llm/admin_api/views.py:177 llm/admin_api/views.py:178
+msgid "Update LLM model"
+msgstr "به‌روزرسانی مدل LLM"
+
+#: llm/admin_api/views.py:182 llm/admin_api/views.py:183
+msgid "Delete LLM model"
+msgstr "حذف مدل LLM"
+
+#: llm/admin_api/views.py:196 llm/admin_api/views.py:197
+msgid "List provider embeddings"
+msgstr "فهرست جاسازی‌های ارائه‌دهنده"
+
+#: llm/admin_api/views.py:201 llm/admin_api/views.py:202
+msgid "Create provider embedding"
+msgstr "ایجاد جاسازی ارائه‌دهنده"
+
+#: llm/admin_api/views.py:206 llm/admin_api/views.py:207
+msgid "Get provider embedding"
+msgstr "دریافت جاسازی ارائه‌دهنده"
+
+#: llm/admin_api/views.py:211 llm/admin_api/views.py:212
+#: llm/admin_api/views.py:216 llm/admin_api/views.py:217
+msgid "Update provider embedding"
+msgstr "به‌روزرسانی جاسازی ارائه‌دهنده"
+
+#: llm/admin_api/views.py:221 llm/admin_api/views.py:222
+msgid "Delete provider embedding"
+msgstr "حذف جاسازی ارائه‌دهنده"
+
+#: llm/consts.py:7 llm/consts.py:22
+msgid "OpenAI"
+msgstr ""
+
+#: llm/consts.py:10
+msgid "WaterCrawl"
+msgstr ""
+
+#: llm/consts.py:37
+msgid "Not Available"
+msgstr "در دسترس نیست"
+
+#: llm/consts.py:38
+msgid "Available"
+msgstr "در دسترس"
+
+#: llm/consts.py:39
+msgid "Team Only"
+msgstr "فقط تیم"
+
+#: llm/consts.py:46
+msgid "Start"
+msgstr "شروع"
+
+#: llm/consts.py:47
+msgid "End"
+msgstr "پایان"
+
+#: llm/factories.py:39
+msgid "Provider config is required"
+msgstr "پیکربندی ارائه‌دهنده ضروری است"
+
+#: llm/factories.py:61 llm/providers.py:90
+msgid "WaterCrawlLLM is not installed. Please install it"
+msgstr "WaterCrawlLLM نصب نشده است. لطفاً آن را نصب کنید"
+
+#: llm/factories.py:71 llm/factories.py:97
+#, python-brace-format
+msgid "Unsupported provider: {provider_name}"
+msgstr "ارائه‌دهنده پشتیبانی نمی‌شود: {provider_name}"
+
+#: llm/models.py:11 llm/models.py:43 llm/models.py:97
+msgid "Provider"
+msgstr "ارائه‌دهنده"
+
+#: llm/models.py:17 llm/models.py:114
+msgid "Visibility Level"
+msgstr "سطح نمایش"
+
+#: llm/models.py:23
+msgid "Min Temperature"
+msgstr "حداقل دما"
+
+#: llm/models.py:26
+msgid "Max Temperature"
+msgstr "حداکثر دما"
+
+#: llm/models.py:29
+msgid "Default Temperature"
+msgstr "دمای پیش‌فرض"
+
+#: llm/models.py:33
+msgid "Model"
+msgstr "مدل"
+
+#: llm/models.py:34
+msgid "Models"
+msgstr "مدل‌ها"
+
+#: llm/models.py:48 plan/models.py:220
+msgid "API Key"
+msgstr "کلید API"
+
+#: llm/models.py:50
+msgid "API Base URL"
+msgstr "URL پایه API"
+
+#: llm/models.py:52
+msgid "Temperature"
+msgstr "دما"
+
+#: llm/models.py:86
+msgid "Provider Config"
+msgstr "پیکربندی ارائه‌دهنده"
+
+#: llm/models.py:87
+msgid "Provider Configs"
+msgstr "پیکربندی‌های ارائه‌دهنده"
+
+#: llm/models.py:105
+msgid "Dimensions"
+msgstr "ابعاد"
+
+#: llm/models.py:106
+msgid "Max Input Length"
+msgstr "حداکثر طول ورودی"
+
+#: llm/models.py:108
+msgid "Truncate"
+msgstr "بریدن"
+
+#: llm/models.py:121
+msgid "Provider Embedding"
+msgstr "جاسازی ارائه‌دهنده"
+
+#: llm/models.py:122
+msgid "Provider Embeddings"
+msgstr "جاسازی‌های ارائه‌دهنده"
+
+#: llm/views.py:19
+msgid "List team provider configs"
+msgstr "فهرست پیکربندی‌های ارائه‌دهنده تیم"
+
+#: llm/views.py:20
+msgid "Get all provider configurations for the current team."
+msgstr "دریافت همه پیکربندی‌های ارائه‌دهنده برای تیم فعلی."
+
+#: llm/views.py:25
+msgid "Create a new provider configuration for the current team."
+msgstr "ایجاد پیکربندی ارائه‌دهنده جدید برای تیم فعلی."
+
+#: llm/views.py:31
+msgid "Get detailed information about a specific provider configuration."
+msgstr "دریافت اطلاعات دقیق درباره پیکربندی خاص ارائه‌دهنده."
+
+#: llm/views.py:37
+msgid "Delete a provider configuration."
+msgstr "حذف پیکربندی ارائه‌دهنده."
+
+#: llm/views.py:42 llm/views.py:47
+msgid "Update a provider configuration."
+msgstr "به‌روزرسانی پیکربندی ارائه‌دهنده."
+
+#: llm/views.py:51 llm/views.py:84
+msgid "List available providers"
+msgstr "فهرست ارائه‌دهندگان موجود"
+
+#: llm/views.py:52 llm/views.py:85
+msgid "Get a list of available LLM providers."
+msgstr "دریافت لیست ارائه‌دهندگان LLM موجود."
+
+#: llm/views.py:57
+msgid "List all provider configs (Global and Team-specific)"
+msgstr "فهرست همه پیکربندی‌های ارائه‌دهنده (عمومی و تیمی)"
+
+#: llm/views.py:59
+msgid "Get all available provider configurations including global and team-specific ones."
+msgstr "دریافت همه پیکربندی‌های موجود شامل عمومی و تیمی."
+
+#: llm/views.py:65
+msgid "Test provider config"
+msgstr "تست پیکربندی ارائه‌دهنده"
+
+#: llm/views.py:66
+msgid "Test a provider configuration without saving it."
+msgstr "تست پیکربندی ارائه‌دهنده بدون ذخیره آن."
+
+#: llm/views.py:74
+msgid "Get provider models"
+msgstr "دریافت مدل‌های ارائه‌دهنده"
+
+#: llm/views.py:75
+msgid "Get all models supported by a specific provider."
+msgstr "دریافت همه مدل‌های پشتیبانی شده توسط ارائه‌دهنده خاص."
+
+#: llm/views.py:79
+msgid "Get provider embedding models"
+msgstr "دریافت مدل‌های جاسازی ارائه‌دهنده"
+
+#: llm/views.py:80
+msgid "Get all embedding models supported by a specific provider."
+msgstr "دریافت همه مدل‌های جاسازی پشتیبانی شده توسط ارائه‌دهنده خاص."
+
+#: llm/views.py:178
+msgid "Test failed"
+msgstr "تست ناموفق"
+
+#: locker/helpers.py:44
+#, python-brace-format
+msgid "Failed to acquire lock '{lock_name}' within {wait_time} seconds"
+msgstr "شکست در دریافت قفل '{lock_name}' ظرف {wait_time} ثانیه"
+
+#: plan/admin.py:50
+msgid "Stripe Configuration"
+msgstr "پیکربندی Stripe"
+
+#: plan/admin.py:52
+msgid "Plan Limits"
+msgstr "محدودیت‌های پلن"
+
+#: plan/admin.py:67 plan/admin.py:102 plan/admin.py:119 plan/admin.py:130
+msgid "Timestamps"
+msgstr "برچسب‌های زمانی"
+
+#: plan/admin.py:89
+msgid "Credits"
+msgstr "اعتبارات"
+
+#: plan/admin.py:91
+msgid "Subscription Details"
+msgstr "جزئیات اشتراک"
+
+#: plan/admin.py:118
+msgid "Payment Details"
+msgstr "جزئیات پرداخت"
+
+#: plan/authentication.py:18
+msgid "No Stripe signature found"
+msgstr "امضای Stripe یافت نشد"
+
+#: plan/authentication.py:30
+msgid "Invalid Stripe signature"
+msgstr "امضای Stripe نامعتبر"
+
+#: plan/consts.py:7
+msgid "Yearly"
+msgstr "سالیانه"
+
+#: plan/consts.py:8
+msgid "Monthly"
+msgstr "ماهیانه"
+
+#: plan/consts.py:23
+msgid "Incomplete"
+msgstr "ناقص"
+
+#: plan/consts.py:24
+msgid "Incomplete Expired"
+msgstr "ناقص منقضی شده"
+
+#: plan/consts.py:25
+msgid "Past Due"
+msgstr "عقب افتاده"
+
+#: plan/consts.py:26
+msgid "Paused"
+msgstr "متوقف شده"
+
+#: plan/consts.py:27
+msgid "Trialing"
+msgstr "در حال آزمایش"
+
+#: plan/consts.py:28
+msgid "Unpaid"
+msgstr "پرداخت نشده"
+
+#: plan/consts.py:35
+msgid "Default"
+msgstr "پیش‌فرض"
+
+#: plan/consts.py:36
+msgid "Info"
+msgstr "اطلاعات"
+
+#: plan/consts.py:37
+msgid "Cross"
+msgstr "ضربدر"
+
+#: plan/consts.py:38
+msgid "Check"
+msgstr "بررسی"
+
+#: plan/filters.py:11 plan/models.py:203
+msgid "Content type"
+msgstr "نوع محتوا"
+
+#: plan/filters.py:13
+msgid "Crawl request"
+msgstr "درخواست خزش"
+
+#: plan/filters.py:14
+msgid "Search request"
+msgstr "درخواست جستجو"
+
+#: plan/filters.py:15
+msgid "Sitemap request"
+msgstr "درخواست نقشه سایت"
+
+#: plan/filters.py:16
+msgid "Knowledge base document"
+msgstr "سند پایگاه دانش"
+
+#: plan/filters.py:21
+msgid "API key"
+msgstr "کلید API"
+
+#: plan/filters.py:33
+msgid "Invalid value. Expected format: app_label.model"
+msgstr "مقدار نامعتبر. فرمت مورد انتظار: app_label.model"
+
+#: plan/models.py:10
+msgid "name"
+msgstr "نام"
+
+#: plan/models.py:11
+msgid "Label"
+msgstr "برچسب"
+
+#: plan/models.py:13
+msgid "Group"
+msgstr "گروه"
+
+#: plan/models.py:17
+msgid "Price before discount"
+msgstr "قیمت قبل از تخفیف"
+
+#: plan/models.py:23
+msgid "Price"
+msgstr "قیمت"
+
+#: plan/models.py:25
+msgid "Stripe price id"
+msgstr "شناسه قیمت Stripe"
+
+#: plan/models.py:28
+msgid "Number of users"
+msgstr "تعداد کاربران"
+
+#: plan/models.py:29
+msgid "Number of users that can be added to the team."
+msgstr "تعداد کاربرانی که می‌توانند به تیم اضافه شوند."
+
+#: plan/models.py:33
+msgid "Page credit"
+msgstr "اعتبار صفحه"
+
+#: plan/models.py:34
+msgid "Number of pages that can be crawled in plan duration."
+msgstr "تعداد صفحاتی که می‌توانند در مدت پلن خزش شوند."
+
+#: plan/models.py:38
+msgid "Daily page credit"
+msgstr "اعتبار روزانه صفحه"
+
+#: plan/models.py:40
+msgid "Number of pages that can be crawled per day. resets at midnight. -1 for unlimited"
+msgstr "تعداد صفحاتی که می‌توانند در روز خزش شوند. در نیمه‌شب بازنشانی می‌شود. -1 برای نامحدود"
+
+#: plan/models.py:45
+msgid "Crawl max depth"
+msgstr "حداکثر عمق خزش"
+
+#: plan/models.py:45
+msgid "Max depth of crawling."
+msgstr "حداکثر عمق خزش."
+
+#: plan/models.py:48
+msgid "Crawl max limit"
+msgstr "حداکثر محدودیت خزش"
+
+#: plan/models.py:48
+msgid "Max number of pages to crawl."
+msgstr "حداکثر تعداد صفحات قابل خزش."
+
+#: plan/models.py:51
+msgid "Max concurrent crawl"
+msgstr "حداکثر خزش همزمان"
+
+#: plan/models.py:52
+msgid "Max Number of concurrent crawling."
+msgstr "حداکثر تعداد خزش همزمان."
+
+#: plan/models.py:56
+msgid "Number of knowledge bases"
+msgstr "تعداد پایگاه‌های دانش"
+
+#: plan/models.py:59
+msgid "Number of each knowledge base documents"
+msgstr "تعداد اسناد هر پایگاه دانش"
+
+#: plan/models.py:62
+msgid "Knowledge base retrival rate limit"
+msgstr "محدودیت نرخ بازیابی پایگاه دانش"
+
+#: plan/models.py:63
+msgid "DRF-style rate string, e.g. '100/min', '500/day'"
+msgstr "رشته نرخ به سبک DRF، مثل '100/min'، '500/day'"
+
+#: plan/models.py:69
+msgid "Is default"
+msgstr "پیش‌فرض است"
+
+#: plan/models.py:70 plan/models.py:89
+msgid "Order"
+msgstr "ترتیب"
+
+#: plan/models.py:71
+msgid "Is active"
+msgstr "فعال است"
+
+#: plan/models.py:74 plan/models.py:124
+msgid "Plan"
+msgstr "پلن"
+
+#: plan/models.py:75
+msgid "Plans"
+msgstr "پلن‌ها"
+
+#: plan/models.py:91
+msgid "Icon"
+msgstr "آیکون"
+
+#: plan/models.py:101
+msgid "Help text"
+msgstr "متن راهنما"
+
+#: plan/models.py:104
+msgid "Plan Feature"
+msgstr "ویژگی پلن"
+
+#: plan/models.py:105
+msgid "Plan Features"
+msgstr "ویژگی‌های پلن"
+
+#: plan/models.py:120
+msgid "Stripe subscription id"
+msgstr "شناسه اشتراک Stripe"
+
+#: plan/models.py:128
+msgid "Remain page credit"
+msgstr "اعتبار صفحه باقیمانده"
+
+#: plan/models.py:130
+msgid "Remain daily page credit"
+msgstr "اعتبار روزانه صفحه باقیمانده"
+
+#: plan/models.py:133
+msgid "Start datetime"
+msgstr "تاریخ شروع"
+
+#: plan/models.py:135
+msgid "Current period start datetime"
+msgstr "تاریخ شروع دوره فعلی"
+
+#: plan/models.py:138
+msgid "Current period end datetime"
+msgstr "تاریخ پایان دوره فعلی"
+
+#: plan/models.py:140
+msgid "Canceled at"
+msgstr "لغو شده در"
+
+#: plan/models.py:148 plan/models.py:159
+msgid "Subscription"
+msgstr "اشتراک"
+
+#: plan/models.py:149
+msgid "Subscriptions"
+msgstr "اشتراک‌ها"
+
+#: plan/models.py:162
+msgid "Amount"
+msgstr "مبلغ"
+
+#: plan/models.py:164
+msgid "Stripe payment id"
+msgstr "شناسه پرداخت Stripe"
+
+#: plan/models.py:174
+msgid "Subscription Payment"
+msgstr "پرداخت اشتراک"
+
+#: plan/models.py:175
+msgid "Subscription Payments"
+msgstr "پرداخت‌های اشتراک"
+
+#: plan/models.py:183
+msgid "Data"
+msgstr "داده"
+
+#: plan/models.py:186
+msgid "Stripe webhook history"
+msgstr "تاریخچه webhook Stripe"
+
+#: plan/models.py:187
+msgid "Stripe webhook histories"
+msgstr "تاریخچه‌های webhook Stripe"
+
+#: plan/models.py:210
+msgid "Content ID"
+msgstr "شناسه محتوا"
+
+#: plan/models.py:226
+msgid "Requested Page Credit"
+msgstr "اعتبار صفحه درخواست شده"
+
+#: plan/models.py:229
+msgid "Actual Page Credit Used"
+msgstr "اعتبار صفحه واقعی مصرف شده"
+
+#: plan/models.py:233
+msgid "Usage History"
+msgstr "تاریخچه استفاده"
+
+#: plan/models.py:234
+msgid "Usage Histories"
+msgstr "تاریخچه‌های استفاده"
+
+#: plan/serializers.py:73
+msgid "Plan not found"
+msgstr "پلن یافت نشد"
+
+#: plan/services.py:147
+msgid "Unlimited"
+msgstr "نامحدود"
+
+#: plan/services.py:243 plan/views.py:57
+msgid "You have no active subscription"
+msgstr "شما اشتراک فعالی ندارید"
+
+#: plan/services.py:630
+msgid "You can't downgrade your plan."
+msgstr "شما نمی‌توانید پلن خود را تنزل دهید."
+
+#: plan/services.py:677
+msgid "Team already has an active subscription."
+msgstr "تیم قبلاً اشتراک فعالی دارد."
+
+#: plan/services.py:711 plan/services.py:741 plan/services.py:764
+msgid "Team does not have an active subscription."
+msgstr "تیم اشتراک فعالی ندارد."
+
+#: plan/services.py:714 plan/services.py:744
+msgid "You cannot cancel freemium plan."
+msgstr "شما نمی‌توانید پلن رایگان را لغو کنید."
+
+#: plan/services.py:767
+msgid "You cannot renew freemium plan."
+msgstr "شما نمی‌توانید پلن رایگان را تمدید کنید."
+
+#: plan/services.py:770
+msgid "This plan is already active."
+msgstr "این پلن قبلاً فعال است."
+
+#: plan/services.py:818 plan/services.py:839
+msgid "get_actual_credits: Unhandled type {type(request)}"
+msgstr "get_actual_credits: نوع پردازش نشده {type(request)}"
+
+#: plan/throttle.py:18 plan/throttle.py:33
+msgid "Cannot throttle a request without a team attached to it."
+msgstr "نمی‌توان درخواستی بدون تیم متصل را محدود کرد."
+
+#: plan/validators.py:42
+#, python-brace-format
+msgid "You have no more daily credit left in your plan. for current request you need {} credits."
+msgstr "اعتبار روزانه‌ای در پلن شما باقی نمانده. برای درخواست فعلی به {} اعتبار نیاز دارید."
+
+#: plan/validators.py:49
+#, python-brace-format
+msgid "You just have {} daily credit left in your plan. for current request you need {} credits."
+msgstr "شما فقط {} اعتبار روزانه در پلن خود دارید. برای درخواست فعلی به {} اعتبار نیاز دارید."
+
+#: plan/validators.py:62
+#, python-brace-format
+msgid "You have no more pages left in your plan. for current request you need {} credits."
+msgstr "صفحه‌ای در پلن شما باقی نمانده. برای درخواست فعلی به {} اعتبار نیاز دارید."
+
+#: plan/validators.py:69
+#, python-brace-format
+msgid "You just have {} credits left in your plan. for current request you need {} credits."
+msgstr "شما فقط {} اعتبار در پلن خود دارید. برای درخواست فعلی به {} اعتبار نیاز دارید."
+
+#: plan/validators.py:111
+msgid "With the current plan you cannot use this proxy server. Upgrade your plan to use Premium proxy servers."
+msgstr "با پلن فعلی نمی‌توانید از این سرور پراکسی استفاده کنید. پلن خود را ارتقا دهید تا از سرورهای پراکسی پرمیوم استفاده کنید."
+
+#: plan/validators.py:125
+#, python-brace-format
+msgid "Your plan does not support more than {} depth. change the max depth in spider options."
+msgstr "پلن شما بیش از {} عمق را پشتیبانی نمی‌کند. حداکثر عمق را در گزینه‌های عنکبوت تغییر دهید."
+
+#: plan/validators.py:138
+#, python-brace-format
+msgid "Your plan does not support more than {} pages per crawl. change the page limit in spider options."
+msgstr "پلن شما بیش از {} صفحه در هر خزش را پشتیبانی نمی‌کند. محدودیت صفحه را در گزینه‌های عنکبوت تغییر دهید."
+
+#: plan/validators.py:160
+#, python-brace-format
+msgid "Your plan does not support more than {} concurrent crawls. Wait for them to finish."
+msgstr "پلن شما بیش از {} خزش همزمان را پشتیبانی نمی‌کند. منتظر بمانید تا آنها به پایان برسند."
+
+#: plan/validators.py:196
+#, python-brace-format
+msgid "Your plan does not support more than {} concurrent searches. Wait for them to finish."
+msgstr "پلن شما بیش از {} جستجوی همزمان را پشتیبانی نمی‌کند. منتظر بمانید تا آنها به پایان برسند."
+
+#: plan/validators.py:229
+#, python-brace-format
+msgid "Your plan does not support more than {} concurrent sitemaps. Wait for them to finish."
+msgstr "پلن شما بیش از {} نقشه سایت همزمان را پشتیبانی نمی‌کند. منتظر بمانید تا آنها به پایان برسند."
+
+#: plan/validators.py:258
+#, python-brace-format
+msgid "Your plan does not support more than {} knowledge bases. You can not create more."
+msgstr "پلن شما بیش از {} پایگاه دانش را پشتیبانی نمی‌کند. شما نمی‌توانید بیشتر ایجاد کنید."
+
+#: plan/validators.py:291
+#, python-brace-format
+msgid "Your current plan does not support more than {} documents per knowledge base. This knowledge base has {} documents left. Your request will add {} documents."
+msgstr "پلن فعلی شما بیش از {} سند برای هر پایگاه دانش را پشتیبانی نمی‌کند. این پایگاه دانش {} سند باقیمانده دارد. درخواست شما {} سند اضافه خواهد کرد."
+
+#: plan/validators.py:386
+msgid "You have reached the maximum number of users for your plan."
+msgstr ""
+
+#: plan/views.py:22
+msgid "List available plans"
+msgstr "فهرست پلن‌های موجود"
+
+#: plan/views.py:24
+msgid "Returns a list of all active subscription plans with their details including pricing, features and limits."
+msgstr "لیست همه پلن‌های فعال اشتراک را با جزئیات شامل قیمت، ویژگی‌ها و محدودیت‌ها برمی‌گرداند."
+
+#: plan/views.py:29
+msgid "Get plan details"
+msgstr "دریافت جزئیات پلن"
+
+#: plan/views.py:31
+msgid "Returns detailed information about a specific subscription plan."
+msgstr "اطلاعات دقیق درباره پلن اشتراک خاص برمی‌گرداند."
+
+#: plan/views.py:49
+msgid "Get current subscription details"
+msgstr "دریافت جزئیات اشتراک فعلی"
+
+#: plan/views.py:51 plan/views.py:63
+msgid "Returns detailed information about the team's current subscription."
+msgstr "اطلاعات دقیق درباره اشتراک فعلی تیم برمی‌گرداند."
+
+#: plan/views.py:61
+msgid "Get subscription details"
+msgstr "دریافت جزئیات اشتراک"
+
+#: plan/views.py:68
+msgid "List team subscriptions"
+msgstr "فهرست اشتراک‌های تیم"
+
+#: plan/views.py:69
+msgid "Returns a list of all active subscriptions for the team."
+msgstr "لیست همه اشتراک‌های فعال برای تیم برمی‌گرداند."
+
+#: plan/views.py:73
+msgid "Start a new subscription"
+msgstr "شروع اشتراک جدید"
+
+#: plan/views.py:74
+msgid "Starts a new subscription for the team."
+msgstr "اشتراک جدید برای تیم را شروع می‌کند."
+
+#: plan/views.py:77
+msgid "Subscription started successfully."
+msgstr "اشتراک با موفقیت شروع شد."
+
+#: plan/views.py:85 plan/views.py:115
+msgid "The URL to redirect the user to for payment processing."
+msgstr "URL برای هدایت کاربر به پردازش پرداخت."
+
+#: plan/views.py:91 plan/views.py:104 plan/views.py:121
+msgid "Returns the URL to redirect the user to for payment processing."
+msgstr "URL برای هدایت کاربر به پردازش پرداخت برمی‌گرداند."
+
+#: plan/views.py:97
+msgid "Cancel subscription"
+msgstr "لغو اشتراک"
+
+#: plan/views.py:98
+msgid "Cancels the active subscription for the team."
+msgstr "اشتراک فعال برای تیم را لغو می‌کند."
+
+#: plan/views.py:102
+msgid "Get customer session URL"
+msgstr "دریافت URL نشست مشتری"
+
+#: plan/views.py:167
+msgid "You cannot start freemium plan for this team"
+msgstr "شما نمی‌توانید پلن رایگان را برای این تیم شروع کنید"
+
+#: plan/views.py:219
+msgid "Handle Stripe webhooks"
+msgstr "مدیریت webhookهای Stripe"
+
+#: plan/views.py:221
+msgid "Processes webhook events from Stripe for subscription and payment updates."
+msgstr "رویدادهای webhook از Stripe را برای به‌روزرسانی اشتراک و پرداخت پردازش می‌کند."
+
+#: plan/views.py:243
+msgid "List usage history"
+msgstr "فهرست تاریخچه استفاده"
+
+#: plan/views.py:244
+msgid "List usage history for the team."
+msgstr "فهرست تاریخچه استفاده برای تیم."
+
+#: plan/views.py:248
+msgid "Get usage history"
+msgstr "دریافت تاریخچه استفاده"
+
+#: plan/views.py:249
+msgid "Get usage history for the team."
+msgstr "دریافت تاریخچه استفاده برای تیم."
+
+#: user/admin.py:20
+msgid "Personal info"
+msgstr "اطلاعات شخصی"
+
+#: user/admin.py:22
+msgid "Permissions"
+msgstr "مجوزها"
+
+#: user/admin.py:34
+msgid "Email verification"
+msgstr "تأیید ایمیل"
+
+#: user/admin.py:38
+msgid "Password reset"
+msgstr "بازنشانی رمز عبور"
+
+#: user/decorators.py:51
+msgid "Invalid API key"
+msgstr "کلید API نامعتبر"
+
+#: user/managers.py:11
+msgid "Superuser must have is_staff=True."
+msgstr "ابرکاربر باید is_staff=True داشته باشد."
+
+#: user/managers.py:13
+msgid "Superuser must have is_superuser=True."
+msgstr "ابرکاربر باید is_superuser=True داشته باشد."
+
+#: user/managers.py:24
+msgid "The given email must be set"
+msgstr "ایمیل ارائه شده باید تنظیم شود"
+
+#: user/models.py:15 user/models.py:141
+msgid "Email Address"
+msgstr "آدرس ایمیل"
+
+#: user/models.py:17
+msgid "Reset Password Expires At"
+msgstr "بازنشانی رمز عبور منقضی می‌شود در"
+
+#: user/models.py:22
+msgid "Reset Password Token"
+msgstr "توکن بازنشانی رمز عبور"
+
+#: user/models.py:28
+msgid "Email Verification Token"
+msgstr "توکن تأیید ایمیل"
+
+#: user/models.py:34
+msgid "Email Verified"
+msgstr "ایمیل تأیید شده"
+
+#: user/models.py:38
+msgid "Privacy Confirmed At"
+msgstr "حریم خصوصی تأیید شده در"
+
+#: user/models.py:43
+msgid "Terms Confirmed At"
+msgstr "شرایط تأیید شده در"
+
+#: user/models.py:48
+msgid "Newsletter Confirmed"
+msgstr "خبرنامه تأیید شده"
+
+#: user/models.py:59 user/models.py:104
+msgid "User"
+msgstr "کاربر"
+
+#: user/models.py:60
+msgid "Users"
+msgstr "کاربران"
+
+#: user/models.py:76
+msgid "Members"
+msgstr "اعضا"
+
+#: user/models.py:81
+msgid "Stripe Customer ID"
+msgstr "شناسه مشتری Stripe"
+
+#: user/models.py:93
+msgid "Teams"
+msgstr "تیم‌ها"
+
+#: user/models.py:115
+msgid "Is Owner"
+msgstr "مالک است"
+
+#: user/models.py:123
+msgid "Team Member"
+msgstr "عضو تیم"
+
+#: user/models.py:124
+msgid "Team Members"
+msgstr "اعضای تیم"
+
+#: user/models.py:135
+msgid "Invitation Token"
+msgstr "توکن دعوت‌نامه"
+
+#: user/models.py:145
+msgid "Activated"
+msgstr "فعال شده"
+
+#: user/models.py:153
+msgid "Team Invitation"
+msgstr "دعوت‌نامه تیم"
+
+#: user/models.py:154
+msgid "Team Invitations"
+msgstr "دعوت‌نامه‌های تیم"
+
+#: user/models.py:173
+msgid "Last Used At"
+msgstr "آخرین استفاده در"
+
+#: user/models.py:182
+msgid "Team API Key"
+msgstr "کلید API تیم"
+
+#: user/models.py:183
+msgid "Team API Keys"
+msgstr "کلیدهای API تیم"
+
+#: user/serializers.py:24
+msgid "Email already exists"
+msgstr "ایمیل قبلاً وجود دارد"
+
+#: user/serializers.py:75 user/serializers.py:77
+msgid "Invalid email or password"
+msgstr "ایمیل یا رمز عبور نامعتبر"
+
+#: user/serializers.py:80
+msgid "Email is not verified"
+msgstr "ایمیل تأیید نشده است"
+
+#: user/services.py:171
+msgid "User is already a member of the team"
+msgstr "کاربر قبلاً عضو تیم است"
+
+#: user/services.py:266
+msgid "User does not exist"
+msgstr "کاربر وجود ندارد"
+
+#: user/services.py:304
+msgid "Signup is not active"
+msgstr "ثبت‌نام فعال نیست"
+
+#: user/views.py:41 user/views.py:42
+msgid "Install WaterCrawl"
+msgstr "نصب WaterCrawl"
+
+#: user/views.py:70 user/views.py:71 user/views.py:111 user/views.py:112
+msgid "Register a new user"
+msgstr "ثبت‌نام کاربر جدید"
+
+#: user/views.py:96 user/views.py:97
+msgid "Verify invitation"
+msgstr "تأیید دعوت‌نامه"
+
+#: user/views.py:142
+msgid "You can not register you already have an account"
+msgstr "شما نمی‌توانید ثبت‌نام کنید، قبلاً حساب کاربری دارید"
+
+#: user/views.py:150
+msgid "Emails do not match the invitation email. you have to register with the email that was invited"
+msgstr "ایمیل با ایمیل دعوت‌نامه مطابقت ندارد. شما باید با ایمیلی که دعوت شده است ثبت‌نام کنید"
+
+#: user/views.py:168 user/views.py:169
+msgid "Authenticate using email and password"
+msgstr "احراز هویت با ایمیل و رمز عبور"
+
+#: user/views.py:200 user/views.py:201
+msgid "Send a verification email"
+msgstr "ارسال ایمیل تأیید"
+
+#: user/views.py:227 user/views.py:228
+msgid "Authenticate using OAuth"
+msgstr "احراز هویت با OAuth"
+
+#: user/views.py:253
+msgid "Invalid token"
+msgstr "توکن نامعتبر"
+
+#: user/views.py:266 user/views.py:267
+msgid "Send a forgot password email"
+msgstr "ارسال ایمیل فراموشی رمز عبور"
+
+#: user/views.py:287 user/views.py:288
+msgid "Verify reset password token"
+msgstr "تأیید توکن بازنشانی رمز عبور"
+
+#: user/views.py:294 user/views.py:295
+msgid "Reset password"
+msgstr "بازنشانی رمز عبور"
+
+#: user/views.py:323 user/views.py:324
+msgid "Verify email"
+msgstr "تأیید ایمیل"
+
+#: user/views.py:357
+msgid "Get user profile"
+msgstr "دریافت پروفایل کاربر"
+
+#: user/views.py:358
+msgid "Get the current user profile"
+msgstr "دریافت پروفایل کاربر فعلی"
+
+#: user/views.py:362 user/views.py:363
+msgid "Update user profile"
+msgstr "به‌روزرسانی پروفایل کاربر"
+
+#: user/views.py:385 user/views.py:386
+msgid "Get my invitations"
+msgstr "دریافت دعوت‌نامه‌های من"
+
+#: user/views.py:390 user/views.py:391
+msgid "Accept an invitation"
+msgstr "پذیرفتن دعوت‌نامه"
+
+#: user/views.py:417 user/views.py:418
+msgid "Create a new team"
+msgstr "ایجاد تیم جدید"
+
+#: user/views.py:422 user/views.py:423
+msgid "Get a team"
+msgstr "دریافت تیم"
+
+#: user/views.py:427 user/views.py:428
+msgid "Update a team"
+msgstr "به‌روزرسانی تیم"
+
+#: user/views.py:432 user/views.py:433
+msgid "List teams"
+msgstr "فهرست تیم‌ها"
+
+#: user/views.py:437
+msgid "Get/Update the current team"
+msgstr "دریافت/به‌روزرسانی تیم فعلی"
+
+#: user/views.py:438
+msgid "Get the current team"
+msgstr "دریافت تیم فعلی"
+
+#: user/views.py:443 user/views.py:444
+msgid "Invite a user to the current team"
+msgstr "دعوت کاربر به تیم فعلی"
+
+#: user/views.py:450 user/views.py:451
+msgid "List invitations to the current team"
+msgstr "فهرست دعوت‌نامه‌ها به تیم فعلی"
+
+#: user/views.py:456 user/views.py:457
+msgid "Revoke an invitation"
+msgstr ""
+
+#: user/views.py:462
+msgid "Get the invitation URL"
+msgstr ""
+
+#: user/views.py:463
+msgid "Get the invitation URL for the selected invitation"
+msgstr ""
+
+#: user/views.py:468
+msgid "Resend the invitation email"
+msgstr ""
+
+#: user/views.py:469
+msgid "Resend the invitation email to the invited user"
+msgstr ""
+
+#: user/views.py:580 user/views.py:581
+msgid "Create a new API key"
+msgstr "ایجاد کلید API جدید"
+
+#: user/views.py:585 user/views.py:586
+msgid "List API keys"
+msgstr "فهرست کلیدهای API"
+
+#: user/views.py:590 user/views.py:591
+msgid "Delete an API key"
+msgstr "حذف کلید API"
+
+#: user/views.py:618 user/views.py:619
+msgid "List team members"
+msgstr "فهرست اعضای تیم"
+
+#: user/views.py:623 user/views.py:624
+msgid "Delete a team member"
+msgstr "حذف عضو تیم"
+
+#: user/views.py:641
+msgid "You can not delete the owner of the team"
+msgstr "شما نمی‌توانید مالک تیم را حذف کنید"
+
+#: user/views.py:647 user/views.py:648
+msgid "Refresh token"
+msgstr "تازه‌سازی توکن"
+
+#: user/views.py:658 user/views.py:659
+msgid "Verify token"
+msgstr "تأیید توکن"
+

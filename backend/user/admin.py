@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.utils.translation import gettext_lazy as _
 from .models import User, Team, TeamMember, TeamInvitation, TeamAPIKey
 
 
@@ -16,9 +17,9 @@ class CustomUserAdmin(UserAdmin):
     list_filter = ("is_staff", "is_active", "email_verified")
     fieldsets = (
         (None, {"fields": ("email", "password")}),
-        ("Personal info", {"fields": ("first_name", "last_name")}),
+        (_("Personal info"), {"fields": ("first_name", "last_name")}),
         (
-            "Permissions",
+            _("Permissions"),
             {
                 "fields": (
                     "is_active",
@@ -30,11 +31,11 @@ class CustomUserAdmin(UserAdmin):
             },
         ),
         (
-            "Email verification",
+            _("Email verification"),
             {"fields": ("email_verified", "email_verification_token")},
         ),
         (
-            "Password reset",
+            _("Password reset"),
             {"fields": ("reset_password_token", "reset_password_expires_at")},
         ),
     )

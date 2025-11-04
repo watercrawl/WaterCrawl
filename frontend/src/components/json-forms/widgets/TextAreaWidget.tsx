@@ -15,7 +15,7 @@ export const TextAreaWidget: React.FC<FieldProps> = ({
   return (
     <textarea
       value={value || ''}
-      onChange={(e) => onChange(e.target.value)}
+      onChange={e => onChange(e.target.value)}
       onBlur={onBlur}
       placeholder={ui.placeholder}
       required={required}
@@ -23,11 +23,11 @@ export const TextAreaWidget: React.FC<FieldProps> = ({
       readOnly={schema.readOnly}
       rows={ui.rows || 3}
       cols={ui.cols}
-      className={`w-full px-3 py-2 bg-transparent border ${
-        hasError ? 'border-red-500' : 'border-gray-200 dark:border-gray-700'
-      } rounded-md text-gray-900 dark:text-white focus:outline-none focus:ring-1 ${
-        hasError ? 'focus:ring-red-500 focus:border-red-500' : 'focus:ring-primary-500 focus:border-primary-500'
-      } dark:focus:border-primary-500 transition-colors ${ui.inputClassName || ''}`}
+      className={`w-full border bg-transparent px-3 py-2 ${
+        hasError ? 'border-error' : 'border-border'
+      } rounded-md text-foreground focus:outline-none focus:ring-1 ${
+        hasError ? 'focus:border-error focus:ring-error' : 'focus:border-primary focus:ring-primary'
+      } transition-colors ${ui.inputClassName || ''}`}
     />
   );
 };

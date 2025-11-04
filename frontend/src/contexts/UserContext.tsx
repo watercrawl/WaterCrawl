@@ -4,7 +4,6 @@ import { Profile } from '../types/user';
 import { useSettings } from './SettingsProvider';
 import { profileApi } from '../services/api/profile';
 
-
 interface UserContextType {
   user: Profile | null;
   loading: boolean;
@@ -44,7 +43,6 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-
   useEffect(() => {
     fetchUserProfile();
   }, []);
@@ -54,11 +52,14 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (!user.privacy_confirmed_at || !user.terms_confirmed_at) {
       setShowPrivacyTermsModal(true);
       return;
-    };
-    if (new Date(settings?.policy_update_at) > new Date(user.privacy_confirmed_at) || new Date(settings?.terms_update_at) > new Date(user.terms_confirmed_at)) {
+    }
+    if (
+      new Date(settings?.policy_update_at) > new Date(user.privacy_confirmed_at) ||
+      new Date(settings?.terms_update_at) > new Date(user.terms_confirmed_at)
+    ) {
       setShowPrivacyTermsModal(true);
       return;
-    };
+    }
     setShowPrivacyTermsModal(false);
   }, [user, settings]);
 

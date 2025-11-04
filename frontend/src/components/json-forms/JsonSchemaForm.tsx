@@ -20,7 +20,8 @@ export const JsonSchemaForm: React.FC<JsonSchemaFormProps> = ({
 
   // Initialize default values
   useEffect(() => {
-    if (!value) {  // Only run if value is null/undefined
+    if (!value) {
+      // Only run if value is null/undefined
       if (schema.default !== undefined) {
         onChange(schema.default);
       } else if (schema.type === 'object' && schema.properties) {
@@ -51,14 +52,16 @@ export const JsonSchemaForm: React.FC<JsonSchemaFormProps> = ({
 
   // Validate on value or schema changes
   useEffect(() => {
-    if (value !== undefined) {  // Only validate if we have a value
+    if (value !== undefined) {
+      // Only validate if we have a value
       const validationErrors = validateValue(value, schema);
       setErrors(validationErrors);
-      if (onError) {  // Only call if onError exists
+      if (onError) {
+        // Only call if onError exists
         onError(validationErrors);
       }
     }
-  }, [value, schema, onChange, onError]);  // Remove onError from dependencies
+  }, [value, schema, onChange, onError]); // Remove onError from dependencies
 
   const handleChange = (newValue: any) => {
     onChange(newValue);

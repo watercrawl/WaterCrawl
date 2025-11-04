@@ -15,20 +15,16 @@ export const CrawlResultItems: React.FC<CrawlResultItemsProps> = ({
   processing,
 }) => {
   return (
-    <div className="px-6 py-4 bg-gray-50 dark:bg-gray-900/30 w-full">
+    <div className="w-full bg-muted px-6 py-4">
       {processing && (
-        <div className="flex items-center justify-center w-full">
+        <div className="flex w-full items-center justify-center">
           <AnimatedProcessing />
         </div>
       )}
       {results.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-          {results.map((result) => (
-            <CrawlResultCard
-              key={result.uuid}
-              result={result}
-              onPreviewClick={onPreviewClick}
-            />
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+          {results.map(result => (
+            <CrawlResultCard key={result.uuid} result={result} onPreviewClick={onPreviewClick} />
           ))}
         </div>
       )}

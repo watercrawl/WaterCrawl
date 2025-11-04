@@ -1,5 +1,7 @@
+import re
 from datetime import timedelta
 from urllib.parse import urljoin
+from django.utils.translation import gettext_lazy as _
 
 import requests
 from django.conf import settings
@@ -116,14 +118,38 @@ class TeamService:
             team_api_key.save(update_fields=["last_used_at"])
         return cls(team_api_key.team)
 
+    @staticmethod
+    def default_team_name(
+        email: str, first_name: str = None, last_name: str = None
+    ) -> str:
+        # Prefer full name if available
+        if first_name or last_name:
+            full_name = " ".join(filter(None, [first_name, last_name])).strip()
+        else:
+            # Derive from email if no name available
+            local_part = email.split("@")[0]
+            # Replace common special chars with spaces
+            clean = re.sub(r"[._+\-]+", " ", local_part)
+            # Remove multiple spaces and capitalize words
+            full_name = " ".join(word.capitalize() for word in clean.split())
+
+        # Handle completely empty fallback (shouldn’t happen)
+        if not full_name:
+            full_name = "My"
+
+        # Return the formatted team name
+        return f"{full_name}'s Team"
+
     @classmethod
     def create_team(
         cls,
         user: User,
-        name: str = "Default",
+        name: str = None,
         is_owner: bool = True,
         is_default: bool = False,
     ):
+        if not name:
+            name = cls.default_team_name(user.email, user.first_name, user.last_name)
         team = Team.objects.create(name=name, is_default=is_default)
         APIKeyService.create_api_key(team)
         return cls(team).add_user(user, is_owner)
@@ -142,8 +168,8 @@ class TeamService:
 
     def invite(self, email: str):
         if self.team.members.filter(email__iexact=email).exists():
-            raise ValidationError("User is already a member of the team")
-        invitation, _ = self.team.invitations.update_or_create(
+            raise ValidationError(_("User is already a member of the team"))
+        invitation, _created = self.team.invitations.update_or_create(
             email=email, defaults={"activated": False}
         )
         return invitation
@@ -208,11 +234,15 @@ class TeamInvitationService:
     def get_link(self):
         return urljoin(
             settings.FRONTEND_URL,
-            f"/register/?invitation_code={self.invitation.invitation_token}",
+            f"/accept/invitation/{self.invitation.invitation_token}",
         )
 
     def is_new_user(self):
         return not User.objects.filter(email__iexact=self.invitation.email).exists()
+
+    def revoke(self):
+        self.invitation.delete()
+        return
 
 
 class VerificationService:
@@ -233,7 +263,7 @@ class VerificationService:
             return cls(User.objects.get(email__iexact=email))
         except User.DoesNotExist:
             if raise_error:
-                raise ValidationError("User does not exist")
+                raise ValidationError(_("User does not exist"))
             return None
 
     def send_verification_email(self):
@@ -270,6 +300,8 @@ class AbsractOAuth2Service:
         try:
             return UserService(User.objects.get(email__iexact=email))
         except User.DoesNotExist:
+            if not settings.IS_SIGNUP_ACTIVE:
+                raise ValidationError(_("Signup is not active"))
             return UserService.create_user(
                 email=email,
                 password=None,

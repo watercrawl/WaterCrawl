@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.translation import gettext as _
 from .models import (
     Plan,
     PlanFeature,
@@ -46,9 +47,9 @@ class PlanAdmin(admin.ModelAdmin):
                 )
             },
         ),
-        ("Stripe Configuration", {"fields": ("stripe_price_id",)}),
+        (_("Stripe Configuration"), {"fields": ("stripe_price_id",)}),
         (
-            "Plan Limits",
+            _("Plan Limits"),
             {
                 "fields": (
                     "number_of_users",
@@ -57,10 +58,13 @@ class PlanAdmin(admin.ModelAdmin):
                     "crawl_max_depth",
                     "crawl_max_limit",
                     "max_concurrent_crawl",
+                    "number_of_knowledge_bases",
+                    "number_of_each_knowledge_base_documents",
+                    "knowledge_base_retrival_rate_limit",
                 )
             },
         ),
-        ("Timestamps", {"fields": ("created_at", "updated_at")}),
+        (_("Timestamps"), {"fields": ("created_at", "updated_at")}),
     )
 
 
@@ -82,9 +86,9 @@ class SubscriptionAdmin(admin.ModelAdmin):
     inlines = [SubscriptionPaymentInline]
     fieldsets = (
         (None, {"fields": ("team", "plan", "status")}),
-        ("Credits", {"fields": ("remain_page_credit", "remain_daily_page_credit")}),
+        (_("Credits"), {"fields": ("remain_page_credit", "remain_daily_page_credit")}),
         (
-            "Subscription Details",
+            _("Subscription Details"),
             {
                 "fields": (
                     "stripe_subscription_id",
@@ -95,7 +99,7 @@ class SubscriptionAdmin(admin.ModelAdmin):
                 )
             },
         ),
-        ("Timestamps", {"fields": ("created_at", "updated_at")}),
+        (_("Timestamps"), {"fields": ("created_at", "updated_at")}),
     )
 
 
@@ -111,8 +115,8 @@ class SubscriptionPaymentAdmin(admin.ModelAdmin):
     readonly_fields = ("created_at", "updated_at")
     fieldsets = (
         (None, {"fields": ("subscription", "amount")}),
-        ("Payment Details", {"fields": ("stripe_payment_id",)}),
-        ("Timestamps", {"fields": ("created_at", "updated_at")}),
+        (_("Payment Details"), {"fields": ("stripe_payment_id",)}),
+        (_("Timestamps"), {"fields": ("created_at", "updated_at")}),
     )
 
 
@@ -123,12 +127,12 @@ class StripeWebhookHistoryAdmin(admin.ModelAdmin):
     list_per_page = 20
     fieldsets = (
         (None, {"fields": ("data",)}),
-        ("Timestamps", {"fields": ("created_at", "updated_at")}),
+        (_("Timestamps"), {"fields": ("created_at", "updated_at")}),
     )
 
 
 @admin.register(UsageHistory)
 class UsageHistoryAdmin(admin.ModelAdmin):
-    list_display = ("__str__", "created_at", "updated_at")
+    list_display = ("__str__", "content", "created_at", "updated_at")
     readonly_fields = ("created_at", "updated_at")
     list_per_page = 20

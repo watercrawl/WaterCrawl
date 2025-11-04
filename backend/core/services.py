@@ -19,6 +19,7 @@ from django.core.files.base import ContentFile
 from django.db.models import Count, F, Q
 from django.utils import timezone
 from django_redis import get_redis_connection
+from django.utils.translation import gettext as _
 
 from common.encryption import decrypt_key
 from core import consts
@@ -765,7 +766,7 @@ class CrawlerService:
         spider_options = spider_options or {}
         urls = list(set(urls))
         if not urls:
-            raise ValueError("At least one URL is required for the crawl request.")
+            raise ValueError(_("At least one URL is required for the crawl request."))
 
         allowed_domains = []
         for url in urls:
@@ -773,9 +774,11 @@ class CrawlerService:
             if parsed_url.netloc not in allowed_domains:
                 allowed_domains.append(parsed_url.netloc)
 
+        url_count = len(urls)
+
         default_spider_options = {
             "max_depth": 0,
-            "page_limit": len(urls),
+            "page_limit": url_count,
             "allowed_domains": allowed_domains,
             "exclude_paths": [],
             "include_paths": [],
@@ -804,6 +807,9 @@ class CrawlerService:
         crawl_request = CrawlRequest.objects.create(
             team=team,
             urls=urls,
+            crawl_type=consts.CRAWL_TYPE_BATCH
+            if url_count > 1
+            else consts.CRAWL_TYPE_SINGLE,
             options={
                 "spider_options": spider_options,
                 "page_options": page_options,

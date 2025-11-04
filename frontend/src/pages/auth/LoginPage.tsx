@@ -14,9 +14,7 @@ const LoginPage = () => {
     }
   }, [authService, navigate]);
 
-  return (
-    <LoginForm />
-  );
+  return <LoginForm />;
 };
 
 export default LoginPage;

@@ -24,7 +24,7 @@ const TeamContext = createContext<TeamContextType | undefined>(undefined);
 export const TeamProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [currentTeam, setCurrentTeamState] = useState<Team | null>(null);
   const [showSubscriptionBanner, setShowSubscriptionBanner] = useState(false);
-  const [currentSubscription, setCurrentSubscription] = useState<CurrentSubscription | null>(null)
+  const [currentSubscription, setCurrentSubscription] = useState<CurrentSubscription | null>(null);
   const [teams, setTeams] = useState<Team[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
@@ -37,7 +37,7 @@ export const TeamProvider: React.FC<{ children: React.ReactNode }> = ({ children
         teamApi.listTeams(),
       ]);
       setCurrentTeamState(currentTeamResponse);
-      setTeams(teamsResponse)
+      setTeams(teamsResponse);
     } catch (err) {
       setError(err as Error);
     } finally {
@@ -105,7 +105,7 @@ export const TeamProvider: React.FC<{ children: React.ReactNode }> = ({ children
         createTeam,
         currentSubscription,
         refreshCurrentSubscription,
-        showSubscriptionBanner
+        showSubscriptionBanner,
       }}
     >
       {children}

@@ -6,25 +6,31 @@ import Loading from '../shared/Loading';
 import { authApi } from '../../services/api/auth';
 import { FormInput } from '../shared/FormInput';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 
-const schema = yup.object({
-  password: yup.string().required('Password is required'),
-  confirmPassword: yup
-    .string()
-    .required('Please confirm your password')
-    .oneOf([yup.ref('password')], 'Passwords must match'),
-});
+const getSchema = (t: (key: string) => string) =>
+  yup.object({
+    password: yup.string().required(t('validation.required')),
+    confirmPassword: yup
+      .string()
+      .required(t('validation.required'))
+      .oneOf([yup.ref('password')], t('validation.passwordMatch')),
+  });
 
-type FormData = yup.InferType<typeof schema>;
+type FormData = {
+  password: string;
+  confirmPassword: string;
+};
 
 interface ResetPasswordFormProps {
   token: string;
 }
 
 export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const methods = useForm<FormData>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(getSchema(t)),
   });
 
   const {
@@ -35,26 +41,25 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
   const onSubmit = async (data: FormData) => {
     try {
       await authApi.resetPassword(token, data.password);
-      toast.success('Password reset successfully');
+      toast.success(t('auth.resetPassword.success'));
       navigate('/');
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Failed to reset password');
+      toast.error(error.response?.data?.message || t('auth.resetPassword.error'));
     }
   };
 
   return (
     <>
-
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white dark:bg-gray-800 px-4 py-8 shadow sm:rounded-lg sm:px-10">
-          <h2 className="mb-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
-            Reset Password
+        <div className="bg-card px-4 py-8 shadow sm:rounded-lg sm:px-10">
+          <h2 className="mb-6 text-center text-3xl font-extrabold text-foreground">
+            {t('auth.resetPassword.title')}
           </h2>
 
           <FormProvider {...methods}>
             <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
               <FormInput
-                label="New password"
+                label={t('auth.resetPassword.newPassword')}
                 name="password"
                 type="password"
                 error={errors.password?.message}
@@ -62,7 +67,7 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
               />
 
               <FormInput
-                label="Confirm password"
+                label={t('auth.resetPassword.confirmPassword')}
                 name="confirmPassword"
                 type="password"
                 error={errors.confirmPassword?.message}
@@ -73,9 +78,9 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex w-full justify-center rounded-md bg-primary-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 disabled:opacity-50"
+                  className="flex w-full justify-center rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 disabled:opacity-50"
                 >
-                  {isSubmitting ? <Loading size="sm" /> : 'Reset password'}
+                  {isSubmitting ? <Loading size="sm" /> : t('auth.resetPassword.resetButton')}
                 </button>
               </div>
 
@@ -83,9 +88,9 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
                 <div className="text-sm">
                   <Link
                     to="/auth/login"
-                    className="font-medium text-primary-600 hover:text-primary-500 dark:text-primary-400"
+                    className="font-medium text-primary hover:text-primary-500"
                   >
-                    Back to login
+                    {t('auth.forgotPassword.backToLogin')}
                   </Link>
                 </div>
               </div>

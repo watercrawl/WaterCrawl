@@ -12,10 +12,10 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variantStyles = {
-  primary: 'bg-blue-600 text-white shadow-sm hover:bg-blue-500 focus-visible:outline-blue-600',
-  secondary: 'bg-gray-600 text-white shadow-sm hover:bg-gray-500 focus-visible:outline-gray-600',
-  outline: 'bg-transparent border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800',
-  danger: 'bg-red-600 text-white shadow-sm hover:bg-red-500 focus-visible:outline-red-600',
+  primary: 'bg-primary-hover text-white shadow-sm hover:bg-primary focus-visible:outline-primary',
+  secondary: 'bg-card text-white shadow-sm hover:bg-muted focus-visible:outline-ring',
+  outline: 'bg-transparent border border-input-border text-foreground hover:bg-muted',
+  danger: 'bg-error text-white shadow-sm hover:bg-error focus-visible:outline-error',
 };
 
 const sizeStyles = {
@@ -54,10 +54,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     if (as === 'link' && href) {
       return (
-        <Link
-          to={href}
-          className={baseClassName}
-        >
+        <Link to={href} className={baseClassName}>
           {loading && <Loading size="sm" className="text-current" />}
           {children}
         </Link>

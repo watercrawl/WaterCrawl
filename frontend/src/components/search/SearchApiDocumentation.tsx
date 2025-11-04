@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
 import { ClipboardIcon } from '@heroicons/react/24/outline';
 import { toast } from 'react-hot-toast';
@@ -23,27 +24,31 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-const copyToClipboard = async (text: string) => {
+const copyToClipboard = async (text: string, t: any) => {
   try {
     await navigator.clipboard.writeText(text);
-    toast.success('Copied to clipboard!');
+    toast.success(t('common.copiedToClipboard'));
   } catch (_) {
-    toast.error('Failed to copy to clipboard');
+    toast.error(t('common.copyFailed'));
   }
 };
 
-export const SearchApiDocumentation: React.FC<SearchApiDocumentationProps> = ({ query = "example search query", options = null }) => {
+export const SearchApiDocumentation: React.FC<SearchApiDocumentationProps> = ({
+  query = 'example search query',
+  options = null,
+}) => {
+  const { t } = useTranslation();
   const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
   const [selectedApiKey, setSelectedApiKey] = useState<string>('');
   const [loadingKeys, setLoadingKeys] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
 
   const defaultOptions = {
-    language: "",
-    country: "",
+    language: '',
+    country: '',
     timeRange: TimeRange.Any,
     numResults: 5,
-    depth: Depth.Basic
+    depth: Depth.Basic,
   };
 
   const searchOptions = options || defaultOptions;
@@ -92,9 +97,9 @@ export const SearchApiDocumentation: React.FC<SearchApiDocumentationProps> = ({ 
         country: searchOptions.country || undefined,
         time_range: searchOptions.timeRange || undefined,
         search_type: SearchType.Web,
-        depth: searchOptions.depth || Depth.Basic
+        depth: searchOptions.depth || Depth.Basic,
       },
-      result_limit: searchOptions.numResults || 5
+      result_limit: searchOptions.numResults || 5,
     };
 
     // Filter out undefined values for cleaner JSON
@@ -125,9 +130,9 @@ export const SearchApiDocumentation: React.FC<SearchApiDocumentationProps> = ({ 
         country: searchOptions.country || undefined,
         time_range: searchOptions.timeRange || undefined,
         search_type: SearchType.Web,
-        depth: searchOptions.depth || Depth.Basic
+        depth: searchOptions.depth || Depth.Basic,
       },
-      result_limit: searchOptions.numResults || 5
+      result_limit: searchOptions.numResults || 5,
     };
 
     // Filter out undefined values for cleaner JSON
@@ -176,7 +181,7 @@ const client = new WaterCrawlAPIClient('${apiKey}', '${baseUrl}');
 
 // Create a search request
 const searchRequest = await client.createSearchRequest(
-  ${query},
+  '${query}',
   {
     language: ${searchOptions.language ? `'${searchOptions.language}'` : 'null'},
     country: ${searchOptions.country ? `'${searchOptions.country}'` : 'null'},
@@ -202,25 +207,23 @@ console.log('Results count:', searchRequest.results ? searchRequest.results.leng
   ];
 
   return (
-    <div className="border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800">
-      <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-        <h3 className="text-base font-semibold text-gray-900 dark:text-white">API Documentation</h3>
-        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-          Use our REST API to integrate web crawling capabilities into your applications. Below are examples in different programming languages.
-        </p>
+    <div className="rounded-lg border border-border bg-card">
+      <div className="border-b border-border px-6 py-4">
+        <h3 className="text-base font-semibold text-foreground">{t('api.title')}</h3>
+        <p className="mt-1 text-sm text-muted-foreground">{t('api.search.fullDescription')}</p>
       </div>
       <div className="p-6">
         <TabGroup selectedIndex={selectedTab} onChange={setSelectedTab}>
-          <TabList className="flex p-1 space-x-1 bg-gray-100 dark:bg-gray-800 rounded-lg">
-            {tabs.map((tab) => (
+          <TabList className="flex gap-x-1 rounded-lg bg-muted p-1">
+            {tabs.map(tab => (
               <Tab
                 key={tab.name}
                 className={({ selected }: { selected: boolean }) =>
                   classNames(
                     'px-4 py-2.5 text-sm font-medium leading-5 focus:outline-none',
                     selected
-                      ? 'text-primary-600 dark:text-primary-400 border-b-2 border-primary-600 dark:border-primary-400'
-                      : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                      ? 'border-b-2 border-primary-600 text-primary'
+                      : 'text-muted-foreground hover:text-foreground'
                   )
                 }
               >
@@ -230,33 +233,32 @@ console.log('Results count:', searchRequest.results ? searchRequest.results.leng
           </TabList>
           <TabPanels className="mt-4">
             {tabs.map((tab, idx) => (
-              <TabPanel
-                key={idx}
-                className={classNames(
-                  'rounded-lg focus:outline-none'
-                )}
-              >
-                <div className="bg-[#1E1E1E] rounded-lg overflow-hidden">
-                  <div className="flex items-center justify-between px-4 py-2 bg-[#2D2D2D] border-b border-[#404040]">
-                    <div className="flex space-x-2 items-center">
-                      <div className="flex space-x-2">
-                        <div className="w-3 h-3 rounded-full bg-[#FF5F56]"></div>
-                        <div className="w-3 h-3 rounded-full bg-[#FFBD2E]"></div>
-                        <div className="w-3 h-3 rounded-full bg-[#27C93F]"></div>
+              <TabPanel key={idx} className={classNames('rounded-lg focus:outline-none')}>
+                <div className="overflow-hidden rounded-lg bg-[#1E1E1E]">
+                  <div className="flex items-center justify-between border-b border-[#404040] bg-[#2D2D2D] px-4 py-2">
+                    <div className="flex items-center gap-x-2">
+                      <div className="flex gap-x-2">
+                        <div className="h-3 w-3 rounded-full bg-[#FF5F56]"></div>
+                        <div className="h-3 w-3 rounded-full bg-[#FFBD2E]"></div>
+                        <div className="h-3 w-3 rounded-full bg-[#27C93F]"></div>
                       </div>
-                      <div className="text-xs text-gray-400 ml-4">{tab.name} Example</div>
+                      <div className="ms-4 text-xs text-muted-foreground">
+                        {tab.name} {t('api.example')}
+                      </div>
                     </div>
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center gap-x-2">
                       <select
                         id={`api-key-select-${tab.name}`}
-                        className="rounded-md border-gray-700 bg-[#23272b] text-gray-100 p-1 text-xs focus:outline-none focus:ring-2 focus:ring-primary-500 w-40"
+                        className="w-40 rounded-md border-border bg-muted p-1 text-xs text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
                         value={selectedApiKey}
                         onChange={e => setSelectedApiKey(e.target.value)}
                         disabled={loadingKeys}
                       >
-                        <option value="">API key...</option>
+                        <option value="">{t('api.selectApiKey')}</option>
                         {apiKeys.map(key => (
-                          <option key={key.uuid} value={key.uuid}>{key.name} ({key.key.slice(0, 6)}...)</option>
+                          <option key={key.uuid} value={key.uuid}>
+                            {key.name} ({key.key.slice(0, 6)}...)
+                          </option>
                         ))}
                       </select>
                       <button
@@ -268,9 +270,9 @@ console.log('Results count:', searchRequest.results ? searchRequest.results.leng
                           } else {
                             content = tab.content;
                           }
-                          copyToClipboard(content);
+                          copyToClipboard(content, t);
                         }}
-                        className="text-xs text-gray-400 hover:text-gray-300 focus:outline-none inline-flex items-center"
+                        className="inline-flex items-center text-xs text-muted-foreground hover:text-muted-foreground focus:outline-none"
                       >
                         <ClipboardIcon className="h-4 w-4" />
                       </button>

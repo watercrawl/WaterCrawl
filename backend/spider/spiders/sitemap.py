@@ -325,7 +325,7 @@ class SitemapScrapper(Spider):
                 # store result
                 discovered_links.append((clean_url, pattern))
 
-        self.visited_urls.update([url for url, _ in discovered_links])
+        self.visited_urls.update([url for url, __ in discovered_links])
 
         if current_depth < 5:
             for url, pattern in discovered_links[

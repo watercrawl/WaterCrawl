@@ -1,7 +1,6 @@
 import api from './api';
 import { Invitation, UpdateProfileRequest, Profile } from '../../types/user';
 
-
 export const profileApi = {
   async getProfile(): Promise<Profile> {
     return api.get<Profile>('/api/v1/user/profile/').then(({ data }) => data);

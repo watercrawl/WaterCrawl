@@ -1,4 +1,4 @@
-import { Team } from "./team";
+import { Team } from './team';
 export interface LoginFormData {
   email: string;
   password: string;
@@ -56,6 +56,7 @@ export interface Profile {
   privacy_confirmed_at: string | null;
   terms_confirmed_at: string | null;
   newsletter_confirmed: boolean;
+  is_superuser: boolean;
 }
 
 export interface TokenPayload {

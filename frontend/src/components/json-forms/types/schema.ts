@@ -1,6 +1,13 @@
-export type JSONSchemaType = 'string' | 'number' | 'integer' | 'boolean' | 'array' | 'object' | 'null';
+export type JSONSchemaType =
+  | 'string'
+  | 'number'
+  | 'integer'
+  | 'boolean'
+  | 'array'
+  | 'object'
+  | 'null';
 
-export type UIWidgetType = 
+export type UIWidgetType =
   | 'text'
   | 'textarea'
   | 'password'

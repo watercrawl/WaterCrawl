@@ -1,0 +1,22 @@
+{
+  "plugins": ["react"],
+  "rules": {
+    "react/jsx-no-literals": [
+      "warn",
+      {
+        "noStrings": true,
+        "allowedStrings": [],
+        "ignoreProps": false,
+        "noAttributeStrings": true
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["src/types/**/*", "src/services/**/*", "src/utils/**/*", "src/hooks/**/*", "src/lib/**/*", "src/constants/**/*"],
+      "rules": {
+        "react/jsx-no-literals": "off"
+      }
+    }
+  ]
+}

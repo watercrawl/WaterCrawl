@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { 
-  CheckCircleIcon, 
-  XCircleIcon, 
-  ExclamationTriangleIcon 
-} from '@heroicons/react/24/outline';
+import { useTranslation } from 'react-i18next';
+import { CheckCircleIcon, XCircleIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
 import { Button } from '../../components/shared/Button';
 import Loading from '../../components/shared/Loading';
 
 const StripeCallbackPage: React.FC = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(true);
@@ -23,94 +21,94 @@ const StripeCallbackPage: React.FC = () => {
     // Optionally, you can add specific logic for each state
     switch (state) {
       case 'payment-success':
-        toast.success('New subscription activated successfully!');
+        toast.success(t('stripe.callback.paymentSuccess'));
         break;
       case 'payment-cancel':
-        toast.error('Subscription process canceled.');
+        toast.error(t('stripe.callback.paymentCancel'));
         break;
       case 'subscription-cancel':
-        toast.success('Subscription will continue as planned.', {
-          icon: <ExclamationTriangleIcon className="h-6 w-6 text-yellow-500 mx-auto" />
+        toast.success(t('stripe.callback.subscriptionContinues'), {
+          icon: <ExclamationTriangleIcon className="mx-auto h-6 w-6 text-warning" />,
         });
         break;
       case 'subscription-cancel-success':
-        toast.success('Subscription will be deactivated at the end of the current period.');
+        toast.success(t('stripe.callback.subscriptionCancelSuccess'));
         break;
       case 'payment-method-update-cancel':
-        toast.error('Payment method update canceled.');
+        toast.error(t('stripe.callback.paymentMethodCancel'));
         break;
       case 'payment-method-update-success':
-        toast.success('Payment method updated successfully!');
+        toast.success(t('stripe.callback.paymentMethodSuccess'));
         break;
       default:
-        toast.error('Unknown callback state');
+        toast.error(t('errors.unknownState'));
     }
-  }, [searchParams, navigate]);
+  }, [searchParams, navigate, t]);
 
   const getStateDetails = () => {
     switch (callbackState) {
       case 'payment-success':
         return {
-          icon: <CheckCircleIcon className="h-16 w-16 text-green-500 mx-auto" />,
-          title: 'Subscription Activated',
-          description: 'Your new subscription is now active. Enjoy your enhanced features!',
-          buttonText: 'Go to Dashboard',
-          onClick: () => navigate('/dashboard')
+          icon: <CheckCircleIcon className="mx-auto h-16 w-16 text-success" />,
+          title: t('stripe.status.subscriptionActivated'),
+          description: t('stripe.status.subscriptionActivatedDesc'),
+          buttonText: t('dashboard.navigation.dashboard'),
+          onClick: () => navigate('/dashboard'),
         };
       case 'payment-cancel':
         return {
-          icon: <XCircleIcon className="h-16 w-16 text-red-500 mx-auto" />,
-          title: 'Subscription Process Canceled',
-          description: 'You have canceled the subscription process. Feel free to explore other plans.',
-          buttonText: 'View Plans',
-          onClick: () => navigate('/dashboard/plans')
+          icon: <XCircleIcon className="mx-auto h-16 w-16 text-error" />,
+          title: t('stripe.status.processCanceled'),
+          description: t('stripe.status.processCanceledDesc'),
+          buttonText: t('plans.viewPlans'),
+          onClick: () => navigate('/dashboard/plans'),
         };
       case 'subscription-cancel':
         return {
-          icon: <ExclamationTriangleIcon className="h-16 w-16 text-yellow-500 mx-auto" />,
-          title: 'Subscription Continues',
-          description: 'Your current subscription will remain active. No changes have been made.',
-          buttonText: 'Back to Dashboard',
-          onClick: () => navigate('/dashboard/')
+          icon: <ExclamationTriangleIcon className="mx-auto h-16 w-16 text-warning" />,
+          title: t('stripe.status.subscriptionContinues'),
+          description: t('stripe.status.subscriptionContinuesDesc'),
+          buttonText: t('dashboard.navigation.backToDashboard'),
+          onClick: () => navigate('/dashboard/'),
         };
       case 'subscription-cancel-success':
         return {
-          icon: <CheckCircleIcon className="h-16 w-16 text-green-500 mx-auto" />,
-          title: 'Subscription Cancellation Confirmed',
-          description: 'Your subscription will be deactivated at the end of the current billing period.',
-          buttonText: 'Back to Settings',
-          onClick: () => navigate('/dashboard/settings#billing')
+          icon: <CheckCircleIcon className="mx-auto h-16 w-16 text-success" />,
+          title: t('stripe.status.cancellationConfirmed'),
+          description: t('stripe.status.cancellationConfirmedDesc'),
+          buttonText: t('dashboard.navigation.backToSettings'),
+          onClick: () => navigate('/dashboard/settings#billing'),
         };
       case 'payment-method-update-cancel':
         return {
-          icon: <XCircleIcon className="h-16 w-16 text-red-500 mx-auto" />,
-          title: 'Payment Method Update Canceled',
-          description: 'Your current payment method remains unchanged.',
-          buttonText: 'Back to Settings',
-          onClick: () => navigate('/dashboard/settings#billing')
+          icon: <XCircleIcon className="mx-auto h-16 w-16 text-error" />,
+          title: t('stripe.status.paymentUpdateCanceled'),
+          description: t('stripe.status.paymentUpdateCanceledDesc'),
+          buttonText: t('dashboard.navigation.backToSettings'),
+          onClick: () => navigate('/dashboard/settings#billing'),
         };
       case 'payment-method-update-success':
         return {
-          icon: <CheckCircleIcon className="h-16 w-16 text-green-500 mx-auto" />,
-          title: 'Payment Method Updated',
-          description: 'Your payment method has been successfully updated.',
-          buttonText: 'Back to Settings',
-          onClick: () => navigate('/dashboard/settings#billing')
+          icon: <CheckCircleIcon className="mx-auto h-16 w-16 text-success" />,
+          title: t('stripe.status.paymentUpdated'),
+          description: t('stripe.status.paymentUpdatedDesc'),
+          buttonText: t('dashboard.navigation.backToSettings'),
+          onClick: () => navigate('/dashboard/settings#billing'),
         };
       default:
         return {
-          icon: <ExclamationTriangleIcon className="h-16 w-16 text-yellow-500 mx-auto" />,
-          title: 'Unknown State',
-          description: 'An unexpected error occurred. Please contact support.',
-          buttonText: 'Back to Dashboard',
-          onClick: () => navigate('/dashboard')
+          icon: <ExclamationTriangleIcon className="mx-auto h-16 w-16 text-warning" />,
+          title: t('errors.unknownState'),
+          description: t('errors.contactSupport'),
+          buttonText: t('dashboard.navigation.backToDashboard'),
+          onClick: () => navigate('/dashboard'),
         };
     }
   };
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-screen">
+      <div className="flex h-screen items-center justify-center">
         <Loading />
       </div>
     );
@@ -119,20 +117,12 @@ const StripeCallbackPage: React.FC = () => {
   const { icon, title, description, buttonText, onClick } = getStateDetails();
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 px-4 py-8">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8 max-w-md w-full text-center">
+    <div className="flex min-h-screen items-center justify-center bg-muted px-4 py-8">
+      <div className="w-full max-w-md rounded-lg bg-card p-8 text-center shadow-xl">
         {icon}
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-6 mb-4">
-          {title}
-        </h2>
-        <p className="text-gray-600 dark:text-gray-300 mb-6">
-          {description}
-        </p>
-        <Button 
-          variant="primary" 
-          onClick={onClick}
-          className="w-full"
-        >
+        <h2 className="mb-4 mt-6 text-2xl font-bold text-foreground">{title}</h2>
+        <p className="mb-6 text-muted-foreground">{description}</p>
+        <Button variant="primary" onClick={onClick} className="w-full">
           {buttonText}
         </Button>
       </div>

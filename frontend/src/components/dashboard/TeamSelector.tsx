@@ -1,10 +1,22 @@
 import React, { Fragment, useState } from 'react';
-import { Menu, Transition, Dialog, MenuButton, MenuItems, MenuItem, TransitionChild, DialogPanel, DialogTitle } from '@headlessui/react';
+import {
+  Menu,
+  Transition,
+  Dialog,
+  MenuButton,
+  MenuItems,
+  MenuItem,
+  TransitionChild,
+  DialogPanel,
+  DialogTitle,
+} from '@headlessui/react';
 import { ChevronDownIcon, PlusIcon } from '@heroicons/react/20/solid';
-import { classNames } from '../../utils/classNames';
+import { classnames } from '../../lib/utils';
 import { useTeam } from '../../contexts/TeamContext';
+import { useTranslation } from 'react-i18next';
 
 export const TeamSelector: React.FC = () => {
+  const { t } = useTranslation();
   const { currentTeam, teams, setCurrentTeam, createTeam } = useTeam();
   const [isCreateTeamOpen, setIsCreateTeamOpen] = useState(false);
   const [newTeamName, setNewTeamName] = useState('');
@@ -24,9 +36,9 @@ export const TeamSelector: React.FC = () => {
   return (
     <>
       <Menu as="div" className="relative">
-        <MenuButton className="flex items-center gap-x-1 text-sm font-medium leading-6 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700 rounded-md px-3 py-1 hover:border-gray-300 dark:hover:border-gray-600">
+        <MenuButton className="flex items-center gap-x-1 rounded-md border border-border px-3 py-1 text-sm font-medium leading-6 text-foreground hover:border-input-border">
           {currentTeam.name}
-          <ChevronDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+          <ChevronDownIcon className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
         </MenuButton>
 
         <Transition
@@ -38,35 +50,38 @@ export const TeamSelector: React.FC = () => {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <MenuItems anchor="bottom start" className="absolute left-0 z-10 mt-2.5 w-48 origin-top-left rounded-md bg-white dark:bg-gray-800 py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
-            {teams.map((team) => (
+          <MenuItems
+            anchor="bottom start"
+            className="bg-popover z-[1001] mt-2.5 w-48 rounded-md bg-card py-2 shadow-lg ring-1 ring-border/10 focus:outline-none"
+          >
+            {teams.map(team => (
               <MenuItem key={team.uuid}>
                 {({ active }) => (
                   <button
                     onClick={() => setCurrentTeam(team)}
-                    className={classNames(
-                      active ? 'bg-gray-50 dark:bg-gray-700' : '',
-                      'block px-3 py-1 w-full text-left text-sm leading-6 text-gray-900 dark:text-white'
-                    )}
+                    className={classnames({
+                      'block w-full px-3 py-1 text-start text-sm leading-6 text-foreground': true,
+                      'bg-muted': active,
+                    })}
                   >
                     {team.name}
                   </button>
                 )}
               </MenuItem>
             ))}
-            <div className="border-t border-gray-100 dark:border-gray-700 my-1" />
+            <div className="my-1 border-t border-border" />
             <MenuItem>
               {({ active }) => (
                 <button
                   onClick={() => setIsCreateTeamOpen(true)}
-                  className={classNames(
-                    active ? 'bg-gray-50 dark:bg-gray-700' : '',
-                    'block px-3 py-1 w-full text-left text-sm leading-6 text-gray-900 dark:text-white'
-                  )}
+                  className={classnames({
+                    'block w-full px-3 py-1 text-start text-sm leading-6 text-foreground': true,
+                    'bg-muted': active,
+                  })}
                 >
                   <div className="flex items-center">
-                    <PlusIcon className="h-4 w-4 mr-2" />
-                    Create Team
+                    <PlusIcon className="me-2 h-4 w-4" />
+                    {t('team.createTeam')}
                   </div>
                 </button>
               )}
@@ -86,7 +101,7 @@ export const TeamSelector: React.FC = () => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black/25 dark:bg-black/40" />
+            <div className="fixed inset-0 bg-black/25" />
           </TransitionChild>
 
           <div className="fixed inset-0 overflow-y-auto">
@@ -100,37 +115,34 @@ export const TeamSelector: React.FC = () => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <DialogPanel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-gray-800 p-6 text-left align-middle shadow-xl transition-all">
-                  <DialogTitle
-                    as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900 dark:text-white"
-                  >
-                    Create New Team
+                <DialogPanel className="bg-popover w-full max-w-md transform overflow-hidden rounded-2xl bg-card p-6 text-start align-middle shadow-xl transition-all">
+                  <DialogTitle as="h3" className="text-lg font-medium leading-6 text-foreground">
+                    {t('team.createNewTeam')}
                   </DialogTitle>
                   <div className="mt-4">
                     <input
                       type="text"
                       value={newTeamName}
-                      onChange={(e) => setNewTeamName(e.target.value)}
-                      placeholder="Team Name"
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 dark:text-white dark:bg-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      onChange={e => setNewTeamName(e.target.value)}
+                      placeholder={t('team.teamNamePlaceholder')}
+                      className="block w-full rounded-md border-0 py-1.5 text-foreground bg-card shadow-sm ring-1 ring-inset ring-border placeholder:text-muted-foreground focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
                     />
                   </div>
 
-                  <div className="mt-6 flex justify-end space-x-3">
+                  <div className="mt-6 flex justify-end gap-x-3">
                     <button
                       type="button"
-                      className="inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                      className="inline-flex justify-center rounded-md border border-input-border px-4 py-2 text-sm font-medium text-foreground hover:bg-muted focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
                       onClick={() => setIsCreateTeamOpen(false)}
                     >
-                      Cancel
+                      {t('common.cancel')}
                     </button>
                     <button
                       type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                      className="inline-flex justify-center rounded-md border border-transparent bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
                       onClick={handleCreateTeam}
                     >
-                      Create
+                      {t('common.create')}
                     </button>
                   </div>
                 </DialogPanel>

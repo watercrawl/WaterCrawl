@@ -67,7 +67,9 @@ def water_crawl_exception_handler(exc, context):
         # Mark the exception as unhandled for Sentry
         event, hint = sentry_sdk.utils.event_from_exception(
             exc,
-            client_options=sentry_sdk.Hub.current.client.options,
+            client_options=sentry_sdk.Hub.current.client.options
+            if sentry_sdk.Hub.current.client
+            else None,
             mechanism={"type": "django", "handled": False},  # <— key part
         )
         sentry_sdk.capture_event(event, hint=hint)

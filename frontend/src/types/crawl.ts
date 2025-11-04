@@ -1,4 +1,4 @@
-import { FeedMessage } from "./feed";
+import { FeedMessage } from './feed';
 
 export type CrawlStatus = 'new' | 'running' | 'canceled' | 'canceling' | 'failed' | 'finished';
 
@@ -22,7 +22,7 @@ export interface BatchCrawlOptions extends Omit<CrawlOptions, 'spider_options'> 
   spider_options: {
     proxy_server?: string;
   };
-};
+}
 
 export type BatchCrawlRequest = Omit<CrawlRequest, 'url' | 'urls' | 'options'> & {
   urls: string[];
@@ -68,7 +68,7 @@ export interface PageOptions {
   accept_cookies_selector?: string;
   locale?: string;
   extra_headers?: Record<string, string>;
-  actions?: Action[]
+  actions?: Action[];
   ignore_rendering?: boolean;
 }
 
@@ -107,4 +107,4 @@ export interface SitemapGraph {
   __self__?: SitemapNode;
   __query__?: SitemapNode[];
   [key: string]: SitemapGraph | SitemapNode | SitemapNode[] | undefined;
-};
+}

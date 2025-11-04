@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-hot-toast';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
 import { SitemapRequest, SitemapStatus, SitemapOptions, SitemapEvent } from '../../types/sitemap';
@@ -7,12 +8,12 @@ import { FormInput } from '../shared/FormComponents';
 import { AxiosError } from 'axios';
 import { SitemapResultDisplay } from './SitemapResultDisplay';
 import { SitemapApiDocumentation } from './SitemapApiDocumentation';
-import Button from '../shared/Button';
 import { SitemapOptionsForm } from '../forms/SitemapOptionsForm';
 import { SitemapDownloadFormatSelector } from '../shared/SitemapDownloadFormatSelector';
 import Feed from '../shared/Feed';
 import { FeedMessage } from '../../types/feed';
 import { useSettings } from '../../contexts/SettingsProvider';
+import { StatusBadge } from '../shared/StatusBadge';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -29,8 +30,9 @@ export const SitemapForm: React.FC<SitemapFormProps> = ({
   initialRequest,
   onSitemapEvent,
   hideApiDocs = false,
-  hideResultsTab = false
+  hideResultsTab = false,
 }) => {
+  const { t } = useTranslation();
   const [url, setUrl] = useState(initialRequest?.url || '');
   const [isLoading, setIsLoading] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
@@ -45,14 +47,14 @@ export const SitemapForm: React.FC<SitemapFormProps> = ({
     ignore_sitemap_xml: initialRequest?.options?.ignore_sitemap_xml || false,
     search: initialRequest?.options?.search || null,
     include_paths: initialRequest?.options?.include_paths || [],
-    exclude_paths: initialRequest?.options?.exclude_paths || []
+    exclude_paths: initialRequest?.options?.exclude_paths || [],
   });
 
   const updateCurrentRequest = useCallback(() => {
     if (!url) return;
     const request = {
       url: url.trim(),
-      options: sitemapOptions
+      options: sitemapOptions,
     } as SitemapRequest;
     setCurrentRequest(request);
   }, [url, sitemapOptions]);
@@ -75,7 +77,7 @@ export const SitemapForm: React.FC<SitemapFormProps> = ({
     setFeedMessages([]);
     e.preventDefault();
     if (!currentRequest?.url) {
-      toast.error('Please enter a valid URL');
+      toast.error(t('sitemap.enterUrl'));
       return;
     }
 
@@ -83,7 +85,7 @@ export const SitemapForm: React.FC<SitemapFormProps> = ({
     try {
       const sitemapRequest: SitemapRequest = {
         url: currentRequest?.url.trim(),
-        options: currentRequest?.options
+        options: currentRequest?.options,
       };
 
       const response = await sitemapApi.create(sitemapRequest);
@@ -93,17 +95,15 @@ export const SitemapForm: React.FC<SitemapFormProps> = ({
 
       // Start checking status
       if (response.uuid) {
-        await sitemapApi.subscribeToStatus(
-          response.uuid,
-          handleSitemapEvent,
-          () => setIsLoading(false)
+        await sitemapApi.subscribeToStatus(response.uuid, handleSitemapEvent, () =>
+          setIsLoading(false)
         );
       }
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data?.message || 'Failed to generate sitemap.');
       } else {
-        toast.error('Failed to generate sitemap.');
+        toast.error(t('sitemap.errors.generateFailed'));
       }
       console.error('Error generating sitemap:', error);
       setIsLoading(false);
@@ -116,13 +116,13 @@ export const SitemapForm: React.FC<SitemapFormProps> = ({
       setIsLoading(true);
       try {
         await sitemapApi.delete(sitemapResult.uuid);
-        toast.success('Sitemap generation canceled');
+        toast.success(t('sitemap.canceled'));
         // Refresh the sitemap state to show canceled
         const updatedRequest = await sitemapApi.get(sitemapResult.uuid);
         setSitemapResult(updatedRequest);
       } catch (error) {
         console.error('Error canceling sitemap generation:', error);
-        toast.error('Failed to cancel sitemap generation.');
+        toast.error(t('sitemap.errors.cancelFailed'));
       } finally {
         setIsLoading(false);
       }
@@ -154,34 +154,41 @@ export const SitemapForm: React.FC<SitemapFormProps> = ({
   // Define tabs structure similar to SearchForm
   const tabs = [
     {
-      name: 'Sitemap Options',
+      name: t('sitemap.tabs.options'),
       content: (
         <div>
           <SitemapOptionsForm
             options={sitemapOptions}
-            onChange={(updatedOptions) => {
+            onChange={updatedOptions => {
               setSitemapOptions({
                 ...sitemapOptions,
-                ...updatedOptions
+                ...updatedOptions,
               });
             }}
           />
           {settings?.is_enterprise_mode_active && (
-            <div className="mt-3 space-y-2 bg-gray-50 dark:bg-gray-900 rounded-md p-3 border border-gray-200 dark:border-gray-700">
-              <p className="text-xs font-medium text-gray-700 dark:text-gray-300">Credit Usage & Speed:</p>
+            <div className="mt-3 space-y-2 rounded-md border border-border bg-card p-3">
+              <p className="text-xs font-medium text-foreground">
+                {t('sitemap.creditUsage.title')}
+              </p>
               <div className="grid grid-cols-1 gap-2">
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 rounded-full bg-green-400"></div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    5 credits per sitemap
-                    <span className="ml-1 text-xs text-green-600 dark:text-green-400">(Fastest speed)</span>
+                <div className="flex items-center gap-x-2">
+                  <div className="h-2 w-2 rounded-full bg-success"></div>
+                  <p className="text-sm text-muted-foreground">
+                    {t('sitemap.creditUsage.standard')}
+                    <span className="ms-1 text-xs text-success">
+                      ({t('sitemap.speed.fastest')})
+                    </span>
                   </p>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 rounded-full bg-yellow-400"></div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    <span className="font-medium">With Ignore Sitemap.xml:</span> 15 credits per sitemap
-                    <span className="ml-1 text-xs text-yellow-600 dark:text-yellow-400">(Moderate speed)</span>
+                <div className="flex items-center gap-x-2">
+                  <div className="h-2 w-2 rounded-full bg-warning"></div>
+                  <p className="text-sm text-muted-foreground">
+                    <div className="inline font-medium">{t('sitemap.creditUsage.withIgnore')}:</div>{' '}
+                    {t('sitemap.creditUsage.ignoreSitemapXml')}
+                    <span className="ms-1 text-xs text-warning">
+                      ({t('sitemap.speed.moderate')})
+                    </span>
                   </p>
                 </div>
               </div>
@@ -190,86 +197,101 @@ export const SitemapForm: React.FC<SitemapFormProps> = ({
         </div>
       ),
     },
-    ...(hideApiDocs ? [] : [
-      {
-        name: 'API Documentation',
-        content: <SitemapApiDocumentation request={currentRequest} />,
-      },
-    ]),
-    ...(hideResultsTab ? [] : [
-      {
-        name: 'Results',
-        content: sitemapResult ? (
-          <>
-            <Feed messages={feedMessages} loading={isLoading} emptyMessage="No sitemap updates" showTimestamp={true} />
-            <div className="mt-4 bg-white dark:bg-gray-800 rounded-lg p-6">
-              <div className="space-y-6">
-                <div className="flex justify-between items-center">
-                  <div>
-                    <h2 className="text-lg font-medium text-gray-900 dark:text-white">
-                      Sitemap for: {sitemapResult.url}
-                    </h2>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                      Status: {sitemapResult.status}
-                      {sitemapResult.duration && ` • Duration: ${sitemapResult.duration}`}
-                    </p>
+    ...(hideApiDocs
+      ? []
+      : [
+        {
+          name: t('sitemap.tabs.api'),
+          content: <SitemapApiDocumentation request={currentRequest} />,
+        },
+      ]),
+    ...(hideResultsTab
+      ? []
+      : [
+        {
+          name: t('sitemap.tabs.results'),
+          content: sitemapResult ? (
+            <>
+              <Feed
+                messages={feedMessages}
+                loading={isLoading}
+                emptyMessage={t('sitemap.noUpdates')}
+                showTimestamp={true}
+              />
+              <div className="mt-4 rounded-lg bg-card p-6">
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h2 className="text-lg font-medium text-foreground">
+                        {t('sitemap.sitemapFor')}: {sitemapResult.url}
+                      </h2>
+                      <p className="text-sm text-muted-foreground">
+                        {t('sitemap.status')}:{' '}
+                        <StatusBadge status={sitemapResult.status as SitemapStatus} />
+                        {sitemapResult.duration &&
+                          ` • ${t('sitemap.duration')}: ${sitemapResult.duration}`}
+                      </p>
+                    </div>
+                    <div className="flex gap-x-2">
+                      {sitemapResult.status === SitemapStatus.Finished && (
+                        <SitemapDownloadFormatSelector request={sitemapResult} buttonWithText />
+                      )}
+                    </div>
                   </div>
-                  <div className="flex space-x-2">
-                    {sitemapResult.status === SitemapStatus.Finished && (
-                      <SitemapDownloadFormatSelector request={sitemapResult} buttonWithText />
-                    )}
-                  </div>
+                  <SitemapResultDisplay result={sitemapResult} loading={isLoading} />
                 </div>
-                <SitemapResultDisplay
-                  result={sitemapResult}
-                  loading={isLoading}
-                />
               </div>
+            </>
+          ) : (
+            <div className="py-12 text-center">
+              <p className="text-muted-foreground">{t('sitemap.noSitemapYet')}</p>
             </div>
-          </>
-        ) : (
-          <div className="text-center py-12">
-            <p className="text-gray-500 dark:text-gray-400">No sitemap generated yet. Use the form to generate a sitemap.</p>
-          </div>
-        )
-      }
-    ])
+          ),
+        },
+      ]),
   ];
 
   return (
-    <form onSubmit={(e) => { e.preventDefault(); handleSubmit(e); }} className="space-y-6">
+    <form
+      onSubmit={e => {
+        e.preventDefault();
+        handleSubmit(e);
+      }}
+      className="space-y-6"
+    >
       {/* Website URL Input and Generate Button */}
       <div className="space-y-2">
-        <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 items-start">
+        <div className="flex flex-col items-start space-y-4 md:flex-row md:gap-x-4 md:space-y-0">
           <div className="w-full">
             <FormInput
               label=""
               value={url}
               onChange={setUrl}
               type="text"
-              placeholder="Enter a URL to generate sitemap (e.g. https://example.com)"
-              className="w-full text-lg"
+              placeholder={t('sitemap.urlPlaceholder')}
+              className="ltr w-full text-lg"
             />
-            <p className="mt-1.5 text-sm text-gray-500 dark:text-gray-400 hidden md:block">
-              Enter a valid URL to explore its sitemap structure.
+            <p className="mt-1.5 hidden text-sm text-muted-foreground md:block">
+              {t('sitemap.urlDescription')}
             </p>
           </div>
           <div className="w-full pt-1">
             {sitemapResult?.status === SitemapStatus.Running ? (
-              <Button
+              <button
+                type="button"
                 onClick={handleCancel}
-                className="w-full md:w-auto px-6 py-2.5 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 focus:outline-none focus:ring-red-500 focus:ring-offset-2 transition-colors"
+                className="w-full rounded-lg bg-error px-6 py-2.5 text-sm font-medium text-error-foreground transition-colors hover:bg-error-light hover:text-error-dark focus:outline-none focus:ring-error focus:ring-offset-2 md:w-auto"
               >
-                Cancel Generation
-              </Button>
+                {t('sitemap.cancelGeneration')}
+              </button>
             ) : (
-              <Button
-                onClick={handleSubmit}
+              <button
+                type="submit"
                 disabled={isLoading}
-                className="w-full md:w-auto px-6 py-2.5 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 focus:outline-none focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="w-full rounded-lg bg-primary px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-hover focus:outline-none focus:ring-primary focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto"
               >
-                {isLoading ? 'Generating...' : 'Generate Sitemap'}
-              </Button>
+                {isLoading ? t('sitemap.generating') : t('sitemap.generateSitemap')}
+              </button>
             )}
           </div>
         </div>
@@ -278,20 +300,18 @@ export const SitemapForm: React.FC<SitemapFormProps> = ({
       {/* Tabs */}
       <TabGroup selectedIndex={selectedTab} onChange={setSelectedTab}>
         <div className="relative">
-          <div className="overflow-x-auto scrollbar-hide">
-            <TabList className="flex space-x-1 border-b border-gray-200 dark:border-gray-700 min-w-max">
-              {tabs.map((tab) => (
+          <div className="scrollbar-hide overflow-x-auto">
+            <TabList className="flex min-w-max gap-x-1 border-b border-border">
+              {tabs.map(tab => (
                 <Tab
                   key={tab.name}
                   className={({ selected }: { selected: boolean }) =>
                     classNames(
                       'px-4 py-2.5 text-sm font-medium leading-5 focus:outline-none',
                       selected
-                        ? 'text-gray-900 dark:text-white border-b-2 border-gray-900 dark:border-white'
-                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300',
-                      (tab.name === 'Results' && sitemapResult?.result)
-                        ? 'text-primary-600 dark:text-primary-400'
-                        : ''
+                        ? 'border-b-2 border-border text-foreground'
+                        : 'text-muted-foreground hover:text-foreground',
+                      tab.name === 'Results' && sitemapResult?.result ? 'text-primary' : ''
                     )
                   }
                 >
@@ -303,11 +323,7 @@ export const SitemapForm: React.FC<SitemapFormProps> = ({
         </div>
         <TabPanels className="mt-4">
           {tabs.map((tab, idx) => (
-            <TabPanel
-              key={idx}
-            >
-              {tab.content}
-            </TabPanel>
+            <TabPanel key={idx}>{tab.content}</TabPanel>
           ))}
         </TabPanels>
       </TabGroup>

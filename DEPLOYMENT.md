@@ -86,7 +86,7 @@ These settings control the Django backend application:
 | `API_ENCRYPTION_KEY` | API encryption key for security | *Long string* | **Yes** for production |
 | `DEBUG` | Debug mode (set to False in production) | `True` | No |
 | `ALLOWED_HOSTS` | Comma-separated list of allowed hosts | `*` | No |
-| `LANGUAGE_CODE` | Language code | `en-us` | No |
+| `LANGUAGE_CODE` | Language code | `en` | No |
 | `TIME_ZONE` | Time zone | `UTC` | No |
 | `USE_I18N` | Enable internationalization | `True` | No |
 | `USE_TZ` | Enable timezone support | `True` | No |
@@ -202,6 +202,7 @@ These settings control user authentication:
 | `IS_ENTERPRISE_MODE_ACTIVE` | Enterprise mode | `False` | No |
 | `IS_LOGIN_ACTIVE` | Enable login functionality | `True` | No |
 | `IS_SIGNUP_ACTIVE` | Enable signup functionality | `False` | No |
+| `IS_EMAIL_VERIFICATION_ACTIVE` | Enable email verification | `True` | No |
 | `IS_GITHUB_LOGIN_ACTIVE` | Enable GitHub login | `False` | No |
 | `IS_GOOGLE_LOGIN_ACTIVE` | Enable Google login | `False` | No |
 | `GITHUB_CLIENT_ID` | GitHub OAuth client ID | Empty | Required for GitHub login |

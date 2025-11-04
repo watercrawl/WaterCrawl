@@ -3,21 +3,27 @@ import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { AuthService } from '../authService';
 import { TeamService } from '../teamService';
 import { API_URL } from '../../utils/env';
+import i18n from '../../i18n/config';
 
 interface CustomAxiosInstance extends AxiosInstance {
-  subscribeToSSE: <T>(url: string, config: AxiosRequestConfig, onEvent: (data: T) => void, onEnd?: () => void) => Promise<boolean>;
+  subscribeToSSE: <T>(
+    url: string,
+    config: AxiosRequestConfig,
+    onEvent: (data: T) => void,
+    onEnd?: () => void
+  ) => Promise<boolean>;
 }
 
 const api = axios.create({
   baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json',
-  }
+  },
 }) as CustomAxiosInstance;
 
-// Add a request interceptor to add the token and team ID to all requests
+// Add a request interceptor to add the token, team ID, and language to all requests
 api.interceptors.request.use(
-  async (config) => {
+  async config => {
     const token = AuthService.getInstance().getToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -28,16 +34,20 @@ api.interceptors.request.use(
         config.headers['x-team-id'] = teamId;
       }
     }
+
+    // Add Accept-Language header based on current user language
+    config.headers['Accept-Language'] = i18n.language || 'en';
+
     return config;
   },
-  (error) => {
+  error => {
     return Promise.reject(error);
   }
 );
 
 api.interceptors.response.use(
-  (response) => response,
-  async (error) => {
+  response => response,
+  async error => {
     const originalRequest = error.config;
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
@@ -55,7 +65,12 @@ api.interceptors.response.use(
   }
 );
 
-api.subscribeToSSE = async <T>(url: string, config: AxiosRequestConfig, onEvent: (data: T) => void, onEnd?: () => void) => {
+api.subscribeToSSE = async <T>(
+  url: string,
+  config: AxiosRequestConfig,
+  onEvent: (data: T) => void,
+  onEnd?: () => void
+) => {
   // Handle case when baseURL is empty by using the current location as fallback
   let apiUrl: URL;
   if (!url.startsWith('http') && (!api.defaults.baseURL || api.defaults.baseURL === '')) {
@@ -67,7 +82,11 @@ api.subscribeToSSE = async <T>(url: string, config: AxiosRequestConfig, onEvent:
       apiUrl = new URL(url, api.defaults.baseURL);
     } catch (_error) {
       // Fallback to absolute URL if construction fails
-      apiUrl = new URL(url.startsWith('http') ? url : `${window.location.origin}${url.startsWith('/') ? '' : '/'}${url}`);
+      apiUrl = new URL(
+        url.startsWith('http')
+          ? url
+          : `${window.location.origin}${url.startsWith('/') ? '' : '/'}${url}`
+      );
     }
   }
   // set query param from config
@@ -81,12 +100,14 @@ api.subscribeToSSE = async <T>(url: string, config: AxiosRequestConfig, onEvent:
     headers.set('Connection', 'keep-alive');
     const token = AuthService.getInstance().getToken();
     if (token) {
-      headers.set('Authorization', "Bearer " + token);
+      headers.set('Authorization', 'Bearer ' + token);
     }
     const teamId = TeamService.getInstance().getCurrentTeamId();
     if (teamId) {
       headers.set('x-team-id', teamId);
     }
+    // Add Accept-Language header for SSE requests
+    headers.set('Accept-Language', i18n.language || 'en');
     const response = await fetch(apiUrl.toString(), {
       method: 'GET',
       headers,

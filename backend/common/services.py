@@ -1,6 +1,7 @@
 import json
 from functools import cached_property
 from typing import Generator
+from django.utils.translation import gettext as _
 
 import html2text
 from django.conf import settings
@@ -41,6 +42,10 @@ class FrontendSettingService:
     @cached_property
     def is_signup_active(self):
         return settings.IS_SIGNUP_ACTIVE
+
+    @cached_property
+    def is_email_verification_active(self):
+        return settings.IS_EMAIL_VERIFICATION_ACTIVE
 
     @cached_property
     def is_login_active(self):
@@ -94,6 +99,10 @@ class FrontendSettingService:
     def mcp_server(self):
         return settings.MCP_SERVER
 
+    @cached_property
+    def is_knowledge_base_enabled(self):
+        return settings.KNOWLEDGE_BASE_ENABLED
+
 
 class EmailService:
     def __init__(self):
@@ -117,11 +126,11 @@ class EmailService:
 
     def validate(self):
         if not self.tos:
-            raise ValueError("No recipient provided")
+            raise ValueError(_("No recipient provided"))
         if not self.subject:
-            raise ValueError("No subject provided")
+            raise ValueError(_("No subject provided"))
         if not self.body and not self.html:
-            raise ValueError("No body or html provided")
+            raise ValueError(_("No body or html provided"))
 
     def add_to(self, to):
         self.tos.append(to)

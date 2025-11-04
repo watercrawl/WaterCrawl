@@ -1,4 +1,3 @@
-
 export enum ProxyType {
   HTTP = 'http',
   SOCKS4 = 'socks4',
@@ -36,4 +35,3 @@ export interface TestProxyRequest {
   username?: string | null;
   password?: string | null;
 }
-

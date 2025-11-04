@@ -90,7 +90,7 @@ export function validateValue(
       } else if (schema.properties) {
         // Check regular required fields
         if (schema.required) {
-          schema.required.forEach((key) => {
+          schema.required.forEach(key => {
             if (!(key in value)) {
               errors.push({ path: [...path, key], message: 'This field is required' });
             }
@@ -101,8 +101,13 @@ export function validateValue(
         if (schema.dependentRequired) {
           Object.entries(schema.dependentRequired).forEach(([dependency, required]) => {
             if (dependency in value && value[dependency]) {
-              required.forEach((key) => {
-                if (!(key in value) || value[key] === undefined || value[key] === null || value[key] === '') {
+              required.forEach(key => {
+                if (
+                  !(key in value) ||
+                  value[key] === undefined ||
+                  value[key] === null ||
+                  value[key] === ''
+                ) {
                   errors.push({
                     path: [...path, key],
                     message: `This field is required when ${dependency} is set`,

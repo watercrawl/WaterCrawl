@@ -33,7 +33,7 @@ Thank you for your interest in contributing to WaterCrawl! This document provide
     ```bash
     cd watercrawl/docker
     cp .env.local .env
-    docker-compose -f docker-compose.local.yml up -d
+    docker compose -f docker-compose.local.yml -f docker-compose.opensearch.yml -p watercrawl up -d
     ```
 
     This will start PostgreSQL, Redis, MinIO, and Mailpit services needed for development.
@@ -58,9 +58,9 @@ Thank you for your interest in contributing to WaterCrawl! This document provide
     
     # Run migrations
     python manage.py migrate
-    
-    # Create a superuser (if needed)
-    python manage.py createsuperuser
+   
+   # Compile messages
+   python manage.py compilemessages
     ```
 
 5. Set up frontend:

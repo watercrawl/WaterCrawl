@@ -23,7 +23,7 @@ WaterCrawl uses a single `.env` file in the `docker` directory for all configura
 | `API_ENCRYPTION_KEY` | `8zSd6JIuC7ovfZ4AoxG_XmhubW6CPnQWW7Qe_4TD1TQ=` | **API encryption key for security. Generate a new one using `python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"`. MUST be changed in production!** |
 | `DEBUG` | `True` | Debug mode (set to `False` in production) |
 | `ALLOWED_HOSTS` | `*` | List of allowed hosts (comma-separated) |
-| `LANGUAGE_CODE` | `en-us` | Default language code |
+| `LANGUAGE_CODE` | `en` | Default language code |
 | `TIME_ZONE` | `UTC` | Server time zone |
 | `USE_I18N` | `True` | Enable internationalization |
 | `USE_TZ` | `True` | Enable timezone support |
@@ -86,6 +86,7 @@ WaterCrawl uses a single `.env` file in the `docker` directory for all configura
 | `IS_ENTERPRISE_MODE_ACTIVE` | `False` | Enable enterprise mode features |
 | `IS_LOGIN_ACTIVE` | `True` | Enable login functionality |
 | `IS_SIGNUP_ACTIVE` | `False` | Enable signup functionality |
+| `IS_EMAIL_VERIFICATION_ACTIVE` | `True` | Enable email verification |
 | `IS_GITHUB_LOGIN_ACTIVE` | `False` | Enable GitHub OAuth login |
 | `IS_GOOGLE_LOGIN_ACTIVE` | `False` | Enable Google OAuth login |
 | `GITHUB_CLIENT_ID` | `` | GitHub OAuth client ID |

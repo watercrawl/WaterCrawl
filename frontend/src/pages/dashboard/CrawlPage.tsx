@@ -2,10 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { CrawlForm } from '../../components/crawl/CrawlForm';
 import { CrawlRequest } from '../../types/crawl';
+import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
+import { useTranslation } from 'react-i18next';
 
 const CrawlPage: React.FC = () => {
+  const { t } = useTranslation();
   const location = useLocation();
   const [initialRequest, setInitialRequest] = useState<CrawlRequest | null>(null);
+  const { setItems } = useBreadcrumbs();
+  useEffect(() => {
+    setItems([
+      { label: t('dashboard.title'), href: '/dashboard' },
+      { label: t('crawl.title'), href: '/dashboard/crawl', current: true },
+    ]);
+  }, [setItems, t]);
 
   useEffect(() => {
     // Load request from navigation state if available
@@ -15,18 +25,14 @@ const CrawlPage: React.FC = () => {
   }, [location.state, initialRequest]);
 
   return (
-    <div className="px-8 py-6 space-y-6">
+    <div className="space-y-6 px-8 py-6">
       <div>
-        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Crawl Playground</h1>
-        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-          Test and experiment with different crawling configurations in real-time
-        </p>
+        <h1 className="text-2xl font-semibold text-foreground">{t('crawl.title')}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{t('crawl.subtitle')}</p>
       </div>
 
       <div className="grid grid-cols-1 gap-6">
-        <CrawlForm
-          initialRequest={initialRequest}
-        />
+        <CrawlForm initialRequest={initialRequest} />
       </div>
     </div>
   );
