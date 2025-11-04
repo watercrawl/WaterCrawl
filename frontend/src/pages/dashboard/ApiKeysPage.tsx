@@ -15,6 +15,7 @@ import { Pagination } from '../../components/shared/Pagination';
 import { useIsTabletOrMobile } from '../../hooks/useMediaQuery';
 import { ApiKeyCard } from '../../components/shared/ApiKeyCard';
 import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
+import { useConfirm } from '../../contexts/ConfirmContext';
 import { useTranslation } from 'react-i18next';
 import { Input } from '../../components/shared/Input';
 import { useDateLocale } from '../../hooks/useDateLocale';
@@ -22,6 +23,7 @@ import { formatDistanceToNowLocalized } from '../../utils/dateUtils';
 
 const ApiKeysPage: React.FC = () => {
   const { t } = useTranslation();
+  const { confirm } = useConfirm();
   const dateLocale = useDateLocale();
   const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -83,18 +85,28 @@ const ApiKeysPage: React.FC = () => {
     }
   };
 
-  const deleteApiKey = async (uuid: string) => {
-    try {
-      setDeletingKey(uuid);
-      await apiKeysApi.delete(uuid);
-      setApiKeys(prev => prev.filter(key => key.uuid !== uuid));
-      toast.success(t('apiKeys.messages.deleteSuccess'));
-    } catch (error) {
-      console.error('Error deleting API key:', error);
-      toast.error(t('apiKeys.messages.deleteFailed'));
-    } finally {
-      setDeletingKey(null);
-    }
+  const handleDeleteApiKey = (apiKey: ApiKey) => {
+    confirm({
+      title: t('apiKeys.deleteConfirmTitle'),
+      message: t('apiKeys.deleteConfirmMessage', { name: apiKey.name }),
+      warningMessage: t('apiKeys.deleteWarning'),
+      variant: 'danger',
+      confirmText: t('common.delete'),
+      cancelText: t('common.cancel'),
+      onConfirm: async () => {
+        try {
+          setDeletingKey(apiKey.uuid);
+          await apiKeysApi.delete(apiKey.uuid);
+          setApiKeys(prev => prev.filter(key => key.uuid !== apiKey.uuid));
+          toast.success(t('apiKeys.messages.deleteSuccess'));
+        } catch (error) {
+          console.error('Error deleting API key:', error);
+          toast.error(t('apiKeys.messages.deleteFailed'));
+        } finally {
+          setDeletingKey(null);
+        }
+      },
+    });
   };
 
   const toggleKeyVisibility = (keyPk: string) => {
@@ -161,7 +173,7 @@ const ApiKeysPage: React.FC = () => {
                     isDeleting={deletingKey === apiKey.uuid}
                     onToggleVisibility={() => toggleKeyVisibility(apiKey.uuid)}
                     onCopy={() => copyToClipboard(apiKey.key, apiKey.uuid)}
-                    onDelete={() => deleteApiKey(apiKey.uuid)}
+                    onDelete={() => handleDeleteApiKey(apiKey)}
                   />
                 ))}
               </div>
@@ -263,7 +275,7 @@ const ApiKeysPage: React.FC = () => {
                                     )}
                                   </button>
                                   <button
-                                    onClick={() => deleteApiKey(apiKey.uuid)}
+                                    onClick={() => handleDeleteApiKey(apiKey)}
                                     disabled={deletingKey === apiKey.uuid}
                                     className={`text-muted-foreground hover:text-error focus:outline-none ${
                                       deletingKey === apiKey.uuid

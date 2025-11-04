@@ -22,7 +22,12 @@ export const OAuthButtons: React.FC = () => {
         window.location.href = '/dashboard';
       })
       .catch(err => {
-        setError(err.message);
+        console.log(err);
+        if (err.response?.status === 400) {
+          setError(err.response?.data?.message || 'Login Failed');
+        } else {
+          setError(err.message);
+        }
       });
   };
 

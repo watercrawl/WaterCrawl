@@ -10,6 +10,7 @@ import AdminLayout from './layouts/AdminLayout';
 import { TeamScopedComponent } from './components/shared/TeamScopedComponent';
 import { Toaster } from 'react-hot-toast';
 import { SettingsProvider } from './contexts/SettingsProvider';
+import { ConfirmProvider } from './contexts/ConfirmContext';
 import { NotFoundPage } from './pages/NotFoundPage';
 import PlansPage from './pages/dashboard/PlansPage';
 import StripeCallbackPage from './pages/dashboard/StripeCallbackPage';
@@ -24,6 +25,7 @@ const SignupPage = React.lazy(() => import('./pages/auth/SignupPage'));
 const ForgotPasswordPage = React.lazy(() => import('./pages/auth/ForgotPasswordPage'));
 const ResetPasswordPage = React.lazy(() => import('./pages/auth/ResetPasswordPage'));
 const VerifyEmailPage = React.lazy(() => import('./pages/auth/VerifyEmailPage'));
+const AcceptInvitationPage = React.lazy(() => import('./pages/auth/AcceptInvitationPage'));
 const DashboardPage = React.lazy(() => import('./pages/dashboard/DashboardPage'));
 const ActivityLogsPage = React.lazy(() => import('./pages/dashboard/CrawlLogsPage'));
 const ApiKeysPage = React.lazy(() => import('./pages/dashboard/ApiKeysPage'));
@@ -116,13 +118,15 @@ const AppContent: React.FC = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <BreadcrumbProvider>
-        <Routes>
+        <ConfirmProvider>
+          <Routes>
           <Route element={<AuthLayout />}>
             <Route path="/" element={<LoginPage />} />
             <Route path="/register" element={<SignupPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
             <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
+            <Route path="/accept/invitation/:code" element={<AcceptInvitationPage />} />
           </Route>
           <Route
             element={
@@ -254,6 +258,7 @@ const AppContent: React.FC = () => {
           <Route path="stripe-callback/" element={<StripeCallbackPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
+        </ConfirmProvider>
       </BreadcrumbProvider>
     </Suspense>
   );

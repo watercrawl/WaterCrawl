@@ -44,6 +44,10 @@ class FrontendSettingService:
         return settings.IS_SIGNUP_ACTIVE
 
     @cached_property
+    def is_email_verification_active(self):
+        return settings.IS_EMAIL_VERIFICATION_ACTIVE
+
+    @cached_property
     def is_login_active(self):
         return settings.IS_LOGIN_ACTIVE
 

@@ -1,3 +1,4 @@
+from django.conf import settings
 from rest_framework import mixins
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from django.utils.translation import gettext_lazy as _
@@ -82,7 +83,8 @@ class RegisterView(APIView):
         serializer = serializers.RegisterSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user_service = UserService.create_user(**serializer.validated_data)
-        send_verification_email.delay(user_service.user.pk)
+        if settings.IS_EMAIL_VERIFICATION_ACTIVE:
+            send_verification_email.delay(user_service.user.pk)
         return Response(
             status=status.HTTP_201_CREATED,
             data=serializers.RegisterSerializer(user_service.user).data,
@@ -116,7 +118,6 @@ class RegisterView(APIView):
 class VerifyInvitation(APIView):
     permission_classes = []
     serializer_class = None
-    authentication_classes = []
 
     def get(self, request, invitation_code):
         invitation_service = TeamInvitationService.make_with_invitation_token(
@@ -124,8 +125,11 @@ class VerifyInvitation(APIView):
         )
         return Response(
             {
+                "uuid": str(invitation_service.invitation.uuid),
                 "new_user": invitation_service.is_new_user(),
-                "email": invitation_service.invitation.email,
+                "matched_email": request.user
+                and request.user.is_authenticated
+                and request.user.email == invitation_service.invitation.email,
                 "invitation_code": invitation_code,
             }
         )
@@ -141,13 +145,18 @@ class VerifyInvitation(APIView):
         serializer.is_valid(raise_exception=True)
 
         if serializer.validated_data["email"] != invitation_service.invitation.email:
-            raise ValidationError(_("Emails do not match"))
+            raise ValidationError(
+                _(
+                    "Emails do not match the invitation email. you have to register with the email that was invited"
+                )
+            )
 
         user_service = UserService.create_user(**serializer.validated_data)
         TeamInvitationService(invitation_service.invitation).accept_invitation(
             user_service.user
         )
-        VerificationService(user_service.user).verify_email()
+        if settings.IS_EMAIL_VERIFICATION_ACTIVE:
+            send_verification_email.delay(user_service.user.pk)
         return Response(
             status=status.HTTP_201_CREATED,
             data=serializers.RegisterSerializer(user_service.user).data,
@@ -443,6 +452,24 @@ class MyInvitationsView(mixins.ListModelMixin, GenericViewSet):
         responses={200: serializers.TeamInvitationSerializer(many=True)},
         tags=["Team"],
     ),
+    revoke_invitation=extend_schema(
+        summary=_("Revoke an invitation"),
+        description=_("Revoke an invitation"),
+        responses={204: None},
+        tags=["Team"],
+    ),
+    invitation_url=extend_schema(
+        summary=_("Get the invitation URL"),
+        description=_("Get the invitation URL for the selected invitation"),
+        responses={200: serializers.TeamInvitationSerializer},
+        tags=["Team"],
+    ),
+    resend_invitation_email=extend_schema(
+        summary=_("Resend the invitation email"),
+        description=_("Resend the invitation email to the invited user"),
+        responses={204: None},
+        tags=["Team"],
+    ),
 )
 @setup_current_team
 class TeamViewSet(
@@ -483,8 +510,12 @@ class TeamViewSet(
         detail=False, methods=["post"], url_path="current/invite", url_name="invite"
     )
     def invite(self, request):
-        serializer = serializers.TeamInvitationSerializer(data=request.data)
+        serializer = serializers.TeamInvitationSerializer(
+            data=request.data,
+            context={"team": request.current_team},
+        )
         serializer.is_valid(raise_exception=True)
+
         invitation = TeamService(request.current_team).invite(
             serializer.validated_data["email"]
         )
@@ -505,6 +536,49 @@ class TeamViewSet(
                 many=True,
             ).data
         )
+
+    @action(
+        detail=False,
+        methods=["delete"],
+        url_path="current/invitations/(?P<uuid>[^/.]+)",
+        url_name="revoke-invitation",
+    )
+    def revoke_invitation(self, request, uuid):
+        invitation = request.current_team.invitations.filter(activated=False).get(
+            pk=uuid
+        )
+        TeamInvitationService(invitation).revoke()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(
+        detail=False,
+        methods=["get"],
+        url_path="current/invitations/(?P<uuid>[^/.]+)/url",
+        url_name="invitation-url",
+    )
+    def invitation_url(self, request, uuid):
+        invitation = request.current_team.invitations.filter(activated=False).get(
+            pk=uuid
+        )
+        return Response(
+            data={
+                "url": TeamInvitationService(invitation).get_link(),
+                "code": invitation.invitation_token,
+            }
+        )
+
+    @action(
+        detail=False,
+        methods=["post"],
+        url_path="current/invitations/(?P<uuid>[^/.]+)/resend",
+        url_name="resend-invitation-email",
+    )
+    def resend_invitation_email(self, request, uuid):
+        invitation = request.current_team.invitations.filter(activated=False).get(
+            pk=uuid
+        )
+        send_invitation_email.delay(str(invitation.pk))
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 @extend_schema_view(

@@ -95,6 +95,9 @@
     },
     "created": "作成日",
     "createNew": "新しいAPIキーを作成",
+    "deleteConfirmTitle": "APIキーを削除",
+    "deleteConfirmMessage": "APIキー\"{{name}}\"を削除してもよろしいですか？",
+    "deleteWarning": "この操作は取り消せません。このキーを使用しているアプリケーションは直ちに動作しなくなります。",
     "deleteKey": "APIキーを削除",
     "hideKey": "APIキーを隠す",
     "keyName": "キー名",
@@ -280,6 +283,7 @@
     "create": "作成",
     "dashboard": "ダッシュボード",
     "delete": "削除",
+    "deleting": "削除中...",
     "dismiss": "閉じる",
     "documents": "ドキュメント",
     "download": "ダウンロード",
@@ -1021,6 +1025,30 @@
     "title": "プライバシーと利用規約の更新",
     "updateMessage": "プライバシーポリシーと利用規約を更新しました。WaterCrawlを続けて使用するには、確認して承認してください。"
   },
+  "notifications": {
+    "title": "通知",
+    "openMenu": "通知を開く",
+    "noNotifications": "新しい通知はありません",
+    "viewAll": "すべての通知を表示",
+    "invitation": {
+      "title": "チームへの招待",
+      "message": "{{teamName}}に招待されました",
+      "verifying": "招待を確認中...",
+      "invalidTitle": "無効な招待",
+      "invalidMessage": "この招待コードは無効または期限切れです。",
+      "loginRequired": "この招待を受け入れるには、招待されたメールアドレスでログインしてください。",
+      "mismatchLoginTitle": "アカウントが一致しません",
+      "mismatchLoginMessage": "この招待は別のアカウント宛てです。ログアウトして正しいアカウントでログインしてください。",
+      "mismatchRegisterTitle": "アカウントが一致しません",
+      "mismatchRegisterMessage": "この招待は新しいユーザー宛てです。ログアウトして招待されたメールで登録してください。",
+      "logoutAndLogin": "ログアウトして正しいアカウントでログイン",
+      "logoutAndRegister": "ログアウトして招待されたメールで登録",
+      "acceptedTitle": "招待を受け入れました！",
+      "acceptedMessage": "チームへの参加に成功しました。ダッシュボードにリダイレクト中...",
+      "confirmTitle": "チーム招待を受け入れる",
+      "confirmMessage": "チームに参加するための招待を受け入れようとしています。"
+    }
+  },
   "processing": {
     "almostThere": "🎯 もうすぐです",
     "analyzing": "🔍 コンテンツを分析中",
@@ -1257,6 +1285,7 @@
         "confirmPrompt": "確認するには、ナレッジベースのタイトル{{title}}を入力してください：",
         "confirmTitle": "このナレッジベースを削除してもよろしいですか？",
         "deleting": "削除中...",
+        "inputLabel": "確認するにはナレッジベースのタイトルを入力してください",
         "title": "ナレッジベースを削除",
         "warningMessage": "この操作は元に戻せません。ナレッジベース{{title}}が完全に削除され、関連するすべてのドキュメントとチャンクが削除されます。"
       },
@@ -1734,14 +1763,25 @@
       "title": "チーム設定"
     },
     "teamInvitations": {
-      "cancelTooltip": "招待キャンセル機能は近日公開予定...",
+      "cancelTooltip": "招待を取り消す",
+      "copyUrl": "招待URLをコピー",
       "date": "日付",
       "invitedUser": "招待されたユーザー",
       "loadError": "招待の読み込みに失敗しました",
       "noPending": "保留中の招待はありません",
       "pending": "保留中",
+      "resendEmail": "招待メールを再送信",
+      "resendError": "招待メールの再送信に失敗しました",
+      "resendSuccess": "招待メールを正常に送信しました",
+      "revokeConfirmButton": "招待を取り消す",
+      "revokeConfirmMessage": "{{email}}への招待を取り消してもよろしいですか？この操作は元に戻せません。",
+      "revokeConfirmTitle": "招待を取り消す",
+      "revokeError": "招待の取り消しに失敗しました",
+      "revokeSuccess": "招待を正常に取り消しました",
       "status": "ステータス",
-      "title": "チーム招待"
+      "title": "チーム招待",
+      "urlCopied": "招待URLをクリップボードにコピーしました",
+      "urlCopyError": "招待URLのコピーに失敗しました"
     },
     "subtitle": "アプリケーションを設定",
     "title": "設定"
@@ -1777,6 +1817,19 @@
       "maxUrls": "最大URL数",
       "url": "WebサイトURL",
       "urlPlaceholder": "https://example.com"
+    },
+    "options": {
+      "includeSubdomains": "サブドメインを含める",
+      "includeSubdomainsDesc": "対象Webサイトのすべてのサブドメインを含める",
+      "ignoreSitemapXml": "sitemap.xmlを無視",
+      "ignoreSitemapXmlDesc": "sitemap.xmlファイルを使用せずにWebサイトを直接クロールする（遅いがより完全）",
+      "searchFilter": "URLフィルタ",
+      "searchFilterDesc": "検索語でサイトマップのURLをフィルタリング（例：'blog'、'/products'）",
+      "searchFilterPlaceholder": "URLをフィルタリングする検索語を入力...",
+      "generalSettings": "一般設定",
+      "generalSettingsDesc": "基本的なサイトマップ生成オプション",
+      "pathFilters": "パスフィルタ",
+      "pathFiltersDesc": "特定のURLパスを含めるか除外する"
     },
     "foundUrls": "{{count}}件のURLが見つかりました",
     "foundUrls_one": "{{count}}件のURLが見つかりました",

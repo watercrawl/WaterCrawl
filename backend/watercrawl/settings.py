@@ -289,6 +289,9 @@ IS_ENTERPRISE_MODE_ACTIVE = env("IS_ENTERPRISE_MODE_ACTIVE", cast=bool, default=
 FRONTEND_URL = env("FRONTEND_URL", cast=str, default="http://localhost:5173")
 IS_LOGIN_ACTIVE = env("IS_LOGIN_ACTIVE", cast=bool, default=True)
 IS_SIGNUP_ACTIVE = env("IS_SIGNUP_ACTIVE", cast=bool, default=True)
+IS_EMAIL_VERIFICATION_ACTIVE = env(
+    "IS_EMAIL_VERIFICATION_ACTIVE", cast=bool, default=True
+)
 IS_GITHUB_LOGIN_ACTIVE = env("IS_GITHUB_LOGIN_ACTIVE", cast=bool, default=True)
 IS_GOOGLE_LOGIN_ACTIVE = env("IS_GOOGLE_LOGIN_ACTIVE", cast=bool, default=True)
 

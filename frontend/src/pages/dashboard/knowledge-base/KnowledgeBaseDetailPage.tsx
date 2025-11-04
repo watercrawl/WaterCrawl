@@ -9,8 +9,8 @@ import {
   BeakerIcon,
   EyeIcon,
 } from '@heroicons/react/24/outline';
-import Modal from '../../../components/shared/Modal';
 import toast from 'react-hot-toast';
+import { useConfirm } from '../../../contexts/ConfirmContext';
 import { knowledgeBaseApi } from '../../../services/api/knowledgeBase';
 import {
   DocumentStatus,
@@ -28,10 +28,10 @@ import { useSettings } from '../../../contexts/SettingsProvider';
 import { useDateLocale } from '../../../hooks/useDateLocale';
 import { formatDistanceToNowLocalized } from '../../../utils/dateUtils';
 import { useTranslation } from 'react-i18next';
-import { Input } from '../../../components/shared/Input';
 
 const KnowledgeBaseDetailPage: React.FC = () => {
   const { t } = useTranslation();
+  const { confirm } = useConfirm();
   const dateLocale = useDateLocale();
   const navigate = useNavigate();
   const { setItems } = useBreadcrumbs();
@@ -43,31 +43,38 @@ const KnowledgeBaseDetailPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingDocuments, setIsLoadingDocuments] = useState(true);
   const [autoRefresh, setAutoRefresh] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [deleteConfirmation, setDeleteConfirmation] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
   const [isRetrying, setIsRetrying] = useState(false);
   const { settings } = useSettings();
 
-  const handleDeleteKnowledgeBase = async () => {
-    if (!knowledgeBase || deleteConfirmation !== knowledgeBase.title) {
-      toast.error(t('settings.knowledgeBase.delete.confirmError'));
-      return;
-    }
+  const handleDeleteKnowledgeBase = () => {
+    if (!knowledgeBase) return;
 
-    setIsDeleting(true);
-    try {
-      await knowledgeBaseApi.delete(knowledgeBase.uuid);
-      toast.success(t('settings.knowledgeBase.toast.deleteSuccess'));
-      navigate('/dashboard/knowledge-base');
-    } catch (error) {
-      console.error('Failed to delete knowledge base:', error);
-      toast.error(t('settings.knowledgeBase.toast.deleteError'));
-    } finally {
-      setIsDeleting(false);
-      setShowDeleteModal(false);
-      setDeleteConfirmation('');
-    }
+    confirm({
+      title: t('settings.knowledgeBase.delete.title'),
+      message: t('settings.knowledgeBase.delete.warningMessage', { title: knowledgeBase.title }),
+      warningMessage: t('settings.knowledgeBase.delete.confirmPrompt', { title: knowledgeBase.title }),
+      variant: 'danger',
+      requireInput: true,
+      inputLabel: t('settings.knowledgeBase.delete.inputLabel'),
+      inputPlaceholder: knowledgeBase.title,
+      expectedInput: knowledgeBase.title,
+      confirmText: t('settings.knowledgeBase.delete.confirm'),
+      cancelText: t('common.cancel'),
+      onConfirm: async () => {
+        setIsDeleting(true);
+        try {
+          await knowledgeBaseApi.delete(knowledgeBase.uuid);
+          toast.success(t('settings.knowledgeBase.toast.deleteSuccess'));
+          navigate('/dashboard/knowledge-base');
+        } catch (error) {
+          console.error('Failed to delete knowledge base:', error);
+          toast.error(t('settings.knowledgeBase.toast.deleteError'));
+        } finally {
+          setIsDeleting(false);
+        }
+      },
+    });
   };
 
   useEffect(() => {
@@ -293,8 +300,8 @@ const KnowledgeBaseDetailPage: React.FC = () => {
               </Link>
             )}
             <button
-              onClick={() => setShowDeleteModal(true)}
-              className="inline-flex items-center rounded-md border border-error bg-card px-4 py-2 text-sm font-medium text-error shadow-sm hover:bg-error-light focus:outline-none focus:ring-2 focus:ring-error focus:ring-offset-2"
+              onClick={handleDeleteKnowledgeBase}
+              className="inline-flex items-center rounded-md border border-error bg-card px-4 py-2 text-sm font-medium text-error shadow-sm hover:bg-error-light hover:text-error-dark focus:outline-none focus:ring-2 focus:ring-error focus:ring-offset-2"
             >
               <TrashIcon className="-ms-1 me-2 h-5 w-5" aria-hidden="true" />
               {t('common.delete')}
@@ -459,73 +466,6 @@ const KnowledgeBaseDetailPage: React.FC = () => {
           </div>
         </div>
       </div>
-      {/* Delete Confirmation Modal */}
-      <Modal
-        isOpen={showDeleteModal}
-        onClose={() => {
-          setShowDeleteModal(false);
-          setDeleteConfirmation('');
-        }}
-        title={t('settings.knowledgeBase.delete.title')}
-        size="md"
-      >
-        <div className="mt-4">
-          <div className="mb-4 flex items-center">
-            <ExclamationTriangleIcon className="me-3 h-6 w-6 text-error" />
-            <div>
-              <h3 className="text-lg font-medium text-foreground">
-                {t('settings.knowledgeBase.delete.confirmTitle')}
-              </h3>
-            </div>
-          </div>
-
-          <div className="mb-4">
-            <p className="mb-2 text-sm text-muted-foreground">
-              {t('settings.knowledgeBase.delete.warningMessage', { title: knowledgeBase?.title })}
-            </p>
-            <p className="mb-4 text-sm text-muted-foreground">
-              {t('settings.knowledgeBase.delete.confirmPrompt', { title: knowledgeBase?.title })}
-            </p>
-            <Input
-              type="text"
-              value={deleteConfirmation}
-              onChange={e => setDeleteConfirmation(e.target.value)}
-              placeholder={knowledgeBase?.title}
-              className="focus:border-error focus:ring-error"
-              disabled={isDeleting}
-            />
-          </div>
-
-          <div className="flex justify-end gap-x-3">
-            <button
-              type="button"
-              onClick={() => {
-                setShowDeleteModal(false);
-                setDeleteConfirmation('');
-              }}
-              className="rounded-md border border-input-border bg-card px-4 py-2 text-sm font-medium text-foreground hover:bg-muted focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-              disabled={isDeleting}
-            >
-              {t('common.cancel')}
-            </button>
-            <button
-              type="button"
-              onClick={handleDeleteKnowledgeBase}
-              disabled={isDeleting || deleteConfirmation !== knowledgeBase?.title}
-              className="flex items-center rounded-md border border-transparent bg-error px-4 py-2 text-sm font-medium text-error-foreground hover:bg-error-dark focus:outline-none focus:ring-2 focus:ring-error focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {isDeleting ? (
-                <>
-                  <Loading size="sm" />
-                  <span className="ms-2">{t('settings.knowledgeBase.delete.deleting')}</span>
-                </>
-              ) : (
-                t('settings.knowledgeBase.delete.confirm')
-              )}
-            </button>
-          </div>
-        </div>
-      </Modal>
     </div>
   );
 };
