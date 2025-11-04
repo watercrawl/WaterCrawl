@@ -14,4 +14,4 @@ declare global {
     }
 }
 
-export const API_URL: string = window.__APP_CONFIG__?.API_URL || import.meta.env.VITE_API_URL || '/';
+export const API_URL: string = window.__APP_CONFIG__?.API_URL || import.meta.env.VITE_API_BASE_URL || '/';
