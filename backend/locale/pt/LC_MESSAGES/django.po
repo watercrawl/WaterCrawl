@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: watercrawl\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-11-03 22:05+0000\n"
-"PO-Revision-Date: 2025-11-03 23:22\n"
+"PO-Revision-Date: 2025-11-04 19:22\n"
 "Last-Translator: \n"
 "Language-Team: Portuguese\n"
 "Language: pt_PT\n"
@@ -2107,7 +2107,7 @@ msgstr "Listar convites para a equipe atual"
 
 #: user/views.py:456 user/views.py:457
 msgid "Revoke an invitation"
-msgstr ""
+msgstr "Revogar um convite"
 
 #: user/views.py:462
 msgid "Get the invitation URL"
