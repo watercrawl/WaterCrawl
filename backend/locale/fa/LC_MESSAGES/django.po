@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: watercrawl\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-11-03 22:05+0000\n"
-"PO-Revision-Date: 2025-11-03 23:22\n"
+"PO-Revision-Date: 2025-11-04 19:22\n"
 "Last-Translator: \n"
 "Language-Team: Persian\n"
 "Language: fa_IR\n"
@@ -1983,7 +1983,7 @@ msgstr "کاربر وجود ندارد"
 
 #: user/services.py:304
 msgid "Signup is not active"
-msgstr ""
+msgstr "ثبت‌نام فعال نیست"
 
 #: user/views.py:41 user/views.py:42
 msgid "Install WaterCrawl"
@@ -2003,7 +2003,7 @@ msgstr "شما نمی‌توانید ثبت‌نام کنید، قبلاً حس�
 
 #: user/views.py:150
 msgid "Emails do not match the invitation email. you have to register with the email that was invited"
-msgstr ""
+msgstr "ایمیل با ایمیل دعوت‌نامه مطابقت ندارد. شما باید با ایمیلی که دعوت شده است ثبت‌نام کنید"
 
 #: user/views.py:168 user/views.py:169
 msgid "Authenticate using email and password"
