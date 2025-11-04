@@ -1285,7 +1285,7 @@
       "delete": {
         "confirm": "Elimina Base di Conoscenza",
         "confirmError": "Per favore inserisci il titolo corretto della base di conoscenza per confermare l'eliminazione",
-        "confirmPrompt": "Digita il titolo della base di conoscenza {{title}} per confermare:",
+        "confirmPrompt": "Per favore digita il titolo della base di conoscenza {{title}} per confermare:",
         "confirmTitle": "Sei sicuro di voler eliminare questa base di conoscenza?",
         "deleting": "Eliminazione...",
         "inputLabel": "Digita il titolo della base di conoscenza per confermare",
