@@ -74,7 +74,7 @@ Thank you for your interest in contributing to WaterCrawl! This document provide
     # Configure environment
     cp .env.example .env
     # Edit .env to point to your local backend
-    # Example: API_BASE_URL=http://localhost:8000/api
+    # Example: VITE_API_BASE_URL=http://localhost:8000/
     ```
 
 6. Start the development servers (in separate terminal windows):
