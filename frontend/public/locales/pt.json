@@ -1286,7 +1286,7 @@
         "confirm": "Excluir Base de Conhecimento",
         "confirmError": "Por favor, digite o título correto da base de conhecimento para confirmar a exclusão",
         "confirmPrompt": "Por favor, digite o título da base de conhecimento {{title}} para confirmar:",
-        "confirmTitle": "Tem certeza de que deseja excluir esta base de conhecimento?",
+        "confirmTitle": "Tem certeza que deseja excluir esta base de conhecimento?",
         "deleting": "Excluindo...",
         "inputLabel": "Digite o título da base de conhecimento para confirmar",
         "title": "Excluir Base de Conhecimento",
