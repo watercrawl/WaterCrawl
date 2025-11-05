@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Modal } from '../shared/Modal';
-import { Button } from '../shared/Button';
-import { knowledgeBaseApi } from '../../services/api/knowledgeBase';
+
 import { toast } from 'react-hot-toast';
-import { KnowledgeBaseContextAwareEnhanceData } from '../../types/knowledge';
+import { useTranslation } from 'react-i18next';
+
 import { AxiosError } from 'axios';
+
+import { Button } from '../shared/Button';
+import { Modal } from '../shared/Modal';
+
+import { knowledgeBaseApi } from '../../services/api/knowledgeBase';
+import { KnowledgeBaseContextAwareEnhanceData } from '../../types/knowledge';
+
 
 interface EnhanceContextModalProps {
   isOpen: boolean;

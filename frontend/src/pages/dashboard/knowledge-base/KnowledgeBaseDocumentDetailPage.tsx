@@ -1,19 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+
 import { toast } from 'react-hot-toast';
-import { knowledgeBaseApi } from '../../../services/api/knowledgeBase';
-import {
-  KnowledgeBase,
-  KnowledgeBaseDocument as Document,
-  KnowledgeBaseChunk as Chunk,
-  DocumentStatus,
-} from '../../../types/knowledge';
-import { PaginatedResponse } from '../../../types/common';
-import { Pagination } from '../../../components/shared/Pagination';
-import { useBreadcrumbs } from '../../../contexts/BreadcrumbContext';
-import Loading from '../../../components/shared/Loading';
-import Card from '../../../components/shared/Card';
-import { StatusBadge } from '../../../components/shared/StatusBadge';
+import { useTranslation } from 'react-i18next';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+
 import {
   TrashIcon,
   ClipboardDocumentIcon,
@@ -21,10 +11,23 @@ import {
   ChevronUpIcon,
   EyeIcon,
 } from '@heroicons/react/24/outline';
-import Modal from '../../../components/shared/Modal';
+
+import Card from '../../../components/shared/Card';
+import Loading from '../../../components/shared/Loading';
 import MarkdownRenderer from '../../../components/shared/MarkdownRenderer';
-import { useTranslation } from 'react-i18next';
+import Modal from '../../../components/shared/Modal';
+import { Pagination } from '../../../components/shared/Pagination';
+import { StatusBadge } from '../../../components/shared/StatusBadge';
+import { useBreadcrumbs } from '../../../contexts/BreadcrumbContext';
 import { useConfirm } from '../../../contexts/ConfirmContext';
+import { knowledgeBaseApi } from '../../../services/api/knowledgeBase';
+import { PaginatedResponse } from '../../../types/common';
+import {
+  KnowledgeBase,
+  KnowledgeBaseDocument as Document,
+  KnowledgeBaseChunk as Chunk,
+  DocumentStatus,
+} from '../../../types/knowledge';
 
 const KnowledgeBaseDocumentDetailPage: React.FC = () => {
   const { t } = useTranslation();

@@ -1,5 +1,4 @@
-import { formatDistanceToNow as dateFnsFormatDistanceToNow } from 'date-fns';
-import { Locale } from 'date-fns';
+import { formatDistanceToNow as dateFnsFormatDistanceToNow, Locale  } from 'date-fns';
 
 /**
  * Localized wrapper for formatDistanceToNow

@@ -1,5 +1,7 @@
 import { useTranslation } from 'react-i18next';
+
 import { useGoogleLogin, useGoogleOneTapLogin } from '@react-oauth/google';
+
 import { LoginButton } from '../shared/LoginButton';
 
 interface GoogleOAuthProps {

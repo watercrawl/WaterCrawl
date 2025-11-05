@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+
 import { useTranslation } from 'react-i18next';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+
+import Loading from '../../components/shared/Loading';
 import { authApi } from '../../services/api/auth';
 import { AuthService } from '../../services/authService';
 import { TeamService } from '../../services/teamService';
-import Loading from '../../components/shared/Loading';
 
 const VerifyEmailPage = () => {
   const { t } = useTranslation();

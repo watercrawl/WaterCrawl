@@ -1,5 +1,8 @@
 import React, { useEffect, useState, Fragment, useCallback } from 'react';
+
+import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+
 import { Dialog, Transition, Tab } from '@headlessui/react';
 import {
   XMarkIcon,
@@ -7,11 +10,12 @@ import {
   DocumentTextIcon,
   MapIcon,
 } from '@heroicons/react/24/outline';
-import { CrawlRequest, SitemapGraph } from '../types/crawl';
+
 import { crawlRequestApi } from '../services/api/crawl';
+import { CrawlRequest, SitemapGraph } from '../types/crawl';
+
 import SitemapGraphViewer from './sitemap/SitemapGraphViewer';
 import SitemapMarkdownViewer from './sitemap/SitemapMarkdownViewer';
-import toast from 'react-hot-toast';
 
 interface SitemapModalProps {
   isOpen: boolean;

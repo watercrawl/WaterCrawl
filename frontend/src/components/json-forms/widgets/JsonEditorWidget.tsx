@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
+
 import Editor from '@monaco-editor/react';
+
 import { FieldProps } from '../types/schema';
 
 export const JsonEditorWidget: React.FC<FieldProps> = ({ schema, value, onChange, errors }) => {

@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { useTranslation } from 'react-i18next';
+
 import { twMerge } from 'tailwind-merge';
 
 export interface Column<T> {

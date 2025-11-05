@@ -1,12 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { DocumentTextIcon, PaperClipIcon, XMarkIcon } from '@heroicons/react/24/outline';
+
 import toast from 'react-hot-toast';
-import { knowledgeBaseApi } from '../../../services/api/knowledgeBase';
-import { useBreadcrumbs } from '../../../contexts/BreadcrumbContext';
-import { KnowledgeBaseDetail } from '../../../types/knowledge';
-import { AxiosError } from 'axios';
 import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router-dom';
+
+import { DocumentTextIcon, PaperClipIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { AxiosError } from 'axios';
+
+import { useBreadcrumbs } from '../../../contexts/BreadcrumbContext';
+import { knowledgeBaseApi } from '../../../services/api/knowledgeBase';
+import { KnowledgeBaseDetail } from '../../../types/knowledge';
+
+
 
 const UploadDocumentsPage: React.FC = () => {
   const { t } = useTranslation();

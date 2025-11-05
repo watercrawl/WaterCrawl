@@ -1,3 +1,4 @@
+import { PaginatedResponse } from '../../types/common';
 import {
   CreateKnowledgeBaseDocumentRequest,
   KnowledgeBaseChunk,
@@ -6,7 +7,7 @@ import {
   KnowledgeBaseDocument,
   KnowledgeBaseFormData,
 } from '../../types/knowledge';
-import { PaginatedResponse } from '../../types/common';
+
 import api from './api';
 
 export const knowledgeBaseApi = {

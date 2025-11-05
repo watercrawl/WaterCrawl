@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+
 import toast from 'react-hot-toast';
-import KnowledgeBaseQueryForm from '../../../components/knowledge/KnowledgeBaseQueryForm';
-import { knowledgeBaseApi } from '../../../services/api/knowledgeBase';
-import { useBreadcrumbs } from '../../../contexts/BreadcrumbContext';
-import { KnowledgeBaseDetail } from '../../../types/knowledge';
 import { useTranslation } from 'react-i18next';
+import { useParams, useNavigate } from 'react-router-dom';
+
+import KnowledgeBaseQueryForm from '../../../components/knowledge/KnowledgeBaseQueryForm';
+import { useBreadcrumbs } from '../../../contexts/BreadcrumbContext';
+import { knowledgeBaseApi } from '../../../services/api/knowledgeBase';
+import { KnowledgeBaseDetail } from '../../../types/knowledge';
+
 
 const KnowledgeBaseQueryPage: React.FC = () => {
   const { t } = useTranslation();

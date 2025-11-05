@@ -2,8 +2,9 @@ import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
 import { AuthService } from '../authService';
 import { TeamService } from '../teamService';
-import { API_URL } from '../../utils/env';
+
 import i18n from '../../i18n/config';
+import { API_URL } from '../../utils/env';
 
 interface CustomAxiosInstance extends AxiosInstance {
   subscribeToSSE: <T>(

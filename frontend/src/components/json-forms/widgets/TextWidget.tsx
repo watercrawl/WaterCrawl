@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { FieldProps } from '../types/schema';
 
 interface TextWidgetProps extends FieldProps {

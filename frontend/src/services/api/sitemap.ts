@@ -1,6 +1,7 @@
 import { PaginatedResponse } from '../../types/common';
-import { SitemapRequest, SitemapEvent } from '../../types/sitemap';
 import { SitemapGraph } from '../../types/crawl';
+import { SitemapRequest, SitemapEvent } from '../../types/sitemap';
+
 import api from './api';
 
 export const sitemapApi = {

@@ -1,9 +1,15 @@
 import React, { useState, Fragment, useEffect } from 'react';
-import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
-import { useTranslation } from 'react-i18next';
-import { Proxy, CreateProxyRequest, ProxyType, TestProxyRequest } from '../../types/proxy';
+
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
+
+import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
+
 import Button from '../shared/Button';
+
+import { Proxy, CreateProxyRequest, ProxyType, TestProxyRequest } from '../../types/proxy';
+
+
 
 interface ProxyFormProps {
   isOpen: boolean;

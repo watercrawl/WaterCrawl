@@ -1,7 +1,9 @@
 import React from 'react';
-import { useTheme } from '../contexts/ThemeContext';
+
 import { SunIcon, MoonIcon } from '@heroicons/react/24/outline';
+
 import { LanguageSelector } from '../components/shared/LanguageSelector';
+import { useTheme } from '../contexts/ThemeContext';
 
 export const PublicSkeleton: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { theme, toggleTheme } = useTheme();

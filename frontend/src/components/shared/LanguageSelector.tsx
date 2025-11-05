@@ -1,7 +1,10 @@
 import React, { Fragment } from 'react';
+
+import { useTranslation } from 'react-i18next';
+
 import { Menu, Transition } from '@headlessui/react';
 import { LanguageIcon, CheckIcon } from '@heroicons/react/24/outline';
-import { useTranslation } from 'react-i18next';
+
 import { useDirection } from '../../contexts/DirectionContext';
 
 interface Language {

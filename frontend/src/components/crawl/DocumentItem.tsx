@@ -1,5 +1,6 @@
-import { Editor } from '@monaco-editor/react';
 import { useTranslation } from 'react-i18next';
+
+import { Editor } from '@monaco-editor/react';
 
 interface DocumentItemProps {
   content: string;

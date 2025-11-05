@@ -1,9 +1,14 @@
 import { useState } from 'react';
-import { useCookieConsent } from '../contexts/CookieConsentContext';
-import { CheckCircle, Cookie, Settings } from 'lucide-react';
+
 import { useTranslation } from 'react-i18next';
-import CookieConsentModal from './CookieConsentModal';
+
+import { CheckCircle, Cookie, Settings } from 'lucide-react';
+
+import { useCookieConsent } from '../contexts/CookieConsentContext';
+
 import { useSettings } from '../../contexts/SettingsProvider.tsx';
+
+import CookieConsentModal from './CookieConsentModal';
 
 export const CookieConsentBanner: React.FC = () => {
   const { t } = useTranslation();

@@ -1,5 +1,6 @@
 import { PaginatedResponse } from '../../types/common';
 import { SearchRequest, SearchEvent } from '../../types/search';
+
 import api from './api';
 
 export const searchApi = {

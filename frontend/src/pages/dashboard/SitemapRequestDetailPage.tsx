@@ -1,21 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import { MagnifyingGlassIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
-import { useTranslation } from 'react-i18next';
+
 import { toast } from 'react-hot-toast';
-import { formatDuration } from '../../utils/formatters';
+import { useTranslation } from 'react-i18next';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+
+import { MagnifyingGlassIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
 import { format } from 'date-fns';
-import { StatusBadge } from '../../components/shared/StatusBadge';
-import { useDateLocale } from '../../hooks/useDateLocale';
-import { formatDistanceToNowLocalized } from '../../utils/dateUtils';
-import { sitemapApi } from '../../services/api/sitemap';
+
 import { AnimatedProcessing } from '../../components/shared/AnimatedProcessing';
+import { ChevronRight, ArrowRight, ArrowLeft } from '../../components/shared/DirectionalIcon';
+import { SitemapDownloadFormatSelector } from '../../components/shared/SitemapDownloadFormatSelector';
+import { StatusBadge } from '../../components/shared/StatusBadge';
+import { SitemapResultDisplay } from '../../components/sitemap/SitemapResultDisplay';
+import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
+import { useDateLocale } from '../../hooks/useDateLocale';
+import { sitemapApi } from '../../services/api/sitemap';
 import { CrawlStatus } from '../../types/crawl';
 import { SitemapEvent, SitemapRequest } from '../../types/sitemap';
-import { SitemapResultDisplay } from '../../components/sitemap/SitemapResultDisplay';
-import { SitemapDownloadFormatSelector } from '../../components/shared/SitemapDownloadFormatSelector';
-import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
-import { ChevronRight, ArrowRight, ArrowLeft } from '../../components/shared/DirectionalIcon';
+import { formatDistanceToNowLocalized } from '../../utils/dateUtils';
+import { formatDuration } from '../../utils/formatters';
 
 const SitemapRequestDetailPage: React.FC = () => {
   const { t } = useTranslation();

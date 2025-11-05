@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDirection } from '../../contexts/DirectionContext';
+
 import {
   ChevronRightIcon,
   ChevronLeftIcon,
@@ -8,6 +8,8 @@ import {
   ArrowLongRightIcon,
   ArrowLongLeftIcon,
 } from '@heroicons/react/24/outline';
+
+import { useDirection } from '../../contexts/DirectionContext';
 
 interface DirectionalIconProps {
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;

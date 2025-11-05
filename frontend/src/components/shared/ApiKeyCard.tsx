@@ -1,6 +1,7 @@
 import React from 'react';
+
 import { useTranslation } from 'react-i18next';
-import { ApiKey } from '../../types/apiKeys';
+
 import {
   EyeIcon,
   EyeSlashIcon,
@@ -8,7 +9,9 @@ import {
   TrashIcon,
 } from '@heroicons/react/24/outline';
 import { CheckIcon } from '@heroicons/react/24/solid';
+
 import { useDateLocale } from '../../hooks/useDateLocale';
+import { ApiKey } from '../../types/apiKeys';
 import { formatDistanceToNowLocalized } from '../../utils/dateUtils';
 
 const maskApiKey = (key: string, visible: boolean) => {

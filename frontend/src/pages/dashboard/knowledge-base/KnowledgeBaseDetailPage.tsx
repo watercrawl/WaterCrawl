@@ -1,5 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
+
+import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 import { Link, useParams, useNavigate } from 'react-router-dom';
+
 import {
   PlusIcon,
   PencilSquareIcon,
@@ -9,25 +13,25 @@ import {
   BeakerIcon,
   EyeIcon,
 } from '@heroicons/react/24/outline';
-import toast from 'react-hot-toast';
+
+import Loading from '../../../components/shared/Loading';
+import { Pagination } from '../../../components/shared/Pagination';
+import { StatusBadge } from '../../../components/shared/StatusBadge';
+import UsageLimitBox from '../../../components/shared/UsageLimitBox';
+import { useBreadcrumbs } from '../../../contexts/BreadcrumbContext';
 import { useConfirm } from '../../../contexts/ConfirmContext';
+import { useSettings } from '../../../contexts/SettingsProvider';
+import { useTeam } from '../../../contexts/TeamContext';
+import { useDateLocale } from '../../../hooks/useDateLocale';
 import { knowledgeBaseApi } from '../../../services/api/knowledgeBase';
+import { PaginatedResponse } from '../../../types/common';
 import {
   DocumentStatus,
   KnowledgeBaseDetail,
   KnowledgeBaseDocument,
 } from '../../../types/knowledge';
-import { PaginatedResponse } from '../../../types/common';
-import { Pagination } from '../../../components/shared/Pagination';
-import Loading from '../../../components/shared/Loading';
-import { StatusBadge } from '../../../components/shared/StatusBadge';
-import { useBreadcrumbs } from '../../../contexts/BreadcrumbContext';
-import { useTeam } from '../../../contexts/TeamContext';
-import UsageLimitBox from '../../../components/shared/UsageLimitBox';
-import { useSettings } from '../../../contexts/SettingsProvider';
-import { useDateLocale } from '../../../hooks/useDateLocale';
 import { formatDistanceToNowLocalized } from '../../../utils/dateUtils';
-import { useTranslation } from 'react-i18next';
+
 
 const KnowledgeBaseDetailPage: React.FC = () => {
   const { t } = useTranslation();

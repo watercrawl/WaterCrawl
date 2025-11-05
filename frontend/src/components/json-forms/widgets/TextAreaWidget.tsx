@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { FieldProps } from '../types/schema';
 
 export const TextAreaWidget: React.FC<FieldProps> = ({

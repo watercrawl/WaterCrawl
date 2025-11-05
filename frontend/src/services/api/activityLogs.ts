@@ -1,5 +1,6 @@
 import { PaginatedResponse } from '../../types/common';
 import { CrawlRequest, CrawlResult } from '../../types/crawl';
+
 import api from './api';
 
 export const activityLogsApi = {

@@ -1,6 +1,21 @@
 import React, { useState, useEffect, useCallback } from 'react';
+
 import { toast } from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
+
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
+import { AxiosError } from 'axios';
+
+import { ApiDocumentation } from '../crawl/ApiDocumentation';
+import { PageOptionsForm } from '../forms/PageOptionsForm';
+import { SpiderOptionsForm, SpiderOptions } from '../forms/SpiderOptionsForm';
+import { JSONSchemaDefinition } from '../json-forms/types/schema';
+import { ResultsTable } from '../ResultsTable';
+import Feed from '../shared/Feed';
+import { FormInput } from '../shared/FormComponents';
+
+import { crawlRequestApi } from '../../services/api/crawl';
+import { pluginsApi } from '../../services/api/plugins';
 import {
   BatchCrawlRequest,
   CrawlEvent,
@@ -9,19 +24,10 @@ import {
   CrawlState,
   PageOptions,
 } from '../../types/crawl';
-import { crawlRequestApi } from '../../services/api/crawl';
-import { pluginsApi } from '../../services/api/plugins'; // Import pluginsService
-import { PageOptionsForm } from '../forms/PageOptionsForm';
-import { SpiderOptionsForm, SpiderOptions } from '../forms/SpiderOptionsForm';
-import { ResultsTable } from '../ResultsTable';
-import PluginOptionsForm from './PluginOptionsForm';
-import { FormInput } from '../shared/FormComponents';
-import { ApiDocumentation } from '../crawl/ApiDocumentation';
-import { JSONSchemaDefinition } from '../json-forms/types/schema';
-import { AxiosError } from 'axios';
 import { FeedMessage } from '../../types/feed';
-import Feed from '../shared/Feed';
-import { useTranslation } from 'react-i18next';
+
+import PluginOptionsForm from './PluginOptionsForm';
+
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -166,16 +172,16 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({
           ...(isBatch
             ? { proxy_server: spiderOptions.proxy_server }
             : {
-                max_depth: parseInt(spiderOptions.maxDepth),
-                page_limit: parseInt(spiderOptions.pageLimit),
-                concurrent_requests: spiderOptions.concurrentRequests
-                  ? parseInt(spiderOptions.concurrentRequests)
-                  : null,
-                allowed_domains: spiderOptions.allowedDomains,
-                exclude_paths: spiderOptions.excludePaths,
-                include_paths: spiderOptions.includePaths,
-                proxy_server: spiderOptions.proxy_server,
-              }),
+              max_depth: parseInt(spiderOptions.maxDepth),
+              page_limit: parseInt(spiderOptions.pageLimit),
+              concurrent_requests: spiderOptions.concurrentRequests
+                ? parseInt(spiderOptions.concurrentRequests)
+                : null,
+              allowed_domains: spiderOptions.allowedDomains,
+              exclude_paths: spiderOptions.excludePaths,
+              include_paths: spiderOptions.includePaths,
+              proxy_server: spiderOptions.proxy_server,
+            }),
         },
         page_options: {
           exclude_tags: pageOptions.exclude_tags,
@@ -357,47 +363,47 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({
     ...(hidePluginTab
       ? []
       : [
-          {
-            name: t('crawl.form.pluginOptions'),
-            content: (
-              <PluginOptionsForm
-                onChange={handlePluginOptionsChange}
-                onValidation={handlePluginValidation}
-                schema={pluginSchema}
-                value={pluginOptions}
-              />
-            ),
-          },
-        ]),
+        {
+          name: t('crawl.form.pluginOptions'),
+          content: (
+            <PluginOptionsForm
+              onChange={handlePluginOptionsChange}
+              onValidation={handlePluginValidation}
+              schema={pluginSchema}
+              value={pluginOptions}
+            />
+          ),
+        },
+      ]),
     ...(hideApiDocs
       ? []
       : [
-          {
-            name: t('crawl.form.apiDocs'),
-            content: <ApiDocumentation request={currentRequest} isBatch={isBatch} />,
-          },
-        ]),
+        {
+          name: t('crawl.form.apiDocs'),
+          content: <ApiDocumentation request={currentRequest} isBatch={isBatch} />,
+        },
+      ]),
     ...(hideResultsTab
       ? []
       : [
-          {
-            name: t('crawl.form.results'),
-            content: crawlStatus.request ? (
-              <>
-                <Feed messages={feedMessages} showTimestamp={true} loading={isLoading} />
-                <ResultsTable
-                  request={crawlStatus.request}
-                  results={crawlStatus.results}
-                  isLoading={isLoading}
-                />
-              </>
-            ) : (
-              <div className="py-12 text-center text-muted-foreground">
-                {t('crawl.form.noResults')}
-              </div>
-            ),
-          },
-        ]),
+        {
+          name: t('crawl.form.results'),
+          content: crawlStatus.request ? (
+            <>
+              <Feed messages={feedMessages} showTimestamp={true} loading={isLoading} />
+              <ResultsTable
+                request={crawlStatus.request}
+                results={crawlStatus.results}
+                isLoading={isLoading}
+              />
+            </>
+          ) : (
+            <div className="py-12 text-center text-muted-foreground">
+              {t('crawl.form.noResults')}
+            </div>
+          ),
+        },
+      ]),
   ];
 
   return (
@@ -409,22 +415,20 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({
             <button
               type="button"
               onClick={() => setIsBatch(false)}
-              className={`${
-                !isBatch
+              className={`${!isBatch
                   ? 'bg-primary text-primary-foreground'
                   : 'bg-card text-foreground hover:bg-muted'
-              } border-e border-input-border px-4 py-2 text-sm font-medium transition-colors`}
+                } border-e border-input-border px-4 py-2 text-sm font-medium transition-colors`}
             >
               {t('crawl.form.singleUrl')}
             </button>
             <button
               type="button"
               onClick={() => setIsBatch(true)}
-              className={`${
-                isBatch
+              className={`${isBatch
                   ? 'bg-primary text-primary-foreground'
                   : 'bg-card text-foreground hover:bg-muted'
-              } px-4 py-2 text-sm font-medium transition-colors`}
+                } px-4 py-2 text-sm font-medium transition-colors`}
             >
               {t('crawl.form.batchUrls')}
             </button>

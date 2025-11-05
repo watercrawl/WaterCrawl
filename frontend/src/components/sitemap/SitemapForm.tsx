@@ -1,19 +1,24 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
+
 import { toast } from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
+
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
-import { SitemapRequest, SitemapStatus, SitemapOptions, SitemapEvent } from '../../types/sitemap';
-import { sitemapApi } from '../../services/api/sitemap';
-import { FormInput } from '../shared/FormComponents';
 import { AxiosError } from 'axios';
-import { SitemapResultDisplay } from './SitemapResultDisplay';
-import { SitemapApiDocumentation } from './SitemapApiDocumentation';
+
 import { SitemapOptionsForm } from '../forms/SitemapOptionsForm';
-import { SitemapDownloadFormatSelector } from '../shared/SitemapDownloadFormatSelector';
 import Feed from '../shared/Feed';
-import { FeedMessage } from '../../types/feed';
-import { useSettings } from '../../contexts/SettingsProvider';
+import { FormInput } from '../shared/FormComponents';
+import { SitemapDownloadFormatSelector } from '../shared/SitemapDownloadFormatSelector';
 import { StatusBadge } from '../shared/StatusBadge';
+
+import { useSettings } from '../../contexts/SettingsProvider';
+import { sitemapApi } from '../../services/api/sitemap';
+import { FeedMessage } from '../../types/feed';
+import { SitemapRequest, SitemapStatus, SitemapOptions, SitemapEvent } from '../../types/sitemap';
+
+import { SitemapApiDocumentation } from './SitemapApiDocumentation';
+import { SitemapResultDisplay } from './SitemapResultDisplay';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');

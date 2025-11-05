@@ -1,14 +1,20 @@
 import { useEffect, useState } from 'react';
+
 import { useForm, FormProvider, Controller } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
+
+import { EnvelopeOpenIcon, InformationCircleIcon } from '@heroicons/react/24/outline';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useTranslation } from 'react-i18next';
-import { profileApi } from '../../services/api/profile';
-import toast from 'react-hot-toast';
+
+
+
 import { FormInput } from '../shared/FormInput';
 import Loading from '../shared/Loading';
-import { EnvelopeOpenIcon, InformationCircleIcon } from '@heroicons/react/24/outline';
 import { Switch } from '../shared/Switch';
+
+import { profileApi } from '../../services/api/profile';
 
 const getSchema = (t: (key: string) => string) =>
   yup

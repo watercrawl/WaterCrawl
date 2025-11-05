@@ -1,19 +1,24 @@
 import React from 'react';
+
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { format } from 'date-fns';
-import { SitemapRequest, SitemapStatus } from '../../types/sitemap';
+
 import {
   DocumentTextIcon,
   ClockIcon,
   CalendarIcon,
   ArrowTopRightOnSquareIcon,
 } from '@heroicons/react/24/outline';
-import { formatDuration } from '../../utils/formatters';
-import { useTranslation } from 'react-i18next';
+import { format } from 'date-fns';
+
 import { useDateLocale } from '../../hooks/useDateLocale';
-import { formatDistanceToNowLocalized } from '../../utils/dateUtils';
-import { StatusBadge } from './StatusBadge';
 import { CrawlStatus } from '../../types/crawl';
+import { SitemapRequest, SitemapStatus } from '../../types/sitemap';
+import { formatDistanceToNowLocalized } from '../../utils/dateUtils';
+import { formatDuration } from '../../utils/formatters';
+
+import { StatusBadge } from './StatusBadge';
+
 
 interface SitemapRequestCardProps {
   request: SitemapRequest;

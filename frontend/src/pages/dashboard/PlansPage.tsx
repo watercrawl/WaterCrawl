@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
-import { Plan } from '../../types/subscription';
-import subscriptionApi from '../../services/api/subscription';
-import { PlansDisplay } from '../../components/plans/PlansDisplay';
-import { useSettings } from '../../contexts/SettingsProvider';
-import { NotFoundPage } from '../NotFoundPage';
+
 import { useTranslation } from 'react-i18next';
+
+import { NotFoundPage } from '../NotFoundPage';
+
+import { PlansDisplay } from '../../components/plans/PlansDisplay';
 import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
+import { useSettings } from '../../contexts/SettingsProvider';
+import subscriptionApi from '../../services/api/subscription';
+import { Plan } from '../../types/subscription';
 
 export default function PlansPage() {
   const { t } = useTranslation();

@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { SearchForm } from '../../components/search/SearchForm';
-import { SearchOptions } from '../../types/search';
-import { useSettings } from '../../contexts/SettingsProvider';
-import { InformationCircleIcon } from '@heroicons/react/24/outline';
-import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
+
 import { useTranslation, Trans } from 'react-i18next';
+import { useLocation } from 'react-router-dom';
+
+import { InformationCircleIcon } from '@heroicons/react/24/outline';
+
+import { SearchForm } from '../../components/search/SearchForm';
+import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
+import { useSettings } from '../../contexts/SettingsProvider';
+import { SearchOptions } from '../../types/search';
 
 interface LocationState {
   initialQuery?: string;

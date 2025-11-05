@@ -1,4 +1,3 @@
-import api from './api';
 import {
   Subscription,
   CreateSubscriptionRequest,
@@ -8,6 +7,8 @@ import {
   CancelSubscriptionResponse,
   UpdatePaymentMethodResponse,
 } from '../../types/subscription';
+
+import api from './api';
 
 export const subscriptionApi = {
   /**

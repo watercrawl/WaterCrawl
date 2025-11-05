@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+
+import { CheckCircleIcon, XCircleIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+
+import Loading from '../../components/shared/Loading';
 import { authApi } from '../../services/api/auth';
 import { profileApi } from '../../services/api/profile';
 import { AuthService } from '../../services/authService';
-import Loading from '../../components/shared/Loading';
-import { CheckCircleIcon, XCircleIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
 type InvitationStatus = 'loading' | 'invalid' | 'mismatch-register' | 'mismatch-login' | 'match' | 'accepted';
 

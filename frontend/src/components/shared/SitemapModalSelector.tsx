@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
-import { MapIcon } from '@heroicons/react/24/outline';
-import SitemapModal from '../SitemapModal';
-import { CrawlRequest } from '../../types/crawl';
+
 import { useTranslation } from 'react-i18next';
+
+import { MapIcon } from '@heroicons/react/24/outline';
+
+import SitemapModal from '../SitemapModal';
+
+import { CrawlRequest } from '../../types/crawl';
 
 interface SitemapModalSelectorProps {
   request: CrawlRequest;

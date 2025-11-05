@@ -1,7 +1,11 @@
-import { Switch as HeadlessSwitch, Field, Label } from '@headlessui/react';
 import React from 'react';
-import { InfoTooltip } from './FormComponents';
+
+import { Switch as HeadlessSwitch, Field, Label } from '@headlessui/react';
+
 import { useDirection } from '../../contexts/DirectionContext';
+
+import { InfoTooltip } from './FormComponents';
+
 
 interface SwitchProps {
   label: string;

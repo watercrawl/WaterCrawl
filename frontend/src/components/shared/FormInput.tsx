@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { useFormContext } from 'react-hook-form';
+
 import { FormInputProps } from '../../types/user';
 
 export const FormInput: React.FC<FormInputProps> = ({

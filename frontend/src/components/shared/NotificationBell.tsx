@@ -1,12 +1,16 @@
 import { Fragment, useCallback, useEffect, useState } from 'react';
+
+import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
+
 import { Menu, Transition } from '@headlessui/react';
 import { BellIcon } from '@heroicons/react/24/outline';
-import { useTranslation } from 'react-i18next';
-import toast from 'react-hot-toast';
 import { format } from 'date-fns';
-import { profileApi } from '../../services/api/profile';
+
 import { useTeam } from '../../contexts/TeamContext';
+import { profileApi } from '../../services/api/profile';
 import { Invitation } from '../../types/user';
+
 import Loading from './Loading';
 
 interface NotificationItem {

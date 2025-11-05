@@ -1,17 +1,24 @@
 import React, { useEffect, useState } from 'react';
+
 import { useForm, SubmitHandler } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
+
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
-import { knowledgeBaseApi } from '../../services/api/knowledgeBase';
-import { KnowledgeBaseApiDocumentation } from './KnowledgeBaseApiDocumentation';
-import { KnowledgeBaseQueryResult } from './KnowledgeBaseQueryResult';
-import Loading from '../shared/Loading';
-import { FormInput } from '../shared/FormComponents';
-import Card from '../shared/Card';
 import Editor from '@monaco-editor/react';
 import { AxiosError } from 'axios';
+
+import Card from '../shared/Card';
+import { FormInput } from '../shared/FormComponents';
+import Loading from '../shared/Loading';
+
 import { classnames } from '../../lib/utils';
-import { useTranslation } from 'react-i18next';
+import { knowledgeBaseApi } from '../../services/api/knowledgeBase';
+
+import { KnowledgeBaseApiDocumentation } from './KnowledgeBaseApiDocumentation';
+import { KnowledgeBaseQueryResult } from './KnowledgeBaseQueryResult';
+
+
 
 interface IFormInput {
   query: string;

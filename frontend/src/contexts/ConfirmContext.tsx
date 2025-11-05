@@ -1,4 +1,7 @@
 import React, { createContext, useContext, useState, useCallback, Fragment } from 'react';
+
+import { useTranslation } from 'react-i18next';
+
 import { Dialog, Transition } from '@headlessui/react';
 import {
   ExclamationTriangleIcon,
@@ -6,7 +9,6 @@ import {
   CheckCircleIcon,
   ExclamationCircleIcon,
 } from '@heroicons/react/24/outline';
-import { useTranslation } from 'react-i18next';
 
 type ConfirmVariant = 'danger' | 'warning' | 'info' | 'success';
 

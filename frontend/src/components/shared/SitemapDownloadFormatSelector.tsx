@@ -1,9 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
+
 import toast from 'react-hot-toast';
-import { SitemapRequest } from '../../types/sitemap';
-import { sitemapApi } from '../../services/api/sitemap';
 import { useTranslation } from 'react-i18next';
+
+import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
+
+import { sitemapApi } from '../../services/api/sitemap';
+import { SitemapRequest } from '../../types/sitemap';
+
 
 type DownloadFormat = 'json' | 'markdown' | 'graph';
 

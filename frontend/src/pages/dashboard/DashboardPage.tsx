@@ -1,9 +1,12 @@
 import React, { useEffect } from 'react';
-import { MCPServerAccess } from '../../components/dashboard/MCPServerAccess';
-import { ResourcesShortcuts } from '../../components/dashboard/ResourcesShortcuts';
-import { QuickNavigation } from '../../components/dashboard/QuickNavigation';
-import { SparklesIcon } from '@heroicons/react/24/outline';
+
 import { useTranslation } from 'react-i18next';
+
+import { SparklesIcon } from '@heroicons/react/24/outline';
+
+import { MCPServerAccess } from '../../components/dashboard/MCPServerAccess';
+import { QuickNavigation } from '../../components/dashboard/QuickNavigation';
+import { ResourcesShortcuts } from '../../components/dashboard/ResourcesShortcuts';
 import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
 
 const DashboardPage: React.FC = () => {

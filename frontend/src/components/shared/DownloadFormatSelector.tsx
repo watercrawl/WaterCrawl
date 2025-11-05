@@ -1,9 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
-import { activityLogsApi } from '../../services/api/activityLogs';
+
 import toast from 'react-hot-toast';
-import { CrawlRequest } from '../../types/crawl';
 import { useTranslation } from 'react-i18next';
+
+import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
+
+import { activityLogsApi } from '../../services/api/activityLogs';
+import { CrawlRequest } from '../../types/crawl';
+
 
 type DownloadFormat = 'json' | 'markdown';
 

@@ -1,8 +1,11 @@
 import React from 'react';
-import { ArrowDownTrayIcon, EyeIcon, PaperClipIcon } from '@heroicons/react/24/outline';
-import { CrawlResult } from '../../types/crawl';
+
 import { useTranslation } from 'react-i18next';
+
+import { ArrowDownTrayIcon, EyeIcon, PaperClipIcon } from '@heroicons/react/24/outline';
+
 import { useDateLocale } from '../../hooks/useDateLocale';
+import { CrawlResult } from '../../types/crawl';
 import { formatDistanceToNowLocalized } from '../../utils/dateUtils';
 
 interface CrawlResultCardProps {

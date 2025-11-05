@@ -1,7 +1,10 @@
 import React from 'react';
+
 import { useTranslation } from 'react-i18next';
-import { SearchResult } from '../../types/search';
+
 import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
+
+import { SearchResult } from '../../types/search';
 
 interface SearchResultDisplayProps {
   results: SearchResult[];

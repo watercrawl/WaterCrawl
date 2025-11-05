@@ -1,3 +1,5 @@
+import api from '../api';
+
 import {
   AdminEmbeddingModel,
   AdminEmbeddingModelRequest,
@@ -8,7 +10,6 @@ import {
   AdminProviderConfigRequest,
 } from '../../../types/admin/provider';
 import { PaginatedResponse } from '../../../types/common';
-import api from '../api';
 
 export const adminProviderApi = {
   providerConfiguration: {

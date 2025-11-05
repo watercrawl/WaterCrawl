@@ -1,5 +1,6 @@
 import { PaginatedResponse } from '../../types/common';
 import { Team, TeamMember, TeamInvitation, TeamInvitationURL } from '../../types/team';
+
 import api from './api';
 
 

@@ -1,16 +1,20 @@
 import React from 'react';
+
 import { FieldProps, UIWidgetType } from '../types/schema';
-import { TextWidget } from '../widgets/TextWidget';
+import { CheckboxWidget } from '../widgets/CheckboxWidget';
+import { JsonEditorWidget } from '../widgets/JsonEditorWidget';
 import { NumberWidget } from '../widgets/NumberWidget';
+import { RadioWidget } from '../widgets/RadioWidget';
 import { SelectWidget } from '../widgets/SelectWidget';
 import { SwitchWidget } from '../widgets/SwitchWidget';
 import { TextAreaWidget } from '../widgets/TextAreaWidget';
-import { RadioWidget } from '../widgets/RadioWidget';
-import { JsonEditorWidget } from '../widgets/JsonEditorWidget';
-import { ObjectField } from './ObjectField';
-import { ArrayField } from './ArrayField';
-import { CheckboxWidget } from '../widgets/CheckboxWidget';
+import { TextWidget } from '../widgets/TextWidget';
+
 import { InfoTooltip } from '../../shared/FormComponents';
+
+import { ArrayField } from './ArrayField';
+import { ObjectField } from './ObjectField';
+
 
 export const SchemaField: React.FC<FieldProps> = props => {
   const { schema, errors = [] } = props;

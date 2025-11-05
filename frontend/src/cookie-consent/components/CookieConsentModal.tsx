@@ -1,9 +1,12 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useCookieConsent } from '../contexts/CookieConsentContext';
-import { Cookie, X, CheckCircle, XCircle, Settings } from 'lucide-react';
+
 import { useTranslation } from 'react-i18next';
+
+import { Cookie, X, CheckCircle, XCircle, Settings } from 'lucide-react';
+
+import { useCookieConsent } from '../contexts/CookieConsentContext';
 
 import Switch from './Switch';
 

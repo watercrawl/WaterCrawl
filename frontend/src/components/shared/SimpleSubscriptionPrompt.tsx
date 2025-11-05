@@ -1,7 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { ArrowRight } from '../../components/shared/DirectionalIcon';
+
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+
+import { ArrowRight } from '../../components/shared/DirectionalIcon';
 
 export const SimpleSubscriptionPrompt: React.FC = () => {
   const { t } = useTranslation();

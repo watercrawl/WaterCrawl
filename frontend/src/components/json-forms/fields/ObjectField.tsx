@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
+
 import { FieldProps } from '../types/schema';
-import { SchemaField } from './SchemaField';
 import { SwitchWidget } from '../widgets/SwitchWidget';
+
+import { SchemaField } from './SchemaField';
 
 export const ObjectField: React.FC<FieldProps> = ({
   schema,

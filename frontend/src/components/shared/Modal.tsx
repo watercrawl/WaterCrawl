@@ -1,5 +1,7 @@
 import React, { Fragment } from 'react';
+
 import { useTranslation } from 'react-i18next';
+
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 

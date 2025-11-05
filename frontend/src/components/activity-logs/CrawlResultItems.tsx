@@ -1,7 +1,10 @@
 import React from 'react';
-import { CrawlResult } from '../../types/crawl';
-import { CrawlResultCard } from './CrawlResultCard';
+
 import { AnimatedProcessing } from '../shared/AnimatedProcessing';
+
+import { CrawlResult } from '../../types/crawl';
+
+import { CrawlResultCard } from './CrawlResultCard';
 
 interface CrawlResultItemsProps {
   results: CrawlResult[];

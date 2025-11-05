@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { CrawlForm } from '../../../components/crawl/CrawlForm';
-import { CrawlEvent, CrawlRequest } from '../../../types/crawl';
+
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router-dom';
+
+import { CrawlForm } from '../../../components/crawl/CrawlForm';
 import { useBreadcrumbs } from '../../../contexts/BreadcrumbContext';
-import { KnowledgeBaseDetail } from '../../../types/knowledge';
 import { knowledgeBaseApi } from '../../../services/api/knowledgeBase';
+import { CrawlEvent, CrawlRequest } from '../../../types/crawl';
+import { KnowledgeBaseDetail } from '../../../types/knowledge';
 
 const NewCrawlPage: React.FC = () => {
   const { t } = useTranslation();

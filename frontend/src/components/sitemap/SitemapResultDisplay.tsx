@@ -1,13 +1,20 @@
 import React, { useState, useEffect, useCallback } from 'react';
+
+import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import { SitemapRequest, SitemapStatus } from '../../types/sitemap';
+
 import { DocumentChartBarIcon, CodeBracketSquareIcon } from '@heroicons/react/24/outline';
-import SitemapGraphViewer from './SitemapGraphViewer';
-import SitemapMarkdownViewer from './SitemapMarkdownViewer';
+
+import Button from '../shared/Button';
+
 import { sitemapApi } from '../../services/api/sitemap';
 import { SitemapGraph } from '../../types/crawl';
-import toast from 'react-hot-toast';
-import Button from '../shared/Button';
+import { SitemapRequest, SitemapStatus } from '../../types/sitemap';
+
+import SitemapGraphViewer from './SitemapGraphViewer';
+import SitemapMarkdownViewer from './SitemapMarkdownViewer';
+
+
 
 interface SitemapResultDisplayProps {
   result?: SitemapRequest;

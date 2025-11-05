@@ -1,16 +1,19 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { PlusIcon } from '@heroicons/react/24/outline';
-import { useTranslation } from 'react-i18next';
-import proxyApi from '../../services/api/proxy';
-import { Proxy, CreateProxyRequest, TestProxyRequest } from '../../types/proxy';
+
 import toast from 'react-hot-toast';
-import ProxyList from '../../components/settings/ProxyList';
+import { useTranslation } from 'react-i18next';
+
+import { PlusIcon } from '@heroicons/react/24/outline';
+
 import ProxyForm from '../../components/settings/ProxyForm';
-import useIsTabletOrMobile from '../../hooks/useIsTabletOrMobile';
-import { PaginatedResponse } from '../../types/common';
+import ProxyList from '../../components/settings/ProxyList';
 import Button from '../../components/shared/Button';
 import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
 import { useConfirm } from '../../contexts/ConfirmContext';
+import useIsTabletOrMobile from '../../hooks/useIsTabletOrMobile';
+import proxyApi from '../../services/api/proxy';
+import { PaginatedResponse } from '../../types/common';
+import { Proxy, CreateProxyRequest, TestProxyRequest } from '../../types/proxy';
 
 const ManageProxiesPage: React.FC = () => {
   const { t } = useTranslation();

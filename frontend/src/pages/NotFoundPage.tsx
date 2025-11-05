@@ -1,6 +1,7 @@
-import { Link } from 'react-router-dom';
-import { AuthService } from '../services/authService';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+
+import { AuthService } from '../services/authService';
 
 export const NotFoundPage = () => {
   const { t } = useTranslation();

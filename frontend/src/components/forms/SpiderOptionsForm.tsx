@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { PlusIcon, XMarkIcon, ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
-import { FormInput, InfoTooltip, OptionGroup } from '../shared/FormComponents';
-import { Button } from '../shared/Button';
+
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+
+import { PlusIcon, XMarkIcon, ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
+
+import { Button } from '../shared/Button';
+import ComboboxComponent from '../shared/ComboboxComponent';
+import { FormInput, InfoTooltip, OptionGroup } from '../shared/FormComponents';
+
+import { useSettings } from '../../contexts/SettingsProvider';
+import { useTeam } from '../../contexts/TeamContext';
 import { proxyApi } from '../../services/api/proxy';
 import { UsableProxy } from '../../types/proxy';
-import ComboboxComponent from '../shared/ComboboxComponent';
-import { useTeam } from '../../contexts/TeamContext';
 import { capFirst } from '../../utils/formatters';
-import { useSettings } from '../../contexts/SettingsProvider';
-import { useTranslation } from 'react-i18next';
+
+
 export interface SpiderOptions {
   maxDepth: string;
   pageLimit: string;

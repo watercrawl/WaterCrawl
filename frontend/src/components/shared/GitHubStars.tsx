@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
+
 import { useTranslation } from 'react-i18next';
+
 import { StarIcon } from '@heroicons/react/24/outline';
 import { StarIcon as StarSolidIcon } from '@heroicons/react/24/solid';
 import axios from 'axios';

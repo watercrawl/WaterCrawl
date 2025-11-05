@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+
 import { useTranslation } from 'react-i18next';
 
 export type NotificationVariant = 'info' | 'success' | 'warning' | 'error';
