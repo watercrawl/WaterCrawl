@@ -114,7 +114,7 @@ export const CookieConsentModal: React.FC<CookieConsentModalProps & { gtag?: str
           <div className="flex justify-center">
             <button
               onClick={handlePrivacyPolicyNavigation}
-              className="w-full text-center text-sm text-primary hover:text-primary-dark hover:underline"
+              className="w-full text-center text-sm text-primary hover:text-primary-strong hover:underline"
             >
               {t('cookieConsent.modal.privacyPolicyLink')}
             </button>

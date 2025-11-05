@@ -130,17 +130,17 @@ export const ProfileForm: React.FC = () => {
             </div>
 
             <div className="border-t border-border pt-6">
-              <div className="flex items-start gap-x-4 rounded-lg border border-info-dark bg-info-light p-4">
-                <EnvelopeOpenIcon className="mt-1 h-6 w-6 flex-shrink-0 text-info-dark" />
+              <div className="flex items-start gap-x-4 rounded-lg border border-info-strong bg-info-soft p-4">
+                <EnvelopeOpenIcon className="mt-1 h-6 w-6 flex-shrink-0 text-info-strong" />
                 <div className="flex-1">
-                  <h3 className="flex items-center text-sm font-semibold text-info-dark">
+                  <h3 className="flex items-center text-sm font-semibold text-info-strong">
                     {t('profile.newsletter.title')}
                     <InformationCircleIcon
-                      className="ms-2 h-4 w-4 cursor-help text-info-dark/70 hover:text-info-dark"
+                      className="ms-2 h-4 w-4 cursor-help text-info-strong/70 hover:text-info-strong"
                       title={t('profile.newsletter.tooltip')}
                     />
                   </h3>
-                  <p className="mb-3 text-xs text-info-dark/80">
+                  <p className="mb-3 text-xs text-info-strong/80">
                     {t('profile.newsletter.description')}
                   </p>
 

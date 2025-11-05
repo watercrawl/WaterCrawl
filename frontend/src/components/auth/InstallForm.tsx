@@ -193,7 +193,7 @@ export const InstallForm: React.FC = () => {
         <div className="bg-card px-6 py-8 shadow sm:rounded-lg">
           <div className="text-center">
             <div className="mb-4 flex justify-center">
-              <div className="rounded-full bg-success-light p-3">
+              <div className="rounded-full bg-success-soft p-3">
                 <ShieldCheckIcon className="h-8 w-8 text-success" />
               </div>
             </div>
@@ -229,7 +229,7 @@ export const InstallForm: React.FC = () => {
             {/* Admin Account Section */}
             <div className="space-y-6">
               <div className="flex items-center">
-                <UserIcon className="me-2 h-5 w-5 text-primary-500" />
+                <UserIcon className="me-2 h-5 w-5 text-primary" />
                 <h3 className="text-lg font-medium text-foreground">{t('install.adminAccount')}</h3>
               </div>
               <div className="space-y-4 rounded-lg bg-muted p-4">
@@ -354,7 +354,7 @@ export const InstallForm: React.FC = () => {
             {/* Preferences Section */}
             <div className="space-y-6">
               <div className="flex items-center">
-                <ShieldCheckIcon className="me-2 h-5 w-5 text-primary-500" />
+                <ShieldCheckIcon className="me-2 h-5 w-5 text-primary" />
                 <h3 className="text-lg font-medium text-foreground">{t('install.preferences')}</h3>
               </div>
               <div className="space-y-5 rounded-lg bg-muted p-4">
@@ -378,7 +378,7 @@ export const InstallForm: React.FC = () => {
                         href="https://github.com/watercrawl/WaterCrawl/blob/main/LICENSE"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-primary underline hover:text-primary-500"
+                        className="text-primary underline hover:text-primary-strong"
                       >
                         {t('install.license.here')}
                       </a>

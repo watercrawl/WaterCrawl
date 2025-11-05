@@ -189,7 +189,7 @@ const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({ sitemapData, is
                     className="inline-block flex max-w-xs items-center truncate text-primary hover:underline"
                     title={`${queryNode.title || 'No title'}\n${queryNode.url}`}
                   >
-                    <span className="me-2 rounded bg-primary-light px-1.5 py-0.5 text-xs font-medium text-primary-dark">
+                    <span className="me-2 rounded bg-primary-soft px-1.5 py-0.5 text-xs font-medium text-primary-strong">
                       query
                     </span>
                     {queryNode.title || queryNode.url}
@@ -226,7 +226,7 @@ const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({ sitemapData, is
               className="inline-block flex max-w-xs items-center truncate text-primary hover:underline"
               title={`${queryNode.title || 'No title'}\n${queryNode.url}`}
             >
-              <span className="me-2 rounded bg-primary-light px-1.5 py-0.5 text-xs font-medium text-primary-dark">
+              <span className="me-2 rounded bg-primary-soft px-1.5 py-0.5 text-xs font-medium text-primary-strong">
                 query
               </span>
               {queryNode.title || queryNode.url}
@@ -254,7 +254,7 @@ const SitemapGraphViewer: React.FC<SitemapGraphViewerProps> = ({ sitemapData, is
       ) : (
         <button
           onClick={() => setRootExpanded(true)}
-          className="font-medium text-primary hover:text-primary-dark"
+          className="font-medium text-primary hover:text-primary-strong"
         >
           {t('sitemap.showSitemap')}
         </button>

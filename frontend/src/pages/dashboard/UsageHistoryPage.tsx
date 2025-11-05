@@ -89,7 +89,7 @@ const UsageHistoryCard: React.FC<UsageHistoryCardProps> = ({ usage, onContentIdC
             {isContentIdClickable(usage.content_type) ? (
               <button
                 onClick={() => onContentIdClick(usage.content_type, usage.content_id)}
-                className="cursor-pointer text-sm text-primary underline hover:text-primary-dark"
+                className="cursor-pointer text-sm text-primary underline hover:text-primary-strong"
               >
                 {t('usage.contentId')}: {usage.content_id}
               </button>
@@ -432,7 +432,7 @@ const UsageHistoryPage: React.FC = () => {
                                               usage.content_id
                                             ) || '#'
                                           }
-                                          className="block max-w-[200px] cursor-pointer truncate text-start text-primary underline hover:text-primary-dark"
+                                          className="block max-w-[200px] cursor-pointer truncate text-start text-primary underline hover:text-primary-strong"
                                           title={usage.content_id}
                                         >
                                           <EyeIcon className="h-4 w-4" />

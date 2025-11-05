@@ -9,9 +9,11 @@ import { ProviderConfigForm } from './ProviderConfigForm';
 import useIsTabletOrMobile from '../../hooks/useIsTabletOrMobile';
 import { PaginatedResponse } from '../../types/common';
 import Button from '../shared/Button';
+import { useConfirm } from '../../contexts/ConfirmContext';
 
 const ProviderConfigSettings: React.FC = () => {
   const { t } = useTranslation();
+  const { confirm } = useConfirm();
   const [response, setResponse] = useState<PaginatedResponse<ProviderConfig>>({
     count: 0,
     next: null,
@@ -100,19 +102,25 @@ const ProviderConfigSettings: React.FC = () => {
 
   // Function to delete a provider config
   const handleDeleteProviderConfig = async (uuid: string) => {
-    if (window.confirm(t('settings.providerConfig.deleteConfirm'))) {
-      try {
-        setDeletingUuid(uuid);
-        await providerApi.deleteProviderConfig(uuid);
-        toast.success(t('settings.providerConfig.toast.deleteSuccess'));
-        fetchProviderConfigs();
-      } catch (error) {
-        console.error('Error deleting provider config:', error);
-        toast.error(t('settings.providerConfig.toast.deleteError'));
-      } finally {
-        setDeletingUuid(null);
-      }
-    }
+    confirm({
+      title: t('settings.providerConfig.deleteTitle'),
+      message: t('settings.providerConfig.deleteConfirm'),
+      confirmText: t('common.delete'),
+      variant: 'danger',
+      onConfirm: async () => {
+        try {
+          setDeletingUuid(uuid);
+          await providerApi.deleteProviderConfig(uuid);
+          toast.success(t('settings.providerConfig.toast.deleteSuccess'));
+          fetchProviderConfigs();
+        } catch (error) {
+          console.error('Error deleting provider config:', error);
+          toast.error(t('settings.providerConfig.toast.deleteError'));
+        } finally {
+          setDeletingUuid(null);
+        }
+      },
+    });
   };
 
   // Function to open the edit modal

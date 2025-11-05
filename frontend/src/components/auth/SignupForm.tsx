@@ -199,7 +199,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ invitationCode }) => {
             {t('auth.signup.verificationSent')}
           </p>
           <div className="mt-6 text-center">
-            <Link to="/" className="font-medium text-primary hover:text-primary-500">
+            <Link to="/" className="font-medium text-primary hover:text-primary-strong">
               {t('auth.signup.returnToLogin')}
             </Link>
           </div>
@@ -284,7 +284,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ invitationCode }) => {
 
             <div className="flex items-center justify-between">
               <div className="text-sm">
-                <Link to="/" className="font-medium text-primary hover:text-primary-500">
+                <Link to="/" className="font-medium text-primary hover:text-primary-strong">
                   {t('auth.signup.hasAccount')}
                 </Link>
               </div>

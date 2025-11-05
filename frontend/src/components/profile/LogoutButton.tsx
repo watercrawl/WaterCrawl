@@ -14,7 +14,7 @@ export function LogoutButton() {
   return (
     <button
       onClick={handleLogout}
-      className="inline-flex items-center rounded-md border border-transparent bg-error px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-error-dark focus:outline-none focus:ring-2 focus:ring-error focus:ring-offset-2"
+      className="inline-flex items-center rounded-md border border-transparent bg-error px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-error-strong focus:outline-none focus:ring-2 focus:ring-error focus:ring-offset-2"
     >
       {t('profile.logout.button')}
     </button>

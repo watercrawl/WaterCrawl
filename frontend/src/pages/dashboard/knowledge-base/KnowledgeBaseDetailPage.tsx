@@ -224,16 +224,16 @@ const KnowledgeBaseDetailPage: React.FC = () => {
   return (
     <div className="px-4 py-6 sm:px-6 lg:px-8">
       {knowledgeBase?.status === 'archived' && (
-        <div className="mb-4 rounded-md bg-warning-light p-4">
+        <div className="mb-4 rounded-md bg-warning-soft p-4">
           <div className="flex">
             <div className="flex-shrink-0">
               <ExclamationTriangleIcon className="h-5 w-5 text-warning" aria-hidden="true" />
             </div>
             <div className="ms-3">
-              <h3 className="text-sm font-medium text-warning-dark">
+              <h3 className="text-sm font-medium text-warning-strong">
                 {t('settings.knowledgeBase.detail.archivedTitle')}
               </h3>
-              <div className="mt-2 text-sm text-warning-dark">
+              <div className="mt-2 text-sm text-warning-strong">
                 <p>{t('settings.knowledgeBase.detail.archivedMessage')}</p>
               </div>
             </div>
@@ -246,7 +246,7 @@ const KnowledgeBaseDetailPage: React.FC = () => {
             <h1 className="text-xl font-semibold text-foreground">{knowledgeBase?.title}</h1>
             <Link
               to={`/dashboard/knowledge-base/${knowledgeBase?.uuid}/edit`}
-              className="ms-4 text-primary hover:text-primary-dark"
+              className="ms-4 text-primary hover:text-primary-strong"
             >
               <PencilSquareIcon className="h-5 w-5" />
             </Link>
@@ -301,7 +301,7 @@ const KnowledgeBaseDetailPage: React.FC = () => {
             )}
             <button
               onClick={handleDeleteKnowledgeBase}
-              className="inline-flex items-center rounded-md border border-error bg-card px-4 py-2 text-sm font-medium text-error shadow-sm hover:bg-error-light hover:text-error-dark focus:outline-none focus:ring-2 focus:ring-error focus:ring-offset-2"
+              className="inline-flex items-center rounded-md border border-error bg-card px-4 py-2 text-sm font-medium text-error shadow-sm hover:bg-error-soft hover:text-error-strong focus:outline-none focus:ring-2 focus:ring-error focus:ring-offset-2"
             >
               <TrashIcon className="-ms-1 me-2 h-5 w-5" aria-hidden="true" />
               {t('common.delete')}
@@ -388,7 +388,7 @@ const KnowledgeBaseDetailPage: React.FC = () => {
                               href={document.source || '#'}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="block max-w-xs truncate text-primary hover:text-primary-900"
+                              className="block max-w-xs truncate text-primary hover:text-primary-strong"
                             >
                               {document.source || 'N/A'}
                             </a>
@@ -408,7 +408,7 @@ const KnowledgeBaseDetailPage: React.FC = () => {
                                   )}
                                   <button
                                     onClick={() => handleRetryIndexing(document.uuid)}
-                                    className="ms-2 text-primary hover:text-primary-900 disabled:opacity-50"
+                                    className="ms-2 text-primary hover:text-primary-strong disabled:opacity-50"
                                     disabled={isRetrying}
                                     title="Retry indexing"
                                   >
@@ -430,7 +430,7 @@ const KnowledgeBaseDetailPage: React.FC = () => {
                             <div className="flex items-center justify-end gap-x-4">
                               <Link
                                 to={`/dashboard/knowledge-base/${knowledgeBaseId}/documents/${document.uuid}`}
-                                className="text-muted-foreground hover:text-primary-500"
+                                className="text-muted-foreground hover:text-primary"
                                 title="View Chunks"
                               >
                                 <EyeIcon className="h-5 w-5" />

@@ -55,9 +55,9 @@ export default function CrawlResultModal({ isOpen, onClose, result }: CrawlResul
                 className={({ selected }: { selected: boolean }) =>
                   `${
                     selected
-                      ? 'bg-card text-primary-dark shadow'
-                      : 'text-muted-foreground hover:bg-card/[0.12] hover:text-primary-dark'
-                  } w-full rounded-lg px-4 py-2.5 text-sm font-medium leading-5 ring-white/60 ring-opacity-60 ring-offset-2 ring-offset-primary-400 transition-colors focus:outline-none focus:ring-2`
+                      ? 'bg-card text-primary-strong shadow'
+                      : 'text-muted-foreground hover:bg-card/[0.12] hover:text-primary-strong'
+                  } w-full rounded-lg px-4 py-2.5 text-sm font-medium leading-5 ring-white/60 ring-opacity-60 ring-offset-2 ring-offset-primary transition-colors focus:outline-none focus:ring-2`
                 }
               >
                 {t('results.markdown')}
@@ -66,9 +66,9 @@ export default function CrawlResultModal({ isOpen, onClose, result }: CrawlResul
                 className={({ selected }: { selected: boolean }) =>
                   `${
                     selected
-                      ? 'bg-card text-primary-dark shadow'
-                      : 'text-muted-foreground hover:bg-card/[0.12] hover:text-primary-dark'
-                  } w-full rounded-lg px-4 py-2.5 text-sm font-medium leading-5 ring-white/60 ring-opacity-60 ring-offset-2 ring-offset-primary-400 transition-colors focus:outline-none focus:ring-2`
+                      ? 'bg-card text-primary-strong shadow'
+                      : 'text-muted-foreground hover:bg-card/[0.12] hover:text-primary-strong'
+                  } w-full rounded-lg px-4 py-2.5 text-sm font-medium leading-5 ring-white/60 ring-opacity-60 ring-offset-2 ring-offset-primary transition-colors focus:outline-none focus:ring-2`
                 }
               >
                 {t('results.json')}
@@ -78,9 +78,9 @@ export default function CrawlResultModal({ isOpen, onClose, result }: CrawlResul
                   className={({ selected }: { selected: boolean }) =>
                     `${
                       selected
-                        ? 'bg-card text-primary-dark shadow'
-                        : 'text-muted-foreground hover:bg-card/[0.12] hover:text-primary-dark'
-                    } w-full rounded-lg px-4 py-2.5 text-sm font-medium leading-5 ring-white/60 ring-opacity-60 ring-offset-2 ring-offset-primary-400 transition-colors focus:outline-none focus:ring-2`
+                        ? 'bg-card text-primary-strong shadow'
+                        : 'text-muted-foreground hover:bg-card/[0.12] hover:text-primary-strong'
+                    } w-full rounded-lg px-4 py-2.5 text-sm font-medium leading-5 ring-white/60 ring-opacity-60 ring-offset-2 ring-offset-primary transition-colors focus:outline-none focus:ring-2`
                   }
                 >
                   {t('results.attachments')} ({result.attachments.length})
@@ -127,7 +127,7 @@ export default function CrawlResultModal({ isOpen, onClose, result }: CrawlResul
                             href={attachment.attachment}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-x-2 text-sm text-primary transition-colors hover:text-primary-dark"
+                            className="inline-flex items-center gap-x-2 text-sm text-primary transition-colors hover:text-primary-strong"
                           >
                             <ArrowDownTrayIcon className="h-4 w-4" />
                             <span>{t('common.download')}</span>

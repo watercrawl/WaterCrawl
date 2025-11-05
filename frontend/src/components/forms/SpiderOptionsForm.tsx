@@ -395,7 +395,7 @@ export const SpiderOptionsForm: React.FC<SpiderOptionsFormProps> = ({
                   <span>{t('crawl.spiderOptions.needProxy')}</span>
                   <Link
                     to="/dashboard/settings#proxy"
-                    className="inline-flex items-center text-primary hover:text-primary-dark"
+                    className="inline-flex items-center text-primary hover:text-primary-strong"
                   >
                     {t('crawl.spiderOptions.manageProxies')}
                     <ArrowTopRightOnSquareIcon className="ms-1 h-3 w-3" />

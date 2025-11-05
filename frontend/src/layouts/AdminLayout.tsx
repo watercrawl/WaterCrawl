@@ -42,8 +42,8 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({ isMobile = false, close
             className={({ isActive }) =>
               `group flex gap-x-3 rounded-md p-2 text-sm font-medium leading-6 ${
                 isActive
-                  ? 'bg-primary-dark/50 text-sidebar-active-text'
-                  : 'text-sidebar-text/80 hover:bg-primary-dark/30 hover:text-sidebar-active-text'
+                  ? 'bg-primary-strong/50 text-sidebar-active-text'
+                  : 'text-sidebar-text/80 hover:bg-primary-strong/30 hover:text-sidebar-active-text'
               }`
             }
           >

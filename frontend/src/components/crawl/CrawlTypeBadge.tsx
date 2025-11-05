@@ -7,8 +7,8 @@ interface CrawlTypeBadgeProps {
 }
 
 const CRAWL_TYPE_COLORS: Record<CrawlType, string> = {
-  single: 'bg-info-light text-info-dark border-info',
-  batch: 'bg-info-light text-info-dark border-info',
+  single: 'bg-info-soft text-info-strong border-info',
+  batch: 'bg-info-soft text-info-strong border-info',
 };
 
 const getCrawlTypeColor = (type: CrawlType): string => {

@@ -5,9 +5,9 @@ export type NotificationVariant = 'info' | 'success' | 'warning' | 'error';
 
 const variantStyles: Record<NotificationVariant, { bg: string; hover: string }> = {
   info: { bg: 'bg-primary-hover', hover: 'hover:bg-primary-hover' },
-  success: { bg: 'bg-success', hover: 'hover:bg-success-dark' },
-  warning: { bg: 'bg-warning', hover: 'hover:bg-warning-dark' },
-  error: { bg: 'bg-error', hover: 'hover:bg-error-dark' },
+  success: { bg: 'bg-success', hover: 'hover:bg-success-strong' },
+  warning: { bg: 'bg-warning', hover: 'hover:bg-warning-strong' },
+  error: { bg: 'bg-error', hover: 'hover:bg-error-strong' },
 };
 
 interface NotificationBannerProps {

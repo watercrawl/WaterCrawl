@@ -436,7 +436,7 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({
               <>
                 <textarea
                   placeholder={t('crawl.form.batchPlaceholder')}
-                  className="ltr w-full rounded-md border border-border bg-transparent px-3 text-foreground focus:border-border focus:outline-none disabled:bg-muted"
+                  className="ltr w-full rounded-md shadow-sm border border-input-border bg-input text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary px-3 py-2 disabled:bg-muted"
                   rows={5}
                   value={urls.join('\n')}
                   onChange={e => handleBatchUrlsChange(e.target.value)}
@@ -466,7 +466,7 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({
               <button
                 type="button"
                 onClick={handleCancel}
-                className="w-full rounded-lg bg-error px-6 py-2.5 text-sm font-medium text-error-foreground transition-colors hover:bg-error-light hover:text-error-dark focus:outline-none focus:ring-error focus:ring-offset-2 md:w-auto"
+                className="w-full rounded-lg bg-error px-6 py-2.5 text-sm font-medium text-error-foreground transition-colors hover:bg-error-soft hover:text-error-strong focus:outline-none focus:ring-error focus:ring-offset-2 md:w-auto"
               >
                 {t('crawl.form.cancelCrawl')}
               </button>

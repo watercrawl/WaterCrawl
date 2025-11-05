@@ -200,7 +200,7 @@ const SelectCrawlPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => handleCrawlSelect(crawl.uuid)}
-                      className="flex items-center text-primary hover:text-primary-900"
+                      className="flex items-center text-primary hover:text-primary-strong"
                     >
                       {t('settings.knowledgeBase.selectCrawl.select')}
                       <ChevronRight className="ms-1 h-4 w-4" />

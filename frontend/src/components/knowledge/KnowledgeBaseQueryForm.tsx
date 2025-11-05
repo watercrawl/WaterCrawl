@@ -166,7 +166,7 @@ const KnowledgeBaseQueryForm: React.FC<KnowledgeBaseQueryFormProps> = ({ knowled
                         message: t('settings.knowledgeBase.query.options.topKMax'),
                       },
                     })}
-                    className="mt-1 block w-full rounded-md border-input-border shadow-sm focus:border-primary focus:ring-primary sm:w-1/4 sm:text-sm"
+                    className="mt-1 block w-full rounded-md shadow-sm border bg-input text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary border-input-border sm:w-1/4 sm:text-sm"
                   />
                   {errors.top_k && (
                     <p className="mt-2 text-sm text-error">{errors.top_k.message}</p>

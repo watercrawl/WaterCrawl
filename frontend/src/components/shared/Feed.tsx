@@ -119,12 +119,12 @@ const Feed: React.FC<FeedProps> = ({
       key={message.id}
       className={`flex items-start rounded border-s-2 px-2 py-1 text-xs ${
         message.type === 'error'
-          ? 'border-error bg-error-light text-error'
+          ? 'border-error bg-error-soft text-error'
           : message.type === 'success'
-            ? 'border-success bg-success-light text-success-dark'
+            ? 'border-success bg-success-soft text-success-strong'
             : message.type === 'warning'
-              ? 'border-warning bg-warning-light text-warning-dark'
-              : 'border-primary bg-primary-light text-foreground'
+              ? 'border-warning bg-warning-soft text-warning-strong'
+              : 'border-primary bg-primary-soft text-foreground'
       }`}
     >
       <div className="me-2 mt-0.5 flex-shrink-0">{getIcon(message.type)}</div>
@@ -165,7 +165,7 @@ const Feed: React.FC<FeedProps> = ({
             e.stopPropagation();
             setExpanded(!expanded);
           }}
-          className="rounded px-2 py-0.5 text-xs font-medium text-primary transition-colors hover:bg-muted hover:text-primary-800 focus:outline-none"
+          className="rounded px-2 py-0.5 text-xs font-medium text-primary transition-colors hover:bg-muted hover:text-primary-strong focus:outline-none"
         >
           {expanded ? t('feed.showLatest') : t('feed.showTrace')}
         </button>

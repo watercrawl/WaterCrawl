@@ -117,7 +117,7 @@ export const LoginForm: React.FC = () => {
                 <div className="text-sm">
                   <Link
                     to="/forgot-password"
-                    className="font-medium text-primary hover:text-primary-500"
+                    className="font-medium text-primary hover:text-primary-strong"
                   >
                     {t('auth.login.forgotPassword')}
                   </Link>
@@ -126,7 +126,7 @@ export const LoginForm: React.FC = () => {
                   <div className="text-sm">
                     <Link
                       to="/register"
-                      className="font-medium text-primary hover:text-primary-500"
+                      className="font-medium text-primary hover:text-primary-strong"
                     >
                       {t('auth.signup.signupButton')}
                     </Link>

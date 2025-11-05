@@ -6,7 +6,7 @@ export const ValidationMessage: React.FC<ValidationMessageProps> = ({ message, t
   const isError = type === 'error';
   const Icon = isError ? XCircleIcon : CheckCircleIcon;
   const baseClasses = 'rounded-md p-4 flex items-center gap-x-2';
-  const colorClasses = isError ? 'bg-error-light text-error-dark' : 'bg-success-light text-success-dark';
+  const colorClasses = isError ? 'bg-error-soft text-error-strong' : 'bg-success-soft text-success-strong';
 
   return (
     <div className={`${baseClasses} ${colorClasses}`}>

@@ -146,7 +146,7 @@ console.log('Sitemap request created:', sitemapRequest.uuid);`;
                 className={({ selected }) =>
                   classnames({
                     'px-4 py-2.5 text-sm font-medium leading-5 focus:outline-none': true,
-                    'border-b-2 border-primary-600 text-primary': selected,
+                    'border-b-2 border-primary-strong text-primary': selected,
                     'text-muted-foreground hover:text-foreground': !selected,
                   })
                 }

@@ -63,7 +63,7 @@ export const PlansModal: React.FC<PlansModalProps> = ({
         <div className="pb-6">
           {isLoading ? (
             <div className="flex items-center justify-center py-12">
-              <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-primary-600"></div>
+              <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-primary-strong"></div>
               <span className="ms-3 text-muted-foreground">{t('plans.loadingPlans')}</span>
             </div>
           ) : (

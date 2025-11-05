@@ -62,7 +62,7 @@ const KnowledgeBasePage: React.FC = () => {
             <div>
               <h1 className="text-xl font-semibold text-foreground">
                 {t('settings.knowledgeBase.title')}
-                <small className="ms-2 inline-flex items-center rounded-full border border-info bg-info-light px-2.5 py-0.5 text-xs font-medium text-info-dark">
+                <small className="ms-2 inline-flex items-center rounded-full border border-info bg-info-soft px-2.5 py-0.5 text-xs font-medium text-info-strong">
                   {t('settings.knowledgeBase.beta')}
                 </small>
               </h1>
@@ -104,16 +104,16 @@ const KnowledgeBasePage: React.FC = () => {
       </div>
 
       {/* Beta Notice Box */}
-      <div className="mt-6 rounded-md border border-warning-dark bg-warning-light p-4">
+      <div className="mt-6 rounded-md border border-warning-strong bg-warning-soft p-4">
         <div className="flex">
           <div className="flex-shrink-0">
-            <ExclamationTriangleIcon className="h-5 w-5 text-warning-dark" aria-hidden="true" />
+            <ExclamationTriangleIcon className="h-5 w-5 text-warning-strong" aria-hidden="true" />
           </div>
           <div className="ms-3">
-            <h3 className="text-sm font-medium text-warning-dark">
+            <h3 className="text-sm font-medium text-warning-strong">
               {t('settings.knowledgeBase.betaNotice.title')}
             </h3>
-            <div className="mt-2 text-sm text-warning-dark">
+            <div className="mt-2 text-sm text-warning-strong">
               <p>{t('settings.knowledgeBase.betaNotice.description')}</p>
               <p className="mt-2">{t('settings.knowledgeBase.betaNotice.feedback')}</p>
             </div>
@@ -228,14 +228,14 @@ const KnowledgeBasePage: React.FC = () => {
                     <div className="flex items-center justify-end gap-x-4">
                       <Link
                         to={`/dashboard/knowledge-base/${kb.uuid}`}
-                        className="text-muted-foreground hover:text-primary-500"
+                        className="text-muted-foreground hover:text-primary"
                         title={t('settings.knowledgeBase.table.viewChunks')}
                       >
                         <EyeIcon className="h-5 w-5" />
                       </Link>
                       <Link
                         to={`/dashboard/knowledge-base/${kb.uuid}/edit`}
-                        className="text-muted-foreground hover:text-primary-500"
+                        className="text-muted-foreground hover:text-primary"
                       >
                         <PencilIcon className="h-5 w-5" />
                       </Link>

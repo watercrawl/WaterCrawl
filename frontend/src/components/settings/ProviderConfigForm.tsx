@@ -307,7 +307,7 @@ export const ProviderConfigForm: React.FC<ProviderConfigFormProps> = ({
                       : t('settings.providerConfig.form.apiKeyPlaceholder')
                   }
                   className={classnames({
-                    'mt-1 block w-full rounded-md border bg-input text-foreground shadow-sm sm:text-sm': true,
+                    'mt-1 block w-full rounded-md shadow-sm border bg-input text-foreground placeholder:text-muted-foreground sm:text-sm': true,
                     'border-error placeholder:text-error/50 focus:border-error focus:ring-1 focus:ring-error':
                       !!errors.api_key,
                     'border-input-border focus:border-primary focus:ring-1 focus:ring-primary':

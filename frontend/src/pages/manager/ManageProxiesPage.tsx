@@ -10,9 +10,11 @@ import useIsTabletOrMobile from '../../hooks/useIsTabletOrMobile';
 import { PaginatedResponse } from '../../types/common';
 import Button from '../../components/shared/Button';
 import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
+import { useConfirm } from '../../contexts/ConfirmContext';
 
 const ManageProxiesPage: React.FC = () => {
   const { t } = useTranslation();
+  const { confirm } = useConfirm();
   const [response, setResponse] = useState<PaginatedResponse<Proxy>>({
     count: 0,
     next: null,
@@ -92,19 +94,25 @@ const ManageProxiesPage: React.FC = () => {
 
   // Function to delete a proxy
   const handleDeleteProxy = async (slug: string) => {
-    if (window.confirm(t('settings.proxy.deleteConfirm'))) {
-      try {
-        setDeletingSlug(slug);
-        await proxyApi.delete(slug);
-        toast.success(t('settings.proxy.toast.deleteSuccess'));
-        fetchProxies();
-      } catch (error) {
-        console.error('Error deleting proxy:', error);
-        toast.error(t('settings.proxy.toast.deleteError'));
-      } finally {
-        setDeletingSlug(null);
-      }
-    }
+    confirm({
+      title: t('settings.proxy.deleteTitle'),
+      message: t('settings.proxy.deleteConfirm'),
+      confirmText: t('common.delete'),
+      variant: 'danger',
+      onConfirm: async () => {
+        try {
+          setDeletingSlug(slug);
+          await proxyApi.delete(slug);
+          toast.success(t('settings.proxy.toast.deleteSuccess'));
+          fetchProxies();
+        } catch (error) {
+          console.error('Error deleting proxy:', error);
+          toast.error(t('settings.proxy.toast.deleteError'));
+        } finally {
+          setDeletingSlug(null);
+        }
+      },
+    });
   };
 
   // Function to open the edit modal

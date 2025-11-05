@@ -356,7 +356,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                             type="text"
                             id="title"
                             {...register('title')}
-                            className={`block w-full rounded-md border-input-border bg-input shadow-sm focus:border-primary focus:ring-primary sm:text-sm ${errors.title ? 'border-error' : ''}`}
+                            className={`block w-full rounded-md shadow-sm border bg-input text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary sm:text-sm ${errors.title ? 'border-error focus:border-error focus:ring-error' : 'border-input-border'}`}
                             placeholder={t('settings.knowledgeBase.form.basicInfo.namePlaceholder')}
                           />
                           {errors.title && (
@@ -377,7 +377,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                             id="description"
                             rows={3}
                             {...register('description')}
-                            className={`block w-full rounded-md border-input-border bg-input shadow-sm focus:border-primary focus:ring-primary sm:text-sm ${errors.description ? 'border-error' : ''}`}
+                            className={`block w-full rounded-md shadow-sm border bg-input text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary px-3 py-2 sm:text-sm ${errors.description ? 'border-error focus:border-error focus:ring-error' : 'border-input-border'}`}
                             placeholder={t(
                               'settings.knowledgeBase.form.basicInfo.descriptionPlaceholder'
                             )}
@@ -397,8 +397,8 @@ const KnowledgeBaseNewPage: React.FC = () => {
                     {t('settings.knowledgeBase.form.embedding.title')}
                   </Card.Title>
                   <Card.Body>
-                    <div className="mb-4 rounded border-s-4 border-info-dark bg-info-light p-3">
-                      <p className="text-sm text-info-dark">
+                    <div className="mb-4 rounded border-s-4 border-info-strong bg-info-soft p-3">
+                      <p className="text-sm text-info-strong">
                         {t('settings.knowledgeBase.form.embedding.description')}
                       </p>
                     </div>
@@ -420,7 +420,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                             text: t('settings.knowledgeBase.form.embedding.recommended'),
                             color: 'primary',
                           }}
-                          iconBgColor="bg-success-light"
+                          iconBgColor="bg-success-soft"
                           iconDarkBgColor=""
                         />{' '}
                         <OptionCard
@@ -537,8 +537,8 @@ const KnowledgeBaseNewPage: React.FC = () => {
                     {t('settings.knowledgeBase.form.chunking.title')}
                   </Card.Title>
                   <Card.Body>
-                    <div className="mb-4 rounded border-s-4 border-info-dark bg-info-light p-3">
-                      <p className="text-sm text-info-dark">
+                    <div className="mb-4 rounded border-s-4 border-info-strong bg-info-soft p-3">
+                      <p className="text-sm text-info-strong">
                         {t('settings.knowledgeBase.form.chunking.description')}
                       </p>
                     </div>
@@ -558,7 +558,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                             min="1"
                             step="1"
                             {...register('chunk_size', { valueAsNumber: true })}
-                            className={`block w-full rounded-md border-input-border bg-input shadow-sm focus:border-primary focus:ring-primary sm:text-sm ${errors.chunk_size ? 'border-error' : ''}`}
+                            className={`block w-full rounded-md shadow-sm border bg-input text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary sm:text-sm ${errors.chunk_size ? 'border-error focus:border-error focus:ring-error' : 'border-input-border'}`}
                           />
                           {errors.chunk_size && (
                             <p className="mt-1 text-sm text-error">{errors.chunk_size.message}</p>
@@ -608,7 +608,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                           step="1"
                           disabled={watchAutoChunkOverlap}
                           {...register('chunk_overlap', { valueAsNumber: true })}
-                          className={`block w-full rounded-md border-input-border shadow-sm focus:border-primary focus:ring-primary sm:text-sm ${watchAutoChunkOverlap ? 'bg-muted' : 'bg-input'} ${errors.chunk_overlap ? 'border-error' : ''}`}
+                          className={`block w-full rounded-md shadow-sm border text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary sm:text-sm ${watchAutoChunkOverlap ? 'bg-muted cursor-not-allowed' : 'bg-input'} ${errors.chunk_overlap ? 'border-error focus:border-error focus:ring-error' : 'border-input-border'}`}
                         />
                         {errors.chunk_overlap && (
                           <p className="mt-1 text-sm text-error">{errors.chunk_overlap.message}</p>
@@ -629,7 +629,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                       id="chunk_separator"
                       placeholder="Enter separator"
                       {...register('chunk_separator')}
-                      className={`block w-full rounded-md border-input-border bg-input shadow-sm focus:border-primary focus:ring-primary sm:text-sm ${errors.chunk_separator ? 'border-error' : ''}`}
+                      className={`block w-full rounded-md shadow-sm border bg-input text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary sm:text-sm ${errors.chunk_separator ? 'border-error focus:border-error focus:ring-error' : 'border-input-border'}`}
                     />
                     {errors.chunk_separator && (
                       <p className="mt-1 text-sm text-error">{errors.chunk_separator.message}</p>
@@ -650,8 +650,8 @@ const KnowledgeBaseNewPage: React.FC = () => {
                     {t('settings.knowledgeBase.form.summarization.title')}
                   </Card.Title>
                   <Card.Body>
-                    <div className="mb-4 rounded border-s-4 border-info-dark bg-info-light p-3">
-                      <p className="text-sm text-info-dark">
+                    <div className="mb-4 rounded border-s-4 border-info-strong bg-info-soft p-3">
+                      <p className="text-sm text-info-strong">
                         {t('settings.knowledgeBase.form.summarization.description')}
                       </p>
                     </div>
@@ -673,7 +673,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                             text: t('settings.knowledgeBase.form.embedding.recommended'),
                             color: 'primary',
                           }}
-                          iconBgColor="bg-warning-light"
+                          iconBgColor="bg-warning-soft"
                           iconDarkBgColor=""
                         />{' '}
                         <OptionCard
@@ -892,7 +892,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                                     id="summarizer_context"
                                     {...register('summarizer_context')}
                                     rows={4}
-                                    className={`block w-full rounded-md border-input-border bg-input shadow-sm focus:border-primary focus:ring-primary sm:text-sm ${errors.summarizer_context ? 'border-error' : ''}`}
+                                    className={`block w-full rounded-md shadow-sm border bg-input text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary px-3 py-2 sm:text-sm ${errors.summarizer_context ? 'border-error focus:border-error focus:ring-error' : 'border-input-border'}`}
                                     placeholder={t(
                                       'settings.knowledgeBase.form.summarization.contextPlaceholder'
                                     )}

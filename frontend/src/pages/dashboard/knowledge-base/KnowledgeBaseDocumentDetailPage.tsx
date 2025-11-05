@@ -24,9 +24,11 @@ import {
 import Modal from '../../../components/shared/Modal';
 import MarkdownRenderer from '../../../components/shared/MarkdownRenderer';
 import { useTranslation } from 'react-i18next';
+import { useConfirm } from '../../../contexts/ConfirmContext';
 
 const KnowledgeBaseDocumentDetailPage: React.FC = () => {
   const { t } = useTranslation();
+  const { confirm } = useConfirm();
   const { knowledgeBaseId, documentId } = useParams<{
     knowledgeBaseId: string;
     documentId: string;
@@ -130,22 +132,28 @@ const KnowledgeBaseDocumentDetailPage: React.FC = () => {
   const handleDeleteDocument = async () => {
     if (!knowledgeBaseId || !documentId) return;
 
-    if (window.confirm(t('settings.knowledgeBase.documentDetail.deleteConfirm'))) {
-      setIsDeleting(true);
-      toast.loading(t('settings.knowledgeBase.documentDetail.deleting'));
-      try {
-        await knowledgeBaseApi.deleteDocument(knowledgeBaseId, documentId);
-        toast.dismiss();
-        toast.success(t('settings.knowledgeBase.documentDetail.deleteSuccess'));
-        navigate(`/dashboard/knowledge-base/${knowledgeBaseId}`);
-      } catch (error) {
-        toast.dismiss();
-        console.error('Failed to delete document:', error);
-        toast.error(t('settings.knowledgeBase.documentDetail.deleteError'));
-      } finally {
-        setIsDeleting(false);
-      }
-    }
+    confirm({
+      title: t('settings.knowledgeBase.documentDetail.deleteTitle'),
+      message: t('settings.knowledgeBase.documentDetail.deleteConfirm'),
+      confirmText: t('common.delete'),
+      variant: 'danger',
+      onConfirm: async () => {
+        setIsDeleting(true);
+        toast.loading(t('settings.knowledgeBase.documentDetail.deleting'));
+        try {
+          await knowledgeBaseApi.deleteDocument(knowledgeBaseId, documentId);
+          toast.dismiss();
+          toast.success(t('settings.knowledgeBase.documentDetail.deleteSuccess'));
+          navigate(`/dashboard/knowledge-base/${knowledgeBaseId}`);
+        } catch (error) {
+          toast.dismiss();
+          console.error('Failed to delete document:', error);
+          toast.error(t('settings.knowledgeBase.documentDetail.deleteError'));
+        } finally {
+          setIsDeleting(false);
+        }
+      },
+    });
   };
 
   const handleCopy = (content: string) => {
@@ -274,7 +282,7 @@ const KnowledgeBaseDocumentDetailPage: React.FC = () => {
                             </button>
                             <button
                               onClick={() => handleCopy(chunk.content)}
-                              className="text-muted-foreground hover:text-primary-500"
+                              className="text-muted-foreground hover:text-primary"
                               title={t('settings.knowledgeBase.documentDetail.copyContent')}
                             >
                               <ClipboardDocumentIcon className="h-5 w-5" />

@@ -325,9 +325,9 @@ export const MCPServerAccess: React.FC = () => {
       </div>
 
       {apiKeys.length === 0 ? (
-        <div className="rounded-lg border border-warning bg-warning-light py-8 text-center">
+        <div className="rounded-lg border border-warning bg-warning-soft py-8 text-center">
           <ExclamationTriangleIcon className="mx-auto mb-3 h-12 w-12 text-warning" />
-          <p className="mb-2 text-warning-dark">{t('dashboard.mcp.noKeys')}</p>
+          <p className="mb-2 text-warning-strong">{t('dashboard.mcp.noKeys')}</p>
           <p className="text-sm text-warning">{t('dashboard.mcp.noKeysMessage')}</p>
         </div>
       ) : (
@@ -357,7 +357,7 @@ export const MCPServerAccess: React.FC = () => {
                 onClick={() => setActiveTab('apikeys')}
                 className={`border-b-2 px-1 py-2 text-sm font-medium transition-colors ${
                   activeTab === 'apikeys'
-                    ? 'border-primary-500 text-primary'
+                    ? 'border-primary text-primary'
                     : 'border-transparent text-muted-foreground hover:border-input-border hover:text-foreground'
                 }`}
               >
@@ -370,7 +370,7 @@ export const MCPServerAccess: React.FC = () => {
                 onClick={() => setActiveTab('mcp')}
                 className={`border-b-2 px-1 py-2 text-sm font-medium transition-colors ${
                   activeTab === 'mcp'
-                    ? 'border-primary-500 text-primary'
+                    ? 'border-primary text-primary'
                     : 'border-transparent text-muted-foreground hover:border-input-border hover:text-foreground'
                 }`}
               >
@@ -458,7 +458,7 @@ export const MCPServerAccess: React.FC = () => {
                     <div className="mt-6 border-t border-border pt-6">
                       <a
                         href="/dashboard/api-keys"
-                        className="inline-flex items-center text-sm font-medium text-primary transition-colors hover:text-primary-dark"
+                        className="inline-flex items-center text-sm font-medium text-primary transition-colors hover:text-primary-strong"
                       >
                         <span>{t('dashboard.mcp.manageKeys')}</span>
                         <ArrowRight className="ms-1 h-4 w-4" />
@@ -480,8 +480,8 @@ export const MCPServerAccess: React.FC = () => {
                         onClick={() => setSelectedApp(app.id as any)}
                         className={`inline-flex items-center gap-x-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
                           selectedApp === app.id
-                            ? 'border border-primary bg-primary-light text-primary-dark'
-                            : 'border border-border bg-primary-light/10 text-foreground hover:bg-primary-light/20'
+                            ? 'border border-primary bg-primary-soft text-primary-strong'
+                            : 'border border-border bg-primary-soft/10 text-foreground hover:bg-primary-soft/20'
                         }`}
                       >
                         {typeof app.icon === 'string' ? (

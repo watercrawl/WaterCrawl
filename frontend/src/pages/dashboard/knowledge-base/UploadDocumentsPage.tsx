@@ -125,7 +125,7 @@ const UploadDocumentsPage: React.FC = () => {
 
       <div className="rounded-lg bg-card p-6 shadow">
         <div
-          className={`rounded-lg border-2 border-dashed p-8 text-center transition-colors duration-200 ${isDragging ? 'border-primary-500 bg-primary-50' : 'border-input-border'} ${isLoading ? 'cursor-not-allowed bg-muted' : ''}`}
+          className={`rounded-lg border-2 border-dashed p-8 text-center transition-colors duration-200 ${isDragging ? 'border-primary bg-primary-soft' : 'border-input-border'} ${isLoading ? 'cursor-not-allowed bg-muted' : ''}`}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
@@ -147,7 +147,7 @@ const UploadDocumentsPage: React.FC = () => {
             type="button"
             onClick={handleBrowseClick}
             disabled={isLoading}
-            className="mt-2 text-sm font-medium text-primary hover:text-primary-500 disabled:cursor-not-allowed disabled:text-muted-foreground"
+            className="mt-2 text-sm font-medium text-primary hover:text-primary-strong disabled:cursor-not-allowed disabled:text-muted-foreground"
           >
             {t('settings.knowledgeBase.uploadDocuments.browse')}
           </button>

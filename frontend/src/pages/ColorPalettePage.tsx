@@ -32,10 +32,10 @@ const colorGroups = [
       { name: 'Primary Hover', className: 'bg-primary-hover', description: 'Primary hover state' },
       {
         name: 'Primary Light',
-        className: 'bg-primary-light',
+        className: 'bg-primary-soft',
         description: 'Primary light variant',
       },
-      { name: 'Primary Dark', className: 'text-primary-dark', description: 'Primary dark variant' },
+      { name: 'Primary Dark', className: 'text-primary-strong', description: 'Primary dark variant' },
     ],
   },
   {
@@ -54,12 +54,12 @@ const colorGroups = [
       },
       {
         name: 'Secondary Light',
-        className: 'bg-secondary-light',
+        className: 'bg-secondary-soft',
         description: 'Secondary light variant',
       },
       {
         name: 'Secondary Dark',
-        className: 'text-secondary-dark',
+        className: 'text-secondary-strong',
         description: 'Secondary dark variant',
       },
     ],
@@ -80,12 +80,12 @@ const colorGroups = [
       },
       {
         name: 'Tertiary Light',
-        className: 'bg-tertiary-light',
+        className: 'bg-tertiary-soft',
         description: 'Tertiary light variant',
       },
       {
         name: 'Tertiary Dark',
-        className: 'text-tertiary-dark',
+        className: 'text-tertiary-strong',
         description: 'Tertiary dark variant',
       },
     ],
@@ -101,10 +101,10 @@ const colorGroups = [
       },
       {
         name: 'Success Light',
-        className: 'bg-success-light',
+        className: 'bg-success-soft',
         description: 'Success light variant',
       },
-      { name: 'Success Dark', className: 'text-success-dark', description: 'Success dark variant' },
+      { name: 'Success Dark', className: 'text-success-strong', description: 'Success dark variant' },
     ],
   },
   {
@@ -116,8 +116,8 @@ const colorGroups = [
         className: 'text-error-foreground',
         description: 'Text on error',
       },
-      { name: 'Error Light', className: 'bg-error-light', description: 'Error light variant' },
-      { name: 'Error Dark', className: 'text-error-dark', description: 'Error dark variant' },
+      { name: 'Error Light', className: 'bg-error-soft', description: 'Error light variant' },
+      { name: 'Error Dark', className: 'text-error-strong', description: 'Error dark variant' },
     ],
   },
   {
@@ -131,10 +131,10 @@ const colorGroups = [
       },
       {
         name: 'Warning Light',
-        className: 'bg-warning-light',
+        className: 'bg-warning-soft',
         description: 'Warning light variant',
       },
-      { name: 'Warning Dark', className: 'text-warning-dark', description: 'Warning dark variant' },
+      { name: 'Warning Dark', className: 'text-warning-strong', description: 'Warning dark variant' },
     ],
   },
   {
@@ -142,8 +142,8 @@ const colorGroups = [
     colors: [
       { name: 'Info', className: 'bg-info', description: 'Info state' },
       { name: 'Info Foreground', className: 'text-info-foreground', description: 'Text on info' },
-      { name: 'Info Light', className: 'bg-info-light', description: 'Info light variant' },
-      { name: 'Info Dark', className: 'text-info-dark', description: 'Info dark variant' },
+      { name: 'Info Light', className: 'bg-info-soft', description: 'Info light variant' },
+      { name: 'Info Dark', className: 'text-info-strong', description: 'Info dark variant' },
     ],
   },
   {

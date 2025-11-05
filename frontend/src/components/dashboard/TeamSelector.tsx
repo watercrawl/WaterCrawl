@@ -14,6 +14,7 @@ import { ChevronDownIcon, PlusIcon } from '@heroicons/react/20/solid';
 import { classnames } from '../../lib/utils';
 import { useTeam } from '../../contexts/TeamContext';
 import { useTranslation } from 'react-i18next';
+import { Input } from '../shared/Input';
 
 export const TeamSelector: React.FC = () => {
   const { t } = useTranslation();
@@ -120,12 +121,11 @@ export const TeamSelector: React.FC = () => {
                     {t('team.createNewTeam')}
                   </DialogTitle>
                   <div className="mt-4">
-                    <input
+                    <Input
                       type="text"
                       value={newTeamName}
                       onChange={e => setNewTeamName(e.target.value)}
                       placeholder={t('team.teamNamePlaceholder')}
-                      className="block w-full rounded-md border-0 py-1.5 text-foreground bg-card shadow-sm ring-1 ring-inset ring-border placeholder:text-muted-foreground focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
                     />
                   </div>
 

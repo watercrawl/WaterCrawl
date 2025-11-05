@@ -201,10 +201,10 @@ const SitemapModal: React.FC<SitemapModalProps> = ({ isOpen, onClose, request })
                         className={({ selected }: { selected: boolean }) =>
                           classNames(
                             'w-full rounded-lg py-2.5 text-sm font-medium leading-5 transition-colors',
-                            'ring-white/60 ring-opacity-60 ring-offset-2 ring-offset-primary-400 focus:outline-none focus:ring-2',
+                            'ring-white/60 ring-opacity-60 ring-offset-2 ring-offset-primary focus:outline-none focus:ring-2',
                             selected
-                              ? 'bg-card text-primary-dark shadow'
-                              : 'text-muted-foreground hover:bg-card/[0.12] hover:text-primary-dark'
+                              ? 'bg-card text-primary-strong shadow'
+                              : 'text-muted-foreground hover:bg-card/[0.12] hover:text-primary-strong'
                           )
                         }
                       >
@@ -214,10 +214,10 @@ const SitemapModal: React.FC<SitemapModalProps> = ({ isOpen, onClose, request })
                         className={({ selected }: { selected: boolean }) =>
                           classNames(
                             'w-full rounded-lg py-2.5 text-sm font-medium leading-5 transition-colors',
-                            'ring-white/60 ring-opacity-60 ring-offset-2 ring-offset-primary-400 focus:outline-none focus:ring-2',
+                            'ring-white/60 ring-opacity-60 ring-offset-2 ring-offset-primary focus:outline-none focus:ring-2',
                             selected
-                              ? 'bg-card text-primary-dark shadow'
-                              : 'text-muted-foreground hover:bg-card/[0.12] hover:text-primary-dark'
+                              ? 'bg-card text-primary-strong shadow'
+                              : 'text-muted-foreground hover:bg-card/[0.12] hover:text-primary-strong'
                           )
                         }
                       >
