@@ -1,16 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useSearchParams, useNavigate, Link } from 'react-router-dom';
+
+import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import { PaginatedResponse } from '../../types/common';
-import { UsageHistory, ContentType } from '../../types/usage_history';
-import { usageHistoryApi } from '../../services/api/usage_history';
-import { apiKeysApi } from '../../services/api/apiKeys';
-import { ApiKey } from '../../types/apiKeys';
-import { useIsTabletOrMobile } from '../../hooks/useMediaQuery';
-import { Pagination } from '../../components/shared/Pagination';
-import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
-import { useDateLocale } from '../../hooks/useDateLocale';
-import { formatDistanceToNowLocalized } from '../../utils/dateUtils';
+import { useSearchParams, useNavigate, Link } from 'react-router-dom';
+
 import {
   DocumentTextIcon,
   MagnifyingGlassIcon,
@@ -18,9 +11,19 @@ import {
   BookOpenIcon,
   EyeIcon,
 } from '@heroicons/react/24/outline';
+
 import SpiderIcon from '../../components/icons/SpiderIcon';
-import toast from 'react-hot-toast';
+import { Pagination } from '../../components/shared/Pagination';
+import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
 import { useSettings } from '../../contexts/SettingsProvider';
+import { useDateLocale } from '../../hooks/useDateLocale';
+import { useIsTabletOrMobile } from '../../hooks/useMediaQuery';
+import { apiKeysApi } from '../../services/api/apiKeys';
+import { usageHistoryApi } from '../../services/api/usage_history';
+import { ApiKey } from '../../types/apiKeys';
+import { PaginatedResponse } from '../../types/common';
+import { UsageHistory, ContentType } from '../../types/usage_history';
+import { formatDistanceToNowLocalized } from '../../utils/dateUtils';
 
 // Content type options for filtering - will use t() inside component
 const CONTENT_TYPE_OPTIONS = [

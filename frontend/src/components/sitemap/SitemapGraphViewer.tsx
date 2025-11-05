@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+
 import { useTranslation } from 'react-i18next';
+
 import { SitemapGraph, SitemapNode } from '../../types/crawl';
 
 interface SitemapGraphViewerProps {

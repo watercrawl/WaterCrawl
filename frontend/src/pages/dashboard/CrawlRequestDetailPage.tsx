@@ -1,24 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { ChevronDownIcon } from '@heroicons/react/24/outline';
-import { useTranslation } from 'react-i18next';
-import { useDateLocale } from '../../hooks/useDateLocale';
-import { formatDistanceToNowLocalized } from '../../utils/dateUtils';
-import { CrawlRequest, CrawlResult, CrawlEvent } from '../../types/crawl';
-import { PaginatedResponse } from '../../types/common';
-import { activityLogsApi } from '../../services/api/activityLogs';
-import { crawlRequestApi } from '../../services/api/crawl';
-import { CrawlResultCard } from '../../components/activity-logs/CrawlResultCard';
-import CrawlResultModal from '../../components/ResultModal';
+
 import { toast } from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
+import { useParams, useNavigate } from 'react-router-dom';
+
+import { ChevronDownIcon } from '@heroicons/react/24/outline';
+
+import { CrawlResultCard } from '../../components/activity-logs/CrawlResultCard';
+import { CrawlTypeBadge } from '../../components/crawl/CrawlTypeBadge';
+import CrawlResultModal from '../../components/ResultModal';
 import { AnimatedProcessing } from '../../components/shared/AnimatedProcessing';
-import { formatDuration } from '../../utils/formatters';
-import { StatusBadge } from '../../components/shared/StatusBadge';
+import { ChevronRight, ArrowRight, ArrowLeft } from '../../components/shared/DirectionalIcon';
 import { DownloadFormatSelector } from '../../components/shared/DownloadFormatSelector';
 import { SitemapModalSelector } from '../../components/shared/SitemapModalSelector';
-import { CrawlTypeBadge } from '../../components/crawl/CrawlTypeBadge';
+import { StatusBadge } from '../../components/shared/StatusBadge';
 import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
-import { ChevronRight, ArrowRight, ArrowLeft } from '../../components/shared/DirectionalIcon';
+import { useDateLocale } from '../../hooks/useDateLocale';
+import { activityLogsApi } from '../../services/api/activityLogs';
+import { crawlRequestApi } from '../../services/api/crawl';
+import { PaginatedResponse } from '../../types/common';
+import { CrawlRequest, CrawlResult, CrawlEvent } from '../../types/crawl';
+import { formatDistanceToNowLocalized } from '../../utils/dateUtils';
+import { formatDuration } from '../../utils/formatters';
 
 const CrawlRequestDetailPage: React.FC = () => {
   const { t } = useTranslation();

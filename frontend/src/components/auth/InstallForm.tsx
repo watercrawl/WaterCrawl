@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+
 import { useForm, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
+import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
+
 import {
   EyeIcon,
   EyeSlashIcon,
@@ -10,15 +12,21 @@ import {
   UserIcon,
   ChartBarIcon,
 } from '@heroicons/react/24/outline';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { AxiosError } from 'axios';
+import * as yup from 'yup';
+
 import { FormInput } from '../shared/FormInput';
 import { ValidationMessage } from '../shared/ValidationMessage';
-import toast from 'react-hot-toast';
+
+
 import { useSettings } from '../../contexts/SettingsProvider.tsx';
 import { authApi } from '../../services/api/auth';
-import { AxiosError } from 'axios';
-import type { ApiError } from '../../types/common';
+
+
 import type { InstallRequest } from '../../types/auth';
-import { useTranslation } from 'react-i18next';
+import type { ApiError } from '../../types/common';
+
 
 const passwordStrengthRegex = {
   hasNumber: /\d/,

@@ -1,4 +1,7 @@
 import React from 'react';
+
+import { useTranslation } from 'react-i18next';
+
 import {
   DocumentTextIcon,
   BookOpenIcon,
@@ -8,8 +11,8 @@ import {
   GlobeAltIcon,
   LanguageIcon,
 } from '@heroicons/react/24/outline';
+
 import { useSettings } from '../../contexts/SettingsProvider';
-import { useTranslation } from 'react-i18next';
 
 interface ResourceLink {
   title: string;

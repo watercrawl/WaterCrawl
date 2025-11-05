@@ -1,5 +1,8 @@
 import { useState } from 'react';
+
 import { useTranslation } from 'react-i18next';
+import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
+
 import {
   Bars3Icon,
   XMarkIcon,
@@ -7,13 +10,13 @@ import {
   ServerIcon,
   HomeIcon,
 } from '@heroicons/react/24/outline';
-import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { useSettings } from '../contexts/SettingsProvider';
-import { useUser } from '../contexts/UserContext';
+
 import Breadcrumbs from '../components/shared/Breadcrumbs';
 import { ArrowLeft } from '../components/shared/DirectionalIcon';
 import { LanguageSelector } from '../components/shared/LanguageSelector';
 import { ProfileMenu } from '../components/shared/ProfileMenu';
+import { useSettings } from '../contexts/SettingsProvider';
+import { useUser } from '../contexts/UserContext';
 
 // Admin navigation items - keys for i18n
 const adminNavigationKeys = [

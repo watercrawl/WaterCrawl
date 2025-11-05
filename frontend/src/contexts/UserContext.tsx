@@ -1,8 +1,10 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
+
+import { profileApi } from '../services/api/profile';
 import { AuthService } from '../services/authService';
 import { Profile } from '../types/user';
+
 import { useSettings } from './SettingsProvider';
-import { profileApi } from '../services/api/profile';
 
 interface UserContextType {
   user: Profile | null;

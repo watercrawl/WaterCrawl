@@ -1,8 +1,9 @@
 import { useTranslation } from 'react-i18next';
-import { Dialog } from '@headlessui/react';
-import { Tab } from '@headlessui/react';
+
+import { Dialog, Tab  } from '@headlessui/react';
 import { XMarkIcon, ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 import Editor from '@monaco-editor/react';
+
 import { CrawlResult, ResultData } from '../types/crawl';
 
 interface CrawlResultModalProps {

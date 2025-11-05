@@ -1,20 +1,29 @@
 import React, { useState } from 'react';
+
 import { useForm, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
+import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
+
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { AxiosError } from 'axios';
+import * as yup from 'yup';
+
+import { EmailVerificationPopup } from '../EmailVerificationPopup';
 import { FormInput } from '../shared/FormInput';
 import { ValidationMessage } from '../shared/ValidationMessage';
-import { OAuthButtons } from './OAuthButtons';
-import { authApi } from '../../services/api/auth';
-import type { ApiError } from '../../types/common';
-import { AuthService } from '../../services/authService';
+
 import { useSettings } from '../../contexts/SettingsProvider';
+import { authApi } from '../../services/api/auth';
+import { AuthService } from '../../services/authService';
 import { TeamService } from '../../services/teamService';
-import { AxiosError } from 'axios';
-import { EmailVerificationPopup } from '../EmailVerificationPopup';
-import { useTranslation } from 'react-i18next';
+
+import { OAuthButtons } from './OAuthButtons';
+
+import type { ApiError } from '../../types/common';
+
+
+
 
 const getSchema = (t: (key: string) => string) =>
   yup

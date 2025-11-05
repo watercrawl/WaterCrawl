@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+
 import { toast } from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
+
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
+import { AxiosError } from 'axios';
+
 import ComboboxComponent from '../shared/ComboboxComponent';
+import Feed from '../shared/Feed';
 import { FormInput } from '../shared/FormComponents';
-import { SearchApiDocumentation } from './SearchApiDocumentation';
+
+import { useSettings } from '../../contexts/SettingsProvider';
+import { searchApi } from '../../services/api/search';
+import { FeedMessage } from '../../types/feed';
 import {
   SearchRequest,
   SearchStatus,
@@ -14,12 +22,10 @@ import {
   TimeRange,
   SearchEvent,
 } from '../../types/search';
-import { searchApi } from '../../services/api/search';
+
+import { SearchApiDocumentation } from './SearchApiDocumentation';
 import { SearchResultDisplay } from './SearchResultDisplay';
-import { AxiosError } from 'axios';
-import Feed from '../shared/Feed';
-import { FeedMessage } from '../../types/feed';
-import { useSettings } from '../../contexts/SettingsProvider';
+
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');

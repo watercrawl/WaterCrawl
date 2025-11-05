@@ -1,29 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import OptionCard from '../../../components/shared/OptionCard';
-import Card from '../../../components/shared/Card';
-import { useNavigate } from 'react-router-dom';
+
 import { useForm, Controller } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
 import toast from 'react-hot-toast';
-import { knowledgeBaseApi } from '../../../services/api/knowledgeBase';
-import { providerApi } from '../../../services/api/provider';
-import Loading from '../../../components/shared/Loading';
-import { Button } from '../../../components/shared/Button';
-import { EnhanceContextModal } from '../../../components/knowledge/EnhanceContextModal';
-import ComboboxComponent, { ComboboxItem } from '../../../components/shared/ComboboxComponent';
-import Slider from '../../../components/shared/Slider';
-import KnowledgeBasePricingInfo from '../../../components/knowledge/KnowledgeBasePricingInfo';
-import {
-  KnowledgeBaseFormData,
-  DEFAULT_CHUNK_SIZE,
-  calculateChunkOverlap,
-  SummarizerType,
-} from '../../../types/knowledge';
-import { ListProviderConfig, Model } from '../../../types/provider';
-import { useBreadcrumbs } from '../../../contexts/BreadcrumbContext';
-import { useTeam } from '../../../contexts/TeamContext';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+
 import {
   InformationCircleIcon,
   Squares2X2Icon,
@@ -34,6 +15,30 @@ import {
   BoltIcon,
   TagIcon,
 } from '@heroicons/react/24/outline';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
+import { EnhanceContextModal } from '../../../components/knowledge/EnhanceContextModal';
+import KnowledgeBasePricingInfo from '../../../components/knowledge/KnowledgeBasePricingInfo';
+import { Button } from '../../../components/shared/Button';
+import Card from '../../../components/shared/Card';
+import ComboboxComponent, { ComboboxItem } from '../../../components/shared/ComboboxComponent';
+import Loading from '../../../components/shared/Loading';
+import OptionCard from '../../../components/shared/OptionCard';
+import Slider from '../../../components/shared/Slider';
+import { useBreadcrumbs } from '../../../contexts/BreadcrumbContext';
+import { useTeam } from '../../../contexts/TeamContext';
+import { knowledgeBaseApi } from '../../../services/api/knowledgeBase';
+import { providerApi } from '../../../services/api/provider';
+import {
+  KnowledgeBaseFormData,
+  DEFAULT_CHUNK_SIZE,
+  calculateChunkOverlap,
+  SummarizerType,
+} from '../../../types/knowledge';
+import { ListProviderConfig, Model } from '../../../types/provider';
+
+
 
 // Create validation schema for form - translations will be applied at runtime
 const createSchema = (t: any) =>

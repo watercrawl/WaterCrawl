@@ -1,4 +1,3 @@
-import api from './api';
 import {
   AuthResponse,
   LoginRequest,
@@ -7,6 +6,8 @@ import {
   VerifyInvitationResponse,
   RegisterResponse,
 } from '../../types/auth';
+
+import api from './api';
 
 export const authApi = {
   async login(request: LoginRequest): Promise<AuthResponse> {

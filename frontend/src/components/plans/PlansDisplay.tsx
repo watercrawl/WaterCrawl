@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { Plan } from '../../types/subscription';
-import { PlanCard } from './PlanCard';
-import { EnterprisePlan } from './EnterprisePlan';
+
 import { useTranslation } from 'react-i18next';
+
+import { Plan } from '../../types/subscription';
+
+import { EnterprisePlan } from './EnterprisePlan';
+import { PlanCard } from './PlanCard';
 
 interface PlansDisplayProps {
   plans: Plan[];

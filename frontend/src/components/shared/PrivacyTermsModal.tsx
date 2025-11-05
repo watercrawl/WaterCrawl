@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
+
+import { toast } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+
 import {
   ShieldCheckIcon,
   ExclamationTriangleIcon,
@@ -7,11 +10,12 @@ import {
   ScaleIcon,
   FingerPrintIcon,
 } from '@heroicons/react/24/outline';
+
 import { useSettings } from '../../contexts/SettingsProvider';
 import { useUser } from '../../contexts/UserContext';
-import { AuthService } from '../../services/authService';
-import { toast } from 'react-hot-toast';
 import { profileApi } from '../../services/api/profile';
+import { AuthService } from '../../services/authService';
+
 import { Switch } from './Switch';
 
 interface PrivacyTermsModalProps {

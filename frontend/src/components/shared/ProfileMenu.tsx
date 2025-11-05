@@ -1,5 +1,8 @@
 import { Fragment, useState } from 'react';
+
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+
 import { Menu, Transition } from '@headlessui/react';
 import {
   UserCircleIcon,
@@ -9,10 +12,11 @@ import {
   ComputerDesktopIcon,
   InformationCircleIcon,
 } from '@heroicons/react/24/outline';
-import { Link } from 'react-router-dom';
-import { useUser } from '../../contexts/UserContext';
+
 import { useTheme } from '../../contexts/ThemeContext';
+import { useUser } from '../../contexts/UserContext';
 import { AuthService } from '../../services/authService';
+
 import { AboutModal } from './AboutModal';
 
 // Generate color based on string

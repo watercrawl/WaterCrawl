@@ -1,5 +1,7 @@
 import React from 'react';
-import { CrawlStatus } from '../../types/crawl';
+
+import { useTranslation } from 'react-i18next';
+
 import {
   PlusIcon,
   ArrowPathIcon,
@@ -10,7 +12,8 @@ import {
   TrashIcon,
   ExclamationTriangleIcon,
 } from '@heroicons/react/24/outline';
-import { useTranslation } from 'react-i18next';
+
+import { CrawlStatus } from '../../types/crawl';
 
 interface StatusBadgeProps {
   status: CrawlStatus | string;

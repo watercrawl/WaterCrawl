@@ -1,17 +1,21 @@
 'use client';
 
 import React, { createContext, useState, useContext, useEffect, useCallback, useRef, useMemo } from 'react';
+
+import { useTranslation } from 'react-i18next';
+
+import { CookieConsentBanner } from '../components/CookieConsentBanner';
 import {
   COOKIE_CONFIG_KEY,
   CookieCategory,
   validateCookieConsent,
   getCookieCategories,
 } from '../constants/cookieConfig';
-import { CookieConsentBanner } from '../components/CookieConsentBanner';
-import { useSettings } from '../../contexts/SettingsProvider';
 import { initializeGoogleAnalytics } from '../utils/analytics';
+
+import { useSettings } from '../../contexts/SettingsProvider';
 import { initSentry } from '../../sentry';
-import { useTranslation } from 'react-i18next';
+
 
 interface CookieConsentContextType {
   isConsentGiven: boolean;

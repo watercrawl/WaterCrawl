@@ -1,4 +1,7 @@
 import React from 'react';
+
+import { useTranslation } from 'react-i18next';
+
 import {
   AreaChart,
   Area,
@@ -8,7 +11,6 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
-import { useTranslation } from 'react-i18next';
 
 interface HistoryData {
   date: string;

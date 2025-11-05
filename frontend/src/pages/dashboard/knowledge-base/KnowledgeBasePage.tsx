@@ -1,22 +1,26 @@
 import React, { useEffect, useState } from 'react';
+
+import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+
 import {
   EyeIcon,
   PencilIcon,
   PlusIcon,
   ExclamationTriangleIcon,
 } from '@heroicons/react/24/outline';
-import { KnowledgeBaseDetail } from '../../../types/knowledge';
-import { knowledgeBaseApi } from '../../../services/api/knowledgeBase';
-import toast from 'react-hot-toast';
+
 import { StatusBadge } from '../../../components/shared/StatusBadge';
-import { useBreadcrumbs } from '../../../contexts/BreadcrumbContext';
-import { useTeam } from '../../../contexts/TeamContext';
 import UsageLimitBox from '../../../components/shared/UsageLimitBox';
-import { useDateLocale } from '../../../hooks/useDateLocale';
-import { formatDistanceToNowLocalized } from '../../../utils/dateUtils';
+import { useBreadcrumbs } from '../../../contexts/BreadcrumbContext';
 import { useSettings } from '../../../contexts/SettingsProvider';
-import { useTranslation } from 'react-i18next';
+import { useTeam } from '../../../contexts/TeamContext';
+import { useDateLocale } from '../../../hooks/useDateLocale';
+import { knowledgeBaseApi } from '../../../services/api/knowledgeBase';
+import { KnowledgeBaseDetail } from '../../../types/knowledge';
+import { formatDistanceToNowLocalized } from '../../../utils/dateUtils';
+
 
 const KnowledgeBasePage: React.FC = () => {
   const { t } = useTranslation();

@@ -1,4 +1,8 @@
 import { useState } from 'react';
+
+import { useTranslation } from 'react-i18next';
+import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
+
 import {
   Bars3Icon,
   ChartBarIcon,
@@ -14,22 +18,21 @@ import {
   BookOpenIcon,
   ServerIcon,
 } from '@heroicons/react/24/outline';
-import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
-import { useDirection } from '../contexts/DirectionContext';
-import { useTranslation } from 'react-i18next';
+
 import { TeamSelector } from '../components/dashboard/TeamSelector';
+import SpiderIcon from '../components/icons/SpiderIcon';
+import { PlansModal } from '../components/plans/PlansModal';
+import Breadcrumbs from '../components/shared/Breadcrumbs';
+import { ArrowRight } from '../components/shared/DirectionalIcon';
+import { GitHubStars } from '../components/shared/GitHubStars';
+import { LanguageSelector } from '../components/shared/LanguageSelector';
+import NotificationBell from '../components/shared/NotificationBell';
+import { PrivacyTermsModal } from '../components/shared/PrivacyTermsModal';
+import { ProfileMenu } from '../components/shared/ProfileMenu';
+import { useDirection } from '../contexts/DirectionContext';
 import { useSettings } from '../contexts/SettingsProvider';
 import { useTeam } from '../contexts/TeamContext';
 import { useUser } from '../contexts/UserContext';
-import { PrivacyTermsModal } from '../components/shared/PrivacyTermsModal';
-import { GitHubStars } from '../components/shared/GitHubStars';
-import SpiderIcon from '../components/icons/SpiderIcon';
-import Breadcrumbs from '../components/shared/Breadcrumbs';
-import { PlansModal } from '../components/plans/PlansModal';
-import { LanguageSelector } from '../components/shared/LanguageSelector';
-import { ArrowRight } from '../components/shared/DirectionalIcon';
-import { ProfileMenu } from '../components/shared/ProfileMenu';
-import NotificationBell from '../components/shared/NotificationBell';
 
 // Reusable Navigation component
 interface NavigationMenuProps {

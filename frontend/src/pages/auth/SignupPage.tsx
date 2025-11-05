@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+
 import { useTranslation } from 'react-i18next';
+import { useLocation, useNavigate } from 'react-router-dom';
+
 import { SignupForm } from '../../components/auth/SignupForm';
-import { AuthService } from '../../services/authService';
 import { useSettings } from '../../contexts/SettingsProvider';
+import { AuthService } from '../../services/authService';
 
 const SignupPage = () => {
   const { t } = useTranslation();

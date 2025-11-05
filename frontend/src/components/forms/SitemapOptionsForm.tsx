@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+
 import { useTranslation } from 'react-i18next';
-import { FormInput, InfoTooltip, OptionGroup } from '../shared/FormComponents';
-import { SitemapOptions } from '../../types/sitemap';
+
 import ArrayStringField from '../shared/ArrayStringField';
+import { FormInput, InfoTooltip, OptionGroup } from '../shared/FormComponents';
 import { Switch } from '../shared/Switch';
+
+import { SitemapOptions } from '../../types/sitemap';
 
 interface SitemapOptionsFormProps {
   options: SitemapOptions;

@@ -1,18 +1,23 @@
 import React from 'react';
+
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { format } from 'date-fns';
-import { CrawlRequest } from '../../types/crawl';
+
 import {
   DocumentTextIcon,
   ClockIcon,
   CalendarIcon,
   ArrowTopRightOnSquareIcon,
 } from '@heroicons/react/24/outline';
-import { formatDuration } from '../../utils/formatters';
-import { StatusBadge } from './StatusBadge';
-import { useTranslation } from 'react-i18next';
+import { format } from 'date-fns';
+
 import { useDateLocale } from '../../hooks/useDateLocale';
+import { CrawlRequest } from '../../types/crawl';
 import { formatDistanceToNowLocalized } from '../../utils/dateUtils';
+import { formatDuration } from '../../utils/formatters';
+
+import { StatusBadge } from './StatusBadge';
+
 
 interface CrawlRequestCardProps {
   request: CrawlRequest;

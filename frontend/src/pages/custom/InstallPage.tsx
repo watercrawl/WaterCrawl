@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { InstallForm } from '../../components/auth/InstallForm';
 import { PublicSkeleton } from '../../layouts/PublicSkeleton';
 

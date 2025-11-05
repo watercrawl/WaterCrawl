@@ -1,6 +1,8 @@
 import React from 'react';
-import { useTheme } from '../contexts/ThemeContext';
+
 import { SunIcon, MoonIcon, ComputerDesktopIcon } from '@heroicons/react/24/outline';
+
+import { useTheme } from '../contexts/ThemeContext';
 
 interface ColorItem {
   name: string;

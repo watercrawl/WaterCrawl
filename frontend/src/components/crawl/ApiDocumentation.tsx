@@ -1,12 +1,16 @@
 import React, { useMemo, useState, useEffect, useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
-import { CrawlRequest } from '../../types/crawl';
-import { ClipboardIcon } from '@heroicons/react/24/outline';
+
 import { toast } from 'react-hot-toast';
-import { API_URL } from '../../utils/env';
+import { useTranslation } from 'react-i18next';
+
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
+import { ClipboardIcon } from '@heroicons/react/24/outline';
+
 import { apiKeysApi } from '../../services/api/apiKeys';
 import { ApiKey } from '../../types/apiKeys';
+import { CrawlRequest } from '../../types/crawl';
+import { API_URL } from '../../utils/env';
+
 import DocumentItem from './DocumentItem';
 
 interface ApiDocumentationProps {

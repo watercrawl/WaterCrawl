@@ -1,6 +1,8 @@
 import React from 'react';
-import { ValidationMessageProps } from '../../types/user';
+
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
+
+import { ValidationMessageProps } from '../../types/user';
 
 export const ValidationMessage: React.FC<ValidationMessageProps> = ({ message, type }) => {
   const isError = type === 'error';

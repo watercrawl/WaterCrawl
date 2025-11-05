@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from 'react';
+
 import { useTranslation } from 'react-i18next';
+
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import { Plan } from '../../types/subscription';
-import subscriptionApi from '../../services/api/subscription';
-import { PlansDisplay } from './PlansDisplay';
-import { useSettings } from '../../contexts/SettingsProvider';
+
 import { TeamSelector } from '../dashboard/TeamSelector';
+
+import { useSettings } from '../../contexts/SettingsProvider';
+import subscriptionApi from '../../services/api/subscription';
+import { Plan } from '../../types/subscription';
+
+import { PlansDisplay } from './PlansDisplay';
+
+
 
 interface PlansModalProps {
   show: boolean;

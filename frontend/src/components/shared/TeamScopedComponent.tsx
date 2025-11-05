@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { useTeam } from '../../contexts/TeamContext';
 
 interface TeamScopedComponentProps {

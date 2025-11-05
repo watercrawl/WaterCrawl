@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
-import { CrawlRequest, CrawlResult } from '../types/crawl';
-import CrawlResultModal from './ResultModal';
-import { CrawlResultItems } from './activity-logs/CrawlResultItems';
-import { StatusBadge } from './shared/StatusBadge';
-import { EyeIcon } from '@heroicons/react/24/outline';
-import { DownloadFormatSelector } from './shared/DownloadFormatSelector';
-import { useNavigate } from 'react-router-dom';
+
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+
+import { EyeIcon } from '@heroicons/react/24/outline';
+
+import { CrawlRequest, CrawlResult } from '../types/crawl';
+
+import { CrawlResultItems } from './activity-logs/CrawlResultItems';
+import CrawlResultModal from './ResultModal';
+import { DownloadFormatSelector } from './shared/DownloadFormatSelector';
+import { StatusBadge } from './shared/StatusBadge';
+
 
 interface ResultsTableProps {
   request: CrawlRequest;

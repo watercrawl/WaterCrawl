@@ -1,8 +1,11 @@
 import React from 'react';
-import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
+
 import { useTranslation } from 'react-i18next';
-import { Proxy } from '../../types/proxy';
+
+import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
+
 import { Pagination } from '../../components/shared/Pagination';
+import { Proxy } from '../../types/proxy';
 
 interface ProxyListProps {
   proxies: Proxy[];

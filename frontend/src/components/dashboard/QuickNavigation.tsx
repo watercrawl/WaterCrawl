@@ -1,6 +1,8 @@
 import React from 'react';
-import { GlobeAltIcon, MagnifyingGlassIcon, DocumentTextIcon } from '@heroicons/react/24/outline';
+
 import { useTranslation } from 'react-i18next';
+
+import { GlobeAltIcon, MagnifyingGlassIcon, DocumentTextIcon } from '@heroicons/react/24/outline';
 
 interface NavigationItem {
   href: string;

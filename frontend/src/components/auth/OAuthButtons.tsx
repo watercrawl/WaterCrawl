@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
+
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
-import GithubOAuth from './GithubOAuth';
-import GoogleOAuth from './GoogleOAuth';
+import { ValidationMessage } from '../shared/ValidationMessage';
+
 import { useSettings } from '../../contexts/SettingsProvider';
 import { oauthApi } from '../../services/api/oauth';
 import { AuthService } from '../../services/authService';
-import { ValidationMessage } from '../shared/ValidationMessage';
 import { TeamService } from '../../services/teamService';
+
+import GithubOAuth from './GithubOAuth';
+import GoogleOAuth from './GoogleOAuth';
 
 export const OAuthButtons: React.FC = () => {
   const { settings } = useSettings();

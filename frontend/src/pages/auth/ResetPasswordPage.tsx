@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
+
 import { useParams, useNavigate } from 'react-router-dom';
+
 import { ResetPasswordForm } from '../../components/auth/ResetPasswordForm';
-import { authApi } from '../../services/api/auth';
 import Loading from '../../components/shared/Loading';
+import { authApi } from '../../services/api/auth';
 
 const ResetPasswordPage = () => {
   const { token } = useParams<{ token: string }>();

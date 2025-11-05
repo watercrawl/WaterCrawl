@@ -1,24 +1,29 @@
 import React, { useState, useEffect } from 'react';
+
+import { toast } from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 import { useParams, Link, useNavigate } from 'react-router-dom';
+
 import {
   MagnifyingGlassIcon,
   ArrowDownTrayIcon,
   ChevronDownIcon,
 } from '@heroicons/react/24/outline';
-import { useTranslation } from 'react-i18next';
-import { SearchResultDisplay } from '../../components/search/SearchResultDisplay';
-import { SearchResult, SearchRequest, SearchEvent } from '../../types/search';
-import { toast } from 'react-hot-toast';
-import { formatDuration } from '../../utils/formatters';
 import { format } from 'date-fns';
-import { StatusBadge } from '../../components/shared/StatusBadge';
-import { useDateLocale } from '../../hooks/useDateLocale';
-import { formatDistanceToNowLocalized } from '../../utils/dateUtils';
-import { searchApi } from '../../services/api/search';
+
+import { SearchResultDisplay } from '../../components/search/SearchResultDisplay';
 import { AnimatedProcessing } from '../../components/shared/AnimatedProcessing';
-import { CrawlStatus } from '../../types/crawl';
-import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
 import { ChevronRight, ArrowRight, ArrowLeft } from '../../components/shared/DirectionalIcon';
+import { StatusBadge } from '../../components/shared/StatusBadge';
+import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
+import { useDateLocale } from '../../hooks/useDateLocale';
+import { searchApi } from '../../services/api/search';
+import { CrawlStatus } from '../../types/crawl';
+import { SearchResult, SearchRequest, SearchEvent } from '../../types/search';
+import { formatDistanceToNowLocalized } from '../../utils/dateUtils';
+import { formatDuration } from '../../utils/formatters';
+
+
 
 const SearchRequestDetailPage: React.FC = () => {
   const { t } = useTranslation();

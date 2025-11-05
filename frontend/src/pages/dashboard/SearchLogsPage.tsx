@@ -1,20 +1,23 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { MagnifyingGlassIcon, EyeIcon, ArrowDownTrayIcon } from '@heroicons/react/24/outline';
-import { SearchRequest, SearchStatus } from '../../types/search';
-import { SearchRequestCard } from '../../components/shared/SearchRequestCard';
-import { Pagination } from '../../components/shared/Pagination';
-import { PaginatedResponse } from '../../types/common';
+
 import { toast } from 'react-hot-toast';
-import { searchApi } from '../../services/api/search';
-import { useIsTabletOrMobile } from '../../hooks/useMediaQuery';
-import { formatDuration } from '../../utils/formatters';
-import { useDateLocale } from '../../hooks/useDateLocale';
-import { formatDistanceToNowLocalized } from '../../utils/dateUtils';
-import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
 import { useTranslation } from 'react-i18next';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+
+import { MagnifyingGlassIcon, EyeIcon, ArrowDownTrayIcon } from '@heroicons/react/24/outline';
+
+import { Pagination } from '../../components/shared/Pagination';
+import { SearchRequestCard } from '../../components/shared/SearchRequestCard';
 import { StatusBadge } from '../../components/shared/StatusBadge';
+import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
+import { useDateLocale } from '../../hooks/useDateLocale';
+import { useIsTabletOrMobile } from '../../hooks/useMediaQuery';
+import { searchApi } from '../../services/api/search';
+import { PaginatedResponse } from '../../types/common';
 import { CrawlStatus } from '../../types/crawl';
+import { SearchRequest, SearchStatus } from '../../types/search';
+import { formatDistanceToNowLocalized } from '../../utils/dateUtils';
+import { formatDuration } from '../../utils/formatters';
 
 const SearchLogsPage: React.FC = () => {
   const { t } = useTranslation();

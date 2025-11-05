@@ -1,4 +1,9 @@
 import React, { useState, useEffect, Fragment, useCallback } from 'react';
+
+import { toast } from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
+
+import { Dialog, Transition } from '@headlessui/react';
 import {
   PlusIcon,
   TrashIcon,
@@ -7,18 +12,16 @@ import {
   EyeIcon,
   EyeSlashIcon,
 } from '@heroicons/react/24/outline';
-import { Dialog, Transition } from '@headlessui/react';
-import { apiKeysApi } from '../../services/api/apiKeys';
-import { ApiKey } from '../../types/apiKeys';
-import { toast } from 'react-hot-toast';
-import { Pagination } from '../../components/shared/Pagination';
-import { useIsTabletOrMobile } from '../../hooks/useMediaQuery';
+
 import { ApiKeyCard } from '../../components/shared/ApiKeyCard';
+import { Input } from '../../components/shared/Input';
+import { Pagination } from '../../components/shared/Pagination';
 import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
 import { useConfirm } from '../../contexts/ConfirmContext';
-import { useTranslation } from 'react-i18next';
-import { Input } from '../../components/shared/Input';
 import { useDateLocale } from '../../hooks/useDateLocale';
+import { useIsTabletOrMobile } from '../../hooks/useMediaQuery';
+import { apiKeysApi } from '../../services/api/apiKeys';
+import { ApiKey } from '../../types/apiKeys';
 import { formatDistanceToNowLocalized } from '../../utils/dateUtils';
 
 const ApiKeysPage: React.FC = () => {

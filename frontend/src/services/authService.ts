@@ -1,6 +1,7 @@
 import { jwtDecode } from 'jwt-decode';
-import { API_URL } from '../utils/env';
+
 import { TokenPayload } from '../types/user';
+import { API_URL } from '../utils/env';
 
 export class AuthService {
   private static instance: AuthService;

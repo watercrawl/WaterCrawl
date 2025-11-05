@@ -1,10 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
-import { format } from 'date-fns';
+
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+
+import { format } from 'date-fns';
+
 import Loading from '../shared/Loading';
-import { profileApi } from '../../services/api/profile';
+
 import { useTeam } from '../../contexts/TeamContext';
+import { profileApi } from '../../services/api/profile';
 import { Invitation } from '../../types/user';
 
 export function InvitationsList() {

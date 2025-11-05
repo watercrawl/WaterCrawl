@@ -1,17 +1,24 @@
 import React, { useState } from 'react';
+
 import { useForm, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import { Link, useNavigate } from 'react-router-dom';
-import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
-import { FormInput } from '../shared/FormInput';
-import { ValidationMessage } from '../shared/ValidationMessage';
-import { OAuthButtons } from './OAuthButtons';
-import { authApi } from '../../services/api/auth';
-import { RegisterRequest } from '../../types/auth';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import { Link, useNavigate } from 'react-router-dom';
+
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
+import { FormInput } from '../shared/FormInput';
+import { ValidationMessage } from '../shared/ValidationMessage';
+
 import { useSettings } from '../../contexts/SettingsProvider';
+import { authApi } from '../../services/api/auth';
+import { RegisterRequest } from '../../types/auth';
+
+import { OAuthButtons } from './OAuthButtons';
+
+
 
 const passwordStrengthRegex = {
   hasNumber: /\d/,

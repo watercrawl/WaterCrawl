@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+
+import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+
 import {
   CreditCardIcon,
   XMarkIcon,
@@ -10,11 +13,12 @@ import {
   TrashIcon,
   ArrowPathIcon,
 } from '@heroicons/react/24/outline';
-import { Button } from './Button';
+
+import { ChevronRight } from '../../components/shared/DirectionalIcon';
 import { useTeam } from '../../contexts/TeamContext';
 import { subscriptionApi } from '../../services/api/subscription';
-import toast from 'react-hot-toast';
-import { ChevronRight } from '../../components/shared/DirectionalIcon';
+
+import { Button } from './Button';
 
 export const BillingManagementCard: React.FC = () => {
   const { t } = useTranslation();

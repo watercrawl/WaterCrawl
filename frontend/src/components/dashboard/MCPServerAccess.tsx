@@ -1,4 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
+
+import { toast } from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+
 import {
   KeyIcon,
   CommandLineIcon,
@@ -9,15 +14,17 @@ import {
   SparklesIcon,
 } from '@heroicons/react/24/outline';
 import { CheckIcon, ExclamationTriangleIcon } from '@heroicons/react/24/solid';
-import { apiKeysApi } from '../../services/api/apiKeys';
-import { ApiKey } from '../../types/apiKeys';
-import { toast } from 'react-hot-toast';
-import { API_URL } from '../../utils/env';
-import { useSettings } from '../../contexts/SettingsProvider';
-import { Link } from 'react-router-dom';
+
 import { ClaudeLogo, CursorLogo, VSCodeLogo, WindsurfLogo } from '../logos';
 import { ArrowRight } from '../shared/DirectionalIcon';
-import { useTranslation } from 'react-i18next';
+
+import { useSettings } from '../../contexts/SettingsProvider';
+import { apiKeysApi } from '../../services/api/apiKeys';
+import { ApiKey } from '../../types/apiKeys';
+import { API_URL } from '../../utils/env';
+
+
+
 
 export const MCPServerAccess: React.FC = () => {
   const { t } = useTranslation();

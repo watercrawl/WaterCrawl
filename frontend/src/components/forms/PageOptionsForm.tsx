@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
-import { PlusIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import { PageOptions } from '../../types/crawl';
-import { OptionGroup, FormInput, InfoTooltip } from '../shared/FormComponents';
-import { Button } from '../shared/Button';
-import { Switch } from '../shared/Switch';
+
 import { useTranslation } from 'react-i18next';
+
+import { PlusIcon, XMarkIcon } from '@heroicons/react/24/outline';
+
+import { Button } from '../shared/Button';
+import { OptionGroup, FormInput, InfoTooltip } from '../shared/FormComponents';
+import { Switch } from '../shared/Switch';
+
+import { PageOptions } from '../../types/crawl';
 
 interface PageOptionsFormProps {
   options: PageOptions;

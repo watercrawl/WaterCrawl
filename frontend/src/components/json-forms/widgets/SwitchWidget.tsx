@@ -1,8 +1,11 @@
 import React from 'react';
+
 import { Switch } from '@headlessui/react';
+
 import { FieldProps } from '../types/schema';
-import { InfoTooltip } from '../../shared/FormComponents';
+
 import { useDirection } from '../../../contexts/DirectionContext';
+import { InfoTooltip } from '../../shared/FormComponents';
 
 export const SwitchWidget: React.FC<FieldProps> = ({
   schema,

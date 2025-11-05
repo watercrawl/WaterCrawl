@@ -1,5 +1,6 @@
-import api from './api';
 import { OAuthRequest, OAuthResponse } from '../../types/oauth';
+
+import api from './api';
 
 export const oauthApi = {
   /**

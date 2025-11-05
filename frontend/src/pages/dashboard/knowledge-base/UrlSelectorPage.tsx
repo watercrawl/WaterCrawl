@@ -1,6 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+
+import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router-dom';
+
 import {
   CheckIcon,
   DocumentTextIcon,
@@ -8,16 +11,17 @@ import {
   GlobeAltIcon,
   FolderArrowDownIcon,
 } from '@heroicons/react/24/outline';
-// Navigation components
-import { SitemapGraph, SitemapNode } from '../../../types/crawl';
-import { knowledgeBaseApi } from '../../../services/api/knowledgeBase';
-import toast from 'react-hot-toast';
-import { SitemapRequest } from '../../../types/sitemap';
-import { sitemapApi } from '../../../services/api/sitemap';
-import { useBreadcrumbs } from '../../../contexts/BreadcrumbContext';
-import { KnowledgeBaseDetail } from '../../../types/knowledge';
 import { AxiosError } from 'axios';
+
 import { ChevronRight } from '../../../components/shared/DirectionalIcon';
+import { useBreadcrumbs } from '../../../contexts/BreadcrumbContext';
+import { knowledgeBaseApi } from '../../../services/api/knowledgeBase';
+import { sitemapApi } from '../../../services/api/sitemap';
+import { SitemapGraph, SitemapNode } from '../../../types/crawl';
+import { KnowledgeBaseDetail } from '../../../types/knowledge';
+import { SitemapRequest } from '../../../types/sitemap';
+
+
 
 const UrlSelectorPage: React.FC = () => {
   const { t } = useTranslation();

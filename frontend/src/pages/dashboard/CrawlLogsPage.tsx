@@ -1,21 +1,24 @@
 import React, { useState, useEffect } from 'react';
+
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { CrawlRequestCard } from '../../components/shared/CrawlRequestCard';
+
+import { EyeIcon } from '@heroicons/react/24/outline';
+
 import { EmptyState } from '../../components/activity-logs/EmptyState';
+import { CrawlRequestCard } from '../../components/shared/CrawlRequestCard';
+import { DownloadFormatSelector } from '../../components/shared/DownloadFormatSelector';
+import { Pagination } from '../../components/shared/Pagination';
+import { SitemapModalSelector } from '../../components/shared/SitemapModalSelector';
+import { StatusBadge } from '../../components/shared/StatusBadge';
+import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
+import { useDateLocale } from '../../hooks/useDateLocale';
+import { useIsTabletOrMobile } from '../../hooks/useMediaQuery';
+import { activityLogsApi } from '../../services/api/activityLogs';
 import { PaginatedResponse } from '../../types/common';
 import { CrawlRequest } from '../../types/crawl';
-import { activityLogsApi } from '../../services/api/activityLogs';
-import { useIsTabletOrMobile } from '../../hooks/useMediaQuery';
-import { Pagination } from '../../components/shared/Pagination';
-import { EyeIcon } from '@heroicons/react/24/outline';
-import { StatusBadge } from '../../components/shared/StatusBadge';
-import { formatDuration } from '../../utils/formatters';
-import { useDateLocale } from '../../hooks/useDateLocale';
 import { formatDistanceToNowLocalized } from '../../utils/dateUtils';
-import { DownloadFormatSelector } from '../../components/shared/DownloadFormatSelector';
-import { SitemapModalSelector } from '../../components/shared/SitemapModalSelector';
-import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
-import { useTranslation } from 'react-i18next';
+import { formatDuration } from '../../utils/formatters';
 
 const CrawlLogsPage: React.FC = () => {
   const { t } = useTranslation();

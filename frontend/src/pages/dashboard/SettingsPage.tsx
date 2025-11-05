@@ -1,24 +1,27 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
-import { teamApi } from '../../services/api/team';
-import { UserCircleIcon, TrashIcon, UsersIcon, EnvelopeIcon, PencilSquareIcon, ClockIcon } from '@heroicons/react/24/outline';
-import { Team, TeamMember } from '../../types/team';
+
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
+
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
+import { UserCircleIcon, TrashIcon, UsersIcon, EnvelopeIcon, PencilSquareIcon, ClockIcon } from '@heroicons/react/24/outline';
+
+import ProviderConfigSettings from '../../components/settings/ProviderConfigSettings';
+import ProxySettings from '../../components/settings/ProxySettings';
 import {
   TeamInvitationsList,
   TeamInvitationsListRef,
 } from '../../components/settings/TeamInvitationsList';
-import { useTeam } from '../../contexts/TeamContext';
-import { useSettings } from '../../contexts/SettingsProvider';
-import { SubscriptionStatusCard } from '../../components/shared/SubscriptionStatusCard';
 import { BillingManagementCard } from '../../components/shared/BillingManagementCard';
-import { SubscriptionsList } from '../../components/shared/SubscriptionsList';
-import ProxySettings from '../../components/settings/ProxySettings';
-import ProviderConfigSettings from '../../components/settings/ProviderConfigSettings';
-import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
-import { useTranslation } from 'react-i18next';
 import { Input } from '../../components/shared/Input';
+import { SubscriptionsList } from '../../components/shared/SubscriptionsList';
+import { SubscriptionStatusCard } from '../../components/shared/SubscriptionStatusCard';
+import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
 import { useConfirm } from '../../contexts/ConfirmContext';
+import { useSettings } from '../../contexts/SettingsProvider';
+import { useTeam } from '../../contexts/TeamContext';
+import { teamApi } from '../../services/api/team';
+import { Team, TeamMember } from '../../types/team';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');

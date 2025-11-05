@@ -1,9 +1,12 @@
 import { useEffect } from 'react';
-import { ProfileForm } from '../../components/profile/ProfileForm';
+
+import { useTranslation } from 'react-i18next';
+
 import { InvitationsList } from '../../components/profile/InvitationsList';
 import { LogoutButton } from '../../components/profile/LogoutButton';
+import { ProfileForm } from '../../components/profile/ProfileForm';
 import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
-import { useTranslation } from 'react-i18next';
+
 
 export default function ProfilePage() {
   const { t } = useTranslation();

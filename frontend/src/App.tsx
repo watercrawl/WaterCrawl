@@ -1,23 +1,24 @@
 import React, { Suspense } from 'react';
+
+import { Toaster } from 'react-hot-toast';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { ThemeProvider } from './contexts/ThemeContext';
+
+import { AuthGuard } from './components/auth/AuthGuard';
+import { TeamScopedComponent } from './components/shared/TeamScopedComponent';
+import { BreadcrumbProvider } from './contexts/BreadcrumbContext';
+import { ConfirmProvider } from './contexts/ConfirmContext';
 import { DirectionProvider } from './contexts/DirectionContext';
+import { SettingsProvider, useSettings  } from './contexts/SettingsProvider';
 import { TeamProvider } from './contexts/TeamContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 import { UserProvider } from './contexts/UserContext';
+import { CookieConsentProvider } from './cookie-consent/contexts/CookieConsentContext';
+import AdminLayout from './layouts/AdminLayout';
 import { AuthLayout } from './layouts/AuthLayout';
 import { DashboardLayout } from './layouts/DashboardLayout';
-import AdminLayout from './layouts/AdminLayout';
-import { TeamScopedComponent } from './components/shared/TeamScopedComponent';
-import { Toaster } from 'react-hot-toast';
-import { SettingsProvider } from './contexts/SettingsProvider';
-import { ConfirmProvider } from './contexts/ConfirmContext';
-import { NotFoundPage } from './pages/NotFoundPage';
 import PlansPage from './pages/dashboard/PlansPage';
 import StripeCallbackPage from './pages/dashboard/StripeCallbackPage';
-import { AuthGuard } from './components/auth/AuthGuard';
-import { CookieConsentProvider } from './cookie-consent/contexts/CookieConsentContext';
-import { BreadcrumbProvider } from './contexts/BreadcrumbContext';
-import { useSettings } from './contexts/SettingsProvider';
+import { NotFoundPage } from './pages/NotFoundPage';
 import './i18n/config'; // Initialize i18n
 
 const LoginPage = React.lazy(() => import('./pages/auth/LoginPage'));

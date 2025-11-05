@@ -1,8 +1,11 @@
 import React from 'react';
+
 import { useTranslation } from 'react-i18next';
-import { ProviderConfig } from '../../types/provider';
+
 import { EyeIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
+
 import { AdminProviderConfig } from '../../types/admin/provider';
+import { ProviderConfig } from '../../types/provider';
 
 interface ProviderConfigListProps {
   providerConfigs: ProviderConfig[] | AdminProviderConfig[];

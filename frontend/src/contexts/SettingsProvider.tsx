@@ -1,10 +1,10 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback  } from 'react';
+
+import { ErrorPage } from '../pages/custom/ErrorPage';
+import { InstallPage } from '../pages/custom/InstallPage';
+import { LoadingPage } from '../pages/custom/LoadingPage';
 import { settingsApi } from '../services/api/settings';
 import { Settings } from '../types/settings';
-import { useCallback } from 'react';
-import { InstallPage } from '../pages/custom/InstallPage';
-import { ErrorPage } from '../pages/custom/ErrorPage';
-import { LoadingPage } from '../pages/custom/LoadingPage';
 
 interface SettingsContextType {
   settings: Settings | null;

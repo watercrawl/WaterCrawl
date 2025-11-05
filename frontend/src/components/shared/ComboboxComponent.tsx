@@ -1,8 +1,9 @@
 import React, { Fragment, useState, useRef, useEffect } from 'react';
+
 import { useTranslation } from 'react-i18next';
-import { Combobox, ComboboxInput, ComboboxOptions, ComboboxOption } from '@headlessui/react';
+
+import { Combobox, ComboboxInput, ComboboxOptions, ComboboxOption, Transition  } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
-import { Transition } from '@headlessui/react';
 
 export interface ComboboxItem {
   id: string;

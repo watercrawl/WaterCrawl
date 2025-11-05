@@ -1,5 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react';
+
+import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
+
 import {
   CheckIcon,
   LinkIcon,
@@ -7,19 +11,18 @@ import {
   CalendarIcon,
   ArrowPathIcon,
 } from '@heroicons/react/24/outline';
-import { CrawlRequest, CrawlResult } from '../../../types/crawl';
+import { AxiosError } from 'axios';
+
+import Button from '../../../components/shared/Button';
+import { Pagination } from '../../../components/shared/Pagination';
+import { useBreadcrumbs } from '../../../contexts/BreadcrumbContext';
+import { useDateLocale } from '../../../hooks/useDateLocale';
 import { activityLogsApi } from '../../../services/api/activityLogs';
 import { knowledgeBaseApi } from '../../../services/api/knowledgeBase';
 import { PaginatedResponse } from '../../../types/common';
-import toast from 'react-hot-toast';
-import Button from '../../../components/shared/Button';
-import { useDateLocale } from '../../../hooks/useDateLocale';
-import { formatDistanceToNowLocalized } from '../../../utils/dateUtils';
-import { useBreadcrumbs } from '../../../contexts/BreadcrumbContext';
-import { AxiosError } from 'axios';
-import { Pagination } from '../../../components/shared/Pagination';
+import { CrawlRequest, CrawlResult } from '../../../types/crawl';
 import { KnowledgeBaseDetail } from '../../../types/knowledge';
-import { useTranslation } from 'react-i18next';
+import { formatDistanceToNowLocalized } from '../../../utils/dateUtils';
 
 const RESULTS_PER_PAGE = 100;
 

@@ -1,10 +1,13 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { Team } from '../types/team';
+
+import { AxiosError } from 'axios';
+
+import subscriptionApi from '../services/api/subscription';
 import { teamApi } from '../services/api/team';
 import { TeamService } from '../services/teamService';
 import { CurrentSubscription } from '../types/subscription';
-import subscriptionApi from '../services/api/subscription';
-import { AxiosError } from 'axios';
+import { Team } from '../types/team';
+
 
 interface TeamContextType {
   currentTeam: Team | null;

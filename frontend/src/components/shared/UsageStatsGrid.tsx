@@ -1,11 +1,13 @@
 import React from 'react';
+
+import { useTranslation } from 'react-i18next';
+
 import {
   ArrowTrendingUpIcon,
   DocumentTextIcon,
   ClockIcon,
   CheckCircleIcon,
 } from '@heroicons/react/24/outline';
-import { useTranslation } from 'react-i18next';
 
 interface UsageStatsGridProps {
   totalCrawls: number;

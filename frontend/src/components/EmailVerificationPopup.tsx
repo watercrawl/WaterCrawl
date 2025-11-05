@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { XMarkIcon } from '@heroicons/react/24/outline';
-import { authApi } from '../services/api/auth';
-import { Button } from '../components/shared/Button';
+
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
+
+import { XMarkIcon } from '@heroicons/react/24/outline';
+
+import { Button } from '../components/shared/Button';
+import { authApi } from '../services/api/auth';
 
 interface EmailVerificationPopupProps {
   email: string;

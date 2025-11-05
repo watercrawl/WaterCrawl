@@ -1,7 +1,10 @@
 import { Fragment } from 'react';
+
 import { useTranslation } from 'react-i18next';
+
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+
 import { useSettings } from '../../contexts/SettingsProvider';
 import { useTheme } from '../../contexts/ThemeContext';
 

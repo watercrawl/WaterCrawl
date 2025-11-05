@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from 'react';
+
+import { useTranslation } from 'react-i18next';
+
+import { ArrowTrendingUpIcon } from '@heroicons/react/24/outline';
 import {
   AreaChart,
   Area,
@@ -8,10 +12,10 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
-import { ArrowTrendingUpIcon } from '@heroicons/react/24/outline';
+
 import { usageApi } from '../../services/api/usage';
 import { UsageResponse } from '../../types/common';
-import { useTranslation } from 'react-i18next';
+
 
 const DashboardStats: React.FC = () => {
   const { t } = useTranslation();

@@ -1,8 +1,11 @@
 import { useCallback, useEffect } from 'react';
-import { useTheme } from '../../contexts/ThemeContext';
+
 import { RedocStandalone } from 'redoc';
-import { API_URL } from '../../utils/env';
+
 import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
+import { useTheme } from '../../contexts/ThemeContext';
+import { API_URL } from '../../utils/env';
+
 const ApiReferencePage: React.FC = () => {
   const { setItems } = useBreadcrumbs();
   const { isDark } = useTheme();

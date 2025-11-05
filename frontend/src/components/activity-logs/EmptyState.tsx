@@ -1,7 +1,9 @@
 import React from 'react';
-import { SpiderIcon } from '../icons/SpiderIcon';
-import { Link } from 'react-router-dom';
+
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+
+import { SpiderIcon } from '../icons/SpiderIcon';
 
 export const EmptyState: React.FC = () => {
   const { t } = useTranslation();

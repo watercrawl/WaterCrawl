@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+
+import { toast } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+
 import {
   ClipboardDocumentIcon,
   ChevronDownIcon,
@@ -8,10 +11,10 @@ import {
   EyeIcon,
   ArrowTopRightOnSquareIcon,
 } from '@heroicons/react/24/outline';
-import { toast } from 'react-hot-toast';
+
 import Card from '../shared/Card';
-import Modal from '../shared/Modal';
 import MarkdownRenderer from '../shared/MarkdownRenderer';
+import Modal from '../shared/Modal';
 
 interface QueryResultData {
   content: string;

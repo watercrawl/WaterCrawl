@@ -1,13 +1,17 @@
 import React from 'react';
+
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+
 import {
   InformationCircleIcon,
   CreditCardIcon,
   ClockIcon,
   ExclamationTriangleIcon,
 } from '@heroicons/react/24/outline';
+
 import Card from '../shared/Card';
+
 import { useSettings } from '../../contexts/SettingsProvider';
 
 interface KnowledgeBasePricingInfoProps {

@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+
 import { useTranslation } from 'react-i18next';
-import { FormInput, InfoTooltip } from './FormComponents';
-import Button from './Button';
+
 import { PlusIcon, XMarkIcon } from '@heroicons/react/20/solid';
+
+import Button from './Button';
+import { FormInput, InfoTooltip } from './FormComponents';
 
 interface ArrayStringFieldProps {
   label: string;

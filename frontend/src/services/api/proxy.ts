@@ -1,6 +1,7 @@
-import api from './api';
 import { PaginatedResponse } from '../../types/common';
 import { CreateProxyRequest, Proxy, TestProxyRequest, UsableProxy } from '../../types/proxy';
+
+import api from './api';
 
 export const proxyApi = {
   async create(data: CreateProxyRequest) {

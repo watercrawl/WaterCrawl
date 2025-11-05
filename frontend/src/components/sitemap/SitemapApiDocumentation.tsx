@@ -1,14 +1,18 @@
 import React, { useState, useEffect, useCallback } from 'react';
+
+import { toast } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
 import { ClipboardIcon } from '@heroicons/react/24/outline';
-import { toast } from 'react-hot-toast';
+
+import DocumentItem from '../crawl/DocumentItem';
+
+import { classnames } from '../../lib/utils';
 import { apiKeysApi } from '../../services/api/apiKeys';
 import { ApiKey } from '../../types/apiKeys';
-import DocumentItem from '../crawl/DocumentItem';
-import { API_URL } from '../../utils/env';
 import { SitemapRequest } from '../../types/sitemap';
-import { classnames } from '../../lib/utils';
+import { API_URL } from '../../utils/env';
 
 interface SitemapApiDocumentationProps {
   request?: SitemapRequest | null;

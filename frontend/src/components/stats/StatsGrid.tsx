@@ -1,13 +1,17 @@
 import React from 'react';
+
 import { useTranslation } from 'react-i18next';
+
 import {
   ArrowTrendingUpIcon,
   DocumentTextIcon,
   ClockIcon,
   CheckCircleIcon,
 } from '@heroicons/react/24/outline';
-import { StatsCard } from './StatsCard';
+
 import { UsageResponse } from '../../types/common';
+
+import { StatsCard } from './StatsCard';
 
 interface StatsGridProps {
   data: UsageResponse;

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { FieldProps, SelectOption } from '../types/schema';
 
 export const SelectWidget: React.FC<FieldProps> = ({

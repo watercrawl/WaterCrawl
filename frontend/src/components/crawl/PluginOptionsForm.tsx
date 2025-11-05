@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+
 import { JsonSchemaForm } from '../json-forms/JsonSchemaForm';
 import { JSONSchemaDefinition } from '../json-forms/types/schema';
 import { OptionGroup } from '../shared/FormComponents';

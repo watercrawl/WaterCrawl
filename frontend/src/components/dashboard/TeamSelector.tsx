@@ -1,4 +1,7 @@
 import React, { Fragment, useState } from 'react';
+
+import { useTranslation } from 'react-i18next';
+
 import {
   Menu,
   Transition,
@@ -11,10 +14,11 @@ import {
   DialogTitle,
 } from '@headlessui/react';
 import { ChevronDownIcon, PlusIcon } from '@heroicons/react/20/solid';
-import { classnames } from '../../lib/utils';
-import { useTeam } from '../../contexts/TeamContext';
-import { useTranslation } from 'react-i18next';
+
 import { Input } from '../shared/Input';
+
+import { useTeam } from '../../contexts/TeamContext';
+import { classnames } from '../../lib/utils';
 
 export const TeamSelector: React.FC = () => {
   const { t } = useTranslation();

@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { FieldProps } from '../types/schema';
+
 import { SchemaField } from './SchemaField';
 
 export const ArrayField: React.FC<FieldProps> = ({
