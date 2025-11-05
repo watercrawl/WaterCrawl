@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
 import { teamApi } from '../../services/api/team';
-import { UserCircleIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { UserCircleIcon, TrashIcon, UsersIcon, EnvelopeIcon, PencilSquareIcon, ClockIcon } from '@heroicons/react/24/outline';
 import { Team, TeamMember } from '../../types/team';
 import toast from 'react-hot-toast';
 import {
@@ -18,6 +18,7 @@ import ProviderConfigSettings from '../../components/settings/ProviderConfigSett
 import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
 import { useTranslation } from 'react-i18next';
 import { Input } from '../../components/shared/Input';
+import { useConfirm } from '../../contexts/ConfirmContext';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -32,6 +33,7 @@ const TABS = ['#team', '#proxy', '#provider-config', '#billing'] as const;
 
 const SettingsPage: React.FC = () => {
   const { t } = useTranslation();
+  const { confirm } = useConfirm();
   const [team, setTeam] = useState<Team | null>(null);
   const [members, setMembers] = useState<TeamMember[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -212,21 +214,27 @@ const SettingsPage: React.FC = () => {
   };
 
   const handleRemoveMember = async (memberId: string) => {
-    if (!window.confirm(t('settings.team.confirmRemove'))) return;
-
-    try {
-      setLoading(true);
-      await teamApi.removeMember(memberId);
-      await Promise.all([
-        fetchMembers(), // Refresh members list
-        refreshTeams(), // Refresh teams in context
-      ]);
-      toast.success(t('settings.team.memberRemoveSuccess'));
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || t('settings.team.memberRemoveError'));
-    } finally {
-      setLoading(false);
-    }
+    confirm({
+      title: t('settings.team.removeMemberTitle'),
+      message: t('settings.team.confirmRemove'),
+      confirmText: t('common.remove'),
+      variant: 'danger',
+      onConfirm: async () => {
+        try {
+          setLoading(true);
+          await teamApi.removeMember(memberId);
+          await Promise.all([
+            fetchMembers(), // Refresh members list
+            refreshTeams(), // Refresh teams in context
+          ]);
+          toast.success(t('settings.team.memberRemoveSuccess'));
+        } catch (error: any) {
+          toast.error(error.response?.data?.message || t('settings.team.memberRemoveError'));
+        } finally {
+          setLoading(false);
+        }
+      },
+    });
   };
 
   return (
@@ -294,80 +302,124 @@ const SettingsPage: React.FC = () => {
           </TabList>
 
           <TabPanels className="mt-8">
-            <TabPanel className="space-y-8">
-              {/* Team Name Section */}
-              <div>
-                <h3 className="mb-4 text-base font-medium text-foreground">
-                  {t('settings.team.name')}
-                </h3>
-                <div className="flex items-center gap-x-4">
-                  <Input
-                    type="text"
-                    value={editingName ? newTeamName : team?.name}
-                    onChange={e => setNewTeamName(e.target.value)}
-                    onClick={() => !editingName && setEditingName(true)}
-                    className="max-w-md"
-                    disabled={loading}
-                  />
-                  {editingName && (
-                    <button
-                      onClick={handleUpdateTeamName}
-                      disabled={loading}
-                      className="inline-flex h-10 items-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors duration-200 hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50"
-                    >
-                      {t('settings.team.save')}
-                    </button>
-                  )}
+            <TabPanel className="space-y-6">
+              {/* Team Name Card */}
+              <div className="overflow-hidden rounded-lg bg-card shadow-sm ring-1 ring-border">
+                <div className="border-b border-border bg-muted/50 px-6 py-4">
+                  <div className="flex items-center gap-x-3">
+                    <div className="rounded-lg bg-primary-soft p-2">
+                      <PencilSquareIcon className="h-5 w-5 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="text-base font-semibold text-foreground">
+                        {t('settings.team.name')}
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        {t('settings.team.nameDescription')}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-
-              {/* Invite Member Section */}
-              <div>
-                <h3 className="mb-4 text-base font-medium text-foreground">
-                  {t('settings.team.inviteMemberTitle')}
-                </h3>
-                <form onSubmit={handleInviteMember} className="mt-6">
+                <div className="px-6 py-5">
                   <div className="flex items-center gap-x-4">
                     <Input
-                      type="email"
-                      value={newMemberEmail}
-                      onChange={e => setNewMemberEmail(e.target.value)}
-                      placeholder={t('settings.team.emailPlaceholder')}
+                      type="text"
+                      value={editingName ? newTeamName : team?.name}
+                      onChange={e => setNewTeamName(e.target.value)}
+                      onClick={() => !editingName && setEditingName(true)}
                       className="max-w-md"
                       disabled={loading}
+                      placeholder={t('settings.team.namePlaceholder')}
                     />
-                    <button
-                      type="submit"
-                      disabled={loading}
-                      className="inline-flex h-10 items-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors duration-200 hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50"
-                    >
-                      {t('settings.team.invite')}
-                    </button>
+                    {editingName && (
+                      <button
+                        onClick={handleUpdateTeamName}
+                        disabled={loading}
+                        className="inline-flex h-10 items-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors duration-200 hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50"
+                      >
+                        {t('settings.team.save')}
+                      </button>
+                    )}
                   </div>
-                </form>
-
-                <div className="mt-6">
-                  <h4 className="mb-3 text-sm font-medium text-foreground">
-                    {t('settings.team.pendingInvitations')}
-                  </h4>
-                  <TeamInvitationsList ref={invitationsListRef} />
                 </div>
               </div>
 
-              {/* Team Members Section */}
-              <div>
-                <div className="mb-4 flex items-center justify-between">
-                  <div>
-                    <h3 className="text-base font-medium text-foreground">
-                      {t('settings.team.members')}
-                    </h3>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      {t('settings.team.subtitle2')}
-                    </p>
+              {/* Invite Member Card */}
+              <div className="overflow-hidden rounded-lg bg-card shadow-sm ring-1 ring-border">
+                <div className="border-b border-border bg-muted/50 px-6 py-4">
+                  <div className="flex items-center gap-x-3">
+                    <div className="rounded-lg bg-success-soft p-2">
+                      <EnvelopeIcon className="h-5 w-5 text-success" />
+                    </div>
+                    <div>
+                      <h3 className="text-base font-semibold text-foreground">
+                        {t('settings.team.inviteMemberTitle')}
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        {t('settings.team.inviteMemberDescription')}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="px-6 py-5">
+                  <form onSubmit={handleInviteMember}>
+                    <div className="flex items-center gap-x-4">
+                      <Input
+                        type="email"
+                        value={newMemberEmail}
+                        onChange={e => setNewMemberEmail(e.target.value)}
+                        placeholder={t('settings.team.emailPlaceholder')}
+                        className="max-w-md"
+                        disabled={loading}
+                      />
+                      <button
+                        type="submit"
+                        disabled={loading}
+                        className="inline-flex h-10 items-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors duration-200 hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50"
+                      >
+                        {t('settings.team.invite')}
+                      </button>
+                    </div>
+                  </form>
+
+                  <div className="mt-6">
+                    <div className="mb-3 flex items-center gap-x-2">
+                      <ClockIcon className="h-4 w-4 text-muted-foreground" />
+                      <h4 className="text-sm font-medium text-foreground">
+                        {t('settings.team.pendingInvitations')}
+                      </h4>
+                    </div>
+                    <TeamInvitationsList ref={invitationsListRef} />
+                  </div>
+                </div>
+              </div>
+
+              {/* Team Members Card */}
+              <div className="overflow-hidden rounded-lg bg-card shadow-sm ring-1 ring-border">
+                <div className="border-b border-border bg-muted/50 px-6 py-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-x-3">
+                      <div className="rounded-lg bg-info-soft p-2">
+                        <UsersIcon className="h-5 w-5 text-info" />
+                      </div>
+                      <div>
+                        <h3 className="text-base font-semibold text-foreground">
+                          {t('settings.team.members')}
+                        </h3>
+                        <p className="text-sm text-muted-foreground">
+                          {t('settings.team.subtitle2')}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="rounded-full bg-primary-soft px-3 py-1">
+                      <span className="text-sm font-semibold text-primary">
+                        {t('settings.team.memberCount', { count: members.length })}
+                      </span>
+                    </div>
                   </div>
                 </div>
 
-                <div className="mt-2 overflow-hidden rounded-md ring-1 ring-border">
+                <div className="overflow-hidden">
                   <table className="min-w-full divide-y divide-border">
                     <thead>
                       <tr className="bg-muted">

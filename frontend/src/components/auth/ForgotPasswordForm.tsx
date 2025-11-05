@@ -50,7 +50,7 @@ export function ForgotPasswordForm() {
             {t('auth.forgotPassword.success')}
           </p>
           <div className="mt-6 text-center">
-            <Link to="/" className="font-medium text-primary hover:text-primary-500">
+            <Link to="/" className="font-medium text-primary hover:text-primary-strong">
               {t('auth.forgotPassword.backToLogin')}
             </Link>
           </div>
@@ -83,7 +83,7 @@ export function ForgotPasswordForm() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="flex w-full justify-center rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 disabled:opacity-50"
+                className="flex w-full justify-center rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-strong disabled:opacity-50"
               >
                 {isSubmitting ? <Loading size="sm" /> : t('auth.forgotPassword.sendButton')}
               </button>
@@ -91,7 +91,7 @@ export function ForgotPasswordForm() {
 
             <div className="flex items-center justify-center">
               <div className="text-sm">
-                <Link to="/" className="font-medium text-primary hover:text-primary-500">
+                <Link to="/" className="font-medium text-primary hover:text-primary-strong">
                   {t('auth.forgotPassword.backToLogin')}
                 </Link>
               </div>

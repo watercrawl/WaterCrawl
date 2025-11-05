@@ -218,7 +218,7 @@ const CrawlRequestDetailPage: React.FC = () => {
             {request.status === 'running' && (
               <button
                 onClick={handleCancel}
-                className="inline-flex items-center rounded-md bg-error px-3 py-1.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-error-dark focus:outline-none focus:ring-error focus:ring-offset-2"
+                className="inline-flex items-center rounded-md bg-error px-3 py-1.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-error-strong focus:outline-none focus:ring-error focus:ring-offset-2"
               >
                 <div className="flex items-center gap-x-2">
                   <span>{t('crawl.form.cancelCrawl')}</span>

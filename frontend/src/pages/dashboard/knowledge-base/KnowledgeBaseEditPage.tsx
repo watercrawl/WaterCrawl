@@ -158,7 +158,7 @@ const KnowledgeBaseEditPage: React.FC = () => {
               icon={
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-primary-500"
+                  className="h-5 w-5 text-primary"
                   viewBox="0 0 20 20"
                   fill="currentColor"
                 >
@@ -183,7 +183,7 @@ const KnowledgeBaseEditPage: React.FC = () => {
                       type="text"
                       id="title"
                       {...register('title')}
-                      className={`block w-full rounded-md border-input-border shadow-sm focus:border-primary focus:ring-primary sm:text-sm ${errors.title ? 'border-error' : ''}`}
+                      className={`block w-full rounded-md shadow-sm border bg-input text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary sm:text-sm ${errors.title ? 'border-error focus:border-error focus:ring-error' : 'border-input-border'}`}
                       placeholder={t('settings.knowledgeBase.form.basicInfo.namePlaceholder')}
                     />
                     {errors.title && (
@@ -204,7 +204,7 @@ const KnowledgeBaseEditPage: React.FC = () => {
                       id="description"
                       rows={3}
                       {...register('description')}
-                      className={`block w-full rounded-md border-input-border shadow-sm focus:border-primary focus:ring-primary sm:text-sm ${errors.description ? 'border-error' : ''}`}
+                      className={`block w-full rounded-md shadow-sm border bg-input text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary px-3 py-2 sm:text-sm ${errors.description ? 'border-error focus:border-error focus:ring-error' : 'border-input-border'}`}
                       placeholder={t(
                         'settings.knowledgeBase.form.basicInfo.descriptionPlaceholder'
                       )}
@@ -246,7 +246,7 @@ const KnowledgeBaseEditPage: React.FC = () => {
                   icon={
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 text-primary-500"
+                      className="h-5 w-5 text-primary"
                       viewBox="0 0 20 20"
                       fill="currentColor"
                     >
@@ -274,7 +274,7 @@ const KnowledgeBaseEditPage: React.FC = () => {
                           type="text"
                           value={knowledgeBase.uuid}
                           readOnly
-                          className="block w-full cursor-not-allowed rounded-md border-input-border bg-muted font-mono text-xs shadow-sm sm:text-sm"
+                          className="block w-full cursor-not-allowed rounded-md shadow-sm border border-input-border bg-muted text-foreground font-mono text-xs sm:text-sm"
                         />
                       </div>
                     </div>
@@ -290,7 +290,7 @@ const KnowledgeBaseEditPage: React.FC = () => {
                             knowledgeBase.status.slice(1)
                           }
                           readOnly
-                          className="block w-full cursor-not-allowed rounded-md border-input-border bg-muted shadow-sm sm:text-sm"
+                          className="block w-full cursor-not-allowed rounded-md shadow-sm border border-input-border bg-muted text-foreground sm:text-sm"
                         />
                       </div>
                     </div>
@@ -303,7 +303,7 @@ const KnowledgeBaseEditPage: React.FC = () => {
                           type="text"
                           value={new Date(knowledgeBase.created_at).toLocaleString()}
                           readOnly
-                          className="block w-full cursor-not-allowed rounded-md border-input-border bg-muted shadow-sm sm:text-sm"
+                          className="block w-full cursor-not-allowed rounded-md shadow-sm border border-input-border bg-muted text-foreground sm:text-sm"
                         />
                       </div>
                     </div>
@@ -316,7 +316,7 @@ const KnowledgeBaseEditPage: React.FC = () => {
                           type="text"
                           value={new Date(knowledgeBase.updated_at).toLocaleString()}
                           readOnly
-                          className="block w-full cursor-not-allowed rounded-md border-input-border bg-muted shadow-sm sm:text-sm"
+                          className="block w-full cursor-not-allowed rounded-md shadow-sm border border-input-border bg-muted text-foreground sm:text-sm"
                         />
                       </div>
                     </div>
@@ -330,7 +330,7 @@ const KnowledgeBaseEditPage: React.FC = () => {
                             type="text"
                             value={knowledgeBase.knowledge_base_each_document_cost}
                             readOnly
-                            className="block w-full cursor-not-allowed rounded-md border-input-border bg-muted shadow-sm sm:text-sm"
+                            className="block w-full cursor-not-allowed rounded-md shadow-sm border border-input-border bg-muted text-foreground sm:text-sm"
                           />
                         </div>
                       </div>
@@ -344,7 +344,7 @@ const KnowledgeBaseEditPage: React.FC = () => {
                   icon={
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 text-primary-500"
+                      className="h-5 w-5 text-primary"
                       viewBox="0 0 20 20"
                       fill="currentColor"
                     >
@@ -371,7 +371,7 @@ const KnowledgeBaseEditPage: React.FC = () => {
                             t('settings.knowledgeBase.readonly.notConfigured')
                           }
                           readOnly
-                          className="block w-full cursor-not-allowed rounded-md border-input-border bg-muted shadow-sm sm:text-sm"
+                          className="block w-full cursor-not-allowed rounded-md shadow-sm border border-input-border bg-muted text-foreground sm:text-sm"
                         />
                       </div>
                     </div>
@@ -387,7 +387,7 @@ const KnowledgeBaseEditPage: React.FC = () => {
                             t('settings.knowledgeBase.readonly.notConfigured')
                           }
                           readOnly
-                          className="block w-full cursor-not-allowed rounded-md border-input-border bg-muted shadow-sm sm:text-sm"
+                          className="block w-full cursor-not-allowed rounded-md shadow-sm border border-input-border bg-muted text-foreground sm:text-sm"
                         />
                       </div>
                     </div>
@@ -401,7 +401,7 @@ const KnowledgeBaseEditPage: React.FC = () => {
                   icon={
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 text-primary-500"
+                      className="h-5 w-5 text-primary"
                       viewBox="0 0 20 20"
                       fill="currentColor"
                     >
@@ -425,7 +425,7 @@ const KnowledgeBaseEditPage: React.FC = () => {
                           type="text"
                           value={`${knowledgeBase.chunk_size} ${t('settings.knowledgeBase.readonly.characters')}`}
                           readOnly
-                          className="block w-full cursor-not-allowed rounded-md border-input-border bg-muted shadow-sm sm:text-sm"
+                          className="block w-full cursor-not-allowed rounded-md shadow-sm border border-input-border bg-muted text-foreground sm:text-sm"
                         />
                       </div>
                     </div>
@@ -438,7 +438,7 @@ const KnowledgeBaseEditPage: React.FC = () => {
                           type="text"
                           value={`${knowledgeBase.chunk_overlap} ${t('settings.knowledgeBase.readonly.characters')}`}
                           readOnly
-                          className="block w-full cursor-not-allowed rounded-md border-input-border bg-muted shadow-sm sm:text-sm"
+                          className="block w-full cursor-not-allowed rounded-md shadow-sm border border-input-border bg-muted text-foreground sm:text-sm"
                         />
                       </div>
                     </div>
@@ -452,7 +452,7 @@ const KnowledgeBaseEditPage: React.FC = () => {
                   icon={
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 text-primary-500"
+                      className="h-5 w-5 text-primary"
                       viewBox="0 0 20 20"
                       fill="currentColor"
                     >
@@ -483,7 +483,7 @@ const KnowledgeBaseEditPage: React.FC = () => {
                             t('settings.knowledgeBase.readonly.notConfigured')
                           }
                           readOnly
-                          className="block w-full cursor-not-allowed rounded-md border-input-border bg-muted shadow-sm sm:text-sm"
+                          className="block w-full cursor-not-allowed rounded-md shadow-sm border border-input-border bg-muted text-foreground sm:text-sm"
                         />
                       </div>
                     </div>
@@ -499,7 +499,7 @@ const KnowledgeBaseEditPage: React.FC = () => {
                             t('settings.knowledgeBase.readonly.notConfigured')
                           }
                           readOnly
-                          className="block w-full cursor-not-allowed rounded-md border-input-border bg-muted shadow-sm sm:text-sm"
+                          className="block w-full cursor-not-allowed rounded-md shadow-sm border border-input-border bg-muted text-foreground sm:text-sm"
                         />
                       </div>
                     </div>
@@ -517,7 +517,7 @@ const KnowledgeBaseEditPage: React.FC = () => {
                                 : t('settings.knowledgeBase.form.summarization.typeStandard')
                             }
                             readOnly
-                            className="block w-full cursor-not-allowed rounded-md border-input-border bg-muted shadow-sm sm:text-sm"
+                            className="block w-full cursor-not-allowed rounded-md shadow-sm border border-input-border bg-muted text-foreground sm:text-sm"
                           />
                         </div>
                       </div>
@@ -531,7 +531,7 @@ const KnowledgeBaseEditPage: React.FC = () => {
                           <textarea
                             value={knowledgeBase.summarizer_context}
                             readOnly
-                            className="block w-full cursor-not-allowed rounded-md border-input-border bg-muted shadow-sm sm:text-sm"
+                            className="block w-full cursor-not-allowed rounded-md shadow-sm border border-input-border bg-muted text-foreground sm:text-sm"
                           />
                         </div>
                       </div>

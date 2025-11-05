@@ -33,7 +33,7 @@ const ProxyCard: React.FC<{
           <div className="flex items-center font-medium text-foreground">
             {proxy.name}
             {proxy.is_default && (
-              <span className="ms-2 rounded bg-primary-light px-2 py-0.5 text-xs font-semibold text-primary-dark">
+              <span className="ms-2 rounded bg-primary-soft px-2 py-0.5 text-xs font-semibold text-primary-strong">
                 {t('settings.proxy.default')}
               </span>
             )}
@@ -213,7 +213,7 @@ const ProxyList: React.FC<ProxyListProps> = ({
                   <td className="whitespace-nowrap py-4 pe-3 ps-4 text-sm font-medium text-foreground sm:ps-6">
                     {proxy.name}
                     {proxy.is_default && (
-                      <span className="ms-2 inline-flex items-center rounded-full bg-primary-light px-2.5 py-0.5 text-xs font-medium text-primary-dark">
+                      <span className="ms-2 inline-flex items-center rounded-full bg-primary-soft px-2.5 py-0.5 text-xs font-medium text-primary-strong">
                         {t('settings.proxy.default')}
                       </span>
                     )}

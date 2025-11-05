@@ -94,7 +94,7 @@ export const TeamInvitationsList = forwardRef<TeamInvitationsListRef>((_, ref) =
                 </div>
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm">
-                <span className="inline-flex items-center rounded-md bg-warning-light px-2.5 py-0.5 text-xs font-medium text-warning-dark">
+                <span className="inline-flex items-center rounded-md bg-warning-soft px-2.5 py-0.5 text-xs font-medium text-warning-strong">
                   {t('settings.teamInvitations.pending')}
                 </span>
               </td>

@@ -114,7 +114,7 @@ const BatchUrlImportPage: React.FC = () => {
             rows={15}
             value={urls}
             onChange={e => setUrls(e.target.value)}
-            className="ltr block w-full rounded-md border-input-border bg-card shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
+            className="ltr block w-full rounded-md shadow-sm border border-input-border bg-input text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary px-3 py-2 sm:text-sm"
             placeholder={t('settings.knowledgeBase.batchUrls.placeholder')}
           />
         </div>

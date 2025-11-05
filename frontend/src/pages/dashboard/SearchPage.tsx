@@ -37,17 +37,17 @@ const SearchPage: React.FC = () => {
 
       <div className="grid grid-cols-1 gap-6">
         {!settings || !settings?.is_search_configured ? (
-          <div className="rounded-lg border border-info bg-info-light p-5 shadow-sm">
+          <div className="rounded-lg border border-info bg-info-soft p-5 shadow-sm">
             <div className="flex items-start">
               <InformationCircleIcon
-                className="me-3 h-6 w-6 flex-shrink-0 text-info-dark"
+                className="me-3 h-6 w-6 flex-shrink-0 text-info-strong"
                 aria-hidden="true"
               />
               <div>
-                <h3 className="text-lg font-medium text-info-dark">
+                <h3 className="text-lg font-medium text-info-strong">
                   {t('search.configuration.title')}
                 </h3>
-                <p className="mt-1 text-sm text-info-dark/90">
+                <p className="mt-1 text-sm text-info-strong/90">
                   {t('search.configuration.description')}
                 </p>
                 <div className="mt-4 space-y-3">
@@ -63,7 +63,7 @@ const SearchPage: React.FC = () => {
                         href="https://developers.google.com/custom-search/v1/overview"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="me-4 font-medium text-primary hover:text-primary-dark"
+                        className="me-4 font-medium text-primary hover:text-primary-strong"
                       >
                         {t('search.configuration.step1.apiDocs')}
                       </a>
@@ -71,7 +71,7 @@ const SearchPage: React.FC = () => {
                         href="https://programmablesearchengine.google.com/controlpanel/all"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="font-medium text-primary hover:text-primary-dark"
+                        className="font-medium text-primary hover:text-primary-strong"
                       >
                         {t('search.configuration.step1.csePanel')}
                       </a>

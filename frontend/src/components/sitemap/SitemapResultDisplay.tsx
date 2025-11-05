@@ -87,7 +87,7 @@ export const SitemapResultDisplay: React.FC<SitemapResultDisplayProps> = ({
     return (
       <div className="flex items-center justify-center py-8">
         <div
-          className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-primary-500 border-e-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+          className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-primary border-e-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
           role="status"
         >
           <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
@@ -101,7 +101,7 @@ export const SitemapResultDisplay: React.FC<SitemapResultDisplayProps> = ({
 
   if (result.status === SitemapStatus.Failed) {
     return (
-      <div className="rounded-md border border-error bg-error-light p-4">
+      <div className="rounded-md border border-error bg-error-soft p-4">
         <div className="flex">
           <div className="flex-shrink-0">
             <svg
@@ -130,7 +130,7 @@ export const SitemapResultDisplay: React.FC<SitemapResultDisplayProps> = ({
 
   if (result.status === SitemapStatus.Canceled) {
     return (
-      <div className="rounded-md border border-warning bg-warning-light p-4">
+      <div className="rounded-md border border-warning bg-warning-soft p-4">
         <div className="flex">
           <div className="flex-shrink-0">
             <svg
@@ -147,10 +147,10 @@ export const SitemapResultDisplay: React.FC<SitemapResultDisplayProps> = ({
             </svg>
           </div>
           <div className="ms-3">
-            <h3 className="text-sm font-medium text-warning-dark">
+            <h3 className="text-sm font-medium text-warning-strong">
               {t('sitemap.generationCanceled')}
             </h3>
-            <div className="mt-2 text-sm text-warning-dark">
+            <div className="mt-2 text-sm text-warning-strong">
               <p>{t('sitemap.generationCanceledMessage')}</p>
             </div>
           </div>

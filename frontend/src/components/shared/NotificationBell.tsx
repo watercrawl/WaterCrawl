@@ -132,7 +132,7 @@ export default function NotificationBell() {
                               <button
                                 onClick={() => handleAcceptInvitation(notification.id)}
                                 disabled={processingId === notification.id}
-                                className="inline-flex items-center rounded border border-transparent bg-primary px-3 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50"
+                                className="inline-flex items-center rounded border border-transparent bg-primary px-3 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-primary-strong focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50"
                               >
                                 {processingId === notification.id ? (
                                   <Loading size="sm" />
@@ -155,7 +155,7 @@ export default function NotificationBell() {
             <div className="border-t border-border px-4 py-2 text-center">
               <a
                 href="/dashboard/profile"
-                className="text-sm font-medium text-primary hover:text-primary-dark"
+                className="text-sm font-medium text-primary hover:text-primary-strong"
               >
                 {t('notifications.viewAll')}
               </a>

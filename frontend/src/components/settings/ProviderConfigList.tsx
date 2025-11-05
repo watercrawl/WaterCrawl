@@ -102,14 +102,14 @@ const ProviderConfigList: React.FC<ProviderConfigListProps> = ({
                       {onView && (
                         <button
                           onClick={() => onView(config)}
-                          className="text-primary hover:text-primary-dark"
+                          className="text-primary hover:text-primary-strong"
                         >
                           <EyeIcon className="h-5 w-5" />
                         </button>
                       )}
                       <button
                         onClick={() => onEdit(config)}
-                        className="text-primary hover:text-primary-dark"
+                        className="text-primary hover:text-primary-strong"
                       >
                         <PencilIcon className="h-5 w-5" />
                       </button>

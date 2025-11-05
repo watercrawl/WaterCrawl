@@ -128,7 +128,7 @@ export const BillingManagementCard: React.FC = () => {
         <div className="border-b border-border p-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-x-4">
-              <CreditCardIcon className="h-8 w-8 text-primary-500" />
+              <CreditCardIcon className="h-8 w-8 text-primary" />
               <div>
                 <h3 className="text-lg font-semibold text-foreground">
                   {currentSubscription.plan_name}
@@ -142,7 +142,7 @@ export const BillingManagementCard: React.FC = () => {
               {currentSubscription.is_default ? (
                 <button
                   onClick={() => navigate('/dashboard/plans')}
-                  className="flex items-center rounded-md border border-primary-600 px-2 py-1 text-sm text-primary hover:text-primary-dark"
+                  className="flex items-center rounded-md border border-primary-strong px-2 py-1 text-sm text-primary hover:text-primary-strong"
                 >
                   {t('billing.upgradePlan')}
                   <ChevronRight className="ms-1 h-4 w-4" />
@@ -205,7 +205,7 @@ export const BillingManagementCard: React.FC = () => {
                 ) : (
                   <button
                     onClick={() => setIsRenewModalOpen(true)}
-                    className="flex items-center rounded-md border border-success px-2 py-1 text-sm text-success hover:text-success-dark"
+                    className="flex items-center rounded-md border border-success px-2 py-1 text-sm text-success hover:text-success-strong"
                   >
                     <ArrowPathIcon className="me-1 h-4 w-4" />
                     {t('billing.renew')}
@@ -255,7 +255,7 @@ export const BillingManagementCard: React.FC = () => {
               <button
                 onClick={handleCancelSubscription}
                 disabled={isLoading}
-                className="rounded-md bg-error px-4 py-2 text-sm text-white hover:bg-error-dark disabled:opacity-50"
+                className="rounded-md bg-error px-4 py-2 text-sm text-white hover:bg-error-strong disabled:opacity-50"
               >
                 {isLoading
                   ? t('billing.modal.cancel.canceling')
@@ -292,7 +292,7 @@ export const BillingManagementCard: React.FC = () => {
               <button
                 onClick={handleRenewSubscription}
                 disabled={isLoading}
-                className="rounded-md bg-success px-4 py-2 text-sm text-white hover:bg-success-dark disabled:opacity-50"
+                className="rounded-md bg-success px-4 py-2 text-sm text-white hover:bg-success-strong disabled:opacity-50"
               >
                 {isLoading ? t('billing.modal.renew.renewing') : t('billing.modal.renew.confirm')}
               </button>
@@ -341,7 +341,7 @@ export const BillingManagementCard: React.FC = () => {
               <button
                 onClick={handleDeleteSubscription}
                 disabled={confirmationText.trim() !== currentTeam?.name || isLoading}
-                className="rounded-md bg-error px-4 py-2 text-sm text-white hover:bg-error-dark disabled:opacity-50"
+                className="rounded-md bg-error px-4 py-2 text-sm text-white hover:bg-error-strong disabled:opacity-50"
               >
                 {isLoading ? t('billing.modal.delete.deleting') : t('billing.modal.delete.confirm')}
               </button>

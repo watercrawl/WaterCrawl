@@ -13,7 +13,7 @@ export const ErrorPage: React.FC<ErrorPageProps> = ({ error, onRetry }) => {
   return (
     <PublicSkeleton>
       <div className="mt-12 flex items-center justify-center">
-        <div className="mx-auto max-w-2xl rounded-lg border border-error bg-error-light p-6 shadow-md">
+        <div className="mx-auto max-w-2xl rounded-lg border border-error bg-error-soft p-6 shadow-md">
           <div className="mb-4 flex items-center">
             <svg
               className="me-3 h-8 w-8 text-error"
@@ -41,7 +41,7 @@ export const ErrorPage: React.FC<ErrorPageProps> = ({ error, onRetry }) => {
           </ul>
 
           {error && (
-            <div className="mb-4 overflow-auto rounded bg-error-light p-3 font-mono text-sm text-error">
+            <div className="mb-4 overflow-auto rounded bg-error-soft p-3 font-mono text-sm text-error">
               <p className="font-semibold">{t('error.errorDetails')}:</p>
               {error.message}
             </div>
@@ -59,7 +59,7 @@ export const ErrorPage: React.FC<ErrorPageProps> = ({ error, onRetry }) => {
             {onRetry && (
               <button
                 onClick={onRetry}
-                className="rounded-md bg-error px-4 py-2 text-white transition-colors duration-200 hover:bg-error-dark focus:outline-none focus:ring-2 focus:ring-error focus:ring-offset-2"
+                className="rounded-md bg-error px-4 py-2 text-white transition-colors duration-200 hover:bg-error-strong focus:outline-none focus:ring-2 focus:ring-error focus:ring-offset-2"
               >
                 {t('error.tryAgain')}
               </button>

@@ -456,7 +456,7 @@ const UrlSelectorPage: React.FC = () => {
                     e.stopPropagation();
                     selectSubtree(value as SitemapGraph, true);
                   }}
-                  className="text-xs text-primary hover:text-primary-900"
+                  className="text-xs text-primary hover:text-primary-strong"
                 >
                   {t('knowledgeBase.import.selectTree')}
                 </button>
@@ -601,7 +601,7 @@ const UrlSelectorPage: React.FC = () => {
             <button
               type="button"
               onClick={handleSelectAll}
-              className="text-xs font-medium text-primary hover:text-primary-900"
+              className="text-xs font-medium text-primary hover:text-primary-strong"
             >
               {t('common.selectAll')}
             </button>

@@ -89,25 +89,25 @@ export const ConfirmProvider: React.FC<{ children: React.ReactNode }> = ({ child
         icon: ExclamationTriangleIcon,
         iconBgColor: 'bg-error',
         iconColor: 'text-error-foreground',
-        buttonClass: 'bg-error hover:bg-error-dark hover:text-error-light focus:ring-error',
+        buttonClass: 'bg-error hover:bg-error-strong hover:text-error-soft focus:ring-error',
       },
       warning: {
         icon: ExclamationCircleIcon,
         iconBgColor: 'bg-warning',
         iconColor: 'text-warning-foreground',
-        buttonClass: 'bg-warning hover:bg-warning-dark hover:text-warning-light focus:ring-warning',
+        buttonClass: 'bg-warning hover:bg-warning-strong hover:text-warning-soft focus:ring-warning',
       },
       info: {
         icon: InformationCircleIcon,
         iconBgColor: 'bg-info',
         iconColor: 'text-info-foreground',
-        buttonClass: 'bg-info hover:bg-info-dark hover:text-info-light focus:ring-info',
+        buttonClass: 'bg-info hover:bg-info-strong hover:text-info-soft focus:ring-info',
       },
       success: {
         icon: CheckCircleIcon,
         iconBgColor: 'bg-success',
         iconColor: 'text-success-foreground',
-        buttonClass: 'bg-success hover:bg-success-dark hover:text-success-light focus:ring-success',
+        buttonClass: 'bg-success hover:bg-success-strong hover:text-success-soft focus:ring-success',
       },
     };
     return configs[variant];

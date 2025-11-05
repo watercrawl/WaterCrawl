@@ -7,7 +7,7 @@ export const SimpleSubscriptionPrompt: React.FC = () => {
   const { t } = useTranslation();
   return (
     <div className="relative overflow-hidden rounded-lg bg-card shadow-lg">
-      <div className="absolute inset-0 bg-gradient-to-r from-primary-light to-primary-light opacity-50" />
+      <div className="absolute inset-0 bg-gradient-to-r from-primary-soft to-primary-soft opacity-50" />
 
       <div className="relative p-6">
         <div className="flex flex-col items-center space-y-4 text-center">

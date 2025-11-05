@@ -20,7 +20,7 @@ const AdminCard: React.FC<AdminCardProps> = ({
   description,
   linkTo,
   linkText = 'Manage',
-  iconBgColor = 'bg-primary-100',
+  iconBgColor = 'bg-primary-soft',
   iconTextColor = 'text-primary',
   buttonColor = 'bg-primary',
   buttonHoverColor = 'hover:bg-primary-hover',

@@ -71,7 +71,7 @@ export const PrivacyTermsModal: React.FC<PrivacyTermsModalProps> = ({ show }) =>
             <h2 className="text-2xl font-bold text-foreground">{t('privacy.title')}</h2>
           </div>
 
-          <div className="flex items-start gap-x-3 rounded-lg border border-primary bg-primary-light p-4">
+          <div className="flex items-start gap-x-3 rounded-lg border border-primary bg-primary-soft p-4">
             <ExclamationTriangleIcon className="mt-1 h-6 w-6 flex-shrink-0 text-warning" />
             <p className="text-sm text-foreground">{t('privacy.updateMessage')}</p>
           </div>
@@ -142,7 +142,7 @@ export const PrivacyTermsModal: React.FC<PrivacyTermsModalProps> = ({ show }) =>
               type="button"
               disabled={isLoading}
               onClick={handleConfirm}
-              className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-500 focus:outline-none focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
+              className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isLoading ? (
                 <svg

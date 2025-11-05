@@ -20,7 +20,7 @@ const DashboardPage: React.FC = () => {
         {/* Header */}
         <div className="mb-8">
           <div className="mb-2 flex items-center gap-x-3">
-            <div className="rounded-lg bg-gradient-to-r from-primary-500 to-primary-600 p-2">
+            <div className="rounded-lg bg-gradient-to-r from-primary to-primary-strong p-2">
               <SparklesIcon className="h-6 w-6 text-white" />
             </div>
             <h1 className="text-xl font-bold text-foreground sm:text-3xl">

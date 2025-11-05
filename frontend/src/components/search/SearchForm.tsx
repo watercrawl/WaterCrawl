@@ -286,7 +286,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({
                   max={20}
                   value={searchOptions.numResults}
                   onChange={e => handleOptionChange('numResults', parseInt(e.target.value, 10))}
-                  className="mt-1 block w-full rounded-md border border-input-border bg-card px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-primary sm:text-sm"
+                  className="mt-1 block w-full rounded-md shadow-sm border bg-input text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary border-input-border sm:text-sm"
                 />
               </div>
 
@@ -301,7 +301,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({
                     onClick={() => handleOptionChange('depth', Depth.Basic)}
                     className={`inline-flex items-center rounded-md px-3 py-1.5 text-sm ${
                       searchOptions.depth === Depth.Basic
-                        ? 'border-primary-700 bg-primary text-white'
+                        ? 'border-primary-strong bg-primary text-white'
                         : 'border-input-border bg-muted text-foreground'
                     } border transition-all hover:bg-opacity-90`}
                   >
@@ -315,7 +315,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({
                     onClick={() => handleOptionChange('depth', Depth.Advanced)}
                     className={`inline-flex items-center rounded-md px-3 py-1.5 text-sm ${
                       searchOptions.depth === Depth.Advanced
-                        ? 'border-primary-700 bg-primary text-white'
+                        ? 'border-primary-strong bg-primary text-white'
                         : 'border-input-border bg-muted text-foreground'
                     } border transition-all hover:bg-opacity-90`}
                   >
@@ -329,7 +329,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({
                     onClick={() => handleOptionChange('depth', Depth.Ultimate)}
                     className={`inline-flex items-center rounded-md px-3 py-1.5 text-sm ${
                       searchOptions.depth === Depth.Ultimate
-                        ? 'border-primary-700 bg-primary text-white'
+                        ? 'border-primary-strong bg-primary text-white'
                         : 'border-input-border bg-muted text-foreground'
                     } border transition-all hover:bg-opacity-90`}
                   >
@@ -557,7 +557,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({
               <button
                 type="button"
                 onClick={handleCancel}
-                className="w-full rounded-lg bg-error px-6 py-2.5 text-sm font-medium text-error-foreground transition-colors hover:bg-error-light hover:text-error-dark focus:outline-none focus:ring-error focus:ring-offset-2 md:w-auto"
+                className="w-full rounded-lg bg-error px-6 py-2.5 text-sm font-medium text-error-foreground transition-colors hover:bg-error-soft hover:text-error-strong focus:outline-none focus:ring-error focus:ring-offset-2 md:w-auto"
               >
                 {t('search.cancelSearch')}
               </button>

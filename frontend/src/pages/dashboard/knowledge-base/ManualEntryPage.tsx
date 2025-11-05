@@ -101,7 +101,7 @@ const ManualEntryPage: React.FC = () => {
         <div className="mb-2 flex items-center">
           <Link
             to={`/dashboard/knowledge-base/${knowledgeBaseId}/import`}
-            className="me-2 text-primary hover:text-primary-dark"
+            className="me-2 text-primary hover:text-primary-strong"
           >
             <ArrowLeft className="h-5 w-5" />
           </Link>
@@ -136,7 +136,7 @@ const ManualEntryPage: React.FC = () => {
               value={manualContent}
               onChange={e => setManualContent(e.target.value)}
               rows={10}
-              className="w-full rounded-md border border-input-border px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-primary"
+              className="w-full rounded-md shadow-sm border border-input-border bg-input text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary px-3 py-2"
               placeholder={t('settings.knowledgeBase.manualEntry.contentPlaceholder')}
             />
           </div>

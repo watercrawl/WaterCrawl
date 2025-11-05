@@ -32,17 +32,17 @@ const STATUS_ICONS = {
 };
 
 const STATUS_COLORS: Record<string, string> = {
-  new: 'bg-info-light text-info-dark border-info-light',
-  running: 'bg-info-light text-info-dark border-info-light',
+  new: 'bg-info-soft text-info-strong border-info-soft',
+  running: 'bg-info-soft text-info-strong border-info-soft',
   canceled: 'bg-muted text-muted-foreground border-border',
   canceling: 'bg-muted text-muted-foreground border-border',
-  failed: 'bg-error-light text-error-dark border-error-light',
-  finished: 'bg-success-light text-success-dark border-success-light',
-  ready: 'bg-success-light text-success-dark border-success-light',
-  processing: 'bg-info-light text-info-dark border-info-light',
-  active: 'bg-success-light text-success-dark border-success-light',
-  archived: 'bg-warning-light text-warning-dark border-warning-light',
-  deleted: 'bg-error-light text-error-dark border-error-light',
+  failed: 'bg-error-soft text-error-strong border-error-soft',
+  finished: 'bg-success-soft text-success-strong border-success-soft',
+  ready: 'bg-success-soft text-success-strong border-success-soft',
+  processing: 'bg-info-soft text-info-strong border-info-soft',
+  active: 'bg-success-soft text-success-strong border-success-soft',
+  archived: 'bg-warning-soft text-warning-strong border-warning-soft',
+  deleted: 'bg-error-soft text-error-strong border-error-soft',
 } as const;
 
 const getStatusColor = (status: string): string => {

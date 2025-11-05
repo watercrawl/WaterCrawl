@@ -27,17 +27,17 @@ const OptionCard: React.FC<OptionCardProps> = ({
   const getBadgeColors = (color: string) => {
     switch (color) {
       case 'primary':
-        return 'bg-primary-light text-primary-dark';
+        return 'bg-primary-soft text-primary-strong';
       case 'success':
-        return 'bg-success-light text-success-dark';
+        return 'bg-success-soft text-success-strong';
       case 'warning':
-        return 'bg-warning-light text-warning-dark';
+        return 'bg-warning-soft text-warning-strong';
       case 'danger':
-        return 'bg-error-light text-error-dark';
+        return 'bg-error-soft text-error-strong';
       case 'info':
-        return 'bg-info-light text-info-dark border-info-dark';
+        return 'bg-info-soft text-info-strong border-info-strong';
       default:
-        return 'bg-primary-light text-primary-dark';
+        return 'bg-primary-soft text-primary-strong';
     }
   };
 
@@ -45,7 +45,7 @@ const OptionCard: React.FC<OptionCardProps> = ({
     <div
       onClick={onClick}
       className={`flex flex-col border p-2 ${
-        isSelected ? 'border-primary bg-primary-light' : 'border-border'
+        isSelected ? 'border-primary bg-primary-soft' : 'border-border'
       } cursor-pointer rounded-lg transition-all hover:border-primary`}
     >
       <div className="flex items-center">

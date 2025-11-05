@@ -43,9 +43,9 @@ export const KnowledgeBasePricingInfo: React.FC<KnowledgeBasePricingInfoProps> =
   if (!settings || !settings.is_enterprise_mode_active) return null;
 
   return (
-    <Card className={`border-primary bg-primary-light ${className}`}>
+    <Card className={`border-primary bg-primary-soft ${className}`}>
       <Card.Title
-        className="text-primary-dark"
+        className="text-primary-strong"
         icon={<InformationCircleIcon className="h-5 w-5 text-primary" />}
       >
         {t('knowledgeBase.pricing.title')}
@@ -97,7 +97,7 @@ export const KnowledgeBasePricingInfo: React.FC<KnowledgeBasePricingInfoProps> =
                   </p>
                   <Link
                     to="/dashboard/settings#provider-config"
-                    className="text-xs text-success underline hover:text-success-dark"
+                    className="text-xs text-success underline hover:text-success-strong"
                   >
                     {t('knowledgeBase.pricing.manageProviders')} →
                   </Link>
@@ -154,7 +154,7 @@ export const KnowledgeBasePricingInfo: React.FC<KnowledgeBasePricingInfoProps> =
                       : rateLimit}
                 </span>
               </div>
-              <div className="rounded bg-success-light p-2 text-xs text-success-dark">
+              <div className="rounded bg-success-soft p-2 text-xs text-success-strong">
                 <strong>🎉 {t('knowledgeBase.pricing.limitedTime')}:</strong>{' '}
                 {t('knowledgeBase.pricing.retrievalsFree')}
               </div>
@@ -162,14 +162,14 @@ export const KnowledgeBasePricingInfo: React.FC<KnowledgeBasePricingInfoProps> =
           </div>
 
           {/* Important Notice */}
-          <div className="rounded-lg border border-warning bg-warning-light p-4">
+          <div className="rounded-lg border border-warning bg-warning-soft p-4">
             <div className="flex items-start gap-x-2">
               <ExclamationTriangleIcon className="mt-0.5 h-4 w-4 flex-shrink-0 text-warning" />
               <div className="text-sm">
-                <p className="mb-1 font-medium text-warning-dark">
+                <p className="mb-1 font-medium text-warning-strong">
                   {t('knowledgeBase.pricing.pricingPolicy')}
                 </p>
-                <p className="text-xs text-warning-dark">
+                <p className="text-xs text-warning-strong">
                   {t('knowledgeBase.pricing.pricingPolicyText')}
                 </p>
               </div>

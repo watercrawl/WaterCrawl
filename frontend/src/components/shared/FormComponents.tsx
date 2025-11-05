@@ -45,7 +45,7 @@ export const FormInput: React.FC<{
       value={value}
       onChange={e => onChange(e.target.value)}
       disabled={disabled}
-      className="ltr h-10 w-full rounded-md border border-border bg-transparent px-3 text-foreground focus:border-border focus:outline-none disabled:bg-muted"
+      className="ltr h-10 w-full rounded-md border border-border bg-input px-3 text-foreground focus:border-border focus:outline-none disabled:bg-muted"
       placeholder={placeholder}
     />
     {helpText && <p className="mt-1 text-xs text-muted-foreground">{helpText}</p>}

@@ -291,7 +291,7 @@ export const DashboardLayout = () => {
               className="flex items-center gap-2"
             >
               <img src="/logo-dark.svg" alt="WaterCrawl" width={32} height={32} />
-              <span className="bg-gradient-to-r from-primary-light to-primary-light bg-clip-text text-lg font-semibold text-transparent">
+              <span className="bg-gradient-to-r from-primary-soft to-primary-soft bg-clip-text text-lg font-semibold text-transparent">
                 WaterCrawl
               </span>
             </Link>

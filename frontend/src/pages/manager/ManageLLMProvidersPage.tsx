@@ -13,9 +13,11 @@ import Button from '../../components/shared/Button';
 import { adminProviderApi } from '../../services/api/admin/provider';
 import { AdminProviderConfig } from '../../types/admin/provider';
 import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
+import { useConfirm } from '../../contexts/ConfirmContext';
 
 const ManageLLMProvidersPage: React.FC = () => {
   const { t } = useTranslation();
+  const { confirm } = useConfirm();
   const [response, setResponse] = useState<PaginatedResponse<AdminProviderConfig>>({
     count: 0,
     next: null,
@@ -115,19 +117,25 @@ const ManageLLMProvidersPage: React.FC = () => {
 
   // Function to delete a provider config
   const handleDeleteProviderConfig = async (uuid: string) => {
-    if (window.confirm(t('providerConfig.deleteConfirm'))) {
-      try {
-        setDeletingUuid(uuid);
-        await adminProviderApi.providerConfiguration.delete(uuid);
-        toast.success(t('providerConfig.toast.deleteSuccess'));
-        fetchProviderConfigs();
-      } catch (error) {
-        console.error('Error deleting provider config:', error);
-        toast.error(t('providerConfig.toast.deleteError'));
-      } finally {
-        setDeletingUuid(null);
-      }
-    }
+    confirm({
+      title: t('providerConfig.deleteTitle'),
+      message: t('providerConfig.deleteConfirm'),
+      confirmText: t('common.delete'),
+      variant: 'danger',
+      onConfirm: async () => {
+        try {
+          setDeletingUuid(uuid);
+          await adminProviderApi.providerConfiguration.delete(uuid);
+          toast.success(t('providerConfig.toast.deleteSuccess'));
+          fetchProviderConfigs();
+        } catch (error) {
+          console.error('Error deleting provider config:', error);
+          toast.error(t('providerConfig.toast.deleteError'));
+        } finally {
+          setDeletingUuid(null);
+        }
+      },
+    });
   };
 
   // Function to open the edit modal

@@ -95,7 +95,7 @@ const KnowledgeBaseImportOptionsPage: React.FC = () => {
     accentColor?: 'primary' | 'blue' | 'green' | 'purple';
   }) => {
     const iconColors = {
-      primary: 'text-primary-500',
+      primary: 'text-primary',
       blue: 'text-primary',
       green: 'text-success',
       purple: 'text-primary',
@@ -136,7 +136,7 @@ const KnowledgeBaseImportOptionsPage: React.FC = () => {
     accentColor?: 'primary' | 'blue' | 'green' | 'purple';
   }) => {
     const iconColors = {
-      primary: 'text-primary-500',
+      primary: 'text-primary',
       blue: 'text-primary',
       green: 'text-success',
       purple: 'text-primary',

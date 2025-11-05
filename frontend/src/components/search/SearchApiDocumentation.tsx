@@ -222,7 +222,7 @@ console.log('Results count:', searchRequest.results ? searchRequest.results.leng
                   classNames(
                     'px-4 py-2.5 text-sm font-medium leading-5 focus:outline-none',
                     selected
-                      ? 'border-b-2 border-primary-600 text-primary'
+                      ? 'border-b-2 border-primary-strong text-primary'
                       : 'text-muted-foreground hover:text-foreground'
                   )
                 }

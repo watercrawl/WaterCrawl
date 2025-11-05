@@ -23,11 +23,9 @@ export const TextAreaWidget: React.FC<FieldProps> = ({
       readOnly={schema.readOnly}
       rows={ui.rows || 3}
       cols={ui.cols}
-      className={`w-full border bg-transparent px-3 py-2 ${
-        hasError ? 'border-error' : 'border-border'
-      } rounded-md text-foreground focus:outline-none focus:ring-1 ${
-        hasError ? 'focus:border-error focus:ring-error' : 'focus:border-primary focus:ring-primary'
-      } transition-colors ${ui.inputClassName || ''}`}
+      className={`w-full rounded-md shadow-sm border bg-input text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary ${
+        hasError ? 'border-error focus:border-error focus:ring-error' : 'border-input-border'
+      } ${ui.inputClassName || ''}`}
     />
   );
 };

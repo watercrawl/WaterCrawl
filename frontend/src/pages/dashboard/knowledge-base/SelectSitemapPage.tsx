@@ -194,7 +194,7 @@ const SelectSitemapPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => handleSitemapSelect(sitemap.uuid as string)}
-                      className="flex items-center text-primary hover:text-primary-900"
+                      className="flex items-center text-primary hover:text-primary-strong"
                     >
                       {t('settings.knowledgeBase.selectSitemap.select')}
                       <ChevronRight className="ms-1 h-4 w-4" />

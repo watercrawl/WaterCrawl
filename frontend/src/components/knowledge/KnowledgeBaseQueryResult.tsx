@@ -93,7 +93,7 @@ export const KnowledgeBaseQueryResult: React.FC<KnowledgeBaseQueryResultProps> =
               {showDocumentLink && result.metadata.document_id && (
                 <Link
                   to={`/dashboard/knowledge-base/${result.metadata.knowledge_base_id}/documents/${result.metadata.document_id}`}
-                  className="inline-flex items-center rounded-md bg-primary-100 px-2 py-1 text-xs font-medium text-primary transition-colors hover:bg-primary/20"
+                  className="inline-flex items-center rounded-md bg-primary-soft px-2 py-1 text-xs font-medium text-primary transition-colors hover:bg-primary/20"
                   target="_blank"
                 >
                   <ArrowTopRightOnSquareIcon className="me-1 h-3 w-3" />
@@ -148,7 +148,7 @@ export const KnowledgeBaseQueryResult: React.FC<KnowledgeBaseQueryResultProps> =
                 {result.metadata.keywords.map((keyword, i) => (
                   <span
                     key={i}
-                    className="inline-flex items-center rounded-full bg-primary-100 px-2 py-1 text-xs font-medium text-primary-dark"
+                    className="inline-flex items-center rounded-full bg-primary-soft px-2 py-1 text-xs font-medium text-primary-strong"
                   >
                     #{keyword}
                   </span>
