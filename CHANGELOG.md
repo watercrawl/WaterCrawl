@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.11.1] - 2025-01-06
+
+### Fixed
+- **Sentry Initialization** - Fixed Sentry monitoring initialization across all application entry points
+  - Added Sentry initialization to Django management commands (manage.py)
+  - Integrated Sentry into Scrapy spider settings for comprehensive crawler monitoring
+  - Enabled Sentry in WSGI application for production error tracking
+  - Ensures complete error tracking coverage across all application components
+
+### Changed
+- **Django Upgrade** - Updated Django framework to version 5.2.8
+  - Security patches and bug fixes
+  - Improved stability and performance
+
 ## [0.11.0] - 2025-01-04
 
 ### Added
