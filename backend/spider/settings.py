@@ -4,10 +4,13 @@ import django
 from django.conf import settings
 
 from core.utils import get_active_plugins
+from watercrawl.sentry import init_sentry
 
 sys.path.append(os.path.dirname(os.path.abspath(".")))
 os.environ["DJANGO_SETTINGS_MODULE"] = "watercrawl.settings"
 django.setup()
+
+init_sentry()
 
 # Scrapy settings for spider project
 #
