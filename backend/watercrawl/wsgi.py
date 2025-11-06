@@ -15,6 +15,6 @@ from .sentry import init_sentry
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "watercrawl.settings")
 
-application = get_wsgi_application()
-
 init_sentry()
+
+application = get_wsgi_application()
