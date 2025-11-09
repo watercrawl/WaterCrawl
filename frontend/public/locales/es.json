@@ -1117,7 +1117,7 @@
   "providerConfig": {
     "addButton": "Agregar Configuración de Proveedor",
     "deleteConfirm": "¿Estás seguro de que quieres eliminar esta configuración de proveedor?",
-    "deleteTitle": "Delete Provider Configuration",
+    "deleteTitle": "Eliminar configuración del proveedor",
     "details": "Detalles de Configuración",
     "modelName": "Nombre del Modelo",
     "provider": "Proveedor",
@@ -1319,7 +1319,7 @@
         "deleteConfirm": "¿Estás seguro de que quieres eliminar este documento? Esta acción no se puede deshacer.",
         "deleteError": "Error al eliminar el documento.",
         "deleteSuccess": "Documento eliminado correctamente.",
-        "deleteTitle": "Delete Document",
+        "deleteTitle": "Eliminar documento",
         "deleting": "Eliminando documento...",
         "errorDetails": "El documento no pudo ser procesado. Detalles del error:",
         "keywords": "Palabras Clave",
@@ -1610,7 +1610,7 @@
       "addButton": "Agregar Configuración de Proveedor",
       "createTitle": "Agregar Configuración de Proveedor",
       "deleteConfirm": "¿Estás seguro de que quieres eliminar esta configuración de proveedor?",
-      "deleteTitle": "Delete Provider Configuration",
+      "deleteTitle": "Eliminar configuración del proveedor",
       "deleting": "Eliminando...",
       "editTitle": "Editar Configuración de Proveedor",
       "form": {
@@ -1676,7 +1676,7 @@
       "createTitle": "Crear Nuevo Servidor Proxy",
       "default": "Predeterminado",
       "deleteConfirm": "¿Estás seguro de que quieres eliminar este servidor proxy?",
-      "deleteTitle": "Delete Proxy Server",
+      "deleteTitle": "Eliminar servidor proxy",
       "editTitle": "Editar Servidor Proxy",
       "form": {
         "authSettings": "Configuración de Autenticación",

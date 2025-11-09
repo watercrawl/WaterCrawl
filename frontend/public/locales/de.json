@@ -1117,7 +1117,7 @@
   "providerConfig": {
     "addButton": "Anbieter-Konfiguration hinzufügen",
     "deleteConfirm": "Sind Sie sicher, dass Sie diese Anbieter-Konfiguration löschen möchten?",
-    "deleteTitle": "Delete Provider Configuration",
+    "deleteTitle": "Anbieter-Konfiguration löschen",
     "details": "Details",
     "modelName": "Modellname",
     "provider": "Anbieter",
@@ -1319,7 +1319,7 @@
         "deleteConfirm": "Möchten Sie dieses Dokument wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
         "deleteError": "Dokument konnte nicht gelöscht werden.",
         "deleteSuccess": "Dokument erfolgreich gelöscht.",
-        "deleteTitle": "Delete Document",
+        "deleteTitle": "Dokument löschen",
         "deleting": "Dokument wird gelöscht...",
         "errorDetails": "Das Dokument konnte nicht verarbeitet werden. Fehlerdetails:",
         "keywords": "Schlüsselwörter",
@@ -1610,7 +1610,7 @@
       "addButton": "Anbieterkonfiguration hinzufügen",
       "createTitle": "Anbieterkonfiguration hinzufügen",
       "deleteConfirm": "Möchten Sie diese Anbieterkonfiguration wirklich löschen?",
-      "deleteTitle": "Delete Provider Configuration",
+      "deleteTitle": "Anbieter-Konfiguration löschen",
       "deleting": "Löscht...",
       "editTitle": "Anbieterkonfiguration bearbeiten",
       "form": {
@@ -1676,7 +1676,7 @@
       "createTitle": "Neuen Proxy-Server erstellen",
       "default": "Standard",
       "deleteConfirm": "Möchten Sie diesen Proxy-Server wirklich löschen?",
-      "deleteTitle": "Delete Proxy Server",
+      "deleteTitle": "Proxy-Server löschen",
       "editTitle": "Proxy-Server bearbeiten",
       "form": {
         "authSettings": "Authentifizierungseinstellungen",

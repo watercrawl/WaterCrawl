@@ -1117,7 +1117,7 @@
   "providerConfig": {
     "addButton": "افزودن پیکربندی ارائه‌دهنده",
     "deleteConfirm": "آیا مطمئن هستید که می‌خواهید این پیکربندی ارائه‌دهنده را حذف کنید؟",
-    "deleteTitle": "Delete Provider Configuration",
+    "deleteTitle": "حذف پیکربندی ارائه‌دهنده",
     "details": "جزئیات پیکربندی",
     "modelName": "نام مدل",
     "provider": "ارائه‌دهنده",
@@ -1319,7 +1319,7 @@
         "deleteConfirm": "آیا مطمئن هستید که می‌خواهید این سند را حذف کنید؟ این عملیات قابل برگشت نیست.",
         "deleteError": "حذف سند ناموفق بود.",
         "deleteSuccess": "سند با موفقیت حذف شد.",
-        "deleteTitle": "Delete Document",
+        "deleteTitle": "حذف سند",
         "deleting": "در حال حذف سند...",
         "errorDetails": "سند قابل پردازش نبود. جزئیات خطا:",
         "keywords": "کلمات کلیدی",
@@ -1610,7 +1610,7 @@
       "addButton": "افزودن پیکربندی ارائه‌دهنده",
       "createTitle": "افزودن پیکربندی ارائه‌دهنده",
       "deleteConfirm": "آیا مطمئن هستید که می‌خواهید این پیکربندی ارائه‌دهنده را حذف کنید؟",
-      "deleteTitle": "Delete Provider Configuration",
+      "deleteTitle": "حذف پیکربندی ارائه‌دهنده",
       "deleting": "در حال حذف...",
       "editTitle": "ویرایش پیکربندی ارائه‌دهنده",
       "form": {
@@ -1676,7 +1676,7 @@
       "createTitle": "ایجاد سرور پروکسی جدید",
       "default": "پیش‌فرض",
       "deleteConfirm": "آیا مطمئن هستید که می‌خواهید این سرور پروکسی را حذف کنید؟",
-      "deleteTitle": "Delete Proxy Server",
+      "deleteTitle": "حذف سرور پروکسی",
       "editTitle": "ویرایش سرور پروکسی",
       "form": {
         "authSettings": "تنظیمات احراز هویت",

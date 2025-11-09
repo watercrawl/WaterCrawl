@@ -1117,7 +1117,7 @@
   "providerConfig": {
     "addButton": "添加提供商配置",
     "deleteConfirm": "您确定要删除此提供商配置吗？",
-    "deleteTitle": "Delete Provider Configuration",
+    "deleteTitle": "删除提供商配置",
     "details": "配置详情",
     "modelName": "模型名称",
     "provider": "提供商",
@@ -1319,7 +1319,7 @@
         "deleteConfirm": "您确定要删除此文档吗？此操作无法撤销。",
         "deleteError": "删除文档失败。",
         "deleteSuccess": "文档删除成功。",
-        "deleteTitle": "Delete Document",
+        "deleteTitle": "删除文档",
         "deleting": "删除文档中...",
         "errorDetails": "无法处理文档。错误详情：",
         "keywords": "关键词",
@@ -1610,7 +1610,7 @@
       "addButton": "添加提供商配置",
       "createTitle": "添加提供商配置",
       "deleteConfirm": "您确定要删除此提供商配置吗？",
-      "deleteTitle": "Delete Provider Configuration",
+      "deleteTitle": "删除提供商配置",
       "deleting": "删除中...",
       "editTitle": "编辑提供商配置",
       "form": {
@@ -1676,7 +1676,7 @@
       "createTitle": "创建新代理服务器",
       "default": "默认",
       "deleteConfirm": "您确定要删除此代理服务器吗？",
-      "deleteTitle": "Delete Proxy Server",
+      "deleteTitle": "删除代理服务器",
       "editTitle": "编辑代理服务器",
       "form": {
         "authSettings": "认证设置",
