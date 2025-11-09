@@ -324,12 +324,10 @@ class GithubOAuthService(AbsractOAuth2Service):
             response.raise_for_status()
             data = response.json()
             
-            # Check if GitHub returned an error in the response body
-            if "error" in data:
-                return None
-            
             access_token = data.get("access_token")
             if not access_token:
+                # This handles cases where GitHub returns an error in the JSON body
+                # (e.g., for an expired code) or if the token is missing for other reasons.
                 return None
                 
             response = requests.get(
