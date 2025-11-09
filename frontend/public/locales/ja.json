@@ -1117,6 +1117,7 @@
   "providerConfig": {
     "addButton": "プロバイダー設定を追加",
     "deleteConfirm": "このプロバイダー設定を削除してもよろしいですか？",
+    "deleteTitle": "Delete Provider Configuration",
     "details": "詳細",
     "modelName": "モデル名",
     "provider": "プロバイダー",
@@ -1318,6 +1319,7 @@
         "deleteConfirm": "このドキュメントを削除してもよろしいですか？この操作は元に戻せません。",
         "deleteError": "ドキュメントの削除に失敗しました。",
         "deleteSuccess": "ドキュメントが正常に削除されました。",
+        "deleteTitle": "Delete Document",
         "deleting": "ドキュメントを削除中...",
         "errorDetails": "ドキュメントを処理できませんでした。エラー詳細：",
         "keywords": "キーワード",
@@ -1608,6 +1610,7 @@
       "addButton": "プロバイダー設定を追加",
       "createTitle": "プロバイダー設定を追加",
       "deleteConfirm": "このプロバイダー設定を削除してもよろしいですか？",
+      "deleteTitle": "Delete Provider Configuration",
       "deleting": "削除中...",
       "editTitle": "プロバイダー設定を編集",
       "form": {
@@ -1673,6 +1676,7 @@
       "createTitle": "新しいプロキシサーバーを作成",
       "default": "デフォルト",
       "deleteConfirm": "このプロキシサーバーを削除してもよろしいですか？",
+      "deleteTitle": "Delete Proxy Server",
       "editTitle": "プロキシサーバーを編集",
       "form": {
         "authSettings": "認証設定",
