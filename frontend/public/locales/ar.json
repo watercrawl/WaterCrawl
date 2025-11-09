@@ -1117,7 +1117,7 @@
   "providerConfig": {
     "addButton": "إضافة تكوين مزود",
     "deleteConfirm": "هل أنت متأكد من حذف تكوين المزود هذا؟",
-    "deleteTitle": "Delete Provider Configuration",
+    "deleteTitle": "حذف تكوين المزود",
     "details": "تفاصيل التكوين",
     "modelName": "اسم النموذج",
     "provider": "المزود",
@@ -1319,7 +1319,7 @@
         "deleteConfirm": "هل أنت متأكد من حذف هذا المستند؟ لا يمكن التراجع عن هذا الإجراء.",
         "deleteError": "فشل حذف المستند.",
         "deleteSuccess": "تم حذف المستند بنجاح.",
-        "deleteTitle": "Delete Document",
+        "deleteTitle": "حذف المستند",
         "deleting": "جاري حذف المستند...",
         "errorDetails": "لم يتمكن من معالجة المستند. تفاصيل الخطأ:",
         "keywords": "الكلمات المفتاحية",
@@ -1610,7 +1610,7 @@
       "addButton": "إضافة تكوين مزود",
       "createTitle": "إضافة تكوين مزود",
       "deleteConfirm": "هل أنت متأكد من حذف تكوين المزود هذا؟",
-      "deleteTitle": "Delete Provider Configuration",
+      "deleteTitle": "حذف تكوين المزود",
       "deleting": "جاري الحذف...",
       "editTitle": "تعديل تكوين المزود",
       "form": {
@@ -1676,7 +1676,7 @@
       "createTitle": "إنشاء خادم بروكسي جديد",
       "default": "افتراضي",
       "deleteConfirm": "هل أنت متأكد من حذف خادم البروكسي هذا؟",
-      "deleteTitle": "Delete Proxy Server",
+      "deleteTitle": "حذف خادم البروكسي",
       "editTitle": "تعديل خادم البروكسي",
       "form": {
         "authSettings": "إعدادات المصادقة",
