@@ -288,7 +288,7 @@ class GoogleOAuthService(AbsractOAuth2Service):
             response.raise_for_status()
             data = response.json()
             return self.get_or_create_user(
-                data["email"], data["given_name"], data["family_name"]
+                data["email"], data.get("given_name"), data.get("family_name")
             )
         except requests.RequestException:
             return None
@@ -303,7 +303,7 @@ class GoogleSigninButtonService(AbsractOAuth2Service):
             response.raise_for_status()
             data = response.json()
             return self.get_or_create_user(
-                data["email"], data["given_name"], data["family_name"]
+                data["email"], data.get("given_name"), data.get("family_name")
             )
         except requests.RequestException:
             return None
@@ -323,7 +323,13 @@ class GithubOAuthService(AbsractOAuth2Service):
             )
             response.raise_for_status()
             data = response.json()
-            access_token = data["access_token"]
+            
+            access_token = data.get("access_token")
+            if not access_token:
+                # This handles cases where GitHub returns an error in the JSON body
+                # (e.g., for an expired code) or if the token is missing for other reasons.
+                return None
+                
             response = requests.get(
                 "https://api.github.com/user/emails",
                 headers={"Authorization": f"token {access_token}"},
