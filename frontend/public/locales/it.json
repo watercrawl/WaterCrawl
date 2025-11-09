@@ -1117,7 +1117,7 @@
   "providerConfig": {
     "addButton": "Aggiungi Configurazione Provider",
     "deleteConfirm": "Sei sicuro di voler eliminare questa configurazione provider?",
-    "deleteTitle": "Delete Provider Configuration",
+    "deleteTitle": "Elimina configurazione provider",
     "details": "Dettagli Configurazione",
     "modelName": "Nome Modello",
     "provider": "Provider",
@@ -1319,7 +1319,7 @@
         "deleteConfirm": "Sei sicuro di voler eliminare questo documento? Questa azione non può essere annullata.",
         "deleteError": "Impossibile eliminare il documento.",
         "deleteSuccess": "Documento eliminato con successo.",
-        "deleteTitle": "Delete Document",
+        "deleteTitle": "Elimina documento",
         "deleting": "Eliminazione documento...",
         "errorDetails": "Il documento non è stato elaborato. Dettagli errore:",
         "keywords": "Parole Chiave",
@@ -1610,7 +1610,7 @@
       "addButton": "Aggiungi Configurazione Provider",
       "createTitle": "Aggiungi Configurazione Provider",
       "deleteConfirm": "Sei sicuro di voler eliminare questa configurazione provider?",
-      "deleteTitle": "Delete Provider Configuration",
+      "deleteTitle": "Elimina configurazione provider",
       "deleting": "Eliminazione...",
       "editTitle": "Modifica Configurazione Provider",
       "form": {
@@ -1676,7 +1676,7 @@
       "createTitle": "Crea Nuovo Server Proxy",
       "default": "Predefinito",
       "deleteConfirm": "Sei sicuro di voler eliminare questo server proxy?",
-      "deleteTitle": "Delete Proxy Server",
+      "deleteTitle": "Elimina server proxy",
       "editTitle": "Modifica Server Proxy",
       "form": {
         "authSettings": "Impostazioni Autenticazione",
