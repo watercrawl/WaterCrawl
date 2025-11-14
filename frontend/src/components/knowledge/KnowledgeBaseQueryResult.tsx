@@ -167,7 +167,7 @@ export const KnowledgeBaseQueryResult: React.FC<KnowledgeBaseQueryResultProps> =
         isOpen={showPreviewModal}
         onClose={() => setShowPreviewModal(false)}
         title={t('knowledgeBase.contentPreview')}
-        size="80vw"
+        size="6xl"
       >
         <div className="mt-4">
           <div className="mb-4 rounded-md bg-muted p-3">

@@ -23,8 +23,6 @@ import { SearchResult, SearchRequest, SearchEvent } from '../../types/search';
 import { formatDistanceToNowLocalized } from '../../utils/dateUtils';
 import { formatDuration } from '../../utils/formatters';
 
-
-
 const SearchRequestDetailPage: React.FC = () => {
   const { t } = useTranslation();
   const dateLocale = useDateLocale();

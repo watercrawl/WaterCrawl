@@ -17,7 +17,6 @@ import { KnowledgeBaseDetail } from '../../../types/knowledge';
 import { SitemapRequest } from '../../../types/sitemap';
 import { formatDistanceToNowLocalized } from '../../../utils/dateUtils';
 
-
 const SelectSitemapPage: React.FC = () => {
   const { t } = useTranslation();
   const dateLocale = useDateLocale();

@@ -8,6 +8,7 @@ import { PlusIcon } from '@heroicons/react/24/outline';
 import ProxyForm from '../../components/settings/ProxyForm';
 import ProxyList from '../../components/settings/ProxyList';
 import Button from '../../components/shared/Button';
+import PageHeader from '../../components/shared/PageHeader';
 import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
 import { useConfirm } from '../../contexts/ConfirmContext';
 import useIsTabletOrMobile from '../../hooks/useIsTabletOrMobile';
@@ -134,8 +135,7 @@ const ManageProxiesPage: React.FC = () => {
     <div className="mt-8 space-y-6">
       <div className="sm:flex sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-lg font-medium text-foreground">{t('settings.proxy.title')}</h2>
-          <p className="mt-1 text-sm text-muted-foreground">{t('settings.proxy.subtitle')}</p>
+          <PageHeader titleKey="settings.proxy.title" descriptionKey="settings.proxy.subtitle" />
         </div>
         <div className="mt-4 sm:mt-0">
           <Button

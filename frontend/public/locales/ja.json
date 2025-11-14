@@ -38,7 +38,8 @@
   },
   "admin": {
     "dashboard": "管理者ダッシュボード",
-    "exitAdmin": "管理者モードを終了",
+    "description": "システム全体の設定、プロキシ、LLMプロバイダーを管理",
+    "exitAdmin": "管理者を終了",
     "llm": {
       "embeddingModels": "埋め込みモデル",
       "models": "モデル",
@@ -578,7 +579,7 @@
       "noSitemaps": "サイトマップが見つかりません",
       "success": "操作が正常に完了しました",
       "tryAgain": "問題が発生しました。もう一度お試しください。",
-      "welcome": "WaterCrawlへようこそ！最初のクロールを作成して開始しましょう。"
+      "welcome": "WaterCrawlの完全なツールキットを使用して、Webデータをクロール、検索、抽出、理解します。"
     },
     "navigation": {
       "activityLogs": "アクティビティログ",
@@ -699,7 +700,7 @@
       "yesterday": "昨日"
     },
     "title": "ダッシュボード",
-    "welcome": "おかえりなさい！",
+    "welcome": "WaterCrawlへようこそ",
     "welcomeTo": "WaterCrawlへようこそ"
   },
   "direction": {

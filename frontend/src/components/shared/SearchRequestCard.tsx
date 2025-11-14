@@ -19,7 +19,6 @@ import { formatDuration } from '../../utils/formatters';
 
 import { StatusBadge } from './StatusBadge';
 
-
 interface SearchRequestCardProps {
   request: SearchRequest;
 }

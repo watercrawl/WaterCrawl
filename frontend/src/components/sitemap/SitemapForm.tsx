@@ -205,55 +205,55 @@ export const SitemapForm: React.FC<SitemapFormProps> = ({
     ...(hideApiDocs
       ? []
       : [
-        {
-          name: t('sitemap.tabs.api'),
-          content: <SitemapApiDocumentation request={currentRequest} />,
-        },
-      ]),
+          {
+            name: t('sitemap.tabs.api'),
+            content: <SitemapApiDocumentation request={currentRequest} />,
+          },
+        ]),
     ...(hideResultsTab
       ? []
       : [
-        {
-          name: t('sitemap.tabs.results'),
-          content: sitemapResult ? (
-            <>
-              <Feed
-                messages={feedMessages}
-                loading={isLoading}
-                emptyMessage={t('sitemap.noUpdates')}
-                showTimestamp={true}
-              />
-              <div className="mt-4 rounded-lg bg-card p-6">
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h2 className="text-lg font-medium text-foreground">
-                        {t('sitemap.sitemapFor')}: {sitemapResult.url}
-                      </h2>
-                      <p className="text-sm text-muted-foreground">
-                        {t('sitemap.status')}:{' '}
-                        <StatusBadge status={sitemapResult.status as SitemapStatus} />
-                        {sitemapResult.duration &&
-                          ` • ${t('sitemap.duration')}: ${sitemapResult.duration}`}
-                      </p>
+          {
+            name: t('sitemap.tabs.results'),
+            content: sitemapResult ? (
+              <>
+                <Feed
+                  messages={feedMessages}
+                  loading={isLoading}
+                  emptyMessage={t('sitemap.noUpdates')}
+                  showTimestamp={true}
+                />
+                <div className="mt-4 rounded-lg bg-card p-6">
+                  <div className="space-y-6">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-medium text-foreground">
+                          {t('sitemap.sitemapFor')}: {sitemapResult.url}
+                        </h2>
+                        <p className="text-sm text-muted-foreground">
+                          {t('sitemap.status')}:{' '}
+                          <StatusBadge status={sitemapResult.status as SitemapStatus} />
+                          {sitemapResult.duration &&
+                            ` • ${t('sitemap.duration')}: ${sitemapResult.duration}`}
+                        </p>
+                      </div>
+                      <div className="flex gap-x-2">
+                        {sitemapResult.status === SitemapStatus.Finished && (
+                          <SitemapDownloadFormatSelector request={sitemapResult} buttonWithText />
+                        )}
+                      </div>
                     </div>
-                    <div className="flex gap-x-2">
-                      {sitemapResult.status === SitemapStatus.Finished && (
-                        <SitemapDownloadFormatSelector request={sitemapResult} buttonWithText />
-                      )}
-                    </div>
+                    <SitemapResultDisplay result={sitemapResult} loading={isLoading} />
                   </div>
-                  <SitemapResultDisplay result={sitemapResult} loading={isLoading} />
                 </div>
+              </>
+            ) : (
+              <div className="py-12 text-center">
+                <p className="text-muted-foreground">{t('sitemap.noSitemapYet')}</p>
               </div>
-            </>
-          ) : (
-            <div className="py-12 text-center">
-              <p className="text-muted-foreground">{t('sitemap.noSitemapYet')}</p>
-            </div>
-          ),
-        },
-      ]),
+            ),
+          },
+        ]),
   ];
 
   return (

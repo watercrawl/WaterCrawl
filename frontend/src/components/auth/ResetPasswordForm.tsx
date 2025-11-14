@@ -11,8 +11,6 @@ import Loading from '../shared/Loading';
 
 import { authApi } from '../../services/api/auth';
 
-
-
 const getSchema = (t: (key: string) => string) =>
   yup.object({
     password: yup.string().required(t('validation.required')),

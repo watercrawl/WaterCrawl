@@ -68,15 +68,29 @@ import Button from '../../components/shared/Button';
 
 ### Modal Component
 
+**See `08-modals.md` for complete modal system documentation.**
+
 ```typescript
-import Modal from '../../components/shared/Modal';
+import { Modal } from '../../components/shared/Modal';
 
 <Modal
   isOpen={isOpen}
   onClose={() => setIsOpen(false)}
   title={t('modal.title')}
+  icon={DocumentIcon}
+  size="md"
+  footer={
+    <>
+      <Button onClick={onClose} variant="outline">
+        {t('common.cancel')}
+      </Button>
+      <Button onClick={handleSubmit}>
+        {t('common.save')}
+      </Button>
+    </>
+  }
 >
-  <div>
+  <div className="space-y-4">
     {/* Modal content */}
   </div>
 </Modal>

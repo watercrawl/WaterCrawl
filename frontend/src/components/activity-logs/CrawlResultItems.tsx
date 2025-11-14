@@ -25,7 +25,7 @@ export const CrawlResultItems: React.FC<CrawlResultItemsProps> = ({
         </div>
       )}
       {results.length > 0 && (
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-3">
           {results.map(result => (
             <CrawlResultCard key={result.uuid} result={result} onPreviewClick={onPreviewClick} />
           ))}

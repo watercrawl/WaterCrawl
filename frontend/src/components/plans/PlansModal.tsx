@@ -12,8 +12,6 @@ import { Plan } from '../../types/subscription';
 
 import { PlansDisplay } from './PlansDisplay';
 
-
-
 interface PlansModalProps {
   show: boolean;
   onClose?: () => void;

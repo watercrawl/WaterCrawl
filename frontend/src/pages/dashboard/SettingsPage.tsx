@@ -4,7 +4,14 @@ import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
-import { UserCircleIcon, TrashIcon, UsersIcon, EnvelopeIcon, PencilSquareIcon, ClockIcon } from '@heroicons/react/24/outline';
+import {
+  UserCircleIcon,
+  TrashIcon,
+  UsersIcon,
+  EnvelopeIcon,
+  PencilSquareIcon,
+  ClockIcon,
+} from '@heroicons/react/24/outline';
 
 import ProviderConfigSettings from '../../components/settings/ProviderConfigSettings';
 import ProxySettings from '../../components/settings/ProxySettings';
@@ -242,20 +249,22 @@ const SettingsPage: React.FC = () => {
 
   return (
     <div className="h-full">
-      <div className="px-8 py-6">
-        <h1 className="text-2xl font-semibold text-foreground">{t('settings.title')}</h1>
-        <p className="mt-1 text-sm text-muted-foreground">{t('settings.team.subtitle')}</p>
+      <div className="px-4 py-6 sm:px-6 lg:px-8">
+        <div className="mb-8">
+          <h1 className="text-2xl font-bold text-foreground">{t('settings.title')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t('settings.team.subtitle')}</p>
+        </div>
 
         <TabGroup selectedIndex={selectedTabIndex} onChange={setSelectedTabIndex}>
-          <TabList className="mt-8 flex gap-x-1 border-b border-border">
+          <TabList className="flex gap-x-6 border-b border-border">
             <Tab
               className={({ selected }: { selected: boolean }) =>
                 classNames(
-                  'px-4 py-2.5 text-sm font-medium leading-5 transition-all duration-200',
-                  'focus:outline-none',
+                  'border-b-2 px-1 py-3 text-sm font-medium transition-colors',
+                  'focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
                   selected
-                    ? 'border-b-2 border-border text-foreground'
-                    : 'text-muted-foreground hover:text-foreground'
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-muted-foreground hover:border-border hover:text-foreground'
                 )
               }
             >
@@ -264,11 +273,11 @@ const SettingsPage: React.FC = () => {
             <Tab
               className={({ selected }: { selected: boolean }) =>
                 classNames(
-                  'px-4 py-2.5 text-sm font-medium leading-5 transition-all duration-200',
-                  'focus:outline-none',
+                  'border-b-2 px-1 py-3 text-sm font-medium transition-colors',
+                  'focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
                   selected
-                    ? 'border-b-2 border-border text-foreground'
-                    : 'text-muted-foreground hover:text-foreground'
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-muted-foreground hover:border-border hover:text-foreground'
                 )
               }
             >
@@ -277,11 +286,11 @@ const SettingsPage: React.FC = () => {
             <Tab
               className={({ selected }: { selected: boolean }) =>
                 classNames(
-                  'px-4 py-2.5 text-sm font-medium leading-5 transition-all duration-200',
-                  'focus:outline-none',
+                  'border-b-2 px-1 py-3 text-sm font-medium transition-colors',
+                  'focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
                   selected
-                    ? 'border-b-2 border-border text-foreground'
-                    : 'text-muted-foreground hover:text-foreground'
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-muted-foreground hover:border-border hover:text-foreground'
                 )
               }
             >
@@ -291,11 +300,11 @@ const SettingsPage: React.FC = () => {
               <Tab
                 className={({ selected }: { selected: boolean }) =>
                   classNames(
-                    'px-4 py-2.5 text-sm font-medium leading-5 transition-all duration-200',
-                    'focus:outline-none',
+                    'border-b-2 px-1 py-3 text-sm font-medium transition-colors',
+                    'focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
                     selected
-                      ? 'border-b-2 border-border text-foreground'
-                      : 'text-muted-foreground hover:text-foreground'
+                      ? 'border-primary text-primary'
+                      : 'border-transparent text-muted-foreground hover:border-border hover:text-foreground'
                   )
                 }
               >
@@ -307,8 +316,8 @@ const SettingsPage: React.FC = () => {
           <TabPanels className="mt-8">
             <TabPanel className="space-y-6">
               {/* Team Name Card */}
-              <div className="overflow-hidden rounded-lg bg-card shadow-sm ring-1 ring-border">
-                <div className="border-b border-border bg-muted/50 px-6 py-4">
+              <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+                <div className="border-b border-border/50 bg-muted/30 px-6 py-4">
                   <div className="flex items-center gap-x-3">
                     <div className="rounded-lg bg-primary-soft p-2">
                       <PencilSquareIcon className="h-5 w-5 text-primary" />
@@ -336,9 +345,10 @@ const SettingsPage: React.FC = () => {
                     />
                     {editingName && (
                       <button
+                        type="button"
                         onClick={handleUpdateTeamName}
                         disabled={loading}
-                        className="inline-flex h-10 items-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors duration-200 hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50"
+                        className="inline-flex h-10 items-center rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground shadow-sm transition-all hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50"
                       >
                         {t('settings.team.save')}
                       </button>
@@ -348,8 +358,8 @@ const SettingsPage: React.FC = () => {
               </div>
 
               {/* Invite Member Card */}
-              <div className="overflow-hidden rounded-lg bg-card shadow-sm ring-1 ring-border">
-                <div className="border-b border-border bg-muted/50 px-6 py-4">
+              <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+                <div className="border-b border-border/50 bg-muted/30 px-6 py-4">
                   <div className="flex items-center gap-x-3">
                     <div className="rounded-lg bg-success-soft p-2">
                       <EnvelopeIcon className="h-5 w-5 text-success" />
@@ -378,7 +388,7 @@ const SettingsPage: React.FC = () => {
                       <button
                         type="submit"
                         disabled={loading}
-                        className="inline-flex h-10 items-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors duration-200 hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50"
+                        className="inline-flex h-10 items-center rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground shadow-sm transition-all hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50"
                       >
                         {t('settings.team.invite')}
                       </button>
@@ -398,8 +408,8 @@ const SettingsPage: React.FC = () => {
               </div>
 
               {/* Team Members Card */}
-              <div className="overflow-hidden rounded-lg bg-card shadow-sm ring-1 ring-border">
-                <div className="border-b border-border bg-muted/50 px-6 py-4">
+              <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+                <div className="border-b border-border/50 bg-muted/30 px-6 py-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-x-3">
                       <div className="rounded-lg bg-info-soft p-2">
@@ -425,31 +435,31 @@ const SettingsPage: React.FC = () => {
                 <div className="overflow-hidden">
                   <table className="min-w-full divide-y divide-border">
                     <thead>
-                      <tr className="bg-muted">
+                      <tr className="bg-muted/30">
                         <th
                           scope="col"
-                          className="py-3.5 pe-3 ps-4 text-start text-sm font-semibold text-foreground sm:ps-6"
+                          className="py-3 pe-3 ps-6 text-start text-xs font-semibold uppercase tracking-wider text-muted-foreground"
                         >
                           {t('settings.team.memberColumn')}
                         </th>
                         <th
                           scope="col"
-                          className="px-3 py-3.5 text-start text-sm font-semibold text-foreground"
+                          className="px-3 py-3 text-start text-xs font-semibold uppercase tracking-wider text-muted-foreground"
                         >
                           {t('settings.team.roleColumn')}
                         </th>
-                        <th scope="col" className="relative py-3.5 pe-4 ps-3 sm:pe-6">
+                        <th scope="col" className="relative py-3 pe-6 ps-3">
                           <span className="sr-only">Actions</span>
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-border bg-card">
+                    <tbody className="divide-y divide-border/50 bg-card">
                       {members.map(member => (
                         <tr
                           key={member.uuid}
-                          className="transition-colors duration-200 hover:bg-muted"
+                          className="transition-colors duration-150 hover:bg-muted/30"
                         >
-                          <td className="whitespace-nowrap py-4 pe-3 ps-4 sm:ps-6">
+                          <td className="whitespace-nowrap py-3.5 pe-3 ps-6">
                             <div className="flex items-center">
                               <div className="flex-shrink-0">
                                 <UserCircleIcon className="h-8 w-8 text-muted-foreground" />
@@ -464,21 +474,22 @@ const SettingsPage: React.FC = () => {
                               </div>
                             </div>
                           </td>
-                          <td className="whitespace-nowrap px-3 py-4 text-sm">
-                            <span className="inline-flex items-center rounded-md bg-muted px-2.5 py-0.5 text-xs font-medium capitalize text-foreground">
+                          <td className="whitespace-nowrap px-3 py-3.5 text-sm">
+                            <span className="inline-flex items-center rounded-full bg-primary-soft px-2.5 py-0.5 text-xs font-medium capitalize text-primary">
                               {member.is_owner
                                 ? t('settings.team.owner')
                                 : t('settings.team.member')}
                             </span>
                           </td>
-                          <td className="relative whitespace-nowrap py-4 pe-4 ps-3 text-end text-sm font-medium sm:pe-6">
+                          <td className="relative whitespace-nowrap py-3.5 pe-6 ps-3 text-end text-sm">
                             {!member.is_owner && (
                               <button
+                                type="button"
                                 onClick={() => handleRemoveMember(member.uuid)}
                                 disabled={loading}
-                                className="rounded-md text-muted-foreground hover:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                                className="rounded-lg p-1.5 text-muted-foreground transition-all hover:bg-error/10 hover:text-error focus:outline-none focus:ring-2 focus:ring-error focus:ring-offset-2 disabled:opacity-50"
                               >
-                                <TrashIcon className="h-5 w-5" />
+                                <TrashIcon className="h-4 w-4" />
                               </button>
                             )}
                           </td>
@@ -488,26 +499,29 @@ const SettingsPage: React.FC = () => {
                   </table>
 
                   {totalPages > 1 && (
-                    <div className="flex items-center justify-between border-t border-border bg-muted px-4 py-3 sm:px-6">
+                    <div className="flex items-center justify-between border-t border-border/50 bg-muted/20 px-6 py-4">
                       <div>
-                        <p className="text-sm text-foreground">
+                        <p className="text-sm text-muted-foreground">
                           {t('settings.team.showingPage')}{' '}
-                          <span className="font-medium">{currentPage}</span> {t('settings.team.of')}{' '}
-                          <span className="font-medium">{totalPages}</span>
+                          <span className="font-medium text-foreground">{currentPage}</span>{' '}
+                          {t('settings.team.of')}{' '}
+                          <span className="font-medium text-foreground">{totalPages}</span>
                         </p>
                       </div>
-                      <div className="flex gap-x-2">
+                      <div className="flex gap-2">
                         <button
+                          type="button"
                           onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                           disabled={currentPage === 1 || loading}
-                          className="inline-flex h-10 items-center rounded-md px-4 text-sm font-medium text-foreground transition-colors duration-200 hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:opacity-50"
+                          className="inline-flex items-center rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium text-foreground transition-all hover:bg-muted focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50"
                         >
                           {t('common.previous')}
                         </button>
                         <button
+                          type="button"
                           onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                           disabled={currentPage === totalPages || loading}
-                          className="inline-flex h-10 items-center rounded-md px-4 text-sm font-medium text-foreground transition-colors duration-200 hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:opacity-50"
+                          className="inline-flex items-center rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium text-foreground transition-all hover:bg-muted focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50"
                         >
                           {t('common.next')}
                         </button>

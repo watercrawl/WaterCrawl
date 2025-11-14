@@ -12,248 +12,104 @@
     color: rgb(var(--foreground));
   }
 
-  /* =================================== 🎨 WATERCRAWL COLOR SYSTEM Complete semantic color palette ================================== */
   :root {
-    /* ============================================ BACKGROUND COLORS - Light Mode =========================================== */
+    /* ============================================ BASE COLORS =========================================== */
     --background: 249 250 251;
-    /* Gray-50 - Page background (subtle gray) */
     --foreground: 17 24 39;
-    /* Gray-900 - Primary text */
     --card: 255 255 255;
-    /* White - Card background (stands out from background) */
     --card-foreground: 17 24 39;
-    /* Gray-900 - Card text */
     --muted: 243 244 246;
-    /* Gray-100 - Muted backgrounds (more contrast than background) */
     --muted-foreground: 107 114 128;
-    /* Gray-500 - Muted text */
-    /* ============================================ PRIMARY/BRAND COLORS =========================================== */
-    /* Primary - Brand */
-    --primary: 14 165 233;
-    /* Primary base color */
-    --primary-foreground: 255 255 255;
-    /* Text on primary */
-    --primary-hover: 12 140 198;
-    /* Primary hover state */
-    --primary-soft: 219 242 252;
-    /* Primary soft/subtle variant */
-    --primary-strong: 11 124 175;
-    /* Primary strong/vibrant variant */
-    /* ============================================ SECONDARY/TERTIARY BRAND COLORS =========================================== */
-    /* Secondary - Green */
-    --secondary: 34 197 94;
-    /* Secondary base color */
-    --secondary-foreground: 255 255 255;
-    /* Text on secondary */
-    --secondary-hover: 29 167 80;
-    /* Secondary hover state */
-    --secondary-soft: 222 246 231;
-    /* Secondary soft/subtle variant */
-    --secondary-strong: 26 148 71;
-    /* Secondary strong/vibrant variant */
-    /* Tertiary - Pink */
-    --tertiary: 236 33 135;
-    /* Tertiary base color */
-    --tertiary-foreground: 255 255 255;
-    /* Text on tertiary */
-    --tertiary-hover: 201 28 115;
-    /* Tertiary hover state */
-    --tertiary-soft: 252 222 237;
-    /* Tertiary soft/subtle variant */
-    --tertiary-strong: 177 25 101;
-    /* Tertiary strong/vibrant variant */
-    /* ============================================ STATUS/FEEDBACK COLORS =========================================== */
-    /* Success - Green */
-    --success: 34 197 94;
-    /* Success base color */
-    --success-foreground: 255 255 255;
-    /* Text on success */
-    --success-hover: 29 167 80;
-    /* Success hover state */
-    --success-soft: 222 246 231;
-    /* Success soft/subtle variant */
-    --success-strong: 26 148 71;
-    /* Success strong/vibrant variant */
-    /* Error - Red */
-    --error: 239 68 68;
-    /* Error base color */
-    --error-foreground: 255 255 255;
-    /* Text on error */
-    --error-hover: 203 58 58;
-    /* Error hover state */
-    --error-soft: 253 227 227;
-    /* Error soft/subtle variant */
-    --error-strong: 179 51 51;
-    /* Error strong/vibrant variant */
-    /* Warning - Yellow */
-    --warning: 234 179 8;
-    /* Warning base color */
-    --warning-foreground: 255 255 255;
-    /* Text on warning */
-    --warning-hover: 199 152 7;
-    /* Warning hover state */
-    --warning-soft: 252 244 218;
-    /* Warning soft/subtle variant */
-    --warning-strong: 176 134 6;
-    /* Warning strong/vibrant variant */
-    /* Info - Blue */
-    --info: 59 130 246;
-    /* Info base color */
-    --info-foreground: 255 255 255;
-    /* Text on info */
-    --info-hover: 50 111 209;
-    /* Info hover state */
-    --info-soft: 226 236 254;
-    /* Info soft/subtle variant */
-    --info-strong: 44 98 185;
-    /* Info strong/vibrant variant */
-    /* ============================================ BORDER COLORS =========================================== */
     --border: 229 231 235;
-    /* Gray-200 - Default borders */
     --input-border: 209 213 219;
-    /* Gray-300 - Input borders */
-    /* ============================================ INPUT/FORM COLORS =========================================== */
     --input: 255 255 255;
-    /* White - Input background */
-    --ring: 14 165 233;
-    /* Primary color - Focus ring */
-    /* ============================================ SIDEBAR COLORS (Always Dark Blue) =========================================== */
-    --sidebar-bg: 23 37 84;
-    /* Blue-950 - Sidebar background */
-    --sidebar-text: 191 219 254;
-    /* Blue-200 - Sidebar text */
-    --sidebar-text-muted: 147 197 253;
-    /* Blue-300 - Sidebar muted text */
-    --sidebar-active-bg: 59 130 246;
-    /* Blue-500 - Sidebar active background */
-    --sidebar-active-text: 255 255 255;
-    /* White - Sidebar active text */
-    --sidebar-hover-bg: 37 99 235;
-    /* Blue-600 - Sidebar hover background */
-    --sidebar-border: 30 58 138;
-    /* Blue-900 - Sidebar borders */
+    --ring: 0 76 164;
+    /* ============================================ PRIMARY/BRAND COLORS =========================================== */
+    --primary: 15 124 251;
+    --primary-foreground: 255 255 255;
+    --primary-hover: 4 104 222;
+    --primary-soft: 234 239 246;
+    --primary-strong: 0 76 164;
+    --secondary: 235 37 137;
+    --secondary-foreground: 255 255 255;
+    --secondary-hover: 212 19 117;
+    --secondary-soft: 246 234 240;
+    --secondary-strong: 168 2 86;
+    --tertiary: 105 54 170;
+    --tertiary-foreground: 255 255 255;
+    --tertiary-hover: 86 44 139;
+    --tertiary-soft: 239 236 244;
+    --tertiary-strong: 56 20 102;
+    --success: 34 197 94;
+    --success-foreground: 255 255 255;
+    --success-hover: 28 162 77;
+    --success-soft: 234 245 238;
+    --success-strong: 9 120 50;
+    --error: 239 68 68;
+    --error-foreground: 255 255 255;
+    --error-hover: 236 30 30;
+    --error-soft: 246 234 234;
+    --error-strong: 204 1 1;
+    --warning: 234 179 8;
+    --warning-foreground: 17 24 39;
+    --warning-hover: 195 149 7;
+    --warning-soft: 246 243 234;
+    --warning-strong: 140 106 0;
+    --info: 59 130 246;
+    --info-foreground: 255 255 255;
+    --info-hover: 20 105 244;
+    --info-soft: 234 238 246;
+    --info-strong: 0 77 203;
   }
 
-  /* ============================================ 🌙 DARK MODE COLORS =========================================== */
   .dark {
-    /* ============================================ BACKGROUND COLORS - Dark Mode =========================================== */
+    /* ============================================ BASE COLORS - Dark Mode =========================================== */
     --background: 17 24 39;
-    /* Gray-900 - Page background */
     --foreground: 243 244 246;
-    /* Gray-100 - Primary text */
     --card: 31 41 55;
-    /* Gray-800 - Card background */
     --card-foreground: 243 244 246;
-    /* Gray-100 - Card text */
     --muted: 43 53 68;
-    /* Gray-750 - Muted backgrounds (lighter for better contrast) */
     --muted-foreground: 156 163 175;
-    /* Gray-400 - Muted text */
-    /* ============================================ PRIMARY/BRAND COLORS - Dark Mode =========================================== */
-    /* Primary - Brand */
-    --primary: 14 165 233;
-    /* Primary base color */
-    --primary-foreground: 255 255 255;
-    /* Text on primary */
-    --primary-hover: 12 140 198;
-    /* Primary hover state */
-    --primary-soft: 16 66 97;
-    /* Primary soft/subtle variant */
-    --primary-strong: 86 192 240;
-    /* Primary strong/vibrant variant */
-    /* ============================================ SECONDARY/TERTIARY BRAND COLORS - Dark Mode =========================================== */
-    /* Secondary - Green */
-    --secondary: 34 197 94;
-    /* Secondary base color */
-    --secondary-foreground: 255 255 255;
-    /* Text on secondary */
-    --secondary-hover: 29 167 80;
-    /* Secondary hover state */
-    --secondary-soft: 22 76 56;
-    /* Secondary soft/subtle variant */
-    --secondary-strong: 100 214 142;
-    /* Secondary strong/vibrant variant */
-    /* Tertiary - Pink */
-    --tertiary: 236 33 135;
-    /* Tertiary base color */
-    --tertiary-foreground: 255 255 255;
-    /* Text on tertiary */
-    --tertiary-hover: 201 28 115;
-    /* Tertiary hover state */
-    --tertiary-soft: 83 27 68;
-    /* Tertiary soft/subtle variant */
-    --tertiary-strong: 242 100 171;
-    /* Tertiary strong/vibrant variant */
-    /* ============================================ STATUS/FEEDBACK COLORS - Dark Mode =========================================== */
-    /* Success - Green */
-    --success: 34 197 94;
-    /* Success base color */
-    --success-foreground: 255 255 255;
-    /* Text on success */
-    --success-hover: 29 167 80;
-    /* Success hover state */
-    --success-soft: 22 76 56;
-    /* Success soft/subtle variant */
-    --success-strong: 100 214 142;
-    /* Success strong/vibrant variant */
-    /* Error - Red */
-    --error: 239 68 68;
-    /* Error base color */
-    --error-foreground: 255 255 255;
-    /* Text on error */
-    --error-hover: 203 58 58;
-    /* Error hover state */
-    --error-soft: 84 37 48;
-    /* Error soft/subtle variant */
-    --error-strong: 244 124 124;
-    /* Error strong/vibrant variant */
-    /* Warning - Yellow */
-    --warning: 234 179 8;
-    /* Warning base color */
-    --warning-foreground: 255 255 255;
-    /* Text on warning */
-    --warning-hover: 199 152 7;
-    /* Warning hover state */
-    --warning-soft: 82 71 30;
-    /* Warning soft/subtle variant */
-;    --warning-strong: 240 202 82;
-    /* Warning strong/vibrant variant */
-    /* Info - Blue */
-    --info: 59 130 246;
-    /* Info base color */
-    --info-foreground: 255 255 255;
-    /* Text on info */
-    --info-hover: 50 111 209;
-    /* Info hover state */
-    --info-soft: 30 56 101;
-    /* Info soft/subtle variant */
-    --info-strong: 118 168 249;
-    /* Info strong/vibrant variant */
-    /* ============================================ BORDER COLORS - Dark Mode =========================================== */
     --border: 55 65 81;
-    /* Gray-700 - Default borders */
     --input-border: 75 85 99;
-    /* Gray-600 - Input borders */
-    /* ============================================ INPUT/FORM COLORS - Dark Mode =========================================== */
     --input: 31 41 55;
-    /* Gray-800 - Input background */
     --ring: 14 165 233;
-    /* Primary color - Focus ring */
-    /* ============================================ SIDEBAR COLORS (Same as light mode - Always dark blue) =========================================== */
-    --sidebar-bg: 23 37 84;
-    /* Blue-950 */
-    --sidebar-text: 191 219 254;
-    /* Blue-200 */
-    --sidebar-text-muted: 147 197 253;
-    /* Blue-300 */
-    --sidebar-active-bg: 59 130 246;
-    /* Blue-500 */
-    --sidebar-active-text: 255 255 255;
-    /* White */
-    --sidebar-hover-bg: 37 99 235;
-    /* Blue-600 */
-    --sidebar-border: 30 58 138;
-    /* Blue-900 */
+    /* ============================================ PRIMARY/BRAND COLORS - Dark Mode =========================================== */
+    --primary: 15 124 251;
+    --primary-foreground: 255 255 255;
+    --primary-hover: 55 146 252;
+    --primary-soft: 18 30 43;
+    --primary-strong: 191 220 253;
+    --secondary: 235 37 137;
+    --secondary-foreground: 255 255 255;
+    --secondary-hover: 238 74 157;
+    --secondary-soft: 43 18 31;
+    --secondary-strong: 253 198 226;
+    --tertiary: 105 54 170;
+    --tertiary-foreground: 255 255 255;
+    --tertiary-hover: 125 69 196;
+    --tertiary-soft: 30 23 39;
+    --tertiary-strong: 197 168 234;
+    --success: 34 197 94;
+    --success-foreground: 255 255 255;
+    --success-hover: 52 220 114;
+    --success-soft: 20 41 28;
+    --success-strong: 164 245 194;
+    --error: 239 68 68;
+    --error-foreground: 255 255 255;
+    --error-hover: 242 106 106;
+    --error-soft: 43 18 18;
+    --error-strong: 254 215 215;
+    --warning: 234 179 8;
+    --warning-foreground: 17 24 39;
+    --warning-hover: 247 196 35;
+    --warning-soft: 43 37 18;
+    --warning-strong: 253 232 168;
+    --info: 59 130 246;
+    --info-foreground: 255 255 255;
+    --info-hover: 98 155 248;
+    --info-soft: 18 28 43;
+    --info-strong: 215 230 254;
   }
 }
 

@@ -22,9 +22,6 @@ import { OAuthButtons } from './OAuthButtons';
 
 import type { ApiError } from '../../types/common';
 
-
-
-
 const getSchema = (t: (key: string) => string) =>
   yup
     .object({

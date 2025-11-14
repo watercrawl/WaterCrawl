@@ -110,13 +110,15 @@ export const TeamInvitationsList = forwardRef<TeamInvitationsListRef>((_, ref) =
                   <button
                     onClick={async () => {
                       if (resendingId === invitation.uuid) return;
-                      
+
                       setResendingId(invitation.uuid);
                       try {
                         await teamApi.resendInvitationEmail(invitation.uuid);
                         toast.success(t('settings.teamInvitations.resendSuccess'));
                       } catch (error: any) {
-                        toast.error(error.response?.data?.message || t('settings.teamInvitations.resendError'));
+                        toast.error(
+                          error.response?.data?.message || t('settings.teamInvitations.resendError')
+                        );
                       } finally {
                         setResendingId(null);
                       }
@@ -135,7 +137,10 @@ export const TeamInvitationsList = forwardRef<TeamInvitationsListRef>((_, ref) =
                         await navigator.clipboard.writeText(fullUrl);
                         toast.success(t('settings.teamInvitations.urlCopied'));
                       } catch (error: any) {
-                        toast.error(error.response?.data?.message || t('settings.teamInvitations.urlCopyError'));
+                        toast.error(
+                          error.response?.data?.message ||
+                            t('settings.teamInvitations.urlCopyError')
+                        );
                       }
                     }}
                     className="rounded-md text-muted-foreground hover:text-primary focus:outline-none focus:ring-2 focus:ring-ring"
@@ -147,7 +152,9 @@ export const TeamInvitationsList = forwardRef<TeamInvitationsListRef>((_, ref) =
                     onClick={() => {
                       confirm({
                         title: t('settings.teamInvitations.revokeConfirmTitle'),
-                        message: t('settings.teamInvitations.revokeConfirmMessage', { email: invitation.email }),
+                        message: t('settings.teamInvitations.revokeConfirmMessage', {
+                          email: invitation.email,
+                        }),
                         confirmText: t('settings.teamInvitations.revokeConfirmButton'),
                         variant: 'danger',
                         onConfirm: async () => {
@@ -156,7 +163,10 @@ export const TeamInvitationsList = forwardRef<TeamInvitationsListRef>((_, ref) =
                             toast.success(t('settings.teamInvitations.revokeSuccess'));
                             await loadInvitations();
                           } catch (error: any) {
-                            toast.error(error.response?.data?.message || t('settings.teamInvitations.revokeError'));
+                            toast.error(
+                              error.response?.data?.message ||
+                                t('settings.teamInvitations.revokeError')
+                            );
                           }
                         },
                       });

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 import { GlobeAltIcon, MagnifyingGlassIcon, DocumentTextIcon } from '@heroicons/react/24/outline';
 
@@ -48,14 +49,14 @@ export const QuickNavigation: React.FC = () => {
   ];
 
   return (
-    <div className="mb-8">
+    <div className="mb-8 min-w-0">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         {navigationItems.map(item => {
           const IconComponent = item.icon;
           return (
-            <a
+            <Link
               key={item.href}
-              href={item.href}
+              to={item.href}
               className={`group rounded-xl border border-border bg-card p-4 transition-colors ${item.borderColor}`}
             >
               <div className="flex items-center gap-x-3">
@@ -67,7 +68,7 @@ export const QuickNavigation: React.FC = () => {
                   <p className="text-xs text-muted-foreground">{item.description}</p>
                 </div>
               </div>
-            </a>
+            </Link>
           );
         })}
       </div>

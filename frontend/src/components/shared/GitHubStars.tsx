@@ -40,18 +40,16 @@ export const GitHubStars = ({ owner, repo, className = '' }: GitHubStarsProps) =
 
   return (
     <div
-      className={`overflow-hidden rounded-lg border border-primary/30 bg-sidebar-active-bg/5 shadow-md transition-shadow hover:shadow-lg ${className}`}
+      className={`overflow-hidden rounded-lg border border-border bg-primary-soft/50 shadow-sm transition-shadow hover:shadow-md ${className}`}
     >
       <div className="px-4 py-3">
-        <h3 className="text-sm font-medium text-sidebar-active-text drop-shadow">
-          {t('github.support')}
-        </h3>
-        <p className="mt-1 text-xs text-sidebar-text/70">{t('github.message')}</p>
+        <h3 className="text-center text-sm font-medium text-foreground">{t('github.support')}</h3>
+        <p className="mt-1 text-center text-xs text-muted-foreground">{t('github.message')}</p>
       </div>
-      <div className="flex items-center justify-between bg-sidebar-active-bg/10 px-4 py-2">
+      <div className="flex items-center justify-between bg-primary-soft px-4 py-2">
         <div className="flex items-center gap-1">
           <StarSolidIcon className="h-4 w-4 text-warning drop-shadow-md" aria-hidden="true" />
-          <span className="text-xs font-medium text-sidebar-text">
+          <span className="text-center text-xs font-medium text-foreground">
             {isLoading ? t('common.loading') : t('github.starsCount', { count: stars || 0 })}
           </span>
         </div>
@@ -59,7 +57,7 @@ export const GitHubStars = ({ owner, repo, className = '' }: GitHubStarsProps) =
           href={repoUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 rounded-md bg-sidebar-bg px-2.5 py-1 text-xs font-medium text-sidebar-text shadow-sm transition-all hover:shadow"
+          className="inline-flex items-center gap-1 rounded-md bg-primary px-2.5 py-1 text-xs font-medium text-primary-foreground shadow-sm transition-all hover:bg-primary-hover"
           aria-label={`Star ${owner}/${repo} on GitHub`}
         >
           <StarIcon className="h-3.5 w-3.5" aria-hidden="true" />

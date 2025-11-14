@@ -37,7 +37,8 @@
     "viewDetails": "مشاهده جزئیات"
   },
   "admin": {
-    "dashboard": "دشبورد مدیریت",
+    "dashboard": "داشبورد مدیریت",
+    "description": "مدیریت تنظیمات سیستم، پروکسی‌ها و ارائه‌دهندگان LLM",
     "exitAdmin": "خروج از مدیریت",
     "llm": {
       "embeddingModels": "مدل‌های Embedding",
@@ -578,7 +579,7 @@
       "noSitemaps": "نقشه سایتی پیدا نشد",
       "success": "عملیات با موفقیت تکمیل شد",
       "tryAgain": "مشکلی پیش آمد. لطفاً دوباره امتحان کنید.",
-      "welcome": "به WaterCrawl خوش آمدید! با ایجاد اولین خزش خود شروع کنید."
+      "welcome": "از مجموعه ابزار کامل WaterCrawl برای خزش، جستجو، استخراج و درک داده‌های وب استفاده کنید."
     },
     "navigation": {
       "activityLogs": "گزارش‌های فعالیت",
@@ -699,7 +700,7 @@
       "yesterday": "دیروز"
     },
     "title": "دشبورد",
-    "welcome": "خوش آمدید!",
+    "welcome": "خوش آمدید به",
     "welcomeTo": "به WaterCrawl خوش آمدید"
   },
   "direction": {

@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { ServerIcon, Cog6ToothIcon } from '@heroicons/react/24/outline';
 
 import AdminCard from '../../components/manager/AdminCard';
+import PageHeader from '../../components/shared/PageHeader';
 import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
 
 const AdminDashboard: React.FC = () => {
@@ -16,8 +17,10 @@ const AdminDashboard: React.FC = () => {
   }, [setItems, t]);
 
   return (
-    <div className="py-6">
-      <h1 className="mb-6 text-2xl font-semibold text-foreground">{t('admin.dashboard')}</h1>
+    <div className="mt-8 space-y-6">
+      <div className="sm:flex sm:items-center sm:justify-between">
+        <PageHeader titleKey="admin.dashboard" descriptionKey="admin.description" />
+      </div>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {/* Proxies Card */}

@@ -1,5 +1,5 @@
 import { PaginatedResponse } from '../../types/common';
-import { UsageHistory, ContentType  } from '../../types/usage_history';
+import { UsageHistory, ContentType } from '../../types/usage_history';
 
 import api from './api';
 

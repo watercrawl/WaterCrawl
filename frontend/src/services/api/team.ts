@@ -3,8 +3,6 @@ import { Team, TeamMember, TeamInvitation, TeamInvitationURL } from '../../types
 
 import api from './api';
 
-
-
 export const teamApi = {
   async getCurrentTeam(): Promise<Team> {
     return api.get<Team>('/api/v1/user/teams/current/').then(({ data }) => data);
@@ -39,7 +37,9 @@ export const teamApi = {
   },
 
   async getInvitationURL(invitationId: string): Promise<TeamInvitationURL> {
-    return api.get<TeamInvitationURL>(`/api/v1/user/teams/current/invitations/${invitationId}/url/`).then(({ data }) => data);
+    return api
+      .get<TeamInvitationURL>(`/api/v1/user/teams/current/invitations/${invitationId}/url/`)
+      .then(({ data }) => data);
   },
 
   async resendInvitationEmail(invitationId: string): Promise<void> {

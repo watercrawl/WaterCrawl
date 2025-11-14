@@ -10,8 +10,6 @@ import { Button } from '../../../components/shared/Button';
 import { useBreadcrumbs } from '../../../contexts/BreadcrumbContext';
 import { knowledgeBaseApi } from '../../../services/api/knowledgeBase';
 
-
-
 const BatchUrlImportPage: React.FC = () => {
   const { t } = useTranslation();
   const { knowledgeBaseId } = useParams<{ knowledgeBaseId: string }>();
@@ -119,7 +117,7 @@ const BatchUrlImportPage: React.FC = () => {
             rows={15}
             value={urls}
             onChange={e => setUrls(e.target.value)}
-            className="ltr block w-full rounded-md shadow-sm border border-input-border bg-input text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary px-3 py-2 sm:text-sm"
+            className="ltr block w-full rounded-md border border-input-border bg-input px-3 py-2 text-foreground shadow-sm placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary sm:text-sm"
             placeholder={t('settings.knowledgeBase.batchUrls.placeholder')}
           />
         </div>

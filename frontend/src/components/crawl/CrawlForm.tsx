@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
 import { AxiosError } from 'axios';
 
-import { ApiDocumentation } from '../crawl/ApiDocumentation';
 import { PageOptionsForm } from '../forms/PageOptionsForm';
 import { SpiderOptionsForm, SpiderOptions } from '../forms/SpiderOptionsForm';
 import { JSONSchemaDefinition } from '../json-forms/types/schema';
@@ -26,8 +25,8 @@ import {
 } from '../../types/crawl';
 import { FeedMessage } from '../../types/feed';
 
+import { CrawlApiDocumentation } from './CrawlApiDocumentation';
 import PluginOptionsForm from './PluginOptionsForm';
-
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -172,16 +171,16 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({
           ...(isBatch
             ? { proxy_server: spiderOptions.proxy_server }
             : {
-              max_depth: parseInt(spiderOptions.maxDepth),
-              page_limit: parseInt(spiderOptions.pageLimit),
-              concurrent_requests: spiderOptions.concurrentRequests
-                ? parseInt(spiderOptions.concurrentRequests)
-                : null,
-              allowed_domains: spiderOptions.allowedDomains,
-              exclude_paths: spiderOptions.excludePaths,
-              include_paths: spiderOptions.includePaths,
-              proxy_server: spiderOptions.proxy_server,
-            }),
+                max_depth: parseInt(spiderOptions.maxDepth),
+                page_limit: parseInt(spiderOptions.pageLimit),
+                concurrent_requests: spiderOptions.concurrentRequests
+                  ? parseInt(spiderOptions.concurrentRequests)
+                  : null,
+                allowed_domains: spiderOptions.allowedDomains,
+                exclude_paths: spiderOptions.excludePaths,
+                include_paths: spiderOptions.includePaths,
+                proxy_server: spiderOptions.proxy_server,
+              }),
         },
         page_options: {
           exclude_tags: pageOptions.exclude_tags,
@@ -363,47 +362,47 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({
     ...(hidePluginTab
       ? []
       : [
-        {
-          name: t('crawl.form.pluginOptions'),
-          content: (
-            <PluginOptionsForm
-              onChange={handlePluginOptionsChange}
-              onValidation={handlePluginValidation}
-              schema={pluginSchema}
-              value={pluginOptions}
-            />
-          ),
-        },
-      ]),
+          {
+            name: t('crawl.form.pluginOptions'),
+            content: (
+              <PluginOptionsForm
+                onChange={handlePluginOptionsChange}
+                onValidation={handlePluginValidation}
+                schema={pluginSchema}
+                value={pluginOptions}
+              />
+            ),
+          },
+        ]),
     ...(hideApiDocs
       ? []
       : [
-        {
-          name: t('crawl.form.apiDocs'),
-          content: <ApiDocumentation request={currentRequest} isBatch={isBatch} />,
-        },
-      ]),
+          {
+            name: t('crawl.form.apiDocs'),
+            content: <CrawlApiDocumentation request={currentRequest} isBatch={isBatch} />,
+          },
+        ]),
     ...(hideResultsTab
       ? []
       : [
-        {
-          name: t('crawl.form.results'),
-          content: crawlStatus.request ? (
-            <>
-              <Feed messages={feedMessages} showTimestamp={true} loading={isLoading} />
-              <ResultsTable
-                request={crawlStatus.request}
-                results={crawlStatus.results}
-                isLoading={isLoading}
-              />
-            </>
-          ) : (
-            <div className="py-12 text-center text-muted-foreground">
-              {t('crawl.form.noResults')}
-            </div>
-          ),
-        },
-      ]),
+          {
+            name: t('crawl.form.results'),
+            content: crawlStatus.request ? (
+              <>
+                <Feed messages={feedMessages} showTimestamp={true} loading={isLoading} />
+                <ResultsTable
+                  request={crawlStatus.request}
+                  results={crawlStatus.results}
+                  isLoading={isLoading}
+                />
+              </>
+            ) : (
+              <div className="py-12 text-center text-muted-foreground">
+                {t('crawl.form.noResults')}
+              </div>
+            ),
+          },
+        ]),
   ];
 
   return (
@@ -415,20 +414,22 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({
             <button
               type="button"
               onClick={() => setIsBatch(false)}
-              className={`${!isBatch
+              className={`${
+                !isBatch
                   ? 'bg-primary text-primary-foreground'
                   : 'bg-card text-foreground hover:bg-muted'
-                } border-e border-input-border px-4 py-2 text-sm font-medium transition-colors`}
+              } border-e border-input-border px-4 py-2 text-sm font-medium transition-colors`}
             >
               {t('crawl.form.singleUrl')}
             </button>
             <button
               type="button"
               onClick={() => setIsBatch(true)}
-              className={`${isBatch
+              className={`${
+                isBatch
                   ? 'bg-primary text-primary-foreground'
                   : 'bg-card text-foreground hover:bg-muted'
-                } px-4 py-2 text-sm font-medium transition-colors`}
+              } px-4 py-2 text-sm font-medium transition-colors`}
             >
               {t('crawl.form.batchUrls')}
             </button>
@@ -440,7 +441,7 @@ export const CrawlForm: React.FC<CrawlFormProps> = ({
               <>
                 <textarea
                   placeholder={t('crawl.form.batchPlaceholder')}
-                  className="ltr w-full rounded-md shadow-sm border border-input-border bg-input text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary px-3 py-2 disabled:bg-muted"
+                  className="ltr w-full rounded-md border border-input-border bg-input px-3 py-2 text-foreground shadow-sm placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary disabled:bg-muted"
                   rows={5}
                   value={urls.join('\n')}
                   onChange={e => handleBatchUrlsChange(e.target.value)}

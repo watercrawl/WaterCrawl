@@ -1,6 +1,14 @@
 'use client';
 
-import React, { createContext, useState, useContext, useEffect, useCallback, useRef, useMemo } from 'react';
+import React, {
+  createContext,
+  useState,
+  useContext,
+  useEffect,
+  useCallback,
+  useRef,
+  useMemo,
+} from 'react';
 
 import { useTranslation } from 'react-i18next';
 
@@ -15,7 +23,6 @@ import { initializeGoogleAnalytics } from '../utils/analytics';
 
 import { useSettings } from '../../contexts/SettingsProvider';
 import { initSentry } from '../../sentry';
-
 
 interface CookieConsentContextType {
   isConsentGiven: boolean;

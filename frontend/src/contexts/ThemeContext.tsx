@@ -21,7 +21,6 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   });
   const [isDark, setIsDark] = useState(false);
 
-
   useEffect(() => {
     // Detect actual applied theme (considering system preference for 'system' theme)
     if (theme === 'system') {

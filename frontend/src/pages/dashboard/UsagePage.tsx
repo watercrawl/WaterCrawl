@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next';
 
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
 
+import Loading from '../../components/shared/Loading';
+import PageHeader from '../../components/shared/PageHeader';
 import SubscriptionStatusCard from '../../components/shared/SubscriptionStatusCard';
 import UsageCharts from '../../components/shared/UsageCharts';
 import UsageStatsGrid from '../../components/shared/UsageStatsGrid';
@@ -55,17 +57,15 @@ const UsagePage: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6 px-8 py-6">
-      <div className="mb-8">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-semibold text-foreground">{t('usage.title')}</h1>
-            <p className="mt-2 text-sm text-muted-foreground">{t('usage.subtitle')}</p>
-          </div>
+    <div className="space-y-6 px-4 py-6 sm:px-6 lg:px-8">
+      <PageHeader
+        titleKey="usage.title"
+        descriptionKey="usage.subtitle"
+        actions={
           <button
             onClick={fetchData}
             disabled={loading}
-            className="inline-flex items-center justify-center rounded-full p-2 text-muted-foreground transition-colors duration-200 hover:bg-muted hover:text-muted-foreground"
+            className="inline-flex items-center justify-center rounded-full border border-border bg-card p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             title={t('usage.refresh')}
           >
             <ArrowPathIcon
@@ -74,12 +74,12 @@ const UsagePage: React.FC = () => {
             />
             <span className="sr-only">{t('usage.refresh')}</span>
           </button>
-        </div>
-      </div>
+        }
+      />
 
       {loading ? (
-        <div className="flex h-full items-center justify-center">
-          <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-border"></div>
+        <div className="flex h-[320px] items-center justify-center">
+          <Loading />
         </div>
       ) : (
         <>

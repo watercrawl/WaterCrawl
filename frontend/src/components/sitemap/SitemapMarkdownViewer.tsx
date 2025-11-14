@@ -26,7 +26,7 @@ const SitemapMarkdownViewer: React.FC<SitemapMarkdownViewerProps> = ({
   }
 
   return (
-    <pre className="overflow-auto whitespace-pre-wrap rounded-md bg-card p-4 font-mono text-sm text-foreground shadow-inner">
+    <pre className="ltr overflow-auto whitespace-pre-wrap rounded-md bg-card p-4 font-mono text-sm text-foreground shadow-inner">
       {markdownContent}
     </pre>
   );

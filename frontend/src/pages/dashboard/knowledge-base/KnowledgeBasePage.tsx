@@ -21,7 +21,6 @@ import { knowledgeBaseApi } from '../../../services/api/knowledgeBase';
 import { KnowledgeBaseDetail } from '../../../types/knowledge';
 import { formatDistanceToNowLocalized } from '../../../utils/dateUtils';
 
-
 const KnowledgeBasePage: React.FC = () => {
   const { t } = useTranslation();
   const dateLocale = useDateLocale();

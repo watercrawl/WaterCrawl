@@ -97,9 +97,9 @@ warning: 'hsl(var(--warning))'
 warning-foreground: 'hsl(var(--warning-foreground))'
 warning-soft: 'hsl(var(--warning-soft))'
 
-danger: 'hsl(var(--danger))'
-danger-foreground: 'hsl(var(--danger-foreground))'
-danger-soft: 'hsl(var(--danger-soft))'
+error: 'hsl(var(--error))'
+error-foreground: 'hsl(var(--error-foreground))'
+error-soft: 'hsl(var(--error-soft))'
 
 info: 'hsl(var(--info))'
 info-foreground: 'hsl(var(--info-foreground))'

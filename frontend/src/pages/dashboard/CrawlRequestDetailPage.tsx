@@ -349,7 +349,7 @@ const CrawlRequestDetailPage: React.FC = () => {
                   </div>
                 ) : (
                   <>
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    <div className="grid min-w-0 gap-3">
                       {allResults.map(result => (
                         <CrawlResultCard
                           key={result.uuid}

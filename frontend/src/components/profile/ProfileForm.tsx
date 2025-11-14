@@ -8,12 +8,11 @@ import { EnvelopeOpenIcon, InformationCircleIcon } from '@heroicons/react/24/out
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-
-
 import { FormInput } from '../shared/FormInput';
 import Loading from '../shared/Loading';
 import { Switch } from '../shared/Switch';
 
+import { useSettings } from '../../contexts/SettingsProvider';
 import { profileApi } from '../../services/api/profile';
 
 const getSchema = (t: (key: string) => string) =>
@@ -32,6 +31,7 @@ export const ProfileForm: React.FC = () => {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const { settings } = useSettings();
 
   const methods = useForm<FormData>({
     resolver: yupResolver(getSchema(t)),
@@ -135,38 +135,39 @@ export const ProfileForm: React.FC = () => {
               </div>
             </div>
 
-            <div className="border-t border-border pt-6">
-              <div className="flex items-start gap-x-4 rounded-lg border border-info-strong bg-info-soft p-4">
-                <EnvelopeOpenIcon className="mt-1 h-6 w-6 flex-shrink-0 text-info-strong" />
-                <div className="flex-1">
-                  <h3 className="flex items-center text-sm font-semibold text-info-strong">
-                    {t('profile.newsletter.title')}
-                    <InformationCircleIcon
-                      className="ms-2 h-4 w-4 cursor-help text-info-strong/70 hover:text-info-strong"
-                      title={t('profile.newsletter.tooltip')}
-                    />
-                  </h3>
-                  <p className="mb-3 text-xs text-info-strong/80">
-                    {t('profile.newsletter.description')}
-                  </p>
+            {settings?.is_enterprise_mode_active && (
+              <div className="border-t border-border pt-6">
+                <div className="flex items-start gap-x-4 rounded-lg border border-info bg-info-soft p-4">
+                  <EnvelopeOpenIcon className="mt-1 h-6 w-6 flex-shrink-0 text-info" />
+                  <div className="flex-1">
+                    <h3 className="flex items-center text-sm font-semibold text-info">
+                      {t('profile.newsletter.title')}
+                      <InformationCircleIcon
+                        className="ms-2 h-4 w-4 cursor-help text-info hover:text-info"
+                        title={t('profile.newsletter.tooltip')}
+                      />
+                    </h3>
+                    <p className="mb-3 text-xs text-info-strong">
+                      {t('profile.newsletter.description')}
+                    </p>
 
-                  <div className="flex items-center">
-                    <Controller
-                      name="newsletter_confirmed"
-                      control={control}
-                      render={({ field: { value, onChange } }) => (
-                        <Switch
-                          checked={value || false}
-                          onChange={onChange}
-                          label={t('profile.newsletter.receiveUpdates')}
-                        />
-                      )}
-                    />
+                    <div className="flex items-center">
+                      <Controller
+                        name="newsletter_confirmed"
+                        control={control}
+                        render={({ field: { value, onChange } }) => (
+                          <Switch
+                            checked={value || false}
+                            onChange={onChange}
+                            label={t('profile.newsletter.receiveUpdates')}
+                          />
+                        )}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-
+            )}
             <div className="flex justify-end">
               <button
                 type="submit"

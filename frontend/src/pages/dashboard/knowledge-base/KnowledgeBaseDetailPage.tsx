@@ -32,7 +32,6 @@ import {
 } from '../../../types/knowledge';
 import { formatDistanceToNowLocalized } from '../../../utils/dateUtils';
 
-
 const KnowledgeBaseDetailPage: React.FC = () => {
   const { t } = useTranslation();
   const { confirm } = useConfirm();
@@ -57,7 +56,9 @@ const KnowledgeBaseDetailPage: React.FC = () => {
     confirm({
       title: t('settings.knowledgeBase.delete.title'),
       message: t('settings.knowledgeBase.delete.warningMessage', { title: knowledgeBase.title }),
-      warningMessage: t('settings.knowledgeBase.delete.confirmPrompt', { title: knowledgeBase.title }),
+      warningMessage: t('settings.knowledgeBase.delete.confirmPrompt', {
+        title: knowledgeBase.title,
+      }),
       variant: 'danger',
       requireInput: true,
       inputLabel: t('settings.knowledgeBase.delete.inputLabel'),

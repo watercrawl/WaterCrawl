@@ -13,6 +13,7 @@ This directory contains comprehensive guidelines for AI assistants working on th
 6. **05-api-integration.md** - API services, error handling, and data fetching
 7. **06-best-practices.md** - Performance, security, accessibility, and patterns
 8. **07-eslint-import-sorting.md** - ESLint import ordering rules and auto-fix
+9. **08-modals.md** - Modal system guidelines and patterns
 
 ## Quick Reference
 

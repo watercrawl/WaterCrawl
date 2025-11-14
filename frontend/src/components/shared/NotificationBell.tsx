@@ -39,7 +39,7 @@ export default function NotificationBell() {
 
   useEffect(() => {
     loadInvitations();
-    
+
     // Poll for new invitations every 60 seconds
     const interval = setInterval(loadInvitations, 60000);
     return () => clearInterval(interval);
@@ -92,11 +92,9 @@ export default function NotificationBell() {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute end-0 z-10 mt-2 w-96 origin-top-end rounded-md bg-card shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <Menu.Items className="origin-top-end absolute end-0 z-10 mt-2 w-96 rounded-md bg-card shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="border-b border-border px-4 py-3">
-            <h3 className="text-sm font-semibold text-foreground">
-              {t('notifications.title')}
-            </h3>
+            <h3 className="text-sm font-semibold text-foreground">{t('notifications.title')}</h3>
           </div>
 
           <div className="max-h-96 overflow-y-auto">
@@ -112,15 +110,11 @@ export default function NotificationBell() {
                 {notifications.map(notification => (
                   <Menu.Item key={notification.id}>
                     {({ active }) => (
-                      <div
-                        className={`px-4 py-3 ${
-                          active ? 'bg-muted' : ''
-                        }`}
-                      >
+                      <div className={`px-4 py-3 ${active ? 'bg-muted' : ''}`}>
                         {notification.type === 'invitation' && (
                           <div className="space-y-2">
                             <div className="flex items-start justify-between gap-x-3">
-                              <div className="flex-1 min-w-0">
+                              <div className="min-w-0 flex-1">
                                 <p className="text-sm font-medium text-foreground">
                                   {notification.title}
                                 </p>

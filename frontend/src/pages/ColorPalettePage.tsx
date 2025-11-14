@@ -37,7 +37,11 @@ const colorGroups = [
         className: 'bg-primary-soft',
         description: 'Primary soft variant',
       },
-      { name: 'Primary Strong', className: 'text-primary-strong', description: 'Primary strong variant' },
+      {
+        name: 'Primary Strong',
+        className: 'text-primary-strong',
+        description: 'Primary strong variant',
+      },
     ],
   },
   {
@@ -106,7 +110,11 @@ const colorGroups = [
         className: 'bg-success-soft',
         description: 'Success soft variant',
       },
-      { name: 'Success Strong', className: 'text-success-strong', description: 'Success strong variant' },
+      {
+        name: 'Success Strong',
+        className: 'text-success-strong',
+        description: 'Success strong variant',
+      },
     ],
   },
   {
@@ -136,7 +144,11 @@ const colorGroups = [
         className: 'bg-warning-soft',
         description: 'Warning soft variant',
       },
-      { name: 'Warning Strong', className: 'text-warning-strong', description: 'Warning strong variant' },
+      {
+        name: 'Warning Strong',
+        className: 'text-warning-strong',
+        description: 'Warning strong variant',
+      },
     ],
   },
   {
@@ -160,34 +172,6 @@ const colorGroups = [
     colors: [
       { name: 'Input', className: 'bg-input', description: 'Input background' },
       { name: 'Ring', className: 'ring-ring', description: 'Focus ring' },
-    ],
-  },
-  {
-    title: 'Sidebar Colors',
-    colors: [
-      { name: 'Sidebar Background', className: 'bg-sidebar-bg', description: 'Sidebar background' },
-      { name: 'Sidebar Text', className: 'text-sidebar-text', description: 'Sidebar text' },
-      {
-        name: 'Sidebar Text Muted',
-        className: 'text-sidebar-text-muted',
-        description: 'Sidebar muted text',
-      },
-      {
-        name: 'Sidebar Active BG',
-        className: 'bg-sidebar-active-bg',
-        description: 'Sidebar active background',
-      },
-      {
-        name: 'Sidebar Active Text',
-        className: 'text-sidebar-active-text',
-        description: 'Sidebar active text',
-      },
-      {
-        name: 'Sidebar Hover BG',
-        className: 'bg-sidebar-hover-bg',
-        description: 'Sidebar hover background',
-      },
-      { name: 'Sidebar Border', className: 'border-sidebar-border', description: 'Sidebar border' },
     ],
   },
 ];

@@ -15,7 +15,6 @@ import { proxyApi } from '../../services/api/proxy';
 import { UsableProxy } from '../../types/proxy';
 import { capFirst } from '../../utils/formatters';
 
-
 export interface SpiderOptions {
   maxDepth: string;
   pageLimit: string;

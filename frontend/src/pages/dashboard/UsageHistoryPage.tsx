@@ -13,6 +13,7 @@ import {
 } from '@heroicons/react/24/outline';
 
 import SpiderIcon from '../../components/icons/SpiderIcon';
+import PageHeader from '../../components/shared/PageHeader';
 import { Pagination } from '../../components/shared/Pagination';
 import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
 import { useSettings } from '../../contexts/SettingsProvider';
@@ -79,11 +80,11 @@ const UsageHistoryCard: React.FC<UsageHistoryCardProps> = ({ usage, onContentIdC
   const { t } = useTranslation();
   const dateLocale = useDateLocale();
   return (
-    <div className="rounded-lg bg-card p-4 shadow transition-shadow duration-200 hover:shadow-md">
+    <div className="group rounded-xl border border-border bg-card p-4 shadow-sm transition-all duration-200 hover:border-primary/30 hover:shadow-md">
       <div className="flex items-start justify-between">
-        <div className="flex items-center gap-x-3">
-          <div className="flex-shrink-0 text-muted-foreground">
-            {getContentTypeIcon(usage.content_type)}
+        <div className="flex items-center gap-3">
+          <div className="shrink-0 rounded-lg bg-gradient-to-br from-primary/10 to-primary/5 p-1.5 shadow-sm">
+            <div className="text-primary">{getContentTypeIcon(usage.content_type)}</div>
           </div>
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-medium text-foreground">
@@ -91,6 +92,7 @@ const UsageHistoryCard: React.FC<UsageHistoryCardProps> = ({ usage, onContentIdC
             </p>
             {isContentIdClickable(usage.content_type) ? (
               <button
+                type="button"
                 onClick={() => onContentIdClick(usage.content_type, usage.content_id)}
                 className="cursor-pointer text-sm text-primary underline hover:text-primary-strong"
               >
@@ -274,59 +276,63 @@ const UsageHistoryPage: React.FC = () => {
 
   return (
     <div className="h-full">
-      <div className="px-4 py-6 sm:px-8">
-        <h1 className="text-2xl font-semibold text-foreground">{t('usage.history')}</h1>
-        <p className="mt-1 text-sm text-muted-foreground">{t('usage.subtitle')}</p>
+      <div className="px-4 py-6 sm:px-6 lg:px-8">
+        <div className="mb-6">
+          <PageHeader
+            titleKey="usage.history"
+            descriptionKey="usage.subtitle"
+            actions={
+              <div className="flex flex-wrap items-center gap-3">
+                <div className="flex items-center gap-3">
+                  <label
+                    htmlFor="content-type-filter"
+                    className="text-sm font-medium text-muted-foreground"
+                  >
+                    {t('usage.filters.contentType')}:
+                  </label>
+                  <select
+                    id="content-type-filter"
+                    value={selectedContentType}
+                    onChange={handleContentTypeChange}
+                    disabled={loading}
+                    className="inline-flex items-center rounded-lg border border-border bg-card px-3 py-1.5 text-sm font-medium text-foreground shadow-sm transition-all hover:bg-muted focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1"
+                  >
+                    {CONTENT_TYPE_OPTIONS.map(option => (
+                      <option key={option.value} value={option.value}>
+                        {t(option.key)}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-        <div className="mt-8">
-          {/* Filters */}
-          <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2">
-            {/* Content Type Filter */}
-            <div>
-              <label
-                htmlFor="content-type-filter"
-                className="mb-1 block text-sm font-medium text-foreground"
-              >
-                {t('usage.filters.contentType')}
-              </label>
-              <select
-                id="content-type-filter"
-                value={selectedContentType}
-                onChange={handleContentTypeChange}
-                className="block w-full rounded-md border border-input-border bg-input text-foreground shadow-sm focus:border-primary focus:ring-1 focus:ring-primary sm:text-sm"
-              >
-                {CONTENT_TYPE_OPTIONS.map(option => (
-                  <option key={option.value} value={option.value}>
-                    {t(option.key)}
-                  </option>
-                ))}
-              </select>
-            </div>
+                <div className="flex items-center gap-3">
+                  <label
+                    htmlFor="api-key-filter"
+                    className="text-sm font-medium text-muted-foreground"
+                  >
+                    {t('usage.filters.apiKey')}:
+                  </label>
+                  <select
+                    id="api-key-filter"
+                    value={selectedApiKey}
+                    onChange={handleApiKeyChange}
+                    disabled={loading}
+                    className="inline-flex items-center rounded-lg border border-border bg-card px-3 py-1.5 text-sm font-medium text-foreground shadow-sm transition-all hover:bg-muted focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1"
+                  >
+                    <option value="">{t('usage.filters.allApiKeys')}</option>
+                    {apiKeys.map(apiKey => (
+                      <option key={apiKey.uuid} value={apiKey.uuid}>
+                        {apiKey.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            }
+          />
+        </div>
 
-            {/* API Key Filter */}
-            <div>
-              <label
-                htmlFor="api-key-filter"
-                className="mb-1 block text-sm font-medium text-foreground"
-              >
-                {t('usage.filters.apiKey')}
-              </label>
-              <select
-                id="api-key-filter"
-                value={selectedApiKey}
-                onChange={handleApiKeyChange}
-                className="block w-full rounded-md border border-input-border bg-input text-foreground shadow-sm focus:border-primary focus:ring-1 focus:ring-primary sm:text-sm"
-              >
-                <option value="">{t('usage.filters.allApiKeys')}</option>
-                {apiKeys.map(apiKey => (
-                  <option key={apiKey.uuid} value={apiKey.uuid}>
-                    {apiKey.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
+        <div className="mt-6">
           {hasNoData ? (
             <div className="py-12 text-center">
               <BookOpenIcon className="mx-auto h-12 w-12 text-muted-foreground" />
@@ -362,121 +368,111 @@ const UsageHistoryPage: React.FC = () => {
               ) : (
                 /* Desktop Table View */
                 <div className={loading ? 'pointer-events-none opacity-70 transition-opacity' : ''}>
-                  <div className="mt-8 flex flex-col">
-                    <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                      <div className="inline-block min-w-full px-4 py-2 align-middle sm:px-6 lg:px-8">
-                        <div className="overflow-hidden rounded-lg shadow ring-1 ring-black ring-opacity-5">
-                          <table className="min-w-full divide-y divide-border">
-                            <thead className="bg-muted">
-                              <tr>
-                                <th
-                                  scope="col"
-                                  className="py-3.5 pe-3 ps-4 text-start text-sm font-semibold text-foreground sm:ps-6"
-                                >
-                                  {t('usage.contentType')}
-                                </th>
-                                <th
-                                  scope="col"
-                                  className="px-3 py-3.5 text-start text-sm font-semibold text-foreground"
-                                >
-                                  {t('usage.contentId')}
-                                </th>
-                                {settings?.is_enterprise_mode_active && (
-                                  <>
-                                    <th
-                                      scope="col"
-                                      className="px-3 py-3.5 text-start text-sm font-semibold text-foreground"
-                                    >
-                                      {t('usage.requestedCredits')}
-                                    </th>
-                                    <th
-                                      scope="col"
-                                      className="px-3 py-3.5 text-start text-sm font-semibold text-foreground"
-                                    >
-                                      {t('usage.usedCredits')}
-                                    </th>
-                                  </>
+                  <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+                    <table className="min-w-full divide-y divide-border">
+                      <thead className="bg-muted/30">
+                        <tr>
+                          <th
+                            scope="col"
+                            className="py-3 pe-3 ps-6 text-start text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+                          >
+                            {t('usage.contentType')}
+                          </th>
+                          <th
+                            scope="col"
+                            className="px-3 py-3 text-start text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+                          >
+                            {t('usage.contentId')}
+                          </th>
+                          {settings?.is_enterprise_mode_active && (
+                            <>
+                              <th
+                                scope="col"
+                                className="px-3 py-3 text-start text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+                              >
+                                {t('usage.requestedCredits')}
+                              </th>
+                              <th
+                                scope="col"
+                                className="px-3 py-3 text-start text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+                              >
+                                {t('usage.usedCredits')}
+                              </th>
+                            </>
+                          )}
+                          <th
+                            scope="col"
+                            className="px-3 py-3 text-start text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+                          >
+                            {t('apiKeys.title')}
+                          </th>
+                          <th
+                            scope="col"
+                            className="px-3 py-3 text-start text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+                          >
+                            {t('usage.requestedAt')}
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-border/50 bg-card">
+                        {usageHistory?.results.map(usage => (
+                          <tr
+                            key={usage.uuid}
+                            className="transition-colors duration-150 hover:bg-muted/30"
+                          >
+                            <td className="whitespace-nowrap py-3.5 pe-3 ps-6 text-sm font-medium text-foreground">
+                              <div className="flex items-center gap-2">
+                                <div className="shrink-0 rounded-md bg-primary/10 p-1">
+                                  <div className="text-primary">
+                                    {getContentTypeIcon(usage.content_type)}
+                                  </div>
+                                </div>
+                                <span>{getContentTypeLabel(usage.content_type, t)}</span>
+                              </div>
+                            </td>
+                            <td className="whitespace-nowrap px-3 py-3.5 text-sm text-muted-foreground">
+                              <div className="flex items-center gap-2">
+                                {isContentIdClickable(usage.content_type) && (
+                                  <Link
+                                    to={
+                                      getDetailPageUrl(usage.content_type, usage.content_id) || '#'
+                                    }
+                                    className="shrink-0 rounded-lg p-1 text-primary transition-all hover:bg-muted hover:text-primary-strong"
+                                    title={t('activityLogs.viewDetails')}
+                                  >
+                                    <EyeIcon className="h-4 w-4" />
+                                  </Link>
                                 )}
-                                <th
-                                  scope="col"
-                                  className="px-3 py-3.5 text-start text-sm font-semibold text-foreground"
+                                <span
+                                  className="block max-w-[200px] truncate"
+                                  title={usage.content_id}
                                 >
-                                  {t('apiKeys.title')}
-                                </th>
-                                <th
-                                  scope="col"
-                                  className="px-3 py-3.5 text-start text-sm font-semibold text-foreground"
-                                >
-                                  {t('usage.requestedAt')}
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody className="divide-y divide-border bg-card">
-                              {usageHistory?.results.map(usage => (
-                                <tr
-                                  key={usage.uuid}
-                                  className="transition-colors duration-200 hover:bg-muted"
-                                >
-                                  <td className="whitespace-nowrap py-4 pe-3 ps-4 text-sm font-medium text-foreground sm:ps-6">
-                                    <div className="flex items-center gap-x-2">
-                                      <div className="flex-shrink-0 text-muted-foreground">
-                                        {getContentTypeIcon(usage.content_type)}
-                                      </div>
-                                      <span>{getContentTypeLabel(usage.content_type, t)}</span>
-                                    </div>
-                                  </td>
-                                  <td className="whitespace-nowrap px-3 py-4 text-sm text-muted-foreground">
-                                    <div className="flex items-center gap-x-2">
-                                      {isContentIdClickable(usage.content_type) && (
-                                        <Link
-                                          to={
-                                            getDetailPageUrl(
-                                              usage.content_type,
-                                              usage.content_id
-                                            ) || '#'
-                                          }
-                                          className="block max-w-[200px] cursor-pointer truncate text-start text-primary underline hover:text-primary-strong"
-                                          title={usage.content_id}
-                                        >
-                                          <EyeIcon className="h-4 w-4" />
-                                        </Link>
-                                      )}
-                                      <span
-                                        className="block max-w-[200px] truncate"
-                                        title={usage.content_id}
-                                      >
-                                        {usage.content_id}
-                                      </span>
-                                    </div>
-                                  </td>
-                                  {settings?.is_enterprise_mode_active && (
-                                    <>
-                                      <td className="whitespace-nowrap px-3 py-4 text-sm text-foreground">
-                                        {usage.requested_page_credit}
-                                      </td>
-                                      <td className="whitespace-nowrap px-3 py-4 text-sm text-foreground">
-                                        {usage.used_page_credit}
-                                      </td>
-                                    </>
-                                  )}
+                                  {usage.content_id}
+                                </span>
+                              </div>
+                            </td>
+                            {settings?.is_enterprise_mode_active && (
+                              <>
+                                <td className="whitespace-nowrap px-3 py-3.5 text-sm text-foreground">
+                                  {usage.requested_page_credit}
+                                </td>
+                                <td className="whitespace-nowrap px-3 py-3.5 text-sm text-foreground">
+                                  {usage.used_page_credit}
+                                </td>
+                              </>
+                            )}
 
-                                  <td className="whitespace-nowrap px-3 py-4 text-sm text-muted-foreground">
-                                    {usage.team_api_key?.name || t('usage.webInterface')}
-                                  </td>
-                                  <td className="whitespace-nowrap px-3 py-4 text-sm text-muted-foreground">
-                                    {formatDistanceToNowLocalized(
-                                      new Date(usage.created_at),
-                                      dateLocale
-                                    )}{' '}
-                                    {t('common.ago')}
-                                  </td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
+                            <td className="whitespace-nowrap px-3 py-3.5 text-sm text-muted-foreground">
+                              {usage.team_api_key?.name || t('usage.webInterface')}
+                            </td>
+                            <td className="whitespace-nowrap px-3 py-3.5 text-sm text-muted-foreground">
+                              {formatDistanceToNowLocalized(new Date(usage.created_at), dateLocale)}{' '}
+                              {t('common.ago')}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               )}

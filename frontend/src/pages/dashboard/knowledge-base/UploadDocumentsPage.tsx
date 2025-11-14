@@ -11,8 +11,6 @@ import { useBreadcrumbs } from '../../../contexts/BreadcrumbContext';
 import { knowledgeBaseApi } from '../../../services/api/knowledgeBase';
 import { KnowledgeBaseDetail } from '../../../types/knowledge';
 
-
-
 const UploadDocumentsPage: React.FC = () => {
   const { t } = useTranslation();
   const { knowledgeBaseId } = useParams<{ knowledgeBaseId: string }>();

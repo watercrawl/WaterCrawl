@@ -97,7 +97,8 @@ export const ConfirmProvider: React.FC<{ children: React.ReactNode }> = ({ child
         icon: ExclamationCircleIcon,
         iconBgColor: 'bg-warning',
         iconColor: 'text-warning-foreground',
-        buttonClass: 'bg-warning hover:bg-warning-strong hover:text-warning-soft focus:ring-warning',
+        buttonClass:
+          'bg-warning hover:bg-warning-strong hover:text-warning-soft focus:ring-warning',
       },
       info: {
         icon: InformationCircleIcon,
@@ -109,7 +110,8 @@ export const ConfirmProvider: React.FC<{ children: React.ReactNode }> = ({ child
         icon: CheckCircleIcon,
         iconBgColor: 'bg-success',
         iconColor: 'text-success-foreground',
-        buttonClass: 'bg-success hover:bg-success-strong hover:text-success-soft focus:ring-success',
+        buttonClass:
+          'bg-success hover:bg-success-strong hover:text-success-soft focus:ring-success',
       },
     };
     return configs[variant];
@@ -119,98 +121,113 @@ export const ConfirmProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const IconComponent = variantConfig.icon;
 
   // Check if confirm button should be disabled
-  const isConfirmDisabled = isLoading || Boolean(options?.requireInput && options?.expectedInput && inputValue.trim() !== options.expectedInput.trim());
+  const isConfirmDisabled =
+    isLoading ||
+    Boolean(
+      options?.requireInput &&
+        options?.expectedInput &&
+        inputValue.trim() !== options.expectedInput.trim()
+    );
 
   return (
     <ConfirmContext.Provider value={{ confirm }}>
       {children}
       {options && (
-      <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-50" onClose={handleClose}>
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-black bg-opacity-25" />
-          </Transition.Child>
+        <Transition appear show={isOpen} as={Fragment}>
+          <Dialog as="div" className="relative z-50" onClose={handleClose}>
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" />
+            </Transition.Child>
 
-          <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center p-4 text-center">
-              <Transition.Child
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0 scale-95"
-                enterTo="opacity-100 scale-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-              >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-card p-6 text-start align-middle shadow-xl transition-all">
-                  <div className="space-y-4">
-                    {/* Icon and Title */}
-                    <div className="flex items-center gap-x-3">
-                      <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full ${variantConfig.iconBgColor}`}>
-                        <IconComponent className={`h-6 w-6 ${variantConfig.iconColor}`} aria-hidden="true" />
+            <div className="fixed inset-0 overflow-y-auto">
+              <div className="flex min-h-full items-center justify-center p-4">
+                <Transition.Child
+                  as={Fragment}
+                  enter="ease-out duration-300"
+                  enterFrom="opacity-0 scale-95"
+                  enterTo="opacity-100 scale-100"
+                  leave="ease-in duration-200"
+                  leaveFrom="opacity-100 scale-100"
+                  leaveTo="opacity-0 scale-95"
+                >
+                  <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-card shadow-2xl transition-all">
+                    {/* Header */}
+                    <div className="border-b border-border/50 bg-muted/30 px-6 py-4">
+                      <div className="flex items-center gap-3">
+                        <div
+                          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${variantConfig.iconBgColor}`}
+                        >
+                          <IconComponent
+                            className={`h-6 w-6 ${variantConfig.iconColor}`}
+                            aria-hidden="true"
+                          />
+                        </div>
+                        <Dialog.Title as="h3" className="text-lg font-bold text-foreground">
+                          {options.title}
+                        </Dialog.Title>
                       </div>
-                      <Dialog.Title as="h3" className="text-lg font-semibold text-foreground">
-                        {options.title}
-                      </Dialog.Title>
                     </div>
 
-                    {/* Message */}
-                    <div>
+                    {/* Body */}
+                    <div className="space-y-4 px-6 py-6">
+                      {/* Message */}
                       <p className="text-sm text-muted-foreground">{options.message}</p>
+
+                      {/* Warning Message */}
+                      {options.warningMessage && (
+                        <div className={`rounded-lg p-3 ${variantConfig.iconBgColor}`}>
+                          <p className={`text-sm ${variantConfig.iconColor}`}>
+                            {options.warningMessage}
+                          </p>
+                        </div>
+                      )}
+
+                      {/* Input Field */}
+                      {options.requireInput && (
+                        <div>
+                          {options.inputLabel && (
+                            <label
+                              htmlFor="confirm-input"
+                              className="block text-sm font-medium text-foreground"
+                            >
+                              {options.inputLabel}
+                            </label>
+                          )}
+                          <input
+                            id="confirm-input"
+                            type="text"
+                            value={inputValue}
+                            onChange={e => {
+                              setInputValue(e.target.value);
+                              setInputError('');
+                            }}
+                            placeholder={options.inputPlaceholder}
+                            className={`mt-2 block w-full rounded-lg border px-3 py-2 shadow-sm transition-colors focus:outline-none focus:ring-2 sm:text-sm ${
+                              inputError
+                                ? 'border-error focus:border-error focus:ring-error'
+                                : 'border-input-border bg-input focus:border-primary focus:ring-primary'
+                            }`}
+                            disabled={isLoading}
+                            autoFocus
+                          />
+                          {inputError && <p className="mt-1 text-sm text-error">{inputError}</p>}
+                        </div>
+                      )}
                     </div>
 
-                    {/* Warning Message */}
-                    {options.warningMessage && (
-                      <div className={`rounded-md p-3 ${variantConfig.iconBgColor}`}>
-                        <p className={`text-sm ${variantConfig.iconColor}`}>{options.warningMessage}</p>
-                      </div>
-                    )}
-
-                    {/* Input Field */}
-                    {options.requireInput && (
-                      <div>
-                        {options.inputLabel && (
-                          <label
-                            htmlFor="confirm-input"
-                            className="block text-sm font-medium text-foreground"
-                          >
-                            {options.inputLabel}
-                          </label>
-                        )}
-                        <input
-                          id="confirm-input"
-                          type="text"
-                          value={inputValue}
-                          onChange={e => {
-                            setInputValue(e.target.value);
-                            setInputError('');
-                          }}
-                          placeholder={options.inputPlaceholder}
-                          className={`mt-2 block w-full rounded-md border px-3 py-2 shadow-sm focus:outline-none focus:ring-2 sm:text-sm ${
-                            inputError
-                              ? 'border-error focus:border-error focus:ring-error'
-                              : 'border-input-border bg-input focus:border-primary focus:ring-primary'
-                          }`}
-                          disabled={isLoading}
-                          autoFocus
-                        />
-                        {inputError && <p className="mt-1 text-sm text-error">{inputError}</p>}
-                      </div>
-                    )}
-
-                    {/* Action Buttons */}
-                    <div className="flex justify-end gap-x-3 pt-2">
+                    {/* Footer */}
+                    <div className="flex items-center justify-end gap-3 border-t border-border/50 bg-muted/20 px-6 py-4">
                       <button
                         type="button"
-                        className="inline-flex justify-center rounded-md border border-input-border bg-card px-4 py-2 text-sm font-medium text-foreground hover:bg-muted focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                        className="inline-flex justify-center rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium text-foreground transition-all hover:bg-muted focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50"
                         onClick={handleClose}
                         disabled={isLoading}
                       >
@@ -218,7 +235,7 @@ export const ConfirmProvider: React.FC<{ children: React.ReactNode }> = ({ child
                       </button>
                       <button
                         type="button"
-                        className={`inline-flex items-center justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${
+                        className={`inline-flex items-center justify-center rounded-lg border border-transparent px-4 py-2 text-sm font-medium text-white transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${
                           variantConfig.buttonClass
                         }`}
                         onClick={handleConfirm}
@@ -234,13 +251,12 @@ export const ConfirmProvider: React.FC<{ children: React.ReactNode }> = ({ child
                         )}
                       </button>
                     </div>
-                  </div>
-                </Dialog.Panel>
-              </Transition.Child>
+                  </Dialog.Panel>
+                </Transition.Child>
+              </div>
             </div>
-          </div>
-        </Dialog>
-      </Transition>
+          </Dialog>
+        </Transition>
       )}
     </ConfirmContext.Provider>
   );

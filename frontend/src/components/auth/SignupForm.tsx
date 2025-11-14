@@ -18,8 +18,6 @@ import { RegisterRequest } from '../../types/auth';
 
 import { OAuthButtons } from './OAuthButtons';
 
-
-
 const passwordStrengthRegex = {
   hasNumber: /\d/,
   hasUpperCase: /[A-Z]/,
@@ -104,13 +102,10 @@ export const SignupForm: React.FC<SignupFormProps> = ({ invitationCode }) => {
   const navigate = useNavigate();
   const { settings } = useSettings();
 
-
-
   const methods = useForm<FormData>({
     resolver: yupResolver(getSchema(t)),
     mode: 'onChange',
   });
-
 
   const {
     handleSubmit,
@@ -300,8 +295,9 @@ export const SignupForm: React.FC<SignupFormProps> = ({ invitationCode }) => {
             <button
               type="submit"
               disabled={isLoading}
-              className={`flex w-full justify-center rounded-md border border-transparent bg-primary px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${isLoading ? 'cursor-not-allowed opacity-50' : ''
-                }`}
+              className={`flex w-full justify-center rounded-md border border-transparent bg-primary px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
+                isLoading ? 'cursor-not-allowed opacity-50' : ''
+              }`}
             >
               {isLoading ? t('auth.signup.creating') : t('auth.signup.signupButton')}
             </button>
@@ -317,9 +313,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ invitationCode }) => {
               </div>
             </div>
 
-            <div className="mt-6">
-              {settings?.is_signup_active && <OAuthButtons />}
-            </div>
+            <div className="mt-6">{settings?.is_signup_active && <OAuthButtons />}</div>
           </div>
         </div>
       </div>

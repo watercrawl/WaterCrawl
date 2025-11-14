@@ -3,18 +3,22 @@ import React, { useState, useEffect, useCallback } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 
-import { DocumentChartBarIcon, CodeBracketSquareIcon } from '@heroicons/react/24/outline';
+import {
+  ChartBarIcon,
+  CodeBracketIcon,
+  DocumentTextIcon,
+  ExclamationTriangleIcon,
+  XCircleIcon,
+} from '@heroicons/react/24/outline';
+import Editor from '@monaco-editor/react';
 
-import Button from '../shared/Button';
-
+import { useTheme } from '../../contexts/ThemeContext';
 import { sitemapApi } from '../../services/api/sitemap';
 import { SitemapGraph } from '../../types/crawl';
 import { SitemapRequest, SitemapStatus } from '../../types/sitemap';
 
 import SitemapGraphViewer from './SitemapGraphViewer';
 import SitemapMarkdownViewer from './SitemapMarkdownViewer';
-
-
 
 interface SitemapResultDisplayProps {
   result?: SitemapRequest;
@@ -28,6 +32,7 @@ export const SitemapResultDisplay: React.FC<SitemapResultDisplayProps> = ({
   loading = false,
 }) => {
   const { t } = useTranslation();
+  const { isDark } = useTheme();
   const [viewMode, setViewMode] = useState<ViewMode>('json');
   const [sitemapGraph, setSitemapGraph] = useState<SitemapGraph | null>(null);
   const [markdownContent, setMarkdownContent] = useState<string>('');
@@ -108,27 +113,16 @@ export const SitemapResultDisplay: React.FC<SitemapResultDisplayProps> = ({
 
   if (result.status === SitemapStatus.Failed) {
     return (
-      <div className="rounded-md border border-error bg-error-soft p-4">
-        <div className="flex">
-          <div className="flex-shrink-0">
-            <svg
-              className="h-5 w-5 text-error"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                fillRule="evenodd"
-                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </div>
-          <div className="ms-3">
-            <h3 className="text-sm font-medium text-error">{t('sitemap.generationFailed')}</h3>
-            <div className="mt-2 text-sm text-error">
-              <p>{t('sitemap.generationError')}</p>
+      <div className="rounded-xl border border-error bg-error-soft p-4 shadow-sm">
+        <div className="flex gap-3">
+          <div className="shrink-0">
+            <div className="rounded-lg bg-error/10 p-2">
+              <XCircleIcon className="h-5 w-5 text-error" aria-hidden="true" />
             </div>
+          </div>
+          <div className="flex-1">
+            <h3 className="text-sm font-semibold text-error">{t('sitemap.generationFailed')}</h3>
+            <p className="mt-1 text-sm text-error-foreground">{t('sitemap.generationError')}</p>
           </div>
         </div>
       </div>
@@ -137,29 +131,20 @@ export const SitemapResultDisplay: React.FC<SitemapResultDisplayProps> = ({
 
   if (result.status === SitemapStatus.Canceled) {
     return (
-      <div className="rounded-md border border-warning bg-warning-soft p-4">
-        <div className="flex">
-          <div className="flex-shrink-0">
-            <svg
-              className="h-5 w-5 text-warning"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                fillRule="evenodd"
-                d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z"
-                clipRule="evenodd"
-              />
-            </svg>
+      <div className="rounded-xl border border-warning bg-warning-soft p-4 shadow-sm">
+        <div className="flex gap-3">
+          <div className="shrink-0">
+            <div className="rounded-lg bg-warning/10 p-2">
+              <ExclamationTriangleIcon className="h-5 w-5 text-warning" aria-hidden="true" />
+            </div>
           </div>
-          <div className="ms-3">
-            <h3 className="text-sm font-medium text-warning-strong">
+          <div className="flex-1">
+            <h3 className="text-sm font-semibold text-warning">
               {t('sitemap.generationCanceled')}
             </h3>
-            <div className="mt-2 text-sm text-warning-strong">
-              <p>{t('sitemap.generationCanceledMessage')}</p>
-            </div>
+            <p className="mt-1 text-sm text-warning-foreground">
+              {t('sitemap.generationCanceledMessage')}
+            </p>
           </div>
         </div>
       </div>
@@ -168,69 +153,92 @@ export const SitemapResultDisplay: React.FC<SitemapResultDisplayProps> = ({
 
   if (result.status === SitemapStatus.Finished) {
     return (
-      <div className="ltr space-y-6">
+      <div className="space-y-4">
         {result.result && Array.isArray(result.result) && (
           <div className="flex items-center justify-between">
-            <span className="text-sm text-muted-foreground">
+            <span className="text-sm font-medium text-foreground">
               {t('sitemap.foundUrls', { count: result.result.length })}
             </span>
-            <div className="flex gap-x-2">
-              {/* View toggle buttons */}
-              <Button
-                size="sm"
-                variant={viewMode === 'json' ? 'primary' : 'outline'}
-                onClick={() => setViewMode('json')}
-                disabled={isLoadingGraph}
+            <div className="inline-flex rounded-lg border border-border bg-card p-1">
+              <button
+                type="button"
+                onClick={e => {
+                  e.preventDefault();
+                  setViewMode('json');
+                }}
+                disabled={isLoadingGraph || isLoadingMarkdown}
+                className={`inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-all ${
+                  viewMode === 'json'
+                    ? 'bg-primary text-primary-foreground shadow-sm'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
               >
-                <CodeBracketSquareIcon className="h-4 w-4" />
-                JSON
-              </Button>
-              <Button
-                size="sm"
-                variant={viewMode === 'graph' ? 'primary' : 'outline'}
-                onClick={() => fetchSitemapGraph()}
-                loading={isLoadingGraph}
-                disabled={isLoadingGraph}
+                <CodeBracketIcon className="h-3.5 w-3.5" />
+                <span>JSON</span>
+              </button>
+              <button
+                type="button"
+                onClick={e => {
+                  e.preventDefault();
+                  fetchSitemapGraph();
+                }}
+                disabled={isLoadingGraph || isLoadingMarkdown}
+                className={`inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-all ${
+                  viewMode === 'graph'
+                    ? 'bg-primary text-primary-foreground shadow-sm'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
               >
-                <DocumentChartBarIcon className="h-4 w-4" />
-                Graph
-              </Button>
-              <Button
-                size="sm"
-                variant={viewMode === 'markdown' ? 'primary' : 'outline'}
-                onClick={() => fetchSitemapMarkdown()}
-                loading={isLoadingMarkdown}
-                disabled={isLoadingMarkdown}
+                <ChartBarIcon className="h-3.5 w-3.5" />
+                <span>{isLoadingGraph ? t('common.loading') : 'Graph'}</span>
+              </button>
+              <button
+                type="button"
+                onClick={e => {
+                  e.preventDefault();
+                  fetchSitemapMarkdown();
+                }}
+                disabled={isLoadingGraph || isLoadingMarkdown}
+                className={`inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-all ${
+                  viewMode === 'markdown'
+                    ? 'bg-primary text-primary-foreground shadow-sm'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
               >
-                <CodeBracketSquareIcon className="h-4 w-4" />
-                Markdown
-              </Button>
+                <DocumentTextIcon className="h-3.5 w-3.5" />
+                <span>{isLoadingMarkdown ? t('common.loading') : 'Markdown'}</span>
+              </button>
             </div>
           </div>
         )}
 
         {viewMode === 'json' && (
-          <div className="overflow-hidden rounded-lg border border-border bg-card">
-            <div className="flex items-center justify-between border-b border-border bg-muted px-4 py-3">
-              <h3 className="text-sm font-medium text-foreground">{t('sitemap.urlList')}</h3>
-            </div>
-            <div className="max-h-[60vh] overflow-y-auto p-4">
-              <pre className="whitespace-pre-wrap break-all font-mono text-sm text-foreground">
-                {JSON.stringify(result.result, null, 2)}
-              </pre>
-            </div>
+          <div className="ltr h-[600px] overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+            <Editor
+              height="100%"
+              defaultLanguage="json"
+              value={JSON.stringify(result.result, null, 2)}
+              options={{
+                readOnly: true,
+                minimap: { enabled: false },
+                scrollBeyondLastLine: false,
+                fontSize: 13,
+                wordWrap: 'on',
+              }}
+              theme={isDark ? 'vs-dark' : 'light'}
+            />
           </div>
         )}
 
         {viewMode === 'graph' && (
-          <div className="overflow-hidden rounded-lg border border-border bg-card">
-            <div className="flex items-center justify-between border-b border-border bg-muted px-4 py-3">
-              <h3 className="text-sm font-medium text-foreground">{t('sitemap.structure')}</h3>
+          <div className="ltr overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+            <div className="border-b border-border/50 bg-muted/30 px-4 py-3">
+              <h3 className="text-sm font-semibold text-foreground">{t('sitemap.structure')}</h3>
             </div>
-            <div className="max-h-[60vh] overflow-y-auto p-4">
+            <div className="max-h-[600px] overflow-y-auto p-4">
               <SitemapGraphViewer sitemapData={sitemapGraph} isLoading={isLoadingGraph} />
             </div>
-            <div className="border-t border-border bg-muted px-4 py-3 text-xs text-muted-foreground">
+            <div className="border-t border-border/50 bg-muted/30 px-4 py-2.5 text-xs text-muted-foreground">
               <p>• {t('sitemap.tips.expandFolders')}</p>
               <p>• {t('sitemap.tips.clickLinks')}</p>
             </div>
@@ -238,11 +246,11 @@ export const SitemapResultDisplay: React.FC<SitemapResultDisplayProps> = ({
         )}
 
         {viewMode === 'markdown' && (
-          <div className="overflow-hidden rounded-lg border border-border bg-card">
-            <div className="flex items-center justify-between border-b border-border bg-muted px-4 py-3">
-              <h3 className="text-sm font-medium text-foreground">{t('sitemap.markdown')}</h3>
+          <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+            <div className="border-b border-border/50 bg-muted/30 px-4 py-3">
+              <h3 className="text-sm font-semibold text-foreground">{t('sitemap.markdown')}</h3>
             </div>
-            <div className="max-h-[60vh] overflow-y-auto">
+            <div className="max-h-[600px] overflow-y-auto">
               <SitemapMarkdownViewer
                 markdownContent={markdownContent}
                 isLoading={isLoadingMarkdown}

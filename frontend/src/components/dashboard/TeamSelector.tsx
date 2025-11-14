@@ -2,20 +2,12 @@ import React, { Fragment, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import {
-  Menu,
-  Transition,
-  Dialog,
-  MenuButton,
-  MenuItems,
-  MenuItem,
-  TransitionChild,
-  DialogPanel,
-  DialogTitle,
-} from '@headlessui/react';
-import { ChevronDownIcon, PlusIcon } from '@heroicons/react/20/solid';
+import { Menu, Transition, MenuButton, MenuItems, MenuItem } from '@headlessui/react';
+import { ChevronDownIcon, PlusIcon, UserGroupIcon } from '@heroicons/react/20/solid';
 
 import { Input } from '../shared/Input';
+import { Modal } from '../shared/Modal';
+
 
 import { useTeam } from '../../contexts/TeamContext';
 import { classnames } from '../../lib/utils';
@@ -95,66 +87,38 @@ export const TeamSelector: React.FC = () => {
         </Transition>
       </Menu>
 
-      <Transition appear show={isCreateTeamOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={() => setIsCreateTeamOpen(false)}>
-          <TransitionChild
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-black/25" />
-          </TransitionChild>
-
-          <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center p-4 text-center">
-              <TransitionChild
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0 scale-95"
-                enterTo="opacity-100 scale-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-              >
-                <DialogPanel className="bg-popover w-full max-w-md transform overflow-hidden rounded-2xl bg-card p-6 text-start align-middle shadow-xl transition-all">
-                  <DialogTitle as="h3" className="text-lg font-medium leading-6 text-foreground">
-                    {t('team.createNewTeam')}
-                  </DialogTitle>
-                  <div className="mt-4">
-                    <Input
-                      type="text"
-                      value={newTeamName}
-                      onChange={e => setNewTeamName(e.target.value)}
-                      placeholder={t('team.teamNamePlaceholder')}
-                    />
-                  </div>
-
-                  <div className="mt-6 flex justify-end gap-x-3">
-                    <button
-                      type="button"
-                      className="inline-flex justify-center rounded-md border border-input-border px-4 py-2 text-sm font-medium text-foreground hover:bg-muted focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-                      onClick={() => setIsCreateTeamOpen(false)}
-                    >
-                      {t('common.cancel')}
-                    </button>
-                    <button
-                      type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-                      onClick={handleCreateTeam}
-                    >
-                      {t('common.create')}
-                    </button>
-                  </div>
-                </DialogPanel>
-              </TransitionChild>
-            </div>
-          </div>
-        </Dialog>
-      </Transition>
+      <Modal
+        isOpen={isCreateTeamOpen}
+        onClose={() => setIsCreateTeamOpen(false)}
+        title={t('team.createNewTeam')}
+        icon={UserGroupIcon}
+        size="md"
+        footer={
+          <>
+            <button
+              type="button"
+              className="inline-flex justify-center rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium text-foreground transition-all hover:bg-muted focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+              onClick={() => setIsCreateTeamOpen(false)}
+            >
+              {t('common.cancel')}
+            </button>
+            <button
+              type="button"
+              className="inline-flex justify-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-all hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+              onClick={handleCreateTeam}
+            >
+              {t('common.create')}
+            </button>
+          </>
+        }
+      >
+        <Input
+          type="text"
+          value={newTeamName}
+          onChange={e => setNewTeamName(e.target.value)}
+          placeholder={t('team.teamNamePlaceholder')}
+        />
+      </Modal>
     </>
   );
 };

@@ -9,6 +9,7 @@ import { PlusIcon } from '@heroicons/react/24/outline';
 import { ProviderConfigForm } from '../../components/settings/ProviderConfigForm';
 import ProviderConfigList from '../../components/settings/ProviderConfigList';
 import Button from '../../components/shared/Button';
+import PageHeader from '../../components/shared/PageHeader';
 import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
 import { useConfirm } from '../../contexts/ConfirmContext';
 import useIsTabletOrMobile from '../../hooks/useIsTabletOrMobile';
@@ -166,10 +167,7 @@ const ManageLLMProvidersPage: React.FC = () => {
   return (
     <div className="mt-8 space-y-6">
       <div className="sm:flex sm:items-center sm:justify-between">
-        <div>
-          <h2 className="text-lg font-medium text-foreground">{t('providerConfig.title')}</h2>
-          <p className="mt-1 text-sm text-muted-foreground">{t('providerConfig.subtitle')}</p>
-        </div>
+        <PageHeader titleKey="providerConfig.title" descriptionKey="providerConfig.subtitle" />
         <div className="mt-4 sm:mt-0">
           <Button
             onClick={() => {

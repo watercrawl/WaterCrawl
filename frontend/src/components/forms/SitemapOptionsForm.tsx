@@ -52,7 +52,10 @@ export const SitemapOptionsForm: React.FC<SitemapOptionsFormProps> = ({ options,
       <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
         {/* Left Column - Basic Settings */}
         <div>
-          <OptionGroup title={t('sitemap.options.generalSettings')} description={t('sitemap.options.generalSettingsDesc')}>
+          <OptionGroup
+            title={t('sitemap.options.generalSettings')}
+            description={t('sitemap.options.generalSettingsDesc')}
+          >
             <div className="space-y-4">
               <div className="flex items-center">
                 <Switch

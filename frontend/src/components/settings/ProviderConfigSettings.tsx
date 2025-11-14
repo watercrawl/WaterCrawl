@@ -16,9 +16,6 @@ import { ProviderConfigFormData, Provider, ProviderConfig } from '../../types/pr
 import { ProviderConfigForm } from './ProviderConfigForm';
 import ProviderConfigList from './ProviderConfigList';
 
-
-
-
 const ProviderConfigSettings: React.FC = () => {
   const { t } = useTranslation();
   const { confirm } = useConfirm();

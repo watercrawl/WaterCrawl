@@ -19,14 +19,11 @@ import * as yup from 'yup';
 import { FormInput } from '../shared/FormInput';
 import { ValidationMessage } from '../shared/ValidationMessage';
 
-
 import { useSettings } from '../../contexts/SettingsProvider.tsx';
 import { authApi } from '../../services/api/auth';
 
-
 import type { InstallRequest } from '../../types/auth';
 import type { ApiError } from '../../types/common';
-
 
 const passwordStrengthRegex = {
   hasNumber: /\d/,

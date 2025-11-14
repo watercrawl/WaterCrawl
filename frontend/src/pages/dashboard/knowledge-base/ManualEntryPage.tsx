@@ -2,10 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams, Link  } from 'react-router-dom';
-
-
-
+import { useNavigate, useParams, Link } from 'react-router-dom';
 
 import { AxiosError } from 'axios';
 
@@ -140,7 +137,7 @@ const ManualEntryPage: React.FC = () => {
               value={manualContent}
               onChange={e => setManualContent(e.target.value)}
               rows={10}
-              className="w-full rounded-md shadow-sm border border-input-border bg-input text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary px-3 py-2"
+              className="w-full rounded-md border border-input-border bg-input px-3 py-2 text-foreground shadow-sm placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary"
               placeholder={t('settings.knowledgeBase.manualEntry.contentPlaceholder')}
             />
           </div>

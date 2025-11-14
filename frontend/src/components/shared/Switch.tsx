@@ -6,7 +6,6 @@ import { useDirection } from '../../contexts/DirectionContext';
 
 import { InfoTooltip } from './FormComponents';
 
-
 interface SwitchProps {
   label: string;
   description?: string;

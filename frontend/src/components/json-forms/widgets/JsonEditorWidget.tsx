@@ -4,7 +4,10 @@ import Editor from '@monaco-editor/react';
 
 import { FieldProps } from '../types/schema';
 
+import { useTheme } from '../../../contexts/ThemeContext';
+
 export const JsonEditorWidget: React.FC<FieldProps> = ({ schema, value, onChange, errors }) => {
+  const { isDark } = useTheme();
   const hasError = errors && errors.length > 0;
   const ui = schema.ui || {};
 
@@ -54,13 +57,13 @@ export const JsonEditorWidget: React.FC<FieldProps> = ({ schema, value, onChange
   }, [value]);
 
   return (
-    <div className={`relative ${hasError ? 'rounded-md border border-error' : ''}`}>
+    <div className={`ltr relative ${hasError ? 'rounded-md border border-error' : ''}`}>
       <Editor
         height={ui.editorHeight || '200px'}
         defaultLanguage="json"
         value={stringifiedValue}
         onChange={handleEditorChange}
-        theme="vs-dark"
+        theme={isDark ? 'vs-dark' : 'light'}
         options={{
           minimap: { enabled: false },
           fontSize: ui.fontSize || 14,
