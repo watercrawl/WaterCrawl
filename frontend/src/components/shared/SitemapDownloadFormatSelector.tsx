@@ -8,7 +8,6 @@ import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 import { sitemapApi } from '../../services/api/sitemap';
 import { SitemapRequest } from '../../types/sitemap';
 
-
 type DownloadFormat = 'json' | 'markdown' | 'graph';
 
 interface DownloadFormatSelectorProps {

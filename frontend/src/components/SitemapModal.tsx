@@ -1,19 +1,16 @@
-import React, { useEffect, useState, Fragment, useCallback } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 
-import { Dialog, Transition, Tab } from '@headlessui/react';
-import {
-  XMarkIcon,
-  DocumentArrowDownIcon,
-  DocumentTextIcon,
-  MapIcon,
-} from '@heroicons/react/24/outline';
+import { Tab } from '@headlessui/react';
+import { DocumentArrowDownIcon, DocumentTextIcon, MapIcon } from '@heroicons/react/24/outline';
+
 
 import { crawlRequestApi } from '../services/api/crawl';
 import { CrawlRequest, SitemapGraph } from '../types/crawl';
 
+import { Modal } from './shared/Modal';
 import SitemapGraphViewer from './sitemap/SitemapGraphViewer';
 import SitemapMarkdownViewer from './sitemap/SitemapMarkdownViewer';
 
@@ -118,150 +115,107 @@ const SitemapModal: React.FC<SitemapModalProps> = ({ isOpen, onClose, request })
   };
 
   return (
-    <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-50 overflow-y-auto" onClose={onClose}>
-        <Transition.Child
-          as={Fragment}
-          enter="ease-out duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <div className="fixed inset-0 bg-black/25" />
-        </Transition.Child>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      title={t('sitemap.explorer')}
+      icon={MapIcon}
+      size="4xl"
+    >
+      <div className="space-y-4">
+        {/* Action Buttons */}
+        <div className="flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={() => request.sitemap && window.open(request.sitemap, '_blank')}
+            className="inline-flex items-center rounded-lg border border-border bg-card px-3 py-2 text-sm font-medium text-foreground transition-all hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50"
+            title="Open JSON Sitemap in new tab"
+            disabled={!request.sitemap}
+          >
+            <MapIcon className="me-1.5 h-4 w-4 text-primary" />
+            {t('sitemap.jsonSitemap')}
+          </button>
 
-        <div className="fixed inset-0 overflow-y-auto">
-          <div className="flex min-h-full items-center justify-center p-4 text-center">
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 scale-95"
-              enterTo="opacity-100 scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-95"
-            >
-              <Dialog.Panel className="w-full max-w-4xl transform overflow-hidden rounded-2xl bg-card p-6 text-start align-middle shadow-xl transition-all">
-                <div className="absolute end-0 top-0 pe-4 pt-4">
-                  <button
-                    type="button"
-                    className="rounded-md bg-card text-muted-foreground hover:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-                    onClick={onClose}
-                  >
-                    <span className="sr-only">Close</span>
-                    <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-                  </button>
-                </div>
+          <button
+            type="button"
+            onClick={() => handleDownloadSitemap('graph')}
+            disabled={!sitemapData}
+            className="inline-flex items-center rounded-lg border border-border bg-card px-3 py-2 text-sm font-medium text-foreground transition-all hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50"
+            title="Download JSON Graph"
+          >
+            <DocumentArrowDownIcon className="me-1.5 h-4 w-4 text-primary" />
+            {t('sitemap.jsonGraph')}
+          </button>
 
-                <div>
-                  <div className="mb-4 flex items-center justify-between">
-                    <Dialog.Title
-                      as="h3"
-                      className="text-xl font-semibold leading-6 text-foreground"
-                    >
-                      {t('sitemap.explorer')}
-                    </Dialog.Title>
-
-                    <div className="me-6 flex gap-x-2">
-                      <button
-                        onClick={() => request.sitemap && window.open(request.sitemap, '_blank')}
-                        className="inline-flex items-center rounded-md border border-input-border bg-card px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50"
-                        title="Open JSON Sitemap in new tab"
-                        disabled={!request.sitemap}
-                      >
-                        <MapIcon className="me-1.5 h-4 w-4 text-primary" />
-                        {t('sitemap.jsonSitemap')}
-                      </button>
-
-                      <div className="mx-1 h-6 border-s border-input-border"></div>
-
-                      <button
-                        onClick={() => handleDownloadSitemap('graph')}
-                        disabled={!sitemapData}
-                        className="inline-flex items-center rounded-md border border-input-border bg-card px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50"
-                        title="Download JSON Graph"
-                      >
-                        <DocumentArrowDownIcon className="me-1.5 h-4 w-4 text-primary" />
-                        {t('sitemap.jsonGraph')}
-                      </button>
-
-                      <button
-                        onClick={() => handleDownloadSitemap('markdown')}
-                        disabled={!markdownContent}
-                        className="inline-flex items-center rounded-md border border-input-border bg-card px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50"
-                        title="Download Markdown"
-                      >
-                        <DocumentTextIcon className="me-1.5 h-4 w-4 text-success" />
-                        {t('results.markdown')}
-                      </button>
-                    </div>
-                  </div>
-
-                  <Tab.Group selectedIndex={activeTabIndex} onChange={setActiveTabIndex}>
-                    <Tab.List className="mb-4 flex gap-x-1 rounded-xl bg-muted p-1">
-                      <Tab
-                        className={({ selected }: { selected: boolean }) =>
-                          classNames(
-                            'w-full rounded-lg py-2.5 text-sm font-medium leading-5 transition-colors',
-                            'ring-white/60 ring-opacity-60 ring-offset-2 ring-offset-primary focus:outline-none focus:ring-2',
-                            selected
-                              ? 'bg-card text-primary-strong shadow'
-                              : 'text-muted-foreground hover:bg-card/[0.12] hover:text-primary-strong'
-                          )
-                        }
-                      >
-                        {t('sitemap.graphView')}
-                      </Tab>
-                      <Tab
-                        className={({ selected }: { selected: boolean }) =>
-                          classNames(
-                            'w-full rounded-lg py-2.5 text-sm font-medium leading-5 transition-colors',
-                            'ring-white/60 ring-opacity-60 ring-offset-2 ring-offset-primary focus:outline-none focus:ring-2',
-                            selected
-                              ? 'bg-card text-primary-strong shadow'
-                              : 'text-muted-foreground hover:bg-card/[0.12] hover:text-primary-strong'
-                          )
-                        }
-                      >
-                        {t('sitemap.markdownView')}
-                      </Tab>
-                    </Tab.List>
-
-                    <Tab.Panels>
-                      <Tab.Panel className="rounded-xl focus:outline-none">
-                        <div className="ltr max-h-[60vh] overflow-y-auto rounded-lg border border-border bg-muted p-4">
-                          <SitemapGraphViewer
-                            sitemapData={sitemapData}
-                            isLoading={isLoadingSitemap}
-                          />
-                        </div>
-                      </Tab.Panel>
-                      <Tab.Panel className="rounded-xl focus:outline-none">
-                        <div className="ltr max-h-[60vh] overflow-y-auto rounded-lg border border-border bg-muted p-4">
-                          <SitemapMarkdownViewer
-                            markdownContent={markdownContent}
-                            isLoading={isLoadingMarkdown}
-                          />
-                        </div>
-                      </Tab.Panel>
-                    </Tab.Panels>
-                  </Tab.Group>
-
-                  <div className="mt-4 rounded-lg border border-border bg-muted p-3 text-xs text-muted-foreground">
-                    <h4 className="mb-1 font-medium">{t('sitemap.tips.title')}</h4>
-                    <p>• {t('sitemap.tips.expandFolders')}</p>
-                    <p>• {t('sitemap.tips.openLinks')}</p>
-                    <p>• {t('sitemap.tips.queryChips')}</p>
-                  </div>
-                </div>
-              </Dialog.Panel>
-            </Transition.Child>
-          </div>
+          <button
+            type="button"
+            onClick={() => handleDownloadSitemap('markdown')}
+            disabled={!markdownContent}
+            className="inline-flex items-center rounded-lg border border-border bg-card px-3 py-2 text-sm font-medium text-foreground transition-all hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50"
+            title="Download Markdown"
+          >
+            <DocumentTextIcon className="me-1.5 h-4 w-4 text-success" />
+            {t('results.markdown')}
+          </button>
         </div>
-      </Dialog>
-    </Transition>
+
+        {/* Tabs */}
+        <Tab.Group selectedIndex={activeTabIndex} onChange={setActiveTabIndex}>
+          <Tab.List className="flex gap-x-1 rounded-xl bg-muted p-1">
+            <Tab
+              className={({ selected }: { selected: boolean }) =>
+                classNames(
+                  'w-full rounded-lg py-2.5 text-sm font-medium leading-5 transition-colors',
+                  'ring-white/60 ring-opacity-60 ring-offset-2 ring-offset-primary focus:outline-none focus:ring-2',
+                  selected
+                    ? 'bg-card text-primary-strong shadow'
+                    : 'text-muted-foreground hover:bg-card/[0.12] hover:text-primary-strong'
+                )
+              }
+            >
+              {t('sitemap.graphView')}
+            </Tab>
+            <Tab
+              className={({ selected }: { selected: boolean }) =>
+                classNames(
+                  'w-full rounded-lg py-2.5 text-sm font-medium leading-5 transition-colors',
+                  'ring-white/60 ring-opacity-60 ring-offset-2 ring-offset-primary focus:outline-none focus:ring-2',
+                  selected
+                    ? 'bg-card text-primary-strong shadow'
+                    : 'text-muted-foreground hover:bg-card/[0.12] hover:text-primary-strong'
+                )
+              }
+            >
+              {t('sitemap.markdownView')}
+            </Tab>
+          </Tab.List>
+
+          <Tab.Panels className="mt-4">
+            <Tab.Panel className="rounded-xl focus:outline-none">
+              <div className="ltr max-h-[60vh] overflow-y-auto rounded-lg border border-border bg-muted p-4">
+                <SitemapGraphViewer sitemapData={sitemapData} isLoading={isLoadingSitemap} />
+              </div>
+            </Tab.Panel>
+            <Tab.Panel className="rounded-xl focus:outline-none">
+              <div className="ltr max-h-[60vh] overflow-y-auto rounded-lg border border-border bg-muted p-4">
+                <SitemapMarkdownViewer
+                  markdownContent={markdownContent}
+                  isLoading={isLoadingMarkdown}
+                />
+              </div>
+            </Tab.Panel>
+          </Tab.Panels>
+        </Tab.Group>
+
+        {/* Tips */}
+        <div className="rounded-lg border border-border bg-muted p-3 text-xs text-muted-foreground">
+          <h4 className="mb-1 font-medium">{t('sitemap.tips.title')}</h4>
+          <p>• {t('sitemap.tips.expandFolders')}</p>
+          <p>• {t('sitemap.tips.openLinks')}</p>
+          <p>• {t('sitemap.tips.queryChips')}</p>
+        </div>
+      </div>
+    </Modal>
   );
 };
 

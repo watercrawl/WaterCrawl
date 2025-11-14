@@ -15,7 +15,6 @@ import { useTeam } from '../../contexts/TeamContext';
 
 import { SimpleSubscriptionPrompt } from './SimpleSubscriptionPrompt';
 
-
 interface Props {
   showRefreshButton?: boolean;
 }

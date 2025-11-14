@@ -90,7 +90,7 @@ export const ResourcesShortcuts: React.FC = () => {
       : []),
   ];
   return (
-    <div className="rounded-xl border border-border bg-card p-6">
+    <div className="min-w-0 rounded-xl border border-border bg-card p-6">
       <div className="mb-6 flex items-center gap-x-3">
         <BookOpenIcon className="h-6 w-6 text-primary" />
         <div>

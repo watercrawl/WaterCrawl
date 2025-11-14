@@ -13,14 +13,12 @@ import {
   BoltIcon,
 } from '@heroicons/react/24/outline';
 
-
 import Button from '../shared/Button';
 
 import { ChevronRight } from '../../components/shared/DirectionalIcon';
 import { useTeam } from '../../contexts/TeamContext';
 import { subscriptionApi } from '../../services/api/subscription';
 import { Plan } from '../../types/subscription';
-
 
 interface PlanCardProps {
   plan: Plan;

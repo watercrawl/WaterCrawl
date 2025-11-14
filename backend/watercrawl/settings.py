@@ -16,6 +16,7 @@ from pathlib import Path
 from celery.schedules import crontab
 from corsheaders.defaults import default_headers
 from environ import Env
+from . import __version__
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -218,7 +219,7 @@ REST_FRAMEWORK = {
 SPECTACULAR_SETTINGS = {
     "TITLE": "WaterCrawl API",
     "DESCRIPTION": "API documentation for WaterCrawl",
-    "VERSION": "1.0.0",
+    "VERSION": __version__,
     "SERVE_INCLUDE_SCHEMA": False,
     # 'SORT_OPERATIONS': 'common.schema.sort_operations',
 }

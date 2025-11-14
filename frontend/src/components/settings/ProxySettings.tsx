@@ -16,9 +16,6 @@ import { Proxy, CreateProxyRequest, TestProxyRequest } from '../../types/proxy';
 import ProxyForm from './ProxyForm';
 import ProxyList from './ProxyList';
 
-
-
-
 const ProxySettings: React.FC = () => {
   const { t } = useTranslation();
   const { confirm } = useConfirm();

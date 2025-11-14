@@ -12,7 +12,6 @@ import CrawlResultModal from './ResultModal';
 import { DownloadFormatSelector } from './shared/DownloadFormatSelector';
 import { StatusBadge } from './shared/StatusBadge';
 
-
 interface ResultsTableProps {
   request: CrawlRequest;
   results: CrawlResult[];

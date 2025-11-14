@@ -23,9 +23,6 @@ import { apiKeysApi } from '../../services/api/apiKeys';
 import { ApiKey } from '../../types/apiKeys';
 import { API_URL } from '../../utils/env';
 
-
-
-
 export const MCPServerAccess: React.FC = () => {
   const { t } = useTranslation();
   const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
@@ -286,7 +283,7 @@ export const MCPServerAccess: React.FC = () => {
     copyId,
     apiKey,
   }) => (
-    <div className="ltr relative rounded-t-lg border border-border">
+    <div className="ltr relative min-w-0 overflow-hidden rounded-lg border border-border">
       <div className="flex items-center justify-between rounded-t-lg bg-card px-4 py-2">
         <span className="text-xs font-medium uppercase text-muted-foreground">{language}</span>
         <button
@@ -301,14 +298,14 @@ export const MCPServerAccess: React.FC = () => {
         </button>
       </div>
       <pre className="overflow-x-auto rounded-b-lg bg-background p-4 text-sm text-muted-foreground">
-        <code>{code.replace(apiKey, maskKey(apiKey))}</code>
+        <code className="break-all">{code.replace(apiKey, maskKey(apiKey))}</code>
       </pre>
     </div>
   );
 
   if (loading) {
     return (
-      <div className="rounded-xl border border-border bg-card p-6">
+      <div className="min-w-0 rounded-xl border border-border bg-card p-6">
         <div className="mb-4 flex items-center gap-x-3">
           <ServerIcon className="h-6 w-6 text-primary" />
           <h2 className="text-lg font-semibold text-foreground">{t('dashboard.mcp.title')}</h2>
@@ -322,7 +319,7 @@ export const MCPServerAccess: React.FC = () => {
   }
 
   return (
-    <div className="rounded-xl border border-border bg-card p-6">
+    <div className="min-w-0 rounded-xl border border-border bg-card p-6">
       <div className="mb-6 flex items-center gap-x-3">
         <SparklesIcon className="h-6 w-6 text-primary" />
         <div>
@@ -359,7 +356,7 @@ export const MCPServerAccess: React.FC = () => {
 
           {/* Tab Navigation */}
           <div className="border-b border-border">
-            <nav className="-mb-px flex gap-x-8">
+            <nav className="-mb-px flex flex-wrap gap-x-8">
               <button
                 onClick={() => setActiveTab('apikeys')}
                 className={`border-b-2 px-1 py-2 text-sm font-medium transition-colors ${
@@ -421,14 +418,14 @@ export const MCPServerAccess: React.FC = () => {
                             {t('dashboard.mcp.apiKey')}
                           </label>
                           <div className="flex items-center gap-x-3">
-                            <div className="relative flex-1">
-                              <code className="block w-full rounded-lg border border-border bg-muted px-4 py-3 font-mono text-sm text-foreground">
+                            <div className="relative min-w-0 flex-1">
+                              <code className="block w-full overflow-x-auto rounded-lg border border-border bg-muted px-4 py-3 font-mono text-sm text-foreground">
                                 {visibleKeys.has(selectedKey.uuid)
                                   ? selectedKey.key
                                   : maskKey(selectedKey.key)}
                               </code>
                             </div>
-                            <div className="flex items-center gap-x-2">
+                            <div className="flex shrink-0 items-center gap-x-2">
                               <button
                                 onClick={() => toggleKeyVisibility(selectedKey.uuid)}
                                 className="inline-flex h-10 w-10 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-muted-foreground"

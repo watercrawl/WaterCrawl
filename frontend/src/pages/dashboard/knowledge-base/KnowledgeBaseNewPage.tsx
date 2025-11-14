@@ -38,8 +38,6 @@ import {
 } from '../../../types/knowledge';
 import { ListProviderConfig, Model } from '../../../types/provider';
 
-
-
 // Create validation schema for form - translations will be applied at runtime
 const createSchema = (t: any) =>
   yup.object().shape({
@@ -262,39 +260,41 @@ const KnowledgeBaseNewPage: React.FC = () => {
       navigate(`/dashboard/knowledge-base/${response.uuid}`);
     } catch (error: any) {
       console.error('Failed to create knowledge base:', error);
-      
+
       // Handle 400 validation errors from server
       if (error.response?.status === 400 && error.response?.data?.errors) {
         const serverErrors = error.response.data.errors;
         let firstErrorField: string | null = null;
-        
+
         // Map server errors to form fields
         Object.entries(serverErrors).forEach(([field, messages]) => {
           const errorMessage = Array.isArray(messages) ? messages[0] : messages;
-          
+
           // Track first error for scrolling
           if (!firstErrorField) {
             firstErrorField = field;
           }
-          
+
           // Set error for the field
           setError(field as any, {
             type: 'server',
             message: errorMessage as string,
           });
         });
-        
+
         // Scroll to the first error field
         if (firstErrorField) {
           setTimeout(() => {
-            const errorElement = document.querySelector(`[name="${firstErrorField}"]`) as HTMLElement;
+            const errorElement = document.querySelector(
+              `[name="${firstErrorField}"]`
+            ) as HTMLElement;
             if (errorElement) {
               errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
               errorElement.focus();
             }
           }, 100);
         }
-        
+
         toast.error(error.response.data.message || t('settings.knowledgeBase.toast.createError'));
       } else if (error.response?.data) {
         // Handle other types of errors
@@ -361,7 +361,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                             type="text"
                             id="title"
                             {...register('title')}
-                            className={`block w-full rounded-md shadow-sm border bg-input text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary sm:text-sm ${errors.title ? 'border-error focus:border-error focus:ring-error' : 'border-input-border'}`}
+                            className={`block w-full rounded-md border bg-input text-foreground shadow-sm placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary sm:text-sm ${errors.title ? 'border-error focus:border-error focus:ring-error' : 'border-input-border'}`}
                             placeholder={t('settings.knowledgeBase.form.basicInfo.namePlaceholder')}
                           />
                           {errors.title && (
@@ -382,7 +382,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                             id="description"
                             rows={3}
                             {...register('description')}
-                            className={`block w-full rounded-md shadow-sm border bg-input text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary px-3 py-2 sm:text-sm ${errors.description ? 'border-error focus:border-error focus:ring-error' : 'border-input-border'}`}
+                            className={`block w-full rounded-md border bg-input px-3 py-2 text-foreground shadow-sm placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary sm:text-sm ${errors.description ? 'border-error focus:border-error focus:ring-error' : 'border-input-border'}`}
                             placeholder={t(
                               'settings.knowledgeBase.form.basicInfo.descriptionPlaceholder'
                             )}
@@ -563,7 +563,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                             min="1"
                             step="1"
                             {...register('chunk_size', { valueAsNumber: true })}
-                            className={`block w-full rounded-md shadow-sm border bg-input text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary sm:text-sm ${errors.chunk_size ? 'border-error focus:border-error focus:ring-error' : 'border-input-border'}`}
+                            className={`block w-full rounded-md border bg-input text-foreground shadow-sm placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary sm:text-sm ${errors.chunk_size ? 'border-error focus:border-error focus:ring-error' : 'border-input-border'}`}
                           />
                           {errors.chunk_size && (
                             <p className="mt-1 text-sm text-error">{errors.chunk_size.message}</p>
@@ -613,7 +613,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                           step="1"
                           disabled={watchAutoChunkOverlap}
                           {...register('chunk_overlap', { valueAsNumber: true })}
-                          className={`block w-full rounded-md shadow-sm border text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary sm:text-sm ${watchAutoChunkOverlap ? 'bg-muted cursor-not-allowed' : 'bg-input'} ${errors.chunk_overlap ? 'border-error focus:border-error focus:ring-error' : 'border-input-border'}`}
+                          className={`block w-full rounded-md border text-foreground shadow-sm placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary sm:text-sm ${watchAutoChunkOverlap ? 'cursor-not-allowed bg-muted' : 'bg-input'} ${errors.chunk_overlap ? 'border-error focus:border-error focus:ring-error' : 'border-input-border'}`}
                         />
                         {errors.chunk_overlap && (
                           <p className="mt-1 text-sm text-error">{errors.chunk_overlap.message}</p>
@@ -897,7 +897,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                                     id="summarizer_context"
                                     {...register('summarizer_context')}
                                     rows={4}
-                                    className={`block w-full rounded-md shadow-sm border bg-input text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary px-3 py-2 sm:text-sm ${errors.summarizer_context ? 'border-error focus:border-error focus:ring-error' : 'border-input-border'}`}
+                                    className={`block w-full rounded-md border bg-input px-3 py-2 text-foreground shadow-sm placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary sm:text-sm ${errors.summarizer_context ? 'border-error focus:border-error focus:ring-error' : 'border-input-border'}`}
                                     placeholder={t(
                                       'settings.knowledgeBase.form.summarization.contextPlaceholder'
                                     )}

@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
 
 import Loading from '../../components/shared/Loading';
+import PageHeader from '../../components/shared/PageHeader';
 import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
 import { adminProviderApi } from '../../services/api/admin/provider';
 import {
@@ -17,7 +18,6 @@ import {
   AdminLLMModelRequest,
   AdminEmbeddingModelRequest,
 } from '../../types/admin/provider';
-
 
 const ProviderConfigDetailPage: React.FC = () => {
   const { t } = useTranslation();
@@ -177,10 +177,7 @@ const ProviderConfigDetailPage: React.FC = () => {
   return (
     <div className="mt-8 space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-foreground">{providerConfig.title}</h1>
-        <p className="text-sm text-muted-foreground">
-          {t('providerConfig.provider')}: {providerConfig.provider_name}
-        </p>
+        <PageHeader titleKey="providerConfig.details" descriptionKey="providerConfig.provider" />
       </div>
 
       <div className="flex gap-x-4">

@@ -38,6 +38,7 @@
   },
   "admin": {
     "dashboard": "Admin-Dashboard",
+    "description": "Verwalten Sie systemweite Konfigurationen, Proxys und LLM-Anbieter",
     "exitAdmin": "Admin verlassen",
     "llm": {
       "embeddingModels": "Embedding-Modelle",
@@ -578,7 +579,7 @@
       "noSitemaps": "Keine Sitemaps gefunden",
       "success": "Operation erfolgreich abgeschlossen",
       "tryAgain": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
-      "welcome": "Willkommen bei WaterCrawl! Beginnen Sie mit Ihrem ersten Crawl."
+      "welcome": "Nutzen Sie das komplette WaterCrawl-Toolkit zum Crawlen, Suchen, Extrahieren und Verstehen von Webdaten."
     },
     "navigation": {
       "activityLogs": "Aktivitätsprotokolle",
@@ -699,7 +700,7 @@
       "yesterday": "Gestern"
     },
     "title": "Dashboard",
-    "welcome": "Willkommen zurück!",
+    "welcome": "Willkommen bei",
     "welcomeTo": "Willkommen bei WaterCrawl"
   },
   "direction": {

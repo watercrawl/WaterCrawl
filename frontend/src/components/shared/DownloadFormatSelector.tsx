@@ -8,7 +8,6 @@ import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 import { activityLogsApi } from '../../services/api/activityLogs';
 import { CrawlRequest } from '../../types/crawl';
 
-
 type DownloadFormat = 'json' | 'markdown';
 
 interface DownloadFormatSelectorProps {

@@ -385,10 +385,10 @@ const KnowledgeBaseDocumentDetailPage: React.FC = () => {
         isOpen={showPreviewModal}
         onClose={() => setShowPreviewModal(false)}
         title={t('settings.knowledgeBase.documentDetail.previewTitle')}
-        size="80vw"
+        size="6xl"
       >
         <div className="mt-4">
-          <MarkdownRenderer content={previewContent}/>
+          <MarkdownRenderer content={previewContent} />
         </div>
       </Modal>
     </div>

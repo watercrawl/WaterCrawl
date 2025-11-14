@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState, useCallback  } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 
 import { ErrorPage } from '../pages/custom/ErrorPage';
 import { InstallPage } from '../pages/custom/InstallPage';

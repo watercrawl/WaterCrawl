@@ -153,7 +153,7 @@ const Feed: React.FC<FeedProps> = ({
         <h3 className="flex items-center text-xs font-medium text-foreground">
           <span>{title}</span>
           {loading && (
-            <div className="ms-2 inline-block h-3 w-3 animate-spin rounded-full border-2 border-input-border border-t-primary-500" />
+            <div className="border-t-primary-500 ms-2 inline-block h-3 w-3 animate-spin rounded-full border-2 border-input-border" />
           )}
           {messages.length > 0 && (
             <span className="ms-2 rounded-full bg-muted px-1.5 py-0.5 text-xs text-muted-foreground">

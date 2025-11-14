@@ -46,7 +46,6 @@ export interface ResultData {
 
 export interface CrawlResult {
   uuid: string;
-  title: string;
   url: string;
   result: string | ResultData;
   created_at: string;

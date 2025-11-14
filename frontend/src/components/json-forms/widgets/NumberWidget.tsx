@@ -30,7 +30,7 @@ export const NumberWidget: React.FC<FieldProps> = ({
       min={schema.minimum}
       max={schema.maximum}
       step={schema.multipleOf}
-      className={`block w-full rounded-md shadow-sm border bg-input text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary sm:text-sm ${
+      className={`block w-full rounded-md border bg-input text-foreground shadow-sm placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary sm:text-sm ${
         hasError ? 'border-error focus:border-error focus:ring-error' : 'border-input-border'
       }`}
     />

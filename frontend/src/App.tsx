@@ -8,7 +8,7 @@ import { TeamScopedComponent } from './components/shared/TeamScopedComponent';
 import { BreadcrumbProvider } from './contexts/BreadcrumbContext';
 import { ConfirmProvider } from './contexts/ConfirmContext';
 import { DirectionProvider } from './contexts/DirectionContext';
-import { SettingsProvider, useSettings  } from './contexts/SettingsProvider';
+import { SettingsProvider, useSettings } from './contexts/SettingsProvider';
 import { TeamProvider } from './contexts/TeamContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { UserProvider } from './contexts/UserContext';
@@ -121,144 +121,144 @@ const AppContent: React.FC = () => {
       <BreadcrumbProvider>
         <ConfirmProvider>
           <Routes>
-          <Route element={<AuthLayout />}>
-            <Route path="/" element={<LoginPage />} />
-            <Route path="/register" element={<SignupPage />} />
-            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-            <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
-            <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
-            <Route path="/accept/invitation/:code" element={<AcceptInvitationPage />} />
-          </Route>
-          <Route
-            element={
-              <AuthGuard>
-                <UserProvider>
-                  <TeamProvider>
-                    <TeamScopedComponent>
-                      <DashboardLayout />
-                    </TeamScopedComponent>
-                  </TeamProvider>
-                </UserProvider>
-              </AuthGuard>
-            }
-          >
-            <Route path="/dashboard">
-              <Route index element={<DashboardPage />} />
-              <Route path="playground" element={<Navigate to="/dashboard/crawl" replace />} />
-              <Route path="crawl" element={<CrawlPage />} />
-              <Route path="search" element={<SearchPage />} />
-              <Route path="sitemap" element={<SitemapPage />} />
-              <Route path="logs/crawls" element={<ActivityLogsPage />} />
-              <Route path="logs/crawls/:requestId" element={<CrawlRequestDetailPage />} />
-              <Route path="logs/searches" element={<SearchLogsPage />} />
-              <Route path="logs/searches/:id" element={<SearchRequestDetailPage />} />
-              <Route path="logs/sitemaps" element={<SitemapLogsPage />} />
-              <Route path="logs/sitemaps/:id" element={<SitemapRequestDetailPage />} />
-              <Route path="logs/usage" element={<UsageHistoryPage />} />
-              <Route path="usage" element={<UsagePage />} />
-              <Route path="api-keys" element={<ApiKeysPage />} />
-              <Route path="settings" element={<SettingsPage />} />
-              <Route path="profile" element={<ProfilePage />} />
-              <Route path="plans" element={<PlansPage />} />
-              <Route path="api-reference" element={<ApiReferencePage />} />
-
-              {/* Knowledge Base Routes - Conditionally rendered */}
-              {settings?.is_knowledge_base_enabled && (
-                <>
-                  <Route path="knowledge-base" element={<KnowledgeBasePage />} />
-                  <Route path="knowledge-base/new" element={<KnowledgeBaseNewPage />} />
-                  <Route
-                    path="knowledge-base/:knowledgeBaseId"
-                    element={<KnowledgeBaseDetailPage />}
-                  />
-                  <Route
-                    path="knowledge-base/:knowledgeBaseId/documents/:documentId"
-                    element={<KnowledgeBaseDocumentDetailPage />}
-                  />
-                  <Route
-                    path="knowledge-base/:knowledgeBaseId/edit"
-                    element={<KnowledgeBaseEditPage />}
-                  />
-
-                  {/* Knowledge Base Import Routes with modular structure */}
-                  <Route
-                    path="knowledge-base/:knowledgeBaseId/import"
-                    element={<KnowledgeBaseImportOptionsPage />}
-                  />
-                  <Route
-                    path="knowledge-base/:knowledgeBaseId/import/select-crawl"
-                    element={<KnowledgeBaseSelectCrawlPage />}
-                  />
-                  <Route
-                    path="knowledge-base/:knowledgeBaseId/import/select-sitemap"
-                    element={<KnowledgeBaseSelectSitemapPage />}
-                  />
-                  <Route
-                    path="knowledge-base/:knowledgeBaseId/import/new-crawl"
-                    element={<KnowledgeBaseNewCrawlPage />}
-                  />
-                  <Route
-                    path="knowledge-base/:knowledgeBaseId/import/new-sitemap"
-                    element={<KnowledgeBaseNewSitemapPage />}
-                  />
-                  <Route
-                    path="knowledge-base/:knowledgeBaseId/import/manual"
-                    element={<KnowledgeBaseManualEntryPage />}
-                  />
-                  <Route
-                    path="knowledge-base/:knowledgeBaseId/import/upload"
-                    element={<KnowledgeBaseUploadDocumentsPage />}
-                  />
-                  <Route
-                    path="knowledge-base/:knowledgeBaseId/import/batch-urls"
-                    element={<BatchUrlImportPage />}
-                  />
-                  <Route
-                    path="knowledge-base/:knowledgeBaseId/import/select-crawl/:crawlRequestId"
-                    element={<KnowledgeBaseSelectCrawlResultsPage />}
-                  />
-                  <Route
-                    path="knowledge-base/:knowledgeBaseId/import/select-sitemap/:sitemapRequestId"
-                    element={<KnowledgeBaseUrlSelectorPage />}
-                  />
-                  <Route
-                    path="knowledge-base/:knowledgeBaseId/import-progress"
-                    element={<KnowledgeBaseImportProgressPage />}
-                  />
-                  <Route
-                    path="knowledge-base/:knowledgeBaseId/query"
-                    element={<KnowledgeBaseQueryPage />}
-                  />
-                </>
-              )}
+            <Route element={<AuthLayout />}>
+              <Route path="/" element={<LoginPage />} />
+              <Route path="/register" element={<SignupPage />} />
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+              <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
+              <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
+              <Route path="/accept/invitation/:code" element={<AcceptInvitationPage />} />
             </Route>
-          </Route>
+            <Route
+              element={
+                <AuthGuard>
+                  <UserProvider>
+                    <TeamProvider>
+                      <TeamScopedComponent>
+                        <DashboardLayout />
+                      </TeamScopedComponent>
+                    </TeamProvider>
+                  </UserProvider>
+                </AuthGuard>
+              }
+            >
+              <Route path="/dashboard">
+                <Route index element={<DashboardPage />} />
+                <Route path="playground" element={<Navigate to="/dashboard/crawl" replace />} />
+                <Route path="crawl" element={<CrawlPage />} />
+                <Route path="search" element={<SearchPage />} />
+                <Route path="sitemap" element={<SitemapPage />} />
+                <Route path="logs/crawls" element={<ActivityLogsPage />} />
+                <Route path="logs/crawls/:requestId" element={<CrawlRequestDetailPage />} />
+                <Route path="logs/searches" element={<SearchLogsPage />} />
+                <Route path="logs/searches/:id" element={<SearchRequestDetailPage />} />
+                <Route path="logs/sitemaps" element={<SitemapLogsPage />} />
+                <Route path="logs/sitemaps/:id" element={<SitemapRequestDetailPage />} />
+                <Route path="logs/usage" element={<UsageHistoryPage />} />
+                <Route path="usage" element={<UsagePage />} />
+                <Route path="api-keys" element={<ApiKeysPage />} />
+                <Route path="settings" element={<SettingsPage />} />
+                <Route path="profile" element={<ProfilePage />} />
+                <Route path="plans" element={<PlansPage />} />
+                <Route path="api-reference" element={<ApiReferencePage />} />
 
-          {/* Admin Routes */}
-          <Route
-            element={
-              <AuthGuard>
-                <UserProvider>
-                  <AdminLayout />
-                </UserProvider>
-              </AuthGuard>
-            }
-          >
-            <Route path="/manager">
-              <Route index element={<AdminDashboard />} />
-              <Route path="proxies" element={<ManageProxiesPage />} />
-              <Route path="llm-providers" element={<ManageLLMProvidersPage />} />
-              <Route
-                path="llm-providers/:providerConfigId"
-                element={<ProviderConfigDetailPage />}
-              />
+                {/* Knowledge Base Routes - Conditionally rendered */}
+                {settings?.is_knowledge_base_enabled && (
+                  <>
+                    <Route path="knowledge-base" element={<KnowledgeBasePage />} />
+                    <Route path="knowledge-base/new" element={<KnowledgeBaseNewPage />} />
+                    <Route
+                      path="knowledge-base/:knowledgeBaseId"
+                      element={<KnowledgeBaseDetailPage />}
+                    />
+                    <Route
+                      path="knowledge-base/:knowledgeBaseId/documents/:documentId"
+                      element={<KnowledgeBaseDocumentDetailPage />}
+                    />
+                    <Route
+                      path="knowledge-base/:knowledgeBaseId/edit"
+                      element={<KnowledgeBaseEditPage />}
+                    />
+
+                    {/* Knowledge Base Import Routes with modular structure */}
+                    <Route
+                      path="knowledge-base/:knowledgeBaseId/import"
+                      element={<KnowledgeBaseImportOptionsPage />}
+                    />
+                    <Route
+                      path="knowledge-base/:knowledgeBaseId/import/select-crawl"
+                      element={<KnowledgeBaseSelectCrawlPage />}
+                    />
+                    <Route
+                      path="knowledge-base/:knowledgeBaseId/import/select-sitemap"
+                      element={<KnowledgeBaseSelectSitemapPage />}
+                    />
+                    <Route
+                      path="knowledge-base/:knowledgeBaseId/import/new-crawl"
+                      element={<KnowledgeBaseNewCrawlPage />}
+                    />
+                    <Route
+                      path="knowledge-base/:knowledgeBaseId/import/new-sitemap"
+                      element={<KnowledgeBaseNewSitemapPage />}
+                    />
+                    <Route
+                      path="knowledge-base/:knowledgeBaseId/import/manual"
+                      element={<KnowledgeBaseManualEntryPage />}
+                    />
+                    <Route
+                      path="knowledge-base/:knowledgeBaseId/import/upload"
+                      element={<KnowledgeBaseUploadDocumentsPage />}
+                    />
+                    <Route
+                      path="knowledge-base/:knowledgeBaseId/import/batch-urls"
+                      element={<BatchUrlImportPage />}
+                    />
+                    <Route
+                      path="knowledge-base/:knowledgeBaseId/import/select-crawl/:crawlRequestId"
+                      element={<KnowledgeBaseSelectCrawlResultsPage />}
+                    />
+                    <Route
+                      path="knowledge-base/:knowledgeBaseId/import/select-sitemap/:sitemapRequestId"
+                      element={<KnowledgeBaseUrlSelectorPage />}
+                    />
+                    <Route
+                      path="knowledge-base/:knowledgeBaseId/import-progress"
+                      element={<KnowledgeBaseImportProgressPage />}
+                    />
+                    <Route
+                      path="knowledge-base/:knowledgeBaseId/query"
+                      element={<KnowledgeBaseQueryPage />}
+                    />
+                  </>
+                )}
+              </Route>
             </Route>
-          </Route>
 
-          <Route path="/color-palette" element={<ColorPalettePage />} />
-          <Route path="stripe-callback/" element={<StripeCallbackPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
+            {/* Admin Routes */}
+            <Route
+              element={
+                <AuthGuard>
+                  <UserProvider>
+                    <AdminLayout />
+                  </UserProvider>
+                </AuthGuard>
+              }
+            >
+              <Route path="/manager">
+                <Route index element={<AdminDashboard />} />
+                <Route path="proxies" element={<ManageProxiesPage />} />
+                <Route path="llm-providers" element={<ManageLLMProvidersPage />} />
+                <Route
+                  path="llm-providers/:providerConfigId"
+                  element={<ProviderConfigDetailPage />}
+                />
+              </Route>
+            </Route>
+
+            <Route path="/color-palette" element={<ColorPalettePage />} />
+            <Route path="stripe-callback/" element={<StripeCallbackPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
         </ConfirmProvider>
       </BreadcrumbProvider>
     </Suspense>

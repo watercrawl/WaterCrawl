@@ -18,7 +18,6 @@ import { ChevronRight } from '../../../components/shared/DirectionalIcon';
 import { useBreadcrumbs } from '../../../contexts/BreadcrumbContext';
 import { knowledgeBaseApi } from '../../../services/api/knowledgeBase';
 
-
 interface ImportMethod {
   id: string;
   name: string;

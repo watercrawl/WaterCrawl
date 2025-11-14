@@ -2,11 +2,14 @@ import React from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import { ArrowDownTrayIcon, EyeIcon, PaperClipIcon } from '@heroicons/react/24/outline';
+import {
+  ArrowDownTrayIcon,
+  DocumentTextIcon,
+  EyeIcon,
+  PaperClipIcon,
+} from '@heroicons/react/24/outline';
 
-import { useDateLocale } from '../../hooks/useDateLocale';
 import { CrawlResult } from '../../types/crawl';
-import { formatDistanceToNowLocalized } from '../../utils/dateUtils';
 
 interface CrawlResultCardProps {
   result: CrawlResult;
@@ -15,7 +18,6 @@ interface CrawlResultCardProps {
 
 export const CrawlResultCard: React.FC<CrawlResultCardProps> = ({ result, onPreviewClick }) => {
   const { t } = useTranslation();
-  const dateLocale = useDateLocale();
   const onDownloadClick = (result: CrawlResult) => {
     // download result as blob
     const blob = new Blob([JSON.stringify(result)], { type: 'application/json' });
@@ -27,70 +29,54 @@ export const CrawlResultCard: React.FC<CrawlResultCardProps> = ({ result, onPrev
     URL.revokeObjectURL(url);
   };
   return (
-    <div className="rounded-md border border-border p-3">
-      {/* Header Section */}
-      <div className="flex items-start justify-between">
-        {/* Left Side - Title and URL */}
-        <div className="min-w-0 flex-1">
-          <h3 className="truncate text-sm font-medium text-foreground">{result.title}</h3>
-          <a
-            href={result.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-1 block truncate text-xs text-muted-foreground hover:underline"
+    <div className="group min-w-0 rounded-xl border border-border bg-card p-4 shadow-sm transition-all duration-200 hover:border-primary/30 hover:shadow-md">
+      {/* Header with URL and actions */}
+      <div className="flex min-w-0 items-center justify-between gap-3">
+        <div className="flex min-w-0 flex-1 items-center gap-2">
+          <div className="shrink-0 rounded-lg bg-gradient-to-br from-primary/10 to-primary/5 p-1.5 shadow-sm">
+            <DocumentTextIcon className="h-3.5 w-3.5 text-primary" />
+          </div>
+          <p
+            className="min-w-0 flex-1 truncate text-sm font-medium text-foreground"
             title={result.url}
           >
             {result.url}
-          </a>
+          </p>
         </div>
 
-        {/* Right Side - Action Buttons */}
-        <div className="ms-4 flex items-center gap-x-2">
+        {/* Action Buttons */}
+        <div className="flex shrink-0 items-center gap-1.5">
+          {result.attachments && result.attachments.length > 0 && (
+            <div className="inline-flex items-center gap-1 rounded-md bg-muted px-2 py-1 text-xs font-medium text-foreground">
+              <PaperClipIcon className="h-3 w-3" />
+              <span>{result.attachments.length}</span>
+            </div>
+          )}
           <button
+            type="button"
             onClick={e => {
               e.preventDefault();
               onDownloadClick(result);
             }}
-            className="p-1.5 text-muted-foreground hover:text-foreground"
+            className="rounded-lg p-1.5 text-muted-foreground transition-all hover:bg-muted hover:text-foreground"
             title={t('common.download')}
           >
             <ArrowDownTrayIcon className="h-4 w-4" />
           </button>
           <button
+            type="button"
             onClick={e => {
               e.preventDefault();
               onPreviewClick(result);
             }}
-            className="p-1.5 text-muted-foreground hover:text-foreground"
-            title={t('common.preview')}
+            className="rounded-lg bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground transition-all hover:bg-primary-hover"
           >
-            <EyeIcon className="h-4 w-4" />
+            <div className="flex items-center gap-1.5">
+              <EyeIcon className="h-4 w-4" />
+              <span>{t('common.preview')}</span>
+            </div>
           </button>
         </div>
-      </div>
-
-      {/* Footer Section - Timestamp and Attachments */}
-      <div className="mt-2 flex items-center justify-between text-xs text-muted-foreground">
-        <span>
-          {formatDistanceToNowLocalized(new Date(result.created_at), dateLocale, {
-            addSuffix: true,
-          })}
-        </span>
-        {result.attachments && result.attachments.length > 0 && (
-          <button
-            onClick={e => {
-              e.preventDefault();
-              onPreviewClick(result);
-            }}
-            className="flex items-center text-xs"
-          >
-            <PaperClipIcon className="me-1 h-3.5 w-3.5" />
-            <span>
-              {result.attachments.length}{' '}
-              {t('crawl.results.attachment', { count: result.attachments.length })}
-            </span>
-          </button>
-        )}
       </div>
     </div>
   );

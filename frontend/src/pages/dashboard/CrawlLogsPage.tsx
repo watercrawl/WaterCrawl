@@ -8,6 +8,7 @@ import { EyeIcon } from '@heroicons/react/24/outline';
 import { EmptyState } from '../../components/activity-logs/EmptyState';
 import { CrawlRequestCard } from '../../components/shared/CrawlRequestCard';
 import { DownloadFormatSelector } from '../../components/shared/DownloadFormatSelector';
+import PageHeader from '../../components/shared/PageHeader';
 import { Pagination } from '../../components/shared/Pagination';
 import { SitemapModalSelector } from '../../components/shared/SitemapModalSelector';
 import { StatusBadge } from '../../components/shared/StatusBadge';
@@ -72,23 +73,6 @@ const CrawlLogsPage: React.FC = () => {
     fetchCrawlRequests(currentPage, selectedStatus);
   }, [currentPage, selectedStatus]);
 
-  // Update URL when status filter changes
-  const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const status = e.target.value;
-    setSelectedStatus(status);
-
-    // Update the URL with the new status
-    if (status) {
-      searchParams.set('status', status);
-    } else {
-      searchParams.delete('status');
-    }
-    setSearchParams(searchParams);
-
-    // Reset to first page when changing filter
-    setCurrentPage(1);
-  };
-
   const handleViewDetails = (e: React.MouseEvent, requestId: string) => {
     e.stopPropagation();
     navigate(`/dashboard/logs/crawls/${requestId}`);
@@ -109,36 +93,48 @@ const CrawlLogsPage: React.FC = () => {
 
   return (
     <div className="h-full">
-      <div className="px-4 py-6 sm:px-8">
-        <h1 className="text-2xl font-semibold text-foreground">{t('activityLogs.crawlLogs')}</h1>
-        <p className="mt-1 text-sm text-muted-foreground">{t('activityLogs.crawlLogsDesc')}</p>
+      <div className="px-4 py-6 sm:px-6 lg:px-8">
+        <div className="mb-6">
+          <PageHeader
+            titleKey="activityLogs.crawlLogs"
+            descriptionKey="activityLogs.crawlLogsDesc"
+            actions={
+              <div className="flex items-center gap-3">
+                <label
+                  htmlFor="status-filter"
+                  className="text-sm font-medium text-muted-foreground"
+                >
+                  {t('activityLogs.filters.filterByStatus')}:
+                </label>
+                <select
+                  id="status-filter"
+                  value={selectedStatus}
+                  onChange={e => {
+                    const status = e.target.value;
+                    setSelectedStatus(status);
+                    if (status) {
+                      searchParams.set('status', status);
+                    } else {
+                      searchParams.delete('status');
+                    }
+                    setSearchParams(searchParams);
+                    setCurrentPage(1);
+                  }}
+                  disabled={loading}
+                  className="inline-flex items-center rounded-lg border border-border bg-card px-3 py-1.5 text-sm font-medium text-foreground shadow-sm transition-all hover:bg-muted focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1"
+                >
+                  {STATUS_OPTIONS.map(option => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            }
+          />
+        </div>
 
-        <div className="mt-8">
-          {/* Status Filter - Positioned at the top */}
-          <div className="mb-6">
-            <label
-              htmlFor="status-filter"
-              className="mb-1 block text-sm font-medium text-foreground"
-            >
-              {t('activityLogs.filters.filterByStatus')}
-            </label>
-            <div className="relative rounded-md shadow-sm">
-              <select
-                id="status-filter"
-                value={selectedStatus}
-                onChange={handleStatusChange}
-                className="block w-full rounded-md border border-input-border bg-input py-2 pe-10 ps-3 text-base text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary sm:w-64 sm:text-sm"
-                disabled={loading}
-              >
-                {STATUS_OPTIONS.map(option => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
+        <div className="mt-6">
           {hasNoData ? (
             <EmptyState />
           ) : (
@@ -167,102 +163,90 @@ const CrawlLogsPage: React.FC = () => {
               ) : (
                 /* Desktop Table View */
                 <div className={loading ? 'pointer-events-none opacity-70 transition-opacity' : ''}>
-                  <div className="mt-8 flex flex-col">
-                    <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                      <div className="inline-block min-w-full px-4 py-2 align-middle sm:px-6 lg:px-8">
-                        <div className="overflow-hidden rounded-lg shadow ring-1 ring-black ring-opacity-5">
-                          <table className="min-w-full divide-y divide-border">
-                            <thead className="bg-muted">
-                              <tr>
-                                <th
-                                  scope="col"
-                                  className="py-3.5 pe-3 ps-4 text-start text-sm font-semibold text-foreground sm:ps-6"
-                                >
-                                  {t('activityLogs.table.url')}
-                                </th>
-                                <th
-                                  scope="col"
-                                  className="px-3 py-3.5 text-start text-sm font-semibold text-foreground"
-                                >
-                                  {t('activityLogs.table.status')}
-                                </th>
-                                <th
-                                  scope="col"
-                                  className="px-3 py-3.5 text-start text-sm font-semibold text-foreground"
-                                >
-                                  {t('activityLogs.table.results')}
-                                </th>
-                                <th
-                                  scope="col"
-                                  className="px-3 py-3.5 text-start text-sm font-semibold text-foreground"
-                                >
-                                  {t('activityLogs.table.created')}
-                                </th>
-                                <th
-                                  scope="col"
-                                  className="px-3 py-3.5 text-start text-sm font-semibold text-foreground"
-                                >
-                                  {t('activityLogs.table.duration')}
-                                </th>
-                                <th scope="col" className="relative py-3.5 pe-4 ps-3 sm:pe-6">
-                                  <span className="sr-only">{t('common.actions')}</span>
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody className="divide-y divide-border bg-card">
-                              {crawlRequests?.results.map(request => (
-                                <React.Fragment key={request.uuid}>
-                                  <tr className="transition-colors duration-200 hover:bg-muted">
-                                    <td className="whitespace-nowrap py-4 pe-3 ps-4 text-sm font-medium text-foreground sm:ps-6">
-                                      <div className="flex items-center">
-                                        <span
-                                          className="max-w-[300px] truncate"
-                                          title={request.url || ''}
-                                        >
-                                          {request.url}
-                                        </span>
-                                      </div>
-                                    </td>
-                                    <td className="whitespace-nowrap px-3 py-4 text-sm">
-                                      <StatusBadge status={request.status} />
-                                    </td>
-                                    <td className="whitespace-nowrap px-3 py-4 text-sm text-muted-foreground">
-                                      {request.number_of_documents}
-                                    </td>
-                                    <td className="whitespace-nowrap px-3 py-4 text-sm text-muted-foreground">
-                                      {formatDistanceToNowLocalized(
-                                        new Date(request.created_at),
-                                        dateLocale,
-                                        { addSuffix: true }
-                                      )}
-                                    </td>
-                                    <td className="whitespace-nowrap px-3 py-4 text-sm text-muted-foreground">
-                                      {formatDuration(request.duration, request.created_at)}
-                                    </td>
-                                    <td className="whitespace-nowrap py-4 pe-4 ps-3 text-end text-sm font-medium sm:pe-6">
-                                      <div className="flex justify-end gap-x-3">
-                                        <DownloadFormatSelector request={request} />
-                                        <SitemapModalSelector request={request} />
-                                        <button
-                                          onClick={e => handleViewDetails(e, request.uuid)}
-                                          className="text-muted-foreground hover:text-muted-foreground focus:outline-none"
-                                          title={t('activityLogs.viewDetails')}
-                                        >
-                                          <span className="sr-only">
-                                            {t('activityLogs.viewDetails')}
-                                          </span>
-                                          <EyeIcon className="h-5 w-5" aria-hidden="true" />
-                                        </button>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                </React.Fragment>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
+                  <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+                    <table className="min-w-full divide-y divide-border">
+                      <thead className="bg-muted/30">
+                        <tr>
+                          <th
+                            scope="col"
+                            className="py-3 pe-3 ps-6 text-start text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+                          >
+                            {t('activityLogs.table.url')}
+                          </th>
+                          <th
+                            scope="col"
+                            className="px-3 py-3 text-start text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+                          >
+                            {t('activityLogs.table.status')}
+                          </th>
+                          <th
+                            scope="col"
+                            className="px-3 py-3 text-start text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+                          >
+                            {t('activityLogs.table.results')}
+                          </th>
+                          <th
+                            scope="col"
+                            className="px-3 py-3 text-start text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+                          >
+                            {t('activityLogs.table.created')}
+                          </th>
+                          <th
+                            scope="col"
+                            className="px-3 py-3 text-start text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+                          >
+                            {t('activityLogs.table.duration')}
+                          </th>
+                          <th scope="col" className="relative py-3 pe-6 ps-3">
+                            <span className="sr-only">{t('common.actions')}</span>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-border/50 bg-card">
+                        {crawlRequests?.results.map(request => (
+                          <React.Fragment key={request.uuid}>
+                            <tr className="transition-colors duration-150 hover:bg-muted/30">
+                              <td className="max-w-[300px] py-3.5 pe-3 ps-6 text-sm font-medium text-foreground">
+                                <div className="truncate" title={request.url || ''}>
+                                  {request.url}
+                                </div>
+                              </td>
+                              <td className="whitespace-nowrap px-3 py-3.5 text-sm">
+                                <StatusBadge status={request.status} />
+                              </td>
+                              <td className="whitespace-nowrap px-3 py-3.5 text-sm text-muted-foreground">
+                                {request.number_of_documents}
+                              </td>
+                              <td className="whitespace-nowrap px-3 py-3.5 text-sm text-muted-foreground">
+                                {formatDistanceToNowLocalized(
+                                  new Date(request.created_at),
+                                  dateLocale,
+                                  { addSuffix: true }
+                                )}
+                              </td>
+                              <td className="whitespace-nowrap px-3 py-3.5 text-sm text-muted-foreground">
+                                {formatDuration(request.duration, request.created_at)}
+                              </td>
+                              <td className="whitespace-nowrap py-3.5 pe-6 ps-3 text-end text-sm">
+                                <div className="flex justify-end gap-2">
+                                  <DownloadFormatSelector request={request} />
+                                  <SitemapModalSelector request={request} />
+                                  <button
+                                    type="button"
+                                    onClick={e => handleViewDetails(e, request.uuid)}
+                                    className="rounded-lg p-1.5 text-muted-foreground transition-all hover:bg-muted hover:text-foreground"
+                                    title={t('activityLogs.viewDetails')}
+                                  >
+                                    <span className="sr-only">{t('activityLogs.viewDetails')}</span>
+                                    <EyeIcon className="h-4 w-4" aria-hidden="true" />
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          </React.Fragment>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               )}

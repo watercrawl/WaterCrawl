@@ -8,7 +8,6 @@ import { TeamService } from '../services/teamService';
 import { CurrentSubscription } from '../types/subscription';
 import { Team } from '../types/team';
 
-
 interface TeamContextType {
   currentTeam: Team | null;
   teams: Team[];

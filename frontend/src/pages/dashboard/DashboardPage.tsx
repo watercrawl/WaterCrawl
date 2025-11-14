@@ -2,11 +2,10 @@ import React, { useEffect } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import { SparklesIcon } from '@heroicons/react/24/outline';
-
 import { MCPServerAccess } from '../../components/dashboard/MCPServerAccess';
 import { QuickNavigation } from '../../components/dashboard/QuickNavigation';
 import { ResourcesShortcuts } from '../../components/dashboard/ResourcesShortcuts';
+import PageHeader from '../../components/shared/PageHeader';
 import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
 
 const DashboardPage: React.FC = () => {
@@ -18,35 +17,24 @@ const DashboardPage: React.FC = () => {
   }, [setItems, t]);
 
   return (
-    <div className="h-full">
-      <div className="px-8 py-6">
-        {/* Header */}
+    <div className="h-full overflow-x-hidden">
+      <div className="px-4 py-6 sm:px-6 lg:px-8">
         <div className="mb-8">
-          <div className="mb-2 flex items-center gap-x-3">
-            <div className="rounded-lg bg-gradient-to-r from-primary to-primary-strong p-2">
-              <SparklesIcon className="h-6 w-6 text-white" />
-            </div>
-            <h1 className="text-xl font-bold text-foreground sm:text-3xl">
-              {t('dashboard.welcome')} WaterCrawl
-            </h1>
-          </div>
-          <p className="max-w-2xl text-lg text-muted-foreground">
-            {t('dashboard.messages.welcome')}
-          </p>
+          <PageHeader titleKey="dashboard.welcome" descriptionKey="dashboard.messages.welcome" />
         </div>
 
         {/* Quick Navigation */}
         <QuickNavigation />
 
         {/* Main Content Grid */}
-        <div className="grid grid-cols-1 gap-8 xl:grid-cols-2">
+        <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
           {/* Left Column */}
-          <div className="space-y-8">
+          <div className="min-w-0 space-y-6">
             <ResourcesShortcuts />
           </div>
 
           {/* Right Column */}
-          <div className="space-y-8">
+          <div className="min-w-0 space-y-6">
             <MCPServerAccess />
           </div>
         </div>

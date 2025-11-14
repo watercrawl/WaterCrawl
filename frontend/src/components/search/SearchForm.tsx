@@ -26,7 +26,6 @@ import {
 import { SearchApiDocumentation } from './SearchApiDocumentation';
 import { SearchResultDisplay } from './SearchResultDisplay';
 
-
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
@@ -292,7 +291,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({
                   max={20}
                   value={searchOptions.numResults}
                   onChange={e => handleOptionChange('numResults', parseInt(e.target.value, 10))}
-                  className="mt-1 block w-full rounded-md shadow-sm border bg-input text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary border-input-border sm:text-sm"
+                  className="mt-1 block w-full rounded-md border border-input-border bg-input text-foreground shadow-sm placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary sm:text-sm"
                 />
               </div>
 

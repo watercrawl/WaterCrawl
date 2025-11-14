@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 
+import PageHeader from '../../components/shared/PageHeader';
 import { SitemapForm } from '../../components/sitemap/SitemapForm';
 import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
 import { SitemapRequest } from '../../types/sitemap';
@@ -24,11 +25,8 @@ const SitemapPage: React.FC = () => {
   }, [setItems, t]);
 
   return (
-    <div className="space-y-6 px-8 py-6">
-      <div>
-        <h1 className="text-2xl font-semibold text-foreground">{t('sitemap.title')}</h1>
-        <p className="mt-1 text-sm text-muted-foreground">{t('sitemap.subtitle')}</p>
-      </div>
+    <div className="space-y-6 px-4 py-6 sm:px-6 lg:px-8">
+      <PageHeader titleKey="sitemap.title" descriptionKey="sitemap.subtitle" />
 
       <div className="grid grid-cols-1 gap-6">
         {/* Show the SitemapForm by default since there's no specific sitemap configuration check */}

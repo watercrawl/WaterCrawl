@@ -6,6 +6,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { MagnifyingGlassIcon, EyeIcon, ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 
+import PageHeader from '../../components/shared/PageHeader';
 import { Pagination } from '../../components/shared/Pagination';
 import { SearchRequestCard } from '../../components/shared/SearchRequestCard';
 import { StatusBadge } from '../../components/shared/StatusBadge';
@@ -76,23 +77,6 @@ const SearchLogsPage: React.FC = () => {
     fetchSearchRequests(currentPage, selectedStatus);
   }, [currentPage, selectedStatus, fetchSearchRequests]);
 
-  // Update URL when status filter changes
-  const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const status = e.target.value;
-    setSelectedStatus(status);
-
-    // Update the URL with the new status
-    if (status) {
-      searchParams.set('status', status);
-    } else {
-      searchParams.delete('status');
-    }
-    setSearchParams(searchParams);
-
-    // Reset to first page when changing filter
-    setCurrentPage(1);
-  };
-
   if (loading && !searchRequests) {
     return (
       <div className="flex h-full items-center justify-center">
@@ -108,33 +92,48 @@ const SearchLogsPage: React.FC = () => {
 
   return (
     <div className="h-full">
-      <div className="px-4 py-6 sm:px-8">
-        <h1 className="text-2xl font-semibold text-foreground">{t('activityLogs.searchLogs')}</h1>
-        <p className="mt-1 text-sm text-muted-foreground">{t('activityLogs.searchLogsDesc')}</p>
+      <div className="px-4 py-6 sm:px-6 lg:px-8">
+        <div className="mb-6">
+          <PageHeader
+            titleKey="activityLogs.searchLogs"
+            descriptionKey="activityLogs.searchLogsDesc"
+            actions={
+              <div className="flex items-center gap-3">
+                <label
+                  htmlFor="status-filter"
+                  className="text-sm font-medium text-muted-foreground"
+                >
+                  {t('activityLogs.filters.filterByStatus')}:
+                </label>
+                <select
+                  id="status-filter"
+                  value={selectedStatus}
+                  onChange={e => {
+                    const status = e.target.value;
+                    setSelectedStatus(status);
+                    if (status) {
+                      searchParams.set('status', status);
+                    } else {
+                      searchParams.delete('status');
+                    }
+                    setSearchParams(searchParams);
+                    setCurrentPage(1);
+                  }}
+                  disabled={loading}
+                  className="inline-flex items-center rounded-lg border border-border bg-card px-3 py-1.5 text-sm font-medium text-foreground shadow-sm transition-all hover:bg-muted focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1"
+                >
+                  {STATUS_OPTIONS.map(option => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            }
+          />
+        </div>
 
-        <div className="mt-8">
-          {/* Status Filter - Positioned at the top */}
-          <div className="mb-6">
-            <label
-              htmlFor="status-filter"
-              className="mb-1 block text-sm font-medium text-foreground"
-            >
-              {t('activityLogs.filters.filterByStatus')}
-            </label>
-            <select
-              id="status-filter"
-              value={selectedStatus}
-              onChange={handleStatusChange}
-              className="mt-1 block w-full rounded-md border border-input-border bg-input py-2 pe-10 ps-3 text-base text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary sm:w-48 sm:text-sm"
-            >
-              {STATUS_OPTIONS.map(option => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </div>
-
+        <div className="mt-6">
           {hasNoData ? (
             <div className="rounded-lg bg-card py-12 text-center shadow">
               <MagnifyingGlassIcon className="mx-auto h-12 w-12 text-muted-foreground" />
@@ -154,110 +153,108 @@ const SearchLogsPage: React.FC = () => {
                   ))}
                 </div>
               ) : (
-                <div className="mt-4">
-                  <div className="overflow-hidden rounded-lg border border-border bg-card shadow">
-                    <div className="overflow-x-auto">
-                      <table className="min-w-full divide-y divide-border">
-                        <thead>
-                          <tr>
-                            <th
-                              scope="col"
-                              className="px-6 py-3 text-start text-xs font-medium uppercase tracking-wider text-muted-foreground"
-                            >
-                              {t('activityLogs.table.query')}
-                            </th>
-                            <th
-                              scope="col"
-                              className="px-6 py-3 text-start text-xs font-medium uppercase tracking-wider text-muted-foreground"
-                            >
-                              {t('activityLogs.table.status')}
-                            </th>
-                            <th
-                              scope="col"
-                              className="px-6 py-3 text-start text-xs font-medium uppercase tracking-wider text-muted-foreground"
-                            >
-                              {t('activityLogs.table.created')}
-                            </th>
-                            <th
-                              scope="col"
-                              className="px-6 py-3 text-start text-xs font-medium uppercase tracking-wider text-muted-foreground"
-                            >
-                              {t('activityLogs.table.duration')}
-                            </th>
-                            <th scope="col" className="relative px-6 py-3">
-                              <span className="sr-only">{t('common.actions')}</span>
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-border bg-card">
-                          {searchRequests?.results.map(request => (
-                            <tr
-                              key={request.uuid}
-                              className="transition-colors duration-200 hover:bg-muted"
-                            >
-                              <td className="whitespace-nowrap py-4 pe-3 ps-4 text-sm font-medium text-foreground sm:ps-6">
-                                <div className="flex items-center">
-                                  <span className="max-w-[300px] truncate" title={request.query}>
-                                    {request.query}
-                                  </span>
-                                </div>
-                              </td>
-                              <td className="whitespace-nowrap px-3 py-4 text-sm">
-                                <StatusBadge status={request.status as CrawlStatus} />
-                              </td>
-                              <td className="whitespace-nowrap px-3 py-4 text-sm text-muted-foreground">
-                                {request.created_at
-                                  ? formatDistanceToNowLocalized(
-                                      new Date(request.created_at),
-                                      dateLocale,
-                                      { addSuffix: true }
-                                    )
-                                  : t('common.unknown')}
-                              </td>
-                              <td className="whitespace-nowrap px-3 py-4 text-sm text-muted-foreground">
-                                {formatDuration(request.duration || null, request.created_at)}
-                              </td>
-                              <td className="whitespace-nowrap py-4 pe-4 ps-3 text-end text-sm font-medium sm:pe-6">
-                                <div className="flex justify-end gap-x-3">
-                                  {request.status === SearchStatus.Finished && (
-                                    <button
-                                      onClick={e => {
-                                        e.stopPropagation();
-                                        const jsonString = JSON.stringify(request.result, null, 2);
-                                        const blob = new Blob([jsonString], {
-                                          type: 'application/json',
-                                        });
-                                        const url = URL.createObjectURL(blob);
-                                        const a = document.createElement('a');
-                                        a.href = url;
-                                        a.download = `search_results_${request.uuid}.json`;
-                                        a.click();
-                                        URL.revokeObjectURL(url);
-                                      }}
-                                      className="text-muted-foreground hover:text-muted-foreground focus:outline-none disabled:opacity-50"
-                                      title={t('activityLogs.downloadResults')}
-                                    >
-                                      <ArrowDownTrayIcon className="h-5 w-5" aria-hidden="true" />
-                                    </button>
-                                  )}
+                <div className={loading ? 'pointer-events-none opacity-70 transition-opacity' : ''}>
+                  <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+                    <table className="min-w-full divide-y divide-border">
+                      <thead className="bg-muted/30">
+                        <tr>
+                          <th
+                            scope="col"
+                            className="py-3 pe-3 ps-6 text-start text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+                          >
+                            {t('activityLogs.table.query')}
+                          </th>
+                          <th
+                            scope="col"
+                            className="px-3 py-3 text-start text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+                          >
+                            {t('activityLogs.table.status')}
+                          </th>
+                          <th
+                            scope="col"
+                            className="px-3 py-3 text-start text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+                          >
+                            {t('activityLogs.table.created')}
+                          </th>
+                          <th
+                            scope="col"
+                            className="px-3 py-3 text-start text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+                          >
+                            {t('activityLogs.table.duration')}
+                          </th>
+                          <th scope="col" className="relative py-3 pe-6 ps-3">
+                            <span className="sr-only">{t('common.actions')}</span>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-border/50 bg-card">
+                        {searchRequests?.results.map(request => (
+                          <tr
+                            key={request.uuid}
+                            className="transition-colors duration-150 hover:bg-muted/30"
+                          >
+                            <td className="max-w-[300px] py-3.5 pe-3 ps-6 text-sm font-medium text-foreground">
+                              <div className="truncate" title={request.query}>
+                                {request.query}
+                              </div>
+                            </td>
+                            <td className="whitespace-nowrap px-3 py-3.5 text-sm">
+                              <StatusBadge status={request.status as CrawlStatus} />
+                            </td>
+                            <td className="whitespace-nowrap px-3 py-3.5 text-sm text-muted-foreground">
+                              {request.created_at
+                                ? formatDistanceToNowLocalized(
+                                    new Date(request.created_at),
+                                    dateLocale,
+                                    { addSuffix: true }
+                                  )
+                                : t('common.unknown')}
+                            </td>
+                            <td className="whitespace-nowrap px-3 py-3.5 text-sm text-muted-foreground">
+                              {formatDuration(request.duration || null, request.created_at)}
+                            </td>
+                            <td className="whitespace-nowrap py-3.5 pe-6 ps-3 text-end text-sm">
+                              <div className="flex justify-end gap-2">
+                                {request.status === SearchStatus.Finished && (
                                   <button
+                                    type="button"
                                     onClick={e => {
                                       e.stopPropagation();
-                                      navigate(`/dashboard/logs/searches/${request.uuid}`);
+                                      const jsonString = JSON.stringify(request.result, null, 2);
+                                      const blob = new Blob([jsonString], {
+                                        type: 'application/json',
+                                      });
+                                      const url = URL.createObjectURL(blob);
+                                      const a = document.createElement('a');
+                                      a.href = url;
+                                      a.download = `search_results_${request.uuid}.json`;
+                                      a.click();
+                                      URL.revokeObjectURL(url);
                                     }}
-                                    className="text-muted-foreground hover:text-muted-foreground focus:outline-none"
-                                    title={t('activityLogs.viewDetails')}
+                                    className="rounded-lg p-1.5 text-muted-foreground transition-all hover:bg-muted hover:text-foreground"
+                                    title={t('activityLogs.downloadResults')}
                                   >
-                                    <span className="sr-only">{t('activityLogs.viewDetails')}</span>
-                                    <EyeIcon className="h-5 w-5" aria-hidden="true" />
+                                    <ArrowDownTrayIcon className="h-4 w-4" aria-hidden="true" />
                                   </button>
-                                </div>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
+                                )}
+                                <button
+                                  type="button"
+                                  onClick={e => {
+                                    e.stopPropagation();
+                                    navigate(`/dashboard/logs/searches/${request.uuid}`);
+                                  }}
+                                  className="rounded-lg p-1.5 text-muted-foreground transition-all hover:bg-muted hover:text-foreground"
+                                  title={t('activityLogs.viewDetails')}
+                                >
+                                  <span className="sr-only">{t('activityLogs.viewDetails')}</span>
+                                  <EyeIcon className="h-4 w-4" aria-hidden="true" />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               )}

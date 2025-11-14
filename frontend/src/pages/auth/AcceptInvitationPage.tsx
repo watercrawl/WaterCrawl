@@ -11,7 +11,13 @@ import { authApi } from '../../services/api/auth';
 import { profileApi } from '../../services/api/profile';
 import { AuthService } from '../../services/authService';
 
-type InvitationStatus = 'loading' | 'invalid' | 'mismatch-register' | 'mismatch-login' | 'match' | 'accepted';
+type InvitationStatus =
+  | 'loading'
+  | 'invalid'
+  | 'mismatch-register'
+  | 'mismatch-login'
+  | 'match'
+  | 'accepted';
 
 export default function AcceptInvitationPage() {
   const { code } = useParams<{ code: string }>();
@@ -49,8 +55,8 @@ export default function AcceptInvitationPage() {
           if (response.new_user) {
             navigate('/register', {
               state: {
-                invitationCode: code
-              }
+                invitationCode: code,
+              },
             });
           } else {
             toast(t('notifications.invitation.loginRequired'));
@@ -59,7 +65,6 @@ export default function AcceptInvitationPage() {
             }, 2000);
           }
         }
-        
       } catch (error: any) {
         // Scenario 1: Invalid invitation
         if (error.response?.status === 404) {
@@ -100,12 +105,12 @@ export default function AcceptInvitationPage() {
   const handleLogout = (redirectTo: 'login' | 'register' = 'login') => {
     const authService = AuthService.getInstance();
     authService.removeToken();
-    
+
     if (redirectTo === 'register') {
       navigate('/register', {
         state: {
-          invitationCode: code
-        }
+          invitationCode: code,
+        },
       });
     } else {
       navigate('/');

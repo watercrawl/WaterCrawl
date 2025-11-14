@@ -38,6 +38,7 @@
   },
   "admin": {
     "dashboard": "Admin Dashboard",
+    "description": "Manage system-wide configurations, proxies, and LLM providers",
     "exitAdmin": "Exit Admin",
     "llm": {
       "embeddingModels": "Embedding Models",
@@ -578,7 +579,7 @@
       "noSitemaps": "No sitemaps found",
       "success": "Operation completed successfully",
       "tryAgain": "Something went wrong. Please try again.",
-      "welcome": "Welcome to WaterCrawl! Start by creating your first crawl."
+      "welcome": "Use WaterCrawl's full toolkit to crawl, search, extract, and understand web data."
     },
     "navigation": {
       "activityLogs": "Activity Logs",
@@ -699,7 +700,7 @@
       "yesterday": "Yesterday"
     },
     "title": "Dashboard",
-    "welcome": "Welcome back!",
+    "welcome": "Welcome to",
     "welcomeTo": "Welcome to WaterCrawl"
   },
   "direction": {

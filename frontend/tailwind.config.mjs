@@ -73,15 +73,6 @@ export default {
           border: 'rgb(var(--input-border) / <alpha-value>)',
         },
         ring: 'rgb(var(--ring) / <alpha-value>)',
-        sidebar: {
-          bg: 'rgb(var(--sidebar-bg) / <alpha-value>)',
-          text: 'rgb(var(--sidebar-text) / <alpha-value>)',
-          'text-muted': 'rgb(var(--sidebar-text-muted) / <alpha-value>)',
-          'active-bg': 'rgb(var(--sidebar-active-bg) / <alpha-value>)',
-          'active-text': 'rgb(var(--sidebar-active-text) / <alpha-value>)',
-          'hover-bg': 'rgb(var(--sidebar-hover-bg) / <alpha-value>)',
-          border: 'rgb(var(--sidebar-border) / <alpha-value>)',
-        },
       },
       fontFamily: {
         sans: ['var(--font-sans-default)', 'ui-sans-serif', 'system-ui'],

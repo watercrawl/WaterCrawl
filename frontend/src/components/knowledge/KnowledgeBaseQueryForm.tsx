@@ -12,13 +12,12 @@ import Card from '../shared/Card';
 import { FormInput } from '../shared/FormComponents';
 import Loading from '../shared/Loading';
 
+import { useTheme } from '../../contexts/ThemeContext';
 import { classnames } from '../../lib/utils';
 import { knowledgeBaseApi } from '../../services/api/knowledgeBase';
 
 import { KnowledgeBaseApiDocumentation } from './KnowledgeBaseApiDocumentation';
 import { KnowledgeBaseQueryResult } from './KnowledgeBaseQueryResult';
-
-
 
 interface IFormInput {
   query: string;
@@ -32,6 +31,7 @@ interface KnowledgeBaseQueryFormProps {
 
 const KnowledgeBaseQueryForm: React.FC<KnowledgeBaseQueryFormProps> = ({ knowledgeBaseId }) => {
   const { t } = useTranslation();
+  const { isDark } = useTheme();
   const [query, setQuery] = useState('');
   const [topK, setTopK] = useState(3);
   const [results, setResults] = useState<any | null>(null);
@@ -173,7 +173,7 @@ const KnowledgeBaseQueryForm: React.FC<KnowledgeBaseQueryFormProps> = ({ knowled
                         message: t('settings.knowledgeBase.query.options.topKMax'),
                       },
                     })}
-                    className="mt-1 block w-full rounded-md shadow-sm border bg-input text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary border-input-border sm:w-1/4 sm:text-sm"
+                    className="mt-1 block w-full rounded-md border border-input-border bg-input text-foreground shadow-sm placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary sm:w-1/4 sm:text-sm"
                   />
                   {errors.top_k && (
                     <p className="mt-2 text-sm text-error">{errors.top_k.message}</p>
@@ -237,7 +237,7 @@ const KnowledgeBaseQueryForm: React.FC<KnowledgeBaseQueryFormProps> = ({ knowled
                       ))}
                     </div>
                   ) : (
-                    <div className="mt-2 overflow-hidden rounded-md border border-border">
+                    <div className="ltr mt-2 overflow-hidden rounded-md border border-border">
                       <Editor
                         height="500px"
                         defaultLanguage="json"
@@ -252,9 +252,8 @@ const KnowledgeBaseQueryForm: React.FC<KnowledgeBaseQueryFormProps> = ({ knowled
                           folding: true,
                           foldingHighlight: true,
                           automaticLayout: true,
-                          theme: 'vs-dark',
                         }}
-                        theme="vs-dark"
+                        theme={isDark ? 'vs-dark' : 'light'}
                       />
                     </div>
                   )}

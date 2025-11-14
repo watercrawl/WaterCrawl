@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { InvitationsList } from '../../components/profile/InvitationsList';
 import { LogoutButton } from '../../components/profile/LogoutButton';
 import { ProfileForm } from '../../components/profile/ProfileForm';
+import PageHeader from '../../components/shared/PageHeader';
 import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
-
 
 export default function ProfilePage() {
   const { t } = useTranslation();
@@ -20,9 +20,8 @@ export default function ProfilePage() {
   }, [setItems, t]);
 
   return (
-    <div className="px-8 py-6">
-      <h1 className="text-2xl font-semibold text-foreground">{t('profile.title')}</h1>
-      <p className="mt-1 text-sm text-muted-foreground">{t('profile.subtitle')}</p>
+    <div className="px-4 py-6 sm:px-6 lg:px-8">
+      <PageHeader titleKey="profile.title" descriptionKey="profile.subtitle" />
       <div>
         <div className="py-4">
           <ProfileForm />

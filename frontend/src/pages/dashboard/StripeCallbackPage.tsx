@@ -6,7 +6,6 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { CheckCircleIcon, XCircleIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
-
 import { Button } from '../../components/shared/Button';
 import Loading from '../../components/shared/Loading';
 

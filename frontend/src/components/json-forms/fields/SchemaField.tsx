@@ -15,7 +15,6 @@ import { InfoTooltip } from '../../shared/FormComponents';
 import { ArrayField } from './ArrayField';
 import { ObjectField } from './ObjectField';
 
-
 export const SchemaField: React.FC<FieldProps> = props => {
   const { schema, errors = [] } = props;
   const hasError = errors.length > 0;

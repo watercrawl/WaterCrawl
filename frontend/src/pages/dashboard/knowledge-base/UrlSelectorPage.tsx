@@ -21,8 +21,6 @@ import { SitemapGraph, SitemapNode } from '../../../types/crawl';
 import { KnowledgeBaseDetail } from '../../../types/knowledge';
 import { SitemapRequest } from '../../../types/sitemap';
 
-
-
 const UrlSelectorPage: React.FC = () => {
   const { t } = useTranslation();
   const { knowledgeBaseId, sitemapRequestId } = useParams<{
