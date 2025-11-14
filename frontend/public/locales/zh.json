@@ -38,6 +38,7 @@
   },
   "admin": {
     "dashboard": "管理员仪表板",
+    "description": "管理系统配置、代理和LLM提供商",
     "exitAdmin": "退出管理员",
     "llm": {
       "embeddingModels": "嵌入模型",
@@ -578,7 +579,7 @@
       "noSitemaps": "未找到站点地图",
       "success": "操作完成",
       "tryAgain": "出错了。请重试。",
-      "welcome": "欢迎使用 WaterCrawl！请创建您的第一个爬取。"
+      "welcome": "使用 WaterCrawl 的全套工具来爬取、搜索、提取和理解网络数据。"
     },
     "navigation": {
       "activityLogs": "活动日志",
@@ -699,7 +700,7 @@
       "yesterday": "昨天"
     },
     "title": "仪表板",
-    "welcome": "欢迎回来！",
+    "welcome": "欢迎使用",
     "welcomeTo": "欢迎使用 WaterCrawl"
   },
   "direction": {
