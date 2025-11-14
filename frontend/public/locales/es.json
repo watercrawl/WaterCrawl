@@ -38,7 +38,8 @@
   },
   "admin": {
     "dashboard": "Panel de Administración",
-    "exitAdmin": "Salir de Administración",
+    "description": "Gestionar configuraciones del sistema, proxies y proveedores LLM",
+    "exitAdmin": "Salir del Administrador",
     "llm": {
       "embeddingModels": "Modelos de Embedding",
       "models": "Modelos",
@@ -578,7 +579,7 @@
       "noSitemaps": "No se encontraron sitemaps",
       "success": "Operación completada correctamente",
       "tryAgain": "Algo salió mal. Por favor inténtalo de nuevo.",
-      "welcome": "¡Bienvenido a WaterCrawl! Comienza creando tu primer crawl."
+      "welcome": "Utiliza el kit completo de WaterCrawl para rastrear, buscar, extraer y comprender datos web."
     },
     "navigation": {
       "activityLogs": "Registros de Actividad",
@@ -699,7 +700,7 @@
       "yesterday": "Ayer"
     },
     "title": "Panel de Control",
-    "welcome": "¡Bienvenido de nuevo!",
+    "welcome": "Bienvenido a",
     "welcomeTo": "Bienvenido a WaterCrawl"
   },
   "direction": {
