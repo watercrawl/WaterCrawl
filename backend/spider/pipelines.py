@@ -61,7 +61,6 @@ class SiteScrapperPipeline:
     def make_url_hash(cls, url):
         url = url.split("#")[0]
         url = url.strip()
-        url = url.replace("//", "/")
         if url.endswith("/"):
             url = url[:-1]
         return hashlib.md5(url.encode()).hexdigest()
