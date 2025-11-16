@@ -54,6 +54,12 @@ class SitemapScrapper(Spider):
         self.processing_sitemap = False
         self.init_plugins()
 
+    def get_proxy_meta(self):
+        return {
+            "proxy_object": self.sitemap_request_service.proxy_object,
+            "proxy": self.sitemap_request_service.proxy_url,
+        }
+
     @classmethod
     def from_crawler(cls, crawler, *args, **kwargs):
         spider = super().from_crawler(crawler, *args, **kwargs)
@@ -121,7 +127,10 @@ class SitemapScrapper(Spider):
                 url=robots_url,
                 callback=self.parse_robots_txt,
                 errback=self.robots_txt_not_found,
-                meta={"skip_playwright": True, "original_url": self.helpers.base_url},
+                meta={
+                    "skip_playwright": True,
+                    **self.get_proxy_meta(),
+                },
             )
 
     ############
@@ -195,7 +204,10 @@ class SitemapScrapper(Spider):
             url=next_sitemap,
             callback=self.parse_sitemap,
             errback=self.handle_sitemap_error,
-            meta={"skip_playwright": True},
+            meta={
+                "skip_playwright": True,
+                **self.get_proxy_meta(),
+            },
         )
 
     def handle_sitemap_error(self, failure):
@@ -290,7 +302,11 @@ class SitemapScrapper(Spider):
             url=requested_url,
             callback=self.parse_html,
             errback=self.try_site_search,
-            meta={"skip_playwright": True, "depth": 0},
+            meta={
+                "skip_playwright": True,
+                "depth": 0,
+                **self.get_proxy_meta(),
+            },
         )
 
     def parse_html(self, response):
@@ -334,7 +350,11 @@ class SitemapScrapper(Spider):
                 yield Request(
                     url=url,
                     callback=self.parse_html,
-                    meta={"depth": current_depth + 1, "skip_playwright": True},
+                    meta={
+                        "depth": current_depth + 1,
+                        "skip_playwright": True,
+                        **self.get_proxy_meta(),
+                    },
                 )
 
     @classmethod
@@ -374,7 +394,10 @@ class SitemapScrapper(Spider):
         yield Request(
             url=search_url,
             callback=lambda response: self.parse_google_search(response, 1),
-            meta={"skip_playwright": True},
+            meta={
+                "skip_playwright": True,
+                **self.get_proxy_meta(),
+            },
         )
 
     @classmethod
@@ -406,7 +429,11 @@ class SitemapScrapper(Spider):
                         self.log(f"Site search found URL: {url}")
 
             # Request the next page if we haven't reached page 10 yet
-            if page_num < 5 and "queries" in data and "nextPage" in data["queries"]:
+            if (
+                page_num < settings.GOOGLE_SEARCH_PAGE_LIMIT
+                and "queries" in data
+                and "nextPage" in data["queries"]
+            ):
                 next_page = page_num + 1
                 start_index = data["queries"]["nextPage"][0]["startIndex"]
 
@@ -422,7 +449,12 @@ class SitemapScrapper(Spider):
                 yield Request(
                     url=search_url,
                     callback=lambda resp: self.parse_google_search(resp, next_page),
-                    meta={"skip_playwright": True},
+                    meta={
+                        "skip_playwright": True,
+                        # we do not want to use proxy for google search
+                        "proxy_object": None,
+                        "proxy": None,
+                    },
                 )
 
         except Exception as e:

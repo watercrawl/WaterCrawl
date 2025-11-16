@@ -20,7 +20,6 @@ class PlaywrightMiddleware:
         self.pubsub_service = pubsub_service
         self.playwright_server = playwright_server
         self.playwright_api_key = playwright_api_key
-        self.is_active = bool(self.helpers.wait_time > 0)
 
     @classmethod
     def from_crawler(cls, crawler):
@@ -35,12 +34,6 @@ class PlaywrightMiddleware:
         )
 
     async def process_request(self, request, spider):
-        if not self.is_active:
-            self.pubsub_service.send_feed(
-                "Playwright middleware is not active", feed_type="warning"
-            )
-            return
-
         # Check if the URL is a JavaScript file
         if not self.playwright_server:
             spider.logger.info("Playwright server is not configured")
