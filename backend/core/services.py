@@ -850,6 +850,12 @@ class CrawlerService:
             return
         return self.proxy_service.get_proxy_object()
 
+    @property
+    def proxy_url(self):
+        if not self.proxy_service:
+            return
+        return self.proxy_service.get_proxy_url()
+
     @classmethod
     def make_with_pk(cls, crawl_request_pk: str):
         return cls(CrawlRequest.objects.get(pk=crawl_request_pk))
@@ -1155,19 +1161,14 @@ class ProxyService:
         return ProxyServer.objects.filter(Q(team=team) | Q(team__isnull=True))
 
     @classmethod
-    def get_proxy_for_crawl_request(
-        cls, crawl_request: CrawlRequest
-    ) -> Optional["ProxyService"]:
-        proxies = cls.get_team_proxies(crawl_request.team)
+    def get_proxy_by_team_and_slug(cls, team, slug=None):
+        proxies = cls.get_team_proxies(team)
         if not proxies.exists():
             return None
         proxies = proxies.order_by("team", "?")
-        proxy_slug = crawl_request.options.get("spider_options", {}).get(
-            "proxy_server", None
-        )
 
-        if proxy_slug:
-            proxy = proxies.filter(slug=proxy_slug).first()
+        if slug:
+            proxy = proxies.filter(slug=slug).first()
             if proxy:
                 return cls(proxy)
 
@@ -1175,7 +1176,21 @@ class ProxyService:
         if default_proxy:
             return cls(default_proxy)
 
-        return None
+    @classmethod
+    def get_proxy_for_crawl_request(
+        cls, crawl_request: CrawlRequest
+    ) -> Optional["ProxyService"]:
+        proxy_slug = crawl_request.options.get("spider_options", {}).get(
+            "proxy_server", None
+        )
+        return cls.get_proxy_by_team_and_slug(crawl_request.team, proxy_slug)
+
+    @classmethod
+    def get_proxy_for_sitemap_request(
+        cls, sitemap_request: SitemapRequest
+    ) -> Optional["ProxyService"]:
+        proxy_slug = sitemap_request.options.get("proxy_server", None)
+        return cls.get_proxy_by_team_and_slug(sitemap_request.team, proxy_slug)
 
     def get_proxy_object(self) -> dict[str, str]:
         return {
@@ -1190,8 +1205,8 @@ class ProxyService:
             else None,
         }
 
-    @classmethod
-    def test_proxy(cls, host, port, proxy_type, username=None, password=None):
+    @staticmethod
+    def __make_proxy_url(host, port, proxy_type, username=None, password=None):
         username_password = ""
         if username:
             username_password = username
@@ -1204,21 +1219,37 @@ class ProxyService:
         if username_password:
             username_password += "@"
 
+        return f"{proxy_type}://{username_password}{host}:{port}"
+
+    @classmethod
+    def test_proxy(cls, host, port, proxy_type, username=None, password=None):
+        proxy_url = cls.__make_proxy_url(host, port, proxy_type, username, password)
+
         response = requests.get(
             "https://httpbin.org/ip",
             proxies={
-                "http": f"{proxy_type}://{username_password}{host}:{port}",
-                "https": f"{proxy_type}://{username_password}{host}:{port}",
+                "http": proxy_url,
+                "https": proxy_url,
             },
             timeout=10,
         )
         response.raise_for_status()
         return response.json()
 
+    def get_proxy_url(self):
+        return self.__make_proxy_url(
+            self.proxy_server.host,
+            self.proxy_server.port,
+            self.proxy_server.proxy_type,
+            self.proxy_server.username,
+            decrypt_key(self.proxy_server.password),
+        )
+
 
 class SitemapRequestService:
     def __init__(self, sitemap: SitemapRequest):
         self.sitemap = sitemap
+        self.proxy_service = ProxyService.get_proxy_for_sitemap_request(sitemap)
         self.pubsub_service = SitemapPubSupService(self.sitemap)
         self.config_helpers = SitemapHelpers(self.sitemap)
 
@@ -1255,6 +1286,18 @@ class SitemapRequestService:
         else:
             self.sitemap.status = consts.CRAWL_STATUS_FAILED
         self.sitemap.save(update_fields=["status", "duration"])
+
+    @cached_property
+    def proxy_object(self):
+        if not self.proxy_service:
+            return
+        return self.proxy_service.get_proxy_object()
+
+    @cached_property
+    def proxy_url(self):
+        if not self.proxy_service:
+            return
+        return self.proxy_service.get_proxy_url()
 
     def stop(self):
         self.sitemap.status = consts.CRAWL_STATUS_CANCELING
