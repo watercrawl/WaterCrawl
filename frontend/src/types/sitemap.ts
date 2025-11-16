@@ -14,6 +14,7 @@ export interface SitemapOptions {
   search: string | null;
   include_paths: string[];
   exclude_paths: string[];
+  proxy_server: string | null;
 }
 
 export interface SitemapRequest {

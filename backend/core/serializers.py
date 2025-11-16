@@ -389,6 +389,17 @@ class SitemapRequestOptionSerializer(serializers.Serializer):
     exclude_paths = serializers.ListField(
         child=serializers.CharField(), required=False, default=[]
     )
+    proxy_server = serializers.CharField(required=False, allow_null=True, default=None)
+
+    def validate_proxy_server(self, value):
+        if (
+            value
+            and not ProxyService.get_team_proxies(self.context["team"])
+            .filter(slug=value)
+            .exists()
+        ):
+            raise serializers.ValidationError(_("Proxy server does not exist"))
+        return value
 
 
 class SitemapRequestSerializer(serializers.ModelSerializer):

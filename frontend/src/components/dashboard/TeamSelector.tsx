@@ -8,7 +8,6 @@ import { ChevronDownIcon, PlusIcon, UserGroupIcon } from '@heroicons/react/20/so
 import { Input } from '../shared/Input';
 import { Modal } from '../shared/Modal';
 
-
 import { useTeam } from '../../contexts/TeamContext';
 import { classnames } from '../../lib/utils';
 

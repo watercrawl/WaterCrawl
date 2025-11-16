@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next';
 import { Tab } from '@headlessui/react';
 import { DocumentArrowDownIcon, DocumentTextIcon, MapIcon } from '@heroicons/react/24/outline';
 
-
 import { crawlRequestApi } from '../services/api/crawl';
 import { CrawlRequest, SitemapGraph } from '../types/crawl';
 

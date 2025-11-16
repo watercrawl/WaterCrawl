@@ -53,6 +53,7 @@ export const SitemapForm: React.FC<SitemapFormProps> = ({
     search: initialRequest?.options?.search || null,
     include_paths: initialRequest?.options?.include_paths || [],
     exclude_paths: initialRequest?.options?.exclude_paths || [],
+    proxy_server: initialRequest?.options?.proxy_server || null,
   });
 
   const updateCurrentRequest = useCallback(() => {

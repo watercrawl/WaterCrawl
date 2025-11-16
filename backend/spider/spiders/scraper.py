@@ -23,6 +23,12 @@ class SiteScrapper(Spider):
         self.init_plugins()
         self.num_items = 0
 
+    def get_proxy_meta(self):
+        return {
+            "proxy_object": self.crawler_service.proxy_object,
+            "proxy": self.crawler_service.proxy_url,
+        }
+
     @classmethod
     def from_crawler(cls, crawler, *args, **kwargs):
         spider = super().from_crawler(crawler, *args, **kwargs)
@@ -52,7 +58,7 @@ class SiteScrapper(Spider):
                 callback=self.parse,
                 errback=self.crawl_error,
                 meta={
-                    "proxy_object": self.crawler_service.proxy_object,
+                    **self.get_proxy_meta(),
                     "skip_playwright": self.helpers.ignore_rendering,
                 },
             )
@@ -92,7 +98,7 @@ class SiteScrapper(Spider):
                     callback=self.parse,
                     errback=self.crawl_error,
                     meta={
-                        "proxy_object": self.crawler_service.proxy_object,
+                        **self.get_proxy_meta(),
                         "skip_playwright": self.helpers.ignore_rendering,
                     },
                 )

@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
 
-
 import { useSettings } from '../../contexts/SettingsProvider';
 import { useTheme } from '../../contexts/ThemeContext';
 

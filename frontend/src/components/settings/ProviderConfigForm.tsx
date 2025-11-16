@@ -7,7 +7,6 @@ import { CogIcon } from '@heroicons/react/24/outline';
 import Button from '../shared/Button';
 import { Modal } from '../shared/Modal';
 
-
 import { classnames } from '../../lib/utils';
 import { AdminProviderConfig } from '../../types/admin/provider';
 import { ProviderConfigFormData, Provider, ProviderConfig, OPTIONS } from '../../types/provider';

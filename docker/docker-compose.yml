@@ -3,7 +3,7 @@ x-app: &app
     context: backend/
     dockerfile: Dockerfile
     args:
-      - VERSION=${VERSION:-v0.11.1}
+      - VERSION=${VERSION:-v0.12.0}
   depends_on:
     db:
       condition: service_healthy
@@ -89,6 +89,7 @@ x-app: &app
     - SCRAPY_GOOGLE_CSE_ID=${SCRAPY_GOOGLE_CSE_ID:-}
     - SCRAPY_MAX_NUMBER_OF_SITEMAP_URLS=${SCRAPY_MAX_NUMBER_OF_SITEMAP_URLS:-20000}
     - SCRAPY_SITEMAP_CRAWL_PAGE_LIMIT=${SCRAPY_SITEMAP_CRAWL_PAGE_LIMIT:-100}
+    - SCRAPY_GOOGLE_SEARCH_PAGE_LIMIT=${SCRAPY_GOOGLE_SEARCH_PAGE_LIMIT:-5}
 
     # Playwright
     - PLAYWRIGHT_SERVER=${PLAYWRIGHT_SERVER:-http://playwright:8000}
@@ -120,7 +121,7 @@ x-app: &app
     - SENTRY_DEBUG=${SENTRY_DEBUG:-False}
 
 x-frontend: &frontend
-  image: watercrawl/frontend:${VERSION:-v0.11.1}
+  image: watercrawl/frontend:${VERSION:-v0.12.0}
   environment:
     - VITE_API_BASE_URL=${API_BASE_URL:-}
     - VITE_SENTRY_DSN=${SENTRY_FRONTEND_DSN:-}
