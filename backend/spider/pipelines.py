@@ -1,3 +1,4 @@
+import hashlib
 import re
 
 from asgiref.sync import sync_to_async
@@ -56,6 +57,15 @@ class SiteScrapperPipeline:
         crawler.signals.connect(pipeline.save_sitemap, signal=signals.spider_closed)
         return pipeline
 
+    @classmethod
+    def make_url_hash(cls, url):
+        url = url.split("#")[0]
+        url = url.strip()
+        url = url.replace("//", "/")
+        if url.endswith("/"):
+            url = url[:-1]
+        return hashlib.md5(url.encode()).hexdigest()
+
     def process_item(self, item, spider):
         """
         Process each scraped item.
@@ -74,22 +84,25 @@ class SiteScrapperPipeline:
             # Normalize URL and title
             url = self._normalize_url(item.get("url", ""))
             title = self._normalize_title(item.get("title", ""))
+            url_hash = self.make_url_hash(url)
 
             if not url or not title:
                 self.logger.debug(f"Skipping item with empty URL or title: {item}")
                 return item
 
-            # Process unique URLs or update existing ones with better titles
-            if self._check_unique(url):
-                self.url_map[url] = title
+            if url_hash not in self.url_map:
+                self.url_map[url_hash] = {
+                    "url": url,
+                    "title": title,
+                }
                 self.processed_count += 1
                 if self.processed_count % 100 == 0:
                     self.logger.info(f"Processed {self.processed_count} unique URLs")
             else:
                 # Keep the shorter, more concise title
-                if len(self.url_map[url]) > len(title) and len(title) > 0:
+                if len(self.url_map[url_hash]["title"]) > len(title) > 0:
                     self.logger.debug(f"Updating title for {url}")
-                    self.url_map[url] = title
+                    self.url_map[url_hash]["title"] = title
                 self.duplicate_count += 1
 
             return item
@@ -109,7 +122,7 @@ class SiteScrapperPipeline:
             return
 
         await sync_to_async(spider.crawler_service.add_sitemap)(
-            [{"url": url, "title": text} for url, text in self.url_map.items()]
+            list(self.url_map.values())
         )
 
     def _normalize_url(self, url):
