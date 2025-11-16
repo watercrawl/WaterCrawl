@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.12.0] - 2025-11-16
+
+### Added
+- **Sitemap Proxy Support**
+  - Added proxy server support for sitemap requests
+  - Enables routing sitemap crawling traffic through a configurable proxy
+
+### Fixed
+- **Sitemap URL Deduplication**
+  - Implemented URL hash-based deduplication in the spider pipeline to avoid processing duplicate sitemap URLs
+
+- **Social Authentication Stability**
+  - Reduces unexpected failures when third-party profile data is incomplete or unavailable
+
 ## [0.11.1] - 2025-01-06
 
 ### Fixed
