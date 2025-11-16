@@ -1242,7 +1242,7 @@ class ProxyService:
             self.proxy_server.port,
             self.proxy_server.proxy_type,
             self.proxy_server.username,
-            decrypt_key(self.proxy_server.password),
+            decrypt_key(self.proxy_server.password) if self.proxy_server.password else None,
         )
 
 
