@@ -1,6 +1,6 @@
 ARG VERSION
 # Use the official WaterCrawl image as the base image
-FROM watercrawl/watercrawl:${VERSION:-v0.11.1}
+FROM watercrawl/watercrawl:${VERSION:-v0.12.0}
 
 # Set working directory
 WORKDIR /var/www
