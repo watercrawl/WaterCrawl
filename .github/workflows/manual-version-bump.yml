@@ -146,6 +146,22 @@ jobs:
             echo "Warning: docker/backend/Dockerfile not found"
           fi
           
+          # docs/docs/self-hosted/configuration.md - update version references
+          if [[ -f "docs/docs/self-hosted/configuration.md" ]]; then
+            update_version "docs/docs/self-hosted/configuration.md" "\\`VERSION\\`" "v[0-9]+\\.[0-9]+\\.[0-9]+" "v${{ env.VERSION }}" "VERSION in configuration table" && UPDATED=1
+            update_version "docs/docs/self-hosted/configuration.md" "^VERSION=" "=v[0-9]+\\.[0-9]+\\.[0-9]+" "=v${{ env.VERSION }}" "VERSION in code example" && UPDATED=1
+          else
+            echo "Warning: docs/docs/self-hosted/configuration.md not found"
+          fi
+          
+          # docs/docs/self-hosted/services.md - update image versions
+          if [[ -f "docs/docs/self-hosted/services.md" ]]; then
+            update_version "docs/docs/self-hosted/services.md" "watercrawl/watercrawl:" "v[0-9]+\\.[0-9]+\\.[0-9]+" "v${{ env.VERSION }}" "watercrawl image version" && UPDATED=1
+            update_version "docs/docs/self-hosted/services.md" "watercrawl/frontend:" "v[0-9]+\\.[0-9]+\\.[0-9]+" "v${{ env.VERSION }}" "frontend image version" && UPDATED=1
+          else
+            echo "Warning: docs/docs/self-hosted/services.md not found"
+          fi
+          
           # Show changes
           echo "Showing changes made:"
           git diff
@@ -173,6 +189,8 @@ jobs:
           echo "- docker/.env.example"
           echo "- docker/docker-compose.yml"
           echo "- docker/backend/Dockerfile"
+          echo "- docs/docs/self-hosted/configuration.md"
+          echo "- docs/docs/self-hosted/services.md"
           echo "Changes committed"
 
       - name: Push branch
@@ -210,7 +228,9 @@ jobs:
           - frontend/src/contexts/SettingsProvider.tsx
           - docker/.env.example
           - docker/docker-compose.yml
-          - docker/backend/Dockerfile" --base main --head release/v${{ env.VERSION }}); then
+          - docker/backend/Dockerfile
+          - docs/docs/self-hosted/configuration.md
+          - docs/docs/self-hosted/services.md" --base main --head release/v${{ env.VERSION }}); then
             echo "❌ Failed to create PR automatically."
             echo "🔗 Please create PR manually: $MANUAL_PR_URL"
             exit 0  # Don't fail the workflow
