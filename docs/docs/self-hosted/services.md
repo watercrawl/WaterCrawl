@@ -5,7 +5,7 @@ WaterCrawl consists of several services working together in a Docker Compose env
 ## Core Services
 
 ### App (Django Application)
-- **Image**: `watercrawl/watercrawl:v0.12.0`
+- **Image**: `watercrawl/watercrawl:v0.12.1`
 - **Purpose**: Main application server
 - **Tech Stack**: Django with Gunicorn
 - **Default Port**: 9000 (internal)
@@ -19,7 +19,7 @@ WaterCrawl consists of several services working together in a Docker Compose env
 - **Command**: `gunicorn -b 0.0.0.0:9000 -w 2 watercrawl.wsgi:application --access-logfile - --error-logfile - --timeout 60`
 
 ### Frontend
-- **Image**: `watercrawl/frontend:v0.12.0`
+- **Image**: `watercrawl/frontend:v0.12.1`
 - **Purpose**: Web interface
 - **Tech Stack**: React/Vite
 - **Dependencies**: App (Core API)
@@ -42,7 +42,7 @@ WaterCrawl consists of several services working together in a Docker Compose env
 - **Command**: Runs an entrypoint script that configures and starts Nginx
 
 ### Celery (Task Queue)
-- **Image**: Same as App (`watercrawl/watercrawl:v0.12.0`)
+- **Image**: Same as App (`watercrawl/watercrawl:v0.12.1`)
 - **Purpose**: Background task processing
 - **Dependencies**: Redis, App
 - **Key Features**:
@@ -53,7 +53,7 @@ WaterCrawl consists of several services working together in a Docker Compose env
 - **Command**: `celery -A watercrawl worker -l info -S django`
 
 ### Celery Beat (Scheduler)
-- **Image**: Same as App (`watercrawl/watercrawl:v0.12.0`)
+- **Image**: Same as App (`watercrawl/watercrawl:v0.12.1`)
 - **Purpose**: Periodic task scheduler
 - **Dependencies**: Redis, App, Celery
 - **Key Features**:

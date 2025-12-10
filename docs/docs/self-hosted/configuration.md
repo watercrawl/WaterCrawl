@@ -156,7 +156,7 @@ Below is a basic configuration example for the `.env` file:
 
 ```bash
 # Core Settings
-VERSION=v0.12.0  # Check https://github.com/watercrawl/WaterCrawl/releases for latest version
+VERSION=v0.12.1  # Check https://github.com/watercrawl/WaterCrawl/releases for latest version
 NGINX_PORT=80
 SECRET_KEY=your_secure_secret_key_here  # Generate with: openssl rand -base64 32
 API_ENCRYPTION_KEY=your_secure_api_encryption_key_here  # Generate with: python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
