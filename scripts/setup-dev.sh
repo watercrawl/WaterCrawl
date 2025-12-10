@@ -45,9 +45,9 @@ if command -v poetry &> /dev/null; then
     POETRY_VERSION=$(poetry --version)
     echo -e "${COLOR_GREEN}✓${COLOR_RESET} $POETRY_VERSION"
 else
-    echo -e "${COLOR_RED}✗${COLOR_RESET} Poetry not found. Installing..."
-    curl -sSL https://install.python-poetry.org | python3 -
-    export PATH="$HOME/.local/bin:$PATH"
+    echo -e "${COLOR_RED}✗${COLOR_RESET} Poetry not found. Please install it manually."
+    echo -e "  See the official documentation: https://python-poetry.org/docs/#installation"
+    exit 1
 fi
 
 # Check pnpm
