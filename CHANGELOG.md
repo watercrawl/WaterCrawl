@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.12.1] - 2025-12-11
+
+### Security
+- **Security Vulnerabilities Fixed** - Resolved 14 security vulnerabilities across frontend, backend, and docs
+  - Upgraded Django from 5.2.8 to 5.2.9 (fixes CVE-2025-13372, CVE-2025-64460)
+  - Upgraded urllib3 from 2.5.0 to 2.6.1 (fixes CVE-2025-66418, CVE-2025-66471)
+  - Upgraded Scrapy from 2.13.3 to 2.13.4 (fixes DoS vulnerability in brotli decompression)
+  - Added pnpm overrides for vulnerable dependencies (js-yaml, glob, node-forge, mdast-util-to-hast)
+
+### Added
+- **Development Setup Improvements**
+  - Added automated setup script (`scripts/setup-dev.sh`) for easy development environment setup
+  - Added comprehensive development setup guide (`DEV_SETUP.md`) with step-by-step instructions
+
+### Fixed
+- **PostgreSQL Healthcheck** - Fixed `pg_isready` healthcheck to use `POSTGRES_USER` environment variable
+- **Version Bump Workflow** - Enhanced manual version bump workflow to automatically update documentation references
+  - Now updates version numbers in `docs/docs/self-hosted/configuration.md` and `docs/docs/self-hosted/services.md`
+
+### Changed
+- **Environment Configuration** - Removed duplicated Playwright configuration from `.env.example`
+
 ## [0.12.0] - 2025-11-16
 
 ### Added

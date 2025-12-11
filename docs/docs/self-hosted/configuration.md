@@ -12,7 +12,7 @@ WaterCrawl uses a single `.env` file in the `docker` directory for all configura
 
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
-| `VERSION` | `v0.12.0`     | Application version. Always check [GitHub Releases](https://github.com/watercrawl/WaterCrawl/releases) for the latest version |
+| `VERSION` | `v0.12.1`     | Application version. Always check [GitHub Releases](https://github.com/watercrawl/WaterCrawl/releases) for the latest version |
 | `NGINX_PORT` | `80`          | Port for the Nginx service |
 
 #### Django Settings
