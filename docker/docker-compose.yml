@@ -190,7 +190,8 @@ services:
       - HOST=${PLAYWRIGHT_HOST:-0.0.0.0}
 
   db:
-    image: postgres:17.2-alpine3.21
+#    image: postgres:17.2-alpine3.21
+    image: pgvector/pgvector:pg17
     restart: always
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
