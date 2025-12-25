@@ -522,7 +522,7 @@ class APISpecToolExecutor(ToolExecutor):
                 case "pdf":
                     extension = "pdf"
                 case "msword":
-                    extension = "docx"
+                    extension = "doc"
                 case "vnd.openxmlformats-officedocument.wordprocessingml.document":
                     extension = "docx"
 
