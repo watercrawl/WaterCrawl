@@ -13,13 +13,18 @@ class KnowledgeBaseAdmin(admin.ModelAdmin):
     list_display = (
         "title",
         "team",
-        "embedding_model",
-        "summarization_model",
+        "embedding_model_key",
+        "summarization_model_key",
         "knowledge_base_each_document_cost",
         "created_at",
     )
     search_fields = ("title", "description")
-    list_filter = ("team", "embedding_model", "summarization_model", "summarizer_type")
+    list_filter = (
+        "team",
+        "embedding_model_key",
+        "summarization_model_key",
+        "summarizer_type",
+    )
     fieldsets = (
         (None, {"fields": ("title", "description", "team")}),
         (
@@ -31,14 +36,13 @@ class KnowledgeBaseAdmin(admin.ModelAdmin):
         (
             _("Embedding Configuration"),
             {
-                "fields": ("embedding_model", "embedding_provider_config"),
+                "fields": ("embedding_model_key", "embedding_provider_config"),
             },
         ),
         (
             _("Chunk Enhancement"),
             {
                 "fields": (
-                    "summarization_model",
                     "summarization_provider_config",
                     "summarizer_type",
                     "summarizer_context",

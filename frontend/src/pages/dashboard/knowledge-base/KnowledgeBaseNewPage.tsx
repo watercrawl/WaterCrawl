@@ -20,12 +20,13 @@ import * as yup from 'yup';
 
 import { EnhanceContextModal } from '../../../components/knowledge/EnhanceContextModal';
 import KnowledgeBasePricingInfo from '../../../components/knowledge/KnowledgeBasePricingInfo';
+import RetrievalSettingForm from '../../../components/knowledge/RetrievalSettingForm';
 import { Button } from '../../../components/shared/Button';
 import Card from '../../../components/shared/Card';
-import ComboboxComponent, { ComboboxItem } from '../../../components/shared/ComboboxComponent';
+import ComboboxComponent from '../../../components/shared/ComboboxComponent';
 import Loading from '../../../components/shared/Loading';
+import ModelSelector from '../../../components/shared/ModelSelector';
 import OptionCard from '../../../components/shared/OptionCard';
-import Slider from '../../../components/shared/Slider';
 import { useBreadcrumbs } from '../../../contexts/BreadcrumbContext';
 import { useTeam } from '../../../contexts/TeamContext';
 import { knowledgeBaseApi } from '../../../services/api/knowledgeBase';
@@ -35,8 +36,10 @@ import {
   DEFAULT_CHUNK_SIZE,
   calculateChunkOverlap,
   SummarizerType,
+  RetrievalSettingFormData,
+  RetrievalType,
 } from '../../../types/knowledge';
-import { ListProviderConfig, Model } from '../../../types/provider';
+import { ListProviderConfig } from '../../../types/provider';
 
 // Create validation schema for form - translations will be applied at runtime
 const createSchema = (t: any) =>
@@ -45,7 +48,7 @@ const createSchema = (t: any) =>
     description: yup
       .string()
       .required(t('settings.knowledgeBase.form.basicInfo.descriptionRequired')),
-    embedding_model_id: yup.string().when('embeddingEnabled', {
+    embedding_model_key: yup.string().when('embeddingEnabled', {
       is: true,
       then: schema => schema.required(t('settings.knowledgeBase.form.embedding.modelRequired')),
       otherwise: schema => schema.nullable(),
@@ -64,7 +67,7 @@ const createSchema = (t: any) =>
       .number()
       .required(t('settings.knowledgeBase.form.chunking.chunkOverlapRequired'))
       .min(0, t('settings.knowledgeBase.form.chunking.chunkOverlapMin')),
-    summarization_model_id: yup.string().nullable(),
+    summarization_model_key: yup.string().nullable(),
     summarization_provider_config_id: yup.string().nullable(),
     summarizer_type: yup
       .string()
@@ -79,10 +82,7 @@ const createSchema = (t: any) =>
         schema.required(t('settings.knowledgeBase.form.summarization.contextRequired')),
       otherwise: schema => schema.nullable(),
     }),
-    summarizer_temperature: yup
-      .number()
-      .min(0, t('settings.knowledgeBase.form.summarization.temperatureMin'))
-      .max(2, t('settings.knowledgeBase.form.summarization.temperatureMax')),
+    summarizer_llm_config: yup.object().nullable(),
     autoChunkOverlap: yup.boolean(),
     enhancementEnabled: yup.boolean().required(),
     embeddingEnabled: yup.boolean().required(),
@@ -94,14 +94,18 @@ const KnowledgeBaseNewPage: React.FC = () => {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [providerConfigs, setProviderConfigs] = useState<ListProviderConfig[]>([]);
-  const [selectedEmbeddingProviderConfig, setSelectedEmbeddingProviderConfig] =
-    useState<ListProviderConfig | null>(null);
-  const [selectedSummarizationProviderConfig, setSelectedSummarizationProviderConfig] =
-    useState<ListProviderConfig | null>(null);
-  const [selectedSummarizationModel, setSelectedSummarizationModel] = useState<Model | null>(null);
-  const [isTemperatureConfigurable, setIsTemperatureConfigurable] = useState(false);
   const [isLoadingProviders, setIsLoadingProviders] = useState(true);
   const [isEnhanceModalOpen, setIsEnhanceModalOpen] = useState(false);
+  const [initialRetrievalSetting, setInitialRetrievalSetting] = useState<Partial<RetrievalSettingFormData>>({
+    name: 'Default',
+    retrieval_type: RetrievalType.HybridSearch,
+    is_default: true,
+    top_k: 3,
+    hybrid_alpha: 0.7,
+    reranker_enabled: false,
+    reranker_model_key: null,
+    reranker_provider_config_id: null,
+  });
   const { setItems } = useBreadcrumbs();
   const { currentSubscription } = useTeam();
 
@@ -154,16 +158,16 @@ const KnowledgeBaseNewPage: React.FC = () => {
     defaultValues: {
       title: '',
       description: '',
-      embedding_model_id: '', // Will be set when models are loaded
+      embedding_model_key: '', // Will be set when models are loaded
       embedding_provider_config_id: '', // Will need to be selected by user
       chunk_size: DEFAULT_CHUNK_SIZE,
       chunk_overlap: calculateChunkOverlap(DEFAULT_CHUNK_SIZE),
       autoChunkOverlap: true, // Use auto chunk overlap by default
-      summarization_model_id: '', // Will be set when models are loaded
+      summarization_model_key: '', // Will be set when models are loaded
       summarization_provider_config_id: '', // Will need to be selected by user
       summarizer_type: SummarizerType.Standard, // Default summarizer type
       summarizer_context: '',
-      summarizer_temperature: 0.7,
+      summarizer_llm_config: {},
       enhancementEnabled: false, // Default to no enhancement (economical)
       embeddingEnabled: false, // Default to embeddings enabled
       chunk_separator: '', // Custom separator for text splitting
@@ -174,29 +178,17 @@ const KnowledgeBaseNewPage: React.FC = () => {
   const {
     embedding_provider_config_id: watchEmbeddingProviderConfig,
     summarization_provider_config_id: watchSummarizationProviderConfig,
-    summarization_model_id: watchSummarizationModelId,
+    summarization_model_key: watchSummarizationModelKey,
     summarizer_type: watchSummarizerType,
     summarizer_context: watchSummarizerContext,
-    summarizer_temperature: watchSummarizerTemperature,
+    summarizer_llm_config: watchSummarizerLLMConfig,
     // chunk_size: watchChunkSize,
     autoChunkOverlap: watchAutoChunkOverlap,
     enhancementEnabled: watchEnhancementEnabled,
     embeddingEnabled: watchEmbeddingEnabled,
   } = watch();
 
-  useEffect(() => {
-    if (!watchEmbeddingProviderConfig) return;
-    setSelectedEmbeddingProviderConfig(
-      providerConfigs.find(config => config.uuid === watchEmbeddingProviderConfig) || null
-    );
-  }, [watchEmbeddingProviderConfig, providerConfigs]);
 
-  useEffect(() => {
-    if (!watchSummarizationProviderConfig) return;
-    setSelectedSummarizationProviderConfig(
-      providerConfigs.find(config => config.uuid === watchSummarizationProviderConfig) || null
-    );
-  }, [watchSummarizationProviderConfig, providerConfigs]);
 
   // Automatically calculate chunk overlap based on chunk size
   // Update chunk_overlap when chunk_size changes or autoChunkOverlap is checked
@@ -213,33 +205,34 @@ const KnowledgeBaseNewPage: React.FC = () => {
     return () => subscription.unsubscribe();
   }, [watch, setValue]);
 
-  useEffect(() => {
-    if (!watchSummarizationModelId) return;
-    const selectedModel =
-      selectedSummarizationProviderConfig?.available_llm_models.find(
-        model => model.uuid === watchSummarizationModelId
-      ) || null;
-    setIsTemperatureConfigurable(
-      selectedModel?.min_temperature !== null && selectedModel?.max_temperature !== null
-    );
-    setSelectedSummarizationModel(selectedModel);
-  }, [watchSummarizationModelId, selectedSummarizationProviderConfig]);
 
   const onSubmit = async (formData: FormData) => {
     setIsSubmitting(true);
     try {
+      // Determine default retrieval type based on embedding configuration
+      let retrievalType = initialRetrievalSetting.retrieval_type || RetrievalType.HybridSearch;
+      if (!formData.embeddingEnabled) {
+        // If no embeddings, force full-text search
+        if (retrievalType === RetrievalType.VectorSearch || retrievalType === RetrievalType.HybridSearch) {
+          retrievalType = RetrievalType.FullTextSearch;
+        }
+      } else if (!retrievalType || retrievalType === RetrievalType.FullTextSearch) {
+        // If embeddings are enabled and no type selected, default to hybrid
+        retrievalType = RetrievalType.HybridSearch;
+      }
+      
       // Extract data for API calls
-      const knowledgeBaseData = {
+      const knowledgeBaseData: any = {
         title: formData.title,
         description: formData.description,
-        embedding_model_id: formData.embeddingEnabled ? formData.embedding_model_id || null : null,
+        embedding_model_key: formData.embeddingEnabled ? formData.embedding_model_key || null : null,
         embedding_provider_config_id: formData.embeddingEnabled
           ? formData.embedding_provider_config_id || null
           : null,
         chunk_size: formData.chunk_size,
         chunk_overlap: formData.chunk_overlap,
-        summarization_model_id: formData.enhancementEnabled
-          ? formData.summarization_model_id || null
+        summarization_model_key: formData.enhancementEnabled
+          ? formData.summarization_model_key || null
           : null,
         summarization_provider_config_id: formData.enhancementEnabled
           ? formData.summarization_provider_config_id || null
@@ -249,10 +242,16 @@ const KnowledgeBaseNewPage: React.FC = () => {
           formData.enhancementEnabled && formData.summarizer_type === 'context_aware'
             ? formData.summarizer_context
             : undefined,
-        summarizer_temperature:
-          formData.enhancementEnabled && isTemperatureConfigurable
-            ? formData.summarizer_temperature
+        summarizer_llm_config:
+          formData.enhancementEnabled
+            ? formData.summarizer_llm_config
             : undefined,
+        // Include initial retrieval setting
+        initial_retrieval_setting: {
+          ...initialRetrievalSetting,
+          retrieval_type: retrievalType,
+          is_default: true,
+        },
       };
       const response = await knowledgeBaseApi.create(knowledgeBaseData);
       toast.success(t('settings.knowledgeBase.toast.createSuccess'));
@@ -442,95 +441,39 @@ const KnowledgeBaseNewPage: React.FC = () => {
                       </div>{' '}
                     </div>{' '}
                     {watchEmbeddingEnabled && (
-                      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                        {' '}
-                        <div className="">
-                          {' '}
-                          <label
-                            htmlFor="embedding_provider_config_id"
-                            className="block text-sm font-medium text-foreground"
-                          >
-                            {' '}
-                            {t('settings.knowledgeBase.form.embedding.providerConfig')}
-                          </label>
-                          <div className="mt-2">
+                      <div>
                             <Controller
                               name="embedding_provider_config_id"
                               control={control}
-                              render={({ field }) => (
-                                <ComboboxComponent
-                                  items={providerConfigs.map(
-                                    (config): ComboboxItem => ({
-                                      id: config.uuid,
-                                      label: config.title,
-                                      category: config.provider_name,
-                                    })
-                                  )}
-                                  value={field.value || ''}
-                                  onChange={field.onChange}
-                                  placeholder={t(
-                                    'settings.knowledgeBase.form.embedding.providerConfigPlaceholder'
-                                  )}
-                                  disabled={!watchEmbeddingEnabled || isLoadingProviders}
-                                  className={
-                                    errors.embedding_provider_config_id ? 'border-error' : ''
-                                  }
-                                />
-                              )}
-                            />
-                            {errors.embedding_provider_config_id && (
-                              <p className="mt-1 text-sm text-error">
-                                {errors.embedding_provider_config_id.message}
-                              </p>
-                            )}
-                          </div>
-                          <p className="mt-2 text-sm text-muted-foreground">
-                            {t('settings.knowledgeBase.form.embedding.providerConfigHelp')}
-                          </p>
-                        </div>
-                        {/* Embedding Model Selection */}
-                        <div className="">
-                          <label
-                            htmlFor="embedding_model_id"
-                            className="block text-sm font-medium text-foreground"
-                          >
-                            {t('settings.knowledgeBase.form.embedding.model')}
-                          </label>
-                          <div className="relative mt-2">
+                          render={({ field: providerField }) => (
                             <Controller
-                              name="embedding_model_id"
+                              name="embedding_model_key"
                               control={control}
-                              render={({ field }) => (
-                                <ComboboxComponent
-                                  items={
-                                    selectedEmbeddingProviderConfig?.available_embedding_models.map(
-                                      (model): ComboboxItem => ({
-                                        id: model.uuid,
-                                        label: `${model.name}${model.dimensions ? ` - ${model.dimensions} ${t('settings.knowledgeBase.form.embedding.dimensions')}` : ''}`,
-                                        category: selectedEmbeddingProviderConfig?.provider_name,
-                                      })
-                                    ) || []
+                              render={({ field: modelField }) => (
+                                <ModelSelector
+                                  modelType="embedding"
+                                  initialProviderConfigId={providerField.value || null}
+                                  initialModelKey={modelField.value || null}
+                                  onChange={(values) => {
+                                    providerField.onChange(values.provider_config_id || '');
+                                    modelField.onChange(values.model_key || '');
+                                  }}
+                                  disabled={!watchEmbeddingEnabled || isLoadingProviders}
+                                  label={t('settings.knowledgeBase.form.embedding.model')}
+                                  placeholder={t('settings.knowledgeBase.form.embedding.modelPlaceholder')}
+                                  required={watchEmbeddingEnabled}
+                                  error={
+                                    errors.embedding_provider_config_id?.message ||
+                                    errors.embedding_model_key?.message
                                   }
-                                  value={field.value || ''}
-                                  onChange={field.onChange}
-                                  placeholder={t(
-                                    'settings.knowledgeBase.form.embedding.modelPlaceholder'
-                                  )}
-                                  disabled={!watchEmbeddingEnabled || !watchEmbeddingProviderConfig}
-                                  className={errors.embedding_model_id ? 'border-error' : ''}
                                 />
                               )}
                             />
-                            {errors.embedding_model_id && (
-                              <p className="mt-1 text-sm text-error">
-                                {errors.embedding_model_id.message}
-                              </p>
                             )}
-                          </div>
+                        />
                           <p className="mt-2 text-sm text-muted-foreground">
                             {t('settings.knowledgeBase.form.embedding.modelHelp')}
                           </p>
-                        </div>
                       </div>
                     )}
                   </Card.Body>
@@ -632,7 +575,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                     <input
                       type="text"
                       id="chunk_separator"
-                      placeholder="Enter separator"
+                      placeholder={t('settings.knowledgeBase.form.chunking.separatorPlaceholder')}
                       {...register('chunk_separator')}
                       className={`block w-full rounded-md shadow-sm border bg-input text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary sm:text-sm ${errors.chunk_separator ? 'border-error focus:border-error focus:ring-error' : 'border-input-border'}`}
                     />
@@ -696,83 +639,45 @@ const KnowledgeBaseNewPage: React.FC = () => {
                     </div>{' '}
                     {watchEnhancementEnabled && (
                       <>
-                        {' '}
                         <div className="grid grid-cols-12 gap-6">
-                          {' '}
                           <div className="col-span-12 sm:col-span-6">
-                            {' '}
-                            <label
-                              htmlFor="summarization_provider_config_id"
-                              className="block text-sm font-medium text-foreground"
-                            >
-                              {' '}
-                              {t('settings.knowledgeBase.form.summarization.providerConfig')}
-                            </label>
-                            <div className="relative mt-2">
                               <Controller
                                 name="summarization_provider_config_id"
                                 control={control}
-                                render={({ field }) => (
-                                  <ComboboxComponent
-                                    items={providerConfigs.map(
-                                      (config): ComboboxItem => ({
-                                        id: config.uuid,
-                                        label: config.title,
-                                        category: config.provider_name,
-                                      })
-                                    )}
-                                    value={field.value || ''}
-                                    onChange={field.onChange}
-                                    placeholder={t(
-                                      'settings.knowledgeBase.form.summarization.providerConfigPlaceholder'
-                                    )}
-                                    disabled={!watchEnhancementEnabled || isLoadingProviders}
-                                    className={
-                                      errors.summarization_provider_config_id ? 'border-error' : ''
-                                    }
-                                  />
-                                )}
-                              />
-                              {errors.summarization_provider_config_id && (
-                                <p className="mt-1 text-sm text-error">
-                                  {errors.summarization_provider_config_id.message}
-                                </p>
-                              )}
-                            </div>
-                            <div className="relative mt-2">
+                              render={({ field: providerField }) => (
                               <Controller
-                                name="summarization_model_id"
+                                name="summarization_model_key"
                                 control={control}
-                                render={({ field }) => (
-                                  <ComboboxComponent
-                                    items={
-                                      selectedSummarizationProviderConfig?.available_llm_models.map(
-                                        (model): ComboboxItem => ({
-                                          id: model.uuid,
-                                          label: model.name,
-                                          category:
-                                            selectedSummarizationProviderConfig?.provider_name,
-                                        })
-                                      ) || []
-                                    }
-                                    value={field.value || ''}
-                                    onChange={field.onChange}
-                                    placeholder={t(
-                                      'settings.knowledgeBase.form.summarization.modelPlaceholder'
-                                    )}
-                                    disabled={
-                                      !watchEnhancementEnabled || !watchSummarizationProviderConfig
-                                    }
-                                    className={errors.summarization_model_id ? 'border-error' : ''}
+                                  render={({ field: modelField }) => (
+                                    <Controller
+                                      name="summarizer_llm_config"
+                                      control={control}
+                                      render={({ field: configField }) => (
+                                        <ModelSelector
+                                          modelType="llm"
+                                          initialProviderConfigId={providerField.value || null}
+                                          initialModelKey={modelField.value || null}
+                                          initialModelConfig={(configField.value as Record<string, any>) || {}}
+                                          onChange={(values) => {
+                                            providerField.onChange(values.provider_config_id || '');
+                                            modelField.onChange(values.model_key || '');
+                                            configField.onChange(values.model_config || {});
+                                          }}
+                                          disabled={!watchEnhancementEnabled || isLoadingProviders}
+                                          label={t('settings.knowledgeBase.form.summarization.providerConfig')}
+                                          placeholder={t('settings.knowledgeBase.form.summarization.modelPlaceholder')}
+                                          required={watchEnhancementEnabled}
+                                          error={
+                                            errors.summarization_provider_config_id?.message ||
+                                            errors.summarization_model_key?.message
+                                          }
                                   />
                                 )}
                               />
-                              {errors.summarization_model_id && (
-                                <p className="mt-1 text-sm text-error">
-                                  {errors.summarization_model_id.message}
-                                </p>
+                                  )}
+                                />
                               )}
-                            </div>
+                            />
                             <p className="mt-2 text-sm text-muted-foreground">
                               {t('settings.knowledgeBase.form.summarization.providerConfigHelp')}
                             </p>
@@ -818,56 +723,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                               {t('settings.knowledgeBase.form.summarization.modelHelp')}
                             </p>
                           </div>
-                          {/* Temperature Slider */}
-                          <div className="col-span-12 sm:col-span-6">
-                            <Controller
-                              name="summarizer_temperature"
-                              control={control}
-                              render={({ field }) => {
-                                console.log('isTemperatureConfigurable', isTemperatureConfigurable);
-                                if (
-                                  !watchEnhancementEnabled ||
-                                  !watchSummarizationModelId ||
-                                  !selectedSummarizationModel ||
-                                  !isTemperatureConfigurable
-                                ) {
-                                  return (
-                                    <div className="opacity-50">
-                                      <label className="mb-2 block text-sm font-medium text-foreground">
-                                        {t('settings.knowledgeBase.form.summarization.temperature')}
-                                      </label>
-                                      <div className="text-sm text-muted-foreground">
-                                        {!isTemperatureConfigurable && selectedSummarizationModel
-                                          ? 'Temperature is handled internally by this model'
-                                          : 'Select a model to configure temperature'}
-                                      </div>
-                                    </div>
-                                  );
-                                }
 
-                                return (
-                                  <Slider
-                                    label={t(
-                                      'settings.knowledgeBase.form.summarization.temperature'
-                                    )}
-                                    value={
-                                      field.value !== undefined && field.value !== null
-                                        ? field.value
-                                        : (selectedSummarizationModel?.default_temperature ?? 0.7)
-                                    }
-                                    onChange={field.onChange}
-                                    min={selectedSummarizationModel.min_temperature!}
-                                    max={selectedSummarizationModel.max_temperature!}
-                                    step={0.1}
-                                    formatValue={val => val.toFixed(1)}
-                                    description={t(
-                                      'settings.knowledgeBase.form.summarization.temperatureHelp'
-                                    )}
-                                  />
-                                );
-                              }}
-                            />
-                          </div>
                         </div>
                         {watchSummarizerType === 'context_aware' && (
                           <>
@@ -886,7 +742,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                                     onClick={() => setIsEnhanceModalOpen(true)}
                                     disabled={
                                       !watchSummarizationProviderConfig ||
-                                      !watchSummarizationModelId
+                                      !watchSummarizationModelKey
                                     }
                                   >
                                     {t('settings.knowledgeBase.form.summarization.enhanceButton')}
@@ -924,18 +780,43 @@ const KnowledgeBaseNewPage: React.FC = () => {
                                 }}
                                 initialContext={watchSummarizerContext || ''}
                                 providerConfigId={watchSummarizationProviderConfig || ''}
-                                modelId={watchSummarizationModelId || ''}
-                                temperature={
-                                  isTemperatureConfigurable
-                                    ? (watchSummarizerTemperature ?? null)
-                                    : null
-                                }
+                                modelKey={watchSummarizationModelKey || ''}
+                                llmConfig={watchSummarizerLLMConfig}
                               />
                             )}
                           </>
                         )}
                       </>
                     )}
+                  </Card.Body>
+                </Card>
+
+                {/* Initial Retrieval Setting Section */}
+                <Card>
+                  <Card.Title icon={<BoltIcon className="h-5 w-5 text-primary" />}>
+                    {t('settings.knowledgeBase.retrievalSettings.title')}
+                  </Card.Title>
+                  <Card.Body>
+                    <RetrievalSettingForm
+                      knowledgeBase={{
+                        embedding_provider_config: watchEmbeddingEnabled && watchEmbeddingProviderConfig
+                          ? {
+                              uuid: watchEmbeddingProviderConfig,
+                              ...providerConfigs.find(p => p.uuid === watchEmbeddingProviderConfig),
+                            }
+                          : null,
+                      } as any}
+                      providers={providerConfigs}
+                      initialData={initialRetrievalSetting}
+                      onSave={async (data) => {
+                        setInitialRetrievalSetting(data);
+                      }}
+                      onChange={(data) => {
+                        setInitialRetrievalSetting(data);
+                      }}
+                      showCancel={false}
+                      compact={true}
+                    />
                   </Card.Body>
                 </Card>
 
@@ -975,10 +856,14 @@ const KnowledgeBaseNewPage: React.FC = () => {
                 isEmbeddingEnabled={watchEmbeddingEnabled}
                 isEnhancementEnabled={watchEnhancementEnabled}
                 embeddingProviderType={
-                  selectedEmbeddingProviderConfig?.is_global ? 'watercrawl' : 'external'
+                  providerConfigs.find(p => p.uuid === watchEmbeddingProviderConfig)?.is_global
+                    ? 'watercrawl'
+                    : 'external'
                 }
                 summarizationProviderType={
-                  selectedSummarizationProviderConfig?.is_global ? 'watercrawl' : 'external'
+                  providerConfigs.find(p => p.uuid === watchSummarizationProviderConfig)?.is_global
+                    ? 'watercrawl'
+                    : 'external'
                 }
                 rateLimit={currentSubscription?.knowledge_base_retrival_rate_limit}
                 numberOfDocumentsLimit={

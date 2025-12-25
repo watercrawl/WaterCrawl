@@ -3,23 +3,8 @@ from django.utils.translation import gettext_lazy as _
 
 from common.encryption import encrypt_key, decrypt_key
 from llm import consts
-from llm.models import LLMModel, ProviderConfig, EmbeddingModel
+from llm.models import ProviderConfig
 from llm.services import ProviderConfigService
-
-
-class LLMModelSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = LLMModel
-        fields = [
-            "uuid",
-            "name",
-            "key",
-            "provider_name",
-            "visibility_level",
-            "created_at",
-            "updated_at",
-        ]
-        read_only_fields = ["uuid", "created_at", "updated_at"]
 
 
 class ProviderConfigSerializer(serializers.ModelSerializer):
@@ -27,7 +12,7 @@ class ProviderConfigSerializer(serializers.ModelSerializer):
 
     is_global = serializers.SerializerMethodField()
     provider_name = serializers.ChoiceField(
-        choices=consts.LLM_PROVIDER_WITHOUT_WATERCRAWL_CHOICES,
+        choices=consts.LLM_PROVIDER_CHOICES,
     )
     api_key = serializers.CharField(
         write_only=True,
@@ -99,31 +84,12 @@ class UpdateProviderConfigSerializer(ProviderConfigSerializer):
                 if "api_key" not in attrs
                 else attrs["api_key"]
             )
-            print(api_key)
             self.test_provider_config(
                 provider_name=self.instance.provider_name,
                 api_key=api_key,
                 base_url=base_url,
             )
         return attrs
-
-
-class EmbeddingModelSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = EmbeddingModel
-        fields = [
-            "uuid",
-            "name",
-            "key",
-            "description",
-            "dimensions",
-            "max_input_length",
-            "truncate",
-            "visibility_level",
-            "created_at",
-            "updated_at",
-        ]
-        read_only_fields = ["uuid", "created_at", "updated_at"]
 
 
 class TestProviderConfigSerializer(serializers.Serializer):
@@ -135,3 +101,12 @@ class TestProviderConfigSerializer(serializers.Serializer):
         if not ProviderConfigService.test_provider_config(**attrs):
             raise serializers.ValidationError("Test failed")
         return attrs
+
+
+class ModelConfigSerializer(serializers.Serializer):
+    key = serializers.CharField()
+    label = serializers.CharField()
+    model_type = serializers.CharField()
+    features = serializers.ListField(child=serializers.CharField())
+    model_properties = serializers.DictField()
+    parameters_schema = serializers.DictField()

@@ -1,0 +1,7 @@
+model: rerank-multilingual-v3.0
+label: "{% trans 'rerank-multilingual-v3.0' %}"
+model_type: rerank
+model_properties:
+  context_size: 5120
+
+

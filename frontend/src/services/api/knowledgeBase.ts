@@ -6,6 +6,9 @@ import {
   KnowledgeBaseDetail,
   KnowledgeBaseDocument,
   KnowledgeBaseFormData,
+  KnowledgeBaseQueryRequest,
+  RetrievalSetting,
+  RetrievalSettingFormData,
 } from '../../types/knowledge';
 
 import api from './api';
@@ -133,7 +136,7 @@ export const knowledgeBaseApi = {
       }
     );
   },
-  async query(knowledgeBaseUuid: string, data: { query: string; top_k?: number }) {
+  async query(knowledgeBaseUuid: string, data: KnowledgeBaseQueryRequest) {
     return api
       .post(`/api/v1/knowledge-base/knowledge-bases/${knowledgeBaseUuid}/query/`, data)
       .then(({ data }) => data);
@@ -169,5 +172,53 @@ export const knowledgeBaseApi = {
         }
       )
       .then(({ data }) => data);
+  },
+
+  // Retrieval Settings API
+  async listRetrievalSettings(knowledgeBaseUuid: string) {
+    return api
+      .get<PaginatedResponse<RetrievalSetting>>(
+        `/api/v1/knowledge-base/knowledge-bases/${knowledgeBaseUuid}/retrieval-settings/`
+      )
+      .then(({ data }) => data);
+  },
+
+  async getRetrievalSetting(knowledgeBaseUuid: string, uuid: string) {
+    return api
+      .get<RetrievalSetting>(
+        `/api/v1/knowledge-base/knowledge-bases/${knowledgeBaseUuid}/retrieval-settings/${uuid}/`
+      )
+      .then(({ data }) => data);
+  },
+
+  async createRetrievalSetting(
+    knowledgeBaseUuid: string,
+    data: RetrievalSettingFormData
+  ) {
+    return api
+      .post<RetrievalSetting>(
+        `/api/v1/knowledge-base/knowledge-bases/${knowledgeBaseUuid}/retrieval-settings/`,
+        data
+      )
+      .then(({ data }) => data);
+  },
+
+  async updateRetrievalSetting(
+    knowledgeBaseUuid: string,
+    uuid: string,
+    data: Partial<RetrievalSettingFormData>
+  ) {
+    return api
+      .patch<RetrievalSetting>(
+        `/api/v1/knowledge-base/knowledge-bases/${knowledgeBaseUuid}/retrieval-settings/${uuid}/`,
+        data
+      )
+      .then(({ data }) => data);
+  },
+
+  async deleteRetrievalSetting(knowledgeBaseUuid: string, uuid: string) {
+    return api.delete(
+      `/api/v1/knowledge-base/knowledge-bases/${knowledgeBaseUuid}/retrieval-settings/${uuid}/`
+    );
   },
 };

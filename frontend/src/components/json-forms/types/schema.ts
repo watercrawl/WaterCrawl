@@ -65,6 +65,7 @@ export interface UIOptions {
   editorHeight?: string; // for json-editor
   fontSize?: number; // for json-editor
   editorOptions?: EditorOptions; // for json-editor
+  toggleable?: boolean; // for object fields - enables toggle switches for each property
 }
 
 export interface JSONSchemaDefinition {
@@ -110,4 +111,5 @@ export interface FieldProps {
   errors?: ValidationError[];
   required?: boolean;
   disabled?: boolean;
+  rootSchema?: JSONSchemaDefinition & { $defs?: Record<string, JSONSchemaDefinition> };
 }

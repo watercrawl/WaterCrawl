@@ -308,23 +308,6 @@ const KnowledgeBaseDocumentDetailPage: React.FC = () => {
                             </button>
                           )}
                         </div>
-                        {chunk.keywords && chunk.keywords.length > 0 && (
-                          <div className="mt-4">
-                            <h5 className="text-sm font-semibold text-foreground">
-                              {t('settings.knowledgeBase.documentDetail.keywords')}
-                            </h5>
-                            <div className="mt-2 flex flex-wrap gap-2">
-                              {chunk.keywords.map((keyword: string, i: number) => (
-                                <span
-                                  key={i}
-                                  className="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-2 py-1 text-xs font-medium text-primary"
-                                >
-                                  #{keyword}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                        )}
                       </div>
                     </Card>
                   );

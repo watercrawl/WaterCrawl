@@ -1,0 +1,566 @@
+from django.db.transaction import atomic
+from rest_framework import serializers
+from django.utils.translation import gettext as _
+
+from agent.models import (
+    Agent,
+    AgentVersion,
+    AgentTool,
+    AgentKnowledgeBase,
+    AgentAsTool,
+    Tool,
+    APISpec,
+    APISpecTool,
+    APISpecParameters,
+    MCPServer,
+    MCPServerParameters,
+    MCPTool,
+    Conversation,
+    Message,
+    MessageBlock,
+    ContextParameters,
+)
+from agent.services import ToolService
+from llm import consts as llm_consts
+from llm.services import ProviderConfigService, ModelAvailabilityService
+from user.models import Team
+
+
+# Agent Serializers
+class AgentListSerializer(serializers.ModelSerializer):
+    """Serializer for agent list (name and status only)."""
+
+    status = serializers.CharField(read_only=True)
+
+    class Meta:
+        model = Agent
+        fields = ["uuid", "name", "status", "created_at", "updated_at"]
+        read_only_fields = ["uuid", "status", "created_at", "updated_at"]
+
+
+class AgentRevertDraftSerializer(serializers.Serializer):
+    """Serializer for reverting draft version."""
+
+    version_uuid = serializers.UUIDField(help_text="UUID of draft version to revert to")
+
+    def validate_version_uuid(self, value):
+        agent: Agent = self.context["agent"]
+        version = agent.versions.filter(uuid=value).first()
+        if not version:
+            raise serializers.ValidationError(_("Version does not exist"))
+        if agent.current_draft_version.uuid == value:
+            raise serializers.ValidationError(
+                _("You cannot revert to current draft version")
+            )
+        return version
+
+
+class AgentVersionListSerializer(serializers.ModelSerializer):
+    """Serializer for listing agent versions."""
+
+    class Meta:
+        model = AgentVersion
+        fields = ["uuid", "status", "created_at", "updated_at"]
+        read_only_fields = ["uuid", "status", "created_at", "updated_at"]
+
+
+class ContextParametersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ContextParameters
+        fields = ["parameter_type", "name", "value"]
+
+
+class AgentVersionDetailSerializer(serializers.ModelSerializer):
+    """Serializer for agent version details."""
+
+    agent_name = serializers.CharField(source="agent.name", read_only=True)
+    provider_config_uuid = serializers.UUIDField(source="provider_config_id")
+    llm_configs = serializers.JSONField(default=dict, help_text="LLM model configs")
+    parameters = ContextParametersSerializer(
+        many=True,
+    )
+
+    class Meta:
+        model = AgentVersion
+        fields = [
+            "uuid",
+            "agent_name",
+            "status",
+            "system_prompt",
+            "provider_config",
+            "provider_config_uuid",
+            "llm_model_key",
+            "llm_configs",
+            "json_output",
+            "json_schema",
+            "parameters",
+            "created_at",
+            "updated_at",
+        ]
+        read_only_fields = ["uuid", "status", "created_at", "updated_at"]
+
+    def validate_provider_config_uuid(self, value):
+        team: Team = self.context["team"]
+        if (
+            not ProviderConfigService.get_team_provider_configs(team=team)
+            .filter(uuid=value)
+            .exists()
+        ):
+            raise serializers.ValidationError(_("Provider config not found"))
+        return value
+
+    def validate(self, attrs):
+        team: Team = self.context["team"]
+        llm_model_key = attrs.get("llm_model_key")
+        if not llm_model_key:
+            return attrs
+
+        print(attrs)
+        provider_config_uuid = attrs.get("provider_config_id")
+        print(provider_config_uuid)
+        if not provider_config_uuid:
+            if self.instance:
+                provider_config_uuid = self.instance.provider_config_id
+            else:
+                raise serializers.ValidationError(
+                    {"provider_config_uuid": _("Provider config UUID is required")}
+                )
+
+        provider_config = (
+            ProviderConfigService.get_team_provider_configs(team=team)
+            .filter(uuid=provider_config_uuid)
+            .first()
+        )
+
+        if not provider_config:
+            raise serializers.ValidationError(
+                {"provider_config_uuid": _("Provider config not found")}
+            )
+
+        if not ModelAvailabilityService.is_model_available(
+            provider_config=provider_config,
+            model_type=llm_consts.MODEL_TYPE_LLM,
+            model_key=llm_model_key,
+        ):
+            raise serializers.ValidationError(
+                {"llm_model_key": _("Invalid llm model Key.")}
+            )
+        return attrs
+
+    @atomic
+    def save(self, **kwargs):
+        parameters = self.validated_data.pop("parameters", [])
+        agent_version = super().save(**kwargs)
+
+        agent_version.parameters.all().delete()
+
+        for context_parameter in parameters:
+            agent_version.parameters.create(**context_parameter)
+        return agent_version
+
+
+# Tool Serializers
+class ToolListSerializer(serializers.ModelSerializer):
+    """Serializer for listing tools."""
+
+    class Meta:
+        model = Tool
+        fields = [
+            "uuid",
+            "name",
+            "description",
+            "key",
+            "tool_type",
+            "input_schema",
+            "output_schema",
+            "created_at",
+        ]
+        read_only_fields = ["uuid", "created_at"]
+
+
+class AgentToolSerializer(serializers.ModelSerializer):
+    """Serializer for agent tools (junction)."""
+
+    tool = ToolListSerializer(read_only=True)
+    tool_uuid = serializers.UUIDField(source="tool_id")
+
+    def validate_tool_uuid(self, value):
+        """Validate that tool exists."""
+        if (
+            not ToolService.get_team_tools(self.context["team"])
+            .filter(uuid=value)
+            .exists()
+        ):
+            raise serializers.ValidationError(_("Tool not found"))
+        return value
+
+    class Meta:
+        model = AgentTool
+        fields = ["uuid", "tool", "tool_uuid", "config", "created_at"]
+        read_only_fields = ["uuid", "tool", "created_at"]
+
+
+class AgentToolUpdateSerializer(serializers.ModelSerializer):
+    """Serializer for updating agent tool config."""
+
+    tool = ToolListSerializer(read_only=True)
+
+    class Meta:
+        model = AgentTool
+        fields = ["uuid", "tool", "config", "created_at"]
+        read_only_fields = ["uuid", "tool", "created_at"]
+
+
+# Knowledge Base Serializers
+class AgentKnowledgeBaseSerializer(serializers.ModelSerializer):
+    """Serializer for agent knowledge bases."""
+
+    knowledge_base_uuid = serializers.UUIDField(source="knowledge_base_id")
+
+    class Meta:
+        model = AgentKnowledgeBase
+        fields = [
+            "uuid",
+            "knowledge_base_uuid",
+            "config",
+            "created_at",
+            "title",
+            "key",
+            "description",
+            "input_schema",
+        ]
+        read_only_fields = [
+            "uuid",
+            "knowledge_base",
+            "created_at",
+            "title",
+            "key",
+            "description",
+            "input_schema",
+        ]
+
+    def validate_knowledge_base_uuid(self, value):
+        """Validate that knowledge base exists."""
+        team: Team = self.context["team"]
+        if not team.knowledge_bases.filter(uuid=value).exists():
+            raise serializers.ValidationError(_("Knowledge base not found"))
+        return value
+
+
+class AgentKnowledgeBaseUpdateSerializer(serializers.ModelSerializer):
+    """Serializer for updating knowledge base config."""
+
+    knowledge_base_uuid = serializers.UUIDField(source="knowledge_base_id")
+
+    class Meta:
+        model = AgentKnowledgeBase
+        fields = [
+            "uuid",
+            "knowledge_base_uuid",
+            "config",
+            "created_at",
+            "title",
+            "key",
+            "description",
+            "input_schema",
+        ]
+        read_only_fields = [
+            "uuid",
+            "knowledge_base_uuid",
+            "created_at",
+            "title",
+            "key",
+            "description",
+            "input_schema",
+        ]
+
+
+# Agent as Tool Serializers
+class AgentAsToolSerializer(serializers.ModelSerializer):
+    """Serializer for agent as tool."""
+
+    tool_agent_uuid = serializers.UUIDField(source="tool_agent_id")
+
+    class Meta:
+        model = AgentAsTool
+        fields = [
+            "uuid",
+            "tool_agent_uuid",
+            "config",
+            "created_at",
+            "name",
+            "key",
+            "description",
+            "input_schema",
+        ]
+        read_only_fields = [
+            "uuid",
+            "tool_agent",
+            "created_at",
+            "name",
+            "key",
+            "description",
+            "input_schema",
+        ]
+
+    def validate_tool_agent_uuid(self, value):
+        """Validate that tool agent exists and is not the same as parent agent."""
+        team: Team = self.context["team"]
+
+        # Check if agent exists and belongs to team
+        if not team.agents.filter(uuid=value).exists():
+            raise serializers.ValidationError(_("Agent not found"))
+
+        # Prevent self-reference
+        parent_agent_version = self.context.get("parent_agent_version")
+        if parent_agent_version:
+            tool_agent = team.agents.get(uuid=value)
+            if tool_agent == parent_agent_version.agent:
+                raise serializers.ValidationError(
+                    _("Agent cannot use itself as a tool")
+                )
+
+        return value
+
+
+class AgentAsToolUpdateSerializer(serializers.ModelSerializer):
+    """Serializer for updating agent tool config."""
+
+    tool_agent_uuid = serializers.UUIDField(source="tool_agent_id")
+
+    class Meta:
+        model = AgentAsTool
+        fields = [
+            "uuid",
+            "tool_agent_uuid",
+            "config",
+            "created_at",
+            "name",
+            "key",
+            "description",
+            "input_schema",
+        ]
+        read_only_fields = [
+            "uuid",
+            "tool_agent_uuid",
+            "created_at",
+            "name",
+            "key",
+            "description",
+            "input_schema",
+        ]
+
+
+class APISpecParametersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = APISpecParameters
+        fields = ["uuid", "tool_parameter_type", "name", "value"]
+        extra_kwargs = {"value": {"write_only": True}}
+
+
+class APISpecToolSerializer(serializers.ModelSerializer):
+    """Serializer for API spec tools."""
+
+    class Meta:
+        model = APISpecTool
+        fields = [
+            "uuid",
+            "name",
+            "description",
+            "key",
+            "method",
+            "path",
+            "input_schema",
+            "output_schema",
+            "created_at",
+        ]
+        read_only_fields = ["uuid", "created_at"]
+
+
+# API Spec Tool Serializers
+class APISpecSerializer(serializers.ModelSerializer):
+    """Serializer for creating API spec tools."""
+
+    parameters = APISpecParametersSerializer(many=True, required=False)
+    tools = APISpecToolSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = APISpec
+        fields = [
+            "uuid",
+            "name",
+            "api_spec",
+            "base_url",
+            "parameters",
+            "tools",
+            "created_at",
+        ]
+        read_only_fields = ["uuid", "created_at"]
+        extra_kwargs = {"api_spec": {"write_only": True}}
+
+
+# MCP Tool Serializers
+class MCPServerParametersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MCPServerParameters
+        fields = ["uuid", "tool_parameter_type", "name", "value"]
+        read_only_fields = ["uuid"]
+        extra_kwargs = {"value": {"write_only": True}}
+
+
+class MCPToolSerializer(serializers.ModelSerializer):
+    """Serializer for MCP tools."""
+
+    mcp_server_name = serializers.CharField(source="mcp_server.name", read_only=True)
+
+    class Meta:
+        model = MCPTool
+        fields = [
+            "uuid",
+            "name",
+            "description",
+            "key",
+            "mcp_server",
+            "mcp_server_name",
+            "input_schema",
+            "output_schema",
+            "created_at",
+        ]
+        read_only_fields = ["uuid", "mcp_server_name", "created_at"]
+
+
+class MCPServerSerializer(serializers.ModelSerializer):
+    """Serializer for MCP servers with parameters and tools."""
+
+    parameters = MCPServerParametersSerializer(many=True, required=False)
+    tools = MCPToolSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = MCPServer
+        fields = [
+            "uuid",
+            "name",
+            "url",
+            "status",
+            "error_message",
+            "parameters",
+            "tools",
+            "created_at",
+            "updated_at",
+        ]
+        read_only_fields = [
+            "uuid",
+            "status",
+            "error_message",
+            "created_at",
+            "updated_at",
+        ]
+
+
+# Tool Test Serializers
+class ToolTestRequestSerializer(serializers.Serializer):
+    """Serializer for testing a tool with input parameters."""
+
+    input = serializers.JSONField(
+        required=False,
+        default=dict,
+        help_text="Input parameters for the tool (based on tool's input_schema)",
+    )
+
+
+class ToolTestResponseSerializer(serializers.Serializer):
+    """Serializer for tool test response."""
+
+    success = serializers.BooleanField(
+        help_text="Whether the tool execution was successful"
+    )
+    content = serializers.CharField(
+        allow_null=True, help_text="Text content from the response"
+    )
+    artifact = serializers.JSONField(
+        allow_null=True, help_text="Artifact data (files, images, etc.)"
+    )
+    error = serializers.CharField(
+        allow_null=True, required=False, help_text="Error message if execution failed"
+    )
+
+
+# Chat Serializers
+class ChatMessageRequestSerializer(serializers.Serializer):
+    """Serializer for chat message request."""
+
+    query = serializers.CharField(
+        required=True, help_text="User input/question content"
+    )
+    inputs = serializers.JSONField(
+        required=False, default=dict, help_text="Variables for the conversation"
+    )
+    response_mode = serializers.ChoiceField(
+        choices=["streaming", "blocking"],
+        default="streaming",
+        help_text="Mode of response return",
+    )
+    user = serializers.CharField(
+        required=True, help_text="User identifier for retrieval and statistics"
+    )
+    conversation_id = serializers.UUIDField(
+        required=False,
+        allow_null=True,
+        help_text="Conversation ID to continue previous chat",
+    )
+    files = serializers.ListField(
+        child=serializers.UUIDField(),
+        required=False,
+        default=list,
+        help_text="List of Media file UUIDs to attach to the message",
+    )
+
+
+class MessageSerializer(serializers.ModelSerializer):
+    """Serializer for message."""
+
+    class Meta:
+        model = Message
+        fields = [
+            "uuid",
+            "name",
+            "message_type",
+            "content",
+            "tool_calls",
+            "additional_kwargs",
+            "response_metadata",
+            "created_at",
+        ]
+        read_only_fields = ["uuid", "created_at"]
+
+
+class ConversationSerializer(serializers.ModelSerializer):
+    """Serializer for conversation."""
+
+    class Meta:
+        model = Conversation
+        fields = [
+            "uuid",
+            "title",
+            "user_identifier",
+            "agent",
+            "agent_version",
+            "inputs",
+            "created_at",
+            "updated_at",
+        ]
+        read_only_fields = ["uuid", "created_at", "updated_at"]
+
+
+class OauthRedirectResponseSerializer(serializers.Serializer):
+    """Serializer for OAuth redirect response."""
+
+    redirect_url = serializers.CharField(help_text="Redirect URL for OAuth flow")
+
+
+class MessageBlockSerializer(serializers.ModelSerializer):
+    messages = MessageSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = MessageBlock
+        fields = ["uuid", "conversation_id", "role", "messages"]

@@ -1,0 +1,252 @@
+from typing import List, Optional, Dict
+
+from django.core.exceptions import ValidationError
+from django.db.models import Q
+from django.db.transaction import atomic
+from django.utils.translation import gettext as _
+
+from agent import consts
+from agent.models import (
+    Agent,
+    AgentVersion,
+    AgentTool,
+    AgentKnowledgeBase,
+    Tool,
+    APISpec,
+    APISpecTool,
+    MCPServer,
+)
+from agent.parsers.api_spec_parsers import APISpecParser
+from common.encryption import encrypt_key
+from user.models import Team
+
+
+class AgentService:
+    """Service for managing agents."""
+
+    def __init__(self, agent: Agent):
+        self.agent = agent
+
+    @classmethod
+    def make_with_pk(cls, pk: str) -> "AgentService":
+        """Get agent by primary key."""
+        return cls(Agent.objects.get(pk=pk))
+
+    def get_or_create_draft(self) -> AgentVersion:
+        """Get current draft or create one (copy from published if exists)."""
+        draft = self.agent.current_draft_version
+
+        if draft:
+            return draft
+
+        # Check if published version exists
+        published = self.agent.current_published_version
+
+        if published:
+            # Copy from published
+            draft = self.revert_to_version(published)
+        else:
+            # Create new draft
+            draft = AgentVersion.objects.create(
+                agent=self.agent, status=consts.AGENT_VERSION_STATUS_DRAFT
+            )
+
+        return draft
+
+    def revert_to_version(self, version: AgentVersion):
+        """Revert to a specific version."""
+
+        # Archive all versions except draft
+        self.agent.versions.exclude(uuid=version.uuid).filter(
+            status=consts.AGENT_VERSION_STATUS_DRAFT
+        ).update(status=consts.AGENT_VERSION_STATUS_ARCHIVED)
+
+        draft = AgentVersion.objects.create(
+            agent=self.agent,
+            status=consts.AGENT_VERSION_STATUS_DRAFT,
+            system_prompt=version.system_prompt,
+            provider_config=version.provider_config,
+            llm_model_key=version.llm_model_key,
+            llm_configs=version.llm_configs.copy(),
+        )
+
+        # Copy tools
+        for agent_tool in version.agent_tools.all():
+            AgentTool.objects.create(
+                agent_version=draft,
+                tool=agent_tool.tool,
+                config=agent_tool.config.copy(),
+            )
+
+        # Copy knowledge bases
+        for agent_kb in version.agent_knowledge_bases.all():
+            AgentKnowledgeBase.objects.create(
+                agent_version=draft,
+                knowledge_base=agent_kb.knowledge_base,
+                config=agent_kb.config.copy(),
+            )
+
+        # Copy Context Parameters
+        for context_parameter in version.parameters.all():
+            draft.parameters.create(
+                name=context_parameter.name, value=context_parameter.value
+            )
+
+        return draft
+
+
+class AgentVersionService:
+    """Service for managing agent versions."""
+
+    def __init__(self, agent_version: AgentVersion):
+        self.agent_version = agent_version
+
+    @classmethod
+    def make_with_pk(cls, pk: str) -> "AgentVersionService":
+        """Get agent version by primary key."""
+        return cls(AgentVersion.objects.get(pk=pk))
+
+    def publish(self) -> AgentVersion:
+        """Publish draft version (archive current published)."""
+        errors = self.has_error()
+        if errors:
+            raise ValidationError(errors)
+
+        # Archive all versions except draft
+        self.agent_version.agent.versions.exclude(uuid=self.agent_version.uuid).update(
+            status=consts.AGENT_VERSION_STATUS_ARCHIVED
+        )
+
+        # Publish draft
+        self.agent_version.status = consts.AGENT_VERSION_STATUS_PUBLISHED
+        self.agent_version.save(update_fields=["status", "updated_at"])
+
+        return self.agent_version
+
+    def has_error(self) -> Dict[str, Optional[str]]:
+        errors = {}
+        if self.agent_version.status == consts.AGENT_VERSION_STATUS_PUBLISHED:
+            errors["error"] = _("Published version cannot be edited.")
+            return errors
+
+        if self.agent_version.system_prompt is None:
+            errors["system_prompt"] = _("System prompt is required.")
+
+        if self.agent_version.provider_config is None:
+            errors["provider_config"] = _("Provider config is required.")
+
+        if self.agent_version.llm_model_key is None:
+            errors["llm_model"] = _("LLM model is required.")
+
+        return errors
+
+
+class ToolService:
+    """Service for managing tools."""
+
+    def __init__(self, tool: Tool):
+        self.tool = tool
+
+    @classmethod
+    def get_team_tools(cls, team: Team):
+        return Tool.objects.filter(Q(team=team) | Q(team__isnull=True))
+
+    @classmethod
+    def make_with_pk(cls, pk: str) -> "ToolService":
+        """Get tool by primary key."""
+        return cls(Tool.objects.get(pk=pk))
+
+    @classmethod
+    def is_api_spec_in_use(cls, instance: APISpec):
+        return AgentTool.objects.filter(tool__apispectool__api_spec=instance).exists()
+
+    @classmethod
+    def is_mcp_server_in_use(cls, instance: MCPServer):
+        return AgentTool.objects.filter(tool__mcptool__mcp_server=instance).exists()
+
+
+class APISpecService:
+    """Service for managing API specs."""
+
+    def __init__(self, api_spec: APISpec):
+        self.api_spec = api_spec
+
+    @classmethod
+    def make_with_pk(cls, pk: str) -> "APISpecService":
+        """Get API spec by primary key."""
+        return cls(APISpec.objects.get(pk=pk))
+
+    @classmethod
+    @atomic
+    def create(
+        cls, team, name: str, api_spec: dict, base_url: str, parameters: List = None
+    ):
+        """Create API spec and generate tools from OpenAPI spec."""
+        # Create APISpec
+        parser = APISpecParser(api_spec)
+        api_spec_obj = APISpec.objects.create(
+            team=team, name=name, api_spec=api_spec, base_url=base_url
+        )
+
+        # Parse OpenAPI spec and create tools
+        for tool in parser.parse():
+            APISpecTool.objects.create(
+                api_spec=api_spec_obj,
+                name=tool.name,
+                description=tool.description,
+                key=tool.key,
+                tool_type=consts.TOOL_TYPE_API_SPEC,
+                method=tool.method,
+                path=tool.path,
+                content_type=tool.content_type,
+                input_schema=tool.input_schema,
+                output_schema=tool.output_schema,
+                team=team,
+            )
+
+        for parameter in parameters or []:
+            parameter["value"] = encrypt_key(parameter["value"])
+            api_spec_obj.parameters.create(**parameter)
+
+        return cls(api_spec_obj)
+
+
+class MCPServerService:
+    """Service for managing MCP servers."""
+
+    def __init__(self, mcp_server: MCPServer):
+        self.mcp_server = mcp_server
+
+    @classmethod
+    def make_with_pk(cls, pk: str) -> "MCPServerService":
+        """Get MCP server by primary key."""
+        return cls(MCPServer.objects.get(pk=pk))
+
+    @classmethod
+    @atomic
+    def create(
+        cls, team, name: str, url: str, parameters: List[dict] = None
+    ) -> "MCPServerService":
+        """Create MCP server with pending status."""
+        mcp_server = MCPServer.objects.create(
+            team=team, name=name, url=url, status=consts.MCP_SERVER_STATUS_PENDING
+        )
+
+        for parameter in parameters or []:
+            parameter["value"] = encrypt_key(parameter["value"])
+            mcp_server.parameters.create(**parameter)
+
+        return cls(mcp_server)
+
+    def update_status(self, status: str, error_message: str = None):
+        """Update MCP server status."""
+        self.mcp_server.status = status
+        self.mcp_server.error_message = error_message
+        self.mcp_server.save(update_fields=["status", "error_message", "updated_at"])
+
+    def can_oauth_authorize(self):
+        return self.mcp_server.status == consts.MCP_SERVER_STATUS_OAUTH_REQUIRED
+
+    def make_pending(self):
+        self.mcp_server.status = consts.MCP_SERVER_STATUS_PENDING
+        self.mcp_server.save(update_fields=["status"])

@@ -2,14 +2,16 @@ from rest_framework import serializers
 from django.utils.translation import gettext_lazy as _
 
 from core.models import CrawlResult
+from llm import consts as llm_consts
 from knowledge_base.models import (
     KnowledgeBase,
     KnowledgeBaseDocument,
     KnowledgeBaseChunk,
+    RetrievalSetting,
 )
 from llm.models import ProviderConfig
-from llm.serializers import LLMModelSerializer, EmbeddingModelSerializer
-from llm.services import ProviderConfigService, LLMModelService
+from llm.models_config.config import ModelConfigLoader, ModelType
+from llm.services import ProviderConfigService, ModelAvailabilityService
 from plan.validators import PlanLimitValidator
 
 
@@ -20,26 +22,133 @@ class ProviderConfigSerializer(serializers.ModelSerializer):
         read_only_fields = ["uuid", "title"]
 
 
-class KnowledgeBaseDetailSerializer(serializers.ModelSerializer):
-    embedding_model = EmbeddingModelSerializer(read_only=True)
-    embedding_model_id = serializers.UUIDField(
+class RetrievalSettingSerializer(serializers.ModelSerializer):
+    reranker_provider_config = ProviderConfigSerializer(read_only=True)
+    reranker_provider_config_id = serializers.UUIDField(
         write_only=True, required=False, allow_null=True
     )
+
+    class Meta:
+        model = RetrievalSetting
+        fields = [
+            "uuid",
+            "name",
+            "retrieval_type",
+            "is_default",
+            "reranker_enabled",
+            "reranker_model_key",
+            "reranker_provider_config",
+            "reranker_provider_config_id",
+            "top_k",
+            "hybrid_alpha",
+            "created_at",
+            "updated_at",
+        ]
+        read_only_fields = ["uuid", "created_at", "updated_at"]
+
+    def validate_reranker_provider_config_id(self, value):
+        if not value:
+            return None
+        provider_config = (
+            ProviderConfigService.get_team_provider_configs(self.context["team"])
+            .filter(pk=value)
+            .first()
+        )
+        if not provider_config:
+            raise serializers.ValidationError(_("Invalid reranker provider config id."))
+        return provider_config
+
+    def validate(self, attrs):
+        reranker_provider_config = attrs.get("reranker_provider_config_id", None)
+
+        # Validate reranker settings
+        if attrs.get("reranker_enabled"):
+            if not reranker_provider_config:
+                raise serializers.ValidationError(
+                    {
+                        "reranker_provider_config_id": _(
+                            "Reranker provider config is required when reranker is enabled."
+                        )
+                    }
+                )
+            if not attrs.get("reranker_model_key"):
+                raise serializers.ValidationError(
+                    {
+                        "reranker_model_key": _(
+                            "Reranker model key is required when reranker is enabled."
+                        )
+                    }
+                )
+            # If reranker is enabled, hybrid_alpha should not be used
+            if attrs.get("hybrid_alpha") is not None:
+                attrs["hybrid_alpha"] = None
+
+        # Validate retrieval type vs embedding
+        knowledge_base = self.context.get("knowledge_base")
+        if knowledge_base:
+            retrieval_type = attrs.get("retrieval_type")
+            if retrieval_type in [
+                RetrievalSetting.RETRIEVAL_TYPE_VECTOR,
+                RetrievalSetting.RETRIEVAL_TYPE_HYBRID,
+            ]:
+                if not knowledge_base.embedding_provider_config:
+                    raise serializers.ValidationError(
+                        _(
+                            "Vector search and hybrid search require the knowledge base to have embedding configuration."
+                        )
+                    )
+
+        if reranker_provider_config:
+            attrs["reranker_provider_config"] = reranker_provider_config
+            attrs.pop("reranker_provider_config_id", None)
+
+        return attrs
+
+    def create(self, validated_data):
+        knowledge_base = self.context["knowledge_base"]
+        validated_data["knowledge_base"] = knowledge_base
+
+        # If this is set as default, unset other defaults
+        if validated_data.get("is_default"):
+            RetrievalSetting.objects.filter(
+                knowledge_base=knowledge_base, is_default=True
+            ).update(is_default=False)
+
+        instance = super().create(validated_data)
+        return instance
+
+    def update(self, instance, validated_data):
+        # If this is set as default, unset other defaults
+        if validated_data.get("is_default") and not instance.is_default:
+            RetrievalSetting.objects.filter(
+                knowledge_base=instance.knowledge_base, is_default=True
+            ).exclude(pk=instance.pk).update(is_default=False)
+
+        return super().update(instance, validated_data)
+
+
+class KnowledgeBaseDetailSerializer(serializers.ModelSerializer):
+    embedding_model_key = serializers.CharField(required=False, allow_null=True)
     embedding_provider_config = ProviderConfigSerializer(read_only=True)
     embedding_provider_config_id = serializers.UUIDField(
         write_only=True, required=False, allow_null=True
     )
 
-    summarization_model = LLMModelSerializer(read_only=True)
-    summarization_model_id = serializers.UUIDField(
-        write_only=True, required=False, allow_null=True
-    )
+    summarization_model_key = serializers.CharField(required=False, allow_null=True)
     summarization_provider_config = ProviderConfigSerializer(read_only=True)
     summarization_provider_config_id = serializers.UUIDField(
         write_only=True, required=False, allow_null=True
     )
     chunk_size = serializers.IntegerField(
         required=False, allow_null=True, min_value=800
+    )
+    default_retrieval_setting = RetrievalSettingSerializer(
+        read_only=True,
+    )
+    initial_retrieval_setting = RetrievalSettingSerializer(
+        required=False,
+        allow_null=True,
+        write_only=True,
     )
 
     class Meta:
@@ -50,20 +159,20 @@ class KnowledgeBaseDetailSerializer(serializers.ModelSerializer):
             "description",
             "chunk_size",
             "chunk_overlap",
-            "embedding_model",
-            "embedding_model_id",
+            "embedding_model_key",
             "embedding_provider_config",
             "embedding_provider_config_id",
-            "summarization_model",
-            "summarization_model_id",
+            "summarization_model_key",
             "summarization_provider_config",
             "summarization_provider_config_id",
             "summarizer_type",
-            "summarizer_temperature",
+            "summarizer_llm_config",
             "summarizer_context",
             "knowledge_base_each_document_cost",
             "document_count",
             "status",
+            "default_retrieval_setting",
+            "initial_retrieval_setting",
             "created_at",
             "updated_at",
         ]
@@ -74,6 +183,7 @@ class KnowledgeBaseDetailSerializer(serializers.ModelSerializer):
             "status",
             "knowledge_base_each_document_cost",
             "document_count",
+            "default_retrieval_setting",
         ]
 
     def validate_embedding_provider_config_id(self, value):
@@ -111,45 +221,71 @@ class KnowledgeBaseDetailSerializer(serializers.ModelSerializer):
             "summarization_provider_config_id", None
         )  # type: ProviderConfig
 
-        if embedding_provider_config and (
-            "embedding_model_id" not in attrs
-            or not embedding_provider_config.available_embedding_models.filter(
-                pk=attrs["embedding_model_id"]
-            ).exists()
-        ):
-            raise serializers.ValidationError(
-                {"embedding_model_id": _("Invalid embedding model id.")}
-            )
-
-        if summarization_provider_config:
-            if "summarization_model_id" not in attrs:
+        if embedding_provider_config:
+            if "embedding_model_key" not in attrs:
                 raise serializers.ValidationError(
-                    {"summarization_model_id": _("Summarization model id is required.")}
+                    {"embedding_model_key": _("Embedding model key is required.")}
                 )
 
-            llm_model = summarization_provider_config.available_llm_models.filter(
-                pk=attrs["summarization_model_id"]
-            ).first()
-            if not llm_model:
-                raise serializers.ValidationError(
-                    {"summarization_model_id": _("Invalid summarization model id.")}
-                )
-
-            if not LLMModelService(llm_model).validate_temperature(
-                attrs.get("summarizer_temperature")
+            if not ModelAvailabilityService.is_model_available(
+                provider_config=embedding_provider_config,
+                model_type=llm_consts.MODEL_TYPE_EMBEDDING,
+                model_key=attrs["embedding_model_key"],
             ):
                 raise serializers.ValidationError(
-                    {"summarizer_temperature": _("Invalid summarizer temperature.")}
+                    {"embedding_model_key": _("Invalid embedding model Key.")}
                 )
 
-        attrs["embedding_provider_config"] = embedding_provider_config
-        attrs["summarization_provider_config"] = summarization_provider_config
+        if summarization_provider_config:
+            if "summarization_model_key" not in attrs:
+                raise serializers.ValidationError(
+                    {
+                        "summarization_model_key": _(
+                            "Summarization model id is required."
+                        )
+                    }
+                )
 
-        return PlanLimitValidator(
+            try:
+                llm_model_config = ModelConfigLoader(
+                    provider_name=summarization_provider_config.provider_name,
+                    model_type=ModelType.LLM,
+                    model_name=attrs["summarization_model_key"],
+                ).load()
+
+            except FileNotFoundError:
+                raise serializers.ValidationError(
+                    {"summarization_model_key": _("Invalid summarization model Key.")}
+                )
+
+            if errors := llm_model_config.has_config_error(
+                attrs.get("summarizer_llm_config", {})
+            ):
+                raise serializers.ValidationError({"summarizer_llm_config": errors})
+
+        # Add provider configs back to attrs so they can be saved
+        if embedding_provider_config:
+            attrs["embedding_provider_config"] = embedding_provider_config
+        if summarization_provider_config:
+            attrs["summarization_provider_config"] = summarization_provider_config
+
+        if not attrs.get("initial_retrieval_setting") and not self.instance:
+            raise serializers.ValidationError(
+                {
+                    "initial_retrieval_setting": _(
+                        "Initial retrieval setting is required."
+                    )
+                }
+            )
+
+        validated_data = PlanLimitValidator(
             team=self.context["team"],
         ).validate_create_knowledge_base(attrs)
 
+        return validated_data
+
     def update(self, instance, validated_data):
+        validated_data.pop("initial_retrieval_setting", None)
         return super().update(instance, validated_data)
 
 
@@ -194,7 +330,6 @@ class KnowledgeBaseChunkSerializer(serializers.ModelSerializer):
             "index",
             "document",
             "content",
-            "keywords",
             "created_at",
             "updated_at",
         ]
@@ -205,6 +340,11 @@ class QueryKnowledgeBaseSerializer(serializers.Serializer):
     query = serializers.CharField(required=True)
     top_k = serializers.IntegerField(
         required=False, default=10, min_value=1, max_value=50
+    )
+    retrieval_setting_id = serializers.UUIDField(
+        required=False,
+        allow_null=True,
+        help_text="UUID of retrieval setting to use (defaults to knowledge base default)",
     )
 
 
@@ -297,8 +437,8 @@ class FillKnowledgeBaseFromFileSerializer(serializers.Serializer):
 
 class ContextAwareEnhancerSerializer(serializers.Serializer):
     provider_config_id = serializers.UUIDField(write_only=True, required=True)
-    llm_model_id = serializers.UUIDField(write_only=True, required=True)
-    temperature = serializers.FloatField(
+    llm_model_key = serializers.CharField(write_only=True, required=True)
+    llm_model_config = serializers.JSONField(
         write_only=True, required=True, allow_null=True
     )
     content = serializers.CharField(required=True)
@@ -315,24 +455,26 @@ class ContextAwareEnhancerSerializer(serializers.Serializer):
 
     def validate(self, attrs):
         provider_config = attrs["provider_config_id"]  # type: ProviderConfig
-        llm_model = provider_config.available_llm_models.filter(
-            pk=attrs["llm_model_id"]
-        ).first()
-
-        if not LLMModelService(llm_model).validate_temperature(attrs["temperature"]):
+        if not ModelAvailabilityService.is_model_available(
+            provider_config=provider_config,
+            model_type=llm_consts.MODEL_TYPE_LLM,
+            model_key=attrs["llm_model_key"],
+        ):
             raise serializers.ValidationError(
-                {"temperature": _("Invalid temperature.")}
+                {"llm_model_key": _("Invalid llm model Key.")}
             )
 
-        if not llm_model:
-            raise serializers.ValidationError(
-                {"llm_model_id": _("Invalid llm model id.")}
-            )
+        # TODO: Validate model config
+        # if errors := model_config.has_config_error(attrs.get("llm_model_config", {})):
+        #     raise serializers.ValidationError(
+        #         {"llm_model_config": errors}
+        #     )
+
         return {
             "provider_config": provider_config,
-            "llm_model": llm_model,
             "content": attrs["content"],
-            "temperature": attrs["temperature"],
+            "llm_model_key": attrs["llm_model_key"],
+            "llm_model_config": attrs["llm_model_config"],
         }
 
 

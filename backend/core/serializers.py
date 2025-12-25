@@ -364,9 +364,7 @@ class TestProxySerializer(serializers.Serializer):
             if "username" not in attrs:
                 attrs["username"] = proxy.username
             if "password" not in attrs:
-                attrs["password"] = (
-                    decrypt_key(proxy.password) if proxy.has_password else None
-                )
+                attrs["password"] = decrypt_key(proxy.password)
             if "proxy_type" not in attrs:
                 attrs["proxy_type"] = proxy.proxy_type
 

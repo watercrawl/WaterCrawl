@@ -49,7 +49,7 @@ class NoiseRemover:
         if self.noise_removed:
             return self.text
         self.remove_inline_svg()
-        self.remove_base64_images()  # todo: Not working with persian scripts
+        self.remove_base64_images()
         self.remove_html_tags()
         self.absolute_image_links()
         self.noise_removed = True

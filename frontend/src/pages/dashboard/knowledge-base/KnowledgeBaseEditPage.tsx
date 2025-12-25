@@ -8,6 +8,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
+import RetrievalSettingsManager from '../../../components/knowledge/RetrievalSettingsManager';
 import Card from '../../../components/shared/Card';
 import { useBreadcrumbs } from '../../../contexts/BreadcrumbContext';
 import { useSettings } from '../../../contexts/SettingsProvider';
@@ -99,21 +100,25 @@ const KnowledgeBaseEditPage: React.FC = () => {
   }, [knowledgeBaseId, reset, navigate, t]);
 
   const onSubmit = async (data: KnowledgeBaseFormData) => {
+    if (!knowledgeBaseId) return;
+    
     setIsSubmitting(true);
     try {
-      // In actual implementation, we would call an API to update the knowledge base
-      // const response = await knowledgeBaseApi.update(knowledgeBaseId, data);
-      console.log('Updating knowledge base with data:', data);
+      await knowledgeBaseApi.update(knowledgeBaseId, {
+        title: data.title,
+        description: data.description,
+      });
 
-      // Mock the API call
-      setTimeout(() => {
         toast.success(t('settings.knowledgeBase.toast.updateSuccess'));
         // Redirect back to the knowledge base detail page
         navigate(`/dashboard/knowledge-base/${knowledgeBaseId}`);
-      }, 1000);
     } catch (error) {
       console.error('Failed to update knowledge base:', error);
-      toast.error(t('settings.knowledgeBase.toast.updateError'));
+      const errorMessage =
+        error && typeof error === 'object' && 'response' in error
+          ? (error.response as { data?: { detail?: string } })?.data?.detail
+          : undefined;
+      toast.error(errorMessage || t('settings.knowledgeBase.toast.updateError'));
     } finally {
       setIsSubmitting(false);
     }
@@ -386,7 +391,7 @@ const KnowledgeBaseEditPage: React.FC = () => {
                         <input
                           type="text"
                           value={
-                            knowledgeBase.embedding_model?.name ||
+                            knowledgeBase.embedding_model_key ||
                             t('settings.knowledgeBase.readonly.notConfigured')
                           }
                           readOnly
@@ -498,7 +503,7 @@ const KnowledgeBaseEditPage: React.FC = () => {
                         <input
                           type="text"
                           value={
-                            knowledgeBase.summarization_model?.name ||
+                            knowledgeBase.summarization_model_key ||
                             t('settings.knowledgeBase.readonly.notConfigured')
                           }
                           readOnly
@@ -532,7 +537,7 @@ const KnowledgeBaseEditPage: React.FC = () => {
                         </label>
                         <div className="mt-1">
                           <textarea
-                            value={knowledgeBase.summarizer_context}
+                            value={knowledgeBase.summarizer_context || ''}
                             readOnly
                             className="block w-full cursor-not-allowed rounded-md border border-input-border bg-muted text-foreground shadow-sm sm:text-sm"
                           />
@@ -540,6 +545,37 @@ const KnowledgeBaseEditPage: React.FC = () => {
                       </div>
                     )}
                   </div>
+                </Card.Body>
+              </Card>
+
+              {/* Retrieval Settings Section */}
+              <Card>
+                <Card.Title
+                  icon={
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5 text-primary"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
+                      <path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1v-5a1 1 0 00-.293-.707l-2-2A1 1 0 0015 7h-1z" />
+                    </svg>
+                  }
+                >
+                  {t('settings.knowledgeBase.retrievalSettings.title')}
+                </Card.Title>
+                <Card.Body>
+                  {knowledgeBase && (
+                    <RetrievalSettingsManager
+                      knowledgeBase={knowledgeBase}
+                      onUpdate={async () => {
+                        // Refresh knowledge base data
+                        const response = await knowledgeBaseApi.get(knowledgeBaseId as string);
+                        setKnowledgeBase(response);
+                      }}
+                    />
+                  )}
                 </Card.Body>
               </Card>
             </>

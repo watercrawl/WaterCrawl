@@ -3,8 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
+import { Cog6ToothIcon } from '@heroicons/react/24/outline';
 import Editor from '@monaco-editor/react';
 import { AxiosError } from 'axios';
 
@@ -21,19 +23,26 @@ import { KnowledgeBaseQueryResult } from './KnowledgeBaseQueryResult';
 
 interface IFormInput {
   query: string;
-  top_k: number;
-  search_type: 'similarity' | 'similarity_score_threshold' | 'mmr';
 }
 
 interface KnowledgeBaseQueryFormProps {
   knowledgeBaseId: string;
+  knowledgeBase?: {
+    default_retrieval_setting?: { uuid: string; name: string } | null;
+    retrieval_settings?: Array<{ uuid: string; name: string }>;
+  };
 }
 
-const KnowledgeBaseQueryForm: React.FC<KnowledgeBaseQueryFormProps> = ({ knowledgeBaseId }) => {
+const KnowledgeBaseQueryForm: React.FC<KnowledgeBaseQueryFormProps> = ({
+  knowledgeBaseId,
+  knowledgeBase,
+}) => {
   const { t } = useTranslation();
   const { isDark } = useTheme();
   const [query, setQuery] = useState('');
-  const [topK, setTopK] = useState(3);
+  const [selectedRetrievalSettingId, setSelectedRetrievalSettingId] = useState<string | null>(
+    knowledgeBase?.default_retrieval_setting?.uuid || null
+  );
   const [results, setResults] = useState<any | null>(null);
   const [isQuerying, setIsQuerying] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
@@ -47,7 +56,6 @@ const KnowledgeBaseQueryForm: React.FC<KnowledgeBaseQueryFormProps> = ({ knowled
   } = useForm<IFormInput>({
     defaultValues: {
       query: '',
-      top_k: 3,
     },
   });
 
@@ -61,14 +69,13 @@ const KnowledgeBaseQueryForm: React.FC<KnowledgeBaseQueryFormProps> = ({ knowled
 
   const onSubmit: SubmitHandler<IFormInput> = async data => {
     setQuery(data.query);
-    setTopK(data.top_k);
     setResults(null);
     setIsQuerying(true);
     setSelectedTab(1); // Switch to results tab
     try {
       const response = await knowledgeBaseApi.query(knowledgeBaseId, {
         query: data.query,
-        top_k: data.top_k,
+        retrieval_setting_id: selectedRetrievalSettingId || undefined,
       });
       setResults(response);
       toast.success(t('settings.knowledgeBase.query.success'));
@@ -114,6 +121,7 @@ const KnowledgeBaseQueryForm: React.FC<KnowledgeBaseQueryFormProps> = ({ knowled
           </div>
         </div>
       </div>
+
       <div className="mt-8">
         <TabGroup selectedIndex={selectedTab} onChange={setSelectedTab}>
           <TabList className="flex min-w-max gap-x-1 border-b border-border">
@@ -157,27 +165,55 @@ const KnowledgeBaseQueryForm: React.FC<KnowledgeBaseQueryFormProps> = ({ knowled
                 <h3 className="text-lg font-medium text-foreground">
                   {t('settings.knowledgeBase.query.options.title')}
                 </h3>
-                <div>
-                  <label htmlFor="top_k" className="block text-sm font-medium text-foreground">
-                    {t('settings.knowledgeBase.query.options.topK')}
-                  </label>
-                  <input
-                    id="top_k"
-                    type="number"
-                    {...register('top_k', {
-                      valueAsNumber: true,
-                      required: t('settings.knowledgeBase.query.options.topKRequired'),
-                      min: { value: 1, message: t('settings.knowledgeBase.query.options.topKMin') },
-                      max: {
-                        value: 50,
-                        message: t('settings.knowledgeBase.query.options.topKMax'),
-                      },
-                    })}
-                    className="mt-1 block w-full rounded-md border border-input-border bg-input text-foreground shadow-sm placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary sm:w-1/4 sm:text-sm"
-                  />
-                  {errors.top_k && (
-                    <p className="mt-2 text-sm text-error">{errors.top_k.message}</p>
-                  )}
+                <div className="space-y-4">
+                  {/* Retrieval Setting Selector */}
+                  <div>
+                    <label className="block text-sm font-medium text-foreground">
+                      {t('settings.knowledgeBase.query.retrievalSetting')}
+                    </label>
+                    {knowledgeBase?.retrieval_settings && knowledgeBase.retrieval_settings.length > 0 ? (
+                      <select
+                        value={selectedRetrievalSettingId || ''}
+                        onChange={e => setSelectedRetrievalSettingId(e.target.value || null)}
+                        className="mt-1 block w-full rounded-md border border-input-border bg-input px-3 py-2 text-sm text-foreground shadow-sm focus:border-primary focus:ring-1 focus:ring-primary sm:w-1/2"
+                      >
+                        {knowledgeBase.default_retrieval_setting && (
+                          <option value={knowledgeBase.default_retrieval_setting.uuid}>
+                            {knowledgeBase.default_retrieval_setting.name} (
+                            {t('settings.knowledgeBase.query.default')})
+                          </option>
+                        )}
+                        {knowledgeBase.retrieval_settings
+                          .filter(s => s.uuid !== knowledgeBase.default_retrieval_setting?.uuid)
+                          .map(setting => (
+                            <option key={setting.uuid} value={setting.uuid}>
+                              {setting.name}
+                            </option>
+                          ))}
+                      </select>
+                    ) : (
+                      <p className="mt-1 text-sm text-muted-foreground">
+                        {t('settings.knowledgeBase.query.noRetrievalSettings')}
+                      </p>
+                    )}
+                    <p className="mt-1.5 text-sm text-muted-foreground">
+                      {t('settings.knowledgeBase.query.retrievalSettingHelpText')}
+                    </p>
+                  </div>
+
+                  {/* Link to Edit Page for Managing Retrieval Settings */}
+                  <div className="flex items-center gap-2 rounded-lg border border-border bg-muted/30 p-3">
+                    <Cog6ToothIcon className="h-5 w-5 text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground">
+                      {t('settings.knowledgeBase.query.manageRetrievalSettingsHint')}
+                    </span>
+                    <Link
+                      to={`/dashboard/knowledge-base/${knowledgeBaseId}/edit`}
+                      className="ml-auto inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-primary-hover"
+                    >
+                      {t('settings.knowledgeBase.query.manageRetrievalSettings')}
+                    </Link>
+                  </div>
                 </div>
               </Card>
             </TabPanel>
@@ -276,7 +312,7 @@ const KnowledgeBaseQueryForm: React.FC<KnowledgeBaseQueryFormProps> = ({ knowled
               <KnowledgeBaseApiDocumentation
                 knowledgeBaseId={knowledgeBaseId}
                 query={query}
-                top_k={topK}
+                retrieval_setting_id={selectedRetrievalSettingId || undefined}
               />
             </TabPanel>
           </TabPanels>

@@ -18,6 +18,7 @@ from user.views import (
     RequestEmailVerificationView,
     InstallView,
     VerifyInvitation,
+    MediaViewSet,
 )
 
 router = DefaultRouter()
@@ -27,6 +28,7 @@ router.register(
     r"teams/current/members", CurrentTeamMembersView, basename="current-team-members"
 )
 router.register(r"profile/invitations", MyInvitationsView, basename="invitations")
+router.register(r"media", MediaViewSet, basename="media")
 urlpatterns = [
     path("install/", InstallView.as_view(), name="install"),
     path("auth/register/", RegisterView.as_view(), name="register"),

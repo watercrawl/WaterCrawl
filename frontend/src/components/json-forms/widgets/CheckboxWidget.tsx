@@ -18,14 +18,14 @@ export const CheckboxWidget: React.FC<FieldProps> = ({
         type="checkbox"
         checked={value || false}
         onChange={e => onChange(e.target.checked)}
-        className={`h-4 w-4 rounded border-input-border text-primary focus:ring-primary ${hasError ? 'border-error' : ''} ${ui.inputClassName || ''} `}
+        className={`h-3.5 w-3.5 rounded border-input-border text-primary focus:ring-primary focus:ring-1 disabled:cursor-not-allowed disabled:opacity-50 ${hasError ? 'border-error' : ''} ${ui.inputClassName || ''}`}
         required={required}
-        disabled={schema.readOnly}
+        disabled={schema.disabled || schema.readOnly}
       />
       {schema.title && (
-        <label className={`ms-2 block text-sm text-foreground ${ui.labelClassName || ''}`}>
+        <label className={`ms-1.5 text-sm text-foreground ${ui.labelClassName || ''}`}>
           {schema.title}
-          {required && <span className="ms-1 text-error">*</span>}
+          {required && <span className="ms-0.5 text-error">*</span>}
         </label>
       )}
     </div>

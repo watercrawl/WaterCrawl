@@ -1,0 +1,7 @@
+model: rerank-v3.5
+label: "{% trans 'rerank-v3.5' %}"
+model_type: rerank
+model_properties:
+  context_size: 5120
+
+

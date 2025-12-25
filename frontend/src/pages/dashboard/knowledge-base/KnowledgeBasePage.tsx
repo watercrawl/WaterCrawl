@@ -207,9 +207,9 @@ const KnowledgeBasePage: React.FC = () => {
                   </td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-muted-foreground">
                     {t('settings.knowledgeBase.table.embedding')}:{' '}
-                    <strong>{kb.embedding_model?.name || 'N/A'}</strong> <br />
+                    <strong>{kb.embedding_model_key || 'N/A'}</strong> <br />
                     {t('settings.knowledgeBase.table.summarization')}:{' '}
-                    <strong>{kb.summarization_model?.name || 'N/A'}</strong>
+                    <strong>{kb.summarization_model_key || 'N/A'}</strong>
                   </td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-muted-foreground">
                     {kb.document_count}

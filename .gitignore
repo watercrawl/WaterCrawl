@@ -29,7 +29,7 @@ Thumbs.db
 !docker/playwright.env
 .scrapy/*
 .celery/*
-celerybeat-schedule.db
+celerybeat-schedule*
 VERSION
 
 # Docker volumes

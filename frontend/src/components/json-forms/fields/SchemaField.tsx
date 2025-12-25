@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { FieldProps, UIWidgetType } from '../types/schema';
+import { resolveSchema } from '../utils/schemaResolver';
 import { CheckboxWidget } from '../widgets/CheckboxWidget';
 import { JsonEditorWidget } from '../widgets/JsonEditorWidget';
 import { NumberWidget } from '../widgets/NumberWidget';
@@ -15,10 +16,28 @@ import { InfoTooltip } from '../../shared/FormComponents';
 import { ArrayField } from './ArrayField';
 import { ObjectField } from './ObjectField';
 
+// Convert field name to readable label (snake_case/camelCase to Title Case)
+const formatFieldName = (name: string): string => {
+  return name
+    .replace(/([a-z])([A-Z])/g, '$1 $2') // camelCase to spaces
+    .replace(/[_-]/g, ' ') // snake_case/kebab-case to spaces
+    .replace(/\b\w/g, char => char.toUpperCase()); // Capitalize first letter of each word
+};
+
 export const SchemaField: React.FC<FieldProps> = props => {
-  const { schema, errors = [] } = props;
+  const { schema: originalSchema, path, errors = [], rootSchema } = props;
   const hasError = errors.length > 0;
+  
+  // Resolve $ref references - use rootSchema if provided for $defs access
+  const schema = useMemo(() => {
+    return resolveSchema(originalSchema as any, rootSchema);
+  }, [originalSchema, rootSchema]);
+  
   const ui = schema.ui || {};
+
+  // Get display label: use title if available, otherwise format the field name from path
+  const fieldName = path.length > 0 ? path[path.length - 1] : '';
+  const displayLabel = schema.title || (fieldName ? formatFieldName(fieldName) : '');
 
   const renderWidget = () => {
     // First check for custom widget
@@ -88,27 +107,27 @@ export const SchemaField: React.FC<FieldProps> = props => {
 
   if (schema.type === 'boolean' && ui.widget !== 'radio') {
     return (
-      <div className={`mb-4 ${ui.className || ''}`}>
+      <div className={ui.className || ''}>
         {renderWidget()}
         {hasError && (
-          <div className="mt-1 text-sm text-error">
+          <p className="mt-1 text-xs text-error">
             {errors.map((error, index) => (
-              <div key={index}>{error.message}</div>
+              <span key={index}>{error.message}</span>
             ))}
-          </div>
+          </p>
         )}
       </div>
     );
   }
 
   return (
-    <div className={`mb-4 ${ui.className || ''}`}>
-      {(schema.title || schema.description) && (
-        <div className="mb-1 flex items-center gap-x-1">
-          {schema.title && (
-            <label className="block text-sm font-medium text-foreground">
-              {schema.title}
-              {props.required && <span className="ms-1 text-error">*</span>}
+    <div className={ui.className || ''}>
+      {(displayLabel || schema.description) && (
+        <div className="mb-1 flex items-center gap-1">
+          {displayLabel && (
+            <label className="text-sm font-medium text-foreground">
+              {displayLabel}
+              {props.required && <span className="ms-0.5 text-error">*</span>}
             </label>
           )}
           {schema.description && <InfoTooltip content={schema.description} />}
@@ -116,11 +135,11 @@ export const SchemaField: React.FC<FieldProps> = props => {
       )}
       {renderWidget()}
       {hasError && (
-        <div className="mt-1 text-sm text-error">
+        <p className="mt-1 text-xs text-error">
           {errors.map((error, index) => (
-            <div key={index}>{error.message}</div>
+            <span key={index}>{error.message}</span>
           ))}
-        </div>
+        </p>
       )}
     </div>
   );

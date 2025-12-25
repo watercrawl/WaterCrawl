@@ -17,8 +17,8 @@ interface EnhanceContextModalProps {
   onEnhance: (enhancedText: string) => void;
   initialContext: string;
   providerConfigId: string;
-  modelId: string;
-  temperature: number | null;
+  modelKey: string;
+  llmConfig?: Record<string, unknown>;
 }
 
 export const EnhanceContextModal: React.FC<EnhanceContextModalProps> = ({
@@ -27,8 +27,8 @@ export const EnhanceContextModal: React.FC<EnhanceContextModalProps> = ({
   onEnhance,
   initialContext,
   providerConfigId,
-  modelId,
-  temperature,
+  modelKey,
+  llmConfig,
 }) => {
   const { t } = useTranslation();
   const [context, setContext] = useState(initialContext);
@@ -43,7 +43,7 @@ export const EnhanceContextModal: React.FC<EnhanceContextModalProps> = ({
   }, [initialContext, isOpen]);
 
   const handleEnhance = async () => {
-    if (!providerConfigId || !modelId) {
+    if (!providerConfigId || !modelKey) {
       toast.error(t('knowledgeBase.enhance.selectProviderFirst'));
       return;
     }
@@ -54,9 +54,9 @@ export const EnhanceContextModal: React.FC<EnhanceContextModalProps> = ({
     try {
       const data: KnowledgeBaseContextAwareEnhanceData = {
         provider_config_id: providerConfigId,
-        llm_model_id: modelId,
+        llm_model_key: modelKey,
         content: context,
-        temperature: temperature,
+        llm_model_config: llmConfig,
       };
       const response = await knowledgeBaseApi.enhanceContextAware(data);
       toast.dismiss();

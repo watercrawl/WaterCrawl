@@ -2,11 +2,13 @@
 This module contains implementations of summarizers for generating document summaries.
 """
 
+from typing import Optional
+
 from langchain_core.prompts import PromptTemplate
 
-from knowledge_base.interfaces import BaseSummarizer
+from knowledge_base.tools.interfaces import BaseSummarizer
 from llm.factories import ChatModelFactory
-from llm.models import LLMModel, ProviderConfig
+from llm.models import ProviderConfig
 
 
 class LLMSummarizer(BaseSummarizer):
@@ -16,9 +18,9 @@ class LLMSummarizer(BaseSummarizer):
         """Generate a summary from documents."""
 
         llm = ChatModelFactory.create_chat_model_from_provider_config(
-            llm_model=self.language_model,
             provider_config=self.provider_config,
-            temperature=self.knowledge_base.summarizer_temperature,
+            llm_model_key=self.llm_model_key,
+            llm_config=self.knowledge_base.summarizer_llm_config,
         )
 
         prompt = PromptTemplate.from_template(
@@ -38,9 +40,9 @@ class ContextAwareSummarizer(BaseSummarizer):
 
         # Create LLM instance with provider_config
         llm = ChatModelFactory.create_chat_model_from_provider_config(
-            llm_model=self.language_model,
             provider_config=self.provider_config,
-            temperature=self.knowledge_base.summarizer_temperature,
+            llm_model_key=self.llm_model_key,
+            llm_config=self.knowledge_base.summarizer_llm_config,
         )
 
         # Create a context-enhanced summarization prompt
@@ -62,19 +64,19 @@ class ContextAwareSummarizer(BaseSummarizer):
 class ContextAwareEnhancerService:
     def __init__(
         self,
-        llm_model: LLMModel,
         provider_config: ProviderConfig,
-        temperature: float = None,
+        llm_model_key: str,
+        llm_config: Optional[dict] = None,
     ):
-        self.llm_model: LLMModel = llm_model
+        self.llm_model_key: str = llm_model_key
         self.provider_config: ProviderConfig = provider_config
-        self.temperature: float = temperature
+        self.llm_config: dict = llm_config or {}
 
     def enhance_context(self, context: str) -> str:
         llm = ChatModelFactory.create_chat_model_from_provider_config(
-            llm_model=self.llm_model,
             provider_config=self.provider_config,
-            temperature=self.temperature,
+            llm_model_key=self.llm_model_key,
+            llm_config=self.llm_config,
         )
         enhancer_prompt = PromptTemplate(
             input_variables=["user_goal"],

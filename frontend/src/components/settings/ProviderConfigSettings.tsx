@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 import { PlusIcon } from '@heroicons/react/24/outline';
 
@@ -19,6 +20,7 @@ import ProviderConfigList from './ProviderConfigList';
 const ProviderConfigSettings: React.FC = () => {
   const { t } = useTranslation();
   const { confirm } = useConfirm();
+  const navigate = useNavigate();
   const [response, setResponse] = useState<PaginatedResponse<ProviderConfig>>({
     count: 0,
     next: null,
@@ -182,6 +184,9 @@ const ProviderConfigSettings: React.FC = () => {
         onPageChange={setCurrentPage}
         onEdit={providerConfig => handleEditProviderConfig(providerConfig as ProviderConfig)}
         onDelete={handleDeleteProviderConfig}
+        onView={providerConfig =>
+          navigate(`/dashboard/settings/provider-config/${providerConfig.uuid}`)
+        }
       />
 
       {isModalOpen && (

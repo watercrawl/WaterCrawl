@@ -7,7 +7,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import KnowledgeBaseQueryForm from '../../../components/knowledge/KnowledgeBaseQueryForm';
 import { useBreadcrumbs } from '../../../contexts/BreadcrumbContext';
 import { knowledgeBaseApi } from '../../../services/api/knowledgeBase';
-import { KnowledgeBaseDetail } from '../../../types/knowledge';
+import { KnowledgeBaseDetail, RetrievalSetting } from '../../../types/knowledge';
 
 const KnowledgeBaseQueryPage: React.FC = () => {
   const { t } = useTranslation();
@@ -15,11 +15,15 @@ const KnowledgeBaseQueryPage: React.FC = () => {
   const navigate = useNavigate();
   const { setItems } = useBreadcrumbs();
   const [knowledgeBase, setKnowledgeBase] = useState<KnowledgeBaseDetail | null>(null);
+  const [retrievalSettings, setRetrievalSettings] = useState<RetrievalSetting[]>([]);
 
   useEffect(() => {
     if (!knowledgeBaseId) {
       navigate('/dashboard/knowledge-base');
+      return;
     }
+    
+    // Fetch knowledge base
     knowledgeBaseApi
       .get(knowledgeBaseId as string)
       .then(response => {
@@ -28,6 +32,17 @@ const KnowledgeBaseQueryPage: React.FC = () => {
       .catch(() => {
         toast.error(t('settings.knowledgeBase.toast.loadError'));
         navigate('/dashboard/knowledge-base');
+      });
+    
+    // Fetch retrieval settings separately
+    knowledgeBaseApi
+      .listRetrievalSettings(knowledgeBaseId as string)
+      .then(response => {
+        setRetrievalSettings(Array.isArray(response) ? response : []);
+      })
+      .catch(() => {
+        // Silently fail - retrieval settings are optional
+        setRetrievalSettings([]);
       });
   }, [knowledgeBaseId, navigate, t]);
 
@@ -57,7 +72,23 @@ const KnowledgeBaseQueryPage: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 gap-6">
-        <KnowledgeBaseQueryForm knowledgeBaseId={knowledgeBaseId!} />
+        {knowledgeBase && (
+          <KnowledgeBaseQueryForm
+            knowledgeBaseId={knowledgeBaseId!}
+            knowledgeBase={{
+              default_retrieval_setting: knowledgeBase.default_retrieval_setting
+                ? {
+                    uuid: knowledgeBase.default_retrieval_setting.uuid,
+                    name: knowledgeBase.default_retrieval_setting.name,
+                  }
+                : null,
+              retrieval_settings: retrievalSettings.map(s => ({
+                uuid: s.uuid,
+                name: s.name,
+              })),
+            }}
+          />
+        )}
       </div>
     </div>
   );

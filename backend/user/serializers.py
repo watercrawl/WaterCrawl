@@ -7,7 +7,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import PermissionDenied
 
 from plan.validators import PlanLimitValidator
-from user.models import User, Team, TeamAPIKey, TeamMember, TeamInvitation
+from user.models import User, Team, TeamAPIKey, TeamMember, TeamInvitation, Media
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -165,3 +165,52 @@ class InstallSerializer(serializers.Serializer):
     password = serializers.CharField(required=True, validators=[validate_password])
     newsletter_confirmed = serializers.BooleanField(required=False, default=False)
     analytics_confirmed = serializers.BooleanField(required=False, default=False)
+
+
+class MediaSerializer(serializers.ModelSerializer):
+    """Serializer for Media model."""
+
+    related_object_type_name = serializers.CharField(
+        source="related_object_type.model",
+        read_only=True,
+    )
+
+    class Meta:
+        model = Media
+        fields = [
+            "uuid",
+            "team",
+            "content_type",
+            "file_name",
+            "size",
+            "related_object_type_name",
+            "related_object_id",
+            "metadata",
+            "created_at",
+            "updated_at",
+            "download_url",
+        ]
+        read_only_fields = [
+            "uuid",
+            "team",
+            "content_type",
+            "file_name",
+            "size",
+            "related_object_type",
+            "related_object_id",
+            "metadata",
+            "created_at",
+            "updated_at",
+            "download_url",
+        ]
+
+
+class MediaUploadSerializer(serializers.Serializer):
+    """Serializer for media file upload."""
+
+    file = serializers.FileField(help_text="The file to upload")
+    metadata = serializers.JSONField(
+        required=False,
+        default=dict,
+        help_text="Optional metadata dictionary (e.g., conversation_id, agent_version_id)",
+    )

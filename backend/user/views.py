@@ -25,7 +25,8 @@ from user.services import (
     TeamInvitationService,
     VerificationService,
 )
-from .models import TeamMember, TeamInvitation, Team, TeamAPIKey
+from .models import TeamMember, TeamInvitation, Team, TeamAPIKey, Media
+from .services import MediaService
 from .permissions import IsAuthenticatedTeam, CanSignup, CanLogin
 from .tasks import (
     send_forget_password_email,
@@ -646,6 +647,64 @@ class CurrentTeamMembersView(
         if instance.is_owner:
             raise PermissionDenied(_("You can not delete the owner of the team"))
         instance.delete()
+
+
+@extend_schema_view(
+    list=extend_schema(
+        summary=_("List media files"),
+        description=_("List all media files for the current team"),
+        tags=["Media"],
+    ),
+    destroy=extend_schema(
+        summary=_("Delete media file"),
+        description=_("Delete a media file"),
+        tags=["Media"],
+    ),
+    upload=extend_schema(
+        summary=_("Upload media file"),
+        description=_("Upload a media file for use in agent conversations"),
+        tags=["Media"],
+        request=serializers.MediaUploadSerializer,
+        responses={201: serializers.MediaSerializer},
+    ),
+)
+@setup_current_team
+class MediaViewSet(
+    mixins.ListModelMixin,
+    mixins.DestroyModelMixin,
+    GenericViewSet,
+):
+    permission_classes = [IsAuthenticated, IsAuthenticatedTeam]
+    serializer_class = serializers.MediaSerializer
+    queryset = Media.objects.none()
+
+    def get_queryset(self):
+        return self.request.current_team.media_files.all().order_by("-created_at")
+
+    @action(detail=False, methods=["POST"], url_path="upload")
+    def upload(self, request):
+        """Upload a media file."""
+        upload_serializer = serializers.MediaUploadSerializer(data=request.data)
+        upload_serializer.is_valid(raise_exception=True)
+
+        uploaded_file = upload_serializer.validated_data["file"]
+        metadata = upload_serializer.validated_data.get("metadata", {})
+
+        # Read file content
+        file_content = uploaded_file.read()
+
+        # Create media using service
+        media_service = MediaService.save_file(
+            team=request.current_team,
+            file_name=uploaded_file.name,
+            file_content=file_content,
+            content_type=uploaded_file.content_type,
+            metadata=metadata,
+        )
+
+        # Return the created media
+        response_serializer = serializers.MediaSerializer(media_service.media)
+        return Response(response_serializer.data, status=status.HTTP_201_CREATED)
 
 
 @extend_schema_view(

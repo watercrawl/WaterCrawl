@@ -213,3 +213,48 @@ services:
     image: redis:latest
     restart: always
 
+  # Vector Database Options (use with --profile)
+  opensearch:
+    image: opensearchproject/opensearch:3.1.0
+    restart: always
+    profiles:
+      - opensearch
+    environment:
+      - cluster.name=opensearch-cluster
+      - node.name=opensearch-node
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=${OPENSEARCH_PASSWORD:-someStrongPAssw0rd}
+      - plugins.security.disabled=false
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./volumes/opensearch-data:/usr/share/opensearch/data
+
+  opensearch-dashboards:
+    image: opensearchproject/opensearch-dashboards:3.1.0
+    restart: always
+    profiles:
+      - opensearch
+    environment:
+      - OPENSEARCH_HOSTS=["https://opensearch:9200"]
+    depends_on:
+      - opensearch
+
+  weaviate:
+    image: semitechnologies/weaviate:latest
+    restart: always
+    profiles:
+      - weaviate
+    environment:
+      - CLUSTER_HOSTNAME=weaviate
+      - PERSISTENCE_DATA_PATH=/var/lib/weaviate
+      - AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED=${AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED:-true}
+      - AUTHENTICATION_APIKEY_ENABLED=${AUTHENTICATION_APIKEY_ENABLED:-false}
+      - AUTHENTICATION_APIKEY_ALLOWED_KEYS=${AUTHENTICATION_APIKEY_ALLOWED_KEYS:-}
+      - AUTHENTICATION_APIKEY_USERS=${AUTHENTICATION_APIKEY_USERS:-}
+    volumes:
+      - ./volumes/weaviate-data:/var/lib/weaviate
+

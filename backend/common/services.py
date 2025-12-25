@@ -99,10 +99,6 @@ class FrontendSettingService:
     def mcp_server(self):
         return settings.MCP_SERVER
 
-    @cached_property
-    def is_knowledge_base_enabled(self):
-        return settings.KNOWLEDGE_BASE_ENABLED
-
 
 class EmailService:
     def __init__(self):

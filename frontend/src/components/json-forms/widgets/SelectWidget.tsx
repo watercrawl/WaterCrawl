@@ -49,7 +49,7 @@ export const SelectWidget: React.FC<FieldProps> = ({
         onChange(selectedOption ? selectedOption.value : e.target.value);
       }}
       onBlur={onBlur}
-      className={`block w-full rounded-md border-0 py-1.5 text-foreground shadow-sm ring-1 ring-inset ring-border focus:ring-2 focus:ring-inset focus:ring-primary ${hasError ? 'ring-red-500' : ''} ${ui.inputClassName || ''} `}
+      className={`block w-full rounded-md border bg-input py-1.5 text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary disabled:cursor-not-allowed disabled:opacity-50 ${hasError ? 'border-error' : 'border-input-border'} ${ui.inputClassName || ''}`}
       required={required}
       disabled={schema.disabled}
     >

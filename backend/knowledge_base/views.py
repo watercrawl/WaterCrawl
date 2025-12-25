@@ -20,8 +20,9 @@ from knowledge_base.models import (
     KnowledgeBase,
     KnowledgeBaseDocument,
     KnowledgeBaseChunk,
+    RetrievalSetting,
 )
-from knowledge_base.tools.processor import KnowledgeBaseProcessor
+from knowledge_base.vector_stores.retriever import Retriever
 from knowledge_base.services import KnowledgeBaseDocumentService, KnowledgeBaseService
 from knowledge_base.tasks import (
     process_document,
@@ -129,7 +130,21 @@ class KnowledgeBaseViewSet(
 
     def perform_create(self, serializer):
         """Create a new knowledge base."""
-        serializer.save(team=self.request.current_team)
+        # Extract initial retrieval setting data before saving
+        initial_retrieval_setting_data = serializer.validated_data.pop(
+            "initial_retrieval_setting"
+        )
+
+        knowledge_base = serializer.save(team=self.request.current_team)
+
+        initial_retrieval_setting_data.pop("is_default", None)
+
+        RetrievalSetting.objects.create(
+            knowledge_base=knowledge_base,
+            is_default=True,
+            **initial_retrieval_setting_data,
+        )
+
         after_create_knowledge_base.delay(serializer.instance.uuid)
 
     def perform_destroy(self, instance):
@@ -152,9 +167,9 @@ class KnowledgeBaseViewSet(
         )
         serializer.is_valid(raise_exception=True)
         service = ContextAwareEnhancerService(
-            llm_model=serializer.validated_data["llm_model"],
+            llm_model_key=serializer.validated_data["llm_model_key"],
             provider_config=serializer.validated_data["provider_config"],
-            temperature=serializer.validated_data["temperature"],
+            llm_config=serializer.validated_data["llm_model_config"],
         )
         result = service.enhance_context(serializer.validated_data["content"])
         return Response(serializers.EnhancedContentSerializer({"content": result}).data)
@@ -172,14 +187,22 @@ class KnowledgeBaseViewSet(
         serializer = serializers.QueryKnowledgeBaseSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        # Create vector store using factory pattern
-        processor = KnowledgeBaseProcessor(knowledge_base)
-        results = processor.search(
-            serializer.validated_data["query"],
-            top_k=serializer.validated_data["top_k"],
-            # search_type=serializer.validated_data["search_type"],
+        # Get retrieval setting (from request or use default)
+        retrieval_setting = None
+        retrieval_setting_id = serializer.validated_data.get("retrieval_setting_id")
+        if retrieval_setting_id:
+            from knowledge_base.models import RetrievalSetting
+
+            retrieval_setting = RetrievalSetting.objects.filter(
+                knowledge_base=knowledge_base, uuid=retrieval_setting_id
+            ).first()
+
+        # Create retriever and search
+        retriever = Retriever(knowledge_base, retrieval_setting)
+        results = retriever.retrieve(
+            query=serializer.validated_data["query"],
         )
-        return Response(results)
+        return Response([result.model_dump() for result in results])
 
 
 @extend_schema_view(
@@ -471,15 +494,84 @@ class KnowledgeBaseDocumentViewSet(
 )
 @setup_current_team
 class KnowledgeBaseChunkViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+    """ViewSet for knowledge base chunks."""
+
     serializer_class = serializers.KnowledgeBaseChunkSerializer
-    queryset = KnowledgeBaseChunk.objects.none()
+    filterset_fields = ["document"]
 
     def get_queryset(self):
-        return self.get_document().chunks.order_by("index")
-
-    def get_document(self):
-        knowledge_base = self.request.current_team.knowledge_bases.get(
-            pk=self.kwargs.get("knowledge_base_uuid")
+        knowledge_base_uuid = self.kwargs.get("knowledge_base_uuid")
+        document_uuid = self.kwargs.get("document_uuid")
+        return KnowledgeBaseChunk.objects.filter(
+            document_id=document_uuid,
+            document__knowledge_base_id=knowledge_base_uuid,
         )
-        document = knowledge_base.documents.get(pk=self.kwargs.get("document_uuid"))
-        return document
+
+
+@extend_schema_view(
+    list=extend_schema(
+        summary=_("List retrieval settings"),
+        description=_("List all retrieval settings for a knowledge base."),
+        tags=["Knowledge Bases"],
+    ),
+    retrieve=extend_schema(
+        summary=_("Get retrieval setting"),
+        description=_("Get details for a specific retrieval setting."),
+        tags=["Knowledge Bases"],
+    ),
+    create=extend_schema(
+        summary=_("Create retrieval setting"),
+        description=_("Create a new retrieval setting for a knowledge base."),
+        tags=["Knowledge Bases"],
+    ),
+    update=extend_schema(
+        summary=_("Update retrieval setting"),
+        description=_("Update an existing retrieval setting."),
+        tags=["Knowledge Bases"],
+    ),
+    partial_update=extend_schema(
+        summary=_("Partially update retrieval setting"),
+        description=_("Partially update an existing retrieval setting."),
+        tags=["Knowledge Bases"],
+    ),
+    destroy=extend_schema(
+        summary=_("Delete retrieval setting"),
+        description=_("Delete an existing retrieval setting."),
+        tags=["Knowledge Bases"],
+    ),
+)
+@setup_current_team
+class RetrievalSettingViewSet(
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.CreateModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+    viewsets.GenericViewSet,
+):
+    """ViewSet for retrieval settings."""
+
+    serializer_class = serializers.RetrievalSettingSerializer
+    pagination_class = None  # Disable pagination for retrieval settings
+
+    def get_queryset(self):
+        knowledge_base_uuid = self.kwargs.get("knowledge_base_pk")
+        return RetrievalSetting.objects.filter(
+            knowledge_base__uuid=knowledge_base_uuid,
+            knowledge_base__team=self.request.current_team,
+        )
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["team"] = self.request.current_team
+        context["knowledge_base"] = KnowledgeBase.objects.get(
+            team=self.request.current_team, uuid=self.kwargs["knowledge_base_pk"]
+        )
+        return context
+
+    def perform_create(self, serializer):
+        knowledge_base_uuid = self.kwargs.get("knowledge_base_pk")
+        knowledge_base = KnowledgeBase.objects.get(
+            uuid=knowledge_base_uuid, team=self.request.current_team
+        )
+        serializer.save(knowledge_base=knowledge_base)
