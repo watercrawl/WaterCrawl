@@ -41,7 +41,7 @@ ADD . /var/www
 
 
 RUN chmod +x /var/www/entrypoint.sh && mkdir /var/www/.celery/ && echo ${APP_VERSION} > /var/www/VERSION && \
-    poetry run django-admin compilemessages
+    poetry run django-admin compilemessages --ignore=.venv
 
 ENV PATH="/var/www/.venv/bin:${PATH}"
 

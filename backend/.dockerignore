@@ -7,3 +7,5 @@ Dockerfile
 .scrapy
 .celery
 *.env
+.venv/
+*.mo
