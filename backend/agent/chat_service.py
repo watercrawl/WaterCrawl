@@ -437,6 +437,22 @@ class ConversationService:
             logger.error(f"Error reading file {media_file.file_name}: {str(e)}")
             return None
 
+    def create_agent_executor(self):
+        # Create context for media library integration
+        context = {
+            "team": self.conversation.team,
+            "agent": self.conversation.agent,
+            "agent_version": self.conversation.agent_version,
+            "conversation": self.conversation,
+        }
+
+        # Create the agent executor with streaming enabled
+        return AgentFactory.create_agent(
+            agent_version=self.conversation.agent_version,
+            context_variables=self.conversation.inputs,
+            context=context,
+        )
+
     def chat(
         self, query: str, files: Optional[List[Media]] = None
     ) -> Generator[dict, None, None]:
@@ -450,21 +466,8 @@ class ConversationService:
         Yields dictionary events that will be formatted by EventStreamResponse.
         """
         messages, message_ids = self.build_current_state(query, files=files)
+        agent_executor = self.create_agent_executor()
 
-        # Create context for media library integration
-        context = {
-            "team": self.conversation.team,
-            "agent": self.conversation.agent,
-            "agent_version": self.conversation.agent_version,
-            "conversation": self.conversation,
-        }
-
-        # Create the agent executor with streaming enabled
-        agent_executor = AgentFactory.create_agent(
-            agent_version=self.conversation.agent_version,
-            context_variables=self.conversation.inputs,
-            context=context,
-        )
         stream = FrontendEventStream(agent_executor)
 
         yield stream.make_event(
@@ -511,11 +514,8 @@ class ConversationService:
         """
         # Add user message
         messages, message_ids = self.build_current_state(query, files=files)
-        # Create agent executor with streaming enabled
-        agent_executor = AgentFactory.create_agent(
-            agent_version=self.conversation.agent_version,
-            context_variables=self.conversation.inputs,
-        )
+
+        agent_executor = self.create_agent_executor()
 
         try:
             # Execute agent (blocking)
