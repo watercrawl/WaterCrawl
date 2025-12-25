@@ -120,6 +120,16 @@ x-app: &app
     - SENTRY_ENVIRONMENT=${SENTRY_ENVIRONMENT:-development}
     - SENTRY_DEBUG=${SENTRY_DEBUG:-False}
 
+    # Knowledge Base it can be postgres, opensearch, or weaviate
+    - KNOWLEDGE_BASE_VECTOR_STORE_TYPE=${KNOWLEDGE_BASE_VECTOR_STORE_TYPE:-postgres}
+    # Vector Database Options (use with --profile)
+    - OPENSEARCH_BASE_URL=${OPENSEARCH_BASE_URL:-https://admin:someStrongPAssw0rd@opensearch:9200}
+    # Weaviate Options (use with --profile weaviate)
+    - WEAVIATE_BASE_URL=${WEAVIATE_BASE_URL:-http://weaviate:8080}
+    - WEAVIATE_GRPC_PORT=${WEAVIATE_GRPC_PORT:-50051}
+    - WEAVIATE_API_KEY=${WEAVIATE_API_KEY:-}
+
+
 x-frontend: &frontend
   image: watercrawl/frontend:${VERSION:-v0.12.1}
   environment:

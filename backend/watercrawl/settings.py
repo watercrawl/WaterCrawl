@@ -444,7 +444,7 @@ API_BASE_URL = env("API_BASE_URL", cast=str, default="http://localhost:8000")
 
 # Knowledge Base settings
 KNOWLEDGE_BASE_VECTOR_STORE_TYPE = env(
-    "KNOWLEDGE_BASE_VECTOR_STORE_TYPE", cast=str, default="opensearch"
+    "KNOWLEDGE_BASE_VECTOR_STORE_TYPE", cast=str, default="postgres"
 )
 
 OPENSEARCH_BASE_URL = env.list("OPENSEARCH_BASE_URL", cast=str, default=[])
