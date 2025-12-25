@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useTranslation } from 'react-i18next';
 import { Link, NavLink } from 'react-router-dom';
 
 import { ChevronDownIcon, XMarkIcon } from '@heroicons/react/24/outline';
@@ -49,7 +50,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   logo,
   logoAlt,
   title,
-  subtitle = 'Web Crawling Platform',
+  subtitle,
   titleLink,
   navigation,
   isOpen,
@@ -61,7 +62,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onToggleMenu,
   isMenuActive,
 }) => {
+  const { t } = useTranslation();
   const { direction } = useDirection();
+  const defaultSubtitle = subtitle || t('common.subtitle');
 
   const isMenuExpanded = (menuName: string) => expandedMenus[menuName] || false;
 
@@ -87,8 +90,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </div>
           <div>
             <span className="block text-sm font-bold tracking-tight text-foreground">{title}</span>
-            {subtitle && (
-              <span className="block text-[11px] text-muted-foreground">{subtitle}</span>
+            {defaultSubtitle && (
+              <span className="block text-[11px] text-muted-foreground">{defaultSubtitle}</span>
             )}
           </div>
         </Link>

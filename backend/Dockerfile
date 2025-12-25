@@ -35,9 +35,12 @@ RUN poetry install --sync --no-cache --no-root
 
 FROM builder AS runtime
 
+WORKDIR /var/www
+
 ADD . /var/www
 
-RUN chmod +x /var/www/entrypoint.sh && mkdir .celery/ && echo ${APP_VERSION} > /var/www/VERSION && \
+
+RUN chmod +x /var/www/entrypoint.sh && mkdir /var/www/.celery/ && echo ${APP_VERSION} > /var/www/VERSION && \
     poetry run django-admin compilemessages
 
 ENV PATH="/var/www/.venv/bin:${PATH}"

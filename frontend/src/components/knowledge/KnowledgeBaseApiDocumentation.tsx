@@ -7,23 +7,25 @@ import { useApiDocumentation } from '../../hooks/useApiDocumentation';
 interface KnowledgeBaseApiDocumentationProps {
   knowledgeBaseId: string;
   query: string;
-  top_k: number;
+  retrieval_setting_id?: string | null;
 }
 
 export const KnowledgeBaseApiDocumentation: React.FC<KnowledgeBaseApiDocumentationProps> = ({
   knowledgeBaseId,
   query,
-  top_k,
+  retrieval_setting_id,
 }) => {
   const { getBaseUrl } = useApiDocumentation();
 
   const tabs: ApiDocTab[] = useMemo(() => {
     const generateCurlCommand = (apiKey: string) => {
       const baseUrl = getBaseUrl();
-      const requestBody = {
+      const requestBody: any = {
         query: query || 'your query here',
-        top_k: top_k,
       };
+      if (retrieval_setting_id) {
+        requestBody.retrieval_setting_id = retrieval_setting_id;
+      }
 
       return `curl -X POST "${baseUrl}/api/v1/knowledge-base/knowledge-bases/${knowledgeBaseId}/query/" \\
   -H "Content-Type: application/json" \\
@@ -42,8 +44,7 @@ client = WaterCrawlAPIClient(api_key='${apiKey}', base_url='${baseUrl}')
 # Query the knowledge base
 results = client.query_knowledge_base(
     knowledge_base_id='${knowledgeBaseId}',
-    query='${query || 'your query here'}',
-    top_k=${top_k}
+    query='${query || 'your query here'}'${retrieval_setting_id ? `,\n    retrieval_setting_id='${retrieval_setting_id}'` : ''}
 )
 
 # Print the results
@@ -54,12 +55,13 @@ for i, chunk in enumerate(results, 1):
     print(f"  Source: {chunk['metadata']['source']}")
     print(f"  Index: {chunk['metadata']['index']}")
     print(f"  UUID: {chunk['metadata']['uuid']}")
-    print(f"  Keywords: {', '.join(chunk['metadata']['keywords'])}")
     print("---")`;
     };
 
     const generateNodeJsCommand = (apiKey: string) => {
       const baseUrl = getBaseUrl();
+      const queryParams = `'${knowledgeBaseId}', // Knowledge base ID
+    '${query || 'your query here'}'${retrieval_setting_id ? `, // Query\n    '${retrieval_setting_id}' // Retrieval setting ID` : ' // Query'}`;
 
       return `import { WaterCrawlAPIClient } from '@watercrawl/nodejs';
 
@@ -69,9 +71,7 @@ const client = new WaterCrawlAPIClient('${apiKey}', '${baseUrl}');
 const queryKnowledgeBase = async () => {
   try {
     const results = await client.queryKnowledgeBase(
-    '${knowledgeBaseId}', // Knowledge base ID
-    '${query || 'your query here'}', // Query
-    ${top_k} // Number of results
+    ${queryParams}
     );
 
     console.log(\`Found \${results.length} relevant chunks:\`);
@@ -81,7 +81,6 @@ const queryKnowledgeBase = async () => {
       console.log(\`  Source: \${chunk.metadata.source}\`);
       console.log(\`  Index: \${chunk.metadata.index}\`);
       console.log(\`  UUID: \${chunk.metadata.uuid}\`);
-      console.log(\`  Keywords: \${chunk.metadata.keywords.join(', ')}\`);
       console.log('---');
     });
   } catch (error) {
@@ -118,7 +117,7 @@ queryKnowledgeBase();`;
         language: 'javascript',
       },
     ];
-  }, [knowledgeBaseId, query, top_k, getBaseUrl]);
+  }, [knowledgeBaseId, query, getBaseUrl, retrieval_setting_id]);
 
   return (
     <ApiDocumentation

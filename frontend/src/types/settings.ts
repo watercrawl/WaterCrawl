@@ -17,5 +17,4 @@ export interface Settings {
   is_search_configured: boolean;
   max_crawl_concurrency: number;
   mcp_server: string;
-  is_knowledge_base_enabled: boolean;
 }

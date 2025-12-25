@@ -1,3 +1,5 @@
+import asyncio
+import os
 import re
 from datetime import timedelta
 from urllib.parse import urljoin
@@ -11,9 +13,14 @@ from django.utils import timezone
 from django.utils.crypto import get_random_string
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from io import BytesIO
+from typing import Optional, Dict, Any
+from django.contrib.contenttypes.models import ContentType
+from django.core.files.storage import storages
+
 from common.services import EmailService
 from locker import redis_lock
-from user.models import User, Team, TeamAPIKey, TeamInvitation
+from user.models import User, Team, TeamAPIKey, TeamInvitation, Media
 from user.utils import generate_random_api_key
 
 
@@ -385,3 +392,100 @@ def oauth_service_factory(provider: str) -> AbsractOAuth2Service:
         return GoogleSigninButtonService()
     else:
         raise ValueError(f"Unknown provider: {provider}")
+
+
+class MediaService:
+    """Service for managing media files in the media library."""
+
+    def __init__(self, media: Media):
+        self.media: Media = media
+
+    @classmethod
+    def save_file(
+        cls,
+        team: Team,
+        file_name: str,
+        file_content: bytes,
+        content_type: str,
+        related_object: Optional[Any] = None,
+        metadata: Optional[Dict[str, Any]] = None,
+    ) -> "MediaService":
+        """
+        Save a file to the media library.
+
+        Args:
+            team: The team that owns the file
+            file_name: Name of the file
+            file_content: File content as bytes
+            content_type: MIME type of the file
+            related_object: Optional related object (Agent, Conversation, etc.)
+            metadata: Optional metadata dictionary (e.g., conversation_id, agent_version_id)
+
+        Returns:
+            MediaService instance
+        """
+        # Determine related object type and ID if provided
+        related_object_type = None
+        related_object_id = None
+        if related_object:
+            related_object_type = ContentType.objects.get_for_model(related_object)
+            related_object_id = (
+                related_object.uuid
+                if hasattr(related_object, "uuid")
+                else related_object.pk
+            )
+
+        # Use default storage (media storage)
+        storage = storages["default"]
+
+        # Generate unique file path
+        timestamp = timezone.now().strftime("%Y/%m/%d")
+        unique_file_name = f"{timezone.now().timestamp()}_{file_name}"
+
+        if len(unique_file_name) > 50:
+            name, extension = os.path.splitext(file_name)
+            unique_file_name = f"{timezone.now().timestamp()}_{name[:50]}{extension}"
+
+        file_path = f"media/{timestamp}/{unique_file_name}"
+
+        # Save file to storage
+        file_obj = BytesIO(file_content)
+        saved_path = storage.save(file_path, file_obj)
+
+        # Create Media record
+        media = Media.objects.create(
+            team=team,
+            content_type=content_type,
+            file_name=file_name,
+            file=saved_path,  # Use the path returned by storage.save()
+            size=len(file_content),
+            related_object_type=related_object_type,
+            related_object_id=related_object_id,
+            metadata=metadata or {},
+        )
+
+        return cls(media)
+
+    @classmethod
+    async def asave_file(
+        cls,
+        team: Team,
+        file_name: str,
+        file_content: bytes,
+        content_type: str,
+        related_object: Optional[Any] = None,
+        metadata: Optional[Dict[str, Any]] = None,
+    ) -> "MediaService":
+        return await asyncio.to_thread(
+            cls.save_file,
+            team,
+            file_name,
+            file_content,
+            content_type,
+            related_object,
+            metadata,
+        )
+
+    @classmethod
+    def make_with_pk(cls, media_pk: str):
+        return cls(Media.objects.get(pk=media_pk))

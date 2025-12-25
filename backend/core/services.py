@@ -1058,8 +1058,6 @@ class SitemapService:
 
 
 class ReportService:
-    """Todo: make some cache layers for this"""
-
     def __init__(self, team: Team, time_delta: timedelta):
         self.team = team
         self.timedelta = time_delta
@@ -1203,12 +1201,8 @@ class ProxyService:
             "type": self.proxy_server.proxy_type,
             "host": self.proxy_server.host,
             "port": str(self.proxy_server.port),
-            "username": self.proxy_server.username
-            if self.proxy_server.username
-            else None,
-            "password": decrypt_key(self.proxy_server.password)
-            if self.proxy_server.password
-            else None,
+            "username": self.proxy_server.username,
+            "password": decrypt_key(self.proxy_server.password),
         }
 
     @staticmethod

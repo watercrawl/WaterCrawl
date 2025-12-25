@@ -1,14 +1,16 @@
 from typing import Optional
 
 from django.utils.translation import gettext as _
-from langchain_community.chat_models import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
+from langchain_cohere import ChatCohere
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_ollama import ChatOllama
+from langchain_openai import ChatOpenAI
 from langchain_core.language_models import BaseChatModel
 
 from common.encryption import decrypt_key
-from llm.interfaces import BaseProvider
-from llm.models import LLMModel, ProviderConfig
-from llm.providers import OpenAIProvider, WaterCrawlProvider
-from llm.services import LLMModelService
+from llm import consts
+from llm.models import ProviderConfig
 
 
 class ChatModelFactory:
@@ -21,80 +23,60 @@ class ChatModelFactory:
     @classmethod
     def create_chat_model_from_provider_config(
         cls,
-        llm_model: LLMModel,
-        provider_config: Optional[ProviderConfig] = None,
-        temperature=None,
+        provider_config: ProviderConfig,
+        llm_model_key: str,
+        llm_config: Optional[dict] = None,
     ) -> BaseChatModel:
         """
         Create a chat model from a Model and ProviderConfig.
 
         Args:
-            llm_model: The Model instance containing provider and model information
             provider_config: The provider configuration with API key and settings
+            llm_model_key: The Model instance containing provider and model information
+            llm_config: Optional configuration parameters for the model
 
         Returns:
             A LangChain chat model instance
         """
+        llm_config = llm_config or {}
         if not provider_config:
             raise ValueError(_("Provider config is required"))
 
-        provider_name = llm_model.provider_name
-        model_name = llm_model.key  # Use key as it's the actual API model name
-        api_key = decrypt_key(provider_config.api_key)
+        api_key = (
+            decrypt_key(provider_config.api_key) if provider_config.api_key else None
+        )
         api_base = provider_config.base_url
 
-        if provider_name == "openai":
-            return ChatOpenAI(
-                model=model_name,
-                openai_api_key=api_key,
-                openai_api_base=api_base or "https://api.openai.com/v1",
-                temperature=LLMModelService(llm_model).get_valid_temperature(
-                    temperature
-                ),
-            )
-
-        elif provider_name == "watercrawl":
-            try:
-                from watercrawl_llm import ChatWaterCrawl
-            except ImportError:
-                raise ImportError(
-                    _("WaterCrawlLLM is not installed. Please install it")
+        match provider_config.provider_name:
+            case consts.LLM_PROVIDER_OPENAI:
+                return ChatOpenAI(
+                    model=llm_model_key,
+                    openai_api_key=api_key,
+                    openai_api_base=api_base or "https://api.openai.com/v1",
+                    **llm_config,
                 )
-
-            kwargs = {}
-            return ChatWaterCrawl(
-                model=model_name, api_key=api_key, base_url=api_base, **kwargs
-            )
-
-        else:
-            raise ValueError(
-                _("Unsupported provider: {provider_name}").format(
-                    provider_name=provider_name
+            case consts.LLM_PROVIDER_ANTHROPIC:
+                anthropic_kwargs = {
+                    "model": llm_model_key,
+                    "anthropic_api_key": api_key,
+                    **llm_config,
+                }
+                if api_base:
+                    anthropic_kwargs["anthropic_api_url"] = api_base
+                return ChatAnthropic(**anthropic_kwargs)
+            case consts.LLM_PROVIDER_GOOGLE_GENAI:
+                return ChatGoogleGenerativeAI(
+                    model=llm_model_key, google_api_key=api_key, **llm_config
                 )
-            )
-
-
-class ProviderFactory:
-    """Factory for creating providers."""
-
-    @classmethod
-    def from_provider_config(cls, provider_config: ProviderConfig) -> BaseProvider:
-        if provider_config.provider_name == "openai":
-            return OpenAIProvider(
-                config={
-                    "api_key": decrypt_key(provider_config.api_key),
-                    "base_url": provider_config.base_url,
-                }
-            )
-        elif provider_config.provider_name == "watercrawl":
-            return WaterCrawlProvider(
-                config={
-                    "api_key": decrypt_key(provider_config.api_key),
-                    "base_url": provider_config.base_url,
-                }
-            )
-        raise ValueError(
-            _("Unsupported provider: {provider_name}").format(
-                provider_name=provider_config.provider_name
-            )
-        )
+            case consts.LLM_PROVIDER_COHERE:
+                return ChatCohere(
+                    model=llm_model_key, cohere_api_key=api_key, **llm_config
+                )
+            case consts.LLM_PROVIDER_OLLAMA:
+                return ChatOllama(base_url=api_base, model=llm_model_key, **llm_config)
+            case _:
+                raise ValueError(
+                    _("Unsupported provider: {provider_name}").format(
+                        provider_name=provider_config.provider_name
+                    )
+                )

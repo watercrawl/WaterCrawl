@@ -1,28 +1,7 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
-from llm.models import LLMModel, ProviderConfig, EmbeddingModel
-
-
-@admin.register(LLMModel)
-class LLMModelAdmin(admin.ModelAdmin):
-    list_display = ("name", "key", "provider_name")
-    search_fields = ("name", "key")
-    list_filter = ("provider_name",)
-
-
-@admin.register(EmbeddingModel)
-class EmbeddingModelAdmin(admin.ModelAdmin):
-    list_display = (
-        "name",
-        "key",
-        "provider_name",
-        "dimensions",
-        "max_input_length",
-        "truncate",
-    )
-    search_fields = ("name", "key")
-    list_filter = ("provider_name", "truncate")
+from llm.models import ProviderConfig
 
 
 @admin.register(ProviderConfig)

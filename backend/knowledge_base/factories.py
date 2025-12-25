@@ -9,6 +9,7 @@ from typing import Dict, Any, Type, Optional
 
 from django.conf import settings
 from django.utils.translation import gettext as _
+from langchain_cohere import CohereEmbeddings
 
 from langchain_text_splitters import (
     RecursiveCharacterTextSplitter,
@@ -16,35 +17,31 @@ from langchain_text_splitters import (
     TokenTextSplitter,
 )
 from langchain_openai import OpenAIEmbeddings
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_core.embeddings import Embeddings
-from langchain_core.vectorstores import VectorStore
 from langchain_text_splitters import TextSplitter
-from opensearchpy import OpenSearch
 
 from common.encryption import decrypt_key
-from knowledge_base.interfaces import (
+from llm import consts as llm_consts
+from knowledge_base import consts
+from knowledge_base.tools.interfaces import (
     BaseSummarizer,
-    BaseKeywordExtractor,
     BaseFileToMarkdownConverter,
 )
-from knowledge_base.models import KnowledgeBase, KnowledgeBaseDocument
+from knowledge_base.models import KnowledgeBase, KnowledgeBaseDocument, RetrievalSetting
 from knowledge_base.tools.file_to_markdown import (
     FileReaderAsConverter,
     HtmlFileToMarkdownConverter,
     DocxFileToMarkdownConverter,
     CsvFileToMarkdownConverter,
 )
-from knowledge_base.tools.retrieval_strategies import (
-    DenseRetrievalStrategy,
-    ContentRetrievalStrategy,
-)
 from knowledge_base.tools.summarizers import ContextAwareSummarizer, LLMSummarizer
 
-from knowledge_base.tools.keyword_extractors import (
-    JiebaKeywordExtractor,
-    LLMKeywordExtractor,
-)
-from knowledge_base.tools.vectore_store import WaterCrawlOpenSearchVectorStore
+from knowledge_base.vector_stores.opensearch import OpenSearchVectorStore
+from knowledge_base.vector_stores.base import BaseVectorStore, BaseReranker
+from knowledge_base.vector_stores.postgres import PostgresVectorStore
+from knowledge_base.vector_stores.weaviate import WeaviateVectorStore
+from llm.models_config.cohere.cohere import CohereReranker
 
 
 class BaseFactory(ABC):
@@ -95,7 +92,7 @@ class EmbedderFactory(BaseFactory):
     @classmethod
     def create_openai_embedding(self, knowledge_base: KnowledgeBase) -> Embeddings:
         return OpenAIEmbeddings(
-            model=knowledge_base.embedding_model.key,
+            model=knowledge_base.embedding_model_key,
             openai_api_key=decrypt_key(
                 knowledge_base.embedding_provider_config.api_key
             ),
@@ -104,89 +101,72 @@ class EmbedderFactory(BaseFactory):
         )
 
     @classmethod
-    def create_watercrawl_embedding(self, knowledge_base: KnowledgeBase) -> Embeddings:
-        try:
-            from watercrawl_llm import WaterCrawlEmbeddings
-        except ImportError:
-            raise ImportError(
-                "WaterCrawlEmbeddings is not installed. Please install it first."
-            )
-        return WaterCrawlEmbeddings(
-            model=knowledge_base.embedding_model.key,
-            api_key=decrypt_key(knowledge_base.embedding_provider_config.api_key),
-            base_url=knowledge_base.embedding_provider_config.base_url,
+    def create_cohere_embedding(cls, knowledge_base: KnowledgeBase) -> Embeddings:
+        return CohereEmbeddings(
+            model=knowledge_base.embedding_model_key,
+            cohere_api_key=decrypt_key(
+                knowledge_base.embedding_provider_config.api_key
+            ),
+        )
+
+    @classmethod
+    def create_google_genai_embedding(cls, knowledge_base: KnowledgeBase) -> Embeddings:
+        return GoogleGenerativeAIEmbeddings(
+            model=knowledge_base.embedding_model_key,
+            google_api_key=decrypt_key(
+                knowledge_base.embedding_provider_config.api_key
+            ),
         )
 
     @classmethod
     def from_knowledge_base(cls, knowledge_base: KnowledgeBase) -> Embeddings:
         """Create embedding model based on provider type."""
         provider_name = knowledge_base.embedding_provider_config.provider_name
-        if provider_name == "openai":
-            return cls.create_openai_embedding(knowledge_base)
-        if provider_name == "watercrawl":
-            return cls.create_watercrawl_embedding(knowledge_base)
-        raise ValueError(
-            _("Unsupported embedding provider: {provider_name}").format(
-                provider_name=provider_name
-            )
-        )
+        match provider_name:
+            case llm_consts.LLM_PROVIDER_GOOGLE_GENAI:
+                return cls.create_google_genai_embedding(knowledge_base)
+            case llm_consts.LLM_PROVIDER_OPENAI:
+                return cls.create_openai_embedding(knowledge_base)
+            case llm_consts.LLM_PROVIDER_COHERE:
+                return cls.create_cohere_embedding(knowledge_base)
+            case _:
+                raise ValueError(
+                    _("Unsupported embedding provider: {provider_name}").format(
+                        provider_name=provider_name
+                    )
+                )
 
 
 class VectorStoreFactory(BaseFactory):
     """Factory for creating vector stores."""
 
     @classmethod
-    def create_opensearch_client(cls) -> OpenSearch:
-        # Create OpenSearch connection
-        opensearch_url = settings.KNOWLEDGE_BASE_OPENSEARCH_URL
-        return OpenSearch(
-            hosts=opensearch_url,
-            http_compress=True,
-            use_ssl=False,
-            verify_certs=False,
-        )
+    def _get_vector_store_type_by_name(cls, name) -> Type[BaseVectorStore]:
+        match name:
+            case consts.VECTOR_STORE_OPENSEARCH:
+                return OpenSearchVectorStore
+            case consts.VECTOR_STORE_POSTGRES:
+                return PostgresVectorStore
+            case consts.VECTOR_STORE_WEAVIATE:
+                return WeaviateVectorStore
+        raise ValueError(_("Unsupported vector store type: {name}").format(name=name))
 
     @classmethod
-    def create_opensearch_store(
-        cls, knowledge_base: KnowledgeBase, embedder: Embeddings = None
-    ) -> VectorStore:
-        """Create OpenSearch vector store."""
-
-        # Create index name from knowledge base ID
-        index_name = f"kb_chunks_{knowledge_base.uuid}"
-
-        if embedder:
-            strategy = DenseRetrievalStrategy(
-                hybrid=True, keyword_importance=1.5, hybrid_alpha=0.7
-            )
-        else:
-            strategy = ContentRetrievalStrategy(keyword_importance=1.5)
-
-        return WaterCrawlOpenSearchVectorStore(
-            opensearch_client=cls.create_opensearch_client(),
-            index_name=index_name,
-            embedding=embedder,
-            retrieval_strategy=strategy,
-        )
-
-    @classmethod
-    def from_knowledge_base(cls, knowledge_base: KnowledgeBase) -> VectorStore:
+    def from_knowledge_base(cls, knowledge_base: KnowledgeBase) -> BaseVectorStore:
         """Create a vector store from a knowledge base configuration."""
-        vector_store_type = getattr(settings, "KB_VECTOR_STORE_TYPE", "opensearch")
-
-        embedder = None
-        if knowledge_base.embedding_provider_config:
-            embedder = EmbedderFactory.from_knowledge_base(knowledge_base)
+        # Use knowledge base's vector_store_type, fallback to settings
+        vector_store_type = knowledge_base.vector_store_type
 
         # Create vector store based on type
-        if vector_store_type == "opensearch":
-            return cls.create_opensearch_store(knowledge_base, embedder)
+        vector_store_type = cls._get_vector_store_type_by_name(vector_store_type)
+        return vector_store_type(knowledge_base)
 
-        raise ValueError(
-            _("Vector store type '{vector_store_type}' not supported").format(
-                vector_store_type=vector_store_type
-            )
+    @classmethod
+    def initialize_vector_store(cls):
+        vector_store_type = cls._get_vector_store_type_by_name(
+            settings.KNOWLEDGE_BASE_VECTOR_STORE_TYPE
         )
+        vector_store_type.initialize()
 
 
 class SummarizerFactory(BaseFactory):
@@ -202,7 +182,7 @@ class SummarizerFactory(BaseFactory):
             BaseSummarizer or None if no summarization model is specified.
         """
         # Use the summarization model from the knowledge base if specified
-        summarization_model = knowledge_base.summarization_model
+        summarization_model = knowledge_base.summarization_model_key
 
         if summarization_model is None:
             return None
@@ -212,19 +192,6 @@ class SummarizerFactory(BaseFactory):
             return ContextAwareSummarizer(knowledge_base=knowledge_base)
         else:
             return LLMSummarizer(knowledge_base=knowledge_base)
-
-
-class KeywordExtractorFactory(BaseFactory):
-    """Factory for creating keyword extractors."""
-
-    @classmethod
-    def from_knowledge_base(cls, knowledge_base: KnowledgeBase) -> BaseKeywordExtractor:
-        """Create a keyword extractor from a knowledge base configuration."""
-
-        if knowledge_base.summarization_provider_config:
-            return LLMKeywordExtractor.from_knowledge_base(knowledge_base)
-
-        return JiebaKeywordExtractor.from_knowledge_base(knowledge_base)
 
 
 class FileToMarkdownFactory:
@@ -262,3 +229,31 @@ class FileToMarkdownFactory:
         raise ValueError(
             _("Unsupported document type: {extension}").format(extension=extension)
         )
+
+
+class RerankerFactory:
+    """Factory for creating rerankers."""
+
+    @classmethod
+    def from_retrieval_setting(
+        cls, retrieval_setting: RetrievalSetting
+    ) -> BaseReranker:
+        """
+        Create reranker from retrieval setting.
+
+        Args:
+            retrieval_setting: RetrievalSetting instance
+
+        Returns:
+            Reranker instance or None if reranking is disabled
+        """
+        provider_name = retrieval_setting.reranker_provider_config.provider_name
+        model_key = retrieval_setting.reranker_model_key
+
+        if provider_name == llm_consts.LLM_PROVIDER_COHERE:
+            return CohereReranker(
+                model_key=model_key,
+                provider_config=retrieval_setting.reranker_provider_config,
+            )
+        else:
+            raise ValueError(f"Unsupported reranker provider: {provider_name}")

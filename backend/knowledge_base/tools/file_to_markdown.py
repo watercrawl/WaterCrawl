@@ -7,7 +7,7 @@ import html2text
 import pypandoc
 from django.core.files.storage import Storage, default_storage
 
-from knowledge_base.interfaces import BaseFileToMarkdownConverter
+from knowledge_base.tools.interfaces import BaseFileToMarkdownConverter
 from knowledge_base.models import KnowledgeBase, KnowledgeBaseDocument
 
 

@@ -15,7 +15,7 @@ export const RadioWidget: React.FC<FieldProps> = ({
   const options = ui.options || schema.enum?.map(value => ({ label: value, value })) || [];
 
   return (
-    <div className={`space-y-2 ${ui.inline ? 'flex gap-x-4 space-y-0' : ''}`}>
+    <div className={`space-y-1.5 ${ui.inline ? 'flex gap-x-3 space-y-0' : ''}`}>
       {options.map((option, index) => (
         <label
           key={index}
@@ -31,11 +31,11 @@ export const RadioWidget: React.FC<FieldProps> = ({
             onBlur={onBlur}
             disabled={schema.disabled}
             required={required}
-            className={`h-4 w-4 border-input-border text-primary focus:ring-primary ${hasError ? 'border-error' : ''} ${
+            className={`h-3.5 w-3.5 border-input-border text-primary focus:ring-primary focus:ring-1 ${hasError ? 'border-error' : ''} ${
               ui.inputClassName || ''
             }`}
           />
-          <span className="ms-2 text-sm text-foreground">{option.label}</span>
+          <span className="ms-1.5 text-sm text-foreground">{option.label}</span>
         </label>
       ))}
     </div>

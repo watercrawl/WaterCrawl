@@ -415,7 +415,7 @@ const KnowledgeBaseDetailPage: React.FC = () => {
                                     onClick={() => handleRetryIndexing(document.uuid)}
                                     className="ms-2 text-primary hover:text-primary-strong disabled:opacity-50"
                                     disabled={isRetrying}
-                                    title="Retry indexing"
+                                    title={t('settings.knowledgeBase.document.retryIndexing')}
                                   >
                                     <ArrowPathIcon
                                       className={`h-5 w-5 ${isRetrying ? 'animate-spin' : ''}`}
@@ -436,7 +436,7 @@ const KnowledgeBaseDetailPage: React.FC = () => {
                               <Link
                                 to={`/dashboard/knowledge-base/${knowledgeBaseId}/documents/${document.uuid}`}
                                 className="text-muted-foreground hover:text-primary"
-                                title="View Chunks"
+                                title={t('settings.knowledgeBase.document.viewChunks')}
                               >
                                 <EyeIcon className="h-5 w-5" />
                               </Link>
@@ -444,7 +444,7 @@ const KnowledgeBaseDetailPage: React.FC = () => {
                                 className="text-muted-foreground hover:text-error"
                                 onClick={() => handleDeleteDocument(document.uuid)}
                                 disabled={isDeleting}
-                                title="Delete Document"
+                                title={t('settings.knowledgeBase.document.deleteDocument')}
                               >
                                 <TrashIcon className="h-5 w-5" />
                               </button>

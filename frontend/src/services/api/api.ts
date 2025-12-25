@@ -13,6 +13,14 @@ interface CustomAxiosInstance extends AxiosInstance {
     onEvent: (data: T) => void,
     onEnd?: () => void
   ) => Promise<boolean>;
+  sseRequest: <T>(
+    url: string,
+    method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE',
+    config: AxiosRequestConfig,
+    body?: any,
+    onEvent?: (data: T) => void,
+    onEnd?: () => void
+  ) => Promise<boolean>;
 }
 
 const api = axios.create({
@@ -66,10 +74,13 @@ api.interceptors.response.use(
   }
 );
 
-api.subscribeToSSE = async <T>(
+// General SSE request handler that supports all HTTP methods
+api.sseRequest = async <T>(
   url: string,
-  config: AxiosRequestConfig,
-  onEvent: (data: T) => void,
+  method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' = 'GET',
+  config: AxiosRequestConfig = {},
+  body?: any,
+  onEvent?: (data: T) => void,
   onEnd?: () => void
 ) => {
   // Handle case when baseURL is empty by using the current location as fallback
@@ -90,29 +101,65 @@ api.subscribeToSSE = async <T>(
       );
     }
   }
-  // set query param from config
-  for (const [key, value] of Object.entries(config.params || {})) {
-    apiUrl.searchParams.append(key, value as string);
+  
+  // Set query params from config (only for GET requests)
+  if (method === 'GET') {
+    for (const [key, value] of Object.entries(config.params || {})) {
+      apiUrl.searchParams.append(key, value as string);
+    }
   }
 
   try {
-    // Create a fetch request with the correct headers for SSE
+    // Create headers
     const headers = new Headers();
     headers.set('Connection', 'keep-alive');
+    
+    // Add Content-Type for requests with body
+    if (body && method !== 'GET') {
+      headers.set('Content-Type', 'application/json');
+    }
+    
+    // Add auth token
     const token = AuthService.getInstance().getToken();
     if (token) {
       headers.set('Authorization', 'Bearer ' + token);
     }
+    
+    // Add team ID
     const teamId = TeamService.getInstance().getCurrentTeamId();
     if (teamId) {
       headers.set('x-team-id', teamId);
     }
-    // Add Accept-Language header for SSE requests
+    
+    // Add Accept-Language header
     headers.set('Accept-Language', i18n.language || 'en');
-    const response = await fetch(apiUrl.toString(), {
-      method: 'GET',
+
+    // Create fetch request
+    const fetchOptions: RequestInit = {
+      method,
       headers,
-    });
+    };
+    
+    // Add body for non-GET requests
+    if (body && method !== 'GET') {
+      fetchOptions.body = JSON.stringify(body);
+    }
+
+    let response = await fetch(apiUrl.toString(), fetchOptions);
+
+    // Handle 401 - try to refresh token and retry
+    if (response.status === 401) {
+      try {
+        const newToken = await AuthService.getInstance().refreshToken();
+        headers.set('Authorization', 'Bearer ' + newToken);
+        fetchOptions.headers = headers;
+        response = await fetch(apiUrl.toString(), fetchOptions);
+      } catch (_refreshError) {
+        AuthService.getInstance().removeToken();
+        window.location.href = '/';
+        throw new Error('Authentication failed');
+      }
+    }
 
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -152,7 +199,7 @@ api.subscribeToSSE = async <T>(
           if (line.startsWith('data: ')) {
             try {
               const jsonStr = line.slice(6).trim();
-              if (jsonStr) {
+              if (jsonStr && onEvent) {
                 const data = JSON.parse(jsonStr);
                 onEvent(data);
               }
@@ -181,4 +228,15 @@ api.subscribeToSSE = async <T>(
     throw error;
   }
 };
+
+// Backward compatibility: subscribeToSSE (GET only)
+api.subscribeToSSE = async <T>(
+  url: string,
+  config: AxiosRequestConfig,
+  onEvent: (data: T) => void,
+  onEnd?: () => void
+) => {
+  return api.sseRequest<T>(url, 'GET', config, undefined, onEvent, onEnd);
+};
+
 export default api;

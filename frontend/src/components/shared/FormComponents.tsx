@@ -72,10 +72,11 @@ export const InfoTooltip: React.FC<{
   content: string;
 }> = ({ content }) => {
   return (
-    <div className="group relative inline-block">
-      <QuestionMarkCircleIcon className="h-4 w-4 text-muted-foreground hover:text-muted-foreground" />
-      <div className="absolute left-1/2 z-10 mt-1 hidden w-64 -translate-x-1/2 rounded-md border border-border bg-card p-2 text-sm text-muted-foreground shadow-lg group-hover:block">
+    <div className="group relative inline-flex items-center">
+      <QuestionMarkCircleIcon className="h-4 w-4 cursor-help text-muted-foreground hover:text-foreground transition-colors" />
+      <div className="absolute bottom-full left-1/2 z-50 mb-2 hidden w-64 max-w-xs -translate-x-1/2 rounded-md border border-border bg-card p-2 text-xs text-muted-foreground shadow-lg group-hover:block">
         {content}
+        <div className="absolute left-1/2 top-full -translate-x-1/2 border-4 border-transparent border-t-border" />
       </div>
     </div>
   );

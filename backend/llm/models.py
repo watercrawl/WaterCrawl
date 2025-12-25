@@ -4,39 +4,6 @@ from common.models import BaseModel
 from llm import consts
 
 
-class LLMModel(BaseModel):
-    name = models.CharField(_("Name"), max_length=255, unique=True)
-    key = models.CharField(_("Key"), max_length=255)
-    provider_name = models.CharField(
-        _("Provider"),
-        max_length=255,
-        choices=consts.LLM_PROVIDER_CHOICES,
-        default=consts.LLM_PROVIDER_OPENAI,
-    )
-    visibility_level = models.CharField(
-        _("Visibility Level"),
-        max_length=255,
-        choices=consts.VISIBILITY_LEVEL_CHOICES,
-        default=consts.VISIBILITY_LEVEL_AVAILABLE,
-    )
-    min_temperature = models.FloatField(
-        _("Min Temperature"), default=0.0, null=True, blank=True
-    )
-    max_temperature = models.FloatField(
-        _("Max Temperature"), default=2.0, null=True, blank=True
-    )
-    default_temperature = models.FloatField(
-        _("Default Temperature"), default=0.7, null=True, blank=True
-    )
-
-    class Meta:
-        verbose_name = _("Model")
-        verbose_name_plural = _("Models")
-
-    def __str__(self):
-        return f"{self.name} ({self.provider_name})"
-
-
 class ProviderConfig(BaseModel):
     title = models.CharField(_("Title"), max_length=255)
     provider_name = models.CharField(
@@ -64,24 +31,6 @@ class ProviderConfig(BaseModel):
         """Check if this is a global provider config."""
         return self.team is None
 
-    @property
-    def available_llm_models(self):
-        queryset = LLMModel.objects.filter(provider_name=self.provider_name).exclude(
-            visibility_level=consts.VISIBILITY_LEVEL_NOT_AVAILABLE
-        )
-        if self.is_global:
-            return queryset.exclude(visibility_level=consts.VISIBILITY_LEVEL_TEAM_ONLY)
-        return queryset
-
-    @property
-    def available_embedding_models(self):
-        queryset = EmbeddingModel.objects.filter(
-            provider_name=self.provider_name
-        ).exclude(visibility_level=consts.VISIBILITY_LEVEL_NOT_AVAILABLE)
-        if self.is_global:
-            return queryset.exclude(visibility_level=consts.VISIBILITY_LEVEL_TEAM_ONLY)
-        return queryset
-
     class Meta:
         verbose_name = _("Provider Config")
         verbose_name_plural = _("Provider Configs")
@@ -90,37 +39,72 @@ class ProviderConfig(BaseModel):
         return f"{self.title} ({self.provider_name})"
 
 
-class EmbeddingModel(BaseModel):
-    """Model for embedding models supported by a provider"""
+class ProviderConfigModel(BaseModel):
+    """
+    Tracks model availability and custom models for a ProviderConfig.
 
-    provider_name = models.CharField(
-        _("Provider"),
-        max_length=255,
-        choices=consts.LLM_PROVIDER_CHOICES,
-        default=consts.LLM_PROVIDER_OPENAI,
+    This model serves two purposes:
+    1. Track which YAML-defined models are active/inactive for a provider config
+    2. Store custom user-defined models that don't have YAML definitions
+    """
+
+    provider_config = models.ForeignKey(
+        ProviderConfig,
+        on_delete=models.CASCADE,
+        verbose_name=_("Provider Config"),
+        related_name="models",
     )
-    name = models.CharField(_("Name"), max_length=255)
-    key = models.CharField(_("Key"), max_length=255)
-    description = models.TextField(_("Description"), blank=True, null=True)
-    dimensions = models.IntegerField(_("Dimensions"), default=1536)
-    max_input_length = models.IntegerField(_("Max Input Length"), default=8191)
-    truncate = models.CharField(
-        _("Truncate"),
+    model_key = models.CharField(
+        _("Model Key"),
         max_length=255,
-        choices=consts.TRUNCATE_CHOICES,
-        default=consts.TRUNCATE_END,
+        help_text=_("Unique identifier for the model"),
     )
-    visibility_level = models.CharField(
-        _("Visibility Level"),
+    model_type = models.CharField(
+        _("Model Type"),
+        max_length=50,
+        choices=consts.MODEL_TYPE_CHOICES,
+        default=consts.MODEL_TYPE_LLM,
+    )
+    is_active = models.BooleanField(
+        _("Is Active"),
+        default=True,
+        help_text=_("Whether this model is available for use"),
+    )
+    is_custom = models.BooleanField(
+        _("Is Custom"),
+        default=False,
+        help_text=_("Whether this is a custom user-defined model"),
+    )
+    custom_label = models.CharField(
+        _("Custom Label"),
         max_length=255,
-        choices=consts.VISIBILITY_LEVEL_CHOICES,
-        default=consts.VISIBILITY_LEVEL_AVAILABLE,
+        blank=True,
+        null=True,
+        help_text=_("Human-readable label for custom models"),
+    )
+    custom_config = models.JSONField(
+        _("Custom Configuration"),
+        default=dict,
+        blank=True,
+        help_text=_(
+            "Custom model configuration (features, model_properties, parameter_rules)"
+        ),
     )
 
     class Meta:
-        verbose_name = _("Provider Embedding")
-        verbose_name_plural = _("Provider Embeddings")
-        unique_together = [("provider_name", "key")]
+        verbose_name = _("Provider Config Model")
+        verbose_name_plural = _("Provider Config Models")
+        unique_together = [["provider_config", "model_key", "model_type"]]
+        ordering = ["model_type", "model_key"]
 
     def __str__(self):
-        return f"{self.name} ({self.provider_name})"
+        status = "active" if self.is_active else "inactive"
+        custom = " (custom)" if self.is_custom else ""
+        return f"{self.model_key} [{self.model_type}] - {status}{custom}"
+
+    @property
+    def label(self):
+        """Get the display label for this model."""
+        if self.is_custom and self.custom_label:
+            return self.custom_label
+        return self.model_key

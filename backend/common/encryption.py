@@ -18,4 +18,6 @@ def encrypt_key(raw_key):
 
 
 def decrypt_key(encrypted_key):
+    if not encrypted_key:
+        return encrypted_key
     return fernet.decrypt(encrypted_key.encode()).decode()

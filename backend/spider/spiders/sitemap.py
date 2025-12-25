@@ -304,16 +304,21 @@ class SitemapScrapper(Spider):
             errback=self.try_site_search,
             meta={
                 "skip_playwright": True,
-                "depth": 0,
+                "crawl_depth": 0,
                 **self.get_proxy_meta(),
             },
         )
 
     def parse_html(self, response):
-        current_depth = response.meta.get("depth", 0)
+        current_depth = response.meta.get("crawl_depth", 0)
 
         self.pubsub_service.send_feed(f"Parsing HTML content for url:{response.url}")
         links = response.css("a::attr(href)").getall()
+
+        if current_depth == 0 and len(links) < self.link_threshold:
+            print("links < self.link_threshold")
+            yield from self.try_site_search()
+
         discovered_links = []
         new_patterns = set()
         for link in links:
@@ -351,7 +356,7 @@ class SitemapScrapper(Spider):
                     url=url,
                     callback=self.parse_html,
                     meta={
-                        "depth": current_depth + 1,
+                        "crawl_depth": current_depth + 1,
                         "skip_playwright": True,
                         **self.get_proxy_meta(),
                     },

@@ -2,25 +2,32 @@
  * Model schema from the API
  */
 export interface Model {
-  uuid: string;
-  name: string;
   key: string;
-  min_temperature: number | null;
-  max_temperature: number | null;
-  default_temperature: number | null;
+  label: string;
+  model_type: string;
+  features: string[];
+  model_properties: Record<string, unknown>;
+  parameters_schema: Record<string, unknown>;
+}
+
+/**
+ * Model with availability status (includes is_active and is_custom)
+ */
+export interface ProviderModel extends Model {
+  is_active: boolean;
+  is_custom: boolean;
 }
 
 /**
  * Provider Embedding model schema
  */
 export interface ProviderEmbedding {
-  uuid: string;
-  name: string;
   key: string;
-  description: string | null;
-  dimensions: number;
-  max_input_length: number;
-  truncate: boolean;
+  label: string;
+  model_type: string;
+  features: string[];
+  model_properties: any;
+  parameters_schema: any; // json schema for model parameters
 }
 
 export enum OPTIONS {
@@ -67,6 +74,76 @@ export interface ListProviderConfig {
   provider_name: string;
   base_url: string | null;
   is_global: boolean;
-  available_llm_models: Model[];
-  available_embedding_models: ProviderEmbedding[];
+  available_llm_models: ProviderModel[];
+  available_embedding_models: ProviderModel[];
+  available_reranker_models: ProviderModel[];
+}
+
+/**
+ * Detailed provider config with all models and their status
+ */
+export interface ProviderConfigDetail {
+  uuid: string;
+  title: string;
+  provider_name: string;
+  base_url: string | null;
+  is_global: boolean;
+  llm_models: ProviderModel[];
+  embedding_models: ProviderModel[];
+  reranker_models: ProviderModel[];
+  custom_models: ProviderConfigModel[];
+}
+
+/**
+ * Provider config model (database record)
+ */
+export interface ProviderConfigModel {
+  uuid: string;
+  model_key: string;
+  model_type: ModelType;
+  is_active: boolean;
+  is_custom: boolean;
+  label: string;
+  custom_config: {
+    features?: string[];
+    model_properties?: Record<string, unknown>;
+    parameters_schema?: Record<string, unknown>;
+  };
+}
+
+/**
+ * Model types
+ */
+export type ModelType = 'llm' | 'embedding' | 'reranker';
+
+/**
+ * Request payload for setting model status
+ */
+export interface SetModelStatusRequest {
+  model_key: string;
+  model_type: ModelType;
+  is_active: boolean;
+}
+
+/**
+ * Request payload for creating a custom model
+ */
+export interface CreateCustomModelRequest {
+  model_key: string;
+  model_type: ModelType;
+  label: string;
+  features?: string[];
+  model_properties?: Record<string, unknown>;
+  parameters_schema?: Record<string, unknown>;
+}
+
+/**
+ * Request payload for updating a custom model
+ */
+export interface UpdateCustomModelRequest {
+  label?: string;
+  is_active?: boolean;
+  features?: string[];
+  model_properties?: Record<string, unknown>;
+  parameters_schema?: Record<string, unknown>;
 }

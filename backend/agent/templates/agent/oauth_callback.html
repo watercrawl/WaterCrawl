@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Oauth Result</title>
+    <script type="text/javascript">
+        let status = "{{ status }}";
+        if (status === "success") {
+            window.close();
+        }
+    </script>
+</head>
+<html>
+<body>
+{% if status == "success" %}
+    <p>The Oauth authentication was successful. You can close this window.</p>
+{% else %}
+    <p>The Oauth authentication failed. Please try again.</p>
+{% endif %}
+</body>
+</html>

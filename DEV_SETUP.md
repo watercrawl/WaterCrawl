@@ -47,6 +47,31 @@ This will start:
 - Playwright on port 8800
 - MCP Server on port 8801
 
+#### Optional: Vector Database Services
+
+You can optionally start vector database services using Docker Compose profiles:
+
+**OpenSearch** (for vector search):
+```bash
+docker-compose -f docker-compose.local.yml --profile opensearch up -d
+```
+This will additionally start:
+- OpenSearch on port 9200
+- OpenSearch Dashboards on port 5601
+
+**Weaviate** (for vector search):
+```bash
+docker-compose -f docker-compose.local.yml --profile weaviate up -d
+```
+This will additionally start:
+- Weaviate HTTP on port 8080
+- Weaviate gRPC on port 50051
+
+**Both vector databases:**
+```bash
+docker-compose -f docker-compose.local.yml --profile opensearch --profile weaviate up -d
+```
+
 ### 3. Set Up Backend
 
 ```bash
@@ -124,6 +149,12 @@ Once everything is running:
 - **MinIO Console**: http://localhost:9001 (username: `minio`, password: `minio123`)
 - **Mailpit (Email Testing)**: http://localhost:8025
 
+### Optional Services (when enabled via profiles)
+
+- **OpenSearch**: https://localhost:9200 (username: `admin`, password: `someStrongPAssw0rd`)
+- **OpenSearch Dashboards**: http://localhost:5601
+- **Weaviate**: http://localhost:8080
+
 ## Environment Variables
 
 ### Backend (.env)
@@ -138,6 +169,21 @@ Key variables to configure:
 - `MINIO_SECRET_KEY`: MinIO secret key (default: `minio123`)
 - `PLAYWRIGHT_SERVER`: Playwright server URL (default: `http://localhost:8800`)
 - `PLAYWRIGHT_API_KEY`: Playwright API key (default: `your-secret-api-key`)
+
+#### Optional Vector Database Variables
+
+**OpenSearch** (when using `--profile opensearch`):
+- `OPENSEARCH_PASSWORD`: Admin password (default: `someStrongPAssw0rd`)
+- `OPENSEARCH_HOST_PORT`: Host port mapping (default: `9200`)
+- `OPENSEARCH_DASHBOARDS_HOST_PORT`: Dashboards port mapping (default: `5601`)
+
+**Weaviate** (when using `--profile weaviate`):
+- `AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED`: Allow anonymous access (default: `true`)
+- `AUTHENTICATION_APIKEY_ENABLED`: Enable API key auth (default: `false`)
+- `AUTHENTICATION_APIKEY_ALLOWED_KEYS`: Allowed API keys
+- `AUTHENTICATION_APIKEY_USERS`: API key users
+- `WEAVIATE_HTTP_PORT`: HTTP port mapping (default: `8080`)
+- `WEAVIATE_GRPC_PORT`: gRPC port mapping (default: `50051`)
 
 ### Frontend (.env)
 

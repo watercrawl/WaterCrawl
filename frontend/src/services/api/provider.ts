@@ -1,9 +1,14 @@
 import { PaginatedResponse } from '../../types/common';
 import {
+  CreateCustomModelRequest,
   ListProviderConfig,
   Provider,
   ProviderConfig,
+  ProviderConfigDetail,
   ProviderConfigFormData,
+  ProviderConfigModel,
+  SetModelStatusRequest,
+  UpdateCustomModelRequest,
 } from '../../types/provider';
 
 import api from './api';
@@ -66,6 +71,50 @@ export const providerApi = {
         message: string;
       }>('/api/v1/llm/provider-configs/test-config/', data)
       .then(({ data }) => data);
+  },
+
+  // Model management endpoints (nested under provider-configs/{id}/models/)
+  async getProviderConfigModels(providerConfigId: string) {
+    return api
+      .get<ProviderConfigDetail>(`/api/v1/llm/provider-configs/${providerConfigId}/models/`)
+      .then(({ data }) => data);
+  },
+
+  async setModelStatus(providerConfigId: string, data: SetModelStatusRequest) {
+    return api
+      .post<ProviderConfigModel>(
+        `/api/v1/llm/provider-configs/${providerConfigId}/models/set-status/`,
+        data
+      )
+      .then(({ data }) => data);
+  },
+
+  async createCustomModel(providerConfigId: string, data: CreateCustomModelRequest) {
+    return api
+      .post<ProviderConfigModel>(
+        `/api/v1/llm/provider-configs/${providerConfigId}/models/`,
+        data
+      )
+      .then(({ data }) => data);
+  },
+
+  async updateCustomModel(
+    providerConfigId: string,
+    modelUuid: string,
+    data: UpdateCustomModelRequest
+  ) {
+    return api
+      .patch<ProviderConfigModel>(
+        `/api/v1/llm/provider-configs/${providerConfigId}/models/${modelUuid}/`,
+        data
+      )
+      .then(({ data }) => data);
+  },
+
+  async deleteCustomModel(providerConfigId: string, modelUuid: string) {
+    return api.delete(
+      `/api/v1/llm/provider-configs/${providerConfigId}/models/${modelUuid}/`
+    );
   },
 };
 

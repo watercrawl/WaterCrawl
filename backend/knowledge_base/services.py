@@ -9,7 +9,7 @@ from knowledge_base import consts
 from knowledge_base.factories import FileToMarkdownFactory
 from knowledge_base.helpers import NoiseRemover
 from knowledge_base.models import KnowledgeBaseDocument, KnowledgeBase
-from knowledge_base.tools.processor import KnowledgeBaseProcessor
+from knowledge_base.vector_stores.feeder import Feeder
 from knowledge_base.tools.storage import KnowledgeBaseStorageService
 from user.models import Team
 
@@ -55,11 +55,12 @@ class KnowledgeBaseService:
         return document
 
     def set_deleted(self):
-        self.knowledge_base.status = "DELETED"
+        self.knowledge_base.status = consts.KNOWLEDGE_BASE_STATUS_DELETED
         self.knowledge_base.save(update_fields=["status"])
 
     def delete_forever(self):
-        KnowledgeBaseProcessor(self.knowledge_base).delete_vector_store()
+        feeder = Feeder(self.knowledge_base)
+        feeder.delete_all()
         self.knowledge_base.delete()
 
     def add_crawl_results(
@@ -117,12 +118,12 @@ class KnowledgeBaseDocumentService:
 
     @atomic
     def index_to_vector_store(self):
-        processor = KnowledgeBaseProcessor(self.document.knowledge_base)
-        processor.persist_to_vector_store(self.document)
+        feeder = Feeder(self.document.knowledge_base)
+        feeder.feed_document(self.document)
 
     def remove_from_vector_store(self):
-        processor = KnowledgeBaseProcessor(self.document.knowledge_base)
-        processor.remove_from_vector_store(self.document)
+        feeder = Feeder(self.document.knowledge_base)
+        feeder.remove_document(self.document)
 
     def set_processing(self):
         if self.document.status == consts.DOCUMENT_STATUS_PROCESSING:

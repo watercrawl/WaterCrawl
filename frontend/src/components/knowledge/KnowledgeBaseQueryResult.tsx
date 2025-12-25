@@ -23,7 +23,6 @@ interface QueryResultData {
     uuid: string;
     source: string;
     knowledge_base_id: string;
-    keywords: string[];
     document_id?: string;
   };
 }
@@ -140,25 +139,6 @@ export const KnowledgeBaseQueryResult: React.FC<KnowledgeBaseQueryResultProps> =
               </button>
             )}
           </div>
-
-          {/* Keywords */}
-          {result.metadata.keywords && result.metadata.keywords.length > 0 && (
-            <div>
-              <h5 className="mb-2 text-sm font-semibold text-foreground">
-                {t('knowledgeBase.keywords')}
-              </h5>
-              <div className="flex flex-wrap gap-2">
-                {result.metadata.keywords.map((keyword, i) => (
-                  <span
-                    key={i}
-                    className="inline-flex items-center rounded-full bg-primary-soft px-2 py-1 text-xs font-medium text-primary-strong"
-                  >
-                    #{keyword}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
       </Card>
 
@@ -181,12 +161,6 @@ export const KnowledgeBaseQueryResult: React.FC<KnowledgeBaseQueryResultProps> =
                 <strong>{t('knowledgeBase.chunk')}:</strong> #{result.metadata.index} (
                 {t('knowledgeBase.id')}: {result.metadata.uuid})
               </div>
-              {result.metadata.keywords.length > 0 && (
-                <div>
-                  <strong>{t('knowledgeBase.keywords')}:</strong>{' '}
-                  {result.metadata.keywords.join(', ')}
-                </div>
-              )}
             </div>
           </div>
           <div className="border-t border-border pt-4">

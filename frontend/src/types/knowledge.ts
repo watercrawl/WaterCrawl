@@ -1,4 +1,4 @@
-import { Model, ProviderConfig, ProviderEmbedding } from './provider';
+import { ProviderConfig } from './provider';
 
 export enum KnowledgeBaseStatus {
   Active = 'active',
@@ -34,18 +34,52 @@ export interface KnowledgeBaseDocument {
   error?: string; // Error message if processing failed
 }
 
+export enum RetrievalType {
+  VectorSearch = 'vector_search',
+  FullTextSearch = 'full_text_search',
+  HybridSearch = 'hybrid_search',
+}
+
+export interface RetrievalSetting {
+  uuid: string;
+  name: string;
+  knowledge_base: string;
+  retrieval_type: RetrievalType;
+  is_default: boolean;
+  reranker_enabled: boolean;
+  reranker_model_key: string | null;
+  reranker_provider_config: ProviderConfig | null;
+  top_k: number;
+  hybrid_alpha: number | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface RetrievalSettingFormData {
+  name: string;
+  retrieval_type: RetrievalType;
+  is_default: boolean;
+  reranker_enabled: boolean;
+  reranker_model_key: string | null;
+  reranker_provider_config_id: string | null;
+  reranker_model_config?: Record<string, any>;
+  top_k: number;
+  hybrid_alpha: number | null;
+}
+
 export interface KnowledgeBaseDetail extends KnowledgeBase {
   chunk_size: number;
   chunk_overlap: number;
-  embedding_model: ProviderEmbedding;
-  embedding_provider_config: ProviderConfig;
-  summarization_model: Model;
-  summarization_provider_config: ProviderConfig;
+  embedding_model_key: string | null;
+  embedding_provider_config: ProviderConfig | null;
+  summarization_model_key: string | null;
+  summarization_provider_config: ProviderConfig | null;
   summarizer_type: SummarizerType;
-  summarizer_context: string;
-  summarizer_temperature: number;
+  summarizer_context: string | null;
+  summarizer_llm_config: Record<string, unknown> | null;
   document_count: number;
   knowledge_base_each_document_cost: number;
+  default_retrieval_setting: RetrievalSetting | null;
 }
 
 export enum SummarizerType {
@@ -58,13 +92,14 @@ export interface KnowledgeBaseFormData {
   description: string;
   chunk_size: number;
   chunk_overlap: number;
-  embedding_model_id: string | null;
+  embedding_model_key: string | null;
   embedding_provider_config_id: string | null;
-  summarization_model_id: string | null;
+  summarization_model_key: string | null;
   summarization_provider_config_id: string | null;
   summarizer_type: SummarizerType;
   summarizer_context?: string;
-  summarizer_temperature?: number;
+  summarizer_llm_config?: Record<string, unknown>;
+  initial_retrieval_setting?: Partial<RetrievalSettingFormData>;
 }
 
 export interface KnowledgeBaseImportData {
@@ -75,9 +110,9 @@ export interface KnowledgeBaseImportData {
 
 export interface KnowledgeBaseContextAwareEnhanceData {
   provider_config_id: string;
-  llm_model_id: string;
+  llm_model_key: string;
   content: string;
-  temperature: number | null;
+  llm_model_config?: Record<string, unknown>;
 }
 
 export interface KnowledgeBaseContextAwareEnhanceResponse {
@@ -94,7 +129,6 @@ export interface KnowledgeBaseChunk {
   index: number;
   document: string;
   content: string;
-  keywords: string[];
   created_at: string;
   updated_at: string;
 }
@@ -102,3 +136,8 @@ export interface KnowledgeBaseChunk {
 // Default and recommended values
 export const DEFAULT_CHUNK_SIZE = 1024;
 export const calculateChunkOverlap = (chunkSize: number) => Math.floor(chunkSize * 0.2); // 20% overlap as a best practice
+
+export interface KnowledgeBaseQueryRequest {
+  query: string;
+  retrieval_setting_id?: string;
+}

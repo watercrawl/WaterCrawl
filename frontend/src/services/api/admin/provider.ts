@@ -10,6 +10,13 @@ import {
   AdminProviderConfigRequest,
 } from '../../../types/admin/provider';
 import { PaginatedResponse } from '../../../types/common';
+import {
+  CreateCustomModelRequest,
+  ProviderConfigDetail,
+  ProviderConfigModel,
+  SetModelStatusRequest,
+  UpdateCustomModelRequest,
+} from '../../../types/provider';
 
 export const adminProviderApi = {
   providerConfiguration: {
@@ -122,6 +129,55 @@ export const adminProviderApi = {
     },
     async delete(uuid: string): Promise<void> {
       await api.delete(`/api/v1/admin/llm/embedding-models/${uuid}/`);
+    },
+  },
+  // Model management for provider configs (nested under provider-configs/{id}/models/)
+  providerConfigModels: {
+    async list(providerConfigId: string): Promise<ProviderConfigDetail> {
+      return api
+        .get<ProviderConfigDetail>(
+          `/api/v1/admin/llm/provider-configs/${providerConfigId}/models/`
+        )
+        .then(({ data }) => data);
+    },
+    async setStatus(
+      providerConfigId: string,
+      data: SetModelStatusRequest
+    ): Promise<ProviderConfigModel> {
+      return api
+        .post<ProviderConfigModel>(
+          `/api/v1/admin/llm/provider-configs/${providerConfigId}/models/set-status/`,
+          data
+        )
+        .then(({ data }) => data);
+    },
+    async create(
+      providerConfigId: string,
+      data: CreateCustomModelRequest
+    ): Promise<ProviderConfigModel> {
+      return api
+        .post<ProviderConfigModel>(
+          `/api/v1/admin/llm/provider-configs/${providerConfigId}/models/`,
+          data
+        )
+        .then(({ data }) => data);
+    },
+    async update(
+      providerConfigId: string,
+      modelUuid: string,
+      data: UpdateCustomModelRequest
+    ): Promise<ProviderConfigModel> {
+      return api
+        .patch<ProviderConfigModel>(
+          `/api/v1/admin/llm/provider-configs/${providerConfigId}/models/${modelUuid}/`,
+          data
+        )
+        .then(({ data }) => data);
+    },
+    async delete(providerConfigId: string, modelUuid: string): Promise<void> {
+      await api.delete(
+        `/api/v1/admin/llm/provider-configs/${providerConfigId}/models/${modelUuid}/`
+      );
     },
   },
 };

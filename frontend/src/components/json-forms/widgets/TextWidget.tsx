@@ -22,7 +22,7 @@ export const TextWidget: React.FC<TextWidgetProps> = ({
       onBlur={onBlur}
       disabled={schema.disabled || disabled}
       placeholder={schema.placeholder}
-      className="block w-full rounded-md border border-input-border bg-input text-foreground shadow-sm placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary sm:text-sm"
+      className="block w-full rounded-md border border-input-border bg-input px-2.5 py-1.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
     />
   );
 };

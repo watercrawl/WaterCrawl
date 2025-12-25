@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
-from .models import User, Team, TeamMember, TeamInvitation, TeamAPIKey
+from .models import User, Team, TeamMember, TeamInvitation, TeamAPIKey, Media
 
 
 class TeamMemberInline(admin.TabularInline):
@@ -71,3 +71,19 @@ class TeamAPIKeyAdmin(admin.ModelAdmin):
     search_fields = ("name", "team__name", "key")
     list_filter = ("created_at", "last_used_at")
     readonly_fields = ("key",)
+
+
+@admin.register(Media)
+class MediaAdmin(admin.ModelAdmin):
+    list_display = [
+        "file_name",
+        "team",
+        "content_type",
+        "size",
+        "related_object_type",
+        "created_at",
+    ]
+    list_filter = ["content_type", "created_at", "related_object_type"]
+    search_fields = ["file_name", "team__name"]
+    readonly_fields = ["uuid", "created_at", "updated_at"]
+    raw_id_fields = ["team", "related_object_type"]

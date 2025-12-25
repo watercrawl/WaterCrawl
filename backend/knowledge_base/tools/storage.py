@@ -28,7 +28,7 @@ class KnowledgeBaseStorageService:
         self.knowledge_base = knowledge_base
 
     @classmethod
-    def from_knowledge_base(cls, knowledge_base):
+    def from_knowledge_base(cls, knowledge_base) -> "KnowledgeBaseStorageService":
         return cls(knowledge_base)
 
     def get_storage_file(self, file: TemporaryUploadedFile) -> StorageFile:

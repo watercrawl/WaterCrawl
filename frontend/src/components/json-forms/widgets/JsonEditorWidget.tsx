@@ -57,20 +57,21 @@ export const JsonEditorWidget: React.FC<FieldProps> = ({ schema, value, onChange
   }, [value]);
 
   return (
-    <div className={`ltr relative ${hasError ? 'rounded-md border border-error' : ''}`}>
+    <div className={`ltr relative overflow-hidden rounded-md ${hasError ? 'ring-1 ring-error' : 'ring-1 ring-input-border'}`}>
       <Editor
-        height={ui.editorHeight || '200px'}
+        height={ui.editorHeight || '150px'}
         defaultLanguage="json"
         value={stringifiedValue}
         onChange={handleEditorChange}
         theme={isDark ? 'vs-dark' : 'light'}
         options={{
           minimap: { enabled: false },
-          fontSize: ui.fontSize || 14,
+          fontSize: ui.fontSize || 13,
           lineNumbers: 'on',
           scrollBeyondLastLine: false,
           automaticLayout: true,
           readOnly: schema.readOnly,
+          padding: { top: 8, bottom: 8 },
           ...ui.editorOptions,
         }}
       />

@@ -11,6 +11,8 @@ import {
   ArchiveBoxIcon,
   TrashIcon,
   ExclamationTriangleIcon,
+  PencilIcon,
+  CheckCircleIcon,
 } from '@heroicons/react/24/outline';
 
 import { CrawlStatus } from '../../types/crawl';
@@ -32,6 +34,8 @@ const STATUS_ICONS = {
   active: <CheckIcon className="h-4 w-4" />,
   archived: <ArchiveBoxIcon className="h-4 w-4" />,
   deleted: <TrashIcon className="h-4 w-4" />,
+  draft: <PencilIcon className="h-4 w-4" />,
+  published: <CheckCircleIcon className="h-4 w-4" />,
 };
 
 const STATUS_COLORS: Record<string, string> = {
@@ -46,6 +50,8 @@ const STATUS_COLORS: Record<string, string> = {
   active: 'bg-success text-success-foreground border-success',
   archived: 'bg-warning text-warning-foreground border-warning',
   deleted: 'bg-error text-error-foreground border-error',
+  draft: 'bg-warning text-warning-foreground border-warning',
+  published: 'bg-success text-success-foreground border-success',
 } as const;
 
 const getStatusColor = (status: string): string => {
@@ -70,6 +76,8 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, showIcon = fal
       active: t('status.active'),
       archived: t('status.archived'),
       deleted: t('status.deleted'),
+      draft: t('agents.status.draft'),
+      published: t('agents.status.published'),
     };
     return statusMap[status.toLowerCase()] || status;
   };

@@ -237,11 +237,11 @@ class KnowledgeBaseRequestValidatorMixin(PlanValidatorInterface):
 
         data["knowledge_base_each_document_cost"] = 0
 
-        embedding_provider_config = data["embedding_provider_config"]
+        embedding_provider_config = data.get("embedding_provider_config")
         if embedding_provider_config and embedding_provider_config.team != self.team:
             data["knowledge_base_each_document_cost"] += 1
 
-        summary_provider_config = data["summarization_provider_config"]
+        summary_provider_config = data.get("summarization_provider_config")
         if summary_provider_config and summary_provider_config.team != self.team:
             data["knowledge_base_each_document_cost"] += 1
 

@@ -78,6 +78,21 @@ export default {
         sans: ['var(--font-sans-default)', 'ui-sans-serif', 'system-ui'],
         persian: ['var(--font-sans-persian)', 'ui-sans-serif', 'system-ui'],
       },
+      keyframes: {
+        'dot-bounce': {
+          '0%, 80%, 100%': { 
+            transform: 'scale(0)',
+            opacity: '0.5',
+          },
+          '40%': { 
+            transform: 'scale(1)',
+            opacity: '1',
+          },
+        },
+      },
+      animation: {
+        'dot-bounce': 'dot-bounce 1.4s ease-in-out infinite',
+      },
     },
   },
   plugins: [

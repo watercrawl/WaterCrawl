@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     "plan",
     "llm",
     "knowledge_base",
+    "agent",
 ]
 
 MIDDLEWARE = [
@@ -108,6 +109,9 @@ DATABASES = {
 CACHES = {
     "default": env.cache_url("REDIS_URL", default="redis://localhost:6379/1"),
 }
+
+# LLM Model Config Cache timeout in seconds (default: 1 hour)
+LLM_MODEL_CONFIG_CACHE_TIMEOUT = env.int("LLM_MODEL_CONFIG_CACHE_TIMEOUT", default=3600)
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -185,6 +189,14 @@ STORAGES = {
             default="django_minio_backend.models.MinioBackend",
         ),
         "OPTIONS": env.json("MEDIA_FILE_STORAGE_OPTIONS", default={}),
+    },
+    "agent": {
+        "BACKEND": env(
+            "AGENT_FILE_STORAGE",
+            cast=str,
+            default="django_minio_backend.models.MinioBackend",
+        ),
+        "OPTIONS": env.json("AGENT_FILE_STORAGE_OPTIONS", default={}),
     },
 }
 STATIC_URL = "/static/"
@@ -419,13 +431,6 @@ API_ENCRYPTION_KEY = env(
 
 MCP_SERVER = env("MCP_SERVER", cast=str, default="/sse")
 
-# Knowledge Base settings
-KNOWLEDGE_BASE_ENABLED = env.bool("KNOWLEDGE_BASE_ENABLED", default=False)
-KNOWLEDGE_BASE_KEYWORD_COUNT = env("KNOWLEDGE_BASE_KEYWORD_COUNT", cast=int, default=10)
-KNOWLEDGE_BASE_OPENSEARCH_URL = env.list(
-    "KNOWLEDGE_BASE_OPENSEARCH_URL", cast=str, default=[]
-)
-
 SENTRY_DSN = env("SENTRY_DSN", cast=str, default="")
 SENTRY_TRACES_SAMPLE_RATE = env("SENTRY_TRACES_SAMPLE_RATE", cast=float, default=1.0)
 SENTRY_SEND_DEFAULT_PII = env("SENTRY_SEND_DEFAULT_PII", cast=bool, default=False)
@@ -434,3 +439,17 @@ SENTRY_HTTP_PROXY = env("SENTRY_HTTP_PROXY", cast=str, default="")
 SENTRY_HTTPS_PROXY = env("SENTRY_HTTPS_PROXY", cast=str, default="")
 SENTRY_ENVIRONMENT = env("SENTRY_ENVIRONMENT", cast=str, default="development")
 SENTRY_DEBUG = env("SENTRY_DEBUG", cast=bool, default=False)
+
+API_BASE_URL = env("API_BASE_URL", cast=str, default="http://localhost:8000")
+
+# Knowledge Base settings
+KNOWLEDGE_BASE_VECTOR_STORE_TYPE = env(
+    "KNOWLEDGE_BASE_VECTOR_STORE_TYPE", cast=str, default="opensearch"
+)
+
+OPENSEARCH_BASE_URL = env.list("OPENSEARCH_BASE_URL", cast=str, default=[])
+
+# Weaviate settings
+WEAVIATE_BASE_URL = env("WEAVIATE_BASE_URL", cast=str, default="http://localhost:8080")
+WEAVIATE_GRPC_PORT = env("WEAVIATE_GRPC_PORT", cast=int, default=50051)
+WEAVIATE_API_KEY = env("WEAVIATE_API_KEY", cast=str, default="")

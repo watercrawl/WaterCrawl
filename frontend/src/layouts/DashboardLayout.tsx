@@ -15,6 +15,9 @@ import {
   DocumentTextIcon,
   BookOpenIcon,
   ServerIcon,
+  CpuChipIcon,
+  WrenchIcon,
+  FolderIcon,
 } from '@heroicons/react/24/outline';
 
 import { TeamSelector } from '../components/dashboard/TeamSelector';
@@ -79,15 +82,14 @@ export const DashboardLayout = () => {
       icon: MagnifyingGlassIcon,
     },
     { name: t('dashboard.navigation.sitemap'), href: '/dashboard/sitemap', icon: MapIcon },
-    ...(settings?.is_knowledge_base_enabled
-      ? [
-          {
-            name: t('dashboard.navigation.knowledgeBase'),
-            href: '/dashboard/knowledge-base',
-            icon: BookOpenIcon,
-          },
-        ]
-      : []),
+    { name: t('dashboard.navigation.agents'), href: '/dashboard/agents', icon: CpuChipIcon },
+    { name: t('dashboard.navigation.tools'), href: '/dashboard/tools', icon: WrenchIcon },
+    { name: t('dashboard.navigation.mediaLibrary'), href: '/dashboard/media', icon: FolderIcon },
+    {
+      name: t('dashboard.navigation.knowledgeBase'),
+      href: '/dashboard/knowledge-base',
+      icon: BookOpenIcon,
+    },
     {
       name: t('dashboard.navigation.activityLogs'),
       icon: ClockIcon,
@@ -178,7 +180,6 @@ export const DashboardLayout = () => {
           logo={!isDark ? '/logo.svg' : '/logo-dark.svg'}
           logoAlt="WaterCrawl"
           title="WaterCrawl"
-          subtitle="Web Crawling Platform"
           titleLink="/dashboard"
           navigation={navigation}
           isOpen={sidebarOpen}
@@ -197,7 +198,6 @@ export const DashboardLayout = () => {
           logo={!isDark ? '/logo.svg' : '/logo-dark.svg'}
           logoAlt="WaterCrawl"
           title="WaterCrawl"
-          subtitle="Web Crawling Platform"
           titleLink="/dashboard"
           navigation={navigation}
           expandedMenus={expandedMenus}
