@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: watercrawl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-03 22:05+0000\n"
-"PO-Revision-Date: 2025-11-03 23:22\n"
+"POT-Creation-Date: 2025-12-24 01:46+0000\n"
+"PO-Revision-Date: 2025-12-25 02:13\n"
 "Last-Translator: \n"
 "Language-Team: English\n"
 "Language: en_US\n"
@@ -17,56 +17,515 @@ msgstr ""
 "X-Crowdin-File: /development/backend/locale/en/LC_MESSAGES/django.po\n"
 "X-Crowdin-File-ID: 26\n"
 
-#: agent/models.py:8 core/models.py:147 llm/models.py:8 llm/models.py:102
-#: user/models.py:71 user/models.py:160
+#: agent/filters.py:12
+msgid "Search"
+msgstr ""
+
+#: agent/filters.py:13
+msgid "Search agents by name"
+msgstr ""
+
+#: agent/models.py:13 agent/models.py:112 agent/models.py:131
+#: agent/models.py:159 agent/models.py:208 agent/models.py:237
+#: agent/models.py:254 core/models.py:147 knowledge_base/models.py:212
+#: user/models.py:76 user/models.py:165
 msgid "Name"
 msgstr ""
 
-#: agent/models.py:10
-msgid "System Prompt"
-msgstr ""
-
-#: agent/models.py:15
-msgid "Config Provider"
-msgstr ""
-
-#: agent/models.py:23
-msgid "LLM Model"
-msgstr ""
-
-#: agent/models.py:31 core/consts.py:203 knowledge_base/models.py:15
-#: llm/models.py:56 plan/models.py:115 plan/models.py:197 user/models.py:92
-#: user/models.py:110 user/models.py:130 user/models.py:165
+#: agent/models.py:17 agent/models.py:144 agent/models.py:182
+#: agent/models.py:232 core/consts.py:203 knowledge_base/models.py:17
+#: llm/models.py:23 plan/models.py:115 plan/models.py:197 user/models.py:97
+#: user/models.py:115 user/models.py:135 user/models.py:170 user/models.py:195
 msgid "Team"
 msgstr ""
 
-#: agent/models.py:41 agent/models.py:50
+#: agent/models.py:41 agent/models.py:49 agent/models.py:95 agent/models.py:297
+#: agent/models.py:321
 msgid "Agent"
 msgstr ""
 
-#: agent/models.py:42
+#: agent/models.py:42 agent/models.py:96
 msgid "Agents"
 msgstr ""
 
-#: agent/models.py:46
+#: agent/models.py:53 agent/models.py:169 core/models.py:125 core/models.py:199
+#: knowledge_base/models.py:86 knowledge_base/models.py:139 plan/models.py:144
+#: plan/models.py:166
+msgid "Status"
+msgstr ""
+
+#: agent/models.py:58
+msgid "System Prompt"
+msgstr ""
+
+#: agent/models.py:65
+msgid "Config Provider"
+msgstr ""
+
+#: agent/models.py:71
+msgid "LLM Model"
+msgstr ""
+
+#: agent/models.py:80
+msgid "JSON Output"
+msgstr ""
+
+#: agent/models.py:82
+msgid "Enable structured JSON output formatting"
+msgstr ""
+
+#: agent/models.py:85 llm/models_config/config.py:271
+msgid "JSON Schema"
+msgstr ""
+
+#: agent/models.py:88
+msgid "JSON Schema for structured output format"
+msgstr ""
+
+#: agent/models.py:102
+msgid "Agent Version"
+msgstr ""
+
+#: agent/models.py:107
+msgid "Parameter Type"
+msgstr ""
+
+#: agent/models.py:116 agent/models.py:209 agent/models.py:255
+msgid "Value"
+msgstr ""
+
+#: agent/models.py:126
+msgid "Agent Context Parameter"
+msgstr ""
+
+#: agent/models.py:127
+msgid "Agent Context Parameters"
+msgstr ""
+
+#: agent/models.py:132
+msgid "LLM Description"
+msgstr ""
+
+#: agent/models.py:133 core/models.py:148 user/models.py:175
+msgid "Key"
+msgstr ""
+
+#: agent/models.py:135
 msgid "Tool Type"
 msgstr ""
 
-#: agent/models.py:53
-msgid "Config"
+#: agent/models.py:154 agent/models.py:291
+msgid "Tool"
 msgstr ""
 
-#: agent/models.py:62
+#: agent/models.py:155
+msgid "Tools"
+msgstr ""
+
+#: agent/models.py:160 core/models.py:74 core/models.py:196
+msgid "URL"
+msgstr ""
+
+#: agent/models.py:162
+msgid "Transport Type"
+msgstr ""
+
+#: agent/models.py:175
+msgid "Error Message"
+msgstr ""
+
+#: agent/models.py:192 agent/models.py:200 agent/models.py:216
+msgid "MCP Server"
+msgstr ""
+
+#: agent/models.py:193
+msgid "MCP Servers"
+msgstr ""
+
+#: agent/models.py:204 agent/models.py:250
+msgid "Tool Parameter Type"
+msgstr ""
+
+#: agent/models.py:224
+msgid "MCP Tool"
+msgstr ""
+
+#: agent/models.py:225
+msgid "MCP Tools"
+msgstr ""
+
+#: agent/models.py:246 agent/models.py:262
+msgid "API Spec"
+msgstr ""
+
+#: agent/models.py:266
+msgid "Method"
+msgstr ""
+
+#: agent/models.py:270
+msgid "Path"
+msgstr ""
+
+#: agent/models.py:274 user/models.py:200
+msgid "Content Type"
+msgstr ""
+
+#: agent/models.py:283
+msgid "API Spec Tool"
+msgstr ""
+
+#: agent/models.py:284
+msgid "API Spec Tools"
+msgstr ""
+
+#: agent/models.py:307
+msgid "Agent Tool"
+msgstr ""
+
+#: agent/models.py:308
+msgid "Agent Tools"
+msgstr ""
+
+#: agent/models.py:315 knowledge_base/models.py:109
+#: knowledge_base/models.py:124 knowledge_base/models.py:208
+msgid "Knowledge Base"
+msgstr ""
+
+#: agent/models.py:357
+msgid "Agent Knowledge Base"
+msgstr ""
+
+#: agent/models.py:358
+msgid "Agent Knowledge Bases"
+msgstr ""
+
+#: agent/models.py:369
+msgid "Tool Agent"
+msgstr ""
+
+#: agent/models.py:371
+msgid "The agent to be used as a tool"
+msgstr ""
+
+#: agent/models.py:376
+msgid "Parent Agent Version"
+msgstr ""
+
+#: agent/models.py:378
+msgid "The agent version that uses this agent as a tool"
+msgstr ""
+
+#: agent/models.py:382
+msgid "Configuration for how the tool agent should be invoked"
+msgstr ""
+
+#: agent/models.py:434
+msgid "Agent as Tool"
+msgstr ""
+
+#: agent/models.py:435
+msgid "Agents as Tools"
+msgstr ""
+
+#: agent/models.py:444
 msgid "agent"
 msgstr ""
 
-#: agent/models.py:70 core/models.py:19 core/models.py:117 core/models.py:172
+#: agent/models.py:450
+msgid "agent version"
+msgstr ""
+
+#: agent/models.py:456 core/models.py:19 core/models.py:117 core/models.py:172
 #: core/models.py:193
 msgid "team"
 msgstr ""
 
-#: agent/models.py:79
+#: agent/models.py:462
+msgid "Conversation"
+msgstr ""
+
+#: agent/models.py:463
+msgid "Conversations"
+msgstr ""
+
+#: agent/models.py:470
 msgid "conversation"
+msgstr ""
+
+#: agent/models.py:501
+msgid "Message"
+msgstr ""
+
+#: agent/models.py:502
+msgid "Messages"
+msgstr ""
+
+#: agent/serializers.py:48
+msgid "Version does not exist"
+msgstr ""
+
+#: agent/serializers.py:50
+msgid "You cannot revert to current draft version"
+msgstr ""
+
+#: agent/serializers.py:107 agent/serializers.py:133 llm/views.py:236
+msgid "Provider config not found"
+msgstr ""
+
+#: agent/serializers.py:124
+msgid "Provider config UUID is required"
+msgstr ""
+
+#: agent/serializers.py:142 knowledge_base/serializers.py:456
+msgid "Invalid llm model Key."
+msgstr ""
+
+#: agent/serializers.py:185
+msgid "Tool not found"
+msgstr ""
+
+#: agent/serializers.py:227
+msgid "Knowledge base not found"
+msgstr ""
+
+#: agent/serializers.py:275
+msgid "Agent not found"
+msgstr ""
+
+#: agent/serializers.py:282
+msgid "Agent cannot use itself as a tool"
+msgstr ""
+
+#: agent/services.py:132
+msgid "Published version cannot be edited."
+msgstr ""
+
+#: agent/services.py:136
+msgid "System prompt is required."
+msgstr ""
+
+#: agent/services.py:139
+msgid "Provider config is required."
+msgstr ""
+
+#: agent/services.py:142
+msgid "LLM model is required."
+msgstr ""
+
+#: agent/tools/base.py:85
+#, python-brace-format
+msgid "Tool with Type {tool_type} has no attribute name."
+msgstr ""
+
+#: agent/tools/base.py:95
+#, python-brace-format
+msgid "{tool_type} has no attribute description."
+msgstr ""
+
+#: agent/tools/base.py:142
+#, python-brace-format
+msgid "Tool {tool_key} not found"
+msgstr ""
+
+#: agent/views.py:70
+msgid "List agents"
+msgstr ""
+
+#: agent/views.py:75
+msgid "Create agent"
+msgstr ""
+
+#: agent/views.py:80
+msgid "Delete agent"
+msgstr ""
+
+#: agent/views.py:85
+msgid "Publish draft"
+msgstr ""
+
+#: agent/views.py:91
+msgid "Get or update draft version"
+msgstr ""
+
+#: agent/views.py:98
+msgid "Chat with draft agent"
+msgstr ""
+
+#: agent/views.py:105
+msgid "Chat with published agent"
+msgstr ""
+
+#: agent/views.py:162
+msgid "No published version found"
+msgstr ""
+
+#: agent/views.py:172
+msgid "No draft version found"
+msgstr ""
+
+#: agent/views.py:187
+msgid "No draft or published version found"
+msgstr ""
+
+#: agent/views.py:205
+msgid "One or more files not found or not accessible"
+msgstr ""
+
+#: agent/views.py:266
+msgid "List agent versions"
+msgstr ""
+
+#: agent/views.py:272
+msgid "Get single version"
+msgstr ""
+
+#: agent/views.py:306
+msgid "List draft tools"
+msgstr ""
+
+#: agent/views.py:311
+msgid "Get draft tool"
+msgstr ""
+
+#: agent/views.py:316
+msgid "Add tool to draft"
+msgstr ""
+
+#: agent/views.py:321 agent/views.py:326
+msgid "Update tool in draft"
+msgstr ""
+
+#: agent/views.py:331
+msgid "Remove tool from draft"
+msgstr ""
+
+#: agent/views.py:387
+msgid "List draft knowledge bases"
+msgstr ""
+
+#: agent/views.py:392
+msgid "Get draft knowledge base"
+msgstr ""
+
+#: agent/views.py:397
+msgid "Add knowledge base to draft"
+msgstr ""
+
+#: agent/views.py:402 agent/views.py:407
+msgid "Update knowledge base in draft"
+msgstr ""
+
+#: agent/views.py:412
+msgid "Remove knowledge base from draft"
+msgstr ""
+
+#: agent/views.py:466
+msgid "List draft agent tools"
+msgstr ""
+
+#: agent/views.py:471
+msgid "Get draft agent tool"
+msgstr ""
+
+#: agent/views.py:476
+msgid "Add agent as tool to draft"
+msgstr ""
+
+#: agent/views.py:481 agent/views.py:486
+msgid "Update agent tool in draft"
+msgstr ""
+
+#: agent/views.py:491
+msgid "Remove agent tool from draft"
+msgstr ""
+
+#: agent/views.py:546
+msgid "List built-in tools"
+msgstr ""
+
+#: agent/views.py:551
+msgid "Get built-in tool"
+msgstr ""
+
+#: agent/views.py:556
+msgid "Test built-in tool"
+msgstr ""
+
+#: agent/views.py:608
+#, python-brace-format
+msgid "Tool failed to execute: {error}"
+msgstr ""
+
+#: agent/views.py:613
+msgid "List API spec tools"
+msgstr ""
+
+#: agent/views.py:618
+msgid "Get API spec tool"
+msgstr ""
+
+#: agent/views.py:623
+msgid "Create API spec tools"
+msgstr ""
+
+#: agent/views.py:628
+msgid "Delete API spec"
+msgstr ""
+
+#: agent/views.py:664
+msgid "API spec is in use"
+msgstr ""
+
+#: agent/views.py:670
+msgid "List MCP servers"
+msgstr ""
+
+#: agent/views.py:675
+msgid "Get MCP server status"
+msgstr ""
+
+#: agent/views.py:680
+msgid "Create MCP server"
+msgstr ""
+
+#: agent/views.py:685
+msgid "Delete MCP server"
+msgstr ""
+
+#: agent/views.py:690
+msgid "OAuth redirect"
+msgstr ""
+
+#: agent/views.py:696
+msgid "OAuth callback"
+msgstr ""
+
+#: agent/views.py:702
+msgid "Revalidate MCP server"
+msgstr ""
+
+#: agent/views.py:739
+msgid "MCP server is in use"
+msgstr ""
+
+#: agent/views.py:747
+msgid "MCP server is not configured for OAuth"
+msgstr ""
+
+#: agent/views.py:790
+msgid "List conversations"
+msgstr ""
+
+#: agent/views.py:795
+msgid "Get conversation"
+msgstr ""
+
+#: agent/views.py:826
+msgid "List conversation messages"
+msgstr ""
+
+#: agent/views.py:852
+msgid "List conversation message blocks"
 msgstr ""
 
 #: common/docs.py:3
@@ -117,15 +576,15 @@ msgstr ""
 msgid "Internal Server Error"
 msgstr ""
 
-#: common/services.py:129
+#: common/services.py:126
 msgid "No recipient provided"
 msgstr ""
 
-#: common/services.py:131
+#: common/services.py:128
 msgid "No subject provided"
 msgstr ""
 
-#: common/services.py:133
+#: common/services.py:130
 msgid "No body or html provided"
 msgstr ""
 
@@ -225,7 +684,7 @@ msgstr ""
 msgid "General"
 msgstr ""
 
-#: core/consts.py:202 llm/consts.py:40
+#: core/consts.py:202 llm/consts.py:91
 msgid "Premium"
 msgstr ""
 
@@ -305,10 +764,6 @@ msgstr ""
 msgid "Crawl Requests"
 msgstr ""
 
-#: core/models.py:74 core/models.py:196
-msgid "URL"
-msgstr ""
-
 #: core/models.py:76 core/models.py:131 core/models.py:206
 msgid "Result"
 msgstr ""
@@ -353,11 +808,6 @@ msgstr ""
 msgid "Duration"
 msgstr ""
 
-#: core/models.py:125 core/models.py:199 knowledge_base/models.py:88
-#: knowledge_base/models.py:130 plan/models.py:144 plan/models.py:166
-msgid "Status"
-msgstr ""
-
 #: core/models.py:142
 msgid "Search Request"
 msgstr ""
@@ -366,11 +816,7 @@ msgstr ""
 msgid "Search Requests"
 msgstr ""
 
-#: core/models.py:148 llm/models.py:9 llm/models.py:103 user/models.py:170
-msgid "Key"
-msgstr ""
-
-#: core/models.py:149 user/models.py:84
+#: core/models.py:149 knowledge_base/models.py:224 user/models.py:89
 msgid "Is Default"
 msgstr ""
 
@@ -418,7 +864,7 @@ msgstr ""
 msgid "Sitemap Requests"
 msgstr ""
 
-#: core/serializers.py:82 core/serializers.py:356
+#: core/serializers.py:82 core/serializers.py:356 core/serializers.py:401
 msgid "Proxy server does not exist"
 msgstr ""
 
@@ -590,17 +1036,18 @@ msgstr ""
 msgid "Chunk Enhancement"
 msgstr ""
 
-#: knowledge_base/admin.py:49 knowledge_base/admin.py:73
-#: knowledge_base/admin.py:98 knowledge_base/models.py:128 llm/admin.py:51
+#: knowledge_base/admin.py:48 knowledge_base/admin.py:72
+#: knowledge_base/admin.py:97 knowledge_base/models.py:137 llm/admin.py:30
+#: user/models.py:233
 msgid "Metadata"
 msgstr ""
 
-#: knowledge_base/admin.py:67 knowledge_base/models.py:119
-#: knowledge_base/models.py:158
+#: knowledge_base/admin.py:66 knowledge_base/models.py:128
+#: knowledge_base/models.py:167
 msgid "Content"
 msgstr ""
 
-#: knowledge_base/admin.py:91
+#: knowledge_base/admin.py:90 knowledge_base/models.py:173 llm/consts.py:24
 msgid "Embedding"
 msgstr ""
 
@@ -644,7 +1091,7 @@ msgstr ""
 msgid "Manual"
 msgstr ""
 
-#: knowledge_base/consts.py:41
+#: knowledge_base/consts.py:41 user/models.py:209
 msgid "File"
 msgstr ""
 
@@ -652,56 +1099,76 @@ msgstr ""
 msgid "Crawl"
 msgstr ""
 
-#: knowledge_base/factories.py:72
+#: knowledge_base/consts.py:50
+msgid "OpenSearch"
+msgstr ""
+
+#: knowledge_base/consts.py:51
+msgid "PostgreSQL"
+msgstr ""
+
+#: knowledge_base/consts.py:52
+msgid "Weaviate"
+msgstr ""
+
+#: knowledge_base/consts.py:53
+msgid "Pinecone"
+msgstr ""
+
+#: knowledge_base/factories.py:65
 #, python-brace-format
 msgid "Text splitter type '{splitter_type}' not supported"
 msgstr ""
 
-#: knowledge_base/factories.py:129
+#: knowledge_base/factories.py:105
+msgid "langchain-cohere is not installed. Please install it: pip install langchain-cohere"
+msgstr ""
+
+#: knowledge_base/factories.py:139
 #, python-brace-format
 msgid "Unsupported embedding provider: {provider_name}"
 msgstr ""
 
-#: knowledge_base/factories.py:186
+#: knowledge_base/factories.py:158
 #, python-brace-format
-msgid "Vector store type '{vector_store_type}' not supported"
+msgid "Unsupported vector store type: {name}"
 msgstr ""
 
-#: knowledge_base/factories.py:263
+#: knowledge_base/factories.py:237
 #, python-brace-format
 msgid "Unsupported document type: {extension}"
 msgstr ""
 
-#: knowledge_base/models.py:10 knowledge_base/models.py:118 llm/models.py:41
+#: knowledge_base/models.py:12 knowledge_base/models.py:127 llm/models.py:8
 #: plan/models.py:98
 msgid "Title"
 msgstr ""
 
-#: knowledge_base/models.py:11 llm/models.py:104 plan/models.py:15
+#: knowledge_base/models.py:13 plan/models.py:15
 msgid "Description"
 msgstr ""
 
-#: knowledge_base/models.py:19
+#: knowledge_base/models.py:21
 msgid "Chunk size"
 msgstr ""
 
-#: knowledge_base/models.py:20
+#: knowledge_base/models.py:22
 msgid "Number of documents to be processed in each chunk"
 msgstr ""
 
-#: knowledge_base/models.py:24
+#: knowledge_base/models.py:26
 msgid "Chunk overlap"
 msgstr ""
 
-#: knowledge_base/models.py:25
+#: knowledge_base/models.py:27
 msgid "Number of overlapping documents in each chunk"
 msgstr ""
 
-#: knowledge_base/models.py:29
+#: knowledge_base/models.py:31
 msgid "Chunk separator"
 msgstr ""
 
-#: knowledge_base/models.py:30
+#: knowledge_base/models.py:32
 msgid "Separator used to split documents into chunks"
 msgstr ""
 
@@ -725,524 +1192,1927 @@ msgstr ""
 msgid "Provider configuration for summarization models"
 msgstr ""
 
-#: knowledge_base/models.py:62
+#: knowledge_base/models.py:60
 msgid "Summarization Model"
 msgstr ""
 
-#: knowledge_base/models.py:68
+#: knowledge_base/models.py:66
 msgid "Summarizer Context"
 msgstr ""
 
-#: knowledge_base/models.py:71
+#: knowledge_base/models.py:69
 msgid "Context to be provided to the summarizer"
 msgstr ""
 
-#: knowledge_base/models.py:74
+#: knowledge_base/models.py:72
 msgid "Summarizer Type"
 msgstr ""
 
-#: knowledge_base/models.py:78
+#: knowledge_base/models.py:76
 msgid "The type of summarizer to use for document summarization"
 msgstr ""
 
-#: knowledge_base/models.py:81
-msgid "Summarizer Temperature"
+#: knowledge_base/models.py:79
+msgid "Summarizer LLM Config"
 msgstr ""
 
-#: knowledge_base/models.py:85
-msgid "Temperature to be provided to the summarizer"
+#: knowledge_base/models.py:83
+msgid "LLM config to be provided to the summarizer"
 msgstr ""
 
-#: knowledge_base/models.py:94
+#: knowledge_base/models.py:92
 msgid "Knowledge Base Each Document Cost"
 msgstr ""
 
-#: knowledge_base/models.py:95
+#: knowledge_base/models.py:93
 msgid "The cost of each document in the knowledge base"
 msgstr ""
 
-#: knowledge_base/models.py:100 knowledge_base/models.py:115
-msgid "Knowledge Base"
+#: knowledge_base/models.py:97
+msgid "Vector Store Type"
 msgstr ""
 
-#: knowledge_base/models.py:101
+#: knowledge_base/models.py:100
+msgid "Type of vector store used for this knowledge base"
+msgstr ""
+
+#: knowledge_base/models.py:110
 msgid "Knowledge Bases"
 msgstr ""
 
-#: knowledge_base/models.py:121
+#: knowledge_base/models.py:130
 msgid "Source Type"
 msgstr ""
 
-#: knowledge_base/models.py:126
+#: knowledge_base/models.py:135
 msgid "Source"
 msgstr ""
 
-#: knowledge_base/models.py:127
+#: knowledge_base/models.py:136
 msgid "Error"
 msgstr ""
 
-#: knowledge_base/models.py:137 knowledge_base/models.py:154
+#: knowledge_base/models.py:146 knowledge_base/models.py:163
 msgid "Document"
 msgstr ""
 
-#: knowledge_base/models.py:138
+#: knowledge_base/models.py:147
 msgid "Documents"
 msgstr ""
 
-#: knowledge_base/models.py:157
+#: knowledge_base/models.py:166
 msgid "Index"
 msgstr ""
 
-#: knowledge_base/models.py:159
-msgid "Keywords"
+#: knowledge_base/models.py:174
+msgid "Vector embedding for semantic search"
 msgstr ""
 
-#: knowledge_base/models.py:162
+#: knowledge_base/models.py:178
 msgid "Chunk"
 msgstr ""
 
-#: knowledge_base/models.py:163
+#: knowledge_base/models.py:179
 msgid "Chunks"
 msgstr ""
 
-#: knowledge_base/serializers.py:89
+#: knowledge_base/models.py:199
+msgid "Vector Search"
+msgstr ""
+
+#: knowledge_base/models.py:200
+msgid "Full-Text Search"
+msgstr ""
+
+#: knowledge_base/models.py:201
+msgid "Hybrid Search"
+msgstr ""
+
+#: knowledge_base/models.py:214
+msgid "Name for this retrieval setting"
+msgstr ""
+
+#: knowledge_base/models.py:217
+msgid "Retrieval Type"
+msgstr ""
+
+#: knowledge_base/models.py:221
+msgid "Type of retrieval to use"
+msgstr ""
+
+#: knowledge_base/models.py:226
+msgid "Whether this is the default retrieval setting for the knowledge base"
+msgstr ""
+
+#: knowledge_base/models.py:230
+msgid "Reranker Enabled"
+msgstr ""
+
+#: knowledge_base/models.py:232
+msgid "Whether to use reranker model for post-processing results"
+msgstr ""
+
+#: knowledge_base/models.py:235
+msgid "Reranker Model Key"
+msgstr ""
+
+#: knowledge_base/models.py:239
+msgid "Model key for reranker (required if reranker_enabled is true)"
+msgstr ""
+
+#: knowledge_base/models.py:244
+msgid "Reranker Provider Config"
+msgstr ""
+
+#: knowledge_base/models.py:248
+msgid "Provider configuration for reranker model"
+msgstr ""
+
+#: knowledge_base/models.py:252 llm/models_config/config.py:186
+msgid "Top K"
+msgstr ""
+
+#: knowledge_base/models.py:254
+msgid "Number of top results to retrieve"
+msgstr ""
+
+#: knowledge_base/models.py:257
+msgid "Score Threshold"
+msgstr ""
+
+#: knowledge_base/models.py:260
+msgid "Minimum score threshold for results (optional)"
+msgstr ""
+
+#: knowledge_base/models.py:263
+msgid "Score Threshold Enabled"
+msgstr ""
+
+#: knowledge_base/models.py:265
+msgid "Whether to apply score threshold filtering"
+msgstr ""
+
+#: knowledge_base/models.py:269
+msgid "Hybrid Alpha"
+msgstr ""
+
+#: knowledge_base/models.py:273
+msgid "Weight for semantic search in hybrid mode (0.0-1.0, higher = more semantic). Used for weighted score ranking when reranker_enabled is false."
+msgstr ""
+
+#: knowledge_base/models.py:277
+msgid "Retrieval Setting"
+msgstr ""
+
+#: knowledge_base/models.py:278
+msgid "Retrieval Settings"
+msgstr ""
+
+#: knowledge_base/models.py:292 knowledge_base/serializers.py:77
+msgid "Reranker model key is required when reranker is enabled."
+msgstr ""
+
+#: knowledge_base/models.py:296 knowledge_base/serializers.py:73
+msgid "Reranker provider config is required when reranker is enabled."
+msgstr ""
+
+#: knowledge_base/models.py:301
+msgid "Reranker provider config is required when using rerank model strategy."
+msgstr ""
+
+#: knowledge_base/models.py:308 knowledge_base/serializers.py:93
+msgid "Vector search and hybrid search require the knowledge base to have embedding configuration."
+msgstr ""
+
+#: knowledge_base/models.py:319
+msgid "Only one retrieval setting can be set as default per knowledge base."
+msgstr ""
+
+#: knowledge_base/serializers.py:61
+msgid "Invalid reranker provider config id."
+msgstr ""
+
+#: knowledge_base/serializers.py:196
 msgid "Invalid embedding provider config id."
 msgstr ""
 
-#: knowledge_base/serializers.py:104
+#: knowledge_base/serializers.py:211
 msgid "Invalid summarization provider config id."
 msgstr ""
 
-#: knowledge_base/serializers.py:121
-msgid "Invalid embedding model id."
+#: knowledge_base/serializers.py:225
+msgid "Embedding model key is required."
 msgstr ""
 
-#: knowledge_base/serializers.py:127
+#: knowledge_base/serializers.py:234
+msgid "Invalid embedding model Key."
+msgstr ""
+
+#: knowledge_base/serializers.py:240
 msgid "Summarization model id is required."
 msgstr ""
 
-#: knowledge_base/serializers.py:135
-msgid "Invalid summarization model id."
+#: knowledge_base/serializers.py:252
+msgid "Invalid summarization model Key."
 msgstr ""
 
-#: knowledge_base/serializers.py:142
-msgid "Invalid summarizer temperature."
+#: knowledge_base/serializers.py:274
+msgid "Initial retrieval setting is required."
 msgstr ""
 
-#: knowledge_base/serializers.py:235
+#: knowledge_base/serializers.py:367
 msgid "crawl_result_uuids cannot be empty."
 msgstr ""
 
-#: knowledge_base/serializers.py:242
+#: knowledge_base/serializers.py:374
 msgid "No valid crawl results found for the provided UUIDs."
 msgstr ""
 
-#: knowledge_base/serializers.py:262
+#: knowledge_base/serializers.py:394
 msgid "Invalid crawl request UUID."
 msgstr ""
 
-#: knowledge_base/serializers.py:280
+#: knowledge_base/serializers.py:412
 msgid "Files cannot be empty."
 msgstr ""
 
-#: knowledge_base/serializers.py:286
+#: knowledge_base/serializers.py:418
 msgid "File must be a pdf, docx, image, or text."
 msgstr ""
 
-#: knowledge_base/serializers.py:313
+#: knowledge_base/serializers.py:445
 msgid "Invalid provider config id."
 msgstr ""
 
-#: knowledge_base/serializers.py:324
-msgid "Invalid temperature."
-msgstr ""
-
-#: knowledge_base/serializers.py:329
-msgid "Invalid llm model id."
-msgstr ""
-
-#: knowledge_base/views.py:46
+#: knowledge_base/views.py:47
 msgid "List knowledge bases"
 msgstr ""
 
-#: knowledge_base/views.py:47
+#: knowledge_base/views.py:48
 msgid "List all knowledge bases for the current team."
 msgstr ""
 
-#: knowledge_base/views.py:51
+#: knowledge_base/views.py:52
 msgid "Get knowledge base details"
 msgstr ""
 
-#: knowledge_base/views.py:52
+#: knowledge_base/views.py:53
 msgid "Get details for a specific knowledge base."
 msgstr ""
 
-#: knowledge_base/views.py:59
+#: knowledge_base/views.py:60
 msgid "Create knowledge base"
 msgstr ""
 
-#: knowledge_base/views.py:60
+#: knowledge_base/views.py:61
 msgid "Create a new knowledge base for the current team."
 msgstr ""
 
-#: knowledge_base/views.py:68
+#: knowledge_base/views.py:69
 msgid "Update knowledge base"
 msgstr ""
 
-#: knowledge_base/views.py:69
+#: knowledge_base/views.py:70
 msgid "Update an existing knowledge base."
 msgstr ""
 
-#: knowledge_base/views.py:73
+#: knowledge_base/views.py:74
 msgid "Partially update knowledge base"
 msgstr ""
 
-#: knowledge_base/views.py:74
+#: knowledge_base/views.py:75
 msgid "Partially update an existing knowledge base."
 msgstr ""
 
-#: knowledge_base/views.py:78
+#: knowledge_base/views.py:79
 msgid "Delete knowledge base"
 msgstr ""
 
-#: knowledge_base/views.py:79
+#: knowledge_base/views.py:80
 msgid "Delete an existing knowledge base."
 msgstr ""
 
-#: knowledge_base/views.py:83
+#: knowledge_base/views.py:84
 msgid "Enhance knowledge base context aware text"
 msgstr ""
 
-#: knowledge_base/views.py:84
+#: knowledge_base/views.py:85
 msgid "Enhance documents using context-aware summarization."
 msgstr ""
 
-#: knowledge_base/views.py:90
+#: knowledge_base/views.py:91
 msgid "Query knowledge base"
 msgstr ""
 
-#: knowledge_base/views.py:91
+#: knowledge_base/views.py:92
 msgid "Execute a query against the knowledge base."
 msgstr ""
 
-#: knowledge_base/views.py:187
+#: knowledge_base/views.py:207
 msgid "List documents"
 msgstr ""
 
-#: knowledge_base/views.py:188
+#: knowledge_base/views.py:208
 msgid "List all documents for a knowledge base."
 msgstr ""
 
-#: knowledge_base/views.py:195
+#: knowledge_base/views.py:215
 msgid "Get document details"
 msgstr ""
 
-#: knowledge_base/views.py:196
+#: knowledge_base/views.py:216
 msgid "Get details for a specific document."
 msgstr ""
 
-#: knowledge_base/views.py:200
+#: knowledge_base/views.py:220
 msgid "Create document"
 msgstr ""
 
-#: knowledge_base/views.py:201
+#: knowledge_base/views.py:221
 msgid "Create a new document for a knowledge base."
 msgstr ""
 
-#: knowledge_base/views.py:205
+#: knowledge_base/views.py:225
 msgid "Update document"
 msgstr ""
 
-#: knowledge_base/views.py:206
+#: knowledge_base/views.py:226
 msgid "Update an existing document."
 msgstr ""
 
-#: knowledge_base/views.py:210
+#: knowledge_base/views.py:230
 msgid "Partially update document"
 msgstr ""
 
-#: knowledge_base/views.py:211
+#: knowledge_base/views.py:231
 msgid "Partially update an existing document."
 msgstr ""
 
-#: knowledge_base/views.py:215
+#: knowledge_base/views.py:235
 msgid "Delete document"
 msgstr ""
 
-#: knowledge_base/views.py:216
+#: knowledge_base/views.py:236
 msgid "Delete an existing document."
 msgstr ""
 
-#: knowledge_base/views.py:220
+#: knowledge_base/views.py:240
 msgid "Process URLs"
 msgstr ""
 
-#: knowledge_base/views.py:221
+#: knowledge_base/views.py:241
 msgid "Process a list of URLs and add them to the knowledge base."
 msgstr ""
 
-#: knowledge_base/views.py:229
+#: knowledge_base/views.py:249
 msgid "Process crawl results"
 msgstr ""
 
-#: knowledge_base/views.py:230
+#: knowledge_base/views.py:250
 msgid "Process crawl results and add them to the knowledge base."
 msgstr ""
 
-#: knowledge_base/views.py:238
+#: knowledge_base/views.py:258
 msgid "Process crawl request"
 msgstr ""
 
-#: knowledge_base/views.py:239
+#: knowledge_base/views.py:259
 msgid "Process a crawl request and add it to the knowledge base."
 msgstr ""
 
-#: knowledge_base/views.py:247
+#: knowledge_base/views.py:267
 msgid "Process files"
 msgstr ""
 
-#: knowledge_base/views.py:248
+#: knowledge_base/views.py:268
 msgid "Process a list of files and add them to the knowledge base."
 msgstr ""
 
-#: knowledge_base/views.py:256
+#: knowledge_base/views.py:276
 msgid "Retry document"
 msgstr ""
 
-#: knowledge_base/views.py:257
+#: knowledge_base/views.py:277
 msgid "Retry a failed document. to index it again."
 msgstr ""
 
-#: knowledge_base/views.py:296 knowledge_base/views.py:337
-#: knowledge_base/views.py:365 knowledge_base/views.py:397
-#: knowledge_base/views.py:428
+#: knowledge_base/views.py:316 knowledge_base/views.py:357
+#: knowledge_base/views.py:385 knowledge_base/views.py:417
+#: knowledge_base/views.py:448
 msgid "You cannot add documents to this knowledge base."
 msgstr ""
 
-#: knowledge_base/views.py:457
+#: knowledge_base/views.py:477
 msgid "You can only retry just failed documents."
 msgstr ""
 
-#: knowledge_base/views.py:459
+#: knowledge_base/views.py:479
 msgid "You cannot make changes to this knowledge base."
 msgstr ""
 
-#: knowledge_base/views.py:467
+#: knowledge_base/views.py:487
 msgid "List document chunks"
 msgstr ""
 
-#: knowledge_base/views.py:468
+#: knowledge_base/views.py:488
 msgid "List all chunks for a document."
 msgstr ""
 
-#: llm/admin.py:44
+#: knowledge_base/views.py:510
+msgid "List retrieval settings"
+msgstr ""
+
+#: knowledge_base/views.py:511
+msgid "List all retrieval settings for a knowledge base."
+msgstr ""
+
+#: knowledge_base/views.py:515
+msgid "Get retrieval setting"
+msgstr ""
+
+#: knowledge_base/views.py:516
+msgid "Get details for a specific retrieval setting."
+msgstr ""
+
+#: knowledge_base/views.py:520
+msgid "Create retrieval setting"
+msgstr ""
+
+#: knowledge_base/views.py:521
+msgid "Create a new retrieval setting for a knowledge base."
+msgstr ""
+
+#: knowledge_base/views.py:525
+msgid "Update retrieval setting"
+msgstr ""
+
+#: knowledge_base/views.py:526
+msgid "Update an existing retrieval setting."
+msgstr ""
+
+#: knowledge_base/views.py:530
+msgid "Partially update retrieval setting"
+msgstr ""
+
+#: knowledge_base/views.py:531
+msgid "Partially update an existing retrieval setting."
+msgstr ""
+
+#: knowledge_base/views.py:535
+msgid "Delete retrieval setting"
+msgstr ""
+
+#: knowledge_base/views.py:536
+msgid "Delete an existing retrieval setting."
+msgstr ""
+
+#: llm/admin.py:23
 msgid "API Configuration"
 msgstr ""
 
-#: llm/admin_api/serializers.py:54 llm/serializers.py:70
+#: llm/admin_api/serializers.py:39 llm/serializers.py:40
 msgid "API key is required"
 msgstr ""
 
-#: llm/admin_api/serializers.py:56 llm/serializers.py:72
+#: llm/admin_api/serializers.py:41 llm/serializers.py:42
 msgid "Base URL is required"
 msgstr ""
 
-#: llm/admin_api/serializers.py:73 llm/admin_api/serializers.py:74
-#: llm/serializers.py:89 llm/serializers.py:90
+#: llm/admin_api/serializers.py:58 llm/admin_api/serializers.py:59
+#: llm/serializers.py:59 llm/serializers.py:60
 msgid "Invalid API key or base URL. Test failed"
 msgstr ""
 
-#: llm/admin_api/views.py:17 llm/admin_api/views.py:18
+#: llm/admin_api/views.py:29 llm/admin_api/views.py:30
 msgid "List provider configs"
 msgstr ""
 
-#: llm/admin_api/views.py:22 llm/admin_api/views.py:23 llm/views.py:24
+#: llm/admin_api/views.py:34 llm/admin_api/views.py:35 llm/views.py:24
 msgid "Create provider config"
 msgstr ""
 
-#: llm/admin_api/views.py:27 llm/admin_api/views.py:28 llm/views.py:29
+#: llm/admin_api/views.py:39 llm/admin_api/views.py:40 llm/views.py:29
 msgid "Get provider config"
 msgstr ""
 
-#: llm/admin_api/views.py:32 llm/admin_api/views.py:33
-#: llm/admin_api/views.py:37 llm/admin_api/views.py:38 llm/views.py:41
+#: llm/admin_api/views.py:44 llm/admin_api/views.py:45
+#: llm/admin_api/views.py:49 llm/admin_api/views.py:50 llm/views.py:41
 #: llm/views.py:46
 msgid "Update provider config"
 msgstr ""
 
-#: llm/admin_api/views.py:42 llm/admin_api/views.py:43 llm/views.py:36
+#: llm/admin_api/views.py:54 llm/admin_api/views.py:55 llm/views.py:36
 msgid "Delete provider config"
 msgstr ""
 
-#: llm/admin_api/views.py:47 llm/admin_api/views.py:48
+#: llm/admin_api/views.py:59 llm/admin_api/views.py:60
 msgid "Sync embeddings"
 msgstr ""
 
-#: llm/admin_api/views.py:54 llm/admin_api/views.py:55
+#: llm/admin_api/views.py:66 llm/admin_api/views.py:67
 msgid "Sync LLM models"
 msgstr ""
 
-#: llm/admin_api/views.py:61 llm/admin_api/views.py:62
+#: llm/admin_api/views.py:73 llm/admin_api/views.py:74
 msgid "Test config"
 msgstr ""
 
-#: llm/admin_api/views.py:68 llm/admin_api/views.py:69
+#: llm/admin_api/views.py:80 llm/admin_api/views.py:81
 msgid "List providers"
 msgstr ""
 
-#: llm/admin_api/views.py:74 llm/views.py:89
+#: llm/admin_api/views.py:86 llm/views.py:89
 msgid "List of available providers"
 msgstr ""
 
-#: llm/admin_api/views.py:157 llm/admin_api/views.py:158
+#: llm/admin_api/views.py:168 llm/admin_api/views.py:169
 msgid "List LLM models"
 msgstr ""
 
-#: llm/admin_api/views.py:162 llm/admin_api/views.py:163
-msgid "Create LLM model"
-msgstr ""
-
-#: llm/admin_api/views.py:167 llm/admin_api/views.py:168
+#: llm/admin_api/views.py:173 llm/admin_api/views.py:174
 msgid "Get LLM model"
 msgstr ""
 
-#: llm/admin_api/views.py:172 llm/admin_api/views.py:173
-#: llm/admin_api/views.py:177 llm/admin_api/views.py:178
-msgid "Update LLM model"
+#: llm/admin_api/views.py:184 llm/admin_api/views.py:193
+#: llm/admin_api/views.py:219 llm/admin_api/views.py:227
+msgid "Provider not found"
 msgstr ""
 
-#: llm/admin_api/views.py:182 llm/admin_api/views.py:183
-msgid "Delete LLM model"
-msgstr ""
-
-#: llm/admin_api/views.py:196 llm/admin_api/views.py:197
+#: llm/admin_api/views.py:203 llm/admin_api/views.py:204
 msgid "List provider embeddings"
 msgstr ""
 
-#: llm/admin_api/views.py:201 llm/admin_api/views.py:202
-msgid "Create provider embedding"
-msgstr ""
-
-#: llm/admin_api/views.py:206 llm/admin_api/views.py:207
+#: llm/admin_api/views.py:208 llm/admin_api/views.py:209
 msgid "Get provider embedding"
 msgstr ""
 
-#: llm/admin_api/views.py:211 llm/admin_api/views.py:212
-#: llm/admin_api/views.py:216 llm/admin_api/views.py:217
-msgid "Update provider embedding"
+#: llm/admin_api/views.py:236 llm/views.py:184
+msgid "List provider config models"
 msgstr ""
 
-#: llm/admin_api/views.py:221 llm/admin_api/views.py:222
-msgid "Delete provider embedding"
+#: llm/admin_api/views.py:237 llm/views.py:185
+msgid "Get all models for a provider config with their status."
 msgstr ""
 
-#: llm/consts.py:7 llm/consts.py:22
+#: llm/admin_api/views.py:241 llm/views.py:189
+msgid "Get provider config model"
+msgstr ""
+
+#: llm/admin_api/views.py:242 llm/views.py:190
+msgid "Get a specific model configuration."
+msgstr ""
+
+#: llm/admin_api/views.py:246 llm/views.py:194
+msgid "Create custom model"
+msgstr ""
+
+#: llm/admin_api/views.py:247 llm/views.py:195
+msgid "Create a custom user-defined model for this provider config."
+msgstr ""
+
+#: llm/admin_api/views.py:253 llm/views.py:201
+msgid "Update custom model"
+msgstr ""
+
+#: llm/admin_api/views.py:254 llm/views.py:202
+msgid "Update a custom user-defined model."
+msgstr ""
+
+#: llm/admin_api/views.py:260 llm/views.py:208
+msgid "Delete custom model"
+msgstr ""
+
+#: llm/admin_api/views.py:261 llm/views.py:209
+msgid "Delete a custom user-defined model."
+msgstr ""
+
+#: llm/admin_api/views.py:280
+msgid "Global provider config not found"
+msgstr ""
+
+#: llm/admin_api/views.py:340 llm/admin_api/views.py:378 llm/views.py:296
+#: llm/views.py:334
+msgid "Custom model not found"
+msgstr ""
+
+#: llm/admin_api/views.py:384 llm/views.py:340
+msgid "Set model status"
+msgstr ""
+
+#: llm/admin_api/views.py:385 llm/views.py:341
+msgid "Activate or deactivate a model for this provider config."
+msgstr ""
+
+#: llm/consts.py:11 llm/consts.py:37
 msgid "OpenAI"
 msgstr ""
 
-#: llm/consts.py:10
-msgid "WaterCrawl"
+#: llm/consts.py:12 llm/consts.py:46
+msgid "Anthropic"
 msgstr ""
 
-#: llm/consts.py:37
+#: llm/consts.py:13 llm/consts.py:55
+msgid "Google Generative AI"
+msgstr ""
+
+#: llm/consts.py:14 llm/consts.py:64
+msgid "Cohere"
+msgstr ""
+
+#: llm/consts.py:15 llm/consts.py:73
+msgid "Ollama"
+msgstr ""
+
+#: llm/consts.py:23
+msgid "LLM"
+msgstr ""
+
+#: llm/consts.py:25
+msgid "Reranker"
+msgstr ""
+
+#: llm/consts.py:88
 msgid "Not Available"
 msgstr ""
 
-#: llm/consts.py:38
+#: llm/consts.py:89
 msgid "Available"
 msgstr ""
 
-#: llm/consts.py:39
+#: llm/consts.py:90
 msgid "Team Only"
 msgstr ""
 
-#: llm/consts.py:46
+#: llm/consts.py:97
 msgid "Start"
 msgstr ""
 
-#: llm/consts.py:47
+#: llm/consts.py:98
 msgid "End"
 msgstr ""
 
-#: llm/factories.py:39
+#: llm/factories.py:43
 msgid "Provider config is required"
 msgstr ""
 
-#: llm/factories.py:61 llm/providers.py:90
-msgid "WaterCrawlLLM is not installed. Please install it"
-msgstr ""
-
-#: llm/factories.py:71 llm/factories.py:97
+#: llm/factories.py:85
 #, python-brace-format
 msgid "Unsupported provider: {provider_name}"
 msgstr ""
 
-#: llm/models.py:11 llm/models.py:43 llm/models.py:97
+#: llm/models.py:10
 msgid "Provider"
 msgstr ""
 
-#: llm/models.py:17 llm/models.py:114
-msgid "Visibility Level"
-msgstr ""
-
-#: llm/models.py:23
-msgid "Min Temperature"
-msgstr ""
-
-#: llm/models.py:26
-msgid "Max Temperature"
-msgstr ""
-
-#: llm/models.py:29
-msgid "Default Temperature"
-msgstr ""
-
-#: llm/models.py:33
-msgid "Model"
-msgstr ""
-
-#: llm/models.py:34
-msgid "Models"
-msgstr ""
-
-#: llm/models.py:48 plan/models.py:220
+#: llm/models.py:15 plan/models.py:220
 msgid "API Key"
 msgstr ""
 
-#: llm/models.py:50
+#: llm/models.py:17
 msgid "API Base URL"
 msgstr ""
 
-#: llm/models.py:52
+#: llm/models.py:19 llm/models_config/config.py:160
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-image.yaml.tpl:13
+#: llm/models_config/google-genai/llms/gemini-3-pro-image-preview.yaml.tpl:13
+#: llm/models_config/google-genai/llms/gemini-3-pro-preview.yaml.tpl:19
 msgid "Temperature"
 msgstr ""
 
-#: llm/models.py:86
+#: llm/models.py:35 llm/models.py:53
 msgid "Provider Config"
 msgstr ""
 
-#: llm/models.py:87
+#: llm/models.py:36
 msgid "Provider Configs"
 msgstr ""
 
-#: llm/models.py:105
-msgid "Dimensions"
+#: llm/models.py:57
+msgid "Model Key"
 msgstr ""
 
-#: llm/models.py:106
-msgid "Max Input Length"
+#: llm/models.py:59
+msgid "Unique identifier for the model"
 msgstr ""
 
-#: llm/models.py:108
-msgid "Truncate"
+#: llm/models.py:62
+msgid "Model Type"
 msgstr ""
 
-#: llm/models.py:121
-msgid "Provider Embedding"
+#: llm/models.py:68
+msgid "Is Active"
 msgstr ""
 
-#: llm/models.py:122
-msgid "Provider Embeddings"
+#: llm/models.py:70
+msgid "Whether this model is available for use"
+msgstr ""
+
+#: llm/models.py:73
+msgid "Is Custom"
+msgstr ""
+
+#: llm/models.py:75
+msgid "Whether this is a custom user-defined model"
+msgstr ""
+
+#: llm/models.py:78
+msgid "Custom Label"
+msgstr ""
+
+#: llm/models.py:82
+msgid "Human-readable label for custom models"
+msgstr ""
+
+#: llm/models.py:85
+msgid "Custom Configuration"
+msgstr ""
+
+#: llm/models.py:88
+msgid "Custom model configuration (features, model_properties, parameter_rules)"
+msgstr ""
+
+#: llm/models.py:92
+msgid "Provider Config Model"
+msgstr ""
+
+#: llm/models.py:93
+msgid "Provider Config Models"
+msgstr ""
+
+#: llm/models_config/anthropic/llms/claude-3-5-haiku-20241022.yaml.tpl:2
+msgid "Claude 3.5 Haiku"
+msgstr ""
+
+#: llm/models_config/anthropic/llms/claude-3-5-sonnet-20240620.yaml.tpl:2
+msgid "Claude 3.5 Sonnet (June 2024)"
+msgstr ""
+
+#: llm/models_config/anthropic/llms/claude-3-5-sonnet-20241022.yaml.tpl:2
+msgid "Claude 3.5 Sonnet (Oct 2024)"
+msgstr ""
+
+#: llm/models_config/anthropic/llms/claude-3-7-sonnet-20250219.yaml.tpl:2
+msgid "Claude 3.7 Sonnet"
+msgstr ""
+
+#: llm/models_config/anthropic/llms/claude-3-haiku-20240307.yaml.tpl:2
+msgid "Claude 3 Haiku"
+msgstr ""
+
+#: llm/models_config/anthropic/llms/claude-3-opus-20240229.yaml.tpl:2
+msgid "Claude 3 Opus"
+msgstr ""
+
+#: llm/models_config/anthropic/llms/claude-3-sonnet-20240229.yaml.tpl:2
+msgid "Claude 3 Sonnet"
+msgstr ""
+
+#: llm/models_config/anthropic/llms/claude-haiku-4-5-20251001.yaml.tpl:2
+msgid "Claude 4.5 Haiku"
+msgstr ""
+
+#: llm/models_config/anthropic/llms/claude-opus-4-1-20250805.yaml.tpl:2
+msgid "Claude Opus 4.1"
+msgstr ""
+
+#: llm/models_config/anthropic/llms/claude-opus-4-20250514.yaml.tpl:2
+msgid "Claude Opus 4"
+msgstr ""
+
+#: llm/models_config/anthropic/llms/claude-opus-4-5-20251101.yaml.tpl:2
+msgid "Claude Opus 4.5"
+msgstr ""
+
+#: llm/models_config/anthropic/llms/claude-sonnet-4-20250514.yaml.tpl:2
+msgid "Claude Sonnet 4"
+msgstr ""
+
+#: llm/models_config/anthropic/llms/claude-sonnet-4-5-20250929.yaml.tpl:2
+msgid "Claude Sonnet 4.5 (Sept 2025)"
+msgstr ""
+
+#: llm/models_config/anthropic/llms/claude-sonnet-4-5.yaml.tpl:2
+msgid "Claude Sonnet 4.5"
+msgstr ""
+
+#: llm/models_config/cohere/llms/c4ai-aya-expanse-32b.yaml.tpl:2
+msgid "c4ai-aya-expanse-32b"
+msgstr ""
+
+#: llm/models_config/cohere/llms/c4ai-aya-expanse-32b.yaml.tpl:20
+#: llm/models_config/cohere/llms/c4ai-aya-expanse-8b.yaml.tpl:20
+#: llm/models_config/cohere/llms/command-a-03-2025.yaml.tpl:22
+#: llm/models_config/cohere/llms/command-chat.yaml.tpl:19
+#: llm/models_config/cohere/llms/command-light-chat.yaml.tpl:19
+#: llm/models_config/cohere/llms/command-light-nightly-chat.yaml.tpl:19
+#: llm/models_config/cohere/llms/command-light-nightly.yaml.tpl:19
+#: llm/models_config/cohere/llms/command-light.yaml.tpl:19
+#: llm/models_config/cohere/llms/command-nightly-chat.yaml.tpl:20
+#: llm/models_config/cohere/llms/command-nightly.yaml.tpl:19
+#: llm/models_config/cohere/llms/command-r-03-2024.yaml.tpl:22
+#: llm/models_config/cohere/llms/command-r-08-2024.yaml.tpl:22
+#: llm/models_config/cohere/llms/command-r-plus-04-2024.yaml.tpl:22
+#: llm/models_config/cohere/llms/command-r-plus-08-2024.yaml.tpl:22
+#: llm/models_config/cohere/llms/command-r-plus.yaml.tpl:22
+#: llm/models_config/cohere/llms/command-r.yaml.tpl:22
+#: llm/models_config/cohere/llms/command-r7b-12-2024.yaml.tpl:22
+#: llm/models_config/cohere/llms/command-r7b-arabic-02-2025.yaml.tpl:22
+#: llm/models_config/cohere/llms/command.yaml.tpl:19
+#: llm/models_config/google-genai/llms/gemini-1.5-flash-001.yaml.tpl:22
+#: llm/models_config/google-genai/llms/gemini-1.5-flash-002.yaml.tpl:22
+#: llm/models_config/google-genai/llms/gemini-1.5-flash-8b-exp-0827.yaml.tpl:22
+#: llm/models_config/google-genai/llms/gemini-1.5-flash-8b-exp-0924.yaml.tpl:22
+#: llm/models_config/google-genai/llms/gemini-1.5-flash-exp-0827.yaml.tpl:22
+#: llm/models_config/google-genai/llms/gemini-1.5-flash-latest.yaml.tpl:25
+#: llm/models_config/google-genai/llms/gemini-1.5-flash.yaml.tpl:25
+#: llm/models_config/google-genai/llms/gemini-1.5-pro-001.yaml.tpl:22
+#: llm/models_config/google-genai/llms/gemini-1.5-pro-002.yaml.tpl:22
+#: llm/models_config/google-genai/llms/gemini-1.5-pro-exp-0801.yaml.tpl:22
+#: llm/models_config/google-genai/llms/gemini-1.5-pro-exp-0827.yaml.tpl:22
+#: llm/models_config/google-genai/llms/gemini-1.5-pro-latest.yaml.tpl:25
+#: llm/models_config/google-genai/llms/gemini-1.5-pro.yaml.tpl:25
+#: llm/models_config/google-genai/llms/gemini-2.0-flash-001.yaml.tpl:25
+#: llm/models_config/google-genai/llms/gemini-2.0-flash-exp.yaml.tpl:25
+#: llm/models_config/google-genai/llms/gemini-2.0-flash-lite-001.yaml.tpl:22
+#: llm/models_config/google-genai/llms/gemini-2.0-flash-lite-preview-02-05.yaml.tpl:22
+#: llm/models_config/google-genai/llms/gemini-2.0-flash-lite-preview.yaml.tpl:22
+#: llm/models_config/google-genai/llms/gemini-2.0-flash-lite.yaml.tpl:25
+#: llm/models_config/google-genai/llms/gemini-2.0-flash-preview-image-generation.yaml.tpl:22
+#: llm/models_config/google-genai/llms/gemini-2.0-flash-thinking-exp-01-21.yaml.tpl:23
+#: llm/models_config/google-genai/llms/gemini-2.0-flash-thinking-exp-1219.yaml.tpl:23
+#: llm/models_config/google-genai/llms/gemini-2.0-flash.yaml.tpl:26
+#: llm/models_config/google-genai/llms/gemini-2.0-pro-exp-02-05.yaml.tpl:25
+#: llm/models_config/google-genai/llms/gemini-2.0-pro-exp.yaml.tpl:25
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-lite-preview-06-17.yaml.tpl:26
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-lite.yaml.tpl:26
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-preview-04-17.yaml.tpl:26
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-preview-05-20.yaml.tpl:26
+#: llm/models_config/google-genai/llms/gemini-2.5-flash.yaml.tpl:26
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-exp-03-25.yaml.tpl:26
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-preview-03-25.yaml.tpl:26
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-preview-05-06.yaml.tpl:26
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-preview-06-05.yaml.tpl:26
+#: llm/models_config/google-genai/llms/gemini-2.5-pro.yaml.tpl:26
+#: llm/models_config/google-genai/llms/gemini-exp-1114.yaml.tpl:22
+#: llm/models_config/google-genai/llms/gemini-exp-1121.yaml.tpl:22
+#: llm/models_config/google-genai/llms/gemini-exp-1206.yaml.tpl:22
+#: llm/models_config/google-genai/llms/gemini-flash-latest.yaml.tpl:26
+#: llm/models_config/google-genai/llms/gemini-flash-lite-latest.yaml.tpl:26
+#: llm/models_config/google-genai/llms/gemini-pro-vision.yaml.tpl:16
+#: llm/models_config/google-genai/llms/gemini-pro.yaml.tpl:18
+#: llm/models_config/google-genai/llms/learnlm-1.5-pro-experimental.yaml.tpl:22
+msgid "Top k"
+msgstr ""
+
+#: llm/models_config/cohere/llms/c4ai-aya-expanse-32b.yaml.tpl:22
+#: llm/models_config/cohere/llms/c4ai-aya-expanse-8b.yaml.tpl:22
+#: llm/models_config/cohere/llms/command-a-03-2025.yaml.tpl:24
+#: llm/models_config/cohere/llms/command-chat.yaml.tpl:21
+#: llm/models_config/cohere/llms/command-light-chat.yaml.tpl:21
+#: llm/models_config/cohere/llms/command-light-nightly-chat.yaml.tpl:21
+#: llm/models_config/cohere/llms/command-light-nightly.yaml.tpl:21
+#: llm/models_config/cohere/llms/command-light.yaml.tpl:21
+#: llm/models_config/cohere/llms/command-nightly-chat.yaml.tpl:22
+#: llm/models_config/cohere/llms/command-nightly.yaml.tpl:21
+#: llm/models_config/cohere/llms/command-r-03-2024.yaml.tpl:24
+#: llm/models_config/cohere/llms/command-r-08-2024.yaml.tpl:24
+#: llm/models_config/cohere/llms/command-r-plus-04-2024.yaml.tpl:24
+#: llm/models_config/cohere/llms/command-r-plus-08-2024.yaml.tpl:24
+#: llm/models_config/cohere/llms/command-r-plus.yaml.tpl:24
+#: llm/models_config/cohere/llms/command-r.yaml.tpl:24
+#: llm/models_config/cohere/llms/command-r7b-12-2024.yaml.tpl:24
+#: llm/models_config/cohere/llms/command-r7b-arabic-02-2025.yaml.tpl:24
+#: llm/models_config/cohere/llms/command.yaml.tpl:21
+#: llm/models_config/google-genai/llms/gemini-1.5-flash-001.yaml.tpl:23
+#: llm/models_config/google-genai/llms/gemini-1.5-flash-002.yaml.tpl:23
+#: llm/models_config/google-genai/llms/gemini-1.5-flash-8b-exp-0827.yaml.tpl:23
+#: llm/models_config/google-genai/llms/gemini-1.5-flash-8b-exp-0924.yaml.tpl:23
+#: llm/models_config/google-genai/llms/gemini-1.5-flash-exp-0827.yaml.tpl:23
+#: llm/models_config/google-genai/llms/gemini-1.5-flash-latest.yaml.tpl:26
+#: llm/models_config/google-genai/llms/gemini-1.5-flash.yaml.tpl:26
+#: llm/models_config/google-genai/llms/gemini-1.5-pro-001.yaml.tpl:23
+#: llm/models_config/google-genai/llms/gemini-1.5-pro-002.yaml.tpl:23
+#: llm/models_config/google-genai/llms/gemini-1.5-pro-exp-0801.yaml.tpl:23
+#: llm/models_config/google-genai/llms/gemini-1.5-pro-exp-0827.yaml.tpl:23
+#: llm/models_config/google-genai/llms/gemini-1.5-pro-latest.yaml.tpl:26
+#: llm/models_config/google-genai/llms/gemini-1.5-pro.yaml.tpl:26
+#: llm/models_config/google-genai/llms/gemini-2.0-flash-001.yaml.tpl:26
+#: llm/models_config/google-genai/llms/gemini-2.0-flash-exp.yaml.tpl:26
+#: llm/models_config/google-genai/llms/gemini-2.0-flash-lite-001.yaml.tpl:23
+#: llm/models_config/google-genai/llms/gemini-2.0-flash-lite-preview-02-05.yaml.tpl:23
+#: llm/models_config/google-genai/llms/gemini-2.0-flash-lite-preview.yaml.tpl:23
+#: llm/models_config/google-genai/llms/gemini-2.0-flash-lite.yaml.tpl:26
+#: llm/models_config/google-genai/llms/gemini-2.0-flash-preview-image-generation.yaml.tpl:23
+#: llm/models_config/google-genai/llms/gemini-2.0-flash-thinking-exp-01-21.yaml.tpl:24
+#: llm/models_config/google-genai/llms/gemini-2.0-flash-thinking-exp-1219.yaml.tpl:24
+#: llm/models_config/google-genai/llms/gemini-2.0-flash.yaml.tpl:27
+#: llm/models_config/google-genai/llms/gemini-2.0-pro-exp-02-05.yaml.tpl:26
+#: llm/models_config/google-genai/llms/gemini-2.0-pro-exp.yaml.tpl:26
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-lite-preview-06-17.yaml.tpl:27
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-lite.yaml.tpl:27
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-preview-04-17.yaml.tpl:27
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-preview-05-20.yaml.tpl:27
+#: llm/models_config/google-genai/llms/gemini-2.5-flash.yaml.tpl:27
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-exp-03-25.yaml.tpl:27
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-preview-03-25.yaml.tpl:27
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-preview-05-06.yaml.tpl:27
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-preview-06-05.yaml.tpl:27
+#: llm/models_config/google-genai/llms/gemini-2.5-pro.yaml.tpl:27
+#: llm/models_config/google-genai/llms/gemini-exp-1114.yaml.tpl:23
+#: llm/models_config/google-genai/llms/gemini-exp-1121.yaml.tpl:23
+#: llm/models_config/google-genai/llms/gemini-exp-1206.yaml.tpl:23
+#: llm/models_config/google-genai/llms/gemini-flash-latest.yaml.tpl:27
+#: llm/models_config/google-genai/llms/gemini-flash-lite-latest.yaml.tpl:27
+#: llm/models_config/google-genai/llms/gemini-pro-vision.yaml.tpl:17
+#: llm/models_config/google-genai/llms/gemini-pro.yaml.tpl:19
+#: llm/models_config/google-genai/llms/learnlm-1.5-pro-experimental.yaml.tpl:23
+msgid "Only sample from the top K options for each subsequent token."
+msgstr ""
+
+#: llm/models_config/cohere/llms/c4ai-aya-expanse-8b.yaml.tpl:2
+msgid "c4ai-aya-expanse-8b"
+msgstr ""
+
+#: llm/models_config/cohere/llms/command-a-03-2025.yaml.tpl:2
+msgid "command-a-03-2025"
+msgstr ""
+
+#: llm/models_config/cohere/llms/command-chat.yaml.tpl:2
+msgid "command-chat"
+msgstr ""
+
+#: llm/models_config/cohere/llms/command-chat.yaml.tpl:31
+#: llm/models_config/cohere/llms/command-light-chat.yaml.tpl:31
+#: llm/models_config/cohere/llms/command-light-nightly-chat.yaml.tpl:31
+#: llm/models_config/cohere/llms/command-nightly-chat.yaml.tpl:32
+msgid "Preamble"
+msgstr ""
+
+#: llm/models_config/cohere/llms/command-chat.yaml.tpl:33
+#: llm/models_config/cohere/llms/command-light-chat.yaml.tpl:33
+#: llm/models_config/cohere/llms/command-light-nightly-chat.yaml.tpl:33
+#: llm/models_config/cohere/llms/command-nightly-chat.yaml.tpl:34
+msgid "When specified, the default Cohere preamble will be replaced with the provided one."
+msgstr ""
+
+#: llm/models_config/cohere/llms/command-chat.yaml.tpl:36
+#: llm/models_config/cohere/llms/command-light-chat.yaml.tpl:36
+#: llm/models_config/cohere/llms/command-light-nightly-chat.yaml.tpl:36
+#: llm/models_config/cohere/llms/command-nightly-chat.yaml.tpl:37
+msgid "Prompt Truncation"
+msgstr ""
+
+#: llm/models_config/cohere/llms/command-chat.yaml.tpl:38
+#: llm/models_config/cohere/llms/command-light-chat.yaml.tpl:38
+#: llm/models_config/cohere/llms/command-light-nightly-chat.yaml.tpl:38
+#: llm/models_config/cohere/llms/command-nightly-chat.yaml.tpl:39
+msgid "Dictates how the prompt will be constructed. With prompt_truncation set to \\\"AUTO\\\", some elements from chat histories will be dropped in an attempt to construct a prompt that fits within the model"
+msgstr ""
+
+#: llm/models_config/cohere/llms/command-light-chat.yaml.tpl:2
+msgid "command-light-chat"
+msgstr ""
+
+#: llm/models_config/cohere/llms/command-light-nightly-chat.yaml.tpl:2
+msgid "command-light-nightly-chat"
+msgstr ""
+
+#: llm/models_config/cohere/llms/command-light-nightly.yaml.tpl:2
+msgid "command-light-nightly"
+msgstr ""
+
+#: llm/models_config/cohere/llms/command-light.yaml.tpl:2
+msgid "command-light"
+msgstr ""
+
+#: llm/models_config/cohere/llms/command-nightly-chat.yaml.tpl:2
+msgid "command-nightly-chat"
+msgstr ""
+
+#: llm/models_config/cohere/llms/command-nightly.yaml.tpl:2
+msgid "command-nightly"
+msgstr ""
+
+#: llm/models_config/cohere/llms/command-r-03-2024.yaml.tpl:2
+msgid "command-r-03-2024"
+msgstr ""
+
+#: llm/models_config/cohere/llms/command-r-08-2024.yaml.tpl:2
+msgid "command-r-08-2024"
+msgstr ""
+
+#: llm/models_config/cohere/llms/command-r-plus-04-2024.yaml.tpl:2
+msgid "command-r-plus-04-2024"
+msgstr ""
+
+#: llm/models_config/cohere/llms/command-r-plus-08-2024.yaml.tpl:2
+msgid "command-r-plus-08-2024"
+msgstr ""
+
+#: llm/models_config/cohere/llms/command-r-plus.yaml.tpl:2
+msgid "command-r-plus"
+msgstr ""
+
+#: llm/models_config/cohere/llms/command-r.yaml.tpl:2
+msgid "command-r"
+msgstr ""
+
+#: llm/models_config/cohere/llms/command-r7b-12-2024.yaml.tpl:2
+msgid "command-r7b-12-2024"
+msgstr ""
+
+#: llm/models_config/cohere/llms/command-r7b-arabic-02-2025.yaml.tpl:2
+msgid "command-r7b-arabic-02-2025"
+msgstr ""
+
+#: llm/models_config/cohere/llms/command.yaml.tpl:2
+msgid "command"
+msgstr ""
+
+#: llm/models_config/cohere/rerankers/rerank-english-v3.0.yaml.tpl:2
+msgid "rerank-english-v3.0"
+msgstr ""
+
+#: llm/models_config/cohere/rerankers/rerank-multilingual-v3.0.yaml.tpl:2
+msgid "rerank-multilingual-v3.0"
+msgstr ""
+
+#: llm/models_config/cohere/rerankers/rerank-v3.5.yaml.tpl:2
+msgid "rerank-v3.5"
+msgstr ""
+
+#: llm/models_config/config.py:162
+msgid "Controls randomness. Lower values make the model more deterministic."
+msgstr ""
+
+#: llm/models_config/config.py:173
+msgid "Top P"
+msgstr ""
+
+#: llm/models_config/config.py:175
+msgid "Nucleus sampling: only consider tokens with cumulative probability >= top_p."
+msgstr ""
+
+#: llm/models_config/config.py:187
+msgid "Only sample from the top K tokens."
+msgstr ""
+
+#: llm/models_config/config.py:198
+msgid "Max Tokens"
+msgstr ""
+
+#: llm/models_config/config.py:199
+msgid "Maximum number of tokens to generate."
+msgstr ""
+
+#: llm/models_config/config.py:210
+msgid "Presence Penalty"
+msgstr ""
+
+#: llm/models_config/config.py:212
+msgid "Penalize new tokens based on whether they appear in the text so far."
+msgstr ""
+
+#: llm/models_config/config.py:223
+msgid "Frequency Penalty"
+msgstr ""
+
+#: llm/models_config/config.py:225
+msgid "Penalize new tokens based on their frequency in the text so far."
+msgstr ""
+
+#: llm/models_config/config.py:236
+msgid "Stop Sequences"
+msgstr ""
+
+#: llm/models_config/config.py:238
+msgid "Sequences where the model will stop generating further tokens."
+msgstr ""
+
+#: llm/models_config/config.py:248
+#: llm/models_config/openai/llms/gpt-4-0125-preview.yaml.tpl:26
+#: llm/models_config/openai/llms/gpt-4-1106-preview.yaml.tpl:26
+#: llm/models_config/openai/llms/gpt-4-turbo-2024-04-09.yaml.tpl:27
+#: llm/models_config/openai/llms/gpt-4-turbo-preview.yaml.tpl:26
+#: llm/models_config/openai/llms/gpt-4-turbo.yaml.tpl:27
+#: llm/models_config/openai/llms/gpt-4.yaml.tpl:26
+msgid "Seed"
+msgstr ""
+
+#: llm/models_config/config.py:249
+msgid "Random seed for reproducible outputs."
+msgstr ""
+
+#: llm/models_config/config.py:258
+#: llm/models_config/openai/llms/chatgpt-4o-latest.yaml.tpl:22
+#: llm/models_config/openai/llms/gpt-3.5-turbo-0125.yaml.tpl:26
+#: llm/models_config/openai/llms/gpt-3.5-turbo-1106.yaml.tpl:26
+#: llm/models_config/openai/llms/gpt-3.5-turbo.yaml.tpl:26
+#: llm/models_config/openai/llms/gpt-4-0125-preview.yaml.tpl:31
+#: llm/models_config/openai/llms/gpt-4-1106-preview.yaml.tpl:31
+#: llm/models_config/openai/llms/gpt-4-turbo-2024-04-09.yaml.tpl:32
+#: llm/models_config/openai/llms/gpt-4-turbo-preview.yaml.tpl:31
+#: llm/models_config/openai/llms/gpt-4-turbo.yaml.tpl:32
+#: llm/models_config/openai/llms/gpt-4.1-2025-04-14.yaml.tpl:27
+#: llm/models_config/openai/llms/gpt-4.1-mini-2025-04-14.yaml.tpl:27
+#: llm/models_config/openai/llms/gpt-4.1-mini.yaml.tpl:27
+#: llm/models_config/openai/llms/gpt-4.1-nano-2025-04-14.yaml.tpl:27
+#: llm/models_config/openai/llms/gpt-4.1-nano.yaml.tpl:27
+#: llm/models_config/openai/llms/gpt-4.1.yaml.tpl:27
+#: llm/models_config/openai/llms/gpt-4.yaml.tpl:31
+#: llm/models_config/openai/llms/gpt-4o-2024-05-13.yaml.tpl:27
+#: llm/models_config/openai/llms/gpt-4o-2024-08-06.yaml.tpl:27
+#: llm/models_config/openai/llms/gpt-4o-2024-11-20.yaml.tpl:27
+#: llm/models_config/openai/llms/gpt-4o-audio-preview-2025-06-03.yaml.tpl:27
+#: llm/models_config/openai/llms/gpt-4o-audio-preview.yaml.tpl:27
+#: llm/models_config/openai/llms/gpt-4o-mini-2024-07-18.yaml.tpl:27
+#: llm/models_config/openai/llms/gpt-4o-mini.yaml.tpl:27
+#: llm/models_config/openai/llms/gpt-4o.yaml.tpl:27
+#: llm/models_config/openai/llms/gpt-5-2025-08-07.yaml.tpl:19
+#: llm/models_config/openai/llms/gpt-5-mini-2025-08-07.yaml.tpl:19
+#: llm/models_config/openai/llms/gpt-5-mini.yaml.tpl:19
+#: llm/models_config/openai/llms/gpt-5-nano-2025-08-07.yaml.tpl:19
+#: llm/models_config/openai/llms/gpt-5-nano.yaml.tpl:19
+#: llm/models_config/openai/llms/gpt-5.1.yaml.tpl:19
+#: llm/models_config/openai/llms/gpt-5.yaml.tpl:19
+msgid "Response Format"
+msgstr ""
+
+#: llm/models_config/config.py:259
+msgid "Specifying the format that the model must output."
+msgstr ""
+
+#: llm/models_config/config.py:273
+msgid "JSON schema definition for structured output when response_format is json_schema."
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-1.5-flash-001.yaml.tpl:2
+msgid "Gemini 1.5 Flash 001"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-1.5-flash-002.yaml.tpl:2
+msgid "Gemini 1.5 Flash 002"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-1.5-flash-8b-exp-0827.yaml.tpl:2
+msgid "Gemini 1.5 Flash 8B 0827"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-1.5-flash-8b-exp-0924.yaml.tpl:2
+msgid "Gemini 1.5 Flash 8B 0924"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-1.5-flash-exp-0827.yaml.tpl:2
+msgid "Gemini 1.5 Flash 0827"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-1.5-flash-latest.yaml.tpl:2
+msgid "Gemini 1.5 Flash Latest"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-1.5-flash.yaml.tpl:2
+msgid "Gemini 1.5 Flash"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-1.5-pro-001.yaml.tpl:2
+msgid "Gemini 1.5 Pro 001"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-1.5-pro-002.yaml.tpl:2
+msgid "Gemini 1.5 Pro 002"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-1.5-pro-exp-0801.yaml.tpl:2
+msgid "Gemini 1.5 Pro 0801"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-1.5-pro-exp-0827.yaml.tpl:2
+msgid "Gemini 1.5 Pro 0827"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-1.5-pro-latest.yaml.tpl:2
+msgid "Gemini 1.5 Pro Latest"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-1.5-pro.yaml.tpl:2
+msgid "Gemini 1.5 Pro"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.0-flash-001.yaml.tpl:2
+msgid "Gemini 2.0 Flash 001"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.0-flash-exp.yaml.tpl:2
+msgid "Gemini 2.0 Flash Exp"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.0-flash-lite-001.yaml.tpl:2
+msgid "Gemini 2.0 Flash-Lite 001"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.0-flash-lite-preview-02-05.yaml.tpl:2
+msgid "Gemini 2.0 Flash-Lite Preview 02-05"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.0-flash-lite-preview.yaml.tpl:2
+msgid "Gemini 2.0 Flash-Lite Preview"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.0-flash-lite.yaml.tpl:2
+msgid "Gemini 2.0 Flash-Lite"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.0-flash-preview-image-generation.yaml.tpl:2
+msgid "Gemini 2.0 Flash Preview Image Generation"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.0-flash-thinking-exp-01-21.yaml.tpl:2
+msgid "Gemini 2.0 Flash Thinking Experimental 01-21"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.0-flash-thinking-exp-1219.yaml.tpl:2
+msgid "Gemini 2.0 Flash Thinking Experimental"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.0-flash.yaml.tpl:2
+msgid "Gemini 2.0 Flash"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.0-flash.yaml.tpl:36
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-lite-preview-06-17.yaml.tpl:56
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-lite.yaml.tpl:56
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-preview-04-17.yaml.tpl:56
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-preview-05-20.yaml.tpl:56
+#: llm/models_config/google-genai/llms/gemini-2.5-flash.yaml.tpl:56
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-exp-03-25.yaml.tpl:50
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-preview-03-25.yaml.tpl:50
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-preview-05-06.yaml.tpl:50
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-preview-06-05.yaml.tpl:50
+#: llm/models_config/google-genai/llms/gemini-2.5-pro.yaml.tpl:50
+#: llm/models_config/google-genai/llms/gemini-3-pro-image-preview.yaml.tpl:55
+#: llm/models_config/google-genai/llms/gemini-3-pro-preview.yaml.tpl:62
+#: llm/models_config/google-genai/llms/gemini-flash-latest.yaml.tpl:56
+#: llm/models_config/google-genai/llms/gemini-flash-lite-latest.yaml.tpl:56
+msgid "Grounding"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.0-flash.yaml.tpl:37
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-lite-preview-06-17.yaml.tpl:57
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-lite.yaml.tpl:57
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-preview-04-17.yaml.tpl:57
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-preview-05-20.yaml.tpl:57
+#: llm/models_config/google-genai/llms/gemini-2.5-flash.yaml.tpl:57
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-exp-03-25.yaml.tpl:51
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-preview-03-25.yaml.tpl:51
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-preview-05-06.yaml.tpl:51
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-preview-06-05.yaml.tpl:51
+#: llm/models_config/google-genai/llms/gemini-2.5-pro.yaml.tpl:51
+#: llm/models_config/google-genai/llms/gemini-3-pro-preview.yaml.tpl:63
+#: llm/models_config/google-genai/llms/gemini-flash-latest.yaml.tpl:57
+#: llm/models_config/google-genai/llms/gemini-flash-lite-latest.yaml.tpl:57
+msgid "Grounding with Google Search"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.0-flash.yaml.tpl:42
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-lite.yaml.tpl:62
+#: llm/models_config/google-genai/llms/gemini-2.5-flash.yaml.tpl:62
+#: llm/models_config/google-genai/llms/gemini-2.5-pro.yaml.tpl:56
+#: llm/models_config/google-genai/llms/gemini-3-pro-preview.yaml.tpl:68
+#: llm/models_config/google-genai/llms/gemini-flash-latest.yaml.tpl:62
+#: llm/models_config/google-genai/llms/gemini-flash-lite-latest.yaml.tpl:62
+msgid "URL context"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.0-flash.yaml.tpl:43
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-lite.yaml.tpl:63
+#: llm/models_config/google-genai/llms/gemini-2.5-flash.yaml.tpl:63
+#: llm/models_config/google-genai/llms/gemini-2.5-pro.yaml.tpl:57
+#: llm/models_config/google-genai/llms/gemini-3-pro-preview.yaml.tpl:69
+#: llm/models_config/google-genai/llms/gemini-flash-latest.yaml.tpl:63
+#: llm/models_config/google-genai/llms/gemini-flash-lite-latest.yaml.tpl:63
+msgid "Browse the url context"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.0-flash.yaml.tpl:48
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-lite.yaml.tpl:68
+#: llm/models_config/google-genai/llms/gemini-2.5-flash.yaml.tpl:68
+#: llm/models_config/google-genai/llms/gemini-2.5-pro.yaml.tpl:62
+#: llm/models_config/google-genai/llms/gemini-3-pro-preview.yaml.tpl:74
+#: llm/models_config/google-genai/llms/gemini-flash-latest.yaml.tpl:68
+#: llm/models_config/google-genai/llms/gemini-flash-lite-latest.yaml.tpl:68
+msgid "Code execution"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.0-flash.yaml.tpl:49
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-lite.yaml.tpl:69
+#: llm/models_config/google-genai/llms/gemini-2.5-flash.yaml.tpl:69
+#: llm/models_config/google-genai/llms/gemini-2.5-pro.yaml.tpl:63
+#: llm/models_config/google-genai/llms/gemini-3-pro-preview.yaml.tpl:75
+#: llm/models_config/google-genai/llms/gemini-flash-latest.yaml.tpl:69
+#: llm/models_config/google-genai/llms/gemini-flash-lite-latest.yaml.tpl:69
+msgid "Lets Gemini use code to solve complex tasks"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.0-pro-exp-02-05.yaml.tpl:2
+msgid "Gemini 2.0 Pro Experimental 02-05"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.0-pro-exp.yaml.tpl:2
+msgid "Gemini 2.0 Pro Experimental"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-image.yaml.tpl:2
+msgid "Nano Banana"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-image.yaml.tpl:14
+msgid "Creativity allowed in the response"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-image.yaml.tpl:21
+#: llm/models_config/google-genai/llms/gemini-3-pro-image-preview.yaml.tpl:21
+msgid "Aspect ratio"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-image.yaml.tpl:22
+#: llm/models_config/google-genai/llms/gemini-3-pro-image-preview.yaml.tpl:22
+msgid "Aspect ratio of the generated images."
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-image.yaml.tpl:39
+#: llm/models_config/google-genai/llms/gemini-3-pro-image-preview.yaml.tpl:61
+#: llm/models_config/google-genai/llms/gemini-3-pro-preview.yaml.tpl:80
+msgid "Output length"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-image.yaml.tpl:40
+#: llm/models_config/google-genai/llms/gemini-3-pro-image-preview.yaml.tpl:62
+msgid "Maximum number of tokens in response"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-lite-preview-06-17.yaml.tpl:2
+msgid "Gemini 2.5 Flash-Lite Preview 06-17"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-lite-preview-06-17.yaml.tpl:36
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-preview-04-17.yaml.tpl:36
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-preview-05-20.yaml.tpl:36
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-exp-03-25.yaml.tpl:36
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-preview-03-25.yaml.tpl:36
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-preview-05-06.yaml.tpl:36
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-preview-06-05.yaml.tpl:36
+msgid "Include Thoughts"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-lite-preview-06-17.yaml.tpl:37
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-lite.yaml.tpl:37
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-preview-04-17.yaml.tpl:37
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-preview-05-20.yaml.tpl:37
+#: llm/models_config/google-genai/llms/gemini-2.5-flash.yaml.tpl:37
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-exp-03-25.yaml.tpl:37
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-preview-03-25.yaml.tpl:37
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-preview-05-06.yaml.tpl:37
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-preview-06-05.yaml.tpl:37
+#: llm/models_config/google-genai/llms/gemini-2.5-pro.yaml.tpl:37
+#: llm/models_config/google-genai/llms/gemini-flash-latest.yaml.tpl:37
+#: llm/models_config/google-genai/llms/gemini-flash-lite-latest.yaml.tpl:37
+msgid "Indicates whether to include thoughts in the response. If true, thoughts are returned only if the model supports thought and thoughts are available."
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-lite-preview-06-17.yaml.tpl:42
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-preview-04-17.yaml.tpl:42
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-preview-05-20.yaml.tpl:42
+msgid "Thinking Mode"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-lite-preview-06-17.yaml.tpl:43
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-lite.yaml.tpl:43
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-preview-04-17.yaml.tpl:43
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-preview-05-20.yaml.tpl:43
+#: llm/models_config/google-genai/llms/gemini-2.5-flash.yaml.tpl:43
+#: llm/models_config/google-genai/llms/gemini-flash-latest.yaml.tpl:43
+#: llm/models_config/google-genai/llms/gemini-flash-lite-latest.yaml.tpl:43
+msgid "Whether to enable thinking mode. If true and thinking_budget is not set, turn on dynamic thinking."
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-lite-preview-06-17.yaml.tpl:48
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-preview-04-17.yaml.tpl:48
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-preview-05-20.yaml.tpl:48
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-exp-03-25.yaml.tpl:42
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-preview-03-25.yaml.tpl:42
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-preview-05-06.yaml.tpl:42
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-preview-06-05.yaml.tpl:42
+msgid "Thinking Budget"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-lite-preview-06-17.yaml.tpl:49
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-lite.yaml.tpl:49
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-preview-04-17.yaml.tpl:49
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-preview-05-20.yaml.tpl:49
+#: llm/models_config/google-genai/llms/gemini-2.5-flash.yaml.tpl:49
+#: llm/models_config/google-genai/llms/gemini-flash-latest.yaml.tpl:49
+#: llm/models_config/google-genai/llms/gemini-flash-lite-latest.yaml.tpl:49
+msgid "Indicates the thinking budget in tokens. This value is valid only when thinking mode is enabled. The default values and allowed ranges are model dependent. When enabling the thinking mode, if the thinking budget is not set, the default is to enable dynamic budget reasoning."
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-lite.yaml.tpl:2
+msgid "Gemini 2.5 Flash-Lite"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-lite.yaml.tpl:36
+#: llm/models_config/google-genai/llms/gemini-2.5-flash.yaml.tpl:36
+#: llm/models_config/google-genai/llms/gemini-2.5-pro.yaml.tpl:36
+#: llm/models_config/google-genai/llms/gemini-3-pro-image-preview.yaml.tpl:49
+#: llm/models_config/google-genai/llms/gemini-3-pro-preview.yaml.tpl:27
+#: llm/models_config/google-genai/llms/gemini-flash-latest.yaml.tpl:36
+#: llm/models_config/google-genai/llms/gemini-flash-lite-latest.yaml.tpl:36
+msgid "Include thoughts"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-lite.yaml.tpl:42
+#: llm/models_config/google-genai/llms/gemini-2.5-flash.yaml.tpl:42
+#: llm/models_config/google-genai/llms/gemini-flash-latest.yaml.tpl:42
+#: llm/models_config/google-genai/llms/gemini-flash-lite-latest.yaml.tpl:42
+msgid "Thinking mode"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-lite.yaml.tpl:48
+#: llm/models_config/google-genai/llms/gemini-2.5-flash.yaml.tpl:48
+#: llm/models_config/google-genai/llms/gemini-2.5-pro.yaml.tpl:42
+#: llm/models_config/google-genai/llms/gemini-flash-latest.yaml.tpl:48
+#: llm/models_config/google-genai/llms/gemini-flash-lite-latest.yaml.tpl:48
+msgid "Set thinking budget"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-preview-04-17.yaml.tpl:2
+msgid "Gemini 2.5 Flash Preview 04-17"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.5-flash-preview-05-20.yaml.tpl:2
+msgid "Gemini 2.5 Flash Preview 05-20"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.5-flash.yaml.tpl:2
+msgid "Gemini 2.5 Flash"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-exp-03-25.yaml.tpl:2
+msgid "Gemini 2.5 Pro Experimental 03-25"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-exp-03-25.yaml.tpl:43
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-preview-03-25.yaml.tpl:43
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-preview-05-06.yaml.tpl:43
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-preview-06-05.yaml.tpl:43
+#: llm/models_config/google-genai/llms/gemini-2.5-pro.yaml.tpl:43
+msgid "Indicates the thinking budget in tokens. This value is valid only when thinking mode is enabled. The default values and allowed ranges are model dependent. If the thinking budget is not set, the default is to enable dynamic budget reasoning."
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-preview-03-25.yaml.tpl:2
+msgid "Gemini 2.5 Pro Preview 03-25"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-preview-05-06.yaml.tpl:2
+msgid "Gemini 2.5 Pro Preview 05-06"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.5-pro-preview-06-05.yaml.tpl:2
+msgid "Gemini 2.5 Pro Preview 06-05"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-2.5-pro.yaml.tpl:2
+msgid "Gemini 2.5 Pro"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-3-pro-image-preview.yaml.tpl:2
+msgid "Nano Banana Pro"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-3-pro-image-preview.yaml.tpl:14
+#: llm/models_config/google-genai/llms/gemini-3-pro-preview.yaml.tpl:20
+msgid "For Gemini 3, best results at default 1.0. Lower values may impact reasoning."
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-3-pro-image-preview.yaml.tpl:39
+msgid "Resolution"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-3-pro-image-preview.yaml.tpl:40
+msgid "Resolution of the generated images. Defaults to 1K."
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-3-pro-image-preview.yaml.tpl:50
+#: llm/models_config/google-genai/llms/gemini-3-pro-preview.yaml.tpl:28
+msgid "Indicates whether to include thoughts in the response. If true, thoughts are returned only if the model supports thought and thoughts are available. Default is false."
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-3-pro-image-preview.yaml.tpl:56
+msgid "Use Google Search"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-3-pro-preview.yaml.tpl:2
+msgid "Gemini 3 Pro Preview"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-3-pro-preview.yaml.tpl:33
+msgid "Media resolution"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-3-pro-preview.yaml.tpl:53
+msgid "Thinking level"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-3-pro-preview.yaml.tpl:54
+msgid "Indicates the thinking level. Default is High."
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-3-pro-preview.yaml.tpl:81
+msgid "The maximum number of tokens to generate in the response."
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-exp-1114.yaml.tpl:2
+msgid "Gemini exp 1114"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-exp-1121.yaml.tpl:2
+msgid "Gemini exp 1121"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-exp-1206.yaml.tpl:2
+msgid "Gemini Experimental 1206"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-flash-latest.yaml.tpl:2
+msgid "Gemini Flash Latest"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-flash-lite-latest.yaml.tpl:2
+msgid "Gemini Flash-Lite Latest"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-pro-vision.yaml.tpl:2
+msgid "Gemini Pro Vision"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/gemini-pro.yaml.tpl:2
+msgid "Gemini Pro"
+msgstr ""
+
+#: llm/models_config/google-genai/llms/learnlm-1.5-pro-experimental.yaml.tpl:2
+msgid "LearnLM 1.5 Pro Experimental"
+msgstr ""
+
+#: llm/models_config/openai/llms/chatgpt-4o-latest.yaml.tpl:2
+msgid "ChatGPT-4o-Latest"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-3.5-turbo-0125.yaml.tpl:2
+msgid "gpt-3.5-turbo-0125"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-3.5-turbo-0125.yaml.tpl:28
+#: llm/models_config/openai/llms/gpt-3.5-turbo-1106.yaml.tpl:28
+#: llm/models_config/openai/llms/gpt-3.5-turbo.yaml.tpl:28
+#: llm/models_config/openai/llms/gpt-4-0125-preview.yaml.tpl:33
+#: llm/models_config/openai/llms/gpt-4-1106-preview.yaml.tpl:33
+#: llm/models_config/openai/llms/gpt-4-turbo-2024-04-09.yaml.tpl:34
+#: llm/models_config/openai/llms/gpt-4-turbo-preview.yaml.tpl:33
+#: llm/models_config/openai/llms/gpt-4-turbo.yaml.tpl:34
+#: llm/models_config/openai/llms/gpt-4.1-2025-04-14.yaml.tpl:29
+#: llm/models_config/openai/llms/gpt-4.1-mini-2025-04-14.yaml.tpl:29
+#: llm/models_config/openai/llms/gpt-4.1-mini.yaml.tpl:29
+#: llm/models_config/openai/llms/gpt-4.1-nano-2025-04-14.yaml.tpl:29
+#: llm/models_config/openai/llms/gpt-4.1-nano.yaml.tpl:29
+#: llm/models_config/openai/llms/gpt-4.1.yaml.tpl:29
+#: llm/models_config/openai/llms/gpt-4.yaml.tpl:33
+#: llm/models_config/openai/llms/gpt-4o-2024-05-13.yaml.tpl:29
+#: llm/models_config/openai/llms/gpt-4o-2024-08-06.yaml.tpl:29
+#: llm/models_config/openai/llms/gpt-4o-2024-11-20.yaml.tpl:29
+#: llm/models_config/openai/llms/gpt-4o-audio-preview-2025-06-03.yaml.tpl:29
+#: llm/models_config/openai/llms/gpt-4o-audio-preview.yaml.tpl:29
+#: llm/models_config/openai/llms/gpt-4o-mini-2024-07-18.yaml.tpl:29
+#: llm/models_config/openai/llms/gpt-4o-mini.yaml.tpl:29
+#: llm/models_config/openai/llms/gpt-4o.yaml.tpl:29
+#: llm/models_config/openai/llms/gpt-5-2025-08-07.yaml.tpl:21
+#: llm/models_config/openai/llms/gpt-5-mini-2025-08-07.yaml.tpl:21
+#: llm/models_config/openai/llms/gpt-5-mini.yaml.tpl:21
+#: llm/models_config/openai/llms/gpt-5-nano-2025-08-07.yaml.tpl:21
+#: llm/models_config/openai/llms/gpt-5-nano.yaml.tpl:21
+#: llm/models_config/openai/llms/gpt-5.1.yaml.tpl:21
+#: llm/models_config/openai/llms/gpt-5.yaml.tpl:21
+#: llm/models_config/openai/llms/o1-mini-2024-09-12.yaml.tpl:18
+#: llm/models_config/openai/llms/o1-mini.yaml.tpl:18
+#: llm/models_config/openai/llms/o1-preview-2024-09-12.yaml.tpl:18
+#: llm/models_config/openai/llms/o1-preview.yaml.tpl:18
+#: llm/models_config/openai/llms/o1.yaml.tpl:30
+#: llm/models_config/openai/llms/o3-2025-04-16.yaml.tpl:30
+#: llm/models_config/openai/llms/o3-mini-2025-01-31.yaml.tpl:29
+#: llm/models_config/openai/llms/o3-mini.yaml.tpl:29
+#: llm/models_config/openai/llms/o3-pro-2025-06-10.yaml.tpl:29
+#: llm/models_config/openai/llms/o3-pro.yaml.tpl:29
+#: llm/models_config/openai/llms/o3.yaml.tpl:30
+#: llm/models_config/openai/llms/o4-mini-2025-04-16.yaml.tpl:30
+#: llm/models_config/openai/llms/o4-mini.yaml.tpl:30
+msgid "specifying the format that the model must output"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-3.5-turbo-1106.yaml.tpl:2
+msgid "gpt-3.5-turbo-1106"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-3.5-turbo-16k.yaml.tpl:2
+msgid "gpt-3.5-turbo-16k"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-3.5-turbo-instruct.yaml.tpl:2
+msgid "gpt-3.5-turbo-instruct"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-3.5-turbo.yaml.tpl:2
+msgid "gpt-3.5-turbo"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-4-0125-preview.yaml.tpl:2
+msgid "gpt-4-0125-preview"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-4-0125-preview.yaml.tpl:28
+#: llm/models_config/openai/llms/gpt-4-1106-preview.yaml.tpl:28
+#: llm/models_config/openai/llms/gpt-4-turbo-2024-04-09.yaml.tpl:29
+#: llm/models_config/openai/llms/gpt-4-turbo-preview.yaml.tpl:28
+#: llm/models_config/openai/llms/gpt-4-turbo.yaml.tpl:29
+#: llm/models_config/openai/llms/gpt-4.yaml.tpl:28
+msgid "If specified, model will make a best effort to sample deterministically, such that repeated requests with the same seed and parameters should return the same result. Determinism is not guaranteed, and you should refer to the system_fingerprint response parameter to monitor changes in the backend."
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-4-1106-preview.yaml.tpl:2
+msgid "gpt-4-1106-preview"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-4-turbo-2024-04-09.yaml.tpl:2
+msgid "gpt-4-turbo-2024-04-09"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-4-turbo-preview.yaml.tpl:2
+msgid "gpt-4-turbo-preview"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-4-turbo.yaml.tpl:2
+msgid "gpt-4-turbo"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-4.1-2025-04-14.yaml.tpl:2
+msgid "gpt-4.1-2025-04-14"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-4.1-mini-2025-04-14.yaml.tpl:2
+msgid "gpt-4.1-mini-2025-04-14"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-4.1-mini.yaml.tpl:2
+msgid "gpt-4.1-mini"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-4.1-nano-2025-04-14.yaml.tpl:2
+msgid "gpt-4.1-nano-2025-04-14"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-4.1-nano.yaml.tpl:2
+msgid "gpt-4.1-nano"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-4.1.yaml.tpl:2
+msgid "gpt-4.1"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-4.yaml.tpl:2
+msgid "gpt-4"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-4o-2024-05-13.yaml.tpl:2
+msgid "gpt-4o-2024-05-13"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-4o-2024-08-06.yaml.tpl:2
+msgid "gpt-4o-2024-08-06"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-4o-2024-11-20.yaml.tpl:2
+msgid "gpt-4o-2024-11-20"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-4o-audio-preview-2025-06-03.yaml.tpl:2
+msgid "gpt-4o-audio-preview-2025-06-03"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-4o-audio-preview.yaml.tpl:2
+msgid "gpt-4o-audio-preview"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-4o-mini-2024-07-18.yaml.tpl:2
+msgid "gpt-4o-mini-2024-07-18"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-4o-mini.yaml.tpl:2
+msgid "gpt-4o-mini"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-4o.yaml.tpl:2
+msgid "gpt-4o"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-5-2025-08-07.yaml.tpl:2
+msgid "gpt-5-2025-08-07"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-5-2025-08-07.yaml.tpl:29
+#: llm/models_config/openai/llms/gpt-5-mini-2025-08-07.yaml.tpl:29
+#: llm/models_config/openai/llms/gpt-5-mini.yaml.tpl:29
+#: llm/models_config/openai/llms/gpt-5-nano-2025-08-07.yaml.tpl:29
+#: llm/models_config/openai/llms/gpt-5-nano.yaml.tpl:29
+#: llm/models_config/openai/llms/gpt-5.1.yaml.tpl:29
+#: llm/models_config/openai/llms/gpt-5.yaml.tpl:29
+msgid "Reasoning Effort"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-5-2025-08-07.yaml.tpl:31
+#: llm/models_config/openai/llms/gpt-5-mini-2025-08-07.yaml.tpl:31
+#: llm/models_config/openai/llms/gpt-5-mini.yaml.tpl:31
+#: llm/models_config/openai/llms/gpt-5-nano-2025-08-07.yaml.tpl:31
+#: llm/models_config/openai/llms/gpt-5-nano.yaml.tpl:31
+#: llm/models_config/openai/llms/gpt-5.yaml.tpl:31
+msgid "Constrains effort on reasoning for reasoning models. Currently supported values are minimal, low, medium, and high. Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-5-2025-08-07.yaml.tpl:40
+#: llm/models_config/openai/llms/gpt-5-mini-2025-08-07.yaml.tpl:40
+#: llm/models_config/openai/llms/gpt-5-mini.yaml.tpl:40
+#: llm/models_config/openai/llms/gpt-5-nano-2025-08-07.yaml.tpl:40
+#: llm/models_config/openai/llms/gpt-5-nano.yaml.tpl:40
+#: llm/models_config/openai/llms/gpt-5.1.yaml.tpl:40
+#: llm/models_config/openai/llms/gpt-5.yaml.tpl:40
+msgid "Verbosity"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-5-2025-08-07.yaml.tpl:42
+#: llm/models_config/openai/llms/gpt-5-mini-2025-08-07.yaml.tpl:42
+#: llm/models_config/openai/llms/gpt-5-mini.yaml.tpl:42
+#: llm/models_config/openai/llms/gpt-5-nano-2025-08-07.yaml.tpl:42
+#: llm/models_config/openai/llms/gpt-5-nano.yaml.tpl:42
+#: llm/models_config/openai/llms/gpt-5.1.yaml.tpl:42
+#: llm/models_config/openai/llms/gpt-5.yaml.tpl:42
+msgid "Constrains the verbosity of the model\\"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-5-2025-08-07.yaml.tpl:50
+#: llm/models_config/openai/llms/gpt-5-mini-2025-08-07.yaml.tpl:50
+#: llm/models_config/openai/llms/gpt-5-mini.yaml.tpl:50
+#: llm/models_config/openai/llms/gpt-5.1.yaml.tpl:50
+#: llm/models_config/openai/llms/gpt-5.yaml.tpl:50
+#: llm/models_config/openai/llms/o3-2025-04-16.yaml.tpl:39
+#: llm/models_config/openai/llms/o3.yaml.tpl:39
+msgid "Streaming"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-5-2025-08-07.yaml.tpl:52
+#: llm/models_config/openai/llms/gpt-5-mini-2025-08-07.yaml.tpl:52
+#: llm/models_config/openai/llms/gpt-5-mini.yaml.tpl:52
+#: llm/models_config/openai/llms/gpt-5.1.yaml.tpl:52
+#: llm/models_config/openai/llms/gpt-5.yaml.tpl:52
+msgid "GPT-5 series models require KYC validation for streaming output, if you want to use the models without this limitation, please turn off streaming responses."
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-5-chat-latest.yaml.tpl:2
+msgid "gpt-5-chat-latest"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-5-mini-2025-08-07.yaml.tpl:2
+msgid "gpt-5-mini-2025-08-07"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-5-mini.yaml.tpl:2
+msgid "gpt-5-mini"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-5-nano-2025-08-07.yaml.tpl:2
+msgid "gpt-5-nano-2025-08-07"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-5-nano.yaml.tpl:2
+msgid "gpt-5-nano"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-5.1.yaml.tpl:2
+msgid "gpt-5.1"
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-5.1.yaml.tpl:31
+msgid "Constrains effort on reasoning for reasoning models. Currently supported values are none, low, medium, and high. Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response. The default for GPT-5.1 is none."
+msgstr ""
+
+#: llm/models_config/openai/llms/gpt-5.yaml.tpl:2
+msgid "gpt-5"
+msgstr ""
+
+#: llm/models_config/openai/llms/o1-mini-2024-09-12.yaml.tpl:2
+msgid "o1-mini-2024-09-12"
+msgstr ""
+
+#: llm/models_config/openai/llms/o1-mini-2024-09-12.yaml.tpl:16
+#: llm/models_config/openai/llms/o1-mini.yaml.tpl:16
+#: llm/models_config/openai/llms/o1-preview-2024-09-12.yaml.tpl:16
+#: llm/models_config/openai/llms/o1-preview.yaml.tpl:16
+#: llm/models_config/openai/llms/o1.yaml.tpl:28
+#: llm/models_config/openai/llms/o3-2025-04-16.yaml.tpl:28
+#: llm/models_config/openai/llms/o3-mini-2025-01-31.yaml.tpl:27
+#: llm/models_config/openai/llms/o3-mini.yaml.tpl:27
+#: llm/models_config/openai/llms/o3-pro-2025-06-10.yaml.tpl:27
+#: llm/models_config/openai/llms/o3-pro.yaml.tpl:27
+#: llm/models_config/openai/llms/o3.yaml.tpl:28
+#: llm/models_config/openai/llms/o4-mini-2025-04-16.yaml.tpl:28
+#: llm/models_config/openai/llms/o4-mini.yaml.tpl:28
+msgid "response_format"
+msgstr ""
+
+#: llm/models_config/openai/llms/o1-mini.yaml.tpl:2
+msgid "o1-mini"
+msgstr ""
+
+#: llm/models_config/openai/llms/o1-preview-2024-09-12.yaml.tpl:2
+msgid "o1-preview-2024-09-12"
+msgstr ""
+
+#: llm/models_config/openai/llms/o1-preview.yaml.tpl:2
+msgid "o1-preview"
+msgstr ""
+
+#: llm/models_config/openai/llms/o1.yaml.tpl:2
+msgid "o1"
+msgstr ""
+
+#: llm/models_config/openai/llms/o1.yaml.tpl:19
+#: llm/models_config/openai/llms/o3-2025-04-16.yaml.tpl:19
+#: llm/models_config/openai/llms/o3-mini-2025-01-31.yaml.tpl:18
+#: llm/models_config/openai/llms/o3-mini.yaml.tpl:18
+#: llm/models_config/openai/llms/o3-pro-2025-06-10.yaml.tpl:18
+#: llm/models_config/openai/llms/o3-pro.yaml.tpl:18
+#: llm/models_config/openai/llms/o3.yaml.tpl:19
+#: llm/models_config/openai/llms/o4-mini-2025-04-16.yaml.tpl:19
+#: llm/models_config/openai/llms/o4-mini.yaml.tpl:19
+msgid "reasoning_effort"
+msgstr ""
+
+#: llm/models_config/openai/llms/o1.yaml.tpl:21
+#: llm/models_config/openai/llms/o3-2025-04-16.yaml.tpl:21
+#: llm/models_config/openai/llms/o3-mini-2025-01-31.yaml.tpl:20
+#: llm/models_config/openai/llms/o3-mini.yaml.tpl:20
+#: llm/models_config/openai/llms/o3-pro-2025-06-10.yaml.tpl:20
+#: llm/models_config/openai/llms/o3-pro.yaml.tpl:20
+#: llm/models_config/openai/llms/o3.yaml.tpl:21
+#: llm/models_config/openai/llms/o4-mini-2025-04-16.yaml.tpl:21
+#: llm/models_config/openai/llms/o4-mini.yaml.tpl:21
+msgid "constrains effort on reasoning for reasoning models"
+msgstr ""
+
+#: llm/models_config/openai/llms/o3-2025-04-16.yaml.tpl:2
+msgid "o3-2025-04-16"
+msgstr ""
+
+#: llm/models_config/openai/llms/o3-2025-04-16.yaml.tpl:41
+#: llm/models_config/openai/llms/o3.yaml.tpl:41
+msgid "o3 series models require KYC validation for streaming output, if you want to use the models without this limitation, please turn off streaming responses."
+msgstr ""
+
+#: llm/models_config/openai/llms/o3-mini-2025-01-31.yaml.tpl:2
+msgid "o3-mini-2025-01-31"
+msgstr ""
+
+#: llm/models_config/openai/llms/o3-mini.yaml.tpl:2
+msgid "o3-mini"
+msgstr ""
+
+#: llm/models_config/openai/llms/o3-pro-2025-06-10.yaml.tpl:2
+msgid "o3-pro-2025-06-10"
+msgstr ""
+
+#: llm/models_config/openai/llms/o3-pro.yaml.tpl:2
+msgid "o3-pro"
+msgstr ""
+
+#: llm/models_config/openai/llms/o3.yaml.tpl:2
+msgid "o3"
+msgstr ""
+
+#: llm/models_config/openai/llms/o4-mini-2025-04-16.yaml.tpl:2
+msgid "o4-mini-2025-04-16"
+msgstr ""
+
+#: llm/models_config/openai/llms/o4-mini.yaml.tpl:2
+msgid "o4-mini"
+msgstr ""
+
+#: llm/serializers.py:278
+msgid "A model with this key already exists for this provider config."
 msgstr ""
 
 #: llm/views.py:19
@@ -1727,17 +3597,17 @@ msgstr ""
 msgid "Your plan does not support more than {} concurrent sitemaps. Wait for them to finish."
 msgstr ""
 
-#: plan/validators.py:258
+#: plan/validators.py:260
 #, python-brace-format
 msgid "Your plan does not support more than {} knowledge bases. You can not create more."
 msgstr ""
 
-#: plan/validators.py:291
+#: plan/validators.py:293
 #, python-brace-format
 msgid "Your current plan does not support more than {} documents per knowledge base. This knowledge base has {} documents left. Your request will add {} documents."
 msgstr ""
 
-#: plan/validators.py:386
+#: plan/validators.py:388
 msgid "You have reached the maximum number of users for your plan."
 msgstr ""
 
@@ -1869,96 +3739,128 @@ msgstr ""
 msgid "The given email must be set"
 msgstr ""
 
-#: user/models.py:15 user/models.py:141
+#: user/models.py:20 user/models.py:146
 msgid "Email Address"
 msgstr ""
 
-#: user/models.py:17
+#: user/models.py:22
 msgid "Reset Password Expires At"
 msgstr ""
 
-#: user/models.py:22
+#: user/models.py:27
 msgid "Reset Password Token"
 msgstr ""
 
-#: user/models.py:28
+#: user/models.py:33
 msgid "Email Verification Token"
 msgstr ""
 
-#: user/models.py:34
+#: user/models.py:39
 msgid "Email Verified"
 msgstr ""
 
-#: user/models.py:38
+#: user/models.py:43
 msgid "Privacy Confirmed At"
 msgstr ""
 
-#: user/models.py:43
+#: user/models.py:48
 msgid "Terms Confirmed At"
 msgstr ""
 
-#: user/models.py:48
+#: user/models.py:53
 msgid "Newsletter Confirmed"
 msgstr ""
 
-#: user/models.py:59 user/models.py:104
+#: user/models.py:64 user/models.py:109
 msgid "User"
 msgstr ""
 
-#: user/models.py:60
+#: user/models.py:65
 msgid "Users"
 msgstr ""
 
-#: user/models.py:76
+#: user/models.py:81
 msgid "Members"
 msgstr ""
 
-#: user/models.py:81
+#: user/models.py:86
 msgid "Stripe Customer ID"
 msgstr ""
 
-#: user/models.py:93
+#: user/models.py:98
 msgid "Teams"
 msgstr ""
 
-#: user/models.py:115
+#: user/models.py:120
 msgid "Is Owner"
 msgstr ""
 
-#: user/models.py:123
+#: user/models.py:128
 msgid "Team Member"
 msgstr ""
 
-#: user/models.py:124
+#: user/models.py:129
 msgid "Team Members"
 msgstr ""
 
-#: user/models.py:135
+#: user/models.py:140
 msgid "Invitation Token"
 msgstr ""
 
-#: user/models.py:145
+#: user/models.py:150
 msgid "Activated"
 msgstr ""
 
-#: user/models.py:153
+#: user/models.py:158
 msgid "Team Invitation"
 msgstr ""
 
-#: user/models.py:154
+#: user/models.py:159
 msgid "Team Invitations"
 msgstr ""
 
-#: user/models.py:173
+#: user/models.py:178
 msgid "Last Used At"
 msgstr ""
 
-#: user/models.py:182
+#: user/models.py:187
 msgid "Team API Key"
 msgstr ""
 
-#: user/models.py:183
+#: user/models.py:188
 msgid "Team API Keys"
+msgstr ""
+
+#: user/models.py:202
+msgid "MIME type of the file (e.g., 'text/csv', 'application/json')"
+msgstr ""
+
+#: user/models.py:205
+msgid "File Name"
+msgstr ""
+
+#: user/models.py:214
+msgid "Size"
+msgstr ""
+
+#: user/models.py:215
+msgid "File size in bytes"
+msgstr ""
+
+#: user/models.py:221
+msgid "Related Object Type"
+msgstr ""
+
+#: user/models.py:227
+msgid "Related Object ID"
+msgstr ""
+
+#: user/models.py:236
+msgid "Additional metadata (e.g., conversation_id, agent_version_id)"
+msgstr ""
+
+#: user/models.py:240 user/models.py:241
+msgid "Media"
 msgstr ""
 
 #: user/serializers.py:24
@@ -1973,171 +3875,195 @@ msgstr ""
 msgid "Email is not verified"
 msgstr ""
 
-#: user/services.py:171
+#: user/services.py:181
 msgid "User is already a member of the team"
 msgstr ""
 
-#: user/services.py:266
+#: user/services.py:276
 msgid "User does not exist"
 msgstr ""
 
-#: user/services.py:304
+#: user/services.py:314
 msgid "Signup is not active"
 msgstr ""
 
-#: user/views.py:41 user/views.py:42
+#: user/views.py:48 user/views.py:49
 msgid "Install WaterCrawl"
 msgstr ""
 
-#: user/views.py:70 user/views.py:71 user/views.py:111 user/views.py:112
+#: user/views.py:77 user/views.py:78 user/views.py:118 user/views.py:119
 msgid "Register a new user"
 msgstr ""
 
-#: user/views.py:96 user/views.py:97
+#: user/views.py:103 user/views.py:104
 msgid "Verify invitation"
 msgstr ""
 
-#: user/views.py:142
+#: user/views.py:149
 msgid "You can not register you already have an account"
 msgstr ""
 
-#: user/views.py:150
+#: user/views.py:157
 msgid "Emails do not match the invitation email. you have to register with the email that was invited"
 msgstr ""
 
-#: user/views.py:168 user/views.py:169
+#: user/views.py:175 user/views.py:176
 msgid "Authenticate using email and password"
 msgstr ""
 
-#: user/views.py:200 user/views.py:201
+#: user/views.py:207 user/views.py:208
 msgid "Send a verification email"
 msgstr ""
 
-#: user/views.py:227 user/views.py:228
+#: user/views.py:234 user/views.py:235
 msgid "Authenticate using OAuth"
 msgstr ""
 
-#: user/views.py:253
+#: user/views.py:260
 msgid "Invalid token"
 msgstr ""
 
-#: user/views.py:266 user/views.py:267
+#: user/views.py:273 user/views.py:274
 msgid "Send a forgot password email"
 msgstr ""
 
-#: user/views.py:287 user/views.py:288
+#: user/views.py:294 user/views.py:295
 msgid "Verify reset password token"
 msgstr ""
 
-#: user/views.py:294 user/views.py:295
+#: user/views.py:301 user/views.py:302
 msgid "Reset password"
 msgstr ""
 
-#: user/views.py:323 user/views.py:324
+#: user/views.py:330 user/views.py:331
 msgid "Verify email"
 msgstr ""
 
-#: user/views.py:357
+#: user/views.py:364
 msgid "Get user profile"
 msgstr ""
 
-#: user/views.py:358
+#: user/views.py:365
 msgid "Get the current user profile"
 msgstr ""
 
-#: user/views.py:362 user/views.py:363
+#: user/views.py:369 user/views.py:370
 msgid "Update user profile"
 msgstr ""
 
-#: user/views.py:385 user/views.py:386
+#: user/views.py:392 user/views.py:393
 msgid "Get my invitations"
 msgstr ""
 
-#: user/views.py:390 user/views.py:391
+#: user/views.py:397 user/views.py:398
 msgid "Accept an invitation"
 msgstr ""
 
-#: user/views.py:417 user/views.py:418
+#: user/views.py:424 user/views.py:425
 msgid "Create a new team"
 msgstr ""
 
-#: user/views.py:422 user/views.py:423
+#: user/views.py:429 user/views.py:430
 msgid "Get a team"
 msgstr ""
 
-#: user/views.py:427 user/views.py:428
+#: user/views.py:434 user/views.py:435
 msgid "Update a team"
 msgstr ""
 
-#: user/views.py:432 user/views.py:433
+#: user/views.py:439 user/views.py:440
 msgid "List teams"
 msgstr ""
 
-#: user/views.py:437
+#: user/views.py:444
 msgid "Get/Update the current team"
 msgstr ""
 
-#: user/views.py:438
+#: user/views.py:445
 msgid "Get the current team"
 msgstr ""
 
-#: user/views.py:443 user/views.py:444
+#: user/views.py:450 user/views.py:451
 msgid "Invite a user to the current team"
 msgstr ""
 
-#: user/views.py:450 user/views.py:451
+#: user/views.py:457 user/views.py:458
 msgid "List invitations to the current team"
 msgstr ""
 
-#: user/views.py:456 user/views.py:457
+#: user/views.py:463 user/views.py:464
 msgid "Revoke an invitation"
 msgstr ""
 
-#: user/views.py:462
+#: user/views.py:469
 msgid "Get the invitation URL"
 msgstr ""
 
-#: user/views.py:463
+#: user/views.py:470
 msgid "Get the invitation URL for the selected invitation"
 msgstr ""
 
-#: user/views.py:468
+#: user/views.py:475
 msgid "Resend the invitation email"
 msgstr ""
 
-#: user/views.py:469
+#: user/views.py:476
 msgid "Resend the invitation email to the invited user"
 msgstr ""
 
-#: user/views.py:580 user/views.py:581
+#: user/views.py:593 user/views.py:594
 msgid "Create a new API key"
 msgstr ""
 
-#: user/views.py:585 user/views.py:586
+#: user/views.py:598 user/views.py:599
 msgid "List API keys"
 msgstr ""
 
-#: user/views.py:590 user/views.py:591
+#: user/views.py:603 user/views.py:604
 msgid "Delete an API key"
 msgstr ""
 
-#: user/views.py:618 user/views.py:619
+#: user/views.py:631 user/views.py:632
 msgid "List team members"
 msgstr ""
 
-#: user/views.py:623 user/views.py:624
+#: user/views.py:636 user/views.py:637
 msgid "Delete a team member"
 msgstr ""
 
-#: user/views.py:641
+#: user/views.py:654
 msgid "You can not delete the owner of the team"
 msgstr ""
 
-#: user/views.py:647 user/views.py:648
+#: user/views.py:660
+msgid "List media files"
+msgstr ""
+
+#: user/views.py:661
+msgid "List all media files for the current team"
+msgstr ""
+
+#: user/views.py:665
+msgid "Delete media file"
+msgstr ""
+
+#: user/views.py:666
+msgid "Delete a media file"
+msgstr ""
+
+#: user/views.py:670
+msgid "Upload media file"
+msgstr ""
+
+#: user/views.py:671
+msgid "Upload a media file for use in agent conversations"
+msgstr ""
+
+#: user/views.py:719 user/views.py:720
 msgid "Refresh token"
 msgstr ""
 
-#: user/views.py:658 user/views.py:659
+#: user/views.py:730 user/views.py:731
 msgid "Verify token"
 msgstr ""
 
