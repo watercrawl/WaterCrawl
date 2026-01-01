@@ -111,7 +111,7 @@ class WaterCrawlSearchTool(BaseBuiltinTool):
                 "depth": depth,
                 "language": language,
                 "country": country,
-                "time_renge": time_range,
+                "time_range": time_range,
             }
 
             service = await asyncio.to_thread(

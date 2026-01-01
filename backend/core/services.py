@@ -281,9 +281,9 @@ class SearchHelpers(BaseHelpers):
     @property
     def time_range(self):
         value = self.search_request.search_options.get(
-            "time_renge", consts.SEARCH_TIME_RENGE_ANY
+            "time_range", consts.SEARCH_TIME_RANGE_ANY
         )
-        if value == consts.SEARCH_TIME_RENGE_ANY:
+        if value == consts.SEARCH_TIME_RANGE_ANY:
             return None
         return value
 
