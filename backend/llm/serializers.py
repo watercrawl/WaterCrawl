@@ -40,7 +40,6 @@ class ProviderConfigSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         provider_name = attrs.get("provider_name")
         config = consts.LLM_PROVIDER_INFORMATION[provider_name]
-        print(config)
         if config["api_key"] == consts.OPTION_REQUIRED and not attrs.get("api_key"):
             raise serializers.ValidationError({"api_key": _("API key is required")})
         if config["base_url"] == consts.OPTION_REQUIRED and not attrs.get("base_url"):
