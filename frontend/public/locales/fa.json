@@ -64,9 +64,9 @@
     "agentToolConfig": {
       "title": "پیکربندی ابزار دستیار"
     },
-    "deleteConfirmTitle": "حذف دستیار",
     "confirmDelete": "آیا مطمئن هستید که می‌خواهید {{name}} را حذف کنید؟ این عمل قابل بازگشت نیست.",
     "createNew": "ایجاد دستیار",
+    "deleteConfirmTitle": "حذف دستیار",
     "deleteSuccess": "دستیار با موفقیت حذف شد",
     "description": "ایجاد و مدیریت دستیارهای هوش مصنوعی مستقل با ابزارها و دانش سفارشی",
     "detail": {
@@ -151,12 +151,14 @@
       "modelHelp": "مدل خاص مورد استفاده را انتخاب کنید",
       "modelParameters": "پارامترهای مدل",
       "name": "نام دستیار",
+      "nameLabel": "نام",
       "namePlaceholder": "نام نماینده را وارد کنید",
       "nameRequired": "نام نماینده الزامی است",
       "noAgentTools": "ابزار دستیاری پیکربندی نشده است. دستیارهایی اضافه کنید تا به عنوان ابزار استفاده شوند.",
       "noCustomHTTPTools": "ابزار HTTP سفارشی پیکربندی نشده است",
       "noKnowledgeBase": "بدون پایگاه دانش",
       "noKnowledgeBases": "هیچ پایگاه دانشی متصل نشده است",
+      "noKnowledgeBasesConnected": "هیچ پایگاه دانشی متصل نشده است",
       "noMCPTools": "ابزار MCP پیکربندی نشده است",
       "noTools": "هنوز ابزاری اضافه نشده است",
       "noVersions": "هیچ تاریخچه نسخه‌ای در دسترس نیست",
@@ -181,6 +183,7 @@
       "systemPrompt": "پرامپت سیستم",
       "systemPromptHelp": "رفتار و شخصیت دستیار را تعریف کنید",
       "systemPromptHint": "از {{VARIABLE_NAME}} برای درج متغیرهای زمینه استفاده کنید. متغیرها به صورت خودکار تشخیص داده می‌شوند.",
+      "systemPromptLabel": "دستور سیستم",
       "systemPromptPlaceholder": "شما یک دستیار هوشمند مفید هستید...",
       "systemPromptRequired": "دستور سیستم الزامی است",
       "tabs": {
@@ -216,13 +219,26 @@
       "versionHistory": "تاریخچه نسخه"
     },
     "jsonOutput": {
+      "clearSchema": "پاک کردن",
+      "currentMode": "حالت فعلی",
       "enableDescription": "مجبور کردن پاسخ‌های دستیار به پیروی از یک طرح JSON خاص",
       "enableLabel": "خروجی JSON ساختاریافته",
       "insertExample": "درج مثال",
       "invalidJson": "فرمت JSON نامعتبر",
       "invalidSchema": "طرح باید یک شیء باشد",
+      "mode": {
+        "disabled": "غیرفعال",
+        "dynamic": "طرح پویا",
+        "predefined": "طرح از پیش تعریف شده"
+      },
+      "modeDescription": {
+        "disabled": "حالت گفتگوی عادی بدون خروجی ساختاریافته. دستیار به زبان طبیعی پاسخ خواهد داد.",
+        "dynamic": "فراخوانندگان API باید در هر درخواست output_schema را ارائه دهند. این اجازه می‌دهد تا طرح‌های مختلف برای هر درخواست وجود داشته باشد.",
+        "predefined": "استفاده از طرح تعریف شده در بالا. تمام پاسخ‌ها از این ساختار پیروی خواهند کرد."
+      },
       "schemaHint": "ساختار خروجی دستیار را با استفاده از فرمت طرح JSON تعریف کنید",
       "schemaLabel": "طرح JSON",
+      "schemaOptional": "اختیاری",
       "schemaPlaceholder": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"answer\": { \"type\": \"string\" }\n  },\n  \"required\": [\"answer\"]\n}",
       "title": "فرمت خروجی"
     },
@@ -263,6 +279,7 @@
       "debugPreview": "اشکال‌زدایی و پیش‌نمایش",
       "defaultVariable": "به صورت خودکار از ورودی پر شده است",
       "draftModeResponse": "این یک شبیه‌سازی حالت پیش‌نویس است. نماینده خود را ذخیره کنید تا با پاسخ‌های واقعی تست کنید.",
+      "dynamicSchemaInfo": "این دستیار در حالت طرح پویا است. یک طرح JSON برای ساختاردهی به پاسخ دستیار برای هر درخواست ارائه دهید.",
       "editVariable": "ویرایش متغیر",
       "enterValue": "مقدار را وارد کنید",
       "estimatedCost": "Estimated Cost",
@@ -278,6 +295,8 @@
       "noVariables": "هنوز متغیری تعریف نشده است",
       "openChat": "تست نماینده",
       "output": "Output",
+      "outputSchema": "طرح خروجی",
+      "outputSchemaRequired": "ارائه طرح خروجی در حالت طرح پویا الزامی است",
       "promptTokens": "Prompt Tokens",
       "queryPlaceholder": "پیام خود را تایپ کنید...",
       "querySuccess": "پرس‌وجو با موفقیت ارسال شد",
@@ -329,7 +348,8 @@
       },
       "title": "پیکربندی ابزار: {{toolName}}",
       "valueLabel": "مقدار"
-    }
+    },
+    "usage": "میزان استفاده دستیار"
   },
   "api": {
     "crawl": {
@@ -540,6 +560,7 @@
     "runId": "شناسه اجرا",
     "startConversation": "شروع گفتگو",
     "streaming": "پخش زنده",
+    "structuredResponse": "پاسخ ساختاریافته",
     "thinking": "در حال فکر کردن",
     "todos": "وظایف",
     "todosCompleted": "تکمیل شده",
@@ -561,12 +582,10 @@
     "ago": "پیش",
     "allRightsReserved": "تمامی حقوق محفوظ است",
     "appName": "WaterCrawl",
-    "subtitle": "پلتفرم خزش وب",
     "back": "بازگشت",
     "backToHome": "Back to Home",
     "cancel": "لغو",
     "close": "بستن",
-    "config": "پیکربندی",
     "configureModel": "پیکربندی مدل",
     "confirmError": "Please enter the correct value to confirm deletion",
     "copiedToClipboard": "در کلیپ‌بورد کپی شد!",
@@ -671,7 +690,6 @@
     "results": "نتایج",
     "save": "ذخیره",
     "saved": "ذخیره شد!",
-    "saving": "در حال ذخیره...",
     "select": "انتخاب",
     "selectAll": "انتخاب همه",
     "selectOption": "یک گزینه انتخاب کنید",
@@ -701,6 +719,7 @@
     },
     "soon": "به زودی",
     "submit": "ثبت",
+    "subtitle": "پلتفرم خزش وب",
     "success": "موفقیت",
     "termsOfService": "شرایط خدمات",
     "theme": {
@@ -894,7 +913,7 @@
       "createKnowledgeBase": "ایجاد پایگاه دانش",
       "delete": "حذف",
       "edit": "ویرایش",
-      "export": "اکسپورت",
+      "export": "خروجی گرفتن",
       "generateSitemap": "تولید نقشه سایت",
       "home": "خانه",
       "next": "بعدی",
@@ -1552,6 +1571,8 @@
       "dimension": "بُعد جاسازی",
       "editCustomModel": "ویرایش مدل سفارشی",
       "embeddingModels": "مدل‌های جاسازی",
+      "export": "خروجی گرفتن",
+      "exportSuccess": "مدل‌ها با موفقیت صادر شدند",
       "features": "ویژگی‌ها",
       "featuresHelp": "لیست ویژگی‌های مدل جدا شده با کاما",
       "featuresHint": "لیست ویژگی‌ها جدا شده با کاما",
@@ -1559,18 +1580,22 @@
       "label": "برچسب نمایش",
       "labelPlaceholder": "مثال: مدل سفارشی من",
       "llmModels": "مدل‌های LLM",
+      "loadFromYaml": "بارگذاری از YAML",
       "modelKey": "کلید مدل",
       "modelKeyPlaceholder": "مثال: my-custom-model",
       "modelName": "نام مدل",
       "noCustomModels": "مدل سفارشی تعریف نشده است",
       "noModels": "مدلی موجود نیست",
+      "noModelsToExport": "مدلی برای خروجی گرفتن وجود ندارد",
       "rerankerModels": "مدل‌های رتبه‌بندی مجدد",
       "status": "وضعیت",
       "title": "مدیریت مدل",
       "type": "نوع",
       "typeEmbedding": "جاسازی",
       "typeLLM": "LLM",
-      "typeReranker": "رتبه‌بندی مجدد"
+      "typeReranker": "رتبه‌بندی مجدد",
+      "yamlLoaded": "فایل YAML با موفقیت بارگذاری شد",
+      "yamlLoadError": "بارگذاری فایل YAML ناموفق بود"
     },
     "provider": "ارائه‌دهنده",
     "subtitle": "مدیریت پیکربندی‌های ارائه‌دهنده خود",
@@ -1979,7 +2004,10 @@
         "error": "اجرای پرس‌وجو ناموفق بود.",
         "helpText": "پرس‌وجوی خود را برای جستجوی پایگاه دانش برای نتایج مرتبط وارد کنید.",
         "json": "JSON",
+        "manageRetrievalSettings": "مدیریت تنظیمات",
+        "manageRetrievalSettingsHint": "تنظیمات بازیابی مانند نوع جستجو و تعداد نتایج را در صفحه ویرایش پیکربندی کنید.",
         "noResults": "یک پرس‌وجو اجرا کنید تا نتایج را در اینجا مشاهده کنید.",
+        "noRetrievalSettings": "تنظیمات بازیابی پیکربندی نشده است.",
         "options": {
           "title": "گزینه‌ها",
           "topK": "تعداد نتایج",
@@ -1995,9 +2023,6 @@
         "resultsCount_other": "نتایج ({{count}} {{unit}} پیدا شد)",
         "retrievalSetting": "تنظیمات بازیابی",
         "retrievalSettingHelpText": "تنظیمات بازیابی نوع جستجو، تعداد نتایج و سایر پارامترهای پرس‌وجو را کنترل می‌کند.",
-        "noRetrievalSettings": "تنظیمات بازیابی پیکربندی نشده است.",
-        "manageRetrievalSettings": "مدیریت تنظیمات",
-        "manageRetrievalSettingsHint": "تنظیمات بازیابی مانند نوع جستجو و تعداد نتایج را در صفحه ویرایش پیکربندی کنید.",
         "runButton": "اجرای پرس‌وجو",
         "success": "پرس‌وجو موفق بود!",
         "title": "پرس‌وجو",
@@ -2496,6 +2521,8 @@
     }
   },
   "subscription": {
+    "agentCallRateLimit": "محدودیت نرخ فراخوانی دستیار",
+    "agents": "دستیارها",
     "dailyPagesCredit": "اعتبار صفحات روزانه",
     "maxConcurrentCrawls": "حداکثر خزش‌های همزمان",
     "maxDepth": "حداکثر عمق",
