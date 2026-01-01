@@ -115,9 +115,7 @@ class AgentVersionDetailSerializer(serializers.ModelSerializer):
         if not llm_model_key:
             return attrs
 
-        print(attrs)
         provider_config_uuid = attrs.get("provider_config_id")
-        print(provider_config_uuid)
         if not provider_config_uuid:
             if self.instance:
                 provider_config_uuid = self.instance.provider_config_id
@@ -514,6 +512,15 @@ class ChatMessageRequestSerializer(serializers.Serializer):
         default=list,
         help_text="List of Media file UUIDs to attach to the message",
     )
+    output_schema = serializers.JSONField(
+        required=False,
+        allow_null=True,
+        default=None,
+        help_text=(
+            "JSON Schema for structured output format. Required when agent has "
+            "json_output=True but no predefined json_schema. Must be a valid JSON Schema object."
+        ),
+    )
 
 
 class MessageSerializer(serializers.ModelSerializer):
@@ -529,6 +536,7 @@ class MessageSerializer(serializers.ModelSerializer):
             "tool_calls",
             "additional_kwargs",
             "response_metadata",
+            "tool_call_id",
             "created_at",
         ]
         read_only_fields = ["uuid", "created_at"]
@@ -563,4 +571,4 @@ class MessageBlockSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MessageBlock
-        fields = ["uuid", "conversation_id", "role", "messages"]
+        fields = ["uuid", "conversation_id", "role", "structured_response", "messages"]

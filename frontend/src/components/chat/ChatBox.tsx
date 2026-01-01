@@ -136,8 +136,11 @@ export interface StreamingState {
   currentAiMessageId: string | null;
   currentContent: string;
   currentToolCalls: Map<string, ToolCallDefinition & { output?: string }>;
+  /** Pending tool calls that have been flushed to AI messages but still need output messages */
+  pendingToolOutputs: Map<string, { toolCall: ToolCallDefinition; aiMessageId: string }>;
   messages: ChatMessageType[];
   error: { message: string; code?: string | number } | null;
+  structuredResponse: Record<string, any> | null;
 }
 
 /**
@@ -149,8 +152,10 @@ export const createStreamingState = (): StreamingState => ({
   currentAiMessageId: null,
   currentContent: '',
   currentToolCalls: new Map(),
+  pendingToolOutputs: new Map(),
   messages: [],
   error: null,
+  structuredResponse: null,
 });
 
 /**
@@ -178,30 +183,43 @@ export const processStreamingEvent = (
       newState.blockId = event.data.id;
       break;
       
-    case 'chat_model_start':
-      // New AI message started - flush any previous content
+    case 'chat_model_start': {
+      // New AI message started - flush any previous content and ALL tool calls
+      // Tool calls should stay in their original AI message position
       if (newState.currentContent || newState.currentToolCalls.size > 0) {
-        // Create message from accumulated content and tool calls
+        const aiMessageId = newState.currentAiMessageId || event.data.run_id;
+        
+        // Create AI message with ALL tool calls (pending and completed)
         const message = createAiMessage(
-          newState.currentAiMessageId || event.data.run_id,
+          aiMessageId,
           newState.currentContent,
           Array.from(newState.currentToolCalls.values())
         );
         newState.messages = [...newState.messages, message];
         
-        // Add tool result messages
-        for (const toolCall of newState.currentToolCalls.values()) {
+        // Track pending tool outputs and add completed tool output messages
+        newState.pendingToolOutputs = new Map(newState.pendingToolOutputs);
+        for (const [id, toolCall] of newState.currentToolCalls) {
           if (toolCall.output !== undefined) {
+            // Completed - add tool output message now
             const toolMessage = createToolMessage(toolCall);
             newState.messages = [...newState.messages, toolMessage];
+          } else {
+            // Pending - track for later insertion at correct position
+            newState.pendingToolOutputs.set(id, {
+              toolCall: { id: toolCall.id, name: toolCall.name, args: toolCall.args, type: toolCall.type },
+              aiMessageId,
+            });
           }
         }
         
         newState.currentContent = '';
         newState.currentToolCalls = new Map();
       }
+      
       newState.currentAiMessageId = event.data.run_id;
       break;
+    }
       
     case 'content':
       // Append streaming content
@@ -221,32 +239,78 @@ export const processStreamingEvent = (
       
     case 'tool_call_end': {
       // Complete a tool call with output
-      newState.currentToolCalls = new Map(newState.currentToolCalls);
+      // Parse the output - always convert to string for storage
+      let output: string;
+      if (event.data.output && typeof event.data.output === 'object') {
+        if ('content' in event.data.output && typeof event.data.output.content !== 'object') {
+          output = String(event.data.output.content) || '';
+        } else {
+          // Stringify object outputs (e.g., for write_todos)
+          output = JSON.stringify(event.data.output);
+        }
+      } else {
+        output = String(event.data.output) || '';
+      }
+      
+      // Check if tool is in current (not yet flushed) tool calls
       const existingToolCall = newState.currentToolCalls.get(event.data.run_id);
       if (existingToolCall) {
-        // Preserve the output structure - it might be an object (for write_todos) or have a content property
-        let output: any;
-        if (event.data.output && typeof event.data.output === 'object') {
-          // If output has a content property, use it (for most tools)
-          // Otherwise, use the output object itself (for write_todos)
-          if ('content' in event.data.output && typeof event.data.output.content !== 'object') {
-            output = String(event.data.output.content) || '';
-          } else {
-            // Use the output object directly (for write_todos and similar)
-            output = event.data.output;
-          }
-        } else {
-          output = String(event.data.output) || '';
-        }
-        
+        newState.currentToolCalls = new Map(newState.currentToolCalls);
         newState.currentToolCalls.set(event.data.run_id, {
           ...existingToolCall,
           output
         });
+        break;
+      }
+      
+      // Check if tool was already flushed (pending output)
+      const pendingOutput = newState.pendingToolOutputs.get(event.data.run_id);
+      if (pendingOutput) {
+        // Find the AI message that contains this tool call
+        const aiMessageIndex = newState.messages.findIndex(
+          msg => msg.uuid === pendingOutput.aiMessageId
+        );
+        
+        if (aiMessageIndex !== -1) {
+          // Create tool output message
+          const toolMessage = createToolMessage({
+            ...pendingOutput.toolCall,
+            output
+          });
+          
+          // Find the correct insertion position (after AI message and any existing tool outputs for it)
+          let insertIndex = aiMessageIndex + 1;
+          while (
+            insertIndex < newState.messages.length &&
+            newState.messages[insertIndex].message_type === 'tool' &&
+            newState.messages[insertIndex].tool_call_id &&
+            newState.messages.slice(aiMessageIndex, aiMessageIndex + 1)[0]?.tool_calls?.some(
+              tc => tc.id === newState.messages[insertIndex].tool_call_id
+            )
+          ) {
+            insertIndex++;
+          }
+          
+          // Insert at the correct position
+          newState.messages = [
+            ...newState.messages.slice(0, insertIndex),
+            toolMessage,
+            ...newState.messages.slice(insertIndex)
+          ];
+        }
+        
+        // Remove from pending
+        newState.pendingToolOutputs = new Map(newState.pendingToolOutputs);
+        newState.pendingToolOutputs.delete(event.data.run_id);
       }
       break;
     }
       
+    case 'structured_response':
+      // Store structured response data
+      newState.structuredResponse = event.data;
+      break;
+
     case 'error': {
       // Handle error event - extract error message from data
       // Note: Fallback message will be translated at component level
@@ -337,6 +401,7 @@ export const buildMessageBlockFromState = (state: StreamingState): MessageBlock 
     role: 'assistant',
     conversation_id: state.conversationId,
     messages,
+    structured_response: state.structuredResponse,
   };
 };
 
@@ -369,6 +434,7 @@ export const buildLiveMessageBlock = (state: StreamingState): MessageBlock => {
     role: 'assistant',
     conversation_id: state.conversationId,
     messages,
+    structured_response: state.structuredResponse,
   };
 };
 
@@ -394,8 +460,12 @@ interface ChatBoxProps {
   disabled?: boolean;
   /** Show streaming mode toggle (only if onSendMessageStreaming is provided) */
   showStreamingToggle?: boolean;
-  /** Default mode */
+  /** Default mode (used for uncontrolled mode) */
   defaultStreamingMode?: boolean;
+  /** Controlled streaming mode value */
+  streamingMode?: boolean;
+  /** Callback when streaming mode changes (enables controlled mode) */
+  onStreamingModeChange?: (mode: boolean) => void;
   /** Enable file attachments */
   enableFileAttachments?: boolean;
   /** Maximum number of file attachments */
@@ -419,6 +489,8 @@ const ChatBox: React.FC<ChatBoxProps> = ({
   disabled = false,
   showStreamingToggle = true,
   defaultStreamingMode = false,
+  streamingMode: controlledStreamingMode,
+  onStreamingModeChange,
   enableFileAttachments = true,
   maxFileAttachments = 5,
 }) => {
@@ -429,7 +501,18 @@ const ChatBox: React.FC<ChatBoxProps> = ({
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
-  const [streamingMode, setStreamingMode] = useState(defaultStreamingMode && !!onSendMessageStreaming);
+  
+  // Support both controlled and uncontrolled streaming mode
+  const [internalStreamingMode, setInternalStreamingMode] = useState(defaultStreamingMode && !!onSendMessageStreaming);
+  const isControlled = controlledStreamingMode !== undefined;
+  const streamingMode = isControlled ? controlledStreamingMode : internalStreamingMode;
+  const setStreamingMode = (mode: boolean) => {
+    if (isControlled && onStreamingModeChange) {
+      onStreamingModeChange(mode);
+    } else {
+      setInternalStreamingMode(mode);
+    }
+  };
   const [conversationId, setConversationId] = useState<string>('');
   const [error, setError] = useState<{ message: string; code?: string | number } | null>(null);
   const [attachments, setAttachments] = useState<FileAttachmentItem[]>([]);
@@ -496,9 +579,8 @@ const ChatBox: React.FC<ChatBoxProps> = ({
   const handleStreamingEnd = useCallback(() => {
     console.log('Streaming ended');
     
-    // If there's an error, it's already displayed, just reset
+    // If there's an error in the streaming state, it's already displayed
     if (streamingStateRef.current.error) {
-      // Error is already set in state, keep it visible
       streamingStateRef.current = createStreamingState();
       setLiveMessageBlock(null);
       setIsStreaming(false);
@@ -509,8 +591,8 @@ const ChatBox: React.FC<ChatBoxProps> = ({
     // Build final message block from accumulated state
     const finalBlock = buildMessageBlockFromState(streamingStateRef.current);
     
-    // Add to message blocks
-    if (finalBlock.messages.length > 0) {
+    // Add to message blocks (if there are messages OR a structured response)
+    if (finalBlock.messages.length > 0 || finalBlock.structured_response) {
       setMessageBlocks(prev => [...prev, finalBlock]);
     }
     
@@ -519,30 +601,10 @@ const ChatBox: React.FC<ChatBoxProps> = ({
     setLiveMessageBlock(null);
     setIsStreaming(false);
     abortControllerRef.current = null;
-    setError(null);
+    // We don't call setError(null) here because we might have a submission error 
+    // that occurred before the stream even started or was caught in handleStreamingSubmit
   }, []);
 
-  /**
-   * Get file UUIDs from uploaded attachments
-   */
-  const getUploadedFileUuids = (): string[] => {
-    return attachments
-      .filter((a) => a.uploaded && a.media)
-      .map((a) => a.media!.uuid);
-  };
-
-  /**
-   * Clear attachments after sending
-   */
-  const clearAttachments = () => {
-    // Revoke preview URLs
-    attachments.forEach((a) => {
-      if (a.preview) {
-        URL.revokeObjectURL(a.preview);
-      }
-    });
-    setAttachments([]);
-  };
 
   /**
    * Check if there are pending uploads
@@ -550,54 +612,30 @@ const ChatBox: React.FC<ChatBoxProps> = ({
   const hasPendingUploads = attachments.some((a) => a.uploading);
 
   /**
-   * Handle blocking mode submit
+   * Extract error details from an error object
    */
-  const handleBlockingSubmit = async (query: string, fileUuids?: string[]) => {
-    setIsLoading(true);
-    setError(null);
+  const extractErrorDetails = useCallback((error: any) => {
+    const data = error?.response?.data;
+    const errorMessage = (typeof data === 'string' ? data : null) || 
+                         data?.message || 
+                         data?.detail || 
+                         data?.error || 
+                         error?.message || 
+                         t('chat.errorOccurred');
     
-    try {
-      const assistantBlock = await onSendMessage(query, fileUuids);
-      console.log('Blocking response:', assistantBlock);
-      
-      // Check if response indicates an error
-      if ((assistantBlock as any).code && (assistantBlock as any).message) {
-        setError({
-          message: (assistantBlock as any).message,
-          code: (assistantBlock as any).code,
-        });
-        setIsLoading(false);
-        return;
-      }
-      
-      // Update conversation ID
-      if (assistantBlock.conversation_id) {
-        setConversationId(assistantBlock.conversation_id);
-      }
-      
-      setMessageBlocks(prev => [...prev, assistantBlock]);
-    } catch (error: any) {
-      console.error('Error sending message:', error);
-      // Extract error message from various error formats
-      const errorMessage = error?.message || error?.response?.data?.message || error?.response?.data?.error || t('chat.errorOccurred');
-      const errorCode = error?.code || error?.response?.status || error?.response?.data?.code;
-      setError({
-        message: typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage),
-        code: errorCode,
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    const errorCode = data?.code || error?.code || error?.response?.status;
+    
+    return {
+      message: typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage),
+      code: errorCode,
+    };
+  }, [t]);
 
   /**
    * Handle streaming mode submit
    */
-  const handleStreamingSubmit = async (query: string, fileUuids?: string[]) => {
-    if (!onSendMessageStreaming) {
-      // Fallback to blocking if streaming not available
-      return handleBlockingSubmit(query, fileUuids);
-    }
+  const handleStreamingSubmit = async (query: string, fileUuids?: string[]): Promise<boolean> => {
+    if (!onSendMessageStreaming) return false;
     
     setIsStreaming(true);
     setError(null);
@@ -606,15 +644,13 @@ const ChatBox: React.FC<ChatBoxProps> = ({
     
     try {
       await onSendMessageStreaming(query, handleStreamingEvent, handleStreamingEnd, fileUuids);
-    } catch (error: any) {
-      console.error('Error in streaming:', error);
-      const errorMessage = error?.message || error?.response?.data?.message || error?.response?.data?.error || t('chat.errorOccurred');
-      const errorCode = error?.code || error?.response?.status || error?.response?.data?.code;
-      setError({
-        message: typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage),
-        code: errorCode,
-      });
+      // Even if the promise resolves, check if an error was received during streaming
+      return !streamingStateRef.current.error;
+    } catch (err: any) {
+      console.error('Error in streaming submit:', err);
+      setError(extractErrorDetails(err));
       handleStreamingEnd();
+      return false;
     }
   };
 
@@ -627,23 +663,62 @@ const ChatBox: React.FC<ChatBoxProps> = ({
     if (!inputValue.trim() || isLoading || isStreaming || disabled || hasPendingUploads) return;
 
     const query = inputValue.trim();
-    const fileUuids = getUploadedFileUuids();
+    const fileUuids = attachments
+      .filter((a) => a.uploaded && a.media)
+      .map((a) => a.media!.uuid);
     
-    // Get uploaded attachments before clearing (for display in message)
     const uploadedAttachments = attachments.filter(a => a.uploaded);
     
-    // Create and add user message block (include attachments for display)
-    const userBlock = createUserMessageBlock(query, conversationId, uploadedAttachments);
-    setMessageBlocks(prev => [...prev, userBlock]);
-    setInputValue('');
     setError(null);
-    clearAttachments();
 
-    // Choose mode
+    let success = false;
+    let assistantBlock: MessageBlock | null = null;
+
     if (streamingMode && onSendMessageStreaming) {
-      await handleStreamingSubmit(query, fileUuids.length > 0 ? fileUuids : undefined);
+      success = await handleStreamingSubmit(query, fileUuids.length > 0 ? fileUuids : undefined);
     } else {
-      await handleBlockingSubmit(query, fileUuids.length > 0 ? fileUuids : undefined);
+      setIsLoading(true);
+      try {
+        assistantBlock = await onSendMessage(query, fileUuids.length > 0 ? fileUuids : undefined);
+        
+        if (assistantBlock && (assistantBlock as any).code && (assistantBlock as any).message) {
+          setError({
+            message: (assistantBlock as any).message,
+            code: (assistantBlock as any).code,
+          });
+          success = false;
+        } else if (assistantBlock) {
+          if (assistantBlock.conversation_id) {
+            setConversationId(assistantBlock.conversation_id);
+          }
+          success = true;
+        } else {
+          throw new Error(t('chat.errorOccurred'));
+        }
+      } catch (err: any) {
+        console.error('Error in blocking submit:', err);
+        setError(extractErrorDetails(err));
+        success = false;
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    if (success) {
+      const userBlock = createUserMessageBlock(query, conversationId, uploadedAttachments);
+      
+      setMessageBlocks(prev => {
+        const next = [...prev, userBlock];
+        if (assistantBlock) next.push(assistantBlock);
+        return next;
+      });
+      
+      setInputValue('');
+      attachments.forEach((a) => {
+        if (a.preview) URL.revokeObjectURL(a.preview);
+      });
+      setAttachments([]);
+      setError(null);
     }
   };
 
@@ -736,7 +811,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({
         ))}
 
         {/* Live streaming message */}
-        {isStreaming && liveMessageBlock && liveMessageBlock.messages.length > 0 && (
+        {isStreaming && liveMessageBlock && (liveMessageBlock.messages.length > 0 || liveMessageBlock.structured_response) && (
           <ChatMessage
             key="live-streaming"
             messageBlock={liveMessageBlock}
@@ -775,8 +850,8 @@ const ChatBox: React.FC<ChatBoxProps> = ({
           </div>
         )}
 
-        {/* Streaming initial placeholder (before first content) */}
-        {isStreaming && (!liveMessageBlock || liveMessageBlock.messages.length === 0) && (
+        {/* Streaming initial placeholder (before first content or structured response) */}
+        {isStreaming && (!liveMessageBlock || (liveMessageBlock.messages.length === 0 && !liveMessageBlock.structured_response)) && (
           <div className={`flex gap-3 ${isRTL ? 'justify-end' : 'justify-start'} mb-4`}>
             <div className="flex-shrink-0 mt-1">
               <div className="h-7 w-7 rounded-full bg-primary/10 flex items-center justify-center">
@@ -833,10 +908,13 @@ const ChatBox: React.FC<ChatBoxProps> = ({
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder={placeholder || t('chat.typeMessage')}
-              disabled={disabled || isProcessing}
+              readOnly={isProcessing}
+              disabled={disabled}
               rows={1}
               dir={detectTextDirection(inputValue) || (isRTL ? 'rtl' : 'ltr')}
-              className="w-full resize-none rounded-xl border border-input bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed max-h-32 overflow-y-auto transition-all"
+              className={`w-full resize-none rounded-xl border border-input bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed max-h-32 overflow-y-auto transition-all ${
+                isProcessing ? 'bg-muted/50 cursor-not-allowed' : ''
+              }`}
               style={{ minHeight: '44px' }}
             />
           </div>

@@ -232,6 +232,7 @@ export const agentApi = {
   },
 
   // Chat with Draft Agent - Blocking Mode
+  // Note: output_schema is required when agent has json_output=true but no predefined json_schema
   async chatWithDraftBlocking(
     agentUuid: string,
     request: ChatMessageRequest
@@ -244,6 +245,7 @@ export const agentApi = {
   },
 
   // Chat with Draft Agent - Streaming Mode
+  // Note: output_schema is required when agent has json_output=true but no predefined json_schema
   async chatWithDraftStreaming(
     agentUuid: string,
     request: Omit<ChatMessageRequest, 'response_mode'>,
@@ -261,6 +263,7 @@ export const agentApi = {
   },
 
   // Chat with Published Agent - Blocking Mode
+  // Note: output_schema is required when agent has json_output=true but no predefined json_schema
   async chatWithPublishedBlocking(
     agentUuid: string,
     request: ChatMessageRequest
@@ -273,6 +276,7 @@ export const agentApi = {
   },
 
   // Chat with Published Agent - Streaming Mode
+  // Note: output_schema is required when agent has json_output=true but no predefined json_schema
   async chatWithPublishedStreaming(
     agentUuid: string,
     request: Omit<ChatMessageRequest, 'response_mode'>,

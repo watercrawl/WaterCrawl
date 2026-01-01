@@ -329,7 +329,6 @@ class ModelConfig:
     """
 
     def __init__(self, config: Dict[str, Any]):
-        print(config)
         self._config = config
 
     @property

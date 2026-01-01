@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
@@ -8,6 +8,7 @@ import {
   CodeBracketIcon,
   ServerIcon,
   PuzzlePieceIcon,
+  MagnifyingGlassIcon,
 } from '@heroicons/react/24/outline';
 
 import ToolCard from '../shared/ToolCard';
@@ -33,6 +34,7 @@ const ToolSelector: React.FC<ToolSelectorProps> = ({
   const [activeTab, setActiveTab] = useState<'builtin' | 'custom' | 'mcp'>('builtin');
   const [expandedApiSpecs, setExpandedApiSpecs] = useState<Set<string>>(new Set());
   const [expandedMcpServers, setExpandedMcpServers] = useState<Set<string>>(new Set());
+  const [searchQuery, setSearchQuery] = useState('');
 
   const toggleApiSpec = (uuid: string) => {
     setExpandedApiSpecs(prev => {
@@ -60,8 +62,66 @@ const ToolSelector: React.FC<ToolSelectorProps> = ({
 
   const isToolSelected = (toolUuid: string) => selectedToolUuids.includes(toolUuid);
 
+  // Filter tools based on search query
+  const filteredBuiltInTools = useMemo(() => {
+    if (!searchQuery.trim()) return builtInTools;
+    const query = searchQuery.toLowerCase();
+    return builtInTools.filter(
+      (tool) =>
+        tool.name.toLowerCase().includes(query) ||
+        tool.description?.toLowerCase().includes(query) ||
+        tool.key.toLowerCase().includes(query)
+    );
+  }, [builtInTools, searchQuery]);
+
+  const filteredApiSpecs = useMemo(() => {
+    if (!searchQuery.trim()) return apiSpecs;
+    const query = searchQuery.toLowerCase();
+    return apiSpecs
+      .map((spec) => ({
+        ...spec,
+        tools: spec.tools.filter(
+          (tool) =>
+            tool.name.toLowerCase().includes(query) ||
+            tool.description?.toLowerCase().includes(query) ||
+            tool.key.toLowerCase().includes(query)
+        ),
+      }))
+      .filter((spec) => spec.tools.length > 0 || spec.name.toLowerCase().includes(query));
+  }, [apiSpecs, searchQuery]);
+
+  const filteredMcpServers = useMemo(() => {
+    if (!searchQuery.trim()) return mcpServers;
+    const query = searchQuery.toLowerCase();
+    return mcpServers
+      .map((server) => ({
+        ...server,
+        tools: server.tools.filter(
+          (tool) =>
+            tool.name.toLowerCase().includes(query) ||
+            tool.description?.toLowerCase().includes(query) ||
+            tool.key.toLowerCase().includes(query)
+        ),
+      }))
+      .filter((server) => server.tools.length > 0 || server.name.toLowerCase().includes(query));
+  }, [mcpServers, searchQuery]);
+
   return (
     <div className="w-full">
+      {/* Search Input */}
+      <div className="mb-4">
+        <div className="relative">
+          <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder={t('tools.searchPlaceholder')}
+            className="w-full pl-9 pr-4 py-2 text-sm rounded-lg border border-input bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+          />
+        </div>
+      </div>
+
       {/* Tabs */}
       <div className="flex border-b border-border mb-4">
         <button
@@ -74,9 +134,9 @@ const ToolSelector: React.FC<ToolSelectorProps> = ({
         >
           <PuzzlePieceIcon className="h-4 w-4" />
           {t('tools.tabs.builtin')}
-          {builtInTools.length > 0 && (
+          {filteredBuiltInTools.length > 0 && (
             <span className="ml-1 px-1.5 py-0.5 rounded-full bg-muted text-[10px] font-semibold">
-              {builtInTools.length}
+              {filteredBuiltInTools.length}
             </span>
           )}
         </button>
@@ -90,9 +150,9 @@ const ToolSelector: React.FC<ToolSelectorProps> = ({
         >
           <CodeBracketIcon className="h-4 w-4" />
           {t('tools.tabs.apiSpecs')}
-          {apiSpecs.length > 0 && (
+          {filteredApiSpecs.length > 0 && (
             <span className="ml-1 px-1.5 py-0.5 rounded-full bg-muted text-[10px] font-semibold">
-              {apiSpecs.length}
+              {filteredApiSpecs.length}
             </span>
           )}
         </button>
@@ -106,9 +166,9 @@ const ToolSelector: React.FC<ToolSelectorProps> = ({
         >
           <ServerIcon className="h-4 w-4" />
           {t('tools.tabs.mcpServers')}
-          {mcpServers.length > 0 && (
+          {filteredMcpServers.length > 0 && (
             <span className="ml-1 px-1.5 py-0.5 rounded-full bg-muted text-[10px] font-semibold">
-              {mcpServers.length}
+              {filteredMcpServers.length}
             </span>
           )}
         </button>
@@ -119,8 +179,8 @@ const ToolSelector: React.FC<ToolSelectorProps> = ({
         {/* Built-in Tools Tab */}
         {activeTab === 'builtin' && (
           <div className="space-y-1.5">
-            {builtInTools.length > 0 ? (
-              builtInTools.map(tool => (
+            {filteredBuiltInTools.length > 0 ? (
+              filteredBuiltInTools.map(tool => (
                   <ToolCard
                     key={tool.uuid}
                     name={tool.name}
@@ -145,8 +205,8 @@ const ToolSelector: React.FC<ToolSelectorProps> = ({
         {/* API Specs Tab */}
         {activeTab === 'custom' && (
           <div className="space-y-2">
-            {apiSpecs.length > 0 ? (
-              apiSpecs.map(spec => {
+            {filteredApiSpecs.length > 0 ? (
+              filteredApiSpecs.map(spec => {
                 const isExpanded = expandedApiSpecs.has(spec.uuid);
                 const selectedCount = spec.tools.filter(t => isToolSelected(t.uuid)).length;
                 return (
@@ -214,8 +274,8 @@ const ToolSelector: React.FC<ToolSelectorProps> = ({
         {/* MCP Servers Tab */}
         {activeTab === 'mcp' && (
           <div className="space-y-2">
-            {mcpServers.length > 0 ? (
-              mcpServers.map(server => {
+            {filteredMcpServers.length > 0 ? (
+              filteredMcpServers.map(server => {
                 const isExpanded = expandedMcpServers.has(server.uuid);
                 const selectedCount = server.tools.filter(t => isToolSelected(t.uuid)).length;
                 return (

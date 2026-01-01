@@ -267,6 +267,7 @@ const KnowledgeBaseQueryForm: React.FC<KnowledgeBaseQueryFormProps> = ({
                         <KnowledgeBaseQueryResult
                           key={`${result.metadata.uuid}-${index}`}
                           result={result}
+                          knowledgeBaseId={knowledgeBaseId}
                           showDocumentLink={true}
                           showSource={true}
                         />

@@ -536,7 +536,6 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({
             onChange={handleModelConfigChange}
             disabled={disabled || !selectedModelKey}
             compact
-            modalTitle={t('common.configureModel')}
           />
         )}
       </div>

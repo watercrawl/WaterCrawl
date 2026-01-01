@@ -432,15 +432,12 @@ const AgentFormPage: React.FC = () => {
         {/* Right Panel - Test Bench (Desktop Only) */}
         {!isTabletOrMobile && (
           <div className="w-1/2 flex flex-col bg-muted/30">
-            <div className="border-b border-border bg-card px-6 py-4">
-              <h2 className="text-sm font-semibold uppercase tracking-wide text-foreground">
-                {t('agents.testBench.debugPreview')}
-              </h2>
-            </div>
             <div className="flex-1 overflow-hidden">
               <AgentTestBenchPanel
                 agent={tempAgent}
                 contextVariableTemplates={formState.contextVariables}
+                jsonOutput={formState.jsonOutput}
+                jsonSchema={formState.jsonSchema}
                 mode="inline"
               />
             </div>
@@ -452,6 +449,8 @@ const AgentFormPage: React.FC = () => {
           <AgentTestBenchPanel
             agent={tempAgent}
             contextVariableTemplates={formState.contextVariables}
+            jsonOutput={formState.jsonOutput}
+            jsonSchema={formState.jsonSchema}
             mode="sidebar"
             defaultOpen={false}
           />

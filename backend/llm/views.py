@@ -167,7 +167,6 @@ class ProviderConfigViewSet(ModelViewSet):
         methods=["post"],
         url_path="test-config",
         url_name="test-config",
-        serializer_class=serializers.TestProviderConfigSerializer,
     )
     def test_config(self, request, **kwargs):
         """Test a provider configuration without saving it."""

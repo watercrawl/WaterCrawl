@@ -19,6 +19,11 @@ class ProviderConfigSerializer(serializers.ModelSerializer):
         required=False,
         allow_null=True,
     )
+    base_url = serializers.CharField(
+        required=False,
+        allow_null=True,
+        allow_blank=True,
+    )
 
     class Meta:
         model = ProviderConfig
@@ -35,6 +40,7 @@ class ProviderConfigSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         provider_name = attrs.get("provider_name")
         config = consts.LLM_PROVIDER_INFORMATION[provider_name]
+        print(config)
         if config["api_key"] == consts.OPTION_REQUIRED and not attrs.get("api_key"):
             raise serializers.ValidationError({"api_key": _("API key is required")})
         if config["base_url"] == consts.OPTION_REQUIRED and not attrs.get("base_url"):
@@ -96,8 +102,12 @@ class TestProviderConfigSerializer(serializers.Serializer):
     """Serializer for testing provider configuration."""
 
     provider_name = serializers.ChoiceField(choices=consts.LLM_PROVIDER_CHOICES)
-    api_key = serializers.CharField()
-    base_url = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    api_key = serializers.CharField(
+        required=False, allow_blank=True, allow_null=True, default=None
+    )
+    base_url = serializers.CharField(
+        required=False, allow_blank=True, allow_null=True, default=None
+    )
 
 
 class ModelConfigSerializer(serializers.Serializer):

@@ -72,21 +72,22 @@ const AgentFormKnowledgeBasesSection: React.FC<AgentFormKnowledgeBasesSectionPro
           )
         }
       />
-      {draftKnowledgeBases.length > 0 ? (
-        <div className="space-y-1">
-          {draftKnowledgeBases.map((kb) => (
-            <ListItem
-              key={kb.uuid}
-              label={kb.title}
-              onConfigure={() => onConfigure(kb)}
-              onDelete={() => onRemove(kb.uuid)}
-              configureTitle={t('common.config')}
-            />
-          ))}
-        </div>
-      ) : (
-        <EmptyState message={t('agents.form.noKnowledgeBases')} />
-      )}
+      <div className="rounded-md border border-input-border bg-card p-3">
+        {draftKnowledgeBases.length > 0 ? (
+          <div className="space-y-1">
+            {draftKnowledgeBases.map((kb) => (
+              <ListItem
+                key={kb.uuid}
+                label={kb.title}
+                onConfigure={() => onConfigure(kb)}
+                onDelete={() => onRemove(kb.uuid)}
+              />
+            ))}
+          </div>
+        ) : (
+          <EmptyState message={t('agents.form.noKnowledgeBases')} />
+        )}
+      </div>
     </div>
   );
 };

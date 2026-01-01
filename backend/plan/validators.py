@@ -2,6 +2,7 @@ import datetime
 from typing import Protocol
 
 from django.utils import timezone
+from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from rest_framework.exceptions import PermissionDenied
 
@@ -21,7 +22,10 @@ import core.consts as core_consts
 class PlanValidatorInterface(Protocol):
     def __init__(self, team: Team):
         self.team = team
-        self.team_plan_service = TeamPlanService(team=team)
+
+    @cached_property
+    def team_plan_service(self):
+        return TeamPlanService(team=self.team)
 
     def validate_daily_credit(self, requested_credit=1): ...
 
@@ -231,9 +235,27 @@ class SitemapRequestValidatorMixin(PlanValidatorInterface):
             )
 
 
+class AgentRequestValidatorMixin(PlanValidatorInterface):
+    def validate_create_agent(self):
+        self._validate_number_of_agents()
+
+    def _validate_number_of_agents(self):
+        if self.team_plan_service.number_of_agents == -1:
+            return
+        number_of_agents_used = self.team.agents.count()
+
+        if number_of_agents_used >= self.team_plan_service.number_of_agents:
+            raise PermissionDenied(
+                _(
+                    "Your plan does not support more than {} agents. You can not create more."
+                ).format(self.team_plan_service.number_of_agents)
+            )
+
+
 class KnowledgeBaseRequestValidatorMixin(PlanValidatorInterface):
     def validate_create_knowledge_base(self, data: dict):
         self._validate_number_of_knowledge_bases()
+        # ... rest of the method
 
         data["knowledge_base_each_document_cost"] = 0
 
@@ -388,6 +410,7 @@ class CanInviteNewMemberValidatorMixin(PlanValidatorInterface):
 
 
 class PlanLimitValidator(
+    AgentRequestValidatorMixin,
     CrawlRequestValidatorMixin,
     SearchRequestValidatorMixin,
     SitemapRequestValidatorMixin,

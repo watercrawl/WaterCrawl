@@ -6,6 +6,7 @@ from plan.services import TeamPlanService
 
 class TeamBasedThrottle(SimpleRateThrottle):
     scope = "team"
+    cache_key_prefix = "throttle_team"
 
     def __init__(self) -> None:
         # Override the usual SimpleRateThrottle, because we can't determine
@@ -17,7 +18,7 @@ class TeamBasedThrottle(SimpleRateThrottle):
             raise ValueError(
                 _("Cannot throttle a request without a team attached to it.")
             )
-        return f"throttle_knowledge_base_retrival_{request.current_team.pk}"
+        return f"{self.cache_key_prefix}_{request.current_team.pk}"
 
     def set_rate(self, rate):
         self.rate = rate
@@ -40,13 +41,23 @@ class TeamBasedThrottle(SimpleRateThrottle):
 
 class KnowledgeBaseRetrivalRateThrottle(TeamBasedThrottle):
     scope = "knowledge_base_retrival"
+    cache_key_prefix = "throttle_knowledge_base_retrival"
 
     def get_rate_limit_for_team(self, request, team):
         return TeamPlanService(request.current_team).knowledge_base_retrival_rate_limit
 
 
+class AgentRateThrottle(TeamBasedThrottle):
+    scope = "agent"
+    cache_key_prefix = "throttle_agent"
+
+    def get_rate_limit_for_team(self, request, team):
+        return TeamPlanService(request.current_team).agent_rate_limit
+
+
 class SummaryEnhancementRateThrottle(TeamBasedThrottle):
     scope = "summary_enhancement"
+    cache_key_prefix = "throttle_summary_enhancement"
 
     def get_rate_limit_for_team(self, request, team):
         return "10/day"

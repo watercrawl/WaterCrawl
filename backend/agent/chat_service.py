@@ -35,9 +35,17 @@ class BlockMessageHandler:
 
     @classmethod
     def create(
-        cls, role: str, conversation: Conversation, messages: List[BaseMessage] = None
+        cls,
+        role: str,
+        conversation: Conversation,
+        messages: List[BaseMessage] = None,
+        structured_response: Optional[Dict[str, Any]] = None,
     ) -> "BlockMessageHandler":
-        block = MessageBlock(role=role, conversation=conversation)
+        block = MessageBlock(
+            role=role,
+            conversation=conversation,
+            structured_response=structured_response,
+        )
         block.save()
         messages = messages or []
         handler = cls(block)
@@ -127,6 +135,12 @@ class FrontendEventStream:
             return []
         return self.agent_state["messages"]
 
+    @property
+    def structured_response(self) -> Optional[Dict[str, Any]]:
+        if not self.agent_state:
+            return None
+        return self.agent_state.get("structured_response")
+
     async def stream_to_frontend(
         self, input_data: Dict[str, Any]
     ) -> AsyncIterator[Dict[str, Any]]:
@@ -144,6 +158,11 @@ class FrontendEventStream:
             processed = await self._process_event(event)
             if processed:
                 yield processed
+        if self.structured_response:
+            yield self.make_event(
+                "structured_response",
+                self.structured_response,
+            )
 
     async def _process_event(self, event: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         """Process individual events based on type."""
@@ -437,7 +456,7 @@ class ConversationService:
             logger.error(f"Error reading file {media_file.file_name}: {str(e)}")
             return None
 
-    def create_agent_executor(self):
+    def create_agent_executor(self, output_schema: Optional[Dict[str, Any]] = None):
         # Create context for media library integration
         context = {
             "team": self.conversation.team,
@@ -451,10 +470,14 @@ class ConversationService:
             agent_version=self.conversation.agent_version,
             context_variables=self.conversation.inputs,
             context=context,
+            output_schema=output_schema,
         )
 
     def chat(
-        self, query: str, files: Optional[List[Media]] = None
+        self,
+        query: str,
+        files: Optional[List[Media]] = None,
+        output_schema: Optional[Dict[str, Any]] = None,
     ) -> Generator[dict, None, None]:
         """
         Process chat message and generate streaming response using AgentFactory.
@@ -462,11 +485,13 @@ class ConversationService:
         Args:
             query: The user's text input
             files: Optional list of Media files to attach to the message
+            output_schema: Optional JSON Schema for structured output (used when agent has
+                          json_output=True but no predefined schema)
 
         Yields dictionary events that will be formatted by EventStreamResponse.
         """
         messages, message_ids = self.build_current_state(query, files=files)
-        agent_executor = self.create_agent_executor()
+        agent_executor = self.create_agent_executor(output_schema=output_schema)
 
         stream = FrontendEventStream(agent_executor)
 
@@ -489,7 +514,7 @@ class ConversationService:
             new_messages = [
                 message for message in stream.messages if message.id not in message_ids
             ]
-            self.persist_output(new_messages)
+            self.persist_output(new_messages, stream.structured_response)
             self.fill_title(query)
             yield stream.make_event("title", {"title": self.conversation.title})
             yield stream.make_event("done", {})
@@ -501,7 +526,10 @@ class ConversationService:
             yield {"event": "error", "data": {"error": str(e)}}
 
     def chat_blocking(
-        self, query: str, files: Optional[List[Media]] = None
+        self,
+        query: str,
+        files: Optional[List[Media]] = None,
+        output_schema: Optional[Dict[str, Any]] = None,
     ) -> MessageBlock:
         """
         Process chat message using AgentFactory and return complete response (blocking mode).
@@ -509,13 +537,15 @@ class ConversationService:
         Args:
             query: The user's text input
             files: Optional list of Media files to attach to the message
+            output_schema: Optional JSON Schema for structured output (used when agent has
+                          json_output=True but no predefined schema)
 
         Returns dictionary with conversation and message information.
         """
         # Add user message
         messages, message_ids = self.build_current_state(query, files=files)
 
-        agent_executor = self.create_agent_executor()
+        agent_executor = self.create_agent_executor(output_schema=output_schema)
 
         try:
             # Execute agent (blocking)
@@ -531,7 +561,7 @@ class ConversationService:
                 for message in result["messages"]
                 if message.id not in message_ids
             ]
-            block = self.persist_output(new_messages)
+            block = self.persist_output(new_messages, result.get("structured_response"))
             self.fill_title(query)
             return block
 
@@ -540,11 +570,16 @@ class ConversationService:
             traceback.print_exc()
             raise ValidationError(str(e))
 
-    def persist_output(self, messages: List[BaseMessage]) -> MessageBlock:
+    def persist_output(
+        self,
+        messages: List[BaseMessage],
+        structured_response: Optional[Dict[str, Any]] = None,
+    ) -> MessageBlock:
         return BlockMessageHandler.create(
             role="assistant",
             conversation=self.conversation,
             messages=messages,
+            structured_response=structured_response,
         ).block
 
     def fill_title(self, query: str) -> Optional[str]:

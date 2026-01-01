@@ -48,7 +48,6 @@ class ProviderConfigService:
         Returns:
             Dictionary with test results
         """
-
         try:
             # Different validation logic depending on provider
             if provider_name == consts.LLM_PROVIDER_OPENAI:
@@ -133,16 +132,21 @@ class ProviderConfigService:
         return False
 
     @classmethod
-    def _test_ollama_provider(cls, base_url: str = None) -> bool:
+    def _test_ollama_provider(cls, base_url: str = None, api_key: str = None) -> bool:
         """Test Ollama provider configuration."""
         api_url = base_url or "http://localhost:11434"
         if api_url.endswith("/"):
             api_url = api_url[:-1]
 
+        headers = {"Content-Type": "application/json"}
+
+        if api_key:
+            headers["Authorization"] = f"Bearer {api_key}"
+
         try:
             response = requests.get(
                 f"{api_url}/api/tags",
-                headers={"Content-Type": "application/json"},
+                headers=headers,
                 timeout=10,
             )
             return response.status_code == 200
@@ -166,7 +170,6 @@ class ProviderConfigService:
                     "anthropic-version": "2023-06-01",
                 },
             )
-            print(response.text)
             return response.status_code == 200
         except Exception as e:
             logger.error(f"Anthropic provider test failed: {str(e)}")

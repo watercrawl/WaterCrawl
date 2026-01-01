@@ -21,7 +21,7 @@ import { agentApi } from '../../services/api/agent';
 import { conversationApi } from '../../services/api/conversation';
 import { formatDistanceToNowLocalized } from '../../utils/dateUtils';
 
-import type { Agent } from '../../types/agent';
+import type { Agent, AgentVersion } from '../../types/agent';
 import type { Conversation, MessageBlock } from '../../types/conversation';
 
 const AgentDetailPage: React.FC = () => {
@@ -40,6 +40,7 @@ const AgentDetailPage: React.FC = () => {
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [showIntegrations, setShowIntegrations] = useState(false);
+  const [publishedVersion, setPublishedVersion] = useState<AgentVersion | null>(null);
 
   useEffect(() => {
     if (agentId) {
@@ -48,6 +49,21 @@ const AgentDetailPage: React.FC = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [agentId]);
+
+  // Fetch published version when agent is loaded and published
+  useEffect(() => {
+    const fetchPublishedVersion = async () => {
+      if (agent && agent.status === 'published') {
+        try {
+          const version = await agentApi.getPublishedVersion(agent.uuid);
+          setPublishedVersion(version);
+        } catch (error) {
+          console.error('Error fetching published version:', error);
+        }
+      }
+    };
+    fetchPublishedVersion();
+  }, [agent]);
 
   useEffect(() => {
     if (agent) {
@@ -362,6 +378,8 @@ const AgentDetailPage: React.FC = () => {
             agent={agent} 
             isPublished={isPublished}
             onConversationCreated={handleConversationCreated}
+            jsonOutput={publishedVersion?.json_output}
+            jsonSchema={publishedVersion?.json_schema}
           />
         )}
       </div>

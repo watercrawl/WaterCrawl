@@ -179,11 +179,11 @@ class WeaviateVectorStore(BaseVectorStore):
                 properties = {
                     "doc_id": str(chunk.uuid),
                     "text": chunk.content,
-                    "chunk_index": chunk.index,
                     "title": chunk.document.title,
+                    "document_id": chunk.document_id,
+                    "index": chunk.index,
                     "source": chunk.document.source,
-                    "knowledge_base_id": str(chunk.document.knowledge_base.uuid),
-                    "document_id": str(chunk.document.uuid),
+                    "source_type": chunk.document.source_type,
                 }
 
                 # Use chunk UUID as object UUID for easy retrieval
@@ -273,11 +273,11 @@ class WeaviateVectorStore(BaseVectorStore):
                 return_properties=[
                     "doc_id",
                     "text",
-                    "chunk_index",
                     "title",
-                    "source",
-                    "knowledge_base_id",
                     "document_id",
+                    "index",
+                    "source",
+                    "source_type",
                 ],
             )
 
@@ -310,11 +310,11 @@ class WeaviateVectorStore(BaseVectorStore):
                 return_properties=[
                     "doc_id",
                     "text",
-                    "chunk_index",
                     "title",
-                    "source",
-                    "knowledge_base_id",
                     "document_id",
+                    "index",
+                    "source",
+                    "source_type",
                 ],
             )
 
@@ -385,16 +385,16 @@ class WeaviateVectorStore(BaseVectorStore):
             doc = Document(
                 content=props.get("text", ""),
                 metadata={
-                    "index": props.get("chunk_index"),
+                    "index": props.get("index"),
                     "title": props.get("title"),
-                    "uuid": props.get("doc_id"),
-                    "source": props.get("source"),
-                    "knowledge_base_id": props.get("knowledge_base_id"),
                     "document_id": props.get("document_id"),
+                    "source": props.get("source"),
+                    "source_type": props.get("source_type"),
                 },
                 score=normalized_score,
                 chunk_id=props.get("doc_id") or str(obj.uuid),
             )
+
             documents.append(doc)
 
         return documents

@@ -57,7 +57,24 @@ export class AuthService {
 
     this.refreshPromise = (async () => {
       try {
-        const response = await fetch(`${API_URL}/api/v1/user/auth/token/refresh/`, {
+        // Properly construct the URL to avoid issues with API_URL format
+        // Use URL constructor to handle all edge cases (trailing slashes, relative/absolute paths)
+        const path = '/api/v1/user/auth/token/refresh/';
+        let url: string;
+        
+        if (!API_URL || API_URL === '/') {
+          // If API_URL is root or empty, use relative path
+          url = path;
+        } else if (API_URL.startsWith('http://') || API_URL.startsWith('https://')) {
+          // If API_URL is absolute, use URL constructor to properly join
+          const baseUrl = API_URL.endsWith('/') ? API_URL.slice(0, -1) : API_URL;
+          url = new URL(path, baseUrl).toString();
+        } else {
+          // If API_URL is relative, use current origin
+          url = new URL(path, window.location.origin).toString();
+        }
+        
+        const response = await fetch(url, {
           body: JSON.stringify({
             refresh: this.getRefreshToken(),
           }),

@@ -2,6 +2,8 @@ import React from 'react';
 
 import { useTranslation } from 'react-i18next';
 
+import SectionHeader from '../SectionHeader';
+
 import ModelSelector from '../../shared/ModelSelector';
 
 interface AgentFormLLMConfigSectionProps {
@@ -25,18 +27,18 @@ const AgentFormLLMConfigSection: React.FC<AgentFormLLMConfigSectionProps> = ({
 
   return (
     <div>
-      <h2 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">
-        {t('agents.form.llmConfig')}
-      </h2>
-      <ModelSelector
-        modelType="llm"
-        initialProviderConfigId={providerConfigId || null}
-        initialModelKey={modelKey || null}
-        initialModelConfig={llmConfigs}
-        onChange={onConfigChange}
-        showLabel={false}
-        placeholder={t('common.llmSelector.selectModel')}
-      />
+      <SectionHeader title={t('agents.form.llmConfig')} />
+      <div className="rounded-md border border-input-border bg-card p-3">
+        <ModelSelector
+          modelType="llm"
+          initialProviderConfigId={providerConfigId || null}
+          initialModelKey={modelKey || null}
+          initialModelConfig={llmConfigs}
+          onChange={onConfigChange}
+          showLabel={false}
+          placeholder={t('common.llmSelector.selectModel')}
+        />
+      </div>
     </div>
   );
 };

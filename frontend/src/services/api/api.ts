@@ -162,7 +162,19 @@ api.sseRequest = async <T>(
     }
 
     if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      let errorData;
+      try {
+        errorData = await response.json();
+      } catch (_) {
+        // Fallback if not JSON
+      }
+      
+      const error = new Error(errorData?.message || `HTTP error! Status: ${response.status}`);
+      (error as any).response = {
+        status: response.status,
+        data: errorData
+      };
+      throw error;
     }
 
     if (!response.body) {

@@ -19,7 +19,7 @@ class RedisLock:
         :param wait_time: Maximum time to wait to acquire the lock (in seconds).
         :param retry_interval: Time between retries (in seconds).
         """
-        self.lock_name = lock_name
+        self.lock_name = str(lock_name)
         self.timeout = timeout
         self.wait_time = wait_time
         self.retry_interval = retry_interval

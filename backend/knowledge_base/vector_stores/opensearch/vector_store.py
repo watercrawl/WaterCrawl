@@ -128,12 +128,11 @@ class OpenSearchVectorStore(BaseVectorStore):
                 "doc_id": str(chunk.uuid),
                 "text": chunk.content,
                 "metadata": {
-                    "index": chunk.index,
                     "title": chunk.document.title,
-                    "uuid": str(chunk.uuid),
+                    "document_id": chunk.document_id,
+                    "index": chunk.index,
                     "source": chunk.document.source,
-                    "knowledge_base_id": str(chunk.document.knowledge_base.uuid),
-                    "document_id": str(chunk.document.uuid),
+                    "source_type": chunk.document.source_type,
                 },
             }
 

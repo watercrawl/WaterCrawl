@@ -90,6 +90,7 @@
       "archived": "Archived",
       "testing": "Testing"
     },
+    "usage": "Agent Usage",
     "details": {
       "tools": "Active Tools",
       "toolsActive": "{{count}} total",
@@ -119,7 +120,9 @@
         "tools": "Tools & Knowledge"
       },
       "name": "Agent Name",
+      "nameLabel": "Name",
       "namePlaceholder": "Enter agent name",
+      "systemPromptLabel": "System Prompt",
       "description": "Description",
       "descriptionPlaceholder": "Describe what this agent does",
       "status": "Status",
@@ -190,17 +193,14 @@
       "knowledgeBaseHelp": "Select a knowledge base to give your agent access to specific information",
       "instructions": "Instructions",
       "llmConfig": "LLM Configuration",
-      "instructions": "Instructions",
       "toolsLabel": "Tools",
-      "knowledge": "Knowledge Bases",
-      "noKnowledgeBases": "No knowledge bases added",
       "knowledge": "Knowledge",
+      "noKnowledgeBases": "No knowledge bases added",
       "publish": "Publish",
       "enabled": "enabled",
-      "toolsLabel": "Tools",
       "addTool": "+ Add Tool",
       "noTools": "No tools added yet",
-      "noKnowledgeBases": "No knowledge bases connected",
+      "noKnowledgeBasesConnected": "No knowledge bases connected",
       "configureTool": "Configure Tool",
       "configSaved": "Configuration saved successfully",
       "toolsNote": "Tools can be managed globally in the Tools menu",
@@ -252,11 +252,24 @@
       "enableLabel": "Structured JSON Output",
       "enableDescription": "Force agent responses to follow a specific JSON schema",
       "schemaLabel": "JSON Schema",
+      "schemaOptional": "optional",
       "schemaPlaceholder": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"answer\": { \"type\": \"string\" }\n  },\n  \"required\": [\"answer\"]\n}",
-      "schemaHint": "Define the structure of the agent's output using JSON Schema format",
+      "schemaHint": "Define the structure of the agent's output using JSON Schema format. Leave empty for dynamic schema mode.",
       "insertExample": "Insert Example",
+      "clearSchema": "Clear",
       "invalidJson": "Invalid JSON format",
-      "invalidSchema": "Schema must be an object"
+      "invalidSchema": "Schema must be an object",
+      "currentMode": "Current Mode",
+      "mode": {
+        "disabled": "Disabled",
+        "dynamic": "Dynamic Schema",
+        "predefined": "Predefined Schema"
+      },
+      "modeDescription": {
+        "disabled": "Normal chat mode without structured output. Agent will respond in natural language.",
+        "dynamic": "API callers must provide output_schema in each request. This allows different schemas per request.",
+        "predefined": "Using the schema defined above. All responses will follow this structure."
+      }
     },
     "kbConfig": {
       "retrievalSettingHint": "Select which retrieval setting to use when querying this knowledge base. The default setting will be used if none is selected."
@@ -274,6 +287,9 @@
       "queryPlaceholder": "Type your message...",
       "querySuccess": "Query sent successfully",
       "contextVariables": "Context Variables",
+      "outputSchema": "Output Schema",
+      "outputSchemaRequired": "Output schema is required in dynamic schema mode",
+      "dynamicSchemaInfo": "This agent is in dynamic schema mode. Provide a JSON Schema to structure the agent's response for each request.",
       "variableRequired": "Both key and value are required",
       "variableKeyRequired": "Variable key is required",
       "variableDuplicate": "Variable with this key already exists",
@@ -617,7 +633,6 @@
     },
     "home": "Home",
     "info": "Information",
-    "loading": "Loading...",
     "login": {
       "email": "Email Address",
       "emailPlaceholder": "Enter your email",
@@ -638,7 +653,6 @@
     },
     "next": "Next",
     "no": "No",
-    "nothingFound": "Nothing found.",
     "openSidebar": "Open sidebar",
     "preview": "Preview",
     "previous": "Previous",
@@ -646,8 +660,6 @@
     "recommended": "Recommended",
     "save": "Save",
     "saved": "Saved!",
-    "saving": "Saving...",
-    "config": "Config",
     "soon": "Soon",
     "send": "Send",
     "resetPassword": {
@@ -661,7 +673,6 @@
       "title": "Reset Password"
     },
     "results": "Results",
-    "selectOption": "Select an option",
     "showLess": "Show less",
     "showMore": "Show more",
     "signup": {
@@ -2391,6 +2402,8 @@
     "dailyPagesCredit": "Daily Pages Credit",
     "maxConcurrentCrawls": "Max Concurrent Crawls",
     "maxDepth": "Max Depth",
+    "agents": "Agents",
+    "agentCallRateLimit": "Agent Call Rate Limit",
     "prompt": {
       "description": "Upgrade to access more features and higher limits",
       "title": "Upgrade Your Plan",
@@ -2769,7 +2782,8 @@
     "uploadFailed": "Upload failed",
     "imageLoadError": "Failed to load image",
     "clickToView": "Click to view",
-    "downloadFile": "Download File"
+    "downloadFile": "Download File",
+    "structuredResponse": "Structured Response"
   },
   "mediaLibrary": {
     "title": "Media Library",

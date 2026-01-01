@@ -1,6 +1,7 @@
 import asyncio
 import json
 import uuid
+import logging
 from typing import Any, Dict, Annotated, Optional
 from urllib.parse import urljoin, urlencode, urlparse, parse_qs, urlunparse
 
@@ -33,6 +34,8 @@ from agent.tools.base import BuiltinToolRegistry, BaseBuiltinTool, SaveFileMixin
 from common.encryption import encrypt_key, decrypt_key
 from knowledge_base.models import RetrievalSetting, KnowledgeBase
 from knowledge_base.vector_stores.retriever import Retriever
+
+logger = logging.getLogger(__name__)
 
 
 class MCPTokenStorageHelper(TokenStorage):
@@ -925,13 +928,12 @@ class AgentToolExecutor(ToolExecutor):
                 )
 
             return ToolMessage(
-                content=message.content, tool_call_id=tool_call_id, status="success"
+                content=str(message.content),
+                tool_call_id=tool_call_id,
+                status="success",
             )
 
         except Exception as e:
-            import logging
-
-            logger = logging.getLogger(__name__)
             logger.error(f"Error executing agent tool: {str(e)}", exc_info=True)
             return ToolMessage(
                 content=f"Error executing agent: {str(e)}",

@@ -132,12 +132,22 @@ class TeamPlanAbstractService(ABC):
 
     @property
     @abstractmethod
+    def number_of_agents(self) -> int:
+        raise NotImplementedError
+
+    @property
+    @abstractmethod
     def number_of_each_knowledge_base_documents(self) -> int:
         raise NotImplementedError
 
     @property
     @abstractmethod
     def knowledge_base_retrival_rate_limit(self) -> str:
+        raise NotImplementedError
+
+    @property
+    @abstractmethod
+    def agent_rate_limit(self) -> str:
         raise NotImplementedError
 
 
@@ -222,11 +232,19 @@ class TeamPlanUnlimitedService(TeamPlanAbstractService):
         return -1
 
     @property
+    def number_of_agents(self):
+        return -1
+
+    @property
     def number_of_each_knowledge_base_documents(self):
         return -1
 
     @property
     def knowledge_base_retrival_rate_limit(self):
+        return None  # unlimited
+
+    @property
+    def agent_rate_limit(self):
         return None  # unlimited
 
 
@@ -352,12 +370,20 @@ class TeamPlanEnterpriseService(TeamPlanAbstractService, ABC):
         return self.subscription.plan.number_of_knowledge_bases
 
     @property
+    def number_of_agents(self):
+        return self.subscription.plan.number_of_agents
+
+    @property
     def number_of_each_knowledge_base_documents(self):
         return self.subscription.plan.number_of_each_knowledge_base_documents
 
     @property
     def knowledge_base_retrival_rate_limit(self):
         return self.subscription.plan.knowledge_base_retrival_rate_limit
+
+    @property
+    def agent_rate_limit(self):
+        return self.subscription.plan.agent_rate_limit
 
 
 TeamPlanService = (

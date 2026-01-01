@@ -59,8 +59,10 @@ class PlanAdmin(admin.ModelAdmin):
                     "crawl_max_limit",
                     "max_concurrent_crawl",
                     "number_of_knowledge_bases",
+                    "number_of_agents",
                     "number_of_each_knowledge_base_documents",
                     "knowledge_base_retrival_rate_limit",
+                    "agent_rate_limit",
                 )
             },
         ),

@@ -316,7 +316,6 @@ class SitemapScrapper(Spider):
         links = response.css("a::attr(href)").getall()
 
         if current_depth == 0 and len(links) < self.link_threshold:
-            print("links < self.link_threshold")
             yield from self.try_site_search()
 
         discovered_links = []

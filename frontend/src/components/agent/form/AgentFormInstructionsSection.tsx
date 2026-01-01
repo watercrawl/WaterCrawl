@@ -2,6 +2,8 @@ import React from 'react';
 
 import { useTranslation } from 'react-i18next';
 
+import SectionHeader from '../SectionHeader';
+
 interface AgentFormInstructionsSectionProps {
   name: string;
   systemPrompt: string;
@@ -19,30 +21,36 @@ const AgentFormInstructionsSection: React.FC<AgentFormInstructionsSectionProps> 
 
   return (
     <div>
-      <h2 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">
-        {t('agents.form.instructions')}
-      </h2>
-      <div className="space-y-3">
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => onNameChange(e.target.value)}
-          placeholder={t('agents.form.namePlaceholder')}
-          className="block w-full rounded-md border border-input-border bg-card px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-        />
-        <div>
-          <div className="flex items-center justify-between mb-1">
-            <span className="text-xs text-muted-foreground">
-              {t('agents.form.systemPromptHint')}
-            </span>
+      <SectionHeader title={t('agents.form.instructions')} />
+      <div className="rounded-md border border-input-border bg-card p-3">
+        <div className="space-y-3">
+          <div>
+            <label className="text-xs font-medium text-foreground mb-1 block">
+              {t('agents.form.nameLabel')}
+            </label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => onNameChange(e.target.value)}
+              placeholder={t('agents.form.namePlaceholder')}
+              className="block w-full rounded-md border border-input-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+            />
           </div>
-          <textarea
-            value={systemPrompt}
-            onChange={(e) => onSystemPromptChange(e.target.value)}
-            placeholder={t('agents.form.systemPromptPlaceholder')}
-            rows={5}
-            className="block w-full rounded-md border border-input-border bg-card px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary font-mono resize-none"
-          />
+          <div>
+            <label className="text-xs font-medium text-foreground mb-1 block">
+              {t('agents.form.systemPromptLabel')}
+            </label>
+            <p className="text-xs text-muted-foreground mb-1">
+              {t('agents.form.systemPromptHint')}
+            </p>
+            <textarea
+              value={systemPrompt}
+              onChange={(e) => onSystemPromptChange(e.target.value)}
+              placeholder={t('agents.form.systemPromptPlaceholder')}
+              rows={5}
+              className="block w-full rounded-md border border-input-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary font-mono resize-none"
+            />
+          </div>
         </div>
       </div>
     </div>

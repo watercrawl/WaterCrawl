@@ -464,6 +464,7 @@ class MessageBlock(BaseModel):
         related_name="blocks",
     )
     role = models.CharField(max_length=20, choices=consts.MESSAGE_ROLE_CHOICES)
+    structured_response = models.JSONField(default=None, blank=True, null=True)
 
 
 class Message(BaseModel):

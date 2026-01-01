@@ -59,6 +59,8 @@ from agent.services import (
     APISpecService,
 )
 from agent.chat_service import ConversationService
+from plan.throttle import AgentRateThrottle
+from plan.validators import PlanLimitValidator
 from user.models import Media
 
 
@@ -127,6 +129,8 @@ class AgentViewSet(
 
     def perform_create(self, serializer):
         """Create agent with initial draft version."""
+        validator = PlanLimitValidator(team=self.request.current_team)
+        validator.validate_create_agent()
         serializer.save(team=self.request.current_team)
 
     @action(detail=True, methods=["get", "put", "patch"], url_path="draft")
@@ -193,6 +197,18 @@ class AgentViewSet(
         validated_data = serializer.validated_data
         response_mode = validated_data.get("response_mode") or "streaming"
 
+        # Validate output_schema requirement when json_output is enabled but no predefined schema
+        output_schema = validated_data.get("output_schema")
+        if agent_version.json_output and not agent_version.json_schema:
+            # Dynamic schema mode: output_schema is required in API request
+            if not output_schema:
+                raise ValidationError(
+                    _(
+                        "output_schema is required when agent has structured output enabled "
+                        "but no predefined schema. Please provide a valid JSON Schema."
+                    )
+                )
+
         # Fetch Media files if file UUIDs provided
         file_uuids = validated_data.get("files", [])
         files = None
@@ -218,23 +234,39 @@ class AgentViewSet(
         if response_mode == "streaming":
             # Return SSE stream using EventStreamResponse
             return EventStreamResponse(
-                conversation_service.chat(query=validated_data["query"], files=files)
+                conversation_service.chat(
+                    query=validated_data["query"],
+                    files=files,
+                    output_schema=output_schema,
+                )
             )
         else:
             # Blocking mode - return complete response
             result = conversation_service.chat_blocking(
-                query=validated_data["query"], files=files
+                query=validated_data["query"],
+                files=files,
+                output_schema=output_schema,
             )
             serializer = MessageBlockSerializer(result)
             return Response(serializer.data)
 
-    @action(detail=True, methods=["post"], url_path="draft/chat-message")
+    @action(
+        detail=True,
+        methods=["post"],
+        url_path="draft/chat-message",
+        throttle_classes=[AgentRateThrottle],
+    )
     def chat_with_draft(self, request, **kwargs):
         """Chat with draft version (streaming)."""
 
         return self.chat(request, chat_with_draft=True)
 
-    @action(detail=True, methods=["post"], url_path="chat-message")
+    @action(
+        detail=True,
+        methods=["post"],
+        url_path="chat-message",
+        throttle_classes=[AgentRateThrottle],
+    )
     def chat_with_published(self, request, **kwargs):
         """Chat with published version (streaming)."""
         return self.chat(request, chat_with_draft=False)
