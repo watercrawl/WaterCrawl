@@ -178,7 +178,7 @@ class WaterCrawlScrapeTool(BaseBuiltinTool):
             )
 
         return_types = params.get("return_types", ["markdown"])
-        wait_time = params.get("wait_time", 1)
+        wait_time = params.get("wait_time", 1000)
 
         # Validate credit and usage
         validator = PlanLimitValidator(team=team)
@@ -202,7 +202,7 @@ class WaterCrawlScrapeTool(BaseBuiltinTool):
                 team=team,
                 spider_options=None,
                 page_options={
-                    "wait_time": max(wait_time, 30000),
+                    "wait_time": max(wait_time, 30000),  # max wait time is 30 seconds
                     "include_links": "links" in return_types,
                     "actions": [{"type": "screenshot"}]
                     if "screenshot" in return_types
