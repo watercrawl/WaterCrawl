@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
@@ -17,6 +17,8 @@ import type { MessageBlock, ToolCallUIState } from '../../types/conversation';
 const StructuredResponsePreview: React.FC<{ data: Record<string, any> }> = ({ data }) => {
   const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = React.useState(true);
+
+  const prettyData = useMemo(() => JSON.stringify(data, null, 2), [data]);
 
   return (
     <div className="border-t border-border bg-muted/30">
@@ -37,7 +39,7 @@ const StructuredResponsePreview: React.FC<{ data: Record<string, any> }> = ({ da
         <div className="px-4 pb-3">
           <pre className="text-xs font-mono bg-background border border-border rounded-md p-3 overflow-x-auto max-h-64 overflow-y-auto">
             <code className="text-foreground">
-              {JSON.stringify(data, null, 2)}
+              {prettyData}
             </code>
           </pre>
         </div>
