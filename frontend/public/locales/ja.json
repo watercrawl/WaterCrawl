@@ -548,6 +548,9 @@
     "upgradePlan": "プランをアップグレード"
   },
   "common": {
+    "expand": "展開",
+    "editor": "エディタ",
+    "done": "完了",
     "creating": "作成中",
     "version": "バージョン",
     "actions": "アクション",
@@ -595,6 +598,8 @@
     "options": "オプション",
     "cancel": "キャンセル",
     "close": "閉じる",
+    "copy": "Copy",
+    "copied": "Copied!",
     "confirmError": "Please enter the correct value to confirm deletion",
     "select": "選択",
     "selectAll": "すべて選択",
