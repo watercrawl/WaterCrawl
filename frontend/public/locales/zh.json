@@ -548,6 +548,9 @@
     "upgradePlan": "升级计划"
   },
   "common": {
+    "expand": "展开",
+    "editor": "编辑器",
+    "done": "完成",
     "creating": "创建中",
     "version": "版本",
     "actions": "操作",
@@ -595,7 +598,9 @@
     "options": "选项",
     "cancel": "取消",
     "close": "关闭",
-    "confirmError": "Please enter the correct value to confirm deletion",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "confirmError": "请输入正确的值以确认删除",
     "select": "选择",
     "selectAll": "全选",
     "deselectAll": "取消全选",
