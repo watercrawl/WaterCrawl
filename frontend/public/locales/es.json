@@ -548,6 +548,9 @@
     "upgradePlan": "Mejorar Plan"
   },
   "common": {
+    "expand": "Ampliar",
+    "editor": "Editor",
+    "done": "Hecho",
     "creating": "Creando",
     "version": "Versión",
     "actions": "Acciones",
@@ -595,6 +598,8 @@
     "options": "Opciones",
     "cancel": "Cancelar",
     "close": "Cerrar",
+    "copy": "Copy",
+    "copied": "Copied!",
     "confirmError": "Please enter the correct value to confirm deletion",
     "select": "Seleccionar",
     "selectAll": "Seleccionar todo",
