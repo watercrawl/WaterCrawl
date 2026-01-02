@@ -38,8 +38,8 @@
   },
   "admin": {
     "dashboard": "管理员仪表板",
-    "description": "管理系统配置、代理和LLM提供商",
-    "exitAdmin": "退出管理员",
+    "description": "管理系统范围的配置、代理和 LLM 提供商",
+    "exitAdmin": "退出管理",
     "llm": {
       "embeddingModels": "嵌入模型",
       "models": "模型",
@@ -63,6 +63,12 @@
   "agents": {
     "title": "代理",
     "description": "使用自定义工具和知识创建并管理自主AI代理",
+    "beta": "beta",
+    "betaNotice": {
+      "description": "智能体功能目前处于 beta 阶段。我们可能会在未来的更新中引入更改、改进或对功能、数据结构或 API 端点的修改。虽然 we 努力保持向后兼容，但请注意，某些更改可能会影响现有的智能体或需要迁移步骤。",
+      "feedback": "我们感谢您在此 beta 期间提供反馈和测试，以帮助我们改进该功能。",
+      "title": "Beta 功能"
+    },
     "createNew": "创建代理",
     "searchPlaceholder": "搜索代理...",
     "noAgents": "暂无代理。创建您的第一个代理开始吧。",
@@ -90,6 +96,7 @@
       "archived": "已归档",
       "testing": "测试中"
     },
+    "usage": "智能体使用情况",
     "details": {
       "tools": "活跃工具",
       "toolsActive": "共 {{count}} 个",
@@ -119,7 +126,9 @@
         "tools": "工具和知识"
       },
       "name": "代理名称",
+      "nameLabel": "名称",
       "namePlaceholder": "输入代理名称",
+      "systemPromptLabel": "系统提示词",
       "description": "描述",
       "descriptionPlaceholder": "描述此代理的功能",
       "status": "状态",
@@ -197,6 +206,7 @@
       "enabled": "已启用",
       "addTool": "+ 添加工具",
       "noTools": "尚未添加工具",
+      "noKnowledgeBasesConnected": "未连接知识库",
       "configureTool": "配置工具",
       "configSaved": "配置保存成功",
       "toolsNote": "可以在工具菜单中全局管理工具",
@@ -248,11 +258,24 @@
       "enableLabel": "结构化JSON输出",
       "enableDescription": "强制代理响应遵循特定的JSON模式",
       "schemaLabel": "JSON模式",
+      "schemaOptional": "可选",
       "schemaPlaceholder": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"answer\": { \"type\": \"string\" }\n  },\n  \"required\": [\"answer\"]\n}",
       "schemaHint": "使用JSON模式格式定义代理输出的结构",
       "insertExample": "插入示例",
+      "clearSchema": "清除",
       "invalidJson": "无效的JSON格式",
-      "invalidSchema": "模式必须是对象"
+      "invalidSchema": "模式必须是对象",
+      "currentMode": "当前模式",
+      "mode": {
+        "disabled": "已禁用",
+        "dynamic": "动态架构",
+        "predefined": "预定义架构"
+      },
+      "modeDescription": {
+        "disabled": "无结构化输出的普通对话模式。智能体将以自然语言回答。",
+        "dynamic": "API 调用者必须在每个请求中提供 output_schema。这允许每个请求使用不同的架构。",
+        "predefined": "使用上面定义的架构。所有响应都将遵循此结构。"
+      }
     },
     "kbConfig": {
       "retrievalSettingHint": "选择查询此知识库时使用的检索设置。如果未选择，将使用默认设置。"
@@ -270,6 +293,9 @@
       "queryPlaceholder": "输入您的消息...",
       "querySuccess": "查询发送成功",
       "contextVariables": "上下文变量",
+      "outputSchema": "输出架构",
+      "outputSchemaRequired": "动态架构模式下必须提供输出架构",
+      "dynamicSchemaInfo": "该智能体处于动态架构模式。请为每个请求提供一个 JSON 架构来结构化智能体的响应。",
       "variableRequired": "键和值都是必需的",
       "variableKeyRequired": "需要变量键",
       "variableDuplicate": "已存在具有此键的变量",
@@ -640,8 +666,6 @@
     "recommended": "推荐",
     "save": "保存",
     "saved": "已保存！",
-    "saving": "保存中...",
-    "config": "配置",
     "soon": "即将推出",
     "send": "发送",
     "resetPassword": {
@@ -1482,12 +1506,12 @@
       "customUpdated": "自定义模型更新成功",
       "customDeleted": "自定义模型删除成功",
       "confirmDelete": "您确定要删除此自定义模型吗？",
-      "export": "Export",
-      "exportSuccess": "Models exported successfully",
-      "noModelsToExport": "No models to export",
-      "loadFromYaml": "Load from YAML",
-      "yamlLoaded": "YAML file loaded successfully",
-      "yamlLoadError": "Failed to load YAML file",
+      "export": "导出",
+      "exportSuccess": "模型导出成功",
+      "noModelsToExport": "没有可导出的模型",
+      "loadFromYaml": "从 YAML 加载",
+      "yamlLoaded": "YAML 文件加载成功",
+      "yamlLoadError": "YAML 文件加载失败",
       "modelKey": "模型键",
       "modelKeyPlaceholder": "例如：my-custom-model",
       "label": "显示标签",
@@ -2384,6 +2408,8 @@
     "dailyPagesCredit": "每日页面积分",
     "maxConcurrentCrawls": "最大并发爬取数",
     "maxDepth": "最大深度",
+    "agents": "智能体",
+    "agentCallRateLimit": "智能体调用频率限制",
     "prompt": {
       "description": "升级以访问更多功能并提高限制",
       "title": "升级您的计划",
@@ -2762,7 +2788,8 @@
     "uploadFailed": "上传失败",
     "imageLoadError": "加载图片失败",
     "clickToView": "点击查看",
-    "downloadFile": "下载文件"
+    "downloadFile": "下载文件",
+    "structuredResponse": "结构化响应"
   },
   "mediaLibrary": {
     "title": "媒体库",
