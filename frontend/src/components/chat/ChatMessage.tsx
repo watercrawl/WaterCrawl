@@ -36,9 +36,9 @@ const StructuredResponsePreview: React.FC<{ data: Record<string, any> }> = ({ da
         <span>{t('chat.structuredResponse')}</span>
       </button>
       {isExpanded && (
-        <div className="px-4 pb-3">
+        <div className="px-4 pb-3" dir="ltr">
           <pre className="text-xs font-mono bg-background border border-border rounded-md p-3 overflow-x-auto max-h-64 overflow-y-auto">
-            <code className="text-foreground">
+            <code className="text-foreground ">
               {prettyData}
             </code>
           </pre>
