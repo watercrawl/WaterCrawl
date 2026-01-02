@@ -63,6 +63,12 @@
   "agents": {
     "title": "Agenten",
     "description": "Erstellen und verwalten Sie autonome KI-Agenten mit benutzerdefinierten Werkzeugen und Wissen",
+    "beta": "Beta",
+    "betaNotice": {
+      "description": "Die Agenten-Funktion befindet sich derzeit in der Beta-Phase. Wir können in zukünftigen Updates Änderungen, Verbesserungen oder Modifikationen an Funktionen, Datenstrukturen oder API-Endpunkten einführen. Obwohl wir uns bemühen, die Rückwärtskompatibilität zu wahren, beachten Sie bitte, dass einige Änderungen bestehende Agenten beeinträchtigen oder Migrationsschritte erfordern könnten.",
+      "feedback": "Wir schätzen Ihr Feedback und Ihre Tests während dieser Beta-Phase, um uns bei der Verbesserung der Funktion zu helfen.",
+      "title": "Beta-Funktion"
+    },
     "createNew": "Agent erstellen",
     "searchPlaceholder": "Agenten durchsuchen...",
     "noAgents": "Noch keine Agenten. Erstellen Sie Ihren ersten Agenten, um zu beginnen.",
@@ -90,6 +96,7 @@
       "archived": "Archiviert",
       "testing": "Im Test"
     },
+    "usage": "Agenten-Nutzung",
     "details": {
       "tools": "Aktive Werkzeuge",
       "toolsActive": "{{count}} insgesamt",
@@ -119,7 +126,9 @@
         "tools": "Werkzeuge & Wissen"
       },
       "name": "Agentenname",
+      "nameLabel": "Name",
       "namePlaceholder": "Agentennamen eingeben",
+      "systemPromptLabel": "System-Prompt",
       "description": "Beschreibung",
       "descriptionPlaceholder": "Beschreiben Sie, was dieser Agent macht",
       "status": "Status",
@@ -197,6 +206,7 @@
       "enabled": "aktiviert",
       "addTool": "+ Werkzeug hinzufügen",
       "noTools": "Noch keine Werkzeuge hinzugefügt",
+      "noKnowledgeBasesConnected": "Keine Wissensdatenbanken verbunden",
       "configureTool": "Werkzeug konfigurieren",
       "configSaved": "Konfiguration erfolgreich gespeichert",
       "toolsNote": "Werkzeuge können global im Werkzeuge-Menü verwaltet werden",
@@ -248,11 +258,24 @@
       "enableLabel": "Strukturierte JSON-Ausgabe",
       "enableDescription": "Zwingen Sie Agenten-Antworten, einem bestimmten JSON-Schema zu folgen",
       "schemaLabel": "JSON-Schema",
+      "schemaOptional": "optional",
       "schemaPlaceholder": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"answer\": { \"type\": \"string\" }\n  },\n  \"required\": [\"answer\"]\n}",
       "schemaHint": "Definieren Sie die Struktur der Agenten-Ausgabe im JSON-Schema-Format",
       "insertExample": "Beispiel einfügen",
+      "clearSchema": "Löschen",
       "invalidJson": "Ungültiges JSON-Format",
-      "invalidSchema": "Schema muss ein Objekt sein"
+      "invalidSchema": "Schema muss ein Objekt sein",
+      "currentMode": "Aktueller Modus",
+      "mode": {
+        "disabled": "Deaktiviert",
+        "dynamic": "Dynamisches Schema",
+        "predefined": "Vordefiniertes Schema"
+      },
+      "modeDescription": {
+        "disabled": "Normaler Chat-Modus ohne strukturierte Ausgabe. Der Agent antwortet in natürlicher Sprache.",
+        "dynamic": "API-Aufrufer müssen in jeder Anfrage ein output_schema angeben. Dies ermöglicht unterschiedliche Schemata pro Anfrage.",
+        "predefined": "Verwendung des oben definierten Schemas. Alle Antworten folgen dieser Struktur."
+      }
     },
     "kbConfig": {
       "retrievalSettingHint": "Wählen Sie, welche Abrufeinstellung beim Abfragen dieser Wissensdatenbank verwendet werden soll. Die Standardeinstellung wird verwendet, wenn keine ausgewählt ist."
@@ -270,6 +293,9 @@
       "queryPlaceholder": "Geben Sie Ihre Nachricht ein...",
       "querySuccess": "Abfrage erfolgreich gesendet",
       "contextVariables": "Kontextvariablen",
+      "outputSchema": "Ausgabeschema",
+      "outputSchemaRequired": "Das Ausgabeschema ist im dynamischen Schema-Modus erforderlich",
+      "dynamicSchemaInfo": "Dieser Agent befindet sich im dynamischen Schema-Modus. Geben Sie ein JSON-Schema an, um die Antwort des Agenten für jede Anfrage zu strukturieren.",
       "variableRequired": "Sowohl Schlüssel als auch Wert sind erforderlich",
       "variableKeyRequired": "Variablenschlüssel ist erforderlich",
       "variableDuplicate": "Eine Variable mit diesem Schlüssel existiert bereits",
@@ -640,8 +666,6 @@
     "recommended": "Empfohlen",
     "save": "Speichern",
     "saved": "Gespeichert!",
-    "saving": "Wird gespeichert...",
-    "config": "Konfiguration",
     "soon": "Demnächst",
     "send": "Senden",
     "resetPassword": {
@@ -1482,20 +1506,20 @@
       "customUpdated": "Benutzerdefiniertes Modell erfolgreich aktualisiert",
       "customDeleted": "Benutzerdefiniertes Modell erfolgreich gelöscht",
       "confirmDelete": "Sind Sie sicher, dass Sie dieses benutzerdefinierte Modell löschen möchten?",
-      "export": "Export",
-      "exportSuccess": "Models exported successfully",
-      "noModelsToExport": "No models to export",
-      "loadFromYaml": "Load from YAML",
-      "yamlLoaded": "YAML file loaded successfully",
-      "yamlLoadError": "Failed to load YAML file",
+      "export": "Exportieren",
+      "exportSuccess": "Modelle erfolgreich exportiert",
+      "noModelsToExport": "Keine Modelle zum Exportieren",
+      "loadFromYaml": "Aus YAML laden",
+      "yamlLoaded": "YAML-Datei erfolgreich geladen",
+      "yamlLoadError": "Fehler beim Laden der YAML-Datei",
       "modelKey": "Modellschlüssel",
       "modelKeyPlaceholder": "z.B. mein-benutzerdefiniertes-modell",
       "label": "Anzeigebezeichnung",
       "labelPlaceholder": "z.B. Mein benutzerdefiniertes Modell",
       "features": "Funktionen",
       "featuresPlaceholder": "z.B. multi-tool-call, vision",
-      "featuresHelp": "Kommagetrennte Liste von Modellfunktionen",
-      "featuresHint": "Kommagetrennte Liste von Funktionen",
+      "featuresHelp": "Liste der Modellfunktionen, getrennt durch Kommas",
+      "featuresHint": "Liste der Funktionen, getrennt durch Kommas",
       "contextSize": "Kontextgröße (Token)",
       "dimension": "Embedding-Dimension",
       "typeLLM": "LLM",
@@ -2384,6 +2408,8 @@
     "dailyPagesCredit": "Tägliches Seitenguthaben",
     "maxConcurrentCrawls": "Max. gleichzeitige Crawls",
     "maxDepth": "Max. Tiefe",
+    "agents": "Agenten",
+    "agentCallRateLimit": "Agenten-Aufruflimit",
     "prompt": {
       "description": "Upgraden Sie, um auf mehr Funktionen zuzugreifen und Ihre Limits zu erhöhen",
       "title": "Ihren Plan upgraden",
@@ -2762,7 +2788,8 @@
     "uploadFailed": "Upload fehlgeschlagen",
     "imageLoadError": "Bild konnte nicht geladen werden",
     "clickToView": "Klicken zum Anzeigen",
-    "downloadFile": "Datei herunterladen"
+    "downloadFile": "Datei herunterladen",
+    "structuredResponse": "Strukturierte Antwort"
   },
   "mediaLibrary": {
     "title": "Medienbibliothek",
