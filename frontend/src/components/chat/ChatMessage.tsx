@@ -1,10 +1,13 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import { useTranslation } from 'react-i18next';
 
 import { UserIcon, CpuChipIcon, CodeBracketIcon, ChevronDownIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 
+import CodeBlock from '../shared/CodeBlock';
+
 import { useDirection } from '../../contexts/DirectionContext';
+
 
 import MessageContentRenderer, { extractTextContent, hasDisplayableContent } from './MessageContentRenderer';
 import ToolCallRenderer from './ToolCallRenderer';
@@ -17,8 +20,6 @@ import type { MessageBlock, ToolCallUIState } from '../../types/conversation';
 const StructuredResponsePreview: React.FC<{ data: Record<string, any> }> = ({ data }) => {
   const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = React.useState(true);
-
-  const prettyData = useMemo(() => JSON.stringify(data, null, 2), [data]);
 
   return (
     <div className="border-t border-border bg-muted/30">
@@ -36,12 +37,8 @@ const StructuredResponsePreview: React.FC<{ data: Record<string, any> }> = ({ da
         <span>{t('chat.structuredResponse')}</span>
       </button>
       {isExpanded && (
-        <div className="px-4 pb-3" dir="ltr">
-          <pre className="text-xs font-mono bg-background border border-border rounded-md p-3 overflow-x-auto max-h-64 overflow-y-auto">
-            <code className="text-foreground ">
-              {prettyData}
-            </code>
-          </pre>
+        <div className="px-4 pb-3">
+          <CodeBlock content={data} language="json" maxHeight="max-h-64" />
         </div>
       )}
     </div>

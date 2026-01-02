@@ -81,7 +81,7 @@ export const useAgentForm = (agentId: string | undefined): UseAgentFormReturn =>
         llm_model_key: modelKey || undefined,
         llm_configs: llmConfigs,
         json_output: jsonOutput,
-        json_schema: jsonSchema || undefined,
+        json_schema: jsonSchema || null,
         parameters: contextVariables,
       });
       setDraft(updated);

@@ -10,7 +10,10 @@ import {
   ExclamationCircleIcon,
 } from '@heroicons/react/24/outline';
 
+import CodeBlock from '../shared/CodeBlock';
+
 import { useDirection } from '../../contexts/DirectionContext';
+
 
 import type { ToolCall } from '../../types/conversation';
 
@@ -138,11 +141,12 @@ const CompactToolCall: React.FC<CompactToolCallProps> = ({ toolCall, isParallel 
               defaultOpen={true}
               isRTL={isRTL}
             >
-              <div className="bg-background/60 rounded-md p-2 overflow-x-auto max-h-40 overflow-y-auto">
-                <pre className="text-[11px] text-foreground font-mono whitespace-pre-wrap break-words">
-                  {JSON.stringify(toolCall.input, null, 2)}
-                </pre>
-              </div>
+              <CodeBlock 
+                content={toolCall.input} 
+                language="json" 
+                maxHeight="max-h-40"
+                textSize="xs"
+              />
             </CollapsibleSection>
 
             {/* Output Section - Collapsible */}
@@ -153,11 +157,12 @@ const CompactToolCall: React.FC<CompactToolCallProps> = ({ toolCall, isParallel 
                 defaultOpen={true}
                 isRTL={isRTL}
               >
-                <div className="bg-background/60 rounded-md p-2 overflow-x-auto max-h-48 overflow-y-auto">
-                  <pre className="text-[11px] text-foreground font-mono whitespace-pre-wrap break-words">
-                    {formatOutput(toolCall.output)}
-                  </pre>
-                </div>
+                <CodeBlock 
+                  content={formatOutput(toolCall.output)} 
+                  language="json" 
+                  maxHeight="max-h-48"
+                  textSize="xs"
+                />
               </CollapsibleSection>
             )}
 
