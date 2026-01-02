@@ -63,6 +63,12 @@
   "agents": {
     "title": "Agentes",
     "description": "Cree y gestione agentes de IA autónomos con herramientas y conocimientos personalizados",
+    "beta": "beta",
+    "betaNotice": {
+      "description": "La función de Agentes está actualmente en beta. Podemos introducir cambios, mejoras o modificaciones en la funcionalidad, estructuras de datos o endpoints de API en futuras actualizaciones. Aunque nos esforzamos por mantener la compatibilidad con versiones anteriores, ten en cuenta que algunos cambios pueden afectar a los agentes existentes o requerir pasos de migración.",
+      "feedback": "Agradecemos tus comentarios y pruebas durante este período beta para ayudarnos a mejorar la función.",
+      "title": "Función Beta"
+    },
     "createNew": "Crear agente",
     "searchPlaceholder": "Buscar agentes...",
     "noAgents": "Aún no hay agentes. Cree su primer agente para comenzar.",
@@ -90,6 +96,7 @@
       "archived": "Archivado",
       "testing": "En pruebas"
     },
+    "usage": "Uso del agente",
     "details": {
       "tools": "Herramientas activas",
       "toolsActive": "{{count}} en total",
@@ -119,7 +126,9 @@
         "tools": "Herramientas y conocimientos"
       },
       "name": "Nombre del agente",
+      "nameLabel": "Nombre",
       "namePlaceholder": "Ingresa el nombre del agente",
+      "systemPromptLabel": "Prompt del sistema",
       "description": "Descripción",
       "descriptionPlaceholder": "Describa qué hace este agente",
       "status": "Estado",
@@ -197,6 +206,7 @@
       "enabled": "habilitado",
       "addTool": "+ Agregar Herramienta",
       "noTools": "Aún no se han agregado herramientas",
+      "noKnowledgeBasesConnected": "No hay bases de conocimientos conectadas",
       "configureTool": "Configurar herramienta",
       "configSaved": "Configuración guardada correctamente",
       "toolsNote": "Las herramientas se pueden gestionar globalmente en el menú Herramientas",
@@ -248,11 +258,24 @@
       "enableLabel": "Salida JSON estructurada",
       "enableDescription": "Forzar que las respuestas del agente sigan un esquema JSON específico",
       "schemaLabel": "Esquema JSON",
+      "schemaOptional": "opcional",
       "schemaPlaceholder": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"answer\": { \"type\": \"string\" }\n  },\n  \"required\": [\"answer\"]\n}",
       "schemaHint": "Defina la estructura de la salida del agente usando el formato de esquema JSON",
       "insertExample": "Insertar ejemplo",
+      "clearSchema": "Limpiar",
       "invalidJson": "Formato JSON no válido",
-      "invalidSchema": "El esquema debe ser un objeto"
+      "invalidSchema": "El esquema debe ser un objeto",
+      "currentMode": "Modo actual",
+      "mode": {
+        "disabled": "Deshabilitado",
+        "dynamic": "Esquema dinámico",
+        "predefined": "Esquema predefinido"
+      },
+      "modeDescription": {
+        "disabled": "Modo de chat normal sin salida estructurada. El agente responderá en lenguaje natural.",
+        "dynamic": "Los llamadores de la API deben proporcionar output_schema en cada solicitud. Esto permite diferentes esquemas por solicitud.",
+        "predefined": "Usando el esquema definido anteriormente. Todas las respuestas seguirán esta estructura."
+      }
     },
     "kbConfig": {
       "retrievalSettingHint": "Seleccione qué configuración de recuperación usar al consultar esta base de conocimientos. Se usará la configuración predeterminada si no se selecciona ninguna."
@@ -270,6 +293,9 @@
       "queryPlaceholder": "Escribe tu mensaje...",
       "querySuccess": "Consulta enviada exitosamente",
       "contextVariables": "Variables de Contexto",
+      "outputSchema": "Esquema de salida",
+      "outputSchemaRequired": "Se requiere el esquema de salida en el modo de esquema dinámico",
+      "dynamicSchemaInfo": "Este agente está en modo de esquema dinámico. Proporcione un esquema JSON para estructurar la respuesta del agente para cada solicitud.",
       "variableRequired": "Se requieren tanto la clave como el valor",
       "variableKeyRequired": "Se requiere la clave de la variable",
       "variableDuplicate": "Ya existe una variable con esta clave",
@@ -640,8 +666,6 @@
     "recommended": "Recomendado",
     "save": "Guardar",
     "saved": "¡Guardado!",
-    "saving": "Guardando...",
-    "config": "Configuración",
     "soon": "Próximamente",
     "send": "Enviar",
     "resetPassword": {
@@ -1482,12 +1506,12 @@
       "customUpdated": "Modelo personalizado actualizado correctamente",
       "customDeleted": "Modelo personalizado eliminado correctamente",
       "confirmDelete": "¿Está seguro de que desea eliminar este modelo personalizado?",
-      "export": "Export",
-      "exportSuccess": "Models exported successfully",
-      "noModelsToExport": "No models to export",
-      "loadFromYaml": "Load from YAML",
-      "yamlLoaded": "YAML file loaded successfully",
-      "yamlLoadError": "Failed to load YAML file",
+      "export": "Exportar",
+      "exportSuccess": "Modelos exportados con éxito",
+      "noModelsToExport": "No hay modelos para exportar",
+      "loadFromYaml": "Cargar desde YAML",
+      "yamlLoaded": "Archivo YAML cargado correctamente",
+      "yamlLoadError": "Error al cargar el archivo YAML",
       "modelKey": "Clave del modelo",
       "modelKeyPlaceholder": "ej., mi-modelo-personalizado",
       "label": "Etiqueta de visualización",
@@ -2384,6 +2408,8 @@
     "dailyPagesCredit": "Crédito de páginas diarias",
     "maxConcurrentCrawls": "Máx. rastreos simultáneos",
     "maxDepth": "Profundidad máxima",
+    "agents": "Agentes",
+    "agentCallRateLimit": "Límite de tasa de llamadas del agente",
     "prompt": {
       "description": "Actualiza para acceder a más funcion y aumentar tus límites",
       "title": "Actualiza tu Plan",
@@ -2762,7 +2788,8 @@
     "uploadFailed": "Error al subir",
     "imageLoadError": "Error al cargar la imagen",
     "clickToView": "Clic para ver",
-    "downloadFile": "Descargar archivo"
+    "downloadFile": "Descargar archivo",
+    "structuredResponse": "Respuesta estructurada"
   },
   "mediaLibrary": {
     "title": "Biblioteca multimedia",
