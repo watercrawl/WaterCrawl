@@ -167,7 +167,7 @@ const AgentFormPage: React.FC = () => {
     [formState.llmConfigs]
   );
   const jsonSchemaSerialized = useMemo(
-    () => JSON.stringify(formState.jsonSchema),
+    () => (formState.jsonSchema ? JSON.stringify(formState.jsonSchema) : 'null'),
     [formState.jsonSchema]
   );
 

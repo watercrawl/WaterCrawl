@@ -10,6 +10,9 @@ import {
 
 import SectionHeader from '../SectionHeader';
 
+import MonacoEditorField from '../../shared/MonacoEditorField';
+import { Switch } from '../../shared/Switch';
+
 interface AgentFormJsonOutputSectionProps {
   jsonOutput: boolean;
   jsonSchema: Record<string, unknown> | null;
@@ -63,7 +66,8 @@ const AgentFormJsonOutputSection: React.FC<AgentFormJsonOutputSectionProps> = ({
     try {
       const parsed = JSON.parse(text);
       if (typeof parsed === 'object' && parsed !== null) {
-        onJsonSchemaChange(parsed);
+        // Ensure we pass a new object reference to trigger effect-based autosave
+        onJsonSchemaChange({ ...parsed });
       } else {
         setSchemaError(t('agents.jsonOutput.invalidSchema'));
       }
@@ -92,7 +96,8 @@ const AgentFormJsonOutputSection: React.FC<AgentFormJsonOutputSectionProps> = ({
     const exampleText = JSON.stringify(exampleSchema, null, 2);
     setSchemaText(exampleText);
     setSchemaError(null);
-    onJsonSchemaChange(exampleSchema);
+    // Ensure new object reference
+    onJsonSchemaChange({ ...exampleSchema });
   }, [exampleSchema, onJsonSchemaChange]);
 
   const handleClearSchema = useCallback(() => {
@@ -120,28 +125,15 @@ const AgentFormJsonOutputSection: React.FC<AgentFormJsonOutputSectionProps> = ({
                 <ChevronRightIcon className="h-4 w-4 text-muted-foreground" />
               )}
             </button>
-            <div>
-              <h3 className="text-sm font-medium text-foreground">
-                {t('agents.jsonOutput.enableLabel')}
-              </h3>
-              <p className="text-xs text-muted-foreground">
-                {t('agents.jsonOutput.enableDescription')}
-              </p>
+            <div className="flex-1">
+              <Switch
+                label={t('agents.jsonOutput.enableLabel')}
+                description={t('agents.jsonOutput.enableDescription')}
+                checked={jsonOutput}
+                onChange={handleToggle}
+              />
             </div>
           </div>
-          <button
-            type="button"
-            onClick={handleToggle}
-            className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
-              jsonOutput ? 'bg-primary' : 'bg-muted'
-            }`}
-          >
-            <span
-              className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
-                jsonOutput ? 'translate-x-5' : 'translate-x-0'
-              }`}
-            />
-          </button>
         </div>
 
         {/* Expanded Content */}
@@ -171,42 +163,36 @@ const AgentFormJsonOutputSection: React.FC<AgentFormJsonOutputSectionProps> = ({
             {/* Schema Editor - Only show when json_output is enabled */}
             {jsonOutput && (
               <>
-                <div className="flex items-center justify-between mb-2">
-                  <label className="text-sm font-medium text-foreground">
-                    {t('agents.jsonOutput.schemaLabel')}
-                    <span className="ml-1 text-xs text-muted-foreground font-normal">
-                      ({t('agents.jsonOutput.schemaOptional')})
-                    </span>
-                  </label>
-                  <div className="flex items-center gap-2">
-                    {schemaText && (
+                <MonacoEditorField
+                  label={t('agents.jsonOutput.schemaLabel')}
+                  value={schemaText}
+                  onChange={handleSchemaChange}
+                  language="json"
+                  height="150px"
+                  headerActions={
+                    <div className="flex items-center gap-2">
+                      {schemaText && (
+                        <button
+                          type="button"
+                          onClick={handleClearSchema}
+                          className="text-xs text-muted-foreground hover:text-danger"
+                        >
+                          {t('agents.jsonOutput.clearSchema')}
+                        </button>
+                      )}
                       <button
                         type="button"
-                        onClick={handleClearSchema}
-                        className="text-xs text-muted-foreground hover:text-danger"
+                        onClick={handleInsertExample}
+                        className="text-xs text-primary hover:text-primary-hover"
                       >
-                        {t('agents.jsonOutput.clearSchema')}
+                        {t('agents.jsonOutput.insertExample')}
                       </button>
-                    )}
-                    <button
-                      type="button"
-                      onClick={handleInsertExample}
-                      className="text-xs text-primary hover:text-primary-hover"
-                    >
-                      {t('agents.jsonOutput.insertExample')}
-                    </button>
-                  </div>
-                </div>
-                <textarea
-                  value={schemaText}
-                  onChange={(e) => handleSchemaChange(e.target.value)}
-                  placeholder={t('agents.jsonOutput.schemaPlaceholder')}
-                  rows={10}
-                  className={`w-full rounded-md border bg-background px-3 py-2 font-mono text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 resize-y ${
-                    schemaError
-                      ? 'border-danger focus:border-danger focus:ring-danger'
-                      : 'border-input-border focus:border-primary focus:ring-primary'
-                  }`}
+                    </div>
+                  }
+                  editorOptions={{
+                    formatOnPaste: true,
+                    formatOnType: true,
+                  }}
                 />
                 {schemaError && (
                   <p className="mt-1 text-xs text-danger">{schemaError}</p>

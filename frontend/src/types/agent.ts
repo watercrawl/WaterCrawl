@@ -53,13 +53,11 @@ export interface AgentVersion {
   llm_model_key?: string;
   llm_configs?: Record<string, any>;
   json_output?: boolean;  // Enable structured JSON output
-  json_schema?: Record<string, any>;  // JSON Schema for output format
+  json_schema?: Record<string, any> | null;  // JSON Schema for output format
   parameters: ContextParameters[];
   created_at: string;
   updated_at: string;
 }
-
-
 
 // Agent Draft - Update request
 export interface AgentDraftUpdateRequest {
@@ -68,7 +66,7 @@ export interface AgentDraftUpdateRequest {
   llm_model_key?: string;
   llm_configs?: Record<string, any>;
   json_output?: boolean;  // Enable structured JSON output
-  json_schema?: Record<string, any>;  // JSON Schema for output format
+  json_schema?: Record<string, any> | null;  // JSON Schema for output format
   parameters: ContextParameters[];
 }
 

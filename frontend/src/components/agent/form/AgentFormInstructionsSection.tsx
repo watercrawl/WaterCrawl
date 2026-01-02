@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next';
 
 import SectionHeader from '../SectionHeader';
 
+import MonacoEditorField from '../../shared/MonacoEditorField';
+
 interface AgentFormInstructionsSectionProps {
   name: string;
   systemPrompt: string;
@@ -36,21 +38,15 @@ const AgentFormInstructionsSection: React.FC<AgentFormInstructionsSectionProps> 
               className="block w-full rounded-md border border-input-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
             />
           </div>
-          <div>
-            <label className="text-xs font-medium text-foreground mb-1 block">
-              {t('agents.form.systemPromptLabel')}
-            </label>
-            <p className="text-xs text-muted-foreground mb-1">
-              {t('agents.form.systemPromptHint')}
-            </p>
-            <textarea
-              value={systemPrompt}
-              onChange={(e) => onSystemPromptChange(e.target.value)}
-              placeholder={t('agents.form.systemPromptPlaceholder')}
-              rows={5}
-              className="block w-full rounded-md border border-input-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary font-mono resize-none"
-            />
-          </div>
+          
+          <MonacoEditorField
+            label={t('agents.form.systemPromptLabel')}
+            hint={t('agents.form.systemPromptHint')}
+            value={systemPrompt}
+            onChange={onSystemPromptChange}
+            language="markdown"
+            height="150px"
+          />
         </div>
       </div>
     </div>
