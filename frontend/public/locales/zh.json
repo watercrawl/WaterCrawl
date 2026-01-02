@@ -38,8 +38,8 @@
   },
   "admin": {
     "dashboard": "管理员仪表板",
-    "description": "管理系统配置、代理和LLM提供商",
-    "exitAdmin": "退出管理员",
+    "description": "管理系统范围的配置、代理和 LLM 提供商",
+    "exitAdmin": "退出管理",
     "llm": {
       "embeddingModels": "嵌入模型",
       "models": "模型",
@@ -63,6 +63,12 @@
   "agents": {
     "agentToolConfig": {
       "title": "配置代理工具"
+    },
+    "beta": "beta",
+    "betaNotice": {
+      "description": "智能体功能目前处于 beta 阶段。我们可能会在未来的更新中引入更改、改进或对功能、数据结构或 API 端点的修改。虽然 we 努力保持向后兼容，但请注意，某些更改可能会影响现有的智能体或需要迁移步骤。",
+      "feedback": "我们感谢您在此 beta 期间提供反馈和测试，以帮助我们改进该功能。",
+      "title": "Beta 功能"
     },
     "confirmDelete": "您确定要删除 {{name}} 吗？此操作无法撤销。",
     "createNew": "创建代理",

@@ -9,6 +9,7 @@ import {
   EyeIcon,
   PencilIcon,
   TrashIcon,
+  ExclamationTriangleIcon,
 } from '@heroicons/react/24/outline';
 
 import AgentCard from '../../components/agent/AgentCard';
@@ -167,6 +168,24 @@ const AgentsPage: React.FC = () => {
           </div>
         }
       />
+
+      {/* Beta Notice Box */}
+      <div className="mt-6 rounded-md border border-warning-strong bg-warning-soft p-4">
+        <div className="flex">
+          <div className="flex-shrink-0">
+            <ExclamationTriangleIcon className="h-5 w-5 text-warning-strong" aria-hidden="true" />
+          </div>
+          <div className="ms-3">
+            <h3 className="text-sm font-medium text-warning-strong">
+              {t('agents.betaNotice.title')}
+            </h3>
+            <div className="mt-2 text-sm text-warning-strong">
+              <p>{t('agents.betaNotice.description')}</p>
+              <p className="mt-2">{t('agents.betaNotice.feedback')}</p>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* Agents List */}
       {isTabletOrMobile ? (

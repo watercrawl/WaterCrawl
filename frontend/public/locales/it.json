@@ -64,6 +64,12 @@
     "agentToolConfig": {
       "title": "Configura strumento agente"
     },
+    "beta": "beta",
+    "betaNotice": {
+      "description": "La funzionalità Agenti è attualmente in beta. Potremmo introdurre cambiamenti, miglioramenti o modifiche alla funzionalità, alle strutture dati o agli endpoint API nei futuri aggiornamenti. Sebbene ci sforziamo di mantenere la compatibilità retroattiva, tieni presente che alcuni cambiamenti potrebbero influire sugli agenti esistenti o richiedere passaggi di migrazione.",
+      "feedback": "Apprezziamo il tuo feedback e i test durante questo periodo beta per aiutarci a migliorare la funzionalità.",
+      "title": "Funzionalità Beta"
+    },
     "confirmDelete": "Sei sicuro di voler eliminare {{name}}? Questa azione non può essere annullata.",
     "createNew": "Crea agente",
     "deleteConfirmTitle": "Elimina agente",

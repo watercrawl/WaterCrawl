@@ -64,6 +64,12 @@
     "agentToolConfig": {
       "title": "Agenten-Werkzeug konfigurieren"
     },
+    "beta": "Beta",
+    "betaNotice": {
+      "description": "Die Agenten-Funktion befindet sich derzeit in der Beta-Phase. Wir können in zukünftigen Updates Änderungen, Verbesserungen oder Modifikationen an Funktionen, Datenstrukturen oder API-Endpunkten einführen. Obwohl wir uns bemühen, die Rückwärtskompatibilität zu wahren, beachten Sie bitte, dass einige Änderungen bestehende Agenten beeinträchtigen oder Migrationsschritte erfordern könnten.",
+      "feedback": "Wir schätzen Ihr Feedback und Ihre Tests während dieser Beta-Phase, um uns bei der Verbesserung der Funktion zu helfen.",
+      "title": "Beta-Funktion"
+    },
     "confirmDelete": "Sind Sie sicher, dass Sie {{name}} löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
     "createNew": "Agent erstellen",
     "deleteConfirmTitle": "Agent löschen",

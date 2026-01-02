@@ -63,6 +63,12 @@
   "agents": {
     "title": "Agents",
     "description": "Create and manage autonomous AI agents with custom tools and knowledge",
+    "beta": "beta",
+    "betaNotice": {
+      "description": "The Agents feature is currently in beta. We may introduce changes, improvements, or modifications to functionality, data structures, or API endpoints in future updates. While we strive to maintain backward compatibility, please be aware that some changes might affect existing agents or require migration steps.",
+      "feedback": "We appreciate your feedback and testing during this beta period to help us improve the feature.",
+      "title": "Beta Feature"
+    },
     "createNew": "Create Agent",
     "searchPlaceholder": "Search agents...",
     "noAgents": "No agents yet. Create your first agent to get started.",

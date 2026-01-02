@@ -39,7 +39,7 @@
   "admin": {
     "dashboard": "Tableau de bord administrateur",
     "description": "Gérer les configurations système, les proxys et les fournisseurs LLM",
-    "exitAdmin": "Quitter l'administrateur",
+    "exitAdmin": "Quitter l'Admin",
     "llm": {
       "embeddingModels": "Modèles d'Embedding",
       "models": "Modèles",
@@ -63,6 +63,12 @@
   "agents": {
     "agentToolConfig": {
       "title": "Configurer l'outil d'agent"
+    },
+    "beta": "bêta",
+    "betaNotice": {
+      "description": "La fonctionnalité Agents est actuellement en version bêta. Nous pourrions introduire des changements, améliorations ou modifications de fonctionnalité, de structures de données ou de points de terminaison API dans les futures mises à jour. Bien que nous nous efforcions de maintenir la rétrocompatibilité, veuillez noter que certains changements pourraient affecter les agents existants ou nécessiter des étapes de migration.",
+      "feedback": "Nous apprécions vos retours et tests pendant cette période bêta pour nous aider à améliorer la fonctionnalité.",
+      "title": "Fonctionnalité bêta"
     },
     "confirmDelete": "Êtes-vous sûr de vouloir supprimer {{name}} ? Cette action ne peut pas être annulée.",
     "createNew": "Créer un agent",
