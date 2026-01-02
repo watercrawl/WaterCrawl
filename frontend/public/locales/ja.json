@@ -38,8 +38,8 @@
   },
   "admin": {
     "dashboard": "管理者ダッシュボード",
-    "description": "システム全体の設定、プロキシ、LLMプロバイダーを管理",
-    "exitAdmin": "管理者を終了",
+    "description": "システム全体の設定、プロキシ、LLMプロバイダーを管理します",
+    "exitAdmin": "管理画面を終了",
     "llm": {
       "embeddingModels": "埋め込みモデル",
       "models": "モデル",
@@ -63,6 +63,12 @@
   "agents": {
     "title": "エージェント",
     "description": "カスタムツールと知識を持つ自律型AIエージェントを作成・管理",
+    "beta": "ベータ",
+    "betaNotice": {
+      "description": "エージェント機能は現在ベータ版です。今後のアップデートで、機能、データ構造、またはAPIエンドポイントに変更、改善、または修正を導入する可能性があります。後方互換性を維持するよう努めていますが、一部の変更は既存のエージェントに影響を与えたり、移行手順が必要になる場合があります。",
+      "feedback": "機能の改善に役立つよう、このベータ期間中のフィードバックとテストをお待ちしております。",
+      "title": "ベータ機能"
+    },
     "createNew": "エージェントを作成",
     "searchPlaceholder": "エージェントを検索...",
     "noAgents": "エージェントはまだありません。最初のエージェントを作成して始めましょう。",
@@ -90,6 +96,7 @@
       "archived": "アーカイブ済み",
       "testing": "テスト中"
     },
+    "usage": "エージェントの使用状況",
     "details": {
       "tools": "アクティブなツール",
       "toolsActive": "合計{{count}}件",
@@ -119,7 +126,9 @@
         "tools": "ツールと知識"
       },
       "name": "エージェント名",
+      "nameLabel": "名前",
       "namePlaceholder": "エージェント名を入力",
+      "systemPromptLabel": "システムプロンプト",
       "description": "説明",
       "descriptionPlaceholder": "このエージェントの機能を説明してください",
       "status": "ステータス",
@@ -197,6 +206,7 @@
       "enabled": "有効",
       "addTool": "+ ツールを追加",
       "noTools": "まだツールが追加されていません",
+      "noKnowledgeBasesConnected": "ナレッジベースが接続されていません",
       "configureTool": "ツールを設定",
       "configSaved": "設定を保存しました",
       "toolsNote": "ツールはツールメニューでグローバルに管理できます",
@@ -248,11 +258,24 @@
       "enableLabel": "構造化JSON出力",
       "enableDescription": "エージェントの応答を特定のJSONスキーマに従わせる",
       "schemaLabel": "JSONスキーマ",
+      "schemaOptional": "オプション",
       "schemaPlaceholder": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"answer\": { \"type\": \"string\" }\n  },\n  \"required\": [\"answer\"]\n}",
       "schemaHint": "JSONスキーマ形式を使用してエージェント出力の構造を定義",
       "insertExample": "例を挿入",
+      "clearSchema": "クリア",
       "invalidJson": "無効なJSON形式",
-      "invalidSchema": "スキーマはオブジェクトである必要があります"
+      "invalidSchema": "スキーマはオブジェクトである必要があります",
+      "currentMode": "現在のモード",
+      "mode": {
+        "disabled": "無効",
+        "dynamic": "動的スキーマ",
+        "predefined": "定義済みスキーマ"
+      },
+      "modeDescription": {
+        "disabled": "構造化出力なしの通常のチャットモード。エージェントは自然言語で応答します。",
+        "dynamic": "API呼び出し元は、各リクエストでoutput_schemaを提供する必要があります。これにより、リクエストごとに異なるスキーマが可能になります。",
+        "predefined": "上記で定義されたスキーマを使用します。すべての応答はこの構造に従います。"
+      }
     },
     "kbConfig": {
       "retrievalSettingHint": "このナレッジベースをクエリする際に使用する取得設定を選択。選択しない場合はデフォルト設定が使用されます。"
@@ -270,6 +293,9 @@
       "queryPlaceholder": "メッセージを入力...",
       "querySuccess": "クエリが正常に送信されました",
       "contextVariables": "コンテキスト変数",
+      "outputSchema": "出力スキーマ",
+      "outputSchemaRequired": "動적スキーマモードでは出力スキーマが必要です",
+      "dynamicSchemaInfo": "このエージェントは動的スキーマモードです。各リクエストに対してエージェントの応答を構造化するためのJSONスキーマを提供してください。",
       "variableRequired": "キーと値の両方が必要です",
       "variableKeyRequired": "変数キーが必要です",
       "variableDuplicate": "このキーの変数は既に存在します",
@@ -640,8 +666,6 @@
     "recommended": "推奨",
     "save": "保存",
     "saved": "保存しました！",
-    "saving": "保存中...",
-    "config": "設定",
     "soon": "近日公開",
     "send": "送信",
     "resetPassword": {
@@ -1482,12 +1506,12 @@
       "customUpdated": "カスタムモデルを更新しました",
       "customDeleted": "カスタムモデルを削除しました",
       "confirmDelete": "このカスタムモデルを削除してもよろしいですか？",
-      "export": "Export",
-      "exportSuccess": "Models exported successfully",
-      "noModelsToExport": "No models to export",
-      "loadFromYaml": "Load from YAML",
-      "yamlLoaded": "YAML file loaded successfully",
-      "yamlLoadError": "Failed to load YAML file",
+      "export": "エクスポート",
+      "exportSuccess": "モデルが正常にエクスポートされました",
+      "noModelsToExport": "エクスポートするモデルがありません",
+      "loadFromYaml": "YAMLから読み込む",
+      "yamlLoaded": "YAMLファイルが正常に読み込まれました",
+      "yamlLoadError": "YAMLファイルの読み込みに失敗しました",
       "modelKey": "モデルキー",
       "modelKeyPlaceholder": "例：my-custom-model",
       "label": "表示ラベル",
@@ -2384,6 +2408,8 @@
     "dailyPagesCredit": "日次ページクレジット",
     "maxConcurrentCrawls": "最大同時クロール数",
     "maxDepth": "最大深度",
+    "agents": "エージェント",
+    "agentCallRateLimit": "エージェント呼び出しレート制限",
     "prompt": {
       "description": "アップグレードしてさらなる機能にアクセスし、制限を増やしましょう",
       "title": "プランをアップグレード",
@@ -2762,7 +2788,8 @@
     "uploadFailed": "アップロードに失敗しました",
     "imageLoadError": "画像を読み込めませんでした",
     "clickToView": "クリックして表示",
-    "downloadFile": "ファイルをダウンロード"
+    "downloadFile": "ファイルをダウンロード",
+    "structuredResponse": "構造化された応答"
   },
   "mediaLibrary": {
     "title": "メディアライブラリ",
