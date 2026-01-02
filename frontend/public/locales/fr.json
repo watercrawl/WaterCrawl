@@ -39,7 +39,7 @@
   "admin": {
     "dashboard": "Tableau de bord administrateur",
     "description": "Gérer les configurations système, les proxys et les fournisseurs LLM",
-    "exitAdmin": "Quitter l'administrateur",
+    "exitAdmin": "Quitter l'Admin",
     "llm": {
       "embeddingModels": "Modèles d'Embedding",
       "models": "Modèles",
@@ -63,6 +63,12 @@
   "agents": {
     "title": "Agents",
     "description": "Créez et gérez des agents IA autonomes avec des outils et des connaissances personnalisés",
+    "beta": "bêta",
+    "betaNotice": {
+      "description": "La fonctionnalité Agents est actuellement en version bêta. Nous pourrions introduire des changements, améliorations ou modifications de fonctionnalité, de structures de données ou de points de terminaison API dans les futures mises à jour. Bien que nous nous efforcions de maintenir la rétrocompatibilité, veuillez noter que certains changements pourraient affecter les agents existants ou nécessiter des étapes de migration.",
+      "feedback": "Nous apprécions vos retours et tests pendant cette période bêta pour nous aider à améliorer la fonctionnalité.",
+      "title": "Fonctionnalité bêta"
+    },
     "createNew": "Créer un agent",
     "searchPlaceholder": "Rechercher des agents...",
     "noAgents": "Pas encore d'agents. Créez votre premier agent pour commencer.",
@@ -90,6 +96,7 @@
       "archived": "Archivé",
       "testing": "En test"
     },
+    "usage": "Utilisation de l'agent",
     "details": {
       "tools": "Outils actifs",
       "toolsActive": "{{count}} au total",
@@ -119,7 +126,9 @@
         "tools": "Outils et connaissances"
       },
       "name": "Nom de l'agent",
+      "nameLabel": "Nom",
       "namePlaceholder": "Entrez le nom de l'agent",
+      "systemPromptLabel": "Prompt système",
       "description": "Description",
       "descriptionPlaceholder": "Décrivez ce que fait cet agent",
       "status": "Statut",
@@ -197,6 +206,7 @@
       "enabled": "activé",
       "addTool": "+ Ajouter un Outil",
       "noTools": "Aucun outil ajouté pour le moment",
+      "noKnowledgeBasesConnected": "Aucune base de connaissances connectée",
       "configureTool": "Configurer l'outil",
       "configSaved": "Configuration enregistrée avec succès",
       "toolsNote": "Les outils peuvent être gérés globalement dans le menu Outils",
@@ -248,11 +258,24 @@
       "enableLabel": "Sortie JSON structurée",
       "enableDescription": "Forcer les réponses de l'agent à suivre un schéma JSON spécifique",
       "schemaLabel": "Schéma JSON",
+      "schemaOptional": "optionnel",
       "schemaPlaceholder": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"answer\": { \"type\": \"string\" }\n  },\n  \"required\": [\"answer\"]\n}",
       "schemaHint": "Définissez la structure de la sortie de l'agent en utilisant le format de schéma JSON",
       "insertExample": "Insérer un exemple",
+      "clearSchema": "Effacer",
       "invalidJson": "Format JSON invalide",
-      "invalidSchema": "Le schéma doit être un objet"
+      "invalidSchema": "Le schéma doit être un objet",
+      "currentMode": "Mode actuel",
+      "mode": {
+        "disabled": "Désactivé",
+        "dynamic": "Schéma dynamique",
+        "predefined": "Schéma prédéfini"
+      },
+      "modeDescription": {
+        "disabled": "Mode chat normal sans sortie structurée. L'agent répondra en langage naturel.",
+        "dynamic": "Les appelants de l'API doivent fournir output_schema dans chaque requête. Cela permet des schémas différents par requête.",
+        "predefined": "Utilisation du schéma défini ci-dessus. Toutes les réponses suivront cette structure."
+      }
     },
     "kbConfig": {
       "retrievalSettingHint": "Sélectionnez le paramètre de récupération à utiliser lors de l'interrogation de cette base de connaissances. Le paramètre par défaut sera utilisé si aucun n'est sélectionné."
@@ -270,6 +293,9 @@
       "queryPlaceholder": "Tapez votre message...",
       "querySuccess": "Requête envoyée avec succès",
       "contextVariables": "Variables de Contexte",
+      "outputSchema": "Schéma de sortie",
+      "outputSchemaRequired": "Le schéma de sortie est requis en mode schéma dynamique",
+      "dynamicSchemaInfo": "Cet agent est en mode schéma dynamique. Fournissez un schéma JSON pour structurer la réponse de l'agent pour chaque requête.",
       "variableRequired": "La clé et la valeur sont requises",
       "variableKeyRequired": "La clé de la variable est requise",
       "variableDuplicate": "Une variable avec cette clé existe déjà",
@@ -640,8 +666,6 @@
     "recommended": "Recommandé",
     "save": "Enregistrer",
     "saved": "Enregistré !",
-    "saving": "Enregistrement...",
-    "config": "Configuration",
     "soon": "Bientôt",
     "send": "Envoyer",
     "resetPassword": {
@@ -1482,12 +1506,12 @@
       "customUpdated": "Modèle personnalisé mis à jour avec succès",
       "customDeleted": "Modèle personnalisé supprimé avec succès",
       "confirmDelete": "Êtes-vous sûr de vouloir supprimer ce modèle personnalisé ?",
-      "export": "Export",
-      "exportSuccess": "Models exported successfully",
-      "noModelsToExport": "No models to export",
-      "loadFromYaml": "Load from YAML",
-      "yamlLoaded": "YAML file loaded successfully",
-      "yamlLoadError": "Failed to load YAML file",
+      "export": "Exporter",
+      "exportSuccess": "Modèles exportés avec succès",
+      "noModelsToExport": "Aucun modèle à exporter",
+      "loadFromYaml": "Charger depuis YAML",
+      "yamlLoaded": "Fichier YAML chargé avec succès",
+      "yamlLoadError": "Échec du chargement du fichier YAML",
       "modelKey": "Clé du modèle",
       "modelKeyPlaceholder": "ex., mon-modele-personnalise",
       "label": "Libellé d'affichage",
@@ -2384,6 +2408,8 @@
     "dailyPagesCredit": "Crédit de pages quotidien",
     "maxConcurrentCrawls": "Nombre maximum de crawls simultanés",
     "maxDepth": "Profondeur maximale",
+    "agents": "Agents",
+    "agentCallRateLimit": "Limite de taux d'appel de l'agent",
     "prompt": {
       "description": "Passez à un plan supérieur pour accéder à plus de fonctionnalités et augmenter vos limites",
       "title": "Améliorez votre plan",
@@ -2762,7 +2788,8 @@
     "uploadFailed": "Échec du téléversement",
     "imageLoadError": "Échec du chargement de l'image",
     "clickToView": "Cliquer pour voir",
-    "downloadFile": "Télécharger le fichier"
+    "downloadFile": "Télécharger le fichier",
+    "structuredResponse": "Réponse structurée"
   },
   "mediaLibrary": {
     "title": "Médiathèque",
