@@ -19,6 +19,11 @@ class ProviderConfigSerializer(serializers.ModelSerializer):
         required=False,
         allow_null=True,
     )
+    base_url = serializers.CharField(
+        required=False,
+        allow_null=True,
+        allow_blank=True,
+    )
 
     class Meta:
         model = ProviderConfig

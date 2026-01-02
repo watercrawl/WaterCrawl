@@ -84,6 +84,7 @@ export interface MessageBlock {
   role: 'user' | 'assistant';
   conversation_id: string;
   messages: ChatMessage[];
+  structured_response?: Record<string, any> | null; // Structured JSON output when json_output is enabled
 }
 
 /**
@@ -109,6 +110,7 @@ export interface ChatMessageRequest {
   inputs?: Record<string, any>;
   conversation_id?: string;
   files?: string[]; // Array of Media file UUIDs
+  output_schema?: Record<string, unknown> | null; // JSON Schema for structured output (required when agent has json_output=true but no predefined schema)
 }
 
 // File attachment for chat messages
@@ -132,6 +134,7 @@ export type ChatEventType =
   | 'content'
   | 'tool_call_start'
   | 'tool_call_end'
+  | 'structured_response'
   | 'error'
   | 'done'
   | 'title';
@@ -224,6 +227,12 @@ export interface TitleEvent extends BaseChatEvent {
   };
 }
 
+// Structured response event
+export interface StructuredResponseEvent extends BaseChatEvent {
+  event: 'structured_response';
+  data: Record<string, any>;
+}
+
 // Union type for all events
 export type ChatEvent =
   | ConversationEvent
@@ -233,6 +242,7 @@ export type ChatEvent =
   | ContentEvent
   | ToolCallStartEvent
   | ToolCallEndEvent
+  | StructuredResponseEvent
   | ErrorEvent
   | DoneEvent
   | TitleEvent;
@@ -276,6 +286,7 @@ export interface MessageBlockUI {
   role: 'user' | 'assistant';
   parts: MessagePart[];
   timestamp: number;
+  structuredResponse?: Record<string, any> | null; // Structured JSON output when json_output is enabled
 }
 
 // Legacy alias for backwards compatibility

@@ -52,6 +52,18 @@ export const SubscriptionStatusCard: React.FC<Props> = ({ showRefreshButton = tr
     return `${used.toLocaleString()} / ${subscription.plan_number_users}`;
   };
 
+  const getUsedAgents = () => {
+    // Note: We don't have remaining_agents in CurrentSubscription yet,
+    // but we can show the limit. If we want actual usage, we might need
+    // another API call or update the backend CurrentSubscription model.
+    // For now, let's show the limit like maxDepth.
+    return subscription.number_of_agents === -1 ? t('subscription.unlimited') : subscription.number_of_agents;
+  };
+
+  const getAgentRateLimit = () => {
+    return subscription.agent_rate_limit || t('subscription.unlimited');
+  };
+
   const calculateUsagePercentage = (used: number, total: number) => {
     return Math.min((used / total) * 100, 100);
   };
@@ -242,6 +254,22 @@ export const SubscriptionStatusCard: React.FC<Props> = ({ showRefreshButton = tr
                       {subscription.max_concurrent_crawl !== -1
                         ? subscription.max_concurrent_crawl
                         : t('subscription.unlimited')}
+                    </div>
+                  </div>
+                  <div className="rounded-lg bg-muted p-2 text-center">
+                    <div className="text-xs text-muted-foreground">
+                      {t('subscription.agents')}
+                    </div>
+                    <div className="mt-1 text-sm font-semibold text-foreground">
+                      {getUsedAgents()}
+                    </div>
+                  </div>
+                  <div className="rounded-lg bg-muted p-2 text-center">
+                    <div className="text-xs text-muted-foreground">
+                      {t('subscription.agentCallRateLimit')}
+                    </div>
+                    <div className="mt-1 text-sm font-semibold text-foreground">
+                      {getAgentRateLimit()}
                     </div>
                   </div>
                 </div>

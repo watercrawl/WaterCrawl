@@ -17,18 +17,20 @@ import MarkdownRenderer from '../shared/MarkdownRenderer';
 import Modal from '../shared/Modal';
 
 interface QueryResultData {
+  chunk_id: string;
   content: string;
   metadata: {
     index: number;
-    uuid: string;
+    source_type: string;
     source: string;
-    knowledge_base_id: string;
     document_id?: string;
   };
+  score: number;
 }
 
 interface KnowledgeBaseQueryResultProps {
   result: QueryResultData;
+  knowledgeBaseId: string;
   showDocumentLink?: boolean;
   showSource?: boolean;
   maxPreviewLength?: number;
@@ -36,6 +38,7 @@ interface KnowledgeBaseQueryResultProps {
 
 export const KnowledgeBaseQueryResult: React.FC<KnowledgeBaseQueryResultProps> = ({
   result,
+  knowledgeBaseId,
   showDocumentLink = true,
   showSource = true,
   maxPreviewLength = 200,
@@ -82,11 +85,11 @@ export const KnowledgeBaseQueryResult: React.FC<KnowledgeBaseQueryResultProps> =
               )}
               <div className="flex items-center gap-x-2 text-sm text-muted-foreground">
                 <span>
-                  {t('knowledgeBase.chunk')} #{result.metadata.index}
+                  {t('knowledgeBase.chunk')} #{result.metadata.index || '-'}
                 </span>
                 <span>•</span>
                 <span>
-                  {t('knowledgeBase.id')}: {result.metadata.uuid.substring(0, 8)}...
+                  {t('knowledgeBase.id')}: {result.chunk_id.substring(0, 8) || '-...'}
                 </span>
               </div>
             </div>
@@ -94,7 +97,7 @@ export const KnowledgeBaseQueryResult: React.FC<KnowledgeBaseQueryResultProps> =
             <div className="flex items-center gap-x-2">
               {showDocumentLink && result.metadata.document_id && (
                 <Link
-                  to={`/dashboard/knowledge-base/${result.metadata.knowledge_base_id}/documents/${result.metadata.document_id}`}
+                  to={`/dashboard/knowledge-base/${knowledgeBaseId}/documents/${result.metadata.document_id}`}
                   className="inline-flex items-center rounded-md bg-primary-soft px-2 py-1 text-xs font-medium text-primary transition-colors hover:bg-primary/20"
                   target="_blank"
                 >
@@ -159,7 +162,7 @@ export const KnowledgeBaseQueryResult: React.FC<KnowledgeBaseQueryResultProps> =
               )}
               <div>
                 <strong>{t('knowledgeBase.chunk')}:</strong> #{result.metadata.index} (
-                {t('knowledgeBase.id')}: {result.metadata.uuid})
+                {t('knowledgeBase.id')}: {result.chunk_id})
               </div>
             </div>
           </div>

@@ -15,6 +15,10 @@ interface AgentTestBenchPanelProps {
   contextVariableTemplates?: ContextParameters[];
   mode?: 'sidebar' | 'modal' | 'inline';
   defaultOpen?: boolean;
+  /** Whether structured JSON output is enabled for this agent */
+  jsonOutput?: boolean;
+  /** Predefined JSON schema for output (null means dynamic mode when jsonOutput is true) */
+  jsonSchema?: Record<string, unknown> | null;
 }
 
 const AgentTestBenchPanel: React.FC<AgentTestBenchPanelProps> = ({
@@ -22,6 +26,8 @@ const AgentTestBenchPanel: React.FC<AgentTestBenchPanelProps> = ({
   contextVariableTemplates = [],
   mode = 'sidebar',
   defaultOpen = false,
+  jsonOutput = false,
+  jsonSchema = null,
 }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(defaultOpen);
@@ -60,7 +66,12 @@ const AgentTestBenchPanel: React.FC<AgentTestBenchPanelProps> = ({
             {/* Content */}
             <div className="flex-1 overflow-hidden">
               {agent ? (
-                <AgentTestBenchSimple agent={agent} contextVariableTemplates={contextVariableTemplates} />
+                <AgentTestBenchSimple
+                  agent={agent}
+                  contextVariableTemplates={contextVariableTemplates}
+                  jsonOutput={jsonOutput}
+                  jsonSchema={jsonSchema}
+                />
               ) : (
                 <div className="flex h-full items-center justify-center p-6 text-center">
                   <div>
@@ -108,7 +119,12 @@ const AgentTestBenchPanel: React.FC<AgentTestBenchPanelProps> = ({
         >
           {agent ? (
             <div className="h-[600px]">
-              <AgentTestBenchSimple agent={agent} contextVariableTemplates={contextVariableTemplates} />
+              <AgentTestBenchSimple
+                agent={agent}
+                contextVariableTemplates={contextVariableTemplates}
+                jsonOutput={jsonOutput}
+                jsonSchema={jsonSchema}
+              />
             </div>
           ) : (
             <div className="flex h-96 items-center justify-center text-center">
@@ -129,7 +145,12 @@ const AgentTestBenchPanel: React.FC<AgentTestBenchPanelProps> = ({
   return (
     <>
       {agent ? (
-        <AgentTestBenchSimple agent={agent} contextVariableTemplates={contextVariableTemplates} />
+        <AgentTestBenchSimple
+          agent={agent}
+          contextVariableTemplates={contextVariableTemplates}
+          jsonOutput={jsonOutput}
+          jsonSchema={jsonSchema}
+        />
       ) : (
         <div className="flex h-full items-center justify-center p-6 text-center">
           <div>

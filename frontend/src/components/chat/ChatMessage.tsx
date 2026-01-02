@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import { UserIcon, CpuChipIcon } from '@heroicons/react/24/outline';
+import { UserIcon, CpuChipIcon, CodeBracketIcon, ChevronDownIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 
 import { useDirection } from '../../contexts/DirectionContext';
 
@@ -10,6 +10,43 @@ import MessageContentRenderer, { extractTextContent, hasDisplayableContent } fro
 import ToolCallRenderer from './ToolCallRenderer';
 
 import type { MessageBlock, ToolCallUIState } from '../../types/conversation';
+
+/**
+ * StructuredResponsePreview component - Renders JSON preview of structured response
+ */
+const StructuredResponsePreview: React.FC<{ data: Record<string, any> }> = ({ data }) => {
+  const { t } = useTranslation();
+  const [isExpanded, setIsExpanded] = React.useState(true);
+
+  const prettyData = useMemo(() => JSON.stringify(data, null, 2), [data]);
+
+  return (
+    <div className="border-t border-border bg-muted/30">
+      <button
+        type="button"
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="w-full px-4 py-2 flex items-center gap-2 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+      >
+        {isExpanded ? (
+          <ChevronDownIcon className="h-3.5 w-3.5" />
+        ) : (
+          <ChevronRightIcon className="h-3.5 w-3.5" />
+        )}
+        <CodeBracketIcon className="h-3.5 w-3.5" />
+        <span>{t('chat.structuredResponse')}</span>
+      </button>
+      {isExpanded && (
+        <div className="px-4 pb-3">
+          <pre className="text-xs font-mono bg-background border border-border rounded-md p-3 overflow-x-auto max-h-64 overflow-y-auto">
+            <code className="text-foreground">
+              {prettyData}
+            </code>
+          </pre>
+        </div>
+      )}
+    </div>
+  );
+};
 
 /**
  * Detect text direction based on first meaningful character
@@ -97,6 +134,9 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ messageBlock, isStreaming = f
     m => (m.message_type === 'ai' || m.message_type === 'human') && hasDisplayableContent(m.content)
   );
 
+  // Check if we have structured response (can show during streaming too)
+  const hasStructuredResponse = !!messageBlock.structured_response;
+
   return (
     <div className={`flex gap-3 ${messageAlignment} mb-4`}>
       {/* Avatar */}
@@ -126,16 +166,16 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ messageBlock, isStreaming = f
 
                   {/* Tool calls */}
                   {message.tool_calls.map((toolCall) => {
-                    const toolCallState = getToolCallUIState(toolCall.id, toolCall.name, toolCall.args);
-                    
-                    return (
-                      <ToolCallRenderer
-                        key={toolCall.id}
-                        toolCall={toolCallState}
-                        isParallel={parallelToolIds.has(toolCall.id)}
-                      />
-                    );
-                  })}
+                      const toolCallState = getToolCallUIState(toolCall.id, toolCall.name, toolCall.args);
+                      
+                      return (
+                        <ToolCallRenderer
+                          key={toolCall.id}
+                          toolCall={toolCallState}
+                          isParallel={parallelToolIds.has(toolCall.id)}
+                        />
+                      );
+                    })}
                 </React.Fragment>
               );
             }
@@ -143,9 +183,10 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ messageBlock, isStreaming = f
             // Tool messages are handled via tool_calls above
             return null;
           })}
-          
-          {/* Thinking indicator - when streaming but no content yet */}
-          {isStreaming && isAssistant && !hasContent && (
+        
+
+          {/* Thinking indicator - when streaming but no content and no structured response yet */}
+          {isStreaming && isAssistant && !hasContent && !hasStructuredResponse && (
             <div className="px-4 py-3">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <div className="inline-flex items-center gap-1">
@@ -159,7 +200,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ messageBlock, isStreaming = f
           )}
           
           {/* Streaming indicator - at the end of the message block */}
-          {isStreaming && isAssistant && hasContent && (
+          {isStreaming && isAssistant && (hasContent || hasStructuredResponse) && (
             <div className="px-4 py-2">
               <div className="text-sm inline-flex items-center gap-1 text-muted-foreground">
                 <span className="w-1.5 h-1.5 rounded-full bg-current animate-dot-bounce" style={{ animationDelay: '0ms' }} />
@@ -167,6 +208,11 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ messageBlock, isStreaming = f
                 <span className="w-1.5 h-1.5 rounded-full bg-current animate-dot-bounce" style={{ animationDelay: '400ms' }} />
               </div>
             </div>
+          )}
+
+          {/* Structured Response Preview - show always when available (streaming or not) */}
+          {isAssistant && messageBlock.structured_response && (
+            <StructuredResponsePreview data={messageBlock.structured_response} />
           )}
         </div>
       </div>

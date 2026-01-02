@@ -2,7 +2,11 @@ import React, { useState, useCallback, useMemo } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import { ChevronDownIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import {
+  ChevronDownIcon,
+  ChevronRightIcon,
+  InformationCircleIcon,
+} from '@heroicons/react/24/outline';
 
 import SectionHeader from '../SectionHeader';
 
@@ -13,6 +17,12 @@ interface AgentFormJsonOutputSectionProps {
   onJsonSchemaChange: (schema: Record<string, unknown> | null) => void;
 }
 
+/**
+ * Three-state structured output configuration:
+ * 1. Disabled (jsonOutput=false): Normal chat without structured output
+ * 2. Dynamic Schema (jsonOutput=true, jsonSchema=null): API callers must provide output_schema
+ * 3. Predefined Schema (jsonOutput=true, jsonSchema set): Uses the schema defined here
+ */
 const AgentFormJsonOutputSection: React.FC<AgentFormJsonOutputSectionProps> = ({
   jsonOutput,
   jsonSchema,
@@ -25,6 +35,13 @@ const AgentFormJsonOutputSection: React.FC<AgentFormJsonOutputSectionProps> = ({
   const [schemaText, setSchemaText] = useState<string>(
     jsonSchema ? JSON.stringify(jsonSchema, null, 2) : ''
   );
+
+  // Determine current mode
+  const currentMode: 'disabled' | 'dynamic' | 'predefined' = useMemo(() => {
+    if (!jsonOutput) return 'disabled';
+    if (!jsonSchema) return 'dynamic';
+    return 'predefined';
+  }, [jsonOutput, jsonSchema]);
 
   const handleToggle = useCallback(() => {
     const newValue = !jsonOutput;
@@ -78,6 +95,12 @@ const AgentFormJsonOutputSection: React.FC<AgentFormJsonOutputSectionProps> = ({
     onJsonSchemaChange(exampleSchema);
   }, [exampleSchema, onJsonSchemaChange]);
 
+  const handleClearSchema = useCallback(() => {
+    setSchemaText('');
+    setSchemaError(null);
+    onJsonSchemaChange(null);
+  }, [onJsonSchemaChange]);
+
   return (
     <div>
       <SectionHeader title={t('agents.jsonOutput.title')} />
@@ -121,38 +144,78 @@ const AgentFormJsonOutputSection: React.FC<AgentFormJsonOutputSectionProps> = ({
           </button>
         </div>
 
-        {/* Schema Editor */}
+        {/* Expanded Content */}
         {isExpanded && (
           <div className="mt-4 pt-4 border-t border-border">
-            <div className="flex items-center justify-between mb-2">
-              <label className="text-sm font-medium text-foreground">
-                {t('agents.jsonOutput.schemaLabel')}
-              </label>
-              <button
-                type="button"
-                onClick={handleInsertExample}
-                className="text-xs text-primary hover:text-primary-hover"
-              >
-                {t('agents.jsonOutput.insertExample')}
-              </button>
+            {/* Current Mode Status */}
+            <div className="mb-4 p-3 rounded-md bg-muted/50">
+              <div className="flex items-start gap-2">
+                <InformationCircleIcon className="h-5 w-5 text-info flex-shrink-0 mt-0.5" />
+                <div className="text-xs">
+                  <p className="font-medium text-foreground mb-1">
+                    {t('agents.jsonOutput.currentMode')}:{' '}
+                    <span className={`${
+                      currentMode === 'disabled' ? 'text-muted-foreground' :
+                      currentMode === 'dynamic' ? 'text-warning' : 'text-success'
+                    }`}>
+                      {t(`agents.jsonOutput.mode.${currentMode}`)}
+                    </span>
+                  </p>
+                  <p className="text-muted-foreground">
+                    {t(`agents.jsonOutput.modeDescription.${currentMode}`)}
+                  </p>
+                </div>
+              </div>
             </div>
-            <textarea
-              value={schemaText}
-              onChange={(e) => handleSchemaChange(e.target.value)}
-              placeholder={t('agents.jsonOutput.schemaPlaceholder')}
-              rows={10}
-              className={`w-full rounded-md border bg-background px-3 py-2 font-mono text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 resize-y ${
-                schemaError
-                  ? 'border-danger focus:border-danger focus:ring-danger'
-                  : 'border-input-border focus:border-primary focus:ring-primary'
-              }`}
-            />
-            {schemaError && (
-              <p className="mt-1 text-xs text-danger">{schemaError}</p>
+
+            {/* Schema Editor - Only show when json_output is enabled */}
+            {jsonOutput && (
+              <>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="text-sm font-medium text-foreground">
+                    {t('agents.jsonOutput.schemaLabel')}
+                    <span className="ml-1 text-xs text-muted-foreground font-normal">
+                      ({t('agents.jsonOutput.schemaOptional')})
+                    </span>
+                  </label>
+                  <div className="flex items-center gap-2">
+                    {schemaText && (
+                      <button
+                        type="button"
+                        onClick={handleClearSchema}
+                        className="text-xs text-muted-foreground hover:text-danger"
+                      >
+                        {t('agents.jsonOutput.clearSchema')}
+                      </button>
+                    )}
+                    <button
+                      type="button"
+                      onClick={handleInsertExample}
+                      className="text-xs text-primary hover:text-primary-hover"
+                    >
+                      {t('agents.jsonOutput.insertExample')}
+                    </button>
+                  </div>
+                </div>
+                <textarea
+                  value={schemaText}
+                  onChange={(e) => handleSchemaChange(e.target.value)}
+                  placeholder={t('agents.jsonOutput.schemaPlaceholder')}
+                  rows={10}
+                  className={`w-full rounded-md border bg-background px-3 py-2 font-mono text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 resize-y ${
+                    schemaError
+                      ? 'border-danger focus:border-danger focus:ring-danger'
+                      : 'border-input-border focus:border-primary focus:ring-primary'
+                  }`}
+                />
+                {schemaError && (
+                  <p className="mt-1 text-xs text-danger">{schemaError}</p>
+                )}
+                <p className="mt-2 text-xs text-muted-foreground">
+                  {t('agents.jsonOutput.schemaHint')}
+                </p>
+              </>
             )}
-            <p className="mt-2 text-xs text-muted-foreground">
-              {t('agents.jsonOutput.schemaHint')}
-            </p>
           </div>
         )}
       </div>

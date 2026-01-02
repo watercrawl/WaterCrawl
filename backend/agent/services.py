@@ -18,6 +18,7 @@ from agent.models import (
 )
 from agent.parsers.api_spec_parsers import APISpecParser
 from common.encryption import encrypt_key
+from locker import redis_lock
 from user.models import Team
 
 
@@ -34,24 +35,25 @@ class AgentService:
 
     def get_or_create_draft(self) -> AgentVersion:
         """Get current draft or create one (copy from published if exists)."""
-        draft = self.agent.current_draft_version
+        with redis_lock(self.agent.uuid):
+            draft = self.agent.current_draft_version
 
-        if draft:
+            if draft:
+                return draft
+
+            # Check if published version exists
+            published = self.agent.current_published_version
+
+            if published:
+                # Copy from published
+                draft = self.revert_to_version(published)
+            else:
+                # Create new draft
+                draft = AgentVersion.objects.create(
+                    agent=self.agent, status=consts.AGENT_VERSION_STATUS_DRAFT
+                )
+
             return draft
-
-        # Check if published version exists
-        published = self.agent.current_published_version
-
-        if published:
-            # Copy from published
-            draft = self.revert_to_version(published)
-        else:
-            # Create new draft
-            draft = AgentVersion.objects.create(
-                agent=self.agent, status=consts.AGENT_VERSION_STATUS_DRAFT
-            )
-
-        return draft
 
     def revert_to_version(self, version: AgentVersion):
         """Revert to a specific version."""
@@ -68,6 +70,8 @@ class AgentService:
             provider_config=version.provider_config,
             llm_model_key=version.llm_model_key,
             llm_configs=version.llm_configs.copy(),
+            json_output=version.json_output,
+            json_schema=version.json_schema,
         )
 
         # Copy tools

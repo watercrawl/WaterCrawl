@@ -39,7 +39,7 @@
   "admin": {
     "dashboard": "Tableau de bord administrateur",
     "description": "Gérer les configurations système, les proxys et les fournisseurs LLM",
-    "exitAdmin": "Quitter l'administrateur",
+    "exitAdmin": "Quitter l'Admin",
     "llm": {
       "embeddingModels": "Modèles d'Embedding",
       "models": "Modèles",
@@ -64,9 +64,15 @@
     "agentToolConfig": {
       "title": "Configurer l'outil d'agent"
     },
-    "deleteConfirmTitle": "Supprimer l'agent",
+    "beta": "bêta",
+    "betaNotice": {
+      "description": "La fonctionnalité Agents est actuellement en version bêta. Nous pourrions introduire des changements, améliorations ou modifications de fonctionnalité, de structures de données ou de points de terminaison API dans les futures mises à jour. Bien que nous nous efforcions de maintenir la rétrocompatibilité, veuillez noter que certains changements pourraient affecter les agents existants ou nécessiter des étapes de migration.",
+      "feedback": "Nous apprécions vos retours et tests pendant cette période bêta pour nous aider à améliorer la fonctionnalité.",
+      "title": "Fonctionnalité bêta"
+    },
     "confirmDelete": "Êtes-vous sûr de vouloir supprimer {{name}} ? Cette action ne peut pas être annulée.",
     "createNew": "Créer un agent",
+    "deleteConfirmTitle": "Supprimer l'agent",
     "deleteSuccess": "Agent supprimé avec succès",
     "description": "Créez et gérez des agents IA autonomes avec des outils et des connaissances personnalisés",
     "detail": {
@@ -151,12 +157,14 @@
       "modelHelp": "Choisissez le modèle spécifique à utiliser",
       "modelParameters": "Paramètres du modèle",
       "name": "Nom de l'agent",
+      "nameLabel": "Nom",
       "namePlaceholder": "Entrez le nom de l'agent",
       "nameRequired": "Le nom de l'agent est requis",
       "noAgentTools": "Aucun outil d'agent configuré. Ajoutez des agents pour les utiliser comme outils.",
       "noCustomHTTPTools": "Aucun outil HTTP personnalisé configuré",
       "noKnowledgeBase": "Pas de base de connaissances",
       "noKnowledgeBases": "Aucune base de connaissances connectée",
+      "noKnowledgeBasesConnected": "Aucune base de connaissances connectée",
       "noMCPTools": "Aucun outil MCP configuré",
       "noTools": "Aucun outil ajouté pour le moment",
       "noVersions": "Aucun historique de versions disponible",
@@ -181,6 +189,7 @@
       "systemPrompt": "Prompt système",
       "systemPromptHelp": "Définir le comportement et la personnalité de l'agent",
       "systemPromptHint": "Utilisez {{VARIABLE_NAME}} pour insérer des variables de contexte. Les variables sont détectées automatiquement.",
+      "systemPromptLabel": "Prompt système",
       "systemPromptPlaceholder": "Vous êtes un assistant IA utile...",
       "systemPromptRequired": "L'invite système est requise",
       "tabs": {
@@ -216,13 +225,26 @@
       "versionHistory": "Historique des Versions"
     },
     "jsonOutput": {
+      "clearSchema": "Effacer",
+      "currentMode": "Mode actuel",
       "enableDescription": "Forcer les réponses de l'agent à suivre un schéma JSON spécifique",
       "enableLabel": "Sortie JSON structurée",
       "insertExample": "Insérer un exemple",
       "invalidJson": "Format JSON invalide",
       "invalidSchema": "Le schéma doit être un objet",
+      "mode": {
+        "disabled": "Désactivé",
+        "dynamic": "Schéma dynamique",
+        "predefined": "Schéma prédéfini"
+      },
+      "modeDescription": {
+        "disabled": "Mode chat normal sans sortie structurée. L'agent répondra en langage naturel.",
+        "dynamic": "Les appelants de l'API doivent fournir output_schema dans chaque requête. Cela permet des schémas différents par requête.",
+        "predefined": "Utilisation du schéma défini ci-dessus. Toutes les réponses suivront cette structure."
+      },
       "schemaHint": "Définissez la structure de la sortie de l'agent en utilisant le format de schéma JSON",
       "schemaLabel": "Schéma JSON",
+      "schemaOptional": "optionnel",
       "schemaPlaceholder": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"answer\": { \"type\": \"string\" }\n  },\n  \"required\": [\"answer\"]\n}",
       "title": "Format de sortie"
     },
@@ -263,6 +285,7 @@
       "debugPreview": "Déboguer et Aperçu",
       "defaultVariable": "Rempli automatiquement à partir de l'entrée",
       "draftModeResponse": "Ceci est une simulation en mode brouillon. Enregistrez votre agent pour tester avec de vraies réponses.",
+      "dynamicSchemaInfo": "Cet agent est en mode schéma dynamique. Fournissez un schéma JSON pour structurer la réponse de l'agent pour chaque requête.",
       "editVariable": "Modifier la Variable",
       "enterValue": "Entrer la valeur",
       "estimatedCost": "Estimated Cost",
@@ -278,6 +301,8 @@
       "noVariables": "Aucune variable définie pour le moment",
       "openChat": "Tester l'Agent",
       "output": "Output",
+      "outputSchema": "Schéma de sortie",
+      "outputSchemaRequired": "Le schéma de sortie est requis en mode schéma dynamique",
       "promptTokens": "Prompt Tokens",
       "queryPlaceholder": "Tapez votre message...",
       "querySuccess": "Requête envoyée avec succès",
@@ -329,7 +354,8 @@
       },
       "title": "Configurer l'outil : {{toolName}}",
       "valueLabel": "Valeur"
-    }
+    },
+    "usage": "Utilisation de l'agent"
   },
   "api": {
     "crawl": {
@@ -540,6 +566,7 @@
     "runId": "ID d'exécution",
     "startConversation": "Démarrer une conversation",
     "streaming": "Diffusion",
+    "structuredResponse": "Réponse structurée",
     "thinking": "Réflexion",
     "todos": "Tâches",
     "todosCompleted": "terminé",
@@ -561,12 +588,10 @@
     "ago": "il y a",
     "allRightsReserved": "Tous droits réservés",
     "appName": "WaterCrawl",
-    "subtitle": "Plateforme de Web Crawling",
     "back": "Retour",
     "backToHome": "Back to Home",
     "cancel": "Annuler",
     "close": "Fermer",
-    "config": "Configuration",
     "configureModel": "Configurer le modèle",
     "confirmError": "Please enter the correct value to confirm deletion",
     "copiedToClipboard": "Copié dans le presse-papiers !",
@@ -671,7 +696,6 @@
     "results": "Résultats",
     "save": "Enregistrer",
     "saved": "Enregistré !",
-    "saving": "Enregistrement...",
     "select": "Sélectionner",
     "selectAll": "Tout sélectionner",
     "selectOption": "Sélectionner une option",
@@ -701,6 +725,7 @@
     },
     "soon": "Bientôt",
     "submit": "Soumettre",
+    "subtitle": "Plateforme de Web Crawling",
     "success": "Succès",
     "termsOfService": "Conditions d'utilisation",
     "theme": {
@@ -1552,6 +1577,8 @@
       "dimension": "Dimension d'embedding",
       "editCustomModel": "Modifier le modèle personnalisé",
       "embeddingModels": "Modèles d'embedding",
+      "export": "Exporter",
+      "exportSuccess": "Modèles exportés avec succès",
       "features": "Fonctionnalités",
       "featuresHelp": "Liste de fonctionnalités du modèle séparées par des virgules",
       "featuresHint": "Liste de fonctionnalités séparées par des virgules",
@@ -1559,18 +1586,22 @@
       "label": "Libellé d'affichage",
       "labelPlaceholder": "ex., Mon modèle personnalisé",
       "llmModels": "Modèles LLM",
+      "loadFromYaml": "Charger depuis YAML",
       "modelKey": "Clé du modèle",
       "modelKeyPlaceholder": "ex., mon-modele-personnalise",
       "modelName": "Nom du modèle",
       "noCustomModels": "Aucun modèle personnalisé défini",
       "noModels": "Aucun modèle disponible",
+      "noModelsToExport": "Aucun modèle à exporter",
       "rerankerModels": "Modèles de reclassement",
       "status": "Statut",
       "title": "Gestion des modèles",
       "type": "Type",
       "typeEmbedding": "Embedding",
       "typeLLM": "LLM",
-      "typeReranker": "Reclasseur"
+      "typeReranker": "Reclasseur",
+      "yamlLoaded": "Fichier YAML chargé avec succès",
+      "yamlLoadError": "Échec du chargement du fichier YAML"
     },
     "provider": "Fournisseur",
     "subtitle": "Gérer vos configurations de fournisseur",
@@ -1979,7 +2010,10 @@
         "error": "Échec de l'exécution de la requête.",
         "helpText": "Entrez votre requête pour rechercher dans la base de connaissances des résultats pertinents.",
         "json": "JSON",
+        "manageRetrievalSettings": "Gérer les paramètres",
+        "manageRetrievalSettingsHint": "Configurez les paramètres de récupération comme le type de recherche et le nombre de résultats dans la page d'édition.",
         "noResults": "Exécutez une requête pour voir les résultats ici.",
+        "noRetrievalSettings": "Aucun paramètre de récupération configuré.",
         "options": {
           "title": "Options",
           "topK": "Nombre de résultats",
@@ -1995,9 +2029,6 @@
         "resultsCount_other": "Résultats ({{count}} {{unit}} trouvés)",
         "retrievalSetting": "Paramètre de récupération",
         "retrievalSettingHelpText": "Le paramètre de récupération contrôle le type de recherche, le nombre de résultats et d'autres paramètres de requête.",
-        "noRetrievalSettings": "Aucun paramètre de récupération configuré.",
-        "manageRetrievalSettings": "Gérer les paramètres",
-        "manageRetrievalSettingsHint": "Configurez les paramètres de récupération comme le type de recherche et le nombre de résultats dans la page d'édition.",
         "runButton": "Exécuter la requête",
         "success": "Requête réussie !",
         "title": "Requête",
@@ -2496,6 +2527,8 @@
     }
   },
   "subscription": {
+    "agentCallRateLimit": "Limite de taux d'appel de l'agent",
+    "agents": "Agents",
     "dailyPagesCredit": "Crédit de pages quotidien",
     "maxConcurrentCrawls": "Nombre maximum de crawls simultanés",
     "maxDepth": "Profondeur maximale",

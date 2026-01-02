@@ -38,8 +38,8 @@
   },
   "admin": {
     "dashboard": "管理员仪表板",
-    "description": "管理系统配置、代理和LLM提供商",
-    "exitAdmin": "退出管理员",
+    "description": "管理系统范围的配置、代理和 LLM 提供商",
+    "exitAdmin": "退出管理",
     "llm": {
       "embeddingModels": "嵌入模型",
       "models": "模型",
@@ -64,9 +64,15 @@
     "agentToolConfig": {
       "title": "配置代理工具"
     },
-    "deleteConfirmTitle": "删除代理",
+    "beta": "beta",
+    "betaNotice": {
+      "description": "智能体功能目前处于 beta 阶段。我们可能会在未来的更新中引入更改、改进或对功能、数据结构或 API 端点的修改。虽然 we 努力保持向后兼容，但请注意，某些更改可能会影响现有的智能体或需要迁移步骤。",
+      "feedback": "我们感谢您在此 beta 期间提供反馈和测试，以帮助我们改进该功能。",
+      "title": "Beta 功能"
+    },
     "confirmDelete": "您确定要删除 {{name}} 吗？此操作无法撤销。",
     "createNew": "创建代理",
+    "deleteConfirmTitle": "删除代理",
     "deleteSuccess": "代理删除成功",
     "description": "使用自定义工具和知识创建并管理自主AI代理",
     "detail": {
@@ -151,12 +157,14 @@
       "modelHelp": "选择要使用的具体模型",
       "modelParameters": "模型参数",
       "name": "代理名称",
+      "nameLabel": "名称",
       "namePlaceholder": "输入代理名称",
       "nameRequired": "代理名称是必需的",
       "noAgentTools": "未配置代理工具。添加代理以将其用作工具。",
       "noCustomHTTPTools": "未配置自定义HTTP工具",
       "noKnowledgeBase": "无知识库",
       "noKnowledgeBases": "未连接知识库",
+      "noKnowledgeBasesConnected": "未连接知识库",
       "noMCPTools": "未配置MCP工具",
       "noTools": "尚未添加工具",
       "noVersions": "无版本历史可用",
@@ -181,6 +189,7 @@
       "systemPrompt": "系统提示",
       "systemPromptHelp": "定义代理的行为和个性",
       "systemPromptHint": "使用 {{VARIABLE_NAME}} 插入上下文变量。变量会自动检测。",
+      "systemPromptLabel": "系统提示词",
       "systemPromptPlaceholder": "你是一个有用的AI助手...",
       "systemPromptRequired": "系统提示是必需的",
       "tabs": {
@@ -216,13 +225,26 @@
       "versionHistory": "版本历史"
     },
     "jsonOutput": {
+      "clearSchema": "清除",
+      "currentMode": "当前模式",
       "enableDescription": "强制代理响应遵循特定的JSON模式",
       "enableLabel": "结构化JSON输出",
       "insertExample": "插入示例",
       "invalidJson": "无效的JSON格式",
       "invalidSchema": "模式必须是对象",
+      "mode": {
+        "disabled": "已禁用",
+        "dynamic": "动态架构",
+        "predefined": "预定义架构"
+      },
+      "modeDescription": {
+        "disabled": "无结构化输出的普通对话模式。智能体将以自然语言回答。",
+        "dynamic": "API 调用者必须在每个请求中提供 output_schema。这允许每个请求使用不同的架构。",
+        "predefined": "使用上面定义的架构。所有响应都将遵循此结构。"
+      },
       "schemaHint": "使用JSON模式格式定义代理输出的结构",
       "schemaLabel": "JSON模式",
+      "schemaOptional": "可选",
       "schemaPlaceholder": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"answer\": { \"type\": \"string\" }\n  },\n  \"required\": [\"answer\"]\n}",
       "title": "输出格式"
     },
@@ -263,6 +285,7 @@
       "debugPreview": "调试和预览",
       "defaultVariable": "从输入自动填充",
       "draftModeResponse": "这是草稿模式模拟。保存您的代理以使用真实响应进行测试。",
+      "dynamicSchemaInfo": "该智能体处于动态架构模式。请为每个请求提供一个 JSON 架构来结构化智能体的响应。",
       "editVariable": "编辑变量",
       "enterValue": "输入值",
       "estimatedCost": "Estimated Cost",
@@ -278,6 +301,8 @@
       "noVariables": "尚未定义变量",
       "openChat": "测试代理",
       "output": "Output",
+      "outputSchema": "输出架构",
+      "outputSchemaRequired": "动态架构模式下必须提供输出架构",
       "promptTokens": "Prompt Tokens",
       "queryPlaceholder": "输入您的消息...",
       "querySuccess": "查询发送成功",
@@ -329,7 +354,8 @@
       },
       "title": "配置工具：{{toolName}}",
       "valueLabel": "值"
-    }
+    },
+    "usage": "智能体使用情况"
   },
   "api": {
     "crawl": {
@@ -540,6 +566,7 @@
     "runId": "运行ID",
     "startConversation": "开始对话",
     "streaming": "流式传输",
+    "structuredResponse": "结构化响应",
     "thinking": "思考中",
     "todos": "待办事项",
     "todosCompleted": "已完成",
@@ -561,12 +588,10 @@
     "ago": "前",
     "allRightsReserved": "保留所有权利",
     "appName": "WaterCrawl",
-    "subtitle": "网络爬虫平台",
     "back": "返回",
     "backToHome": "Back to Home",
     "cancel": "取消",
     "close": "关闭",
-    "config": "配置",
     "configureModel": "配置模型",
     "confirmError": "Please enter the correct value to confirm deletion",
     "copiedToClipboard": "已复制到剪贴板！",
@@ -671,7 +696,6 @@
     "results": "结果",
     "save": "保存",
     "saved": "已保存！",
-    "saving": "保存中...",
     "select": "选择",
     "selectAll": "全选",
     "selectOption": "选择一个选项",
@@ -701,6 +725,7 @@
     },
     "soon": "即将推出",
     "submit": "提交",
+    "subtitle": "网络爬虫平台",
     "success": "成功",
     "termsOfService": "服务条款",
     "theme": {
@@ -1552,6 +1577,8 @@
       "dimension": "嵌入维度",
       "editCustomModel": "编辑自定义模型",
       "embeddingModels": "嵌入模型",
+      "export": "导出",
+      "exportSuccess": "模型导出成功",
       "features": "功能",
       "featuresHelp": "以逗号分隔的模型功能列表",
       "featuresHint": "以逗号分隔的功能列表",
@@ -1559,18 +1586,22 @@
       "label": "显示标签",
       "labelPlaceholder": "例如：我的自定义模型",
       "llmModels": "LLM模型",
+      "loadFromYaml": "从 YAML 加载",
       "modelKey": "模型键",
       "modelKeyPlaceholder": "例如：my-custom-model",
       "modelName": "模型名称",
       "noCustomModels": "未定义自定义模型",
       "noModels": "无可用模型",
+      "noModelsToExport": "没有可导出的模型",
       "rerankerModels": "重排模型",
       "status": "状态",
       "title": "模型管理",
       "type": "类型",
       "typeEmbedding": "嵌入",
       "typeLLM": "LLM",
-      "typeReranker": "重排器"
+      "typeReranker": "重排器",
+      "yamlLoaded": "YAML 文件加载成功",
+      "yamlLoadError": "YAML 文件加载失败"
     },
     "provider": "提供商",
     "subtitle": "管理您的提供商配置",
@@ -1979,7 +2010,10 @@
         "error": "执行查询失败。",
         "helpText": "输入您的查询以搜索知识库以获取相关结果。",
         "json": "JSON",
+        "manageRetrievalSettings": "管理设置",
+        "manageRetrievalSettingsHint": "在编辑页面配置搜索类型和结果数量等检索设置。",
         "noResults": "运行查询以在此查看结果。",
+        "noRetrievalSettings": "未配置检索设置。",
         "options": {
           "title": "选项",
           "topK": "结果数量",
@@ -1995,9 +2029,6 @@
         "resultsCount_other": "结果（找到 {{count}} 个 {{unit}}）",
         "retrievalSetting": "检索设置",
         "retrievalSettingHelpText": "检索设置控制搜索类型、结果数量和其他查询参数。",
-        "noRetrievalSettings": "未配置检索设置。",
-        "manageRetrievalSettings": "管理设置",
-        "manageRetrievalSettingsHint": "在编辑页面配置搜索类型和结果数量等检索设置。",
         "runButton": "运行查询",
         "success": "查询成功！",
         "title": "查询",
@@ -2496,6 +2527,8 @@
     }
   },
   "subscription": {
+    "agentCallRateLimit": "智能体调用频率限制",
+    "agents": "智能体",
     "dailyPagesCredit": "每日页面积分",
     "maxConcurrentCrawls": "最大并发爬取数",
     "maxDepth": "最大深度",

@@ -9,6 +9,7 @@ import {
   EyeIcon,
   PencilIcon,
   TrashIcon,
+  ExclamationTriangleIcon,
 } from '@heroicons/react/24/outline';
 
 import AgentCard from '../../components/agent/AgentCard';
@@ -17,8 +18,10 @@ import Modal from '../../components/shared/Modal';
 import { PageHeader } from '../../components/shared/PageHeader';
 import { Pagination } from '../../components/shared/Pagination';
 import { StatusBadge } from '../../components/shared/StatusBadge';
+import UsageLimitBox from '../../components/shared/UsageLimitBox';
 import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
 import { useConfirm } from '../../contexts/ConfirmContext';
+import { useTeam } from '../../contexts/TeamContext';
 import { useDateLocale, useIsTabletOrMobile } from '../../hooks';
 import { agentApi } from '../../services/api/agent';
 import { formatDistanceToNowLocalized } from '../../utils/dateUtils';
@@ -32,6 +35,7 @@ const AgentsPage: React.FC = () => {
   const { confirm } = useConfirm();
   const dateLocale = useDateLocale();
   const { setItems } = useBreadcrumbs();
+  const { currentSubscription } = useTeam();
   const [agents, setAgents] = useState<PaginatedResponse<Agent> | null>(null);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -39,6 +43,12 @@ const AgentsPage: React.FC = () => {
   const [newAgentName, setNewAgentName] = useState('');
   const [creating, setCreating] = useState(false);
   const isTabletOrMobile = useIsTabletOrMobile();
+
+  const isLimitReached = !!(
+    currentSubscription &&
+    currentSubscription.number_of_agents !== -1 &&
+    (agents?.count || 0) >= currentSubscription.number_of_agents
+  );
 
   useEffect(() => {
     setItems([
@@ -133,15 +143,49 @@ const AgentsPage: React.FC = () => {
         titleKey="agents.title"
         descriptionKey="agents.description"
         actions={
-          <button
-            onClick={() => setShowCreateModal(true)}
-            className="inline-flex items-center gap-x-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary-hover"
-          >
-            <PlusIcon className="h-5 w-5" />
-            {t('agents.createNew')}
-          </button>
+          <div className="flex items-center gap-x-4">
+            {currentSubscription && (
+              <div className="hidden sm:block">
+                <UsageLimitBox
+                  label={t('agents.usage')}
+                  current={agents?.count || 0}
+                  limit={currentSubscription.number_of_agents}
+                />
+              </div>
+            )}
+            <button
+              onClick={() => setShowCreateModal(true)}
+              disabled={isLimitReached}
+              className={`inline-flex items-center gap-x-2 rounded-md px-4 py-2 text-sm font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${
+                isLimitReached
+                  ? 'cursor-not-allowed bg-muted text-muted-foreground'
+                  : 'bg-primary text-primary-foreground hover:bg-primary-hover focus-visible:outline-primary'
+              }`}
+            >
+              <PlusIcon className="h-5 w-5" />
+              {t('agents.createNew')}
+            </button>
+          </div>
         }
       />
+
+      {/* Beta Notice Box */}
+      <div className="mt-6 rounded-md border border-warning-strong bg-warning-soft p-4">
+        <div className="flex">
+          <div className="flex-shrink-0">
+            <ExclamationTriangleIcon className="h-5 w-5 text-warning-strong" aria-hidden="true" />
+          </div>
+          <div className="ms-3">
+            <h3 className="text-sm font-medium text-warning-strong">
+              {t('agents.betaNotice.title')}
+            </h3>
+            <div className="mt-2 text-sm text-warning-strong">
+              <p>{t('agents.betaNotice.description')}</p>
+              <p className="mt-2">{t('agents.betaNotice.feedback')}</p>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* Agents List */}
       {isTabletOrMobile ? (

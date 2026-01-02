@@ -71,7 +71,7 @@ LLM_PROVIDER_INFORMATION = OrderedDict(
             LLM_PROVIDER_OLLAMA,
             {
                 "title": _("Ollama"),
-                "api_key": OPTION_NOT_AVAILABLE,
+                "api_key": OPTION_OPTIONAL,
                 "base_url": OPTION_REQUIRED,
                 "default_base_url": "http://localhost:11434",
             },

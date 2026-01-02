@@ -55,11 +55,20 @@ class Plan(BaseModel):
     number_of_knowledge_bases = models.IntegerField(
         _("Number of knowledge bases"), default=1
     )
+    number_of_agents = models.IntegerField(_("Number of agents"), default=1)
     number_of_each_knowledge_base_documents = models.IntegerField(
         _("Number of each knowledge base documents"), default=100
     )
     knowledge_base_retrival_rate_limit = models.CharField(
         _("Knowledge base retrival rate limit"),
+        help_text=_("DRF-style rate string, e.g. '100/min', '500/day'"),
+        max_length=100,
+        default=None,
+        null=True,
+        blank=True,
+    )
+    agent_rate_limit = models.CharField(
+        _("Agent call rate limit"),
         help_text=_("DRF-style rate string, e.g. '100/min', '500/day'"),
         max_length=100,
         default=None,

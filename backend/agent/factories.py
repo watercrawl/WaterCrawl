@@ -11,10 +11,12 @@ import re
 from typing import Dict, List, Any, Optional
 
 from langchain.agents import create_agent
+from langchain.agents.structured_output import ToolStrategy
 from langchain_core.language_models import BaseChatModel
 from langchain_core.messages import ToolMessage
 from langchain_core.runnables import Runnable
 from langchain_core.tools import Tool, StructuredTool
+from langchain_ollama import ChatOllama
 
 from agent import consts
 from agent.executors import (
@@ -59,6 +61,7 @@ class AgentFactory:
         context_variables: Optional[Dict[str, Any]] = None,
         context: Optional[Dict[str, Any]] = None,
         sub_agent: bool = False,
+        output_schema: Optional[Dict[str, Any]] = None,
     ) -> Runnable:
         """
         Create a LangChain agent from an agent version.
@@ -70,6 +73,9 @@ class AgentFactory:
                               patterns in the prompt.
             context: Optional context dict containing team, agent, agent_version, conversation
                     for media library integration.
+            sub_agent: Whether this agent is being used as a sub-agent
+            output_schema: Optional JSON Schema for structured output. Used when agent has
+                          json_output=True but no predefined json_schema (dynamic schema mode).
 
         Returns:
             Runnable agent instance
@@ -81,20 +87,32 @@ class AgentFactory:
             agent_version, context_variables or {}
         )
 
+        chat_model = cls._create_chat_model(agent_version)
+
         # Build agent kwargs
         agent_kwargs = {
-            "model": cls._create_chat_model(agent_version),
+            "model": chat_model,
             "tools": tools,
             # "middleware": [TodoListMiddleware()],
             "system_prompt": system_prompt,
         }
 
         # Apply structured JSON output if enabled
-        if agent_version.json_output and agent_version.json_schema:
-            response_schema = cls._prepare_response_schema(
-                agent_version.json_schema, agent_version.agent.name
-            )
-            agent_kwargs["response_format"] = response_schema
+        # Three states:
+        # 1. json_output=False: No structured output
+        # 2. json_output=True, json_schema set: Use predefined schema from agent
+        # 3. json_output=True, json_schema=None: Use dynamic schema from API request (output_schema)
+        if agent_version.json_output:
+            schema_to_use = agent_version.json_schema or output_schema
+            if schema_to_use:
+                response_schema = cls._prepare_response_schema(
+                    schema_to_use, agent_version.agent.name
+                )
+
+                if isinstance(chat_model, ChatOllama):
+                    agent_kwargs["response_format"] = ToolStrategy(response_schema)
+                else:
+                    agent_kwargs["response_format"] = response_schema
 
         if sub_agent:
             agent_kwargs["name"] = f"{agent_version.uuid.hex}_sub_agent"

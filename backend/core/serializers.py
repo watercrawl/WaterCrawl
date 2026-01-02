@@ -226,10 +226,10 @@ class SearchOptionsSerializer(serializers.Serializer):
     country = serializers.CharField(
         required=False, max_length=8, allow_null=True, default=None
     )
-    time_renge = serializers.ChoiceField(
+    time_range = serializers.ChoiceField(
         required=False,
-        choices=consts.SEARCH_TIME_RENGE_CHOICES,
-        default=consts.SEARCH_TIME_RENGE_ANY,
+        choices=consts.SEARCH_TIME_RANGE_CHOICES,
+        default=consts.SEARCH_TIME_RANGE_ANY,
     )
     search_type = serializers.ChoiceField(
         required=False,

@@ -19,6 +19,11 @@ class ProviderConfigSerializer(serializers.ModelSerializer):
         required=False,
         allow_null=True,
     )
+    base_url = serializers.CharField(
+        required=False,
+        allow_null=True,
+        allow_blank=True,
+    )
 
     class Meta:
         model = ProviderConfig
@@ -96,8 +101,12 @@ class TestProviderConfigSerializer(serializers.Serializer):
     """Serializer for testing provider configuration."""
 
     provider_name = serializers.ChoiceField(choices=consts.LLM_PROVIDER_CHOICES)
-    api_key = serializers.CharField()
-    base_url = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    api_key = serializers.CharField(
+        required=False, allow_blank=True, allow_null=True, default=None
+    )
+    base_url = serializers.CharField(
+        required=False, allow_blank=True, allow_null=True, default=None
+    )
 
 
 class ModelConfigSerializer(serializers.Serializer):

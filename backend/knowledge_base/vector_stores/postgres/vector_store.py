@@ -138,7 +138,7 @@ class PostgresVectorStore(BaseVectorStore):
         queryset = (
             queryset.annotate(search=search_vector, score=search_rank)
             .filter(search=search_query)
-            .order_by("-rank")[:top_k]
+            .order_by("-score")[:top_k]
         )
 
         return self._make_results(queryset)
@@ -154,7 +154,11 @@ class PostgresVectorStore(BaseVectorStore):
                 Document(
                     content=chunk.content,
                     metadata={
+                        "title": chunk.document.title,
                         "document_id": chunk.document_id,
+                        "index": chunk.index,
+                        "source": chunk.document.source,
+                        "source_type": chunk.document.source_type,
                     },
                     score=chunk.score,
                     chunk_id=str(chunk.uuid),
@@ -168,7 +172,7 @@ class PostgresVectorStore(BaseVectorStore):
         if not results:
             return results
 
-        scores = [r.get("score", 0.0) for r in results]
+        scores = [r.score for r in results if r.score is not None]
         if not scores:
             return results
 
@@ -178,12 +182,10 @@ class PostgresVectorStore(BaseVectorStore):
         if max_score == min_score:
             # All scores are the same, set to 1.0
             for result in results:
-                result["score"] = 1.0
+                result.score = 1.0
         else:
             # Normalize to 0-1
             for result in results:
-                result["score"] = (result.get("score", 0.0) - min_score) / (
-                    max_score - min_score
-                )
+                result.score = (result.score - min_score) / (max_score - min_score)
 
         return results

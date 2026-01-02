@@ -73,7 +73,16 @@ class ChatModelFactory:
                     model=llm_model_key, cohere_api_key=api_key, **llm_config
                 )
             case consts.LLM_PROVIDER_OLLAMA:
-                return ChatOllama(base_url=api_base, model=llm_model_key, **llm_config)
+                if api_key:
+                    kwargs = {"headers": {"Authorization": f"Bearer {api_key}"}}
+                else:
+                    kwargs = {}
+                return ChatOllama(
+                    base_url=api_base,
+                    model=llm_model_key,
+                    client_kwargs=kwargs,
+                    **llm_config,
+                )
             case _:
                 raise ValueError(
                     _("Unsupported provider: {provider_name}").format(

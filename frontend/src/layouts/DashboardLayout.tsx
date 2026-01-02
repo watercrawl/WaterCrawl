@@ -18,6 +18,7 @@ import {
   CpuChipIcon,
   WrenchIcon,
   FolderIcon,
+  SparklesIcon
 } from '@heroicons/react/24/outline';
 
 import { TeamSelector } from '../components/dashboard/TeamSelector';
@@ -82,13 +83,17 @@ export const DashboardLayout = () => {
       icon: MagnifyingGlassIcon,
     },
     { name: t('dashboard.navigation.sitemap'), href: '/dashboard/sitemap', icon: MapIcon },
-    { name: t('dashboard.navigation.agents'), href: '/dashboard/agents', icon: CpuChipIcon },
-    { name: t('dashboard.navigation.tools'), href: '/dashboard/tools', icon: WrenchIcon },
-    { name: t('dashboard.navigation.mediaLibrary'), href: '/dashboard/media', icon: FolderIcon },
     {
       name: t('dashboard.navigation.knowledgeBase'),
       href: '/dashboard/knowledge-base',
       icon: BookOpenIcon,
+    },
+    {
+      name: t('dashboard.navigation.agents'), icon: SparklesIcon, children: [
+        { name: t('dashboard.navigation.agents'), href: '/dashboard/agents', icon: CpuChipIcon },
+        { name: t('dashboard.navigation.tools'), href: '/dashboard/tools', icon: WrenchIcon },
+        { name: t('dashboard.navigation.mediaLibrary'), href: '/dashboard/media', icon: FolderIcon },
+      ]
     },
     {
       name: t('dashboard.navigation.activityLogs'),
@@ -131,12 +136,12 @@ export const DashboardLayout = () => {
     },
     ...(user?.is_superuser
       ? [
-          {
-            name: t('dashboard.navigation.adminPanel'),
-            href: '/manager',
-            icon: ServerIcon,
-          },
-        ]
+        {
+          name: t('dashboard.navigation.adminPanel'),
+          href: '/manager',
+          icon: ServerIcon,
+        },
+      ]
       : []),
   ];
 

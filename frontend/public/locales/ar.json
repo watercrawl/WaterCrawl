@@ -64,9 +64,15 @@
     "agentToolConfig": {
       "title": "تكوين أداة الوكيل"
     },
-    "deleteConfirmTitle": "حذف الوكيل",
+    "beta": "تجريبي",
+    "betaNotice": {
+      "description": "ميزة الوكلاء قيد التجربة حاليًا (Beta). قد نقدم تغييرات أو تحسينات أو تعديلات على الوظائف أو هياكل البيانات أو نقاط نهاية API في التحديثات المستقبلية. بينما نسعى للحفاظ على التوافق مع الإصدارات السابقة، يرجى العلم أن بعض التغييرات قد تؤثر على الوكلاء الموجودين أو تتطلب خطوات ترحيل.",
+      "feedback": "نقدر ملاحظاتك واختبارك خلال فترة التجربة لمساعدتنا في تحسين الميزة.",
+      "title": "ميزة تجريبية"
+    },
     "confirmDelete": "هل أنت متأكد من رغبتك في حذف {{name}}؟ لا يمكن التراجع عن هذا الإجراء.",
     "createNew": "إنشاء وكيل",
+    "deleteConfirmTitle": "حذف الوكيل",
     "deleteSuccess": "تم حذف الوكيل بنجاح",
     "description": "إنشاء وإدارة وكلاء الذكاء الاصطناعي المستقلين مع أدوات ومعارف مخصصة",
     "detail": {
@@ -151,12 +157,14 @@
       "modelHelp": "اختر النموذج المحدد للاستخدام",
       "modelParameters": "معلمات النموذج",
       "name": "اسم الوكيل",
+      "nameLabel": "الاسم",
       "namePlaceholder": "أدخل اسم الوكيل",
       "nameRequired": "اسم الوكيل مطلوب",
       "noAgentTools": "لم يتم تكوين أدوات وكيل. أضف وكلاء لاستخدامهم كأدوات.",
       "noCustomHTTPTools": "لم يتم تكوين أدوات HTTP مخصصة",
       "noKnowledgeBase": "لا توجد قاعدة معرفة",
       "noKnowledgeBases": "لم يتم الاتصال بقواعد المعرفة",
+      "noKnowledgeBasesConnected": "لم يتم توصيل أي قواعد معرفة",
       "noMCPTools": "لم يتم تكوين أدوات MCP",
       "noTools": "لم تتم إضافة أدوات بعد",
       "noVersions": "لا يوجد سجل إصدارات متاح",
@@ -181,6 +189,7 @@
       "systemPrompt": "موجه النظام",
       "systemPromptHelp": "حدد سلوك وشخصية الوكيل",
       "systemPromptHint": "استخدم {{VARIABLE_NAME}} لإدراج متغيرات السياق. يتم اكتشاف المتغيرات تلقائيًا.",
+      "systemPromptLabel": "موجه النظام",
       "systemPromptPlaceholder": "أنت مساعد ذكي مفيد...",
       "systemPromptRequired": "موجه النظام مطلوب",
       "tabs": {
@@ -216,13 +225,26 @@
       "versionHistory": "سجل الإصدارات"
     },
     "jsonOutput": {
+      "clearSchema": "مسح",
+      "currentMode": "الوضع الحالي",
       "enableDescription": "إجبار استجابات الوكيل على اتباع مخطط JSON محدد",
       "enableLabel": "إخراج JSON منظم",
       "insertExample": "إدراج مثال",
       "invalidJson": "تنسيق JSON غير صالح",
       "invalidSchema": "يجب أن يكون المخطط كائناً",
+      "mode": {
+        "disabled": "معطل",
+        "dynamic": "مخطط ديناميكي",
+        "predefined": "مخطط محدد مسبقاً"
+      },
+      "modeDescription": {
+        "disabled": "وضع الدردشة العادي بدون مخرجات منظمة. سيستجيب الوكيل بلغة طبيعية.",
+        "dynamic": "يجب على المتصلين بواجهة برمجة التطبيقات توفير output_schema في كل طلب. هذا يسمح بمخططات مختلفة لكل طلب.",
+        "predefined": "باستخدام المخطط المحدد أعلاه. ستتبع جميع الاستجابات هذا الهيكل."
+      },
       "schemaHint": "حدد بنية إخراج الوكيل باستخدام تنسيق مخطط JSON",
       "schemaLabel": "مخطط JSON",
+      "schemaOptional": "اختياري",
       "schemaPlaceholder": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"answer\": { \"type\": \"string\" }\n  },\n  \"required\": [\"answer\"]\n}",
       "title": "تنسيق الإخراج"
     },
@@ -263,6 +285,7 @@
       "debugPreview": "التصحيح والمعاينة",
       "defaultVariable": "تم ملؤه تلقائيًا من الإدخال",
       "draftModeResponse": "هذه محاكاة وضع المسودة. احفظ وكيلك للاختبار باستجابات حقيقية.",
+      "dynamicSchemaInfo": "هذا الوكيل في وضع المخطط الديناميكي. قدم مخطط JSON لهيكلة استجابة الوكيل لكل طلب.",
       "editVariable": "تعديل متغير",
       "enterValue": "أدخل القيمة",
       "estimatedCost": "التكلفة المقدرة",
@@ -278,6 +301,8 @@
       "noVariables": "لم يتم تعريف متغيرات بعد",
       "openChat": "اختبار الوكيل",
       "output": "الإخراج",
+      "outputSchema": "مخطط المخرجات",
+      "outputSchemaRequired": "مخطط المخرجات مطلوب في وضع المخطط الديناميكي",
       "promptTokens": "رموز الموجه",
       "queryPlaceholder": "اكتب رسالتك...",
       "querySuccess": "تم إرسال الاستعلام بنجاح",
@@ -329,7 +354,8 @@
       },
       "title": "تكوين الأداة: {{toolName}}",
       "valueLabel": "القيمة"
-    }
+    },
+    "usage": "استخدام الوكيل"
   },
   "api": {
     "crawl": {
@@ -540,6 +566,7 @@
     "runId": "معرف التشغيل",
     "startConversation": "بدء محادثة",
     "streaming": "البث",
+    "structuredResponse": "استجابة منظمة",
     "thinking": "يفكر",
     "todos": "المهام",
     "todosCompleted": "مكتمل",
@@ -561,12 +588,10 @@
     "ago": "منذ",
     "allRightsReserved": "جميع الحقوق محفوظة",
     "appName": "WaterCrawl",
-    "subtitle": "منصة زحف الويب",
     "back": "رجوع",
     "backToHome": "Back to Home",
     "cancel": "إلغاء",
     "close": "إغلاق",
-    "config": "التكوين",
     "configureModel": "تكوين النموذج",
     "confirmError": "Please enter the correct value to confirm deletion",
     "copiedToClipboard": "تم النسخ إلى الحافظة!",
@@ -671,7 +696,6 @@
     "results": "النتائج",
     "save": "حفظ",
     "saved": "تم الحفظ!",
-    "saving": "جارٍ الحفظ...",
     "select": "اختيار",
     "selectAll": "تحديد الكل",
     "selectOption": "حدد خيارًا",
@@ -701,6 +725,7 @@
     },
     "soon": "قريباً",
     "submit": "إرسال",
+    "subtitle": "منصة زحف الويب",
     "success": "نجح",
     "termsOfService": "شروط الخدمة",
     "theme": {
@@ -1552,6 +1577,8 @@
       "dimension": "بُعد التضمين",
       "editCustomModel": "تعديل نموذج مخصص",
       "embeddingModels": "نماذج التضمين",
+      "export": "تصدير",
+      "exportSuccess": "تم تصدير النماذج بنجاح",
       "features": "الميزات",
       "featuresHelp": "قائمة بميزات النموذج مفصولة بفواصل",
       "featuresHint": "قائمة بالميزات مفصولة بفواصل",
@@ -1559,18 +1586,22 @@
       "label": "تسمية العرض",
       "labelPlaceholder": "مثال: نموذجي المخصص",
       "llmModels": "نماذج LLM",
+      "loadFromYaml": "تحميل من YAML",
       "modelKey": "مفتاح النموذج",
       "modelKeyPlaceholder": "مثال: my-custom-model",
       "modelName": "اسم النموذج",
       "noCustomModels": "لا توجد نماذج مخصصة محددة",
       "noModels": "لا توجد نماذج متاحة",
+      "noModelsToExport": "لا توجد نماذج للتصدير",
       "rerankerModels": "نماذج إعادة الترتيب",
       "status": "الحالة",
       "title": "إدارة النماذج",
       "type": "النوع",
       "typeEmbedding": "تضمين",
       "typeLLM": "LLM",
-      "typeReranker": "إعادة الترتيب"
+      "typeReranker": "إعادة الترتيب",
+      "yamlLoaded": "تم تحميل ملف YAML بنجاح",
+      "yamlLoadError": "فشل تحميل ملف YAML"
     },
     "provider": "المزود",
     "subtitle": "إدارة تكوينات المزودين",
@@ -1979,7 +2010,10 @@
         "error": "فشل تنفيذ الاستعلام.",
         "helpText": "أدخل استعلامك للبحث في قاعدة المعرفة عن نتائج ذات صلة.",
         "json": "JSON",
+        "manageRetrievalSettings": "إدارة الإعدادات",
+        "manageRetrievalSettingsHint": "قم بتكوين إعدادات الاسترجاع مثل نوع البحث وعدد النتائج في صفحة التحرير.",
         "noResults": "قم بتشغيل استعلام لرؤية النتائج هنا.",
+        "noRetrievalSettings": "لم يتم تكوين إعدادات الاسترجاع.",
         "options": {
           "title": "الخيارات",
           "topK": "عدد النتائج",
@@ -1995,9 +2029,6 @@
         "resultsCount_other": "نتائج (تم العثور على {{count}} {{unit}})",
         "retrievalSetting": "إعداد الاسترجاع",
         "retrievalSettingHelpText": "يتحكم إعداد الاسترجاع في نوع البحث وعدد النتائج ومعلمات الاستعلام الأخرى.",
-        "noRetrievalSettings": "لم يتم تكوين إعدادات الاسترجاع.",
-        "manageRetrievalSettings": "إدارة الإعدادات",
-        "manageRetrievalSettingsHint": "قم بتكوين إعدادات الاسترجاع مثل نوع البحث وعدد النتائج في صفحة التحرير.",
         "runButton": "تشغيل الاستعلام",
         "success": "نجح الاستعلام!",
         "title": "استعلام",
@@ -2496,6 +2527,8 @@
     }
   },
   "subscription": {
+    "agentCallRateLimit": "حد معدل استدعاء الوكيل",
+    "agents": "الوكلاء",
     "dailyPagesCredit": "رصيد الصفحات اليومي",
     "maxConcurrentCrawls": "الحد الأقصى للزحف المتزامن",
     "maxDepth": "العمق الأقصى",

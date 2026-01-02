@@ -38,8 +38,8 @@
   },
   "admin": {
     "dashboard": "管理者ダッシュボード",
-    "description": "システム全体の設定、プロキシ、LLMプロバイダーを管理",
-    "exitAdmin": "管理者を終了",
+    "description": "システム全体の設定、プロキシ、LLMプロバイダーを管理します",
+    "exitAdmin": "管理画面を終了",
     "llm": {
       "embeddingModels": "埋め込みモデル",
       "models": "モデル",
@@ -64,9 +64,15 @@
     "agentToolConfig": {
       "title": "エージェントツールを設定"
     },
-    "deleteConfirmTitle": "エージェントを削除",
+    "beta": "ベータ",
+    "betaNotice": {
+      "description": "エージェント機能は現在ベータ版です。今後のアップデートで、機能、データ構造、またはAPIエンドポイントに変更、改善、または修正を導入する可能性があります。後方互換性を維持するよう努めていますが、一部の変更は既存のエージェントに影響を与えたり、移行手順が必要になる場合があります。",
+      "feedback": "機能の改善に役立つよう、このベータ期間中のフィードバックとテストをお待ちしております。",
+      "title": "ベータ機能"
+    },
     "confirmDelete": "{{name}}を削除してもよろしいですか？この操作は元に戻せません。",
     "createNew": "エージェントを作成",
+    "deleteConfirmTitle": "エージェントを削除",
     "deleteSuccess": "エージェントを削除しました",
     "description": "カスタムツールと知識を持つ自律型AIエージェントを作成・管理",
     "detail": {
@@ -151,12 +157,14 @@
       "modelHelp": "使用する特定のモデルを選択",
       "modelParameters": "モデルパラメータ",
       "name": "エージェント名",
+      "nameLabel": "名前",
       "namePlaceholder": "エージェント名を入力",
       "nameRequired": "エージェント名は必須です",
       "noAgentTools": "エージェントツールは設定されていません。ツールとして使用するエージェントを追加してください。",
       "noCustomHTTPTools": "カスタムHTTPツールは設定されていません",
       "noKnowledgeBase": "ナレッジベースなし",
       "noKnowledgeBases": "接続されたナレッジベースがありません",
+      "noKnowledgeBasesConnected": "ナレッジベースが接続されていません",
       "noMCPTools": "MCPツールは設定されていません",
       "noTools": "まだツールが追加されていません",
       "noVersions": "バージョン履歴が利用できません",
@@ -181,6 +189,7 @@
       "systemPrompt": "システムプロンプト",
       "systemPromptHelp": "エージェントの動作と性格を定義",
       "systemPromptHint": "{{VARIABLE_NAME}}を使用してコンテキスト変数を挿入します。変数は自動的に検出されます。",
+      "systemPromptLabel": "システムプロンプト",
       "systemPromptPlaceholder": "あなたは役立つAIアシスタントです...",
       "systemPromptRequired": "システムプロンプトは必須です",
       "tabs": {
@@ -216,13 +225,26 @@
       "versionHistory": "バージョン履歴"
     },
     "jsonOutput": {
+      "clearSchema": "クリア",
+      "currentMode": "現在のモード",
       "enableDescription": "エージェントの応答を特定のJSONスキーマに従わせる",
       "enableLabel": "構造化JSON出力",
       "insertExample": "例を挿入",
       "invalidJson": "無効なJSON形式",
       "invalidSchema": "スキーマはオブジェクトである必要があります",
+      "mode": {
+        "disabled": "無効",
+        "dynamic": "動的スキーマ",
+        "predefined": "定義済みスキーマ"
+      },
+      "modeDescription": {
+        "disabled": "構造化出力なしの通常のチャットモード。エージェントは自然言語で応答します。",
+        "dynamic": "API呼び出し元は、各リクエストでoutput_schemaを提供する必要があります。これにより、リクエストごとに異なるスキーマが可能になります。",
+        "predefined": "上記で定義されたスキーマを使用します。すべての応答はこの構造に従います。"
+      },
       "schemaHint": "JSONスキーマ形式を使用してエージェント出力の構造を定義",
       "schemaLabel": "JSONスキーマ",
+      "schemaOptional": "オプション",
       "schemaPlaceholder": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"answer\": { \"type\": \"string\" }\n  },\n  \"required\": [\"answer\"]\n}",
       "title": "出力形式"
     },
@@ -263,6 +285,7 @@
       "debugPreview": "デバッグとプレビュー",
       "defaultVariable": "入力から自動入力",
       "draftModeResponse": "これはドラフトモードのシミュレーションです。エージェントを保存して実際の応答でテストしてください。",
+      "dynamicSchemaInfo": "このエージェントは動的スキーマモードです。各リクエストに対してエージェントの応答を構造化するためのJSONスキーマを提供してください。",
       "editVariable": "変数を編集",
       "enterValue": "値を入力",
       "estimatedCost": "Estimated Cost",
@@ -278,6 +301,8 @@
       "noVariables": "まだ変数が定義されていません",
       "openChat": "エージェントをテスト",
       "output": "Output",
+      "outputSchema": "出力スキーマ",
+      "outputSchemaRequired": "動적スキーマモードでは出力スキーマが必要です",
       "promptTokens": "Prompt Tokens",
       "queryPlaceholder": "メッセージを入力...",
       "querySuccess": "クエリが正常に送信されました",
@@ -329,7 +354,8 @@
       },
       "title": "ツールを設定: {{toolName}}",
       "valueLabel": "値"
-    }
+    },
+    "usage": "エージェントの使用状況"
   },
   "api": {
     "crawl": {
@@ -540,6 +566,7 @@
     "runId": "実行ID",
     "startConversation": "会話を開始",
     "streaming": "ストリーミング",
+    "structuredResponse": "構造化された応答",
     "thinking": "思考中",
     "todos": "タスク",
     "todosCompleted": "完了",
@@ -561,12 +588,10 @@
     "ago": "前",
     "allRightsReserved": "全著作権所有",
     "appName": "WaterCrawl",
-    "subtitle": "Webクローリングプラットフォーム",
     "back": "戻る",
     "backToHome": "Back to Home",
     "cancel": "キャンセル",
     "close": "閉じる",
-    "config": "設定",
     "configureModel": "モデルを設定",
     "confirmError": "Please enter the correct value to confirm deletion",
     "copiedToClipboard": "クリップボードにコピーしました！",
@@ -671,7 +696,6 @@
     "results": "結果",
     "save": "保存",
     "saved": "保存しました！",
-    "saving": "保存中...",
     "select": "選択",
     "selectAll": "すべて選択",
     "selectOption": "オプションを選択",
@@ -701,6 +725,7 @@
     },
     "soon": "近日公開",
     "submit": "送信",
+    "subtitle": "Webクローリングプラットフォーム",
     "success": "成功",
     "termsOfService": "利用規約",
     "theme": {
@@ -1552,6 +1577,8 @@
       "dimension": "エンベディング次元",
       "editCustomModel": "カスタムモデルを編集",
       "embeddingModels": "エンベディングモデル",
+      "export": "エクスポート",
+      "exportSuccess": "モデルが正常にエクスポートされました",
       "features": "機能",
       "featuresHelp": "カンマ区切りのモデル機能リスト",
       "featuresHint": "カンマ区切りの機能リスト",
@@ -1559,18 +1586,22 @@
       "label": "表示ラベル",
       "labelPlaceholder": "例：マイカスタムモデル",
       "llmModels": "LLMモデル",
+      "loadFromYaml": "YAMLから読み込む",
       "modelKey": "モデルキー",
       "modelKeyPlaceholder": "例：my-custom-model",
       "modelName": "モデル名",
       "noCustomModels": "カスタムモデルは定義されていません",
       "noModels": "利用可能なモデルがありません",
+      "noModelsToExport": "エクスポートするモデルがありません",
       "rerankerModels": "リランカーモデル",
       "status": "ステータス",
       "title": "モデル管理",
       "type": "タイプ",
       "typeEmbedding": "エンベディング",
       "typeLLM": "LLM",
-      "typeReranker": "リランカー"
+      "typeReranker": "リランカー",
+      "yamlLoaded": "YAMLファイルが正常に読み込まれました",
+      "yamlLoadError": "YAMLファイルの読み込みに失敗しました"
     },
     "provider": "プロバイダー",
     "subtitle": "LLMプロバイダー設定を管理します。",
@@ -1979,7 +2010,10 @@
         "error": "クエリの実行に失敗しました。",
         "helpText": "クエリを入力してナレッジベースで関連結果を検索します。",
         "json": "JSON",
+        "manageRetrievalSettings": "設定を管理",
+        "manageRetrievalSettingsHint": "編集ページで検索タイプや結果数などの検索設定を構成してください。",
         "noResults": "クエリを実行すると結果が表示されます。",
+        "noRetrievalSettings": "検索設定が構成されていません。",
         "options": {
           "title": "オプション",
           "topK": "結果の数",
@@ -1995,9 +2029,6 @@
         "resultsCount_other": "結果 ({{count}}件の{{unit}}が見つかりました)",
         "retrievalSetting": "検索設定",
         "retrievalSettingHelpText": "検索設定は、検索タイプ、結果数、その他のクエリパラメータを制御します。",
-        "noRetrievalSettings": "検索設定が構成されていません。",
-        "manageRetrievalSettings": "設定を管理",
-        "manageRetrievalSettingsHint": "編集ページで検索タイプや結果数などの検索設定を構成してください。",
         "runButton": "クエリを実行",
         "success": "クエリが成功しました！",
         "title": "クエリ",
@@ -2496,6 +2527,8 @@
     }
   },
   "subscription": {
+    "agentCallRateLimit": "エージェント呼び出しレート制限",
+    "agents": "エージェント",
     "dailyPagesCredit": "日次ページクレジット",
     "maxConcurrentCrawls": "最大同時クロール数",
     "maxDepth": "最大深度",

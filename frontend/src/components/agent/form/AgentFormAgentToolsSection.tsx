@@ -75,21 +75,22 @@ const AgentFormAgentToolsSection: React.FC<AgentFormAgentToolsSectionProps> = ({
           )
         }
       />
-      {draftAgentTools.length > 0 ? (
-        <div className="space-y-1">
-          {draftAgentTools.map((agentTool) => (
-            <ListItem
-              key={agentTool.uuid}
-              label={agentTool.name}
-              onConfigure={onConfigure ? () => onConfigure(agentTool) : undefined}
-              onDelete={() => onRemove(agentTool.uuid)}
-              configureTitle={t('common.config')}
-            />
-          ))}
-        </div>
-      ) : (
-        <EmptyState message={t('agents.form.noAgentTools')} />
-      )}
+      <div className="rounded-md border border-input-border bg-card p-3">
+        {draftAgentTools.length > 0 ? (
+          <div className="space-y-1">
+            {draftAgentTools.map((agentTool) => (
+              <ListItem
+                key={agentTool.uuid}
+                label={agentTool.name}
+                onConfigure={onConfigure ? () => onConfigure(agentTool) : undefined}
+                onDelete={() => onRemove(agentTool.uuid)}
+              />
+            ))}
+          </div>
+        ) : (
+          <EmptyState message={t('agents.form.noAgentTools')} />
+        )}
+      </div>
     </div>
   );
 };

@@ -319,7 +319,8 @@ const FileAttachment: React.FC<FileAttachmentProps> = ({
                 <button
                   type="button"
                   onClick={() => removeAttachment(attachment.id)}
-                  className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-destructive text-destructive-foreground flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                  disabled={disabled}
+                  className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-destructive text-destructive-foreground flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity disabled:opacity-0 disabled:cursor-not-allowed"
                   title={t('common.remove')}
                 >
                   <XMarkIcon className="h-3 w-3" />

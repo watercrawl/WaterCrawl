@@ -64,9 +64,15 @@
     "agentToolConfig": {
       "title": "Configura strumento agente"
     },
-    "deleteConfirmTitle": "Elimina agente",
+    "beta": "beta",
+    "betaNotice": {
+      "description": "La funzionalità Agenti è attualmente in beta. Potremmo introdurre cambiamenti, miglioramenti o modifiche alla funzionalità, alle strutture dati o agli endpoint API nei futuri aggiornamenti. Sebbene ci sforziamo di mantenere la compatibilità retroattiva, tieni presente che alcuni cambiamenti potrebbero influire sugli agenti esistenti o richiedere passaggi di migrazione.",
+      "feedback": "Apprezziamo il tuo feedback e i test durante questo periodo beta per aiutarci a migliorare la funzionalità.",
+      "title": "Funzionalità Beta"
+    },
     "confirmDelete": "Sei sicuro di voler eliminare {{name}}? Questa azione non può essere annullata.",
     "createNew": "Crea agente",
+    "deleteConfirmTitle": "Elimina agente",
     "deleteSuccess": "Agente eliminato con successo",
     "description": "Crea e gestisci agenti IA autonomi con strumenti e conoscenze personalizzati",
     "detail": {
@@ -151,12 +157,14 @@
       "modelHelp": "Scegli il modello specifico da utilizzare",
       "modelParameters": "Parametri del modello",
       "name": "Nome agente",
+      "nameLabel": "Nome",
       "namePlaceholder": "Inserisci il nome dell'agente",
       "nameRequired": "Il nome dell'agente è obbligatorio",
       "noAgentTools": "Nessuno strumento agente configurato. Aggiungi agenti per usarli come strumenti.",
       "noCustomHTTPTools": "Nessuno strumento HTTP personalizzato configurato",
       "noKnowledgeBase": "Nessuna base di conoscenza",
       "noKnowledgeBases": "Nessuna base di conoscenza collegata",
+      "noKnowledgeBasesConnected": "Nessuna base di conoscenza connesa",
       "noMCPTools": "Nessuno strumento MCP configurato",
       "noTools": "Nessuno strumento aggiunto ancora",
       "noVersions": "Nessuna cronologia versioni disponibile",
@@ -181,6 +189,7 @@
       "systemPrompt": "Prompt di sistema",
       "systemPromptHelp": "Definisci il comportamento e la personalità dell'agente",
       "systemPromptHint": "Usa {{VARIABLE_NAME}} per inserire variabili di contesto. Le variabili vengono rilevate automaticamente.",
+      "systemPromptLabel": "Prompt di sistema",
       "systemPromptPlaceholder": "Sei un assistente IA utile...",
       "systemPromptRequired": "Il prompt di sistema è obbligatorio",
       "tabs": {
@@ -216,13 +225,26 @@
       "versionHistory": "Cronologia Versioni"
     },
     "jsonOutput": {
+      "clearSchema": "Cancella",
+      "currentMode": "Modalità attuale",
       "enableDescription": "Forza le risposte dell'agente a seguire uno schema JSON specifico",
       "enableLabel": "Output JSON strutturato",
       "insertExample": "Inserisci esempio",
       "invalidJson": "Formato JSON non valido",
       "invalidSchema": "Lo schema deve essere un oggetto",
+      "mode": {
+        "disabled": "Disabilitato",
+        "dynamic": "Schema dinamico",
+        "predefined": "Schema predefinito"
+      },
+      "modeDescription": {
+        "disabled": "Modalità chat normale senza output strutturato. L'agente risponderà in linguaggio naturale.",
+        "dynamic": "I chiamanti API devono fornire output_schema in ogni richiesta. Ciò consente schemi diversi per richiesta.",
+        "predefined": "Utilizzo dello schema definito sopra. Tutte le risposte seguiranno questa struttura."
+      },
       "schemaHint": "Definisci la struttura dell'output dell'agente usando il formato schema JSON",
       "schemaLabel": "Schema JSON",
+      "schemaOptional": "opzionale",
       "schemaPlaceholder": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"answer\": { \"type\": \"string\" }\n  },\n  \"required\": [\"answer\"]\n}",
       "title": "Formato output"
     },
@@ -263,6 +285,7 @@
       "debugPreview": "Debug e Anteprima",
       "defaultVariable": "Compilato automaticamente dall'input",
       "draftModeResponse": "Questa è una simulazione in modalità bozza. Salva il tuo agente per testare con risposte reali.",
+      "dynamicSchemaInfo": "Questo agente è in modalità schema dinamico. Fornisci uno schema JSON per strutturare la risposta dell'agente per ogni richiesta.",
       "editVariable": "Modifica Variabile",
       "enterValue": "Inserisci valore",
       "estimatedCost": "Estimated Cost",
@@ -278,6 +301,8 @@
       "noVariables": "Nessuna variabile definita ancora",
       "openChat": "Testa Agente",
       "output": "Output",
+      "outputSchema": "Schema di output",
+      "outputSchemaRequired": "Lo schema di output è richiesto in modalità schema dinamico",
       "promptTokens": "Prompt Tokens",
       "queryPlaceholder": "Digita il tuo messaggio...",
       "querySuccess": "Query inviata con successo",
@@ -329,7 +354,8 @@
       },
       "title": "Configura strumento: {{toolName}}",
       "valueLabel": "Valore"
-    }
+    },
+    "usage": "Utilizzo agente"
   },
   "api": {
     "crawl": {
@@ -540,6 +566,7 @@
     "runId": "ID di esecuzione",
     "startConversation": "Inizia una conversazione",
     "streaming": "Streaming",
+    "structuredResponse": "Risposta strutturata",
     "thinking": "Pensando",
     "todos": "Attività",
     "todosCompleted": "completato",
@@ -561,12 +588,10 @@
     "ago": "fa",
     "allRightsReserved": "Tutti i diritti riservati",
     "appName": "WaterCrawl",
-    "subtitle": "Piattaforma di Web Crawling",
     "back": "Indietro",
     "backToHome": "Back to Home",
     "cancel": "Annulla",
     "close": "Chiudi",
-    "config": "Configurazione",
     "configureModel": "Configura modello",
     "confirmError": "Please enter the correct value to confirm deletion",
     "copiedToClipboard": "Copiato negli appunti!",
@@ -671,7 +696,6 @@
     "results": "Risultati",
     "save": "Salva",
     "saved": "Salvato!",
-    "saving": "Salvataggio...",
     "select": "Seleziona",
     "selectAll": "Seleziona tutto",
     "selectOption": "Seleziona un'opzione",
@@ -701,6 +725,7 @@
     },
     "soon": "Prossimamente",
     "submit": "Invia",
+    "subtitle": "Piattaforma di Web Crawling",
     "success": "Successo",
     "termsOfService": "Termini di Servizio",
     "theme": {
@@ -1552,6 +1577,8 @@
       "dimension": "Dimensione embedding",
       "editCustomModel": "Modifica modello personalizzato",
       "embeddingModels": "Modelli embedding",
+      "export": "Esporta",
+      "exportSuccess": "Modelli esportati con successo",
       "features": "Funzionalità",
       "featuresHelp": "Lista di funzionalità del modello separate da virgola",
       "featuresHint": "Lista di funzionalità separate da virgola",
@@ -1559,18 +1586,22 @@
       "label": "Etichetta visualizzazione",
       "labelPlaceholder": "es., Il mio modello personalizzato",
       "llmModels": "Modelli LLM",
+      "loadFromYaml": "Carica da YAML",
       "modelKey": "Chiave modello",
       "modelKeyPlaceholder": "es., mio-modello-personalizzato",
       "modelName": "Nome modello",
       "noCustomModels": "Nessun modello personalizzato definito",
       "noModels": "Nessun modello disponibile",
+      "noModelsToExport": "Nessun modello da esportare",
       "rerankerModels": "Modelli reranker",
       "status": "Stato",
       "title": "Gestione modelli",
       "type": "Tipo",
       "typeEmbedding": "Embedding",
       "typeLLM": "LLM",
-      "typeReranker": "Reranker"
+      "typeReranker": "Reranker",
+      "yamlLoaded": "File YAML caricato con successo",
+      "yamlLoadError": "Errore nel caricamento del file YAML"
     },
     "provider": "Provider",
     "subtitle": "Gestisci le tue configurazioni provider",
@@ -1979,7 +2010,10 @@
         "error": "Impossibile eseguire la query.",
         "helpText": "Inserisci la tua query per cercare risultati rilevanti nella base di conoscenza.",
         "json": "JSON",
+        "manageRetrievalSettings": "Gestisci Impostazioni",
+        "manageRetrievalSettingsHint": "Configura le impostazioni di recupero come il tipo di ricerca e il numero di risultati nella pagina di modifica.",
         "noResults": "Esegui una query per vedere i risultati qui.",
+        "noRetrievalSettings": "Nessuna impostazione di recupero configurata.",
         "options": {
           "title": "Opzioni",
           "topK": "Numero di Risultati",
@@ -1995,9 +2029,6 @@
         "resultsCount_other": "Risultati ({{count}} {{unit}} trovati)",
         "retrievalSetting": "Impostazione di recupero",
         "retrievalSettingHelpText": "L'impostazione di recupero controlla il tipo di ricerca, il numero di risultati e altri parametri di query.",
-        "noRetrievalSettings": "Nessuna impostazione di recupero configurata.",
-        "manageRetrievalSettings": "Gestisci Impostazioni",
-        "manageRetrievalSettingsHint": "Configura le impostazioni di recupero come il tipo di ricerca e il numero di risultati nella pagina di modifica.",
         "runButton": "Esegui Query",
         "success": "Query eseguita con successo!",
         "title": "Query",
@@ -2496,6 +2527,8 @@
     }
   },
   "subscription": {
+    "agentCallRateLimit": "Limite di frequenza chiamate agente",
+    "agents": "Agenti",
     "dailyPagesCredit": "Credito pagine giornaliero",
     "maxConcurrentCrawls": "Crawl simultanei massimi",
     "maxDepth": "Profondità massima",

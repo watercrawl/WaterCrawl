@@ -34,6 +34,11 @@ class PlanSerializer(serializers.ModelSerializer):
             "crawl_max_depth",
             "crawl_max_limit",
             "max_concurrent_crawl",
+            "number_of_knowledge_bases",
+            "number_of_agents",
+            "number_of_each_knowledge_base_documents",
+            "knowledge_base_retrival_rate_limit",
+            "agent_rate_limit",
             "is_default",
             "features",
         ]
@@ -89,8 +94,10 @@ class TeamPlanSerializer(serializers.Serializer):
     max_depth = serializers.IntegerField()
     max_concurrent_crawl = serializers.IntegerField()
     number_of_knowledge_bases = serializers.IntegerField()
+    number_of_agents = serializers.IntegerField()
     number_of_each_knowledge_base_documents = serializers.IntegerField()
     knowledge_base_retrival_rate_limit = serializers.CharField()
+    agent_rate_limit = serializers.CharField()
     start_at = serializers.DateTimeField()
     current_period_start_at = serializers.DateTimeField()
     current_period_end_at = serializers.DateTimeField()

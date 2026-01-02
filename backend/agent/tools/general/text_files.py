@@ -85,10 +85,8 @@ class PlainTextFileTool(BaseBuiltinTool):
                 status="error",
             )
 
-        print("File content bytes", file_content_bytes)
         # Assuming self.save_file handles the file storage and returns a URL
         url = await self.save_file(final_file_name, file_content_bytes)
-        print("URL", url)
 
         if not url:
             return ToolMessage(

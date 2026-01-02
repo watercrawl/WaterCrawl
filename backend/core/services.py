@@ -281,9 +281,9 @@ class SearchHelpers(BaseHelpers):
     @property
     def time_range(self):
         value = self.search_request.search_options.get(
-            "time_renge", consts.SEARCH_TIME_RENGE_ANY
+            "time_range", consts.SEARCH_TIME_RANGE_ANY
         )
-        if value == consts.SEARCH_TIME_RENGE_ANY:
+        if value == consts.SEARCH_TIME_RANGE_ANY:
             return None
         return value
 
@@ -945,6 +945,22 @@ class SearchService:
     def make_with_pk(cls, search_request_uuid):
         return cls(SearchRequest.objects.get(uuid=search_request_uuid))
 
+    @classmethod
+    def make_with_query(
+        cls,
+        team: Team,
+        query: str,
+        result_limit: int = 5,
+        search_options: Optional[dict] = None,
+    ):
+        search_request = SearchRequest.objects.create(
+            team=team,
+            query=query,
+            result_limit=result_limit,
+            search_options=search_options or {},
+        )
+        return cls(search_request)
+
     def run(self):
         self.search_request.status = consts.CRAWL_STATUS_RUNNING
         self.search_request.save(update_fields=["status"])
@@ -1259,6 +1275,20 @@ class SitemapRequestService:
     def make_with_pk(cls, pk):
         return cls(SitemapRequest.objects.get(pk=pk))
 
+    @classmethod
+    def make_with_url(
+        cls,
+        team: Team,
+        url: str,
+        options: Optional[dict] = None,
+    ):
+        sitemap_request = SitemapRequest.objects.create(
+            team=team,
+            url=url,
+            options=options or {},
+        )
+        return cls(sitemap_request)
+
     def run(self):
         self.sitemap.status = consts.CRAWL_STATUS_RUNNING
         self.sitemap.save(update_fields=["status"])
@@ -1273,8 +1303,7 @@ class SitemapRequestService:
         ]
         try:
             subprocess.run(params, check=True)
-        except subprocess.CalledProcessError as e:
-            print(e)
+        except subprocess.CalledProcessError:
             self.sitemap.duration = timezone.now() - self.sitemap.created_at
             self.sitemap.status = consts.CRAWL_STATUS_FAILED
             self.sitemap.save(update_fields=["status", "duration"])
