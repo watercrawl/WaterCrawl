@@ -548,7 +548,10 @@
     "upgradePlan": "ترقية الخطة"
   },
   "common": {
-    "creating": "جارٍ الإنشاء",
+    "expand": "توسيع",
+    "editor": "المحرر",
+    "done": "تم",
+    "creating": "جاري الإنشاء",
     "version": "الإصدار",
     "actions": "الإجراءات",
     "ago": "منذ",
@@ -595,6 +598,8 @@
     "options": "خيارات",
     "cancel": "إلغاء",
     "close": "إغلاق",
+    "copy": "نسخ",
+    "copied": "تم النسخ!",
     "confirmError": "Please enter the correct value to confirm deletion",
     "select": "اختيار",
     "selectAll": "تحديد الكل",
