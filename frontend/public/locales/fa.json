@@ -548,6 +548,9 @@
     "upgradePlan": "ارتقاء پلن"
   },
   "common": {
+    "expand": "بزرگ‌نمایی",
+    "editor": "ویرایشگر",
+    "done": "انجام شد",
     "creating": "در حال ایجاد",
     "version": "نسخه",
     "actions": "عملیات",
@@ -595,6 +598,8 @@
     "options": "گزینه‌ها",
     "cancel": "لغو",
     "close": "بستن",
+    "copy": "کپی",
+    "copied": "کپی شد!",
     "confirmError": "Please enter the correct value to confirm deletion",
     "select": "انتخاب",
     "selectAll": "انتخاب همه",
