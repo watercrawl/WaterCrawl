@@ -216,7 +216,7 @@ export const ProviderConfigForm: React.FC<ProviderConfigFormProps> = ({
             type="button"
             onClick={handleTest}
             disabled={loading || testing || !hasChangesToTest}
-            variant="secondary"
+            variant="outline"
           >
             {testing
               ? t('settings.providerConfig.form.testing')

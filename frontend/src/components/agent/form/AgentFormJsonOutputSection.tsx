@@ -9,6 +9,7 @@ import {
 } from '@heroicons/react/24/outline';
 
 import SectionHeader from '../SectionHeader';
+import { Switch } from '../../shared/Switch';
 
 interface AgentFormJsonOutputSectionProps {
   jsonOutput: boolean;
@@ -120,28 +121,15 @@ const AgentFormJsonOutputSection: React.FC<AgentFormJsonOutputSectionProps> = ({
                 <ChevronRightIcon className="h-4 w-4 text-muted-foreground" />
               )}
             </button>
-            <div>
-              <h3 className="text-sm font-medium text-foreground">
-                {t('agents.jsonOutput.enableLabel')}
-              </h3>
-              <p className="text-xs text-muted-foreground">
-                {t('agents.jsonOutput.enableDescription')}
-              </p>
+            <div className="flex-1">
+              <Switch
+                label={t('agents.jsonOutput.enableLabel')}
+                description={t('agents.jsonOutput.enableDescription')}
+                checked={jsonOutput}
+                onChange={handleToggle}
+              />
             </div>
           </div>
-          <button
-            type="button"
-            onClick={handleToggle}
-            className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
-              jsonOutput ? 'bg-primary' : 'bg-muted'
-            }`}
-          >
-            <span
-              className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
-                jsonOutput ? 'translate-x-5' : 'translate-x-0'
-              }`}
-            />
-          </button>
         </div>
 
         {/* Expanded Content */}
