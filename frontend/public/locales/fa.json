@@ -63,6 +63,12 @@
   "agents": {
     "title": "دستیارها",
     "description": "ایجاد و مدیریت دستیارهای هوش مصنوعی مستقل با ابزارها و دانش سفارشی",
+    "beta": "beta",
+    "betaNotice": {
+      "description": "ویژگی دستیارها در حال حاضر در مرحله آزمایشی (beta) است. ما ممکن است در به‌روزرسانی‌های آینده تغییرات، بهبودها یا اصلاحاتی در عملکرد، ساختار داده‌ها یا نقاط پایانی API ایجاد کنیم. اگرچه ما برای حفظ سازگاری با نسخه‌های قبلی تلاش می‌کنیم، لطفاً توجه داشته باشید که برخی از تغییرات ممکن است بر دستیارهای موجود تأثیر بگذارد یا نیاز به مراحل مهاجرت داشته باشد.",
+      "feedback": "ما از بازخورد و تست شما در طول این دوره آزمایشی برای کمک به بهبود این ویژگی قدردانی می‌کنیم.",
+      "title": "ویژگی آزمایشی"
+    },
     "createNew": "ایجاد دستیار",
     "searchPlaceholder": "جستجوی دستیارها...",
     "noAgents": "هنوز دستیاری وجود ندارد. اولین دستیار خود را ایجاد کنید تا شروع کنید.",
@@ -90,6 +96,7 @@
       "archived": "بایگانی شده",
       "testing": "در حال آزمایش"
     },
+    "usage": "میزان استفاده دستیار",
     "details": {
       "tools": "ابزارهای فعال",
       "toolsActive": "{{count}} مجموع",
@@ -119,7 +126,9 @@
         "tools": "ابزارها و دانش"
       },
       "name": "نام دستیار",
+      "nameLabel": "نام",
       "namePlaceholder": "نام نماینده را وارد کنید",
+      "systemPromptLabel": "دستور سیستم",
       "description": "توضیحات",
       "descriptionPlaceholder": "توضیح دهید این دستیار چه کاری انجام می‌دهد",
       "status": "وضعیت",
@@ -197,6 +206,7 @@
       "enabled": "فعال",
       "addTool": "+ افزودن ابزار",
       "noTools": "هنوز ابزاری اضافه نشده است",
+      "noKnowledgeBasesConnected": "هیچ پایگاه دانشی متصل نشده است",
       "configureTool": "پیکربندی ابزار",
       "configSaved": "پیکربندی با موفقیت ذخیره شد",
       "toolsNote": "ابزارها را می‌توان به صورت سراسری در منوی ابزارها مدیریت کرد",
@@ -248,11 +258,24 @@
       "enableLabel": "خروجی JSON ساختاریافته",
       "enableDescription": "مجبور کردن پاسخ‌های دستیار به پیروی از یک طرح JSON خاص",
       "schemaLabel": "طرح JSON",
+      "schemaOptional": "اختیاری",
       "schemaPlaceholder": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"answer\": { \"type\": \"string\" }\n  },\n  \"required\": [\"answer\"]\n}",
       "schemaHint": "ساختار خروجی دستیار را با استفاده از فرمت طرح JSON تعریف کنید",
       "insertExample": "درج مثال",
+      "clearSchema": "پاک کردن",
       "invalidJson": "فرمت JSON نامعتبر",
-      "invalidSchema": "طرح باید یک شیء باشد"
+      "invalidSchema": "طرح باید یک شیء باشد",
+      "currentMode": "حالت فعلی",
+      "mode": {
+        "disabled": "غیرفعال",
+        "dynamic": "طرح پویا",
+        "predefined": "طرح از پیش تعریف شده"
+      },
+      "modeDescription": {
+        "disabled": "حالت گفتگوی عادی بدون خروجی ساختاریافته. دستیار به زبان طبیعی پاسخ خواهد داد.",
+        "dynamic": "فراخوانندگان API باید در هر درخواست output_schema را ارائه دهند. این اجازه می‌دهد تا طرح‌های مختلف برای هر درخواست وجود داشته باشد.",
+        "predefined": "استفاده از طرح تعریف شده در بالا. تمام پاسخ‌ها از این ساختار پیروی خواهند کرد."
+      }
     },
     "kbConfig": {
       "retrievalSettingHint": "انتخاب کنید که هنگام پرس و جو از این پایگاه دانش از کدام تنظیمات بازیابی استفاده شود. اگر هیچکدام انتخاب نشود، تنظیمات پیش‌فرض استفاده می‌شود."
@@ -270,6 +293,9 @@
       "queryPlaceholder": "پیام خود را تایپ کنید...",
       "querySuccess": "پرس‌وجو با موفقیت ارسال شد",
       "contextVariables": "متغیرهای زمینه",
+      "outputSchema": "طرح خروجی",
+      "outputSchemaRequired": "ارائه طرح خروجی در حالت طرح پویا الزامی است",
+      "dynamicSchemaInfo": "این دستیار در حالت طرح پویا است. یک طرح JSON برای ساختاردهی به پاسخ دستیار برای هر درخواست ارائه دهید.",
       "variableRequired": "هم کلید و هم مقدار الزامی است",
       "variableKeyRequired": "کلید متغیر الزامی است",
       "variableDuplicate": "متغیری با این کلید از قبل وجود دارد",
@@ -640,8 +666,6 @@
     "recommended": "توصیه شده",
     "save": "ذخیره",
     "saved": "ذخیره شد!",
-    "saving": "در حال ذخیره...",
-    "config": "پیکربندی",
     "soon": "به زودی",
     "send": "ارسال",
     "resetPassword": {
@@ -833,7 +857,7 @@
       "createKnowledgeBase": "ایجاد پایگاه دانش",
       "delete": "حذف",
       "edit": "ویرایش",
-      "export": "اکسپورت",
+      "export": "خروجی گرفتن",
       "generateSitemap": "تولید نقشه سایت",
       "home": "خانه",
       "next": "بعدی",
@@ -1482,12 +1506,12 @@
       "customUpdated": "مدل سفارشی با موفقیت به‌روزرسانی شد",
       "customDeleted": "مدل سفارشی با موفقیت حذف شد",
       "confirmDelete": "آیا مطمئن هستید که می‌خواهید این مدل سفارشی را حذف کنید؟",
-      "export": "Export",
-      "exportSuccess": "Models exported successfully",
-      "noModelsToExport": "No models to export",
-      "loadFromYaml": "Load from YAML",
-      "yamlLoaded": "YAML file loaded successfully",
-      "yamlLoadError": "Failed to load YAML file",
+      "export": "خروجی گرفتن",
+      "exportSuccess": "مدل‌ها با موفقیت صادر شدند",
+      "noModelsToExport": "مدلی برای خروجی گرفتن وجود ندارد",
+      "loadFromYaml": "بارگذاری از YAML",
+      "yamlLoaded": "فایل YAML با موفقیت بارگذاری شد",
+      "yamlLoadError": "بارگذاری فایل YAML ناموفق بود",
       "modelKey": "کلید مدل",
       "modelKeyPlaceholder": "مثال: my-custom-model",
       "label": "برچسب نمایش",
@@ -2384,6 +2408,8 @@
     "dailyPagesCredit": "اعتبار صفحات روزانه",
     "maxConcurrentCrawls": "حداکثر خزش‌های همزمان",
     "maxDepth": "حداکثر عمق",
+    "agents": "دستیارها",
+    "agentCallRateLimit": "محدودیت نرخ فراخوانی دستیار",
     "prompt": {
       "description": "برای دسترسی به ویژگی‌های بیشتر و افزایش محدودیت‌های خود ارتقا دهید",
       "title": "ارتقای پلن خود",
@@ -2762,7 +2788,8 @@
     "uploadFailed": "آپلود ناموفق بود",
     "imageLoadError": "بارگذاری تصویر ناموفق بود",
     "clickToView": "برای مشاهده کلیک کنید",
-    "downloadFile": "دانلود فایل"
+    "downloadFile": "دانلود فایل",
+    "structuredResponse": "پاسخ ساختاریافته"
   },
   "mediaLibrary": {
     "title": "کتابخانه رسانه",
