@@ -63,6 +63,12 @@
   "agents": {
     "title": "الوكلاء",
     "description": "إنشاء وإدارة وكلاء الذكاء الاصطناعي المستقلين مع أدوات ومعارف مخصصة",
+    "beta": "تجريبي",
+    "betaNotice": {
+      "description": "ميزة الوكلاء قيد التجربة حاليًا (Beta). قد نقدم تغييرات أو تحسينات أو تعديلات على الوظائف أو هياكل البيانات أو نقاط نهاية API في التحديثات المستقبلية. بينما نسعى للحفاظ على التوافق مع الإصدارات السابقة، يرجى العلم أن بعض التغييرات قد تؤثر على الوكلاء الموجودين أو تتطلب خطوات ترحيل.",
+      "feedback": "نقدر ملاحظاتك واختبارك خلال فترة التجربة لمساعدتنا في تحسين الميزة.",
+      "title": "ميزة تجريبية"
+    },
     "createNew": "إنشاء وكيل",
     "searchPlaceholder": "البحث عن وكلاء...",
     "noAgents": "لا يوجد وكلاء بعد. أنشئ وكيلك الأول للبدء.",
@@ -90,6 +96,7 @@
       "archived": "مؤرشف",
       "testing": "قيد الاختبار"
     },
+    "usage": "استخدام الوكيل",
     "details": {
       "tools": "الأدوات النشطة",
       "toolsActive": "{{count}} إجمالي",
@@ -119,7 +126,9 @@
         "tools": "الأدوات والمعرفة"
       },
       "name": "اسم الوكيل",
+      "nameLabel": "الاسم",
       "namePlaceholder": "أدخل اسم الوكيل",
+      "systemPromptLabel": "موجه النظام",
       "description": "الوصف",
       "descriptionPlaceholder": "صف ما يفعله هذا الوكيل",
       "status": "الحالة",
@@ -197,6 +206,7 @@
       "enabled": "مُفعّل",
       "addTool": "+ إضافة أداة",
       "noTools": "لم تتم إضافة أدوات بعد",
+      "noKnowledgeBasesConnected": "لم يتم توصيل أي قواعد معرفة",
       "configureTool": "تكوين الأداة",
       "configSaved": "تم حفظ التكوين بنجاح",
       "toolsNote": "يمكن إدارة الأدوات عالمياً في قائمة الأدوات",
@@ -248,11 +258,24 @@
       "enableLabel": "إخراج JSON منظم",
       "enableDescription": "إجبار استجابات الوكيل على اتباع مخطط JSON محدد",
       "schemaLabel": "مخطط JSON",
+      "schemaOptional": "اختياري",
       "schemaPlaceholder": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"answer\": { \"type\": \"string\" }\n  },\n  \"required\": [\"answer\"]\n}",
       "schemaHint": "حدد بنية إخراج الوكيل باستخدام تنسيق مخطط JSON",
       "insertExample": "إدراج مثال",
+      "clearSchema": "مسح",
       "invalidJson": "تنسيق JSON غير صالح",
-      "invalidSchema": "يجب أن يكون المخطط كائناً"
+      "invalidSchema": "يجب أن يكون المخطط كائناً",
+      "currentMode": "الوضع الحالي",
+      "mode": {
+        "disabled": "معطل",
+        "dynamic": "مخطط ديناميكي",
+        "predefined": "مخطط محدد مسبقاً"
+      },
+      "modeDescription": {
+        "disabled": "وضع الدردشة العادي بدون مخرجات منظمة. سيستجيب الوكيل بلغة طبيعية.",
+        "dynamic": "يجب على المتصلين بواجهة برمجة التطبيقات توفير output_schema في كل طلب. هذا يسمح بمخططات مختلفة لكل طلب.",
+        "predefined": "باستخدام المخطط المحدد أعلاه. ستتبع جميع الاستجابات هذا الهيكل."
+      }
     },
     "kbConfig": {
       "retrievalSettingHint": "حدد إعداد الاسترجاع الذي سيتم استخدامه عند الاستعلام عن قاعدة المعرفة هذه. سيتم استخدام الإعداد الافتراضي إذا لم يتم تحديد أي منها."
@@ -270,6 +293,9 @@
       "queryPlaceholder": "اكتب رسالتك...",
       "querySuccess": "تم إرسال الاستعلام بنجاح",
       "contextVariables": "متغيرات السياق",
+      "outputSchema": "مخطط المخرجات",
+      "outputSchemaRequired": "مخطط المخرجات مطلوب في وضع المخطط الديناميكي",
+      "dynamicSchemaInfo": "هذا الوكيل في وضع المخطط الديناميكي. قدم مخطط JSON لهيكلة استجابة الوكيل لكل طلب.",
       "variableRequired": "كل من المفتاح والقيمة مطلوبان",
       "variableKeyRequired": "مفتاح المتغير مطلوب",
       "variableDuplicate": "متغير بهذا المفتاح موجود بالفعل",
@@ -640,8 +666,6 @@
     "recommended": "موصى به",
     "save": "حفظ",
     "saved": "تم الحفظ!",
-    "saving": "جارٍ الحفظ...",
-    "config": "التكوين",
     "soon": "قريباً",
     "send": "إرسال",
     "resetPassword": {
@@ -1482,12 +1506,12 @@
       "customUpdated": "تم تحديث النموذج المخصص بنجاح",
       "customDeleted": "تم حذف النموذج المخصص بنجاح",
       "confirmDelete": "هل أنت متأكد من رغبتك في حذف هذا النموذج المخصص؟",
-      "export": "Export",
-      "exportSuccess": "Models exported successfully",
-      "noModelsToExport": "No models to export",
-      "loadFromYaml": "Load from YAML",
-      "yamlLoaded": "YAML file loaded successfully",
-      "yamlLoadError": "Failed to load YAML file",
+      "export": "تصدير",
+      "exportSuccess": "تم تصدير النماذج بنجاح",
+      "noModelsToExport": "لا توجد نماذج للتصدير",
+      "loadFromYaml": "تحميل من YAML",
+      "yamlLoaded": "تم تحميل ملف YAML بنجاح",
+      "yamlLoadError": "فشل تحميل ملف YAML",
       "modelKey": "مفتاح النموذج",
       "modelKeyPlaceholder": "مثال: my-custom-model",
       "label": "تسمية العرض",
@@ -2384,6 +2408,8 @@
     "dailyPagesCredit": "رصيد الصفحات اليومي",
     "maxConcurrentCrawls": "الحد الأقصى للزحف المتزامن",
     "maxDepth": "العمق الأقصى",
+    "agents": "الوكلاء",
+    "agentCallRateLimit": "حد معدل استدعاء الوكيل",
     "prompt": {
       "description": "قم بالترقية للوصول إلى مزيد من الميزات وزيادة حدودك",
       "title": "قم بترقية خطتك",
@@ -2762,7 +2788,8 @@
     "uploadFailed": "فشل الرفع",
     "imageLoadError": "فشل تحميل الصورة",
     "clickToView": "انقر للعرض",
-    "downloadFile": "تنزيل الملف"
+    "downloadFile": "تنزيل الملف",
+    "structuredResponse": "استجابة منظمة"
   },
   "mediaLibrary": {
     "title": "مكتبة الوسائط",
