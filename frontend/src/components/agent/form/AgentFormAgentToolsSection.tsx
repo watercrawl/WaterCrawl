@@ -4,12 +4,13 @@ import { useTranslation } from 'react-i18next';
 
 import { PlusIcon } from '@heroicons/react/24/outline';
 
-import { agentApi } from '../../../services/api/agent';
-import Modal from '../../shared/Modal';
 import EmptyState from '../EmptyState';
 import ListItem from '../ListItem';
 import SectionHeader from '../SectionHeader';
 import UniversalSelector from '../UniversalSelector';
+
+import { agentApi } from '../../../services/api/agent';
+import Modal from '../../shared/Modal';
 
 import type { Agent, AgentAsTool } from '../../../types/agent';
 

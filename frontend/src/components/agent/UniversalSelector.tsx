@@ -1,8 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
+
 import { useTranslation } from 'react-i18next';
+
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import { Pagination } from '../shared/Pagination';
+
 import Loading from '../shared/Loading';
+import { Pagination } from '../shared/Pagination';
+
 import EmptyState from './EmptyState';
 
 interface SelectionItem {
