@@ -153,7 +153,7 @@ class MCPHelper:
             else:
                 self.query_params[parameter.name] = decrypt_key(parameter.value)
 
-        print(self.path_params, self.query_params, self.headers)
+        # debug print removed
 
     def make_storage(self) -> MCPTokenStorageHelper:
         return MCPTokenStorageHelper(self.mcp_server)
