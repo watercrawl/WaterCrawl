@@ -890,18 +890,20 @@ const ChatBox: React.FC<ChatBoxProps> = ({
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className={`flex items-end gap-2 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
+        <form onSubmit={handleSubmit} className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
           {/* File attachment button */}
           {enableFileAttachments && attachments.length === 0 && (
-            <FileAttachment
-              attachments={attachments}
-              onAttachmentsChange={setAttachments}
-              disabled={disabled || isProcessing}
-              maxFiles={maxFileAttachments}
-            />
+            <div className="flex-shrink-0 flex items-center justify-center h-11 w-11">
+              <FileAttachment
+                attachments={attachments}
+                onAttachmentsChange={setAttachments}
+                disabled={disabled || isProcessing}
+                maxFiles={maxFileAttachments}
+              />
+            </div>
           )}
 
-          <div className="flex-1 relative">
+          <div className="flex-1 relative flex items-center">
             <textarea
               ref={textareaRef}
               value={inputValue}
@@ -912,7 +914,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({
               disabled={disabled}
               rows={1}
               dir={detectTextDirection(inputValue) || (isRTL ? 'rtl' : 'ltr')}
-              className={`w-full resize-none rounded-xl border border-input bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed max-h-32 overflow-y-auto transition-all ${
+              className={`w-full resize-none rounded-xl border border-input bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed max-h-32 overflow-y-auto transition-all ${
                 isProcessing ? 'bg-muted/50 cursor-not-allowed' : ''
               }`}
               style={{ minHeight: '44px' }}

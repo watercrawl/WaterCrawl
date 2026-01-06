@@ -14,7 +14,7 @@ from langchain.agents import create_agent
 from langchain.agents.structured_output import ToolStrategy
 from langchain_core.language_models import BaseChatModel
 from langchain_core.messages import ToolMessage
-from langchain_core.runnables import Runnable
+from langchain_core.runnables import Runnable, RunnableConfig
 from langchain_core.tools import Tool, StructuredTool
 from langchain_ollama import ChatOllama
 
@@ -114,10 +114,8 @@ class AgentFactory:
                 else:
                     agent_kwargs["response_format"] = response_schema
 
-        if sub_agent:
-            agent_kwargs["name"] = f"{agent_version.uuid.hex}_sub_agent"
-
-        return create_agent(**agent_kwargs)
+        tags = ["main_agent"] if not sub_agent else ["sub_agent"]
+        return create_agent(**agent_kwargs).with_config(RunnableConfig(tags=tags))
 
     @classmethod
     def _prepare_response_schema(

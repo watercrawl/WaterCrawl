@@ -11,6 +11,7 @@
  * Commands:
  *   sync          Sync all language files with en.json (add missing keys, remove extra keys)
  *   find-empty    Find empty values in language files and show JSON path and line number
+ *   remove-dupes  Remove duplicate keys from language files (keeps first occurrence)
  *   validate      Validate structure of all language files against en.json
  *   stats         Show statistics about translation coverage
  *
@@ -389,6 +390,55 @@ function validateStructure() {
   }
 }
 
+function removeDuplicates() {
+  console.log('🔄 Removing duplicate keys from translation files...\n');
+  console.log('   This will load and re-save each JSON file, which automatically');
+  console.log('   removes any duplicate keys (keeping the last occurrence).\n');
+
+  const langs = options.lang ? [options.lang] : [...SUPPORTED_LANGS, SOURCE_LANG];
+  let filesFixed = 0;
+
+  for (const lang of langs) {
+    const targetFile = path.join(LOCALES_DIR, `${lang}.json`);
+    if (!fs.existsSync(targetFile)) {
+      console.log(`⚠️  ${lang}.json does not exist, skipping`);
+      continue;
+    }
+
+    try {
+      // Read the file content
+      const content = fs.readFileSync(targetFile, 'utf8');
+      
+      // Parse JSON (this automatically handles duplicates - keeps last value)
+      const json = JSON.parse(content);
+      
+      // Sort keys and stringify
+      const sortedJson = sortObjectKeys(json);
+      const newContent = JSON.stringify(sortedJson, null, 2) + '\n';
+      
+      // Check if content changed
+      if (content !== newContent) {
+        if (!options.dryRun) {
+          fs.writeFileSync(targetFile, newContent, 'utf8');
+          console.log(`✅ ${lang}.json - Fixed and saved`);
+        } else {
+          console.log(`⚠️  ${lang}.json - Would be fixed (dry run)`);
+        }
+        filesFixed++;
+      } else {
+        console.log(`✅ ${lang}.json - No changes needed`);
+      }
+    } catch (error) {
+      console.error(`❌ ${lang}.json - Error: ${error.message}`);
+    }
+  }
+
+  console.log(`\n📊 Summary: ${filesFixed} file(s) ${options.dryRun ? 'would be ' : ''}fixed`);
+  if (options.dryRun && filesFixed > 0) {
+    console.log(`\n   (Dry run mode - no files were modified)`);
+  }
+}
+
 function showStats() {
   console.log('📊 Translation Statistics\n');
 
@@ -456,6 +506,11 @@ Commands:
   find-empty    Find empty values in language files
                 - Shows JSON path and line number for each empty value
 
+  remove-dupes  Remove duplicate keys from language files
+                - Loads and re-saves each JSON file
+                - Automatically removes duplicate keys
+                - Sorts keys alphabetically
+
   validate      Validate structure of all language files
                 - Reports missing and extra keys
                 - Returns exit code 1 if there are issues
@@ -477,6 +532,8 @@ Examples:
   node scripts/sync-translations.js sync --dry-run
   node scripts/sync-translations.js find-empty
   node scripts/sync-translations.js find-empty --lang=fr
+  node scripts/sync-translations.js remove-dupes
+  node scripts/sync-translations.js remove-dupes --lang=zh
   node scripts/sync-translations.js validate
   node scripts/sync-translations.js stats
 `);
@@ -489,6 +546,10 @@ switch (command) {
     break;
   case 'find-empty':
     findEmptyValues();
+    break;
+  case 'remove-dupes':
+  case 'remove-duplicates':
+    removeDuplicates();
     break;
   case 'validate':
     validateStructure();

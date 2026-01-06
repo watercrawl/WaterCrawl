@@ -182,6 +182,54 @@ class APISpecService:
 
     @classmethod
     @atomic
+    def update(
+        cls,
+        api_spec_obj: APISpec,
+        name: str = None,
+        base_url: str = None,
+        parameters: List[dict] = None,
+    ) -> "APISpecService":
+        """Update API spec and its parameters."""
+        if name:
+            api_spec_obj.name = name
+        if base_url:
+            api_spec_obj.base_url = base_url
+
+        api_spec_obj.save()
+
+        if not parameters:
+            api_spec_obj.parameters.all().delete()
+            return cls(api_spec_obj)
+
+        existing_params = {p.name: p for p in api_spec_obj.parameters.all()}
+
+        new_param_names = [p["name"] for p in parameters]
+        api_spec_obj.parameters.exclude(name__in=new_param_names).delete()
+
+        for param_data in parameters:
+            name = param_data["name"]
+            value = param_data["value"]
+            param_type = param_data["tool_parameter_type"]
+
+            if name in existing_params:
+                obj = existing_params[name]
+                obj.tool_parameter_type = param_type
+                if value:
+                    obj.value = encrypt_key(value)
+                obj.save()
+            else:
+                if not value:
+                    raise ValidationError(_("Value for new parameters is required"))
+                api_spec_obj.parameters.create(
+                    name=name,
+                    tool_parameter_type=param_type,
+                    value=encrypt_key(value),
+                )
+
+        return cls(api_spec_obj)
+
+    @classmethod
+    @atomic
     def create(
         cls, team, name: str, api_spec: dict, base_url: str, parameters: List = None
     ):
@@ -229,11 +277,20 @@ class MCPServerService:
     @classmethod
     @atomic
     def create(
-        cls, team, name: str, url: str, parameters: List[dict] = None
+        cls,
+        team,
+        name: str,
+        url: str,
+        transport_type: str = None,
+        parameters: List[dict] = None,
     ) -> "MCPServerService":
         """Create MCP server with pending status."""
         mcp_server = MCPServer.objects.create(
-            team=team, name=name, url=url, status=consts.MCP_SERVER_STATUS_PENDING
+            team=team,
+            name=name,
+            url=url,
+            transport_type=transport_type,
+            status=consts.MCP_SERVER_STATUS_PENDING,
         )
 
         for parameter in parameters or []:
@@ -254,3 +311,56 @@ class MCPServerService:
     def make_pending(self):
         self.mcp_server.status = consts.MCP_SERVER_STATUS_PENDING
         self.mcp_server.save(update_fields=["status"])
+
+    @classmethod
+    @atomic
+    def update(
+        cls,
+        mcp_server: MCPServer,
+        name: str = None,
+        url: str = None,
+        transport_type: str = None,
+        parameters: List[dict] = None,
+    ) -> "MCPServerService":
+        """Update MCP server and its parameters."""
+        if name:
+            mcp_server.name = name
+        if url:
+            mcp_server.url = url
+        if transport_type:
+            mcp_server.transport_type = transport_type
+
+        mcp_server.status = consts.MCP_SERVER_STATUS_PENDING
+        mcp_server.save()
+
+        if not parameters:
+            mcp_server.parameters.all().delete()
+        else:
+            existing_params = {p.name: p for p in mcp_server.parameters.all()}
+
+            new_param_names = [p["name"] for p in parameters]
+            mcp_server.parameters.exclude(name__in=new_param_names).delete()
+
+            for param_data in parameters:
+                name = param_data["name"]
+                value = param_data["value"]
+                param_type = param_data["tool_parameter_type"]
+
+                if name in existing_params:
+                    obj = existing_params[name]
+                    obj.tool_parameter_type = param_type
+                    # Only update value if it's not the masked placeholder or empty (for OAuth/Masked values)
+                    if value:
+                        obj.value = encrypt_key(value)
+                    obj.save()
+                else:
+                    # New parameter
+                    if not value:
+                        raise ValidationError(_("Value for new parameters is required"))
+                    mcp_server.parameters.create(
+                        name=name,
+                        tool_parameter_type=param_type,
+                        value=encrypt_key(value),
+                    )
+
+        return cls(mcp_server)

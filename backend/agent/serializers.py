@@ -350,10 +350,18 @@ class AgentAsToolUpdateSerializer(serializers.ModelSerializer):
 
 
 class APISpecParametersSerializer(serializers.ModelSerializer):
+    value = serializers.CharField(write_only=True, allow_null=True)
+
     class Meta:
         model = APISpecParameters
         fields = ["uuid", "tool_parameter_type", "name", "value"]
-        extra_kwargs = {"value": {"write_only": True}}
+        read_only_fields = ["uuid"]
+
+    def validate_value(self, value):
+        is_update = self.context.get("is_update")
+        if not value and not is_update:
+            raise serializers.ValidationError(_("Value is required"))
+        return value
 
 
 class APISpecToolSerializer(serializers.ModelSerializer):
@@ -381,6 +389,13 @@ class APISpecSerializer(serializers.ModelSerializer):
 
     parameters = APISpecParametersSerializer(many=True, required=False)
     tools = APISpecToolSerializer(many=True, read_only=True)
+    api_spec = serializers.JSONField(write_only=True, required=False, allow_null=True)
+
+    def validate_api_spec(self, value):
+        is_update = self.context["is_update"]
+        if not is_update and not value:
+            raise serializers.ValidationError(_("Value is required"))
+        return value
 
     class Meta:
         model = APISpec
@@ -399,11 +414,18 @@ class APISpecSerializer(serializers.ModelSerializer):
 
 # MCP Tool Serializers
 class MCPServerParametersSerializer(serializers.ModelSerializer):
+    value = serializers.CharField(write_only=True, allow_null=True)
+
     class Meta:
         model = MCPServerParameters
         fields = ["uuid", "tool_parameter_type", "name", "value"]
         read_only_fields = ["uuid"]
-        extra_kwargs = {"value": {"write_only": True}}
+
+    def validate_value(self, value):
+        is_update = self.context.get("is_update")
+        if not value and not is_update:
+            raise serializers.ValidationError(_("Value is required"))
+        return value
 
 
 class MCPToolSerializer(serializers.ModelSerializer):
@@ -439,6 +461,7 @@ class MCPServerSerializer(serializers.ModelSerializer):
             "uuid",
             "name",
             "url",
+            "transport_type",
             "status",
             "error_message",
             "parameters",

@@ -17,7 +17,8 @@
     "i18n:sync": "node scripts/sync-translations.cjs sync",
     "i18n:validate": "node scripts/sync-translations.cjs validate",
     "i18n:stats": "node scripts/sync-translations.cjs stats",
-    "i18n:find-empty": "node scripts/sync-translations.cjs find-empty"
+    "i18n:find-empty": "node scripts/sync-translations.cjs find-empty",
+    "i18n:remove-dupes": "node scripts/sync-translations.cjs remove-dupes"
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.8.0",

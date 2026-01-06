@@ -50,6 +50,14 @@ export const toolsApi = {
     return data;
   },
 
+  async updateApiSpec(uuid: string, request: APISpecCreateRequest): Promise<APISpec> {
+    const { data } = await api.put<APISpec>(
+      `/api/v1/agent/api-specs/${uuid}/`,
+      request
+    );
+    return data;
+  },
+
   async deleteApiSpec(uuid: string): Promise<void> {
     await api.delete(`/api/v1/agent/api-specs/${uuid}/`);
   },
@@ -68,6 +76,14 @@ export const toolsApi = {
   async createMcpServer(request: MCPServerCreateRequest): Promise<MCPServer> {
     const { data } = await api.post<MCPServer>(
       '/api/v1/agent/mcp-servers/',
+      request
+    );
+    return data;
+  },
+
+  async updateMcpServer(uuid: string, request: MCPServerCreateRequest): Promise<MCPServer> {
+    const { data } = await api.put<MCPServer>(
+      `/api/v1/agent/mcp-servers/${uuid}/`,
       request
     );
     return data;

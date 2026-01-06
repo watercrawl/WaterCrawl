@@ -9,6 +9,22 @@
 
 Translation files: `/public/locales/{languageCode}.json`
 
+## Managing Translations
+
+We use automated scripts to maintain consistency across all 10 language files.
+
+### Step-by-Step Workflow:
+1. **Add to English**: Add your new translation keys to `/public/locales/en.json` first.
+2. **Sync Languages**: Run the sync script to automatically add the new keys to all other language files:
+   ```bash
+   pnpm i18n:sync
+   ```
+3. **Find Missing Translations**: Run the find-empty script to identify which keys need translation:
+   ```bash
+   pnpm i18n:find-empty
+   ```
+4. **Translate**: Fill in the empty values in the respective `.json` files.
+
 ## Basic Usage
 
 ```typescript

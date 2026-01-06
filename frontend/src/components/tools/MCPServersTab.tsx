@@ -3,7 +3,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 
-import { PlusIcon, TrashIcon, ChevronDownIcon, ChevronRightIcon, ArrowPathIcon, LockOpenIcon, ArrowPathRoundedSquareIcon, CommandLineIcon, InformationCircleIcon, ShieldCheckIcon, ServerStackIcon } from '@heroicons/react/24/outline';
+import { PlusIcon, TrashIcon, ChevronDownIcon, ChevronRightIcon, ArrowPathIcon, LockOpenIcon, ArrowPathRoundedSquareIcon, CommandLineIcon, InformationCircleIcon, ShieldCheckIcon, ServerStackIcon, PencilIcon } from '@heroicons/react/24/outline';
 
 import Button from '../shared/Button';
 import Loading from '../shared/Loading';
@@ -21,12 +21,14 @@ const MCPServersTab: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [mcpServers, setMcpServers] = useState<MCPServer[]>([]);
   const [expandedServers, setExpandedServers] = useState<Set<string>>(new Set());
+  const [editingServer, setEditingServer] = useState<MCPServer | null>(null);
   const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Modal states
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [serverName, setServerName] = useState('');
   const [serverUrl, setServerUrl] = useState('');
+  const [transportType, setTransportType] = useState<'sse' | 'streamable_http'>('streamable_http');
   const [serverParameters, setServerParameters] = useState<MCPServerParameters[]>([]);
   const [creating, setCreating] = useState(false);
 
@@ -191,7 +193,22 @@ const MCPServersTab: React.FC = () => {
   const resetCreateModal = () => {
     setServerName('');
     setServerUrl('');
+    setTransportType('streamable_http');
     setServerParameters([]);
+    setEditingServer(null);
+  };
+
+  const handleEditClick = (server: MCPServer) => {
+    setEditingServer(server);
+    setServerName(server.name);
+    setServerUrl(server.url);
+    setTransportType(server.transport_type);
+    setServerParameters(server.parameters.map(p => ({
+      tool_parameter_type: p.tool_parameter_type,
+      name: p.name,
+      value: ''
+    })));
+    setShowCreateModal(true);
   };
 
   const handleCreateMcpServer = async () => {
@@ -200,18 +217,34 @@ const MCPServersTab: React.FC = () => {
       return;
     }
 
-    // Validate parameters - all must have name and value
-    const invalidParams = serverParameters.some(p => !p.name.trim() || !p.value.trim());
-    if (invalidParams) {
+    // Validate parameters - all must have name
+    const invalidNames = serverParameters.some(p => !p.name.trim());
+    if (invalidNames) {
       toast.error(t('tools.mcp.fillAllParameters'));
       return;
+    }
+
+    // Value is only required in creation mode
+    if (!editingServer) {
+      const invalidValues = serverParameters.some(p => !p.value || !p.value.trim());
+      if (invalidValues) {
+        toast.error(t('tools.mcp.fillAllParameters'));
+        return;
+      }
     }
 
     // Check all required path parameters are filled
     const requiredNames = getRequiredParameterNames();
     const missingRequired = Array.from(requiredNames).filter(name => {
       const param = serverParameters.find(p => p.name === name);
-      return !param || !param.value.trim();
+      // Only require value if NOT in editing mode or if the parameter is being newly added/modified in edit mode
+      // For simplicity, in edit mode we only enforce value if it's explicitly provided or if it's a new parameter
+      if (!editingServer) {
+        return !param || !param.value || !param.value.trim();
+      }
+      // In edit mode, we allow empty values to preserve secrets, 
+      // but the parameter itself must exist in the list if it's required by the URL
+      return !param;
     });
     
     if (missingRequired.length > 0) {
@@ -224,23 +257,34 @@ const MCPServersTab: React.FC = () => {
       const request: MCPServerCreateRequest = {
         name: serverName.trim(),
         url: serverUrl.trim(),
+        transport_type: transportType,
         parameters: serverParameters.length > 0
           ? serverParameters.map(p => ({
             tool_parameter_type: p.tool_parameter_type,
             name: p.name.trim(),
-            value: p.value.trim(),
+            value: p.value ? p.value.trim() : null,
           }))
           : undefined,
       };
 
-      await toolsApi.createMcpServer(request);
-      toast.success(t('tools.mcp.createSuccess'));
+      if (editingServer) {
+        await toolsApi.updateMcpServer(editingServer.uuid, request);
+        toast.success(t('tools.mcp.updateSuccess'));
+      } else {
+        await toolsApi.createMcpServer(request);
+        toast.success(t('tools.mcp.createSuccess'));
+      }
+      
       setShowCreateModal(false);
       resetCreateModal();
       fetchMcpServers();
     } catch (error: any) {
-      console.error('Error creating MCP server:', error);
-      toast.error(error.response?.data?.detail || t('errors.generic'));
+      if (error.response?.status === 400) {
+        toast.error(error.response?.data?.message || t('errors.badRequest'));
+      } else {
+        console.error('Error saving MCP server:', error);
+        toast.error(error.response?.data?.detail || t('errors.generic'));
+      }
     } finally {
       setCreating(false);
     }
@@ -417,6 +461,9 @@ const MCPServersTab: React.FC = () => {
                       <div className="flex items-center gap-x-2">
                         <h3 className="text-base font-semibold text-foreground">{server.name}</h3>
                         {getStatusBadge(server.status)}
+                        <span className="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground uppercase tracking-wider border border-border">
+                          {server.transport_type === 'sse' ? 'SSE' : 'Streamable HTTP'}
+                        </span>
                       </div>
                       <p className="text-xs text-muted-foreground mt-1">{server.url}</p>
                       <p className="text-xs text-muted-foreground">
@@ -440,6 +487,18 @@ const MCPServersTab: React.FC = () => {
                       </button>
                     )}
 
+                    {/* Edit Button */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleEditClick(server);
+                      }}
+                      className="rounded-md p-2 text-muted-foreground hover:bg-muted transition-colors"
+                      title={t('common.edit')}
+                    >
+                      <PencilIcon className="h-4 w-4" />
+                    </button>
+
                     {/* Revalidate Button */}
 
                     <button
@@ -447,11 +506,10 @@ const MCPServersTab: React.FC = () => {
                         e.stopPropagation();
                         handleRevalidate(server.uuid, server.name);
                       }}
-                      className="inline-flex items-center gap-x-2 rounded-md border border-input-border bg-background px-3 py-2 text-sm font-medium text-foreground hover:bg-muted"
+                      className="rounded-md p-2 text-muted-foreground hover:bg-muted transition-colors"
                       title={t('tools.mcp.revalidate')}
                     >
                       <ArrowPathRoundedSquareIcon className="h-4 w-4" />
-                      <span className="hidden sm:inline">{t('tools.mcp.revalidate')}</span>
                     </button>
 
                     {/* Delete Button */}
@@ -532,7 +590,7 @@ const MCPServersTab: React.FC = () => {
           setShowCreateModal(false);
           resetCreateModal();
         }}
-        title={t('tools.mcp.createTitle')}
+        title={editingServer ? t('tools.mcp.editTitle') : t('tools.mcp.createTitle')}
         icon={ServerStackIcon}
         footer={
           <>
@@ -550,7 +608,7 @@ const MCPServersTab: React.FC = () => {
               onClick={handleCreateMcpServer}
               disabled={creating}
             >
-              {creating ? t('common.creating') : t('common.create')}
+              {creating ? t('common.saving') : (editingServer ? t('common.save') : t('common.create'))}
             </Button>
           </>
         }
@@ -582,6 +640,38 @@ const MCPServersTab: React.FC = () => {
             <p className="mt-1 text-xs text-muted-foreground">
               {t('tools.mcp.serverUrlHelp')}
             </p>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-foreground mb-2">
+              {t('tools.mcp.transportType')}
+            </label>
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => setTransportType('streamable_http')}
+                className={`flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium transition-all border ${
+                  transportType === 'streamable_http'
+                    ? 'bg-primary/10 border-primary text-primary shadow-sm'
+                    : 'bg-background border-input-border text-muted-foreground hover:border-muted-foreground hover:bg-muted/50'
+                }`}
+              >
+                <div className={`h-2 w-2 rounded-full ${transportType === 'streamable_http' ? 'bg-primary animate-pulse' : 'bg-muted-foreground/40'}`} />
+                Streamable HTTP
+              </button>
+              <button
+                type="button"
+                onClick={() => setTransportType('sse')}
+                className={`flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium transition-all border ${
+                  transportType === 'sse'
+                    ? 'bg-primary/10 border-primary text-primary shadow-sm'
+                    : 'bg-background border-input-border text-muted-foreground hover:border-muted-foreground hover:bg-muted/50'
+                }`}
+              >
+                <div className={`h-2 w-2 rounded-full ${transportType === 'sse' ? 'bg-primary animate-pulse' : 'bg-muted-foreground/40'}`} />
+                SSE
+              </button>
+            </div>
           </div>
 
           {/* Path Variable Hint */}
@@ -628,6 +718,46 @@ const MCPServersTab: React.FC = () => {
               <div className="space-y-3">
                 {serverParameters.map((param, index) => {
                   const isRequired = getRequiredParameterNames().has(param.name);
+                  const isOAuth = param.tool_parameter_type === 'oauth';
+                  
+                  if (isOAuth) {
+                    return (
+                      <div key={index} className="rounded-lg bg-warning-soft/30 border border-warning/20 p-4 mb-4">
+                        <div className="flex items-start gap-3">
+                          <div className="flex-shrink-0 p-2 bg-warning-soft rounded-lg">
+                            <ShieldCheckIcon className="h-5 w-5 text-warning" />
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex items-center justify-between mb-1">
+                              <h4 className="text-sm font-semibold text-foreground">
+                                {t('tools.mcp.oauthWarning')}
+                              </h4>
+                              <button
+                                type="button"
+                                onClick={() => handleRemoveParameter(index)}
+                                className="text-destructive hover:text-destructive-hover transition-colors"
+                                title={t('common.remove')}
+                              >
+                                <TrashIcon className="h-4 w-4" />
+                              </button>
+                            </div>
+                            <p className="text-xs text-muted-foreground leading-relaxed">
+                              {t('tools.mcp.oauthWarningDescription')}
+                            </p>
+                            <div className="mt-3 flex items-center gap-2">
+                              <span className="inline-flex items-center rounded-md bg-warning-soft px-2 py-0.5 text-[10px] font-medium text-warning uppercase border border-warning/20">
+                                {t('tools.mcp.status.active')}
+                              </span>
+                              <span className="text-[10px] text-muted-foreground font-mono">
+                                {param.name}: ********
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  }
+
                   return (
                     <div
                       key={index}
@@ -659,14 +789,10 @@ const MCPServersTab: React.FC = () => {
                           <input
                             type="text"
                             value={param.name}
-                            onChange={e =>
-                              handleParameterChange(index, 'name', e.target.value)
-                            }
-                            disabled={isRequired}
-                            className={`block w-full rounded-lg border border-input-border px-2 py-1.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary font-mono ${
-                              isRequired ? 'bg-muted cursor-not-allowed' : 'bg-input'
-                            }`}
+                            onChange={(e) => handleParameterChange(index, 'name', e.target.value)}
+                            disabled={param.tool_parameter_type === 'oauth'}
                             placeholder={t('tools.mcp.parameterNamePlaceholder')}
+                            className="block w-full rounded-lg border border-input-border bg-input px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed"
                           />
                         </div>
 
@@ -677,19 +803,18 @@ const MCPServersTab: React.FC = () => {
                           </label>
                           <select
                             value={param.tool_parameter_type}
-                            onChange={e =>
-                              handleParameterChange(index, 'tool_parameter_type', e.target.value)
-                            }
-                            disabled={isRequired}
-                            className={`block w-full rounded-lg border border-input-border px-2 py-1.5 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary ${
-                              isRequired ? 'bg-muted cursor-not-allowed' : 'bg-input'
-                            }`}
+                            onChange={(e) => handleParameterChange(index, 'tool_parameter_type', e.target.value as ToolParameterType)}
+                            disabled={param.tool_parameter_type === 'oauth'}
+                            className="block w-full rounded-lg border border-input-border bg-input px-3 py-2 text-xs text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed"
                           >
-                            {parameterTypeOptions.map(opt => (
-                              <option key={opt.value} value={opt.value}>
-                                {opt.label}
+                            {parameterTypeOptions.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
                               </option>
                             ))}
+                            {param.tool_parameter_type === 'oauth' && (
+                              <option value="oauth">OAuth</option>
+                            )}
                           </select>
                         </div>
 
@@ -715,19 +840,21 @@ const MCPServersTab: React.FC = () => {
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           {t('tools.mcp.parameterValue')}
-                          {isRequired && <span className="text-warning ml-1">*</span>}
+                          {(isRequired && !editingServer) && <span className="text-warning ml-1">*</span>}
+                          {editingServer && <span className="text-[10px] text-muted-foreground ml-1 font-normal">({t('common.optional')})</span>}
                         </label>
                         <input
                           type="text"
-                          value={param.value}
+                          value={param.value ?? ''}
                           onChange={e =>
                             handleParameterChange(index, 'value', e.target.value)
                           }
+                          disabled={param.tool_parameter_type === 'oauth'}
                           className={`block w-full rounded-lg border px-2 py-1.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary bg-input ${
-                            isRequired && !param.value.trim()
+                            isRequired && (!param.value || !param.value.trim())
                               ? 'border-warning'
                               : 'border-input-border'
-                          }`}
+                          } ${param.tool_parameter_type === 'oauth' ? 'opacity-50 cursor-not-allowed' : ''}`}
                           placeholder={t('tools.mcp.parameterValuePlaceholder')}
                         />
                       </div>

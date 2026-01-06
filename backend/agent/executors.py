@@ -1,5 +1,6 @@
 import asyncio
 import json
+import re
 import uuid
 import logging
 from typing import Any, Dict, Annotated, Optional
@@ -13,7 +14,12 @@ from mcp import ClientSession
 from mcp.client.auth import OAuthRegistrationError
 from mcp.client.sse import sse_client
 from mcp.client.streamable_http import streamablehttp_client
-from mcp.shared.auth import OAuthToken, OAuthClientInformationFull, OAuthClientMetadata
+from mcp.shared.auth import (
+    OAuthToken,
+    OAuthClientInformationFull,
+    OAuthClientMetadata,
+    OAuthMetadata,
+)
 from mcp.types import CallToolResult, TextContent
 from pydantic import AnyUrl
 import httpx
@@ -61,6 +67,7 @@ class MCPTokenStorageHelper(TokenStorage):
             await self.parameter.asave(update_fields=["value"])
             return
         self.parameter = await self.mcp_server.parameters.acreate(
+            name="OAuth",
             tool_parameter_type=consts.TOOL_PARAMETER_OAUTH,
             value=encrypt_key(json.dumps(self.data)),
         )
@@ -110,26 +117,43 @@ class MCPTokenStorageHelper(TokenStorage):
         self.data["login_data"] = None
         await self.store_data()
 
+    async def set_oauth_metadata(self, oauth_metadata: OAuthMetadata) -> None:
+        self.data["oauth_metadata"] = oauth_metadata.model_dump(
+            mode="json", exclude_none=True
+        )
+        await self.store_data()
+
+    async def get_oauth_metadata(self) -> Optional[OAuthMetadata]:
+        oauth_metadata = self.data.get("oauth_metadata")
+        if oauth_metadata:
+            return OAuthMetadata(**oauth_metadata)
+        return None
+
 
 class MCPHelper:
-    def __init__(self, mcp_server: MCPServer, revalidate_type=False):
+    def __init__(self, mcp_server: MCPServer):
         self.mcp_server: MCPServer = mcp_server
         self.headers = {}
         self.query_params = {}
+        self.path_params = {}
         self.timeout = 300.0
         self.sse_read_timeout = 300.0
-        self.revalidate_type = revalidate_type
 
         for parameter in self.mcp_server.parameters.filter(
             tool_parameter_type__in=[
+                consts.TOOL_PARAMETER_TYPE_PATH,
                 consts.TOOL_PARAMETER_TYPE_HEADER,
                 consts.TOOL_PARAMETER_TYPE_QUERY,
             ]
         ):
             if parameter.tool_parameter_type == consts.TOOL_PARAMETER_TYPE_HEADER:
                 self.headers[parameter.name] = decrypt_key(parameter.value)
+            elif parameter.tool_parameter_type == consts.TOOL_PARAMETER_TYPE_PATH:
+                self.path_params[parameter.name] = decrypt_key(parameter.value)
             else:
                 self.query_params[parameter.name] = decrypt_key(parameter.value)
+
+        print(self.path_params, self.query_params, self.headers)
 
     def make_storage(self) -> MCPTokenStorageHelper:
         return MCPTokenStorageHelper(self.mcp_server)
@@ -137,7 +161,7 @@ class MCPHelper:
     @property
     def mcp_server_url(self):
         # If no additional query params, return original URL unchanged.
-        if not self.query_params:
+        if not self.query_params and not self.path_params:
             return self.mcp_server.url
 
         # Parse original URL
@@ -153,12 +177,17 @@ class MCPHelper:
         # Re-encode
         new_query = urlencode(merged, doseq=True)
 
+        path = parsed.path
+        for k, v in self.path_params.items():
+            pattern = rf"\{{\{{{re.escape(k)}\}}\}}"
+            path = re.sub(pattern, v, path)
+
         # Rebuild full URL including fragment
         rebuilt = urlunparse(
             (
                 parsed.scheme,
                 parsed.netloc,
-                parsed.path,
+                path,
                 parsed.params,
                 new_query,
                 parsed.fragment,
@@ -184,12 +213,10 @@ class MCPHelper:
         )
 
     def make_parser(self) -> MCPServerParser:
-        transport_type = None
-        if self.mcp_server.transport_type and not self.revalidate_type:
-            transport_type = TransportType(self.mcp_server.transport_type)
-
+        transport_type = TransportType(self.mcp_server.transport_type)
         return MCPServerParser(
             self.mcp_server_url,
+            headers=self.headers,
             auth=self.make_auth_provider(),
             transport_type=transport_type,
             timeout=self.timeout,
@@ -200,11 +227,6 @@ class MCPHelper:
         async def _validate_and_save_tools():
             try:
                 parser = self.make_parser()
-                if not self.mcp_server.transport_type or self.revalidate_type:
-                    self.mcp_server.transport_type = (
-                        await parser.detect_transport_type()
-                    ).value
-                    await self.mcp_server.asave(update_fields=["transport_type"])
 
                 fetched_tools = [tool async for tool in parser.tools()]
                 for tool in fetched_tools:
@@ -819,8 +841,9 @@ class KnowledgeBaseQuestionExecutor(ToolExecutor):
         try:
             # Filters are passed as a parameter
             query = params.get("query")
+            filters = params.get("filters")
             # Retrieve documents
-            documents = self.retriever.retrieve(query=query)
+            documents = self.retriever.retrieve(query=query, filters=filters)
 
             # Format results
             if not documents:
@@ -849,9 +872,6 @@ class KnowledgeBaseQuestionExecutor(ToolExecutor):
                 tool_call_id=tool_call_id,
             )
         except Exception as e:
-            import logging
-
-            logger = logging.getLogger(__name__)
             logger.error(f"Error querying knowledge base: {str(e)}", exc_info=True)
             return ToolMessage(
                 content=f"Error querying knowledge base: {str(e)}",
@@ -916,7 +936,7 @@ class AgentToolExecutor(ToolExecutor):
                 )
 
             # Invoke the agent with the query
-            message_block = conversation.chat_blocking(query)
+            message_block = conversation.chat_blocking(query, sub_agent=True)
 
             # Extract the response from messages
             message = message_block.messages.last()

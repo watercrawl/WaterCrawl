@@ -2,7 +2,7 @@ import secrets
 import time
 from enum import Enum
 from typing import Optional, Dict, Any, AsyncGenerator
-from urllib.parse import urljoin, urlencode, urlparse
+from urllib.parse import urljoin, urlencode
 
 import httpx
 from mcp import ClientSession
@@ -14,7 +14,7 @@ from mcp.client.auth import (
 )
 from mcp.client.sse import sse_client
 from mcp.client.streamable_http import streamablehttp_client
-from mcp.shared.auth import OAuthClientMetadata
+from mcp.shared.auth import OAuthClientMetadata, OAuthMetadata
 from pydantic import BaseModel
 
 
@@ -67,6 +67,10 @@ class TokenStorage(BaseTokenStorage):
         """To clear state and code verifier"""
         ...
 
+    async def set_oauth_metadata(self, oauth_metadata: OAuthMetadata) -> None: ...
+
+    async def get_oauth_metadata(self) -> Optional[OAuthMetadata]: ...
+
 
 class MCPOAuthProvider(OAuthClientProvider):
     def __init__(
@@ -89,13 +93,17 @@ class MCPOAuthProvider(OAuthClientProvider):
         await super()._initialize()
         # always set token expiry now to refresh token
         self.context.token_expiry_time = time.time()
+        self.context.oauth_metadata = await self.context.storage.get_oauth_metadata()
 
     async def _perform_authorization(self) -> httpx.Request:
+        await self.context.storage.set_oauth_metadata(self.context.oauth_metadata)
         raise MCPOAuthRequiredError
 
     async def build_authorization_url(self) -> str:
         if not self._initialized:
             await self._initialize()
+
+        print(self.context.oauth_metadata)
         if (
             self.context.oauth_metadata
             and self.context.oauth_metadata.authorization_endpoint
@@ -197,48 +205,6 @@ class MCPServerParser:
     def headers(self, headers: Dict[str, str]):
         self._headers = headers
 
-    async def detect_transport_type(self) -> TransportType:
-        """
-        Detect the transport type by analyzing the URL and attempting connections.
-
-        Returns:
-            TransportType: The detected transport type
-
-        Raises:
-            MCPConnectionError: If unable to detect or connect
-            MCPOAuthRequiredError: If OAuth authentication is required
-        """
-        # First, try URL-based heuristics
-        parsed = urlparse(self.mcp_server_url)
-        path = parsed.path.lower()
-
-        # Common patterns from the codebase
-        if "/sse" in path:
-            return TransportType.SSE
-        elif "/mcp" in path:
-            return TransportType.STREAMABLE_HTTP
-
-            # If heuristics fail, try both transports
-        # Try StreamableHTTP first (more modern)
-        try:
-            await self._validate_connection(TransportType.STREAMABLE_HTTP)
-            return TransportType.STREAMABLE_HTTP
-        except MCPOAuthRequiredError:
-            raise  # Re-raise OAuth errors
-        except Exception:
-            pass
-
-            # Try SSE
-        try:
-            await self._validate_connection(TransportType.SSE)
-            return TransportType.SSE
-        except MCPOAuthRequiredError:
-            raise  # Re-raise OAuth errors
-        except Exception as e:
-            raise MCPConnectionError(
-                f"Unable to connect using either SSE or StreamableHTTP transport: {str(e)}"
-            )
-
     async def _validate_connection(self, transport_type: TransportType) -> None:
         """
         Validate connection to the server using specified transport.
@@ -279,6 +245,11 @@ class MCPServerParser:
                 raise MCPAuthenticationError(
                     f"Authentication failed: {e.response.status_code} - {e.response.text}"
                 )
+
+            if e.response.status_code == 405:
+                raise MCPConnectionError(
+                    f"HTTP error: {e.response.status_code} - It looks like you're trying to use an unsupported transport type."
+                )
             raise MCPConnectionError(
                 f"HTTP error: {e.response.status_code} - {e.response.text}"
             )
@@ -287,7 +258,7 @@ class MCPServerParser:
 
     async def validate(self) -> bool:
         """
-        Validate connection to the MCP server and detect transport type.
+        Validate connection to the MCP server.
 
         Returns:
             bool: True if connection is successful
@@ -297,7 +268,10 @@ class MCPServerParser:
             MCPAuthenticationError: If authentication fails
             MCPOAuthRequiredError: If OAuth authentication is required
         """
-        self._transport_type = await self.detect_transport_type()
+        if self._transport_type is None:
+            raise MCPConnectionError("Transport type must be provided")
+
+        await self._validate_connection(self._transport_type)
         return True
 
     async def tools(self) -> AsyncGenerator[MCPToolParameters, None]:
@@ -365,7 +339,13 @@ class MCPServerParser:
                         raise MCPAuthenticationError(
                             f"Authentication failed: {exc.response.status_code}"
                         )
-                    raise MCPConnectionError(f"HTTP error: {exc.response.status_code}")
+                    if exc.response.status_code == 405:
+                        raise MCPConnectionError(
+                            f"HTTP error: {exc.response.status_code} -- It looks like you're trying to use an unsupported transport type."
+                        )
+                    raise MCPConnectionError(
+                        f"HTTP error: {exc.response.status_code} - {exc.response.text}"
+                    )
                 raise
         except Exception as e:
             raise MCPConnectionError(f"Failed to list tools: {str(e)}")
