@@ -17,11 +17,12 @@ class KnowledgeBaseFilter(django_filters.FilterSet):
         model = KnowledgeBase
         fields = ["search"]
 
+    from django.db.models import Q
+
     def filter_search(self, queryset, name, value):
         """Filter knowledge bases by title or description (case-insensitive)."""
         if value:
             return queryset.filter(
-                django_filters.filters.Q(title__icontains=value)
-                | django_filters.filters.Q(description__icontains=value)
+                Q(title__icontains=value) | Q(description__icontains=value)
             )
         return queryset
