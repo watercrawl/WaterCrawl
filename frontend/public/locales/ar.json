@@ -596,7 +596,7 @@
     "cancel": "إلغاء",
     "close": "إغلاق",
     "configureModel": "تكوين النموذج",
-    "confirmError": "Please enter the correct value to confirm deletion",
+    "confirmError": "الرجاء إدخال القيمة الصحيحة لتأكيد الحذف",
     "copied": "تم النسخ!",
     "copiedToClipboard": "تم النسخ إلى الحافظة!",
     "copy": "نسخ",
