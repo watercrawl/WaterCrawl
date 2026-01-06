@@ -14,10 +14,11 @@ import {
 import api from './api';
 
 export const knowledgeBaseApi = {
-  async list(page?: number, pageSize?: number) {
+  async list(page?: number, pageSize?: number, search?: string) {
     const params = new URLSearchParams();
     if (page) params.append('page', page.toString());
     if (pageSize) params.append('page_size', pageSize.toString());
+    if (search) params.append('search', search);
 
     return api
       .get<

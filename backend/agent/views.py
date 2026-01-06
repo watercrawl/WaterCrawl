@@ -665,27 +665,48 @@ class APISpecViewSet(
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
     mixins.CreateModelMixin,
+    mixins.UpdateModelMixin,
     mixins.DestroyModelMixin,
     GenericViewSet,
 ):
-    """ViewSet for creating API spec tools."""
+    """ViewSet for managing API specs."""
 
     permission_classes = [IsAuthenticatedTeam]
     serializer_class = APISpecSerializer
     queryset = APISpec.objects.none()
+    lookup_field = "uuid"
 
     def get_queryset(self):
         """Get API specs owned by team."""
-        return self.request.current_team.api_specs.all()
+        return self.request.current_team.api_specs.all().order_by("-created_at")
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["is_update"] = False
+        if self.action in ("update", "partial_update"):
+            context["is_update"] = True
+        context["team"] = self.request.current_team
+        return context
 
     def perform_create(self, serializer):
-        """Create API spec with pending status."""
+        """Create API spec."""
         service = APISpecService.create(
             team=self.request.current_team,
             name=serializer.validated_data["name"],
-            base_url=serializer.validated_data["base_url"],
             api_spec=serializer.validated_data["api_spec"],
+            base_url=serializer.validated_data.get("base_url", ""),
             parameters=serializer.validated_data.get("parameters", []),
+        )
+        serializer.instance = service.api_spec
+
+    def perform_update(self, serializer):
+        """Update API spec."""
+        instance = self.get_object()
+        service = APISpecService.update(
+            api_spec_obj=instance,
+            name=serializer.validated_data.get("name"),
+            base_url=serializer.validated_data.get("base_url"),
+            parameters=serializer.validated_data.get("parameters"),
         )
         serializer.instance = service.api_spec
 
@@ -740,6 +761,7 @@ class MCPServerViewSet(
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
     mixins.CreateModelMixin,
+    mixins.UpdateModelMixin,
     mixins.DestroyModelMixin,
     GenericViewSet,
 ):
@@ -752,17 +774,39 @@ class MCPServerViewSet(
 
     def get_queryset(self):
         """Get MCP servers owned by team."""
-        return self.request.current_team.mcp_servers.all()
+        return self.request.current_team.mcp_servers.all().order_by("-created_at")
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+
+        context["is_update"] = False
+        if self.action in ("update", "partial_update"):
+            context["is_update"] = True
+
+        return context
 
     def perform_create(self, serializer):
         service = MCPServerService.create(
             team=self.request.current_team,
             name=serializer.validated_data["name"],
             url=serializer.validated_data["url"],
+            transport_type=serializer.validated_data.get("transport_type"),
             parameters=serializer.validated_data.get("parameters", []),
         )
         serializer.instance = service.mcp_server
         validate_mcp_server_task.delay(service.mcp_server.pk)
+
+    def perform_update(self, serializer):
+        instance = self.get_object()
+        service = MCPServerService.update(
+            mcp_server=instance,
+            name=serializer.validated_data.get("name"),
+            url=serializer.validated_data.get("url"),
+            transport_type=serializer.validated_data.get("transport_type"),
+            parameters=serializer.validated_data.get("parameters"),
+        )
+        serializer.instance = service.mcp_server
+        validate_mcp_server_task.delay(instance.pk)
 
     def perform_destroy(self, instance):
         if ToolService.is_mcp_server_in_use(instance):
@@ -810,7 +854,7 @@ class MCPServerViewSet(
     def revalidate(self, request, **kwargs):
         instance = self.get_object()
         MCPServerService(instance).make_pending()
-        validate_mcp_server_task.delay(instance.pk, revalidate_type=True)
+        validate_mcp_server_task.delay(instance.pk)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 

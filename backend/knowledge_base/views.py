@@ -15,7 +15,7 @@ from rest_framework.mixins import (
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
-from knowledge_base import serializers, consts
+from knowledge_base import serializers, consts, filters
 from knowledge_base.models import (
     KnowledgeBase,
     KnowledgeBaseDocument,
@@ -110,6 +110,7 @@ class KnowledgeBaseViewSet(
     permission_classes = [IsAuthenticatedTeam]
     queryset = KnowledgeBase.objects.none()
     lookup_field = "uuid"
+    filterset_class = filters.KnowledgeBaseFilter
 
     def get_queryset(self):
         """Return knowledge bases for the current team."""

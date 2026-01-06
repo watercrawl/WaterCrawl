@@ -157,7 +157,7 @@ class MCPServer(BaseModel):
     transport_type = models.CharField(
         verbose_name=_("Transport Type"),
         choices=consts.TRANSPORT_TYPE_CHOICES,
-        default=None,
+        default=consts.TRANSPORT_TYPE_STREAMABLE_HTTP,
         null=True,
         max_length=50,
     )
@@ -332,7 +332,8 @@ class AgentKnowledgeBase(BaseModel):
                 "query": {"type": "string", "description": "The search query"},
                 "filters": {
                     "type": "object",
-                    "description": "Additional filters to apply key value pairs.",
+                    "description": "Additional filters to apply key value pairs. on metadata field.",
+                    "properties": {},
                 },
             },
             "required": ["query"],
@@ -401,22 +402,51 @@ class AgentAsTool(BaseModel):
         """
         Input schema for the agent tool.
         Accepts a query/instruction for the tool agent.
+        The 'inputs' field schema is dynamically generated based on the tool agent's context variables.
         """
+        version = (
+            self.tool_agent.current_published_version
+            or self.tool_agent.current_draft_version
+        )
+
+        properties = {
+            "query": {
+                "type": "string",
+                "description": "The task or question to send to the agent",
+            }
+        }
+
+        required_items = ["query"]
+
+        if version and version.parameters.exists():
+            context_vars = version.parameters.all()
+            input_props = {}
+            required_inputs = []
+
+            for var in context_vars:
+                input_props[var.name] = {
+                    "type": var.parameter_type,
+                    "description": f"Value for {var.name}",
+                }
+                # If it doesn't have a default value, it might be required
+                if not var.value:
+                    required_inputs.append(var.name)
+
+            properties["inputs"] = {
+                "type": "object",
+                "description": "Input variables for the agent context",
+                "properties": input_props,
+                "additionalProperties": False,
+            }
+            if required_inputs:
+                properties["inputs"]["required"] = required_inputs
+                required_items.append("inputs")
+
         return {
             "$schema": "http://json-schema.org/draft-07/schema#",
             "type": "object",
-            "properties": {
-                "query": {
-                    "type": "string",
-                    "description": "The task or question to send to the agent",
-                },
-                "inputs": {
-                    "type": "object",
-                    "description": "Optional input variables for the agent",
-                    "additionalProperties": True,
-                },
-            },
-            "required": ["query"],
+            "properties": properties,
+            "required": required_items,
         }
 
     def __str__(self):

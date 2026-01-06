@@ -30,11 +30,9 @@ import {
   useAgentVersions,
 } from '../../hooks';
 import { agentApi } from '../../services/api/agent';
-import { knowledgeBaseApi } from '../../services/api/knowledgeBase';
 import { toolsApi } from '../../services/api/tools';
 
 import type { Agent, AgentVersionStatus, ContextParameters, AgentAsTool, ToolParametersConfig } from '../../types/agent';
-import type { KnowledgeBaseDetail } from '../../types/knowledge';
 import type { ToolListItem, APISpec, MCPServer } from '../../types/tools';
 
 const AgentFormPage: React.FC = () => {
@@ -46,32 +44,26 @@ const AgentFormPage: React.FC = () => {
 
   const [loading, setLoading] = useState(true);
   const [publishing, setPublishing] = useState(false);
-  const [knowledgeBases, setKnowledgeBases] = useState<KnowledgeBaseDetail[]>([]);
   const [builtInTools, setBuiltInTools] = useState<ToolListItem[]>([]);
   const [apiSpecs, setApiSpecs] = useState<APISpec[]>([]);
   const [mcpServers, setMcpServers] = useState<MCPServer[]>([]);
-  const [availableAgents, setAvailableAgents] = useState<Agent[]>([]);
   const [draftAgentTools, setDraftAgentTools] = useState<AgentAsTool[]>([]);
   const [editingAgentTool, setEditingAgentTool] = useState<AgentAsTool | null>(null);
 
   // Use custom hooks for form state management
   const formState = useAgentForm(agentId);
 
-  // Fetch options (knowledge bases, tools, agents, etc.)
+  // Fetch options (tools, etc.)
   const fetchOptions = useCallback(async () => {
     try {
-      const [kbData, toolsData, apiSpecsData, mcpServersData, agentsData] = await Promise.all([
-        knowledgeBaseApi.list(1, 100),
+      const [toolsData, apiSpecsData, mcpServersData] = await Promise.all([
         toolsApi.listTools(),
         toolsApi.listApiSpecs(),
         toolsApi.listMcpServers(),
-        agentApi.list(),
       ]);
-      setKnowledgeBases(kbData.results);
       setBuiltInTools(toolsData.results.filter((t: ToolListItem) => t.tool_type === 'built_in'));
       setApiSpecs(apiSpecsData.results);
       setMcpServers(mcpServersData.results);
-      setAvailableAgents(agentsData.results);
     } catch (error) {
       console.error('Error fetching options:', error);
       const errorMessage =
@@ -411,7 +403,6 @@ const AgentFormPage: React.FC = () => {
             {/* Knowledge Bases */}
             <AgentFormKnowledgeBasesSection
               draftKnowledgeBases={formState.draftKnowledgeBases}
-              knowledgeBases={knowledgeBases}
               onAdd={knowledgeBasesHook.addKnowledgeBase}
               onRemove={knowledgeBasesHook.removeKnowledgeBase}
               onConfigure={knowledgeBasesHook.setEditingKnowledgeBase}
@@ -420,7 +411,6 @@ const AgentFormPage: React.FC = () => {
             {/* Agent Tools */}
             <AgentFormAgentToolsSection
               draftAgentTools={draftAgentTools}
-              availableAgents={availableAgents}
               currentAgentUuid={agentId!}
               onAdd={handleAddAgentTool}
               onRemove={handleRemoveAgentTool}

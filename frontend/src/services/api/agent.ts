@@ -31,8 +31,17 @@ import api from './api';
 
 export const agentApi = {
   // Agent CRUD
-  async list(search?: string): Promise<PaginatedResponse<Agent>> {
-    const params = search ? { search } : {};
+  async list(page?: number, pageSize?: number, search?: string, filters?: Record<string, string>): Promise<PaginatedResponse<Agent>> {
+    const params = new URLSearchParams();
+    if (page) params.append('page', page.toString());
+    if (pageSize) params.append('page_size', pageSize.toString());
+    if (search) params.append('search', search);
+    if (filters) {
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value) params.append(key, value);
+      });
+    }
+
     const { data } = await api.get<PaginatedResponse<Agent>>('/api/v1/agent/agents/', {
       params,
     });

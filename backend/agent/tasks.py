@@ -32,6 +32,6 @@ def update_builtin_tools(sender, **kwargs):
     max_retries=3,
     default_retry_delay=60,
 )
-def validate_mcp_server_task(self, mcp_server_pk: str, revalidate_type: bool = False):
+def validate_mcp_server_task(self, mcp_server_pk: str):
     service = MCPServerService.make_with_pk(mcp_server_pk)
-    MCPHelper(service.mcp_server, revalidate_type).validate_and_save_tools()
+    MCPHelper(service.mcp_server).validate_and_save_tools()

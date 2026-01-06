@@ -456,7 +456,9 @@ class ConversationService:
             logger.error(f"Error reading file {media_file.file_name}: {str(e)}")
             return None
 
-    def create_agent_executor(self, output_schema: Optional[Dict[str, Any]] = None):
+    def create_agent_executor(
+        self, output_schema: Optional[Dict[str, Any]] = None, sub_agent=False
+    ):
         # Create context for media library integration
         context = {
             "team": self.conversation.team,
@@ -471,6 +473,7 @@ class ConversationService:
             context_variables=self.conversation.inputs,
             context=context,
             output_schema=output_schema,
+            sub_agent=sub_agent,
         )
 
     def chat(
@@ -530,6 +533,7 @@ class ConversationService:
         query: str,
         files: Optional[List[Media]] = None,
         output_schema: Optional[Dict[str, Any]] = None,
+        sub_agent: bool = False,
     ) -> MessageBlock:
         """
         Process chat message using AgentFactory and return complete response (blocking mode).
@@ -545,7 +549,9 @@ class ConversationService:
         # Add user message
         messages, message_ids = self.build_current_state(query, files=files)
 
-        agent_executor = self.create_agent_executor(output_schema=output_schema)
+        agent_executor = self.create_agent_executor(
+            output_schema=output_schema, sub_agent=sub_agent
+        )
 
         try:
             # Execute agent (blocking)

@@ -3,14 +3,14 @@
 import { ToolType } from './agent';
 
 // Tool Parameter Type
-export type ToolParameterType = 'header' | 'query' | 'path';
+export type ToolParameterType = 'header' | 'query' | 'path' | 'oauth';
 
 // API Spec Parameter
 export interface APISpecParameter {
   uuid: string;
   tool_parameter_type: ToolParameterType;
   name: string;
-  value: string;
+  value: string | null;
 }
 
 // API Spec Tool - Specific to OpenAPI tools
@@ -31,6 +31,7 @@ export interface APISpec {
   uuid: string;
   name: string;
   base_url: string;
+  api_spec: any;
   parameters: APISpecParameter[];
   tools: APISpecTool[];
   created_at: string;
@@ -73,6 +74,7 @@ export interface MCPServer {
   uuid: string;
   name: string;
   url: string;
+  transport_type: 'sse' | 'streamable_http';
   status: MCPServerStatus;
   error_message: string | null;
   parameters: MCPServerParameter[];
@@ -85,13 +87,14 @@ export interface MCPServerParameters {
   uuid?: string;
   tool_parameter_type: ToolParameterType;
   name: string;
-  value: string;
+  value?: string | null;
 }
 
 // MCP Server - Create request
 export interface MCPServerCreateRequest {
   name: string;
   url: string;
+  transport_type: 'sse' | 'streamable_http';
   parameters?: MCPServerParameters[];
 }
 
