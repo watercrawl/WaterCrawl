@@ -37,11 +37,12 @@ class AgentFilter(django_filters.FilterSet):
         if not value:
             return queryset
 
+        published_versions = AgentVersion.objects.filter(
+            agent=OuterRef("pk"), status=consts.AGENT_VERSION_STATUS_PUBLISHED
+        )
+
         if value == consts.AGENT_VERSION_STATUS_PUBLISHED:
             # Agent is published if it has at least one published version
-            published_versions = AgentVersion.objects.filter(
-                agent=OuterRef("pk"), status=consts.AGENT_VERSION_STATUS_PUBLISHED
-            )
             return queryset.annotate(has_published=Exists(published_versions)).filter(
                 has_published=True
             )
@@ -50,13 +51,9 @@ class AgentFilter(django_filters.FilterSet):
             draft_versions = AgentVersion.objects.filter(
                 agent=OuterRef("pk"), status=consts.AGENT_VERSION_STATUS_DRAFT
             )
-            published_versions = AgentVersion.objects.filter(
-                agent=OuterRef("pk"), status=consts.AGENT_VERSION_STATUS_PUBLISHED
-            )
-            return (
-                queryset.annotate(has_draft=Exists(draft_versions))
-                .annotate(has_published=Exists(published_versions))
-                .filter(has_draft=True, has_published=False)
-            )
+            return queryset.annotate(
+                has_draft=Exists(draft_versions),
+                has_published=Exists(published_versions),
+            ).filter(has_draft=True, has_published=False)
 
         return queryset
