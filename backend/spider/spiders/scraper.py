@@ -1,6 +1,8 @@
 from typing import Iterable
 
-from scrapy import Request, Spider, signals
+from scrapy import Request, signals
+
+from spider.spiders import SentryCaptureSpider
 from scrapy.exceptions import IgnoreRequest
 
 from core.services import CrawlerService, CrawlHelpers, BasePubSupService
@@ -8,7 +10,7 @@ from spider import settings
 from spider.items import ScrapedItem, LinkItem
 
 
-class SiteScrapper(Spider):
+class SiteScrapper(SentryCaptureSpider):
     name = "SiteScrapper"
     allowed_domains = []
 

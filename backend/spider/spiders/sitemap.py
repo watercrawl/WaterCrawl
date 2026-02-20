@@ -4,14 +4,16 @@ import re
 from urllib.parse import urlparse, urljoin
 
 from lxml import etree
-from scrapy import Request, Spider, signals
+from scrapy import Request, signals
+
+from spider.spiders import SentryCaptureSpider
 
 from core.services import SitemapRequestService, BasePubSupService
 from spider import settings
 from spider.items import SitemapResult
 
 
-class SitemapScrapper(Spider):
+class SitemapScrapper(SentryCaptureSpider):
     name = "SitemapScrapper"
     allowed_domains = []
 

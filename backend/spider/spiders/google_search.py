@@ -1,6 +1,8 @@
 from typing import Iterable
 
-from scrapy import Request, Spider, signals
+from scrapy import Request, signals
+
+from spider.spiders import SentryCaptureSpider
 
 from core import consts
 from core.services import SearchService, BasePubSupService
@@ -8,7 +10,7 @@ from spider import settings
 from spider.items import SearchResult
 
 
-class SearchScrapper(Spider):
+class SearchScrapper(SentryCaptureSpider):
     name = None
     allowed_domains = []
 
