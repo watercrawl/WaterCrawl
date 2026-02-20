@@ -19,7 +19,7 @@
     "@monaco-editor/react": "^4.7.0",
     "@radix-ui/react-select": "^2.2.6",
     "@react-oauth/google": "^0.12.2",
-    "@sentry/react": "^10.22.0",
+    "@sentry/react": "^10.27.0",
     "@sentry/tracing": "^7.120.4",
     "@sentry/vite-plugin": "^4.6.0",
     "autoprefixer": "^10.4.21",
@@ -65,10 +65,10 @@
       "dompurify@<3.2.4": ">=3.2.4",
       "js-yaml@>=4.0.0 <4.1.1": ">=4.1.1",
       "glob@>=10.2.0 <10.5.0": ">=10.5.0",
-      "fast-xml-parser@>=4.3.6 <5.3.4": ">=5.3.4",
+      "fast-xml-parser@>=4.3.6 <5.3.6": ">=5.3.6",
       "lodash@>=4.0.0 <4.17.23": ">=4.17.23",
       "@isaacs/brace-expansion@<5.0.1": ">=5.0.1",
-      "minimatch@>=10.0.0 <10.2.1": ">=10.2.1",
+      "minimatch@<10.2.1": ">=10.2.1",
       "axios@>=1.0.0 <1.13.5": ">=1.13.5"
     }
   }
