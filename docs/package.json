@@ -4,6 +4,7 @@
   "private": true,
   "pnpm": {
     "overrides": {
+      "gray-matter>js-yaml": "^3.14.1",
       "redoc": "^2.4.0",
       "webpack-dev-server@<=5.2.0": ">=5.2.1",
       "on-headers@<1.1.0": ">=1.1.0",
