@@ -28,12 +28,12 @@
     "@monaco-editor/react": "^4.7.0",
     "@radix-ui/react-select": "^2.2.6",
     "@react-oauth/google": "^0.12.2",
-    "@sentry/react": "^10.22.0",
+    "@sentry/react": "^10.27.0",
     "@sentry/tracing": "^7.120.4",
     "@sentry/vite-plugin": "^4.6.0",
     "@tailwindcss/typography": "^0.5.19",
     "autoprefixer": "^10.4.21",
-    "axios": "^1.13.1",
+    "axios": "^1.13.5",
     "clsx": "^2.1.1",
     "core-js": "^3.46.0",
     "date-fns": "^4.1.0",
@@ -50,7 +50,7 @@
     "react-hot-toast": "^2.6.0",
     "react-i18next": "^16.2.1",
     "react-markdown": "^10.1.0",
-    "react-router-dom": "^7.9.5",
+    "react-router-dom": "^7.12.0",
     "react-syntax-highlighter": "^16.1.0",
     "recharts": "^2.15.4",
     "redoc": "^2.5.2",
@@ -94,7 +94,12 @@
       "@eslint/plugin-kit@<0.3.4": ">=0.3.4",
       "dompurify@<3.2.4": ">=3.2.4",
       "js-yaml@>=4.0.0 <4.1.1": ">=4.1.1",
-      "glob@>=10.2.0 <10.5.0": ">=10.5.0"
+      "glob@>=10.2.0 <10.5.0": ">=10.5.0",
+      "fast-xml-parser@>=4.3.6 <5.3.6": ">=5.3.6",
+      "lodash@>=4.0.0 <4.17.23": ">=4.17.23",
+      "@isaacs/brace-expansion@<5.0.1": ">=5.0.1",
+      "minimatch@<10.2.1": ">=10.2.1",
+      "axios@>=1.0.0 <1.13.5": ">=1.13.5"
     }
   }
 }

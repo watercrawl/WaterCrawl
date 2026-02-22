@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.12.2] - 2026-02-20
+
+### Security
+- **Multiple Security Vulnerabilities Fixed** - Resolved security vulnerabilities across frontend, backend, and docs
+  - Upgraded Django from 5.2.9 to 5.2.11
+  - Upgraded urllib3 to 2.6.3+
+  - Added cryptography >=46.0.5 to address security issues
+  - Added sqlparse >=0.5.4 to address security issues
+  - Upgraded axios from 1.13.1 to 1.13.5
+  - Added pnpm overrides for vulnerable dependencies:
+    - `qs`, `fast-xml-parser`, `lodash`, `minimatch`, `webpack`
+    - `@isaacs/brace-expansion`, `diff`, `ajv`, `@pnpm/npm-conf`, `sirv`
+  - Fixed gray-matter js-yaml dependency vulnerability
+
+### Fixed
+- **Spider Error Handling** - Improved unhandled exception handling in Scrapy spiders with dedicated Sentry integration
+
+### Changed
+- **Documentation Dependencies** - Upgraded Docusaurus from 3.6.3 to 3.8.0
+- **Frontend Dependencies**
+  - Upgraded @sentry/react from 10.22.0 to 10.27.0
+  - Upgraded react-router-dom from 7.9.5 to 7.12.0
+
 ## [0.12.1] - 2025-12-11
 
 ### Security

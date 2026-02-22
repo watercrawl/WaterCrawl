@@ -64,14 +64,15 @@ def water_crawl_exception_handler(exc, context):
 
     else:
         traceback.print_exc()
-        event, hint = sentry_sdk.utils.event_from_exception(
-            exc,
-            client_options=sentry_sdk.get_client().options
-            if sentry_sdk.get_client()
-            else None,
-            mechanism={"type": "django", "handled": False},
-        )
-        sentry_sdk.capture_event(event, hint=hint)
+        # Mark the exception as unhandled for Sentry
+        client = sentry_sdk.get_client()
+        if client.is_active():
+            event, hint = sentry_sdk.utils.event_from_exception(
+                exc,
+                client_options=client.options,
+                mechanism={"type": "django", "handled": False},
+            )
+            sentry_sdk.capture_event(event, hint=hint)
 
     # Override the default response with the custom response structure
     return Response(custom_response_data, status=custom_response_data["code"])

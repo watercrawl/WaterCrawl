@@ -72,6 +72,7 @@ DOWNLOADER_MIDDLEWARES = {
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
 EXTENSIONS = {
+    "spider.sentry_unhandled.SentryUnhandledExtension": 10,
     "spider.extensions.StopAfterRequestsExtension": 500,
     # "scrapy.extensions.telnet.TelnetConsole": None,
 }

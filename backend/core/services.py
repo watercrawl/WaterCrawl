@@ -2,6 +2,7 @@ import base64
 import fnmatch
 import io
 import json
+import logging
 import subprocess
 import urllib
 import zipfile
@@ -35,6 +36,8 @@ from spider.items import ScrapedItem
 from user.models import Team
 from user.utils import load_class_by_name
 from watercrawl.celery import app
+
+logger = logging.getLogger(__name__)
 
 
 class BaseHelpers:
@@ -837,8 +840,20 @@ class CrawlerService:
             *self.config_helpers.get_spider_settings(),
         ]
         try:
-            subprocess.run(params, check=True, cwd=settings.BASE_DIR)
-        except subprocess.CalledProcessError:
+            subprocess.run(
+                params,
+                check=True,
+                cwd=settings.BASE_DIR,
+                capture_output=True,
+                text=True,
+            )
+        except subprocess.CalledProcessError as e:
+            logger.error(
+                "Scrapy spider failed for crawl_request=%s\nstdout:\n%s\nstderr:\n%s",
+                self.crawl_request.pk,
+                e.stdout,
+                e.stderr,
+            )
             self.crawl_request.duration = timezone.now() - self.crawl_request.created_at
             self.crawl_request.status = consts.CRAWL_STATUS_FAILED
             self.crawl_request.save(update_fields=["status", "duration"])
@@ -973,7 +988,28 @@ class SearchService:
             "-a",
             f"search_request_uuid={self.search_request.pk}",
         ]
-        subprocess.run(params, check=True)
+        try:
+            subprocess.run(
+                params,
+                check=True,
+                cwd=settings.BASE_DIR,
+                capture_output=True,
+                text=True,
+            )
+        except subprocess.CalledProcessError as e:
+            logger.error(
+                "Scrapy spider failed for search_request=%s\nstdout:\n%s\nstderr:\n%s",
+                self.search_request.pk,
+                e.stdout,
+                e.stderr,
+            )
+            self.search_request.duration = (
+                timezone.now() - self.search_request.created_at
+            )
+            self.search_request.status = consts.CRAWL_STATUS_FAILED
+            self.search_request.save(update_fields=["status", "duration"])
+            self.pubsub_service.send_status("state")
+            raise
 
         self.search_request.refresh_from_db()
         self.search_request.duration = timezone.now() - self.search_request.created_at
@@ -1302,8 +1338,20 @@ class SitemapRequestService:
             f"sitemap_request_uuid={self.sitemap.pk}",
         ]
         try:
-            subprocess.run(params, check=True)
-        except subprocess.CalledProcessError:
+            subprocess.run(
+                params,
+                check=True,
+                cwd=settings.BASE_DIR,
+                capture_output=True,
+                text=True,
+            )
+        except subprocess.CalledProcessError as e:
+            logger.error(
+                "Scrapy spider failed for sitemap_request=%s\nstdout:\n%s\nstderr:\n%s",
+                self.sitemap.pk,
+                e.stdout,
+                e.stderr,
+            )
             self.sitemap.duration = timezone.now() - self.sitemap.created_at
             self.sitemap.status = consts.CRAWL_STATUS_FAILED
             self.sitemap.save(update_fields=["status", "duration"])

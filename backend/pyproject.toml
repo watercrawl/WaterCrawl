@@ -1,6 +1,6 @@
 [project]
 name = "watercrawl"
-version = "0.12.1"
+version = "0.12.2"
 description = "WaterCrawl is a smart and extensible web crawler that extracts structured knowledge from websites, generates LLM-ready Markdown files, and visualizes crawl strategies. Built with Django, Scrapy, and Playwright."
 authors = [
     {name = "AmirMohsen Asaran",email = "amir.asaran92@gmail.com"}
@@ -9,8 +9,8 @@ readme = "../README.md"
 requires-python = ">=3.13,<4"
 dependencies = [
     "gunicorn (==23.0.0)",
-    "django (==5.2.10)",
-    "django-environ (==0.12.0)",
+    "django (==5.2.11)",
+    "django-environ (==0.11.2)",
     "scrapy (==2.13.4)",
     "djangorestframework (==3.16.1)",
     "celery (==5.4.0)",
@@ -32,7 +32,9 @@ dependencies = [
     "django-filter (==25.2)",
     "django-redis (==6.0.0)",
     "sentry-sdk[aiohttp,celery,django] (>=2.43.0,<3.0.0)",
-    "urllib3 (>=2.6.2)",
+    "urllib3 (>=2.6.3)",
+    "cryptography (>=46.0.5)",
+    "sqlparse (>=0.5.4)",
     "pypandoc-binary (>=1.15,<2.0)",
     "opensearch-py (>=3.0.0,<4.0.0)",
     "weaviate-client (>=4.9.0,<5.0.0)",
