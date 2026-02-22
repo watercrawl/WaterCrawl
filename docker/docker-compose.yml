@@ -3,7 +3,7 @@ x-app: &app
     context: backend/
     dockerfile: Dockerfile
     args:
-      - VERSION=${VERSION:-v0.12.1}
+      - VERSION=${VERSION:-v0.12.2}
   depends_on:
     db:
       condition: service_healthy
@@ -120,7 +120,7 @@ x-app: &app
     - SENTRY_DEBUG=${SENTRY_DEBUG:-False}
 
 x-frontend: &frontend
-  image: watercrawl/frontend:${VERSION:-v0.12.1}
+  image: watercrawl/frontend:${VERSION:-v0.12.2}
   environment:
     - VITE_API_BASE_URL=${API_BASE_URL:-}
     - VITE_SENTRY_DSN=${SENTRY_FRONTEND_DSN:-}
