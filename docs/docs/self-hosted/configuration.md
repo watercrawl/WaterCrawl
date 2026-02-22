@@ -12,7 +12,7 @@ WaterCrawl uses a single `.env` file in the `docker` directory for all configura
 
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
-| `VERSION` | `v0.12.1`     | Application version. Always check [GitHub Releases](https://github.com/watercrawl/WaterCrawl/releases) for the latest version |
+| `VERSION` | `v0.12.2`     | Application version. Always check [GitHub Releases](https://github.com/watercrawl/WaterCrawl/releases) for the latest version |
 | `NGINX_PORT` | `80`          | Port for the Nginx service |
 
 #### Django Settings
@@ -156,7 +156,7 @@ Below is a basic configuration example for the `.env` file:
 
 ```bash
 # Core Settings
-VERSION=v0.12.1  # Check https://github.com/watercrawl/WaterCrawl/releases for latest version
+VERSION=v0.12.2  # Check https://github.com/watercrawl/WaterCrawl/releases for latest version
 NGINX_PORT=80
 SECRET_KEY=your_secure_secret_key_here  # Generate with: openssl rand -base64 32
 API_ENCRYPTION_KEY=your_secure_api_encryption_key_here  # Generate with: python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
