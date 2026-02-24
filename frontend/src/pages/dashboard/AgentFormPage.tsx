@@ -198,11 +198,7 @@ const AgentFormPage: React.FC = () => {
 
   // Auto-save agent name on changes
   const saveAgentNameWithState = useCallback(async () => {
-    await saveAgentName({
-      enable_as_tool: agentData?.enable_as_tool,
-      tool_function_name: agentData?.tool_function_name,
-      tool_description: agentData?.tool_description,
-    });
+    await saveAgentName();
   }, [saveAgentName, agentData]);
 
   const nameDeps = useMemo(() => [name], [name]);
@@ -323,11 +319,7 @@ const AgentFormPage: React.FC = () => {
 
     // Save both agent name, draft, and tool config first
     await Promise.all([
-      saveAgentName({
-        enable_as_tool: enableAsTool,
-        tool_function_name: toolFunctionName,
-        tool_description: toolDescription,
-      }),
+      saveAgentName(),
       saveDraft(),
       saveToolConfig(),
     ]);
