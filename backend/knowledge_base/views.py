@@ -21,7 +21,13 @@ from knowledge_base.models import (
     KnowledgeBaseDocument,
     KnowledgeBaseChunk,
     RetrievalSetting,
+    KnowledgeBaseQuery,
+    QUERY_STATUS_NEW,
+    QUERY_STATUS_PROCESSING,
+    QUERY_STATUS_FINISHED,
+    QUERY_STATUS_FAILED,
 )
+from plan.services import TeamPlanService
 from knowledge_base.vector_stores.retriever import Retriever
 from knowledge_base.services import KnowledgeBaseDocumentService, KnowledgeBaseService
 from knowledge_base.tasks import (
@@ -192,18 +198,73 @@ class KnowledgeBaseViewSet(
         retrieval_setting = None
         retrieval_setting_id = serializer.validated_data.get("retrieval_setting_id")
         if retrieval_setting_id:
-            from knowledge_base.models import RetrievalSetting
-
             retrieval_setting = RetrievalSetting.objects.filter(
                 knowledge_base=knowledge_base, uuid=retrieval_setting_id
             ).first()
 
-        # Create retriever and search
-        retriever = Retriever(knowledge_base, retrieval_setting)
-        results = retriever.retrieve(
-            query=serializer.validated_data["query"],
+        # Use default retrieval setting if not specified
+        if not retrieval_setting:
+            retrieval_setting = knowledge_base.retrieval_settings.filter(
+                is_default=True
+            ).first()
+
+        # Get retrieval cost from the setting
+        retrieval_cost = retrieval_setting.retrieval_cost if retrieval_setting else 0
+
+        # Check if team has enough credits
+        team_plan_service = TeamPlanService(request.current_team)
+        if retrieval_cost > 0:
+            # Check both daily and total credit limits
+            if (
+                team_plan_service.remaining_page_credit != -1
+                and team_plan_service.remaining_page_credit < retrieval_cost
+            ):
+                raise PermissionDenied(
+                    _("Insufficient credits. Please upgrade your plan.")
+                )
+            if (
+                team_plan_service.remaining_daily_page_credit != -1
+                and team_plan_service.remaining_daily_page_credit < retrieval_cost
+            ):
+                raise PermissionDenied(
+                    _(
+                        "Daily credit limit reached. Please try again tomorrow or upgrade your plan."
+                    )
+                )
+
+        # Create query history record
+        query_record = KnowledgeBaseQuery.objects.create(
+            knowledge_base=knowledge_base,
+            retrieval_setting=retrieval_setting,
+            query_text=serializer.validated_data["query"],
+            status=QUERY_STATUS_NEW,
+            retrieval_cost=retrieval_cost,
         )
-        return Response([result.model_dump() for result in results])
+
+        try:
+            # Update status to processing
+            query_record.status = QUERY_STATUS_PROCESSING
+            query_record.save(update_fields=["status"])
+
+            # Create retriever and search
+            retriever = Retriever(knowledge_base, retrieval_setting)
+            results = retriever.retrieve(
+                query=serializer.validated_data["query"],
+            )
+
+            # Update query record with results
+            query_record.status = QUERY_STATUS_FINISHED
+            query_record.results_count = len(results)
+            query_record.save(update_fields=["status", "results_count"])
+
+            return Response([result.model_dump() for result in results])
+
+        except Exception as e:
+            # Mark query as failed and save error
+            query_record.status = QUERY_STATUS_FAILED
+            query_record.error_message = str(e)
+            query_record.save(update_fields=["status", "error_message"])
+            raise
 
 
 @extend_schema_view(
@@ -576,3 +637,20 @@ class RetrievalSettingViewSet(
             uuid=knowledge_base_uuid, team=self.request.current_team
         )
         serializer.save(knowledge_base=knowledge_base)
+
+
+@setup_current_team
+class KnowledgeBaseQueryViewSet(
+    ListModelMixin,
+    RetrieveModelMixin,
+    GenericViewSet,
+):
+    """ViewSet for knowledge base query history."""
+
+    serializer_class = serializers.KnowledgeBaseQuerySerializer
+    filterset_class = filters.KnowledgeBaseQueryFilter
+
+    def get_queryset(self):
+        return KnowledgeBaseQuery.objects.filter(
+            knowledge_base__team=self.request.current_team
+        ).select_related("knowledge_base", "retrieval_setting")

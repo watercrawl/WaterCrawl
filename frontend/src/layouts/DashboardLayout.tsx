@@ -115,6 +115,11 @@ export const DashboardLayout = () => {
           icon: MapIcon,
         },
         {
+          name: t('dashboard.navigation.queries'),
+          href: '/dashboard/logs/queries',
+          icon: MagnifyingGlassIcon,
+        },
+        {
           name: t('dashboard.navigation.usageHistory'),
           href: '/dashboard/logs/usage',
           icon: DocumentTextIcon,

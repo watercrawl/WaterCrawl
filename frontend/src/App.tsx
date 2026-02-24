@@ -47,11 +47,13 @@ const SitemapRequestDetailPage = React.lazy(
 );
 const ApiReferencePage = React.lazy(() => import('./pages/dashboard/ApiReferencePage'));
 const UsageHistoryPage = React.lazy(() => import('./pages/dashboard/UsageHistoryPage'));
+const QueryLogsPage = React.lazy(() => import('./pages/dashboard/QueryLogsPage'));
 
 // Agent pages
 const AgentsPage = React.lazy(() => import('./pages/dashboard/AgentsPage'));
 const AgentFormPage = React.lazy(() => import('./pages/dashboard/AgentFormPage'));
 const AgentDetailPage = React.lazy(() => import('./pages/dashboard/AgentDetailPage'));
+const AgentIntegrationsPage = React.lazy(() => import('./pages/dashboard/AgentIntegrationsPage'));
 
 // Tools Management
 const ToolsManagementPage = React.lazy(() => import('./pages/dashboard/ToolsManagementPage'));
@@ -170,6 +172,7 @@ const AppContent: React.FC = () => {
                 <Route path="logs/sitemaps" element={<SitemapLogsPage />} />
                 <Route path="logs/sitemaps/:id" element={<SitemapRequestDetailPage />} />
                 <Route path="logs/usage" element={<UsageHistoryPage />} />
+                <Route path="logs/queries" element={<QueryLogsPage />} />
                 <Route path="usage" element={<UsagePage />} />
                 <Route path="api-keys" element={<ApiKeysPage />} />
                 <Route path="settings" element={<SettingsPage />} />
@@ -185,6 +188,7 @@ const AppContent: React.FC = () => {
                 <Route path="agents" element={<AgentsPage />} />
                 <Route path="agents/:agentId" element={<AgentDetailPage />} />
                 <Route path="agents/:agentId/edit" element={<AgentFormPage />} />
+                <Route path="agents/:agentId/integrations" element={<AgentIntegrationsPage />} />
 
                 {/* Tools Management Route */}
                 <Route path="tools" element={<ToolsManagementPage />} />

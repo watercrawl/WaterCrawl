@@ -161,7 +161,7 @@ const KnowledgeBasePage: React.FC = () => {
                   scope="col"
                   className="px-3 py-3.5 text-start text-sm font-semibold text-foreground"
                 >
-                  {t('settings.knowledgeBase.table.models')}
+                  {t('settings.knowledgeBase.table.embedding')}
                 </th>
                 <th
                   scope="col"
@@ -206,10 +206,7 @@ const KnowledgeBasePage: React.FC = () => {
                     </Link>
                   </td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-muted-foreground">
-                    {t('settings.knowledgeBase.table.embedding')}:{' '}
-                    <strong>{kb.embedding_model_key || 'N/A'}</strong> <br />
-                    {t('settings.knowledgeBase.table.summarization')}:{' '}
-                    <strong>{kb.summarization_model_key || 'N/A'}</strong>
+                    <strong>{kb.embedding_model_key || 'N/A'}</strong>
                   </td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-muted-foreground">
                     {kb.document_count}

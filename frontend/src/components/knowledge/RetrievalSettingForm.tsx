@@ -108,19 +108,7 @@ const RetrievalSettingForm: React.FC<RetrievalSettingFormProps> = ({
           {t('settings.knowledgeBase.retrievalSettings.retrievalType')}
         </label>
         <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
-          <OptionCard
-            title={t('settings.knowledgeBase.retrievalSettings.types.vector_search')}
-            description={t('settings.knowledgeBase.retrievalSettings.descriptions.vector_search')}
-            icon={<Square3Stack3DIcon className="h-3 w-3 text-primary" />}
-            isSelected={formData.retrieval_type === RetrievalType.VectorSearch}
-            onClick={() => {
-              if (canUseVectorSearch) {
-                setFormData({ ...formData, retrieval_type: RetrievalType.VectorSearch });
-              }
-            }}
-            iconBgColor={canUseVectorSearch ? "bg-primary-soft" : "bg-muted"}
-            iconDarkBgColor=""
-          />
+          {/* Full Text Search - Always Available */}
           <OptionCard
             title={t('settings.knowledgeBase.retrievalSettings.types.full_text_search')}
             description={t('settings.knowledgeBase.retrievalSettings.descriptions.full_text_search')}
@@ -130,6 +118,8 @@ const RetrievalSettingForm: React.FC<RetrievalSettingFormProps> = ({
             iconBgColor="bg-muted"
             iconDarkBgColor=""
           />
+          
+          {/* Hybrid Search - Requires Embeddings */}
           <OptionCard
             title={t('settings.knowledgeBase.retrievalSettings.types.hybrid_search')}
             description={t('settings.knowledgeBase.retrievalSettings.descriptions.hybrid_search')}
@@ -145,13 +135,39 @@ const RetrievalSettingForm: React.FC<RetrievalSettingFormProps> = ({
             badge={canUseVectorSearch ? {
               text: t('common.recommended'),
               color: 'primary',
+            } : {
+              text: t('settings.knowledgeBase.retrievalSettings.disabled'),
+              color: 'warning',
+            }}
+            disabled={!canUseVectorSearch}
+          />
+          
+          {/* Vector Search - Requires Embeddings */}
+          <OptionCard
+            title={t('settings.knowledgeBase.retrievalSettings.types.vector_search')}
+            description={t('settings.knowledgeBase.retrievalSettings.descriptions.vector_search')}
+            icon={<Square3Stack3DIcon className="h-3 w-3 text-primary" />}
+            isSelected={formData.retrieval_type === RetrievalType.VectorSearch}
+            onClick={() => {
+              if (canUseVectorSearch) {
+                setFormData({ ...formData, retrieval_type: RetrievalType.VectorSearch });
+              }
+            }}
+            iconBgColor={canUseVectorSearch ? "bg-primary-soft" : "bg-muted"}
+            iconDarkBgColor=""
+            badge={!canUseVectorSearch ? {
+              text: t('settings.knowledgeBase.retrievalSettings.disabled'),
+              color: 'warning',
             } : undefined}
+            disabled={!canUseVectorSearch}
           />
         </div>
         {!canUseVectorSearch && (
           <div className="mt-3 rounded-md border-s-4 border-warning-strong bg-warning-soft p-3">
             <p className="text-sm text-warning-strong">
-              {t('settings.knowledgeBase.retrievalSettings.embeddingRequired')}
+              <strong>{t('settings.knowledgeBase.retrievalSettings.embeddingRequired')}</strong>
+              {' '}
+              {t('settings.knowledgeBase.retrievalSettings.embeddingRequiredExplanation')}
             </p>
           </div>
         )}

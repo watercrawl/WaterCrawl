@@ -12,8 +12,9 @@
       "fetchFailed": "Error al obtener los registros de actividad"
     },
     "filters": {
-      "allStatuses": "Todos los Estados",
-      "filterByStatus": "Filtrar por Estado"
+      "allStatuses": "Todos los estados",
+      "filterByStatus": "Filtrar por estado",
+      "status": "Estado"
     },
     "loading": "Cargando registros de actividad...",
     "noSearchRequestsFound": "No se encontraron solicitudes de búsqueda",
@@ -23,6 +24,7 @@
     "sitemapLogs": "Registros de Sitemap",
     "sitemapLogsDesc": "Ver tus solicitudes de sitemap recientes y sus resultados",
     "table": {
+      "actions": "Acciones",
       "created": "Creado",
       "documents": "Documentos",
       "duration": "Duración",
@@ -115,10 +117,10 @@
       "addTool": "+ Agregar Herramienta",
       "advancedModelSettings": "Configuración avanzada del modelo",
       "advancedSettings": "Configuración avanzada",
-      "agentToolAdded": "Herramienta de agente agregada correctamente",
+      "agentsAsTools": "Agentes como Herramientas",
+      "agentToolAdded": "Herramienta de agente agregada exitosamente",
       "agentToolConfigSaved": "Configuración de herramienta de agente guardada",
-      "agentToolRemoved": "Herramienta de agente eliminada correctamente",
-      "agentTools": "Herramientas de agente",
+      "agentToolRemoved": "Herramienta de agente eliminada exitosamente",
       "agentToolsDescription": "Delegar tareas a otros agentes especializados",
       "builtInDataTools": "Herramientas de datos integradas",
       "builtInUtilityTools": "Herramientas de utilidad integradas",
@@ -133,9 +135,16 @@
       "customHTTPTools": "Herramientas HTTP personalizadas",
       "description": "Descripción",
       "descriptionPlaceholder": "Describa qué hace este agente",
+      "disableToolWarningConsequence": "Deshabilitar esta función eliminará este agente de todos los lugares donde se usa como herramienta. Esta acción no se puede deshacer.",
+      "disableToolWarningMessage": "Este agente se está utilizando actualmente como herramienta en {{count}} otros agentes.",
+      "disableToolWarningMessage_one": "Este agente se está utilizando actualmente como herramienta en {{count}} otro agente.",
+      "disableToolWarningMessage_other": "Este agente se está utilizando actualmente como herramienta en {{count}} otros agentes.",
+      "disableToolWarningTitle": "Deshabilitar agente como herramienta",
       "draftAgent": "Agente Borrador",
       "editDescription": "Actualice la configuración y ajustes de su agente",
       "editTitle": "Editar Agente",
+      "enableAsTool": "Habilitar este agente como herramienta",
+      "enableAsToolDescription": "Permite que otros agentes usen este agente como herramienta. Debe configurar el nombre de la función y la descripción antes de publicar.",
       "enabled": "habilitado",
       "frequencyPenalty": "Penalización de frecuencia",
       "frequencyPenaltyDescription": "Reduce la repetición penalizando tokens según su frecuencia. Rango: -2.0 a 2.0",
@@ -168,6 +177,7 @@
       "noKnowledgeBases": "No hay bases de conocimiento conectadas",
       "noKnowledgeBasesConnected": "No hay bases de conocimiento conectadas",
       "noMCPTools": "No hay herramientas MCP configuradas",
+      "noRetrievalSettings": "Configuración de recuperación no configurada.",
       "noTools": "Aún no se han agregado herramientas",
       "noVersions": "No hay historial de versiones disponible",
       "presencePenalty": "Penalización de presencia",
@@ -202,8 +212,19 @@
       "temperature": "Temperatura",
       "temperatureHelp": "Controla la aleatoriedad: 0 es determinístico, valores más altos son más creativos",
       "toolAdded": "Herramienta agregada exitosamente",
+      "toolConfigInfoMessage": "Configure cómo aparece este agente cuando se usa como herramienta por otros agentes. El nombre de función y la descripción ayudan a otros agentes a comprender cuándo y cómo usar esta herramienta.",
+      "toolConfigSaved": "Configuración de herramienta guardada con éxito",
       "toolConfigUpdated": "Configuración de herramienta actualizada exitosamente",
+      "toolConfiguration": "Configuración de herramienta",
       "toolDescription": "Descripción de la herramienta",
+      "toolDescriptionHint": "Explica qué hace este agente cuando se usa como herramienta. Esto ayuda a otros agentes a decidir cuándo usarlo.",
+      "toolDescriptionLabel": "Descripción de la herramienta",
+      "toolDescriptionPlaceholder": "Describe qué hace esta herramienta y cuándo usarla...",
+      "toolDescriptionRequired": "Se requiere descripción de la herramienta cuando el agente está habilitado como herramienta",
+      "toolFunctionName": "Nombre de función",
+      "toolFunctionNameHint": "Un identificador único para esta herramienta. Usa snake_case (ej. mi_herramienta).",
+      "toolFunctionNamePlaceholder": "ej. analizar_sentimiento, resumir_documento",
+      "toolFunctionNameRequired": "Se requiere nombre de función cuando el agente está habilitado como herramienta",
       "toolName": "Nombre de la herramienta",
       "toolRemoved": "Herramienta eliminada exitosamente",
       "tools": {
@@ -225,6 +246,15 @@
       "topPDescription": "Controla la diversidad mediante muestreo de núcleo. 0.5 significa que se considera la mitad de todas las opciones ponderadas por probabilidad.",
       "updateSuccess": "Agente actualizado correctamente",
       "versionHistory": "Historial de Versiones"
+    },
+    "integrations": {
+      "apiDocumentation": "Documentación de API",
+      "integrationType": "Tipo de integración",
+      "publishedOnly": "Las integraciones solo están disponibles para agentes publicados",
+      "title": "Integraciones",
+      "webhooks": "Webhooks",
+      "webhooksComingSoon": "Webhooks próximamente",
+      "webhooksDesc": "Recibe notificaciones cuando tu agente recibe mensajes o completa tareas."
     },
     "jsonOutput": {
       "clearSchema": "Limpiar",
@@ -254,6 +284,7 @@
       "retrievalSettingHint": "Seleccione qué configuración de recuperación usar al consultar esta base de conocimientos. Se usará la configuración predeterminada si no se selecciona ninguna."
     },
     "noAgents": "Aún no hay agentes. Cree su primer agente para comenzar.",
+    "noAgentsFound": "No se encontraron agentes",
     "noResults": "No se encontraron agentes que coincidan con su búsqueda.",
     "notFound": "Agente no encontrado",
     "searchPlaceholder": "Buscar agentes...",
@@ -394,6 +425,7 @@
       "warning": "¡Asegúrate de copiar tu clave ahora. No podrás verla de nuevo!"
     },
     "created": "Creada",
+    "createFirstKey": "Crea tu primera clave API para comenzar",
     "createNew": "Crear Nueva Clave API",
     "deleteConfirmMessage": "¿Está seguro de que desea eliminar la clave API \"{{name}}\"?",
     "deleteConfirmTitle": "Eliminar Clave API",
@@ -594,8 +626,11 @@
     "back": "Atrás",
     "backToHome": "Back to Home",
     "cancel": "Cancelar",
+    "cards": "Tarjetas",
     "close": "Cerrar",
+    "configure": "Configurar",
     "configureModel": "Configurar modelo",
+    "confirm": "Confirmar",
     "confirmError": "Por favor ingresa el valor correcto para confirmar la eliminación",
     "copied": "¡Copiado!",
     "copiedToClipboard": "¡Copiado al portapapeles!",
@@ -619,7 +654,9 @@
     "duplicate": "Duplicar",
     "edit": "Editar",
     "editor": "Editor",
+    "error": "Error",
     "expand": "Ampliar",
+    "false": "Falso",
     "forgotPassword": {
       "backToLogin": "Volver al inicio de sesión",
       "checkEmail": "Revisa tu correo electrónico",
@@ -677,7 +714,9 @@
     "noModelsAvailableMessage": "No hay modelos de {{modelType}} disponibles en sus configuraciones de proveedores. Por favor agregue o configure proveedores con modelos de {{modelType}} en la configuración de su equipo.",
     "noProviderConfigs": "No hay configuraciones de proveedores disponibles",
     "noProviderConfigsMessage": "Necesita configurar al menos un proveedor para usar modelos. Por favor agregue una configuración de proveedor en la configuración de su equipo.",
+    "noResults": "No se encontraron resultados",
     "nothingFound": "No se encontró nada.",
+    "open": "Abrir",
     "openSidebar": "Abrir barra lateral",
     "openUserMenu": "Abrir menú de usuario",
     "optional": "Opcional",
@@ -705,6 +744,8 @@
     "results": "Resultados",
     "save": "Guardar",
     "saved": "¡Guardado!",
+    "saving": "Guardando...",
+    "search": "Buscar",
     "select": "Seleccionar",
     "selectAll": "Seleccionar todo",
     "selectOption": "Selecciona una opción",
@@ -733,6 +774,7 @@
       "verifyEmail": "Por favor verifica tu dirección de correo electrónico"
     },
     "soon": "Próximamente",
+    "stop": "Detener",
     "submit": "Enviar",
     "subtitle": "Plataforma de Web Crawling",
     "success": "Éxito",
@@ -743,6 +785,7 @@
       "system": "Sistema",
       "title": "Tema"
     },
+    "true": "Verdadero",
     "typing": "Escribiendo...",
     "unknown": "Desconocido",
     "url": "URL",
@@ -1005,6 +1048,7 @@
       "knowledgeBase": "Base de Conocimientos",
       "mediaLibrary": "Biblioteca multimedia",
       "profile": "Perfil",
+      "queries": "Registros de Consultas",
       "search": "Buscar",
       "searches": "Búsquedas",
       "settings": "Configuración",
@@ -1151,6 +1195,7 @@
     "tryAgain": "Intentar de Nuevo"
   },
   "errors": {
+    "badRequest": "Solicitud inválida",
     "contactSupport": "Por favor contacta con soporte si este problema persiste",
     "generic": "Algo salió mal. Por favor inténtalo de nuevo",
     "notFound": {
@@ -1211,7 +1256,7 @@
       "readVersion": "Puedes leer la última versión"
     },
     "newsletter": {
-      "description": "Te enviaremos actualizaciones de WaterCrawl, nuevas funciones y anuncios importantes",
+      "description": "Te enviaremos actualizaciones de WaterCrawl, nuevas funciones y anuncios importantes directamente en tu bandeja de entrada.",
       "title": "Únete a nuestro boletín"
     },
     "password": {
@@ -1245,6 +1290,9 @@
       "passwordUppercase": "La contraseña debe contener al menos una letra mayúscula",
       "validEmail": "Por favor ingresa un correo electrónico válido"
     }
+  },
+  "knowledge": {
+    "noKnowledgeBases": "No se encontraron bases de conocimiento"
   },
   "knowledgeBase": {
     "chunk": "Fragmento",
@@ -1286,12 +1334,18 @@
       "importAllSuccess": "Todos los resultados se importaron con éxito",
       "importFailed": "Error al importar los resultados seleccionados",
       "importSelected": "Importar Seleccionados ({{count}})",
+      "importSelected_one": "Importar seleccionado ({{count}})",
+      "importSelected_other": "Importar seleccionados ({{count}})",
       "importSuccess": "{{count}} resultado importado con éxito",
       "importSuccess_one": "{{count}} resultado importado con éxito",
       "importSuccess_other": "{{count}} resultados importados con éxito",
       "importUrls": "Importar {{count}} URLs",
+      "importUrls_one": "Importar {{count}} URL",
+      "importUrls_other": "Importar {{count}} URLs",
       "importUrlsFailed": "Error al importar URLs a la base de conocimientos",
       "importUrlsSuccess": "Se inició con éxito la importación de {{count}} URLs a la base de conocimientos",
+      "importUrlsSuccess_one": "Importación de {{count}} URL a la base de conocimiento iniciada con éxito",
+      "importUrlsSuccess_other": "Importación de {{count}} URLs a la base de conocimiento iniciada con éxito",
       "invalidRequest": "Solicitud inválida. Por favor verifique sus selecciones e intente nuevamente.",
       "manual": "Entrada Manual",
       "manualDesc": "Ingresar o pegar contenido de texto manualmente",
@@ -1338,6 +1392,9 @@
     "keywords": "Palabras Clave",
     "list": "Bases de Conocimientos",
     "new": "Nueva Base de Conocimientos",
+    "noQueries": "Aún no hay consultas",
+    "noQueriesFiltered": "No se encontraron consultas con el filtro seleccionado",
+    "noQueriesYet": "El historial de consultas aparecerá aquí una vez que comience a usar la recuperación de la base de conocimientos",
     "previewContent": "Vista previa del contenido completo",
     "pricing": {
       "costPerDocument": "Costo por Documento",
@@ -1372,6 +1429,12 @@
       "sources": "Fuentes",
       "title": "Consultar Base de Conocimientos"
     },
+    "queryHistory": "Historial de Consultas",
+    "queryLogs": "Registros de Consultas",
+    "queryLogsDesc": "Ver historial de consultas y costos de recuperación de la base de conocimientos",
+    "queryText": "Texto de Consulta",
+    "resultsCount": "Resultados",
+    "retrievalCost": "Costo",
     "searchPlaceholder": "Buscar bases de conocimientos...",
     "source": "Fuente",
     "subtitle": "Gestiona tus bases de conocimientos",
@@ -1535,7 +1598,7 @@
       "description": "Recibe las últimas actualizaciones, noticias de producto y ofertas exclusivas directamente en tu bandeja de entrada.",
       "receiveUpdates": "Recibir boletines y actualizaciones",
       "title": "Suscripción al Boletín",
-      "tooltip": "¡Manténete actualizado con nuestras últimas funciones, actualizaciones y ofertas exclusivas!"
+      "tooltip": "¡Manténte actualizado con nuestras últimas funciones, actualizaciones y ofertas exclusivas!"
     },
     "password": {
       "changeButton": "Cambiar Contraseña",
@@ -1637,6 +1700,8 @@
   },
   "results": {
     "attachments": "Adjuntos",
+    "attachments_one": "{{count}} adjunto",
+    "attachments_other": "{{count}} adjuntos",
     "details": "Detalles del Resultado",
     "json": "JSON",
     "markdown": "Markdown",
@@ -1739,6 +1804,7 @@
     "numResults": "Número de Resultados",
     "queryDescription": "Ingresa tu consulta para buscar en internet resultados relevantes.",
     "queryPlaceholder": "Ingresa tu consulta de búsqueda...",
+    "result": "Resultado",
     "results": {
       "date": "Fecha",
       "found": "resultados encontrados",
@@ -1831,6 +1897,11 @@
         "goBack": "Volver a Bases de Conocimientos",
         "notFound": "Base de conocimientos no encontrada o no tienes acceso a ella.",
         "test": "Probar"
+      },
+      "document": {
+        "deleteDocument": "Eliminar documento",
+        "retryIndexing": "Reintentar indexación",
+        "viewChunks": "Ver bloques"
       },
       "documentDetail": {
         "backToKB": "Volver a Base de Conocimientos",
@@ -2077,13 +2148,29 @@
           "hybrid_search": "Combine búsqueda semántica y por palabras clave para mejores resultados",
           "vector_search": "Búsqueda usando similitud semántica con embeddings"
         },
+        "disabled": "Deshabilitado",
         "embeddingRequired": "La búsqueda vectorial e híbrida requiere que los embeddings estén configurados para esta base de conocimientos",
+        "embeddingRequiredExplanation": "Por favor, configure un proveedor de embeddings para esta base de conocimientos para usar estos tipos de recuperación.",
         "hybridAlpha": "Alpha híbrido",
         "hybridAlphaHelp": "Equilibrio entre búsqueda semántica (0.0) y búsqueda por palabras clave (1.0). 0.7 significa 70% semántica, 30% palabras clave.",
         "loadError": "Error al cargar las configuraciones de recuperación",
         "name": "Nombre",
         "namePlaceholder": "ej. Búsqueda por defecto, Búsqueda semántica, etc.",
         "noSettings": "No hay configuraciones de recuperación configuradas. Añada una para comenzar.",
+        "pricing": {
+          "costPerRetrieval": "Costo por Recuperación",
+          "credit": "crédito",
+          "credits": "créditos",
+          "free": "Gratis",
+          "limitedTime": "Tiempo Limitado",
+          "noCharges": "Sin cargos al usar sus propias claves API para funciones habilitadas.",
+          "rerankerWC": "Reranker (proveedor WaterCrawl)",
+          "retrievalsFree": "¡Las recuperaciones son actualmente gratuitas!",
+          "title": "Precios de Recuperación",
+          "vectorSearchWC": "Búsqueda Vectorial (proveedor WaterCrawl)",
+          "yourConfiguration": "Su Configuración"
+        },
+        "requiresEmbedding": "Requiere configuración de embeddings",
         "reranker": "Reranker",
         "rerankerEnabled": "Habilitar reranker",
         "rerankerEnabledHelp": "Use un reranker para mejorar la relevancia de los resultados reordenando los resultados",
@@ -2611,6 +2698,8 @@
       "noSpecsDescription": "Agregue una especificación OpenAPI para generar herramientas para sus agentes",
       "noTools": "No hay herramientas disponibles",
       "securityParamsExtracted": "Se extrajeron {{count}} parámetro(s) de seguridad de la especificación",
+      "securityParamsExtracted_one": "{{count}} parámetro de seguridad extraído de las especificaciones",
+      "securityParamsExtracted_other": "{{count}} parámetros de seguridad extraídos de las especificaciones",
       "specJson": "Especificación OpenAPI",
       "specJsonHelp": "Pegue su especificación OpenAPI o suba un archivo JSON/YAML",
       "specName": "Nombre de especificación",
@@ -2624,6 +2713,7 @@
     "createCustomTool": "Crear herramienta personalizada",
     "createSuccess": "Herramienta creada correctamente",
     "deleteSuccess": "Herramienta eliminada correctamente",
+    "description": "Descripción",
     "drawer": {
       "artifact": "Artefacto",
       "description": "Descripción",
@@ -2677,6 +2767,7 @@
       "urlRequired": "La URL es requerida"
     },
     "inactive": "Inactiva",
+    "inputParameters": "Parámetros de entrada",
     "management": "Gestión de herramientas",
     "managementDescription": "Gestione herramientas HTTP personalizadas y servidores MCP para sus agentes",
     "mcp": {
@@ -2751,7 +2842,11 @@
       "pathVariableHintDescription": "Si la clave API debe formar parte de la ruta de la URL, utilice {{VARIABLE_NAME}} como marcador de posición y añada un parámetro con el mismo nombre utilizando el tipo \"Ruta\".",
       "pathVariableHintTitle": "Variables dinámicas de URL",
       "pathVariablesDetected": "Detectadas {{count}} variables de ruta - por favor, rellene los valores",
+      "pathVariablesDetected_one": "{{count}} variable de ruta detectada - complete los valores",
+      "pathVariablesDetected_other": "{{count}} variables de ruta detectadas - complete los valores",
       "queryParamsExtracted": "Extraídos {{count}} parámetros de consulta de la URL",
+      "queryParamsExtracted_one": "{{count}} parámetro de consulta extraído de la URL",
+      "queryParamsExtracted_other": "{{count}} parámetros de consulta extraídos de la URL",
       "reconnect": "Reconectar",
       "required": "Requerido",
       "requiredFromUrl": "Detectado desde la ruta de la URL",
@@ -2791,8 +2886,12 @@
       "yamlConverted": "YAML convertido a JSON"
     },
     "noBuiltInTools": "Sin herramientas integradas",
+    "noBuiltInToolsDescription": "No hay herramientas integradas disponibles",
+    "noInputSchema": "Sin esquema de entrada",
+    "noParameters": "Sin parámetros",
     "noTools": "No se encontraron herramientas",
     "noToolsDescription": "Cree su primera herramienta personalizada o conéctese a un servidor MCP para comenzar",
+    "searchPlaceholder": "Buscar herramientas...",
     "tabs": {
       "apiSpecs": "Especificaciones API",
       "builtin": "Herramientas integradas",
@@ -2815,6 +2914,7 @@
       "tryAgain": "Intentar de nuevo"
     },
     "tool": "herramienta",
+    "toolKey": "Clave de herramienta",
     "tools": "herramientas",
     "type": {
       "apiSpec": "Especificación API",

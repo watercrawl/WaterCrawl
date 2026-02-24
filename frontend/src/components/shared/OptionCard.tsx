@@ -12,6 +12,7 @@ export interface OptionCardProps {
   };
   iconBgColor: string;
   iconDarkBgColor: string;
+  disabled?: boolean;
 }
 
 const OptionCard: React.FC<OptionCardProps> = ({
@@ -23,6 +24,7 @@ const OptionCard: React.FC<OptionCardProps> = ({
   badge,
   iconBgColor,
   iconDarkBgColor,
+  disabled = false,
 }) => {
   const getBadgeColors = (color: string) => {
     switch (color) {
@@ -43,10 +45,14 @@ const OptionCard: React.FC<OptionCardProps> = ({
 
   return (
     <div
-      onClick={onClick}
+      onClick={disabled ? undefined : onClick}
       className={`flex flex-col border p-2 ${
         isSelected ? 'border-primary bg-primary-soft' : 'border-border'
-      } cursor-pointer rounded-lg transition-all hover:border-primary`}
+      } ${
+        disabled 
+          ? 'cursor-not-allowed opacity-60' 
+          : 'cursor-pointer hover:border-primary'
+      } rounded-lg transition-all`}
     >
       <div className="flex items-center">
         <div

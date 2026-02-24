@@ -42,7 +42,9 @@ export const useVariableDetection = ({
   }, [systemPrompt, existingVariables, onVariablesDetected]);
 
   useEffect(() => {
-    const timer = setTimeout(detectVariables, delay);
+    const timer = setTimeout(() => {
+      detectVariables();
+    }, delay);
     return () => clearTimeout(timer);
   }, [detectVariables, delay]);
 };

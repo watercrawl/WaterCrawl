@@ -8,4 +8,5 @@ export { useAgentTools } from './useAgentTools';
 export { useAgentKnowledgeBases } from './useAgentKnowledgeBases';
 export { useAgentContextVariables } from './useAgentContextVariables';
 export { useAgentVersions } from './useAgentVersions';
+export { useAgentToolConfig } from './useAgentToolConfig';
 

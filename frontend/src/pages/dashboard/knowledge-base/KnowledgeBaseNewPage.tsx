@@ -9,21 +9,16 @@ import {
   InformationCircleIcon,
   Squares2X2Icon,
   Square3Stack3DIcon,
-  Bars3Icon,
   CheckCircleIcon,
   XCircleIcon,
   BoltIcon,
-  TagIcon,
 } from '@heroicons/react/24/outline';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { EnhanceContextModal } from '../../../components/knowledge/EnhanceContextModal';
 import KnowledgeBasePricingInfo from '../../../components/knowledge/KnowledgeBasePricingInfo';
 import RetrievalSettingForm from '../../../components/knowledge/RetrievalSettingForm';
-import { Button } from '../../../components/shared/Button';
 import Card from '../../../components/shared/Card';
-import ComboboxComponent from '../../../components/shared/ComboboxComponent';
 import Loading from '../../../components/shared/Loading';
 import ModelSelector from '../../../components/shared/ModelSelector';
 import OptionCard from '../../../components/shared/OptionCard';
@@ -95,10 +90,9 @@ const KnowledgeBaseNewPage: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [providerConfigs, setProviderConfigs] = useState<ListProviderConfig[]>([]);
   const [isLoadingProviders, setIsLoadingProviders] = useState(true);
-  const [isEnhanceModalOpen, setIsEnhanceModalOpen] = useState(false);
   const [initialRetrievalSetting, setInitialRetrievalSetting] = useState<Partial<RetrievalSettingFormData>>({
     name: 'Default',
-    retrieval_type: RetrievalType.HybridSearch,
+    retrieval_type: RetrievalType.FullTextSearch,
     is_default: true,
     top_k: 3,
     hybrid_alpha: 0.7,
@@ -178,10 +172,6 @@ const KnowledgeBaseNewPage: React.FC = () => {
   const {
     embedding_provider_config_id: watchEmbeddingProviderConfig,
     summarization_provider_config_id: watchSummarizationProviderConfig,
-    summarization_model_key: watchSummarizationModelKey,
-    summarizer_type: watchSummarizerType,
-    summarizer_context: watchSummarizerContext,
-    summarizer_llm_config: watchSummarizerLLMConfig,
     // chunk_size: watchChunkSize,
     autoChunkOverlap: watchAutoChunkOverlap,
     enhancementEnabled: watchEnhancementEnabled,
@@ -413,6 +403,17 @@ const KnowledgeBaseNewPage: React.FC = () => {
                       </label>
                       <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
                         <OptionCard
+                          title={t('settings.knowledgeBase.form.embedding.textOnlySearch')}
+                          description={t(
+                            'settings.knowledgeBase.form.embedding.textOnlyDescription'
+                          )}
+                          icon={<XCircleIcon className="h-3 w-3 text-muted-foreground" />}
+                          isSelected={!watchEmbeddingEnabled}
+                          onClick={() => setValue('embeddingEnabled', false)}
+                          iconBgColor="bg-muted"
+                          iconDarkBgColor=""
+                        />{' '}
+                        <OptionCard
                           title={t('settings.knowledgeBase.form.embedding.semanticSearch')}
                           description={t(
                             'settings.knowledgeBase.form.embedding.semanticDescription'
@@ -425,17 +426,6 @@ const KnowledgeBaseNewPage: React.FC = () => {
                             color: 'primary',
                           }}
                           iconBgColor="bg-success-soft"
-                          iconDarkBgColor=""
-                        />{' '}
-                        <OptionCard
-                          title={t('settings.knowledgeBase.form.embedding.textOnlySearch')}
-                          description={t(
-                            'settings.knowledgeBase.form.embedding.textOnlyDescription'
-                          )}
-                          icon={<XCircleIcon className="h-3 w-3 text-muted-foreground" />}
-                          isSelected={!watchEmbeddingEnabled}
-                          onClick={() => setValue('embeddingEnabled', false)}
-                          iconBgColor="bg-muted"
                           iconDarkBgColor=""
                         />{' '}
                       </div>{' '}
@@ -592,8 +582,16 @@ const KnowledgeBaseNewPage: React.FC = () => {
                   </Card.Body>
                 </Card>
 
-                {/* Summarization Configuration Section */}
-                <Card>
+                {/* Summarization Configuration Section - COMMENTED OUT */}
+                {/* Default values are set in form initialization:
+                    - enhancementEnabled: false (no enhancement by default)
+                    - summarizer_type: SummarizerType.Standard
+                    - summarization_model_key: null
+                    - summarization_provider_config_id: null
+                    - summarizer_context: ''
+                    - summarizer_llm_config: {}
+                */}
+                {/* <Card>
                   <Card.Title icon={<Bars3Icon className="h-5 w-5 text-primary" />}>
                     {t('settings.knowledgeBase.form.summarization.title')}
                   </Card.Title>
@@ -603,7 +601,6 @@ const KnowledgeBaseNewPage: React.FC = () => {
                         {t('settings.knowledgeBase.form.summarization.description')}
                       </p>
                     </div>
-                    {/* Index Method Selection */}
                     <div className="mb-6">
                       <label className="mb-3 block text-sm font-medium text-foreground">
                         {t('settings.knowledgeBase.form.summarization.enableQuestion')}
@@ -789,7 +786,7 @@ const KnowledgeBaseNewPage: React.FC = () => {
                       </>
                     )}
                   </Card.Body>
-                </Card>
+                </Card> */}
 
                 {/* Initial Retrieval Setting Section */}
                 <Card>
@@ -868,6 +865,14 @@ const KnowledgeBaseNewPage: React.FC = () => {
                 rateLimit={currentSubscription?.knowledge_base_retrival_rate_limit}
                 numberOfDocumentsLimit={
                   currentSubscription?.number_of_each_knowledge_base_documents
+                }
+                retrievalType={initialRetrievalSetting.retrieval_type}
+                rerankerEnabled={initialRetrievalSetting.reranker_enabled}
+                rerankerProviderType={
+                  initialRetrievalSetting.reranker_provider_config_id &&
+                  providerConfigs.find(p => p.uuid === initialRetrievalSetting.reranker_provider_config_id)?.is_global
+                    ? 'watercrawl'
+                    : 'external'
                 }
               />
             </div>

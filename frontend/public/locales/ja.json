@@ -13,7 +13,8 @@
     },
     "filters": {
       "allStatuses": "すべてのステータス",
-      "filterByStatus": "ステータスでフィルター"
+      "filterByStatus": "ステータスでフィルター",
+      "status": "ステータス"
     },
     "loading": "アクティビティログを読み込み中...",
     "noSearchRequestsFound": "検索リクエストが見つかりません",
@@ -23,6 +24,7 @@
     "sitemapLogs": "サイトマップログ",
     "sitemapLogsDesc": "最近のサイトマップリクエストとその結果を表示",
     "table": {
+      "actions": "アクション",
       "created": "作成日時",
       "documents": "ドキュメント",
       "duration": "期間",
@@ -115,10 +117,10 @@
       "addTool": "+ ツールを追加",
       "advancedModelSettings": "高度なモデル設定",
       "advancedSettings": "詳細設定",
+      "agentsAsTools": "ツールとしてのエージェント",
       "agentToolAdded": "エージェントツールを追加しました",
       "agentToolConfigSaved": "エージェントツール設定を保存しました",
       "agentToolRemoved": "エージェントツールを削除しました",
-      "agentTools": "エージェントツール",
       "agentToolsDescription": "他の専門エージェントにタスクを委任",
       "builtInDataTools": "組み込みデータツール",
       "builtInUtilityTools": "組み込みユーティリティツール",
@@ -133,9 +135,16 @@
       "customHTTPTools": "カスタムHTTPツール",
       "description": "説明",
       "descriptionPlaceholder": "このエージェントの機能を説明してください",
+      "disableToolWarningConsequence": "この機能を無効化すると、このエージェントがツールとして使用されているすべての場所から削除されます。この操作は元に戻せません。",
+      "disableToolWarningMessage": "このエージェントは現在{{count}}個の他のエージェントでツールとして使用されています。",
+      "disableToolWarningMessage_one": "このエージェントは現在{{count}}他のエージェントでツールとして使用されています。",
+      "disableToolWarningMessage_other": "このエージェントは現在{{count}}他のエージェントでツールとして使用されています。",
+      "disableToolWarningTitle": "ツールとしてのエージェントを無効化",
       "draftAgent": "ドラフトエージェント",
       "editDescription": "エージェントの設定と構成を更新",
       "editTitle": "エージェントを編集",
+      "enableAsTool": "このエージェントをツールとして有効化",
+      "enableAsToolDescription": "他のエージェントがこのエージェントをツールとして使用できるようにします。公開する前に関数名と説明を設定する必要があります。",
       "enabled": "有効",
       "frequencyPenalty": "頻度ペナルティ",
       "frequencyPenaltyDescription": "トークンの出現頻度に基づいてペナルティを与え、繰り返しを減らします。範囲：-2.0から2.0",
@@ -168,6 +177,7 @@
       "noKnowledgeBases": "接続されたナレッジベースがありません",
       "noKnowledgeBasesConnected": "ナレッジベースが接続されていません",
       "noMCPTools": "MCPツールは設定されていません",
+      "noRetrievalSettings": "検索設定が設定されていません。",
       "noTools": "まだツールが追加されていません",
       "noVersions": "バージョン履歴が利用できません",
       "presencePenalty": "存在ペナルティ",
@@ -202,8 +212,19 @@
       "temperature": "温度",
       "temperatureHelp": "ランダム性を制御：0は決定論的、値が高いほどより創造的",
       "toolAdded": "ツールが正常に追加されました",
+      "toolConfigInfoMessage": "他のエージェントがこのエージェントをツールとして使用する際の表示方法を設定します。関数名と説明は、他のエージェントがこのツールをいつ、どのように使用するかを理解するのに役立ちます。",
+      "toolConfigSaved": "ツール設定を保存しました",
       "toolConfigUpdated": "ツール設定が正常に更新されました",
+      "toolConfiguration": "ツール設定",
       "toolDescription": "ツールの説明",
+      "toolDescriptionHint": "このエージェントがツールとして使用される際に何をするかを説明します。これにより、他のエージェントがいつ使用すべきかを判断できます。",
+      "toolDescriptionLabel": "ツールの説明",
+      "toolDescriptionPlaceholder": "このツールが何をするか、いつ使用するかを説明してください...",
+      "toolDescriptionRequired": "エージェントがツールとして有効化されている場合、ツールの説明は必須です",
+      "toolFunctionName": "関数名",
+      "toolFunctionNameHint": "このツールの一意の識別子。snake_caseを使用してください（例: my_tool_name）。",
+      "toolFunctionNamePlaceholder": "例: analyze_sentiment, summarize_document",
+      "toolFunctionNameRequired": "エージェントがツールとして有効化されている場合、関数名は必須です",
       "toolName": "ツール名",
       "toolRemoved": "ツールが正常に削除されました",
       "tools": {
@@ -225,6 +246,15 @@
       "topPDescription": "核サンプリングによる多様性を制御。0.5は確率加重されたオプションの半分が考慮されることを意味します。",
       "updateSuccess": "エージェントを更新しました",
       "versionHistory": "バージョン履歴"
+    },
+    "integrations": {
+      "apiDocumentation": "APIドキュメント",
+      "integrationType": "統合タイプ",
+      "publishedOnly": "統合は公開されたエージェントでのみ利用可能です",
+      "title": "統合",
+      "webhooks": "Webhook",
+      "webhooksComingSoon": "Webhook近日公開",
+      "webhooksDesc": "エージェントがメッセージを受信したりタスクを完了したときに通知を受け取ります。"
     },
     "jsonOutput": {
       "clearSchema": "クリア",
@@ -254,6 +284,7 @@
       "retrievalSettingHint": "このナレッジベースをクエリする際に使用する取得設定を選択。選択しない場合はデフォルト設定が使用されます。"
     },
     "noAgents": "エージェントはまだありません。最初のエージェントを作成して始めましょう。",
+    "noAgentsFound": "エージェントが見つかりません",
     "noResults": "検索に一致するエージェントが見つかりません。",
     "notFound": "エージェントが見つかりません",
     "searchPlaceholder": "エージェントを検索...",
@@ -394,6 +425,7 @@
       "warning": "今すぐキーをコピーしてください。二度と表示されません！"
     },
     "created": "作成日",
+    "createFirstKey": "最初のAPIキーを作成して開始しましょう",
     "createNew": "新しいAPIキーを作成",
     "deleteConfirmMessage": "APIキー\"{{name}}\"を削除してもよろしいですか？",
     "deleteConfirmTitle": "APIキーを削除",
@@ -594,8 +626,11 @@
     "back": "戻る",
     "backToHome": "Back to Home",
     "cancel": "キャンセル",
+    "cards": "カード",
     "close": "閉じる",
+    "configure": "設定",
     "configureModel": "モデルを設定",
+    "confirm": "確認",
     "confirmError": "Please enter the correct value to confirm deletion",
     "copied": "コピーしました！",
     "copiedToClipboard": "クリップボードにコピーしました！",
@@ -619,7 +654,9 @@
     "duplicate": "複製",
     "edit": "編集",
     "editor": "エディタ",
+    "error": "エラー",
     "expand": "展開",
+    "false": "假",
     "forgotPassword": {
       "backToLogin": "ログインに戻る",
       "checkEmail": "メールを確認してください",
@@ -677,7 +714,9 @@
     "noModelsAvailableMessage": "プロバイダー設定に{{modelType}}モデルがありません。チーム設定で{{modelType}}モデルを持つプロバイダーを追加または設定してください。",
     "noProviderConfigs": "プロバイダー設定がありません",
     "noProviderConfigsMessage": "モデルを使用するには、少なくとも1つのプロバイダーを設定する必要があります。チーム設定でプロバイダー設定を追加してください。",
+    "noResults": "結果なし",
     "nothingFound": "何も見つかりませんでした。",
+    "open": "開く",
     "openSidebar": "サイドバーを開く",
     "openUserMenu": "ユーザーメニューを開く",
     "optional": "任意",
@@ -705,6 +744,8 @@
     "results": "結果",
     "save": "保存",
     "saved": "保存しました！",
+    "saving": "保存中...",
+    "search": "検索",
     "select": "選択",
     "selectAll": "すべて選択",
     "selectOption": "オプションを選択",
@@ -733,6 +774,7 @@
       "verifyEmail": "メールアドレスを確認してください"
     },
     "soon": "近日公開",
+    "stop": "停止",
     "submit": "送信",
     "subtitle": "Webクローリングプラットフォーム",
     "success": "成功",
@@ -743,6 +785,7 @@
       "system": "システム",
       "title": "テーマ"
     },
+    "true": "真",
     "typing": "入力中...",
     "unknown": "不明",
     "url": "URL",
@@ -1005,6 +1048,7 @@
       "knowledgeBase": "ナレッジベース",
       "mediaLibrary": "メディアライブラリ",
       "profile": "プロフィール",
+      "queries": "クエリログ",
       "search": "検索",
       "searches": "検索",
       "settings": "設定",
@@ -1151,6 +1195,7 @@
     "tryAgain": "再試行"
   },
   "errors": {
+    "badRequest": "無効なリクエスト",
     "contactSupport": "この問題が解決しない場合はサポートにお問い合わせください",
     "generic": "問題が発生しました。もう一度お試しください",
     "notFound": {
@@ -1246,6 +1291,9 @@
       "validEmail": "有効なメールアドレスを入力してください"
     }
   },
+  "knowledge": {
+    "noKnowledgeBases": "ナレッジベースが見つかりません"
+  },
   "knowledgeBase": {
     "chunk": "チャンク",
     "contentPreview": "コンテンツプレビュー",
@@ -1286,12 +1334,18 @@
       "importAllSuccess": "すべての結果を正常にインポートしました",
       "importFailed": "選択した結果のインポートに失敗しました",
       "importSelected": "選択項目をインポート ({{count}})",
+      "importSelected_one": "{{count}}個の選択をインポート",
+      "importSelected_other": "{{count}}個の選択をインポート",
       "importSuccess": "{{count}} 件の結果を正常にインポートしました",
       "importSuccess_one": "Successfully imported {{count}} result",
       "importSuccess_other": "Successfully imported {{count}} results",
       "importUrls": "{{count}} 件のURLをインポート",
+      "importUrls_one": "{{count}}個URLをインポート",
+      "importUrls_other": "{{count}}個URLをインポート",
       "importUrlsFailed": "URLのナレッジベースへのインポートに失敗しました",
       "importUrlsSuccess": "{{count}} 件のURLのナレッジベースへのインポートを正常に開始しました",
+      "importUrlsSuccess_one": "{{count}}個URLのインポートを開始しました",
+      "importUrlsSuccess_other": "{{count}}個URLのインポートを開始しました",
       "invalidRequest": "無効なリクエストです。選択内容を確認して、もう一度お試しください。",
       "manual": "手動入力",
       "manualDesc": "テキストコンテンツを手動で入力または貼り付け",
@@ -1338,6 +1392,9 @@
     "keywords": "キーワード",
     "list": "ナレッジベース",
     "new": "新しいナレッジベース",
+    "noQueries": "まだクエリがありません",
+    "noQueriesFiltered": "選択したフィルターでクエリが見つかりません",
+    "noQueriesYet": "ナレッジベース検索を使用し始めると、クエリ履歴がここに表示されます",
     "previewContent": "全コンテンツをプレビュー",
     "pricing": {
       "costPerDocument": "ドキュメントあたりのコスト",
@@ -1372,6 +1429,12 @@
       "sources": "ソース",
       "title": "ナレッジベースを検索"
     },
+    "queryHistory": "クエリ履歴",
+    "queryLogs": "クエリログ",
+    "queryLogsDesc": "ナレッジベースのクエリ履歴と検索コストを表示",
+    "queryText": "クエリテキスト",
+    "resultsCount": "結果数",
+    "retrievalCost": "コスト",
     "searchPlaceholder": "ナレッジベースを検索...",
     "source": "ソース",
     "subtitle": "ナレッジベースを管理",
@@ -1637,6 +1700,8 @@
   },
   "results": {
     "attachments": "添付ファイル",
+    "attachments_one": "{{count}}個の添付ファイル",
+    "attachments_other": "{{count}}個の添付ファイル",
     "details": "結果詳細",
     "json": "JSON",
     "markdown": "Markdown",
@@ -1739,6 +1804,7 @@
     "numResults": "結果の数",
     "queryDescription": "クエリを入力してインターネットで関連結果を検索します。",
     "queryPlaceholder": "検索クエリを入力...",
+    "result": "結果",
     "results": {
       "date": "日付",
       "found": "件の結果が見つかりました",
@@ -1831,6 +1897,11 @@
         "goBack": "ナレッジベースに戻る",
         "notFound": "ナレッジベースが見つからないか、アクセス権がありません。",
         "test": "テスト"
+      },
+      "document": {
+        "deleteDocument": "ドキュメントを削除",
+        "retryIndexing": "インデックス再試行",
+        "viewChunks": "チャンクを表示"
       },
       "documentDetail": {
         "backToKB": "ナレッジベースに戻る",
@@ -2077,13 +2148,29 @@
           "hybrid_search": "セマンティック検索とキーワード検索を組み合わせて最良の結果を得る",
           "vector_search": "埋め込みを使用したセマンティック類似性による検索"
         },
+        "disabled": "無効",
         "embeddingRequired": "ベクトル検索とハイブリッド検索には、このナレッジベースに埋め込みが設定されている必要があります",
+        "embeddingRequiredExplanation": "これらの検索タイプを使用するには、このナレッジベースの埋め込みプロバイダーを設定してください。",
         "hybridAlpha": "ハイブリッドアルファ",
         "hybridAlphaHelp": "セマンティック検索（0.0）とキーワード検索（1.0）のバランス。0.7は70%セマンティック、30%キーワードを意味します。",
         "loadError": "検索設定の読み込みに失敗しました",
         "name": "名前",
         "namePlaceholder": "例：デフォルト検索、セマンティック検索など",
         "noSettings": "検索設定が設定されていません。開始するには1つ追加してください。",
+        "pricing": {
+          "costPerRetrieval": "検索あたりのコスト",
+          "credit": "クレジット",
+          "credits": "クレジット",
+          "free": "無料",
+          "limitedTime": "期間限定",
+          "noCharges": "有効な機能に独自のAPIキーを使用する場合、料金は発生しません。",
+          "rerankerWC": "リランカー（WaterCrawlプロバイダー）",
+          "retrievalsFree": "検索は現在無料です！",
+          "title": "検索料金",
+          "vectorSearchWC": "ベクトル検索（WaterCrawlプロバイダー）",
+          "yourConfiguration": "あなたの設定"
+        },
+        "requiresEmbedding": "埋め込み設定が必要",
         "reranker": "リランカー",
         "rerankerEnabled": "リランカーを有効にする",
         "rerankerEnabledHelp": "リランカーを使用して結果を再順序付けすることで、結果の関連性を向上させます",
@@ -2611,6 +2698,8 @@
       "noSpecsDescription": "OpenAPI仕様を追加してエージェント用のツールを生成します",
       "noTools": "利用可能なツールがありません",
       "securityParamsExtracted": "仕様から{{count}}個のセキュリティパラメータを抽出しました",
+      "securityParamsExtracted_one": "仕様から{{count}}個のセキュリティパラメータを抽出しました",
+      "securityParamsExtracted_other": "仕様から{{count}}個のセキュリティパラメータを抽出しました",
       "specJson": "OpenAPI仕様",
       "specJsonHelp": "OpenAPI仕様を貼り付けるか、JSON/YAMLファイルをアップロードしてください",
       "specName": "仕様名",
@@ -2624,6 +2713,7 @@
     "createCustomTool": "カスタムツールを作成",
     "createSuccess": "ツールを作成しました",
     "deleteSuccess": "ツールを削除しました",
+    "description": "説明",
     "drawer": {
       "artifact": "アーティファクト",
       "description": "説明",
@@ -2677,6 +2767,7 @@
       "urlRequired": "URLは必須です"
     },
     "inactive": "非アクティブ",
+    "inputParameters": "入力パラメータ",
     "management": "ツール管理",
     "managementDescription": "エージェント用のカスタムHTTPツールとMCPサーバーを管理",
     "mcp": {
@@ -2751,7 +2842,11 @@
       "pathVariableHintDescription": "APIキーがURLパスの一部である必要がある場合は、{{VARIABLE_NAME}}をプレースホルダーとして使用し、「パス」タイプで同じ名前のパラメータを追加してください。",
       "pathVariableHintTitle": "動的URL変数",
       "pathVariablesDetected": "{{count}}個のパス変数が検出されました - 値を入力してください",
+      "pathVariablesDetected_one": "{{count}}個のパス変数が検出されました - 値を入力してください",
+      "pathVariablesDetected_other": "{{count}}個のパス変数が検出されました - 値を入力してください",
       "queryParamsExtracted": "URLから{{count}}個のクエリパラメータを抽出しました",
+      "queryParamsExtracted_one": "URLから{{count}}個のクエリパラメータを抽出しました",
+      "queryParamsExtracted_other": "URLから{{count}}個のクエリパラメータを抽出しました",
       "reconnect": "再接続",
       "required": "必須",
       "requiredFromUrl": "URLパスから検出",
@@ -2791,8 +2886,12 @@
       "yamlConverted": "YAMLをJSONに変換しました"
     },
     "noBuiltInTools": "組み込みツールがありません",
+    "noBuiltInToolsDescription": "利用可能な組み込みツールなし",
+    "noInputSchema": "入力スキーマなし",
+    "noParameters": "パラメータなし",
     "noTools": "ツールが見つかりません",
     "noToolsDescription": "最初のカスタムツールを作成するか、MCPサーバーに接続して開始します",
+    "searchPlaceholder": "ツールを検索...",
     "tabs": {
       "apiSpecs": "API仕様",
       "builtin": "組み込みツール",
@@ -2815,6 +2914,7 @@
       "tryAgain": "再試行"
     },
     "tool": "ツール",
+    "toolKey": "ツールキー",
     "tools": "ツール",
     "type": {
       "apiSpec": "API仕様",

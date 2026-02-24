@@ -8,6 +8,7 @@ from knowledge_base.models import (
     KnowledgeBaseDocument,
     KnowledgeBaseChunk,
     RetrievalSetting,
+    KnowledgeBaseQuery,
 )
 from llm.models import ProviderConfig
 from llm.models_config.config import ModelConfigLoader, ModelType
@@ -39,12 +40,14 @@ class RetrievalSettingSerializer(serializers.ModelSerializer):
             "reranker_model_key",
             "reranker_provider_config",
             "reranker_provider_config_id",
+            "reranker_model_config",
             "top_k",
             "hybrid_alpha",
+            "retrieval_cost",
             "created_at",
             "updated_at",
         ]
-        read_only_fields = ["uuid", "created_at", "updated_at"]
+        read_only_fields = ["uuid", "retrieval_cost", "created_at", "updated_at"]
 
     def validate_reranker_provider_config_id(self, value):
         if not value:
@@ -480,3 +483,31 @@ class ContextAwareEnhancerSerializer(serializers.Serializer):
 
 class EnhancedContentSerializer(serializers.Serializer):
     content = serializers.CharField()
+
+
+class KnowledgeBaseQuerySerializer(serializers.ModelSerializer):
+    """Serializer for knowledge base query history."""
+
+    class Meta:
+        model = KnowledgeBaseQuery
+        fields = [
+            "uuid",
+            "knowledge_base",
+            "retrieval_setting",
+            "query_text",
+            "status",
+            "results_count",
+            "retrieval_cost",
+            "error_message",
+            "created_at",
+            "updated_at",
+        ]
+        read_only_fields = [
+            "uuid",
+            "status",
+            "results_count",
+            "retrieval_cost",
+            "error_message",
+            "created_at",
+            "updated_at",
+        ]

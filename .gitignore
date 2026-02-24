@@ -34,3 +34,5 @@ VERSION
 
 # Docker volumes
 docker/volumes/
+# Snyk Security Extension - AI Rules (auto-generated)
+.windsurf/rules/snyk_rules.md

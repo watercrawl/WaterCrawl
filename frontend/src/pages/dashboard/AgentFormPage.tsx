@@ -28,6 +28,7 @@ import {
   useAgentKnowledgeBases,
   useAgentContextVariables,
   useAgentVersions,
+  useAgentToolConfig,
 } from '../../hooks';
 import { agentApi } from '../../services/api/agent';
 import { toolsApi } from '../../services/api/tools';
@@ -49,9 +50,38 @@ const AgentFormPage: React.FC = () => {
   const [mcpServers, setMcpServers] = useState<MCPServer[]>([]);
   const [draftAgentTools, setDraftAgentTools] = useState<AgentAsTool[]>([]);
   const [editingAgentTool, setEditingAgentTool] = useState<AgentAsTool | null>(null);
+  const [agentData, setAgentData] = useState<Agent | null>(null);
 
   // Use custom hooks for form state management
   const formState = useAgentForm(agentId);
+  const {
+    draft,
+    name,
+    systemPrompt,
+    providerConfigId,
+    modelKey,
+    llmConfigs,
+    jsonOutput,
+    jsonSchema,
+    contextVariables,
+    draftTools,
+    draftKnowledgeBases,
+    saving,
+    showSavedIndicator,
+    setDraft,
+    setName,
+    setSystemPrompt,
+    setProviderConfigId,
+    setModelKey,
+    setLlmConfigs,
+    setJsonOutput,
+    setJsonSchema,
+    setContextVariables,
+    setDraftTools,
+    setDraftKnowledgeBases,
+    saveAgentName,
+    saveDraft,
+  } = formState;
 
   // Fetch options (tools, etc.)
   const fetchOptions = useCallback(async () => {
@@ -80,24 +110,26 @@ const AgentFormPage: React.FC = () => {
 
     setLoading(true);
     try {
-      const [draftData, toolsData, kbsData, agentToolsData] = await Promise.all([
+      const [agentDataResponse, draftData, toolsData, kbsData, agentToolsData] = await Promise.all([
+        agentApi.get(agentId),
         agentApi.getDraft(agentId),
         agentApi.listDraftTools(agentId),
         agentApi.listDraftKnowledgeBases(agentId),
         agentApi.getDraftAgentTools(agentId),
       ]);
 
-      formState.setDraft(draftData);
-      formState.setName(draftData.agent_name);
-      formState.setSystemPrompt(draftData.system_prompt || '');
-      formState.setProviderConfigId(draftData.provider_config_uuid || '');
-      formState.setModelKey(draftData.llm_model_key || '');
-      formState.setLlmConfigs(draftData.llm_configs || {});
-      formState.setJsonOutput(draftData.json_output || false);
-      formState.setJsonSchema(draftData.json_schema || null);
-      formState.setContextVariables(draftData.parameters || []);
-      formState.setDraftTools(toolsData);
-      formState.setDraftKnowledgeBases(kbsData);
+      setAgentData(agentDataResponse);
+      setDraft(draftData);
+      setName(draftData.agent_name);
+      setSystemPrompt(draftData.system_prompt || '');
+      setProviderConfigId(draftData.provider_config_uuid || '');
+      setModelKey(draftData.llm_model_key || '');
+      setLlmConfigs(draftData.llm_configs || {});
+      setJsonOutput(draftData.json_output || false);
+      setJsonSchema(draftData.json_schema || null);
+      setContextVariables(draftData.parameters || []);
+      setDraftTools(toolsData);
+      setDraftKnowledgeBases(kbsData);
       setDraftAgentTools(agentToolsData);
     } catch (error) {
       console.error('Error loading draft:', error);
@@ -109,20 +141,49 @@ const AgentFormPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [agentId, t]);
+    
+  }, [
+    agentId,
+    t,
+    setDraft,
+    setName,
+    setSystemPrompt,
+    setProviderConfigId,
+    setModelKey,
+    setLlmConfigs,
+    setJsonOutput,
+    setJsonSchema,
+    setContextVariables,
+    setDraftTools,
+    setDraftKnowledgeBases,
+  ]);
 
   // Initialize other hooks - must be after loadDraft is defined
   const versions = useAgentVersions(agentId, loadDraft);
-  const tools = useAgentTools(agentId, formState.setDraftTools);
+  const tools = useAgentTools(agentId, setDraftTools);
   const knowledgeBasesHook = useAgentKnowledgeBases(
     agentId,
-    formState.setDraftKnowledgeBases
+    setDraftKnowledgeBases
   );
   const contextVariablesHook = useAgentContextVariables(
-    formState.contextVariables,
-    formState.setContextVariables
+    contextVariables,
+    setContextVariables
   );
+  const toolConfig = useAgentToolConfig(
+    agentId,
+    agentData?.enable_as_tool || false,
+    agentData?.tool_function_name || '',
+    agentData?.tool_description || ''
+  );
+  const {
+    enableAsTool,
+    toolFunctionName,
+    toolDescription,
+    setEnableAsTool,
+    setToolFunctionName,
+    setToolDescription,
+    saveToolConfig,
+  } = toolConfig;
 
   useEffect(() => {
     // Redirect to agents list if no agentId (this page is only for editing)
@@ -136,79 +197,140 @@ const AgentFormPage: React.FC = () => {
   }, [agentId, navigate, fetchOptions, loadDraft]);
 
   // Auto-save agent name on changes
+  const saveAgentNameWithState = useCallback(async () => {
+    await saveAgentName({
+      enable_as_tool: agentData?.enable_as_tool,
+      tool_function_name: agentData?.tool_function_name,
+      tool_description: agentData?.tool_description,
+    });
+  }, [saveAgentName, agentData]);
+
+  const nameDeps = useMemo(() => [name], [name]);
   useAutoSave({
-    enabled: !!formState.draft,
+    enabled: !!draft,
     delay: 1000,
-    onSave: formState.saveAgentName,
-    dependencies: [formState.name],
+    onSave: saveAgentNameWithState,
+    dependencies: nameDeps,
   });
 
   // Auto-detect {{VAR}} patterns in system prompt
   useVariableDetection({
-    systemPrompt: formState.systemPrompt,
-    existingVariables: formState.contextVariables,
+    systemPrompt,
+    existingVariables: contextVariables,
     onVariablesDetected: (newVars: ContextParameters[]) => {
-      formState.setContextVariables((prev) => [...prev, ...newVars]);
+      setContextVariables((prev) => [...prev, ...newVars]);
     },
   });
 
   // Auto-save draft on form changes
   // Serialize llmConfigs for reliable change detection
   const llmConfigsSerialized = useMemo(
-    () => JSON.stringify(formState.llmConfigs),
-    [formState.llmConfigs]
+    () => JSON.stringify(llmConfigs),
+    [llmConfigs]
   );
   const jsonSchemaSerialized = useMemo(
-    () => (formState.jsonSchema ? JSON.stringify(formState.jsonSchema) : 'null'),
-    [formState.jsonSchema]
+    () => (jsonSchema ? JSON.stringify(jsonSchema) : 'null'),
+    [jsonSchema]
   );
 
   useAutoSave({
-    enabled: !!formState.draft,
+    enabled: !!draft,
     delay: 1000,
-    onSave: formState.saveDraft,
+    onSave: saveDraft,
     dependencies: [
-      formState.modelKey,
-      llmConfigsSerialized, // Use serialized version for reliable comparison
-      formState.providerConfigId,
-      formState.systemPrompt,
-      formState.jsonOutput,
-      jsonSchemaSerialized, // Use serialized version for reliable comparison
-      // Serialize contextVariables array for reliable comparison
-      JSON.stringify(formState.contextVariables),
+      modelKey,
+      llmConfigsSerialized,
+      providerConfigId,
+      systemPrompt,
+      jsonOutput,
+      jsonSchemaSerialized,
+      JSON.stringify(contextVariables),
     ],
   });
 
+  // Auto-save for tool toggle activation/deactivation only
+  useAutoSave({
+    enabled: !!agentId && agentData !== null,
+    delay: 500,
+    onSave: async () => {
+      // Only save the enable_as_tool flag, not the fields (those are saved via modal)
+      if (!agentId) return;
+      const previousValue = agentData?.enable_as_tool;
+      try {
+        const updated = await agentApi.update(agentId, {
+          enable_as_tool: enableAsTool,
+        });
+        // Update agentData with the saved value
+        setAgentData(updated);
+      } catch (error: any) {
+        console.error('Error auto-saving tool toggle:', error);
+        
+        // Show specific error message from backend
+        const errorMessage = 
+          error?.response?.data?.errors?.enable_as_tool?.[0] ||
+          error?.response?.data?.message ||
+          t('errors.generic');
+        toast.error(errorMessage);
+        
+        // Revert the switch to previous value on failure
+        if (previousValue !== undefined) {
+          setEnableAsTool(previousValue);
+        }
+      }
+    },
+    dependencies: [enableAsTool],
+  });
+
   useEffect(() => {
-    if (formState.draft && formState.name) {
+    if (draft && name) {
       setItems([
         { label: t('dashboard.navigation.dashboard'), href: '/dashboard' },
         { label: t('dashboard.navigation.agents'), href: '/dashboard/agents' },
-        { label: formState.name, current: true },
+        { label: name, current: true },
       ]);
     }
-  }, [formState.draft, formState.name, setItems, t]);
+  }, [draft, name, setItems, t]);
 
   const handlePublish = useCallback(async () => {
-    if (!agentId || !formState.draft) return;
+    if (!agentId || !draft) return;
 
-    if (!formState.name.trim()) {
+    if (!name.trim()) {
       toast.error(t('agents.form.nameRequired'));
       return;
     }
 
-    if (!formState.systemPrompt.trim()) {
+    if (!systemPrompt.trim()) {
       toast.error(t('agents.form.systemPromptRequired'));
       return;
     }
 
-    if (!formState.providerConfigId || !formState.modelKey) {
+    if (!providerConfigId || !modelKey) {
       toast.error(t('agents.form.llmRequired'));
       return;
     }
 
-    // Save both agent name and draft first
-    await Promise.all([formState.saveAgentName(), formState.saveDraft()]);
+    // Validate tool configuration if enabled
+    if (enableAsTool) {
+      if (!toolFunctionName.trim()) {
+        toast.error(t('agents.form.toolFunctionNameRequired'));
+        return;
+      }
+      if (!toolDescription.trim()) {
+        toast.error(t('agents.form.toolDescriptionRequired'));
+        return;
+      }
+    }
+
+    // Save both agent name, draft, and tool config first
+    await Promise.all([
+      saveAgentName({
+        enable_as_tool: enableAsTool,
+        tool_function_name: toolFunctionName,
+        tool_description: toolDescription,
+      }),
+      saveDraft(),
+      saveToolConfig(),
+    ]);
 
     setPublishing(true);
     try {
@@ -226,17 +348,20 @@ const AgentFormPage: React.FC = () => {
     } finally {
       setPublishing(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     agentId,
+    draft,
+    name,
+    systemPrompt,
+    providerConfigId,
+    modelKey,
+    saveAgentName,
+    saveDraft,
+    enableAsTool,
+    toolFunctionName,
+    toolDescription,
+    saveToolConfig,
     t,
-    formState.draft,
-    formState.name,
-    formState.systemPrompt,
-    formState.providerConfigId,
-    formState.modelKey,
-    formState.saveAgentName,
-    formState.saveDraft,
     loadDraft,
   ]);
 
@@ -309,17 +434,20 @@ const AgentFormPage: React.FC = () => {
 
   // Create temp agent for test bench
   const tempAgent = useMemo<Agent | null>(() => {
-    const canTest = formState.providerConfigId && formState.modelKey && agentId;
-    if (!canTest || !formState.draft) return null;
+    const canTest = providerConfigId && modelKey && agentId;
+    if (!canTest || !draft || !agentData) return null;
 
     return {
       uuid: agentId,
-      name: formState.name || t('agents.form.draftAgent'),
+      name: name || t('agents.form.draftAgent'),
       status: 'draft' as AgentVersionStatus,
-      created_at: formState.draft.created_at,
-      updated_at: formState.draft.updated_at,
+      enable_as_tool: agentData.enable_as_tool,
+      tool_function_name: agentData.tool_function_name,
+      tool_description: agentData.tool_description,
+      created_at: draft.created_at,
+      updated_at: draft.updated_at,
     };
-  }, [agentId, formState.providerConfigId, formState.modelKey, formState.draft, formState.name, t]);
+  }, [agentId, providerConfigId, modelKey, draft, name, agentData, t]);
 
   // Early return must be after all hooks
   if (loading) {
@@ -331,11 +459,19 @@ const AgentFormPage: React.FC = () => {
       {/* Top Header */}
       <AgentFormHeader
         agentId={agentId!}
-        name={formState.name}
-        showSavedIndicator={formState.showSavedIndicator}
+        name={name}
+        showSavedIndicator={showSavedIndicator}
         isTabletOrMobile={isTabletOrMobile}
         publishing={publishing}
-        saving={formState.saving}
+        saving={saving}
+        isPublished={agentData?.status === 'published'}
+        enableAsTool={enableAsTool}
+        toolFunctionName={toolFunctionName}
+        toolDescription={toolDescription}
+        onEnableAsToolChange={setEnableAsTool}
+        onToolFunctionNameChange={setToolFunctionName}
+        onToolDescriptionChange={setToolDescription}
+        onSaveToolConfig={saveToolConfig}
         onVersionHistory={versions.loadVersionHistory}
         onPublish={handlePublish}
       />
@@ -353,15 +489,15 @@ const AgentFormPage: React.FC = () => {
           <div className="space-y-4">
             {/* Instructions Section */}
             <AgentFormInstructionsSection
-              name={formState.name}
-              systemPrompt={formState.systemPrompt}
-              onNameChange={formState.setName}
-              onSystemPromptChange={formState.setSystemPrompt}
+              name={name}
+              systemPrompt={systemPrompt}
+              onNameChange={setName}
+              onSystemPromptChange={setSystemPrompt}
             />
 
             {/* Context Variables */}
             <AgentFormContextVariablesSection
-              contextVariables={formState.contextVariables}
+              contextVariables={contextVariables}
               onAdd={() => contextVariablesHook.openVariableModal()}
               onEdit={(index) => contextVariablesHook.openVariableModal(index)}
               onRemove={contextVariablesHook.removeContextVariable}
@@ -369,29 +505,29 @@ const AgentFormPage: React.FC = () => {
 
             {/* LLM Configuration */}
             <AgentFormLLMConfigSection
-              providerConfigId={formState.providerConfigId}
-              modelKey={formState.modelKey}
-              llmConfigs={formState.llmConfigs}
+              providerConfigId={providerConfigId}
+              modelKey={modelKey}
+              llmConfigs={llmConfigs}
               onConfigChange={(values) => {
-                formState.setProviderConfigId(values.provider_config_id || '');
-                formState.setModelKey(values.model_key || '');
+                setProviderConfigId(values.provider_config_id || '');
+                setModelKey(values.model_key || '');
                 // Always create a new object reference to ensure deep comparison detects the change
-                formState.setLlmConfigs({ ...(values.model_config || {}) });
+                setLlmConfigs({ ...(values.model_config || {}) });
               }}
             />
 
             {/* JSON Output Format */}
             <AgentFormJsonOutputSection
-              jsonOutput={formState.jsonOutput}
-              jsonSchema={formState.jsonSchema}
-              onJsonOutputChange={formState.setJsonOutput}
-              onJsonSchemaChange={formState.setJsonSchema}
+              jsonOutput={jsonOutput}
+              jsonSchema={jsonSchema}
+              onJsonOutputChange={setJsonOutput}
+              onJsonSchemaChange={setJsonSchema}
             />
 
             {/* Tools Section */}
             <AgentFormToolsSection
               agentId={agentId!}
-              draftTools={formState.draftTools}
+              draftTools={draftTools}
               builtInTools={builtInTools}
               apiSpecs={apiSpecs}
               mcpServers={mcpServers}
@@ -402,7 +538,7 @@ const AgentFormPage: React.FC = () => {
 
             {/* Knowledge Bases */}
             <AgentFormKnowledgeBasesSection
-              draftKnowledgeBases={formState.draftKnowledgeBases}
+              draftKnowledgeBases={draftKnowledgeBases}
               onAdd={knowledgeBasesHook.addKnowledgeBase}
               onRemove={knowledgeBasesHook.removeKnowledgeBase}
               onConfigure={knowledgeBasesHook.setEditingKnowledgeBase}
@@ -425,9 +561,9 @@ const AgentFormPage: React.FC = () => {
             <div className="flex-1 overflow-hidden">
               <AgentTestBenchPanel
                 agent={tempAgent}
-                contextVariableTemplates={formState.contextVariables}
-                jsonOutput={formState.jsonOutput}
-                jsonSchema={formState.jsonSchema}
+                contextVariableTemplates={contextVariables}
+                jsonOutput={jsonOutput}
+                jsonSchema={jsonSchema}
                 mode="inline"
               />
             </div>
@@ -438,9 +574,9 @@ const AgentFormPage: React.FC = () => {
         {isTabletOrMobile && (
           <AgentTestBenchPanel
             agent={tempAgent}
-            contextVariableTemplates={formState.contextVariables}
-            jsonOutput={formState.jsonOutput}
-            jsonSchema={formState.jsonSchema}
+            contextVariableTemplates={contextVariables}
+            jsonOutput={jsonOutput}
+            jsonSchema={jsonSchema}
             mode="sidebar"
             defaultOpen={false}
           />

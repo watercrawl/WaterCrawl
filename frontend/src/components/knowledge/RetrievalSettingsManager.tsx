@@ -257,6 +257,21 @@ const RetrievalSettingCard: React.FC<RetrievalSettingCardProps> = ({
                 <span className="font-medium">{t('settings.knowledgeBase.retrievalSettings.topK')}:</span>{' '}
                 {setting.top_k}
               </div>
+              <div>
+                <span className="font-medium">
+                  {t('settings.knowledgeBase.retrievalSettings.pricing.costPerRetrieval')}:
+                </span>{' '}
+                {setting.retrieval_cost > 0 ? (
+                  <span className="text-primary">
+                    {setting.retrieval_cost}{' '}
+                    {setting.retrieval_cost === 1
+                      ? t('settings.knowledgeBase.retrievalSettings.pricing.credit')
+                      : t('settings.knowledgeBase.retrievalSettings.pricing.credits')}
+                  </span>
+                ) : (
+                  <span className="text-success">{t('settings.knowledgeBase.retrievalSettings.pricing.free')}</span>
+                )}
+              </div>
               {setting.reranker_enabled && (
                 <div>
                   <span className="font-medium">

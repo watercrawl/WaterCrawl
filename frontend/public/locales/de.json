@@ -13,7 +13,8 @@
     },
     "filters": {
       "allStatuses": "Alle Status",
-      "filterByStatus": "Nach Status filtern"
+      "filterByStatus": "Nach Status filtern",
+      "status": "Status"
     },
     "loading": "Lade Aktivitätsprotokolle...",
     "noSearchRequestsFound": "Keine Suchanfragen gefunden",
@@ -23,6 +24,7 @@
     "sitemapLogs": "Sitemap-Protokolle",
     "sitemapLogsDesc": "Sehen Sie Ihre letzten Sitemap-Anfragen und deren Ergebnisse",
     "table": {
+      "actions": "Aktionen",
       "created": "Erstellt",
       "documents": "Dokumente",
       "duration": "Dauer",
@@ -115,10 +117,10 @@
       "addTool": "+ Werkzeug hinzufügen",
       "advancedModelSettings": "Erweiterte Modelleinstellungen",
       "advancedSettings": "Erweiterte Einstellungen",
+      "agentsAsTools": "Agenten als Werkzeuge",
       "agentToolAdded": "Agenten-Werkzeug erfolgreich hinzugefügt",
       "agentToolConfigSaved": "Agenten-Werkzeug-Konfiguration gespeichert",
       "agentToolRemoved": "Agenten-Werkzeug erfolgreich entfernt",
-      "agentTools": "Agenten-Werkzeuge",
       "agentToolsDescription": "Aufgaben an andere spezialisierte Agenten delegieren",
       "builtInDataTools": "Integrierte Daten-Werkzeuge",
       "builtInUtilityTools": "Integrierte Hilfs-Werkzeuge",
@@ -133,9 +135,16 @@
       "customHTTPTools": "Benutzerdefinierte HTTP-Werkzeuge",
       "description": "Beschreibung",
       "descriptionPlaceholder": "Beschreiben Sie, was dieser Agent macht",
+      "disableToolWarningConsequence": "Das Deaktivieren dieser Funktion entfernt diesen Agenten von allen Stellen, an denen er als Werkzeug verwendet wird. Diese Aktion kann nicht rückgängig gemacht werden.",
+      "disableToolWarningMessage": "Dieser Agent wird derzeit als Werkzeug in {{count}} anderen Agent(en) verwendet.",
+      "disableToolWarningMessage_one": "Dieser Agent wird derzeit als Werkzeug in {{count}} anderem Agent verwendet.",
+      "disableToolWarningMessage_other": "Dieser Agent wird derzeit als Werkzeug in {{count}} anderen Agenten verwendet.",
+      "disableToolWarningTitle": "Agent als Werkzeug deaktivieren",
       "draftAgent": "Entwurfs-Agent",
       "editDescription": "Aktualisieren Sie die Konfiguration und Einstellungen Ihres Agenten",
       "editTitle": "Agent bearbeiten",
+      "enableAsTool": "Diesen Agenten als Werkzeug aktivieren",
+      "enableAsToolDescription": "Erlauben Sie anderen Agenten, diesen Agenten als Werkzeug zu verwenden. Sie müssen den Funktionsnamen und die Beschreibung vor der Veröffentlichung konfigurieren.",
       "enabled": "aktiviert",
       "frequencyPenalty": "Frequenzstrafe",
       "frequencyPenaltyDescription": "Reduziert Wiederholungen durch Bestrafung von Tokens basierend auf ihrer Häufigkeit. Bereich: -2.0 bis 2.0",
@@ -168,6 +177,7 @@
       "noKnowledgeBases": "Keine Wissensdatenbanken verbunden",
       "noKnowledgeBasesConnected": "Keine Wissensdatenbanken verbunden",
       "noMCPTools": "Keine MCP-Werkzeuge konfiguriert",
+      "noRetrievalSettings": "Abrufeinstellungen nicht konfiguriert.",
       "noTools": "Noch keine Werkzeuge hinzugefügt",
       "noVersions": "Kein Versionsverlauf verfügbar",
       "presencePenalty": "Präsenzstrafe",
@@ -202,8 +212,19 @@
       "temperature": "Temperatur",
       "temperatureHelp": "Steuert die Zufälligkeit: 0 ist deterministisch, höhere Werte sind kreativer",
       "toolAdded": "Werkzeug erfolgreich hinzugefügt",
+      "toolConfigInfoMessage": "Konfigurieren Sie, wie jeder Parameter behandelt werden soll, wenn der Agent dieses Werkzeug aufruft",
+      "toolConfigSaved": "Werkzeug-Konfiguration erfolgreich gespeichert",
       "toolConfigUpdated": "Werkzeugkonfiguration erfolgreich aktualisiert",
+      "toolConfiguration": "Werkzeug-Konfiguration",
       "toolDescription": "Werkzeugbeschreibung",
+      "toolDescriptionHint": "Erklären Sie, was dieser Agent tut, wenn er als Werkzeug verwendet wird. Dies hilft anderen Agenten zu entscheiden, wann sie ihn verwenden sollen.",
+      "toolDescriptionLabel": "Werkzeug-Beschreibung",
+      "toolDescriptionPlaceholder": "Beschreiben Sie, was dieses Werkzeug tut und wann es verwendet werden soll...",
+      "toolDescriptionRequired": "Werkzeug-Beschreibung ist erforderlich, wenn Agent als Werkzeug aktiviert ist",
+      "toolFunctionName": "Funktionsname",
+      "toolFunctionNameHint": "Eine eindeutige Kennung für dieses Werkzeug. Verwenden Sie snake_case (z.B. mein_werkzeug_name).",
+      "toolFunctionNamePlaceholder": "z.B. analyse_sentiment, dokument_zusammenfassen",
+      "toolFunctionNameRequired": "Funktionsname ist erforderlich, wenn Agent als Werkzeug aktiviert ist",
       "toolName": "Werkzeugname",
       "toolRemoved": "Werkzeug erfolgreich entfernt",
       "tools": {
@@ -225,6 +246,15 @@
       "topPDescription": "Steuert die Vielfalt über Nucleus-Sampling. 0.5 bedeutet, dass die Hälfte aller wahrscheinlichkeitsgewichteten Optionen berücksichtigt wird.",
       "updateSuccess": "Agent erfolgreich aktualisiert",
       "versionHistory": "Versionsverlauf"
+    },
+    "integrations": {
+      "apiDocumentation": "API-Dokumentation",
+      "integrationType": "Integrationstyp",
+      "publishedOnly": "Integrationen sind nur für veröffentlichte Agenten verfügbar",
+      "title": "Integrationen",
+      "webhooks": "Webhooks",
+      "webhooksComingSoon": "Webhooks demnächst verfügbar",
+      "webhooksDesc": "Erhalten Sie Benachrichtigungen, wenn Ihr Agent Nachrichten empfängt oder Aufgaben abschließt."
     },
     "jsonOutput": {
       "clearSchema": "Löschen",
@@ -254,6 +284,7 @@
       "retrievalSettingHint": "Wählen Sie, welche Abrufeinstellung beim Abfragen dieser Wissensdatenbank verwendet werden soll. Die Standardeinstellung wird verwendet, wenn keine ausgewählt ist."
     },
     "noAgents": "Noch keine Agenten. Erstellen Sie Ihren ersten Agenten, um zu beginnen.",
+    "noAgentsFound": "Keine Agenten gefunden",
     "noResults": "Keine Agenten gefunden, die Ihrer Suche entsprechen.",
     "notFound": "Agent nicht gefunden",
     "searchPlaceholder": "Agenten durchsuchen...",
@@ -394,6 +425,7 @@
       "warning": "Stellen Sie sicher, dass Sie Ihren Schlüssel jetzt kopieren. Sie können ihn später nicht mehr sehen!"
     },
     "created": "Erstellt",
+    "createFirstKey": "Erstellen Sie Ihren ersten API-Schlüssel, um loszulegen",
     "createNew": "Neuen API-Schlüssel erstellen",
     "deleteConfirmMessage": "Sind Sie sicher, dass Sie den API-Schlüssel \"{{name}}\" löschen möchten?",
     "deleteConfirmTitle": "API-Schlüssel löschen",
@@ -594,8 +626,11 @@
     "back": "Zurück",
     "backToHome": "Back to Home",
     "cancel": "Abbrechen",
+    "cards": "Karten",
     "close": "Schließen",
+    "configure": "Konfigurieren",
     "configureModel": "Modell konfigurieren",
+    "confirm": "Bestätigen",
     "confirmError": "Bitte geben Sie den korrekten Wert ein, um die Löschung zu bestätigen",
     "copied": "Kopiert!",
     "copiedToClipboard": "In Zwischenablage kopiert!",
@@ -619,7 +654,9 @@
     "duplicate": "Duplizieren",
     "edit": "Bearbeiten",
     "editor": "Editor",
+    "error": "Fehler",
     "expand": "Erweitern",
+    "false": "Falsch",
     "forgotPassword": {
       "backToLogin": "Zurück zum Login",
       "checkEmail": "Überprüfen Sie Ihre E-Mail",
@@ -677,7 +714,9 @@
     "noModelsAvailableMessage": "Keine {{modelType}}-Modelle sind in Ihren Anbieterkonfigurationen verfügbar. Bitte fügen Sie Anbieter mit {{modelType}}-Modellen in Ihren Teameinstellungen hinzu oder konfigurieren Sie diese.",
     "noProviderConfigs": "Keine Anbieterkonfigurationen verfügbar",
     "noProviderConfigsMessage": "Sie müssen mindestens einen Anbieter konfigurieren, um Modelle zu verwenden. Bitte fügen Sie eine Anbieterkonfiguration in Ihren Teameinstellungen hinzu.",
+    "noResults": "Keine Ergebnisse gefunden",
     "nothingFound": "Nichts gefunden.",
+    "open": "Öffnen",
     "openSidebar": "Seitenleiste öffnen",
     "openUserMenu": "Benutzermenü öffnen",
     "optional": "Optional",
@@ -705,6 +744,8 @@
     "results": "Ergebnisse",
     "save": "Speichern",
     "saved": "Gespeichert!",
+    "saving": "Speichern...",
+    "search": "Suchen",
     "select": "Auswählen",
     "selectAll": "Alle auswählen",
     "selectOption": "Option wählen",
@@ -733,6 +774,7 @@
       "verifyEmail": "Bitte bestätigen Sie Ihre E-Mail-Adresse"
     },
     "soon": "Demnächst",
+    "stop": "Stopp",
     "submit": "Absenden",
     "subtitle": "Web-Crawling-Plattform",
     "success": "Erfolg",
@@ -743,6 +785,7 @@
       "system": "System",
       "title": "Theme"
     },
+    "true": "Wahr",
     "typing": "Schreibt...",
     "unknown": "Unbekannt",
     "url": "URL",
@@ -1005,6 +1048,7 @@
       "knowledgeBase": "Wissensdatenbank",
       "mediaLibrary": "Medienbibliothek",
       "profile": "Profil",
+      "queries": "Abfrageprotokolle",
       "search": "Suche",
       "searches": "Suchen",
       "settings": "Einstellungen",
@@ -1151,6 +1195,7 @@
     "tryAgain": "Erneut versuchen"
   },
   "errors": {
+    "badRequest": "Ungültige Anfrage",
     "contactSupport": "Bitte kontaktieren Sie den Support, wenn dieses Problem weiterhin besteht",
     "generic": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut",
     "notFound": {
@@ -1246,6 +1291,9 @@
       "validEmail": "Bitte geben Sie eine gültige E-Mail ein"
     }
   },
+  "knowledge": {
+    "noKnowledgeBases": "Keine Wissensdatenbanken gefunden"
+  },
   "knowledgeBase": {
     "chunk": "Block",
     "contentPreview": "Inhaltsvorschau",
@@ -1286,12 +1334,18 @@
       "importAllSuccess": "Alle Ergebnisse erfolgreich importiert",
       "importFailed": "Fehler beim Importieren der ausgewählten Ergebnisse",
       "importSelected": "Ausgewählte importieren ({{count}})",
+      "importSelected_one": "Ausgewählte importieren ({{count}})",
+      "importSelected_other": "Ausgewählte importieren ({{count}})",
       "importSuccess": "{{count}} Ergebnis erfolgreich importiert",
       "importSuccess_one": "{{count}} Ergebnis erfolgreich importiert",
       "importSuccess_other": "{{count}} Ergebnisse erfolgreich importiert",
       "importUrls": "{{count}} URLs importieren",
+      "importUrls_one": "{{count}} URL importieren",
+      "importUrls_other": "{{count}} URLs importieren",
       "importUrlsFailed": "Fehler beim Importieren der URLs zur Wissensdatenbank",
       "importUrlsSuccess": "Import von {{count}} URLs zur Wissensdatenbank erfolgreich gestartet",
+      "importUrlsSuccess_one": "Import von {{count}} URL in die Wissensdatenbank erfolgreich gestartet",
+      "importUrlsSuccess_other": "Import von {{count}} URLs in die Wissensdatenbank erfolgreich gestartet",
       "invalidRequest": "Ungültige Anfrage. Bitte überprüfen Sie Ihre Auswahl und versuchen Sie es erneut.",
       "manual": "Manuelle Eingabe",
       "manualDesc": "Textinhalt manuell eingeben oder einfügen",
@@ -1338,6 +1392,9 @@
     "keywords": "Schlüsselwörter",
     "list": "Wissensdatenbanken",
     "new": "Neue Wissensdatenbank",
+    "noQueries": "Noch keine Abfragen",
+    "noQueriesFiltered": "Keine Abfragen mit dem ausgewählten Filter gefunden",
+    "noQueriesYet": "Der Abfrageverlauf wird hier angezeigt, sobald Sie mit der Nutzung der Wissensdatenbank-Abfrage beginnen",
     "previewContent": "Vollständigen Inhalt in Vorschau anzeigen",
     "pricing": {
       "costPerDocument": "Kosten pro Dokument",
@@ -1372,6 +1429,12 @@
       "sources": "Quellen",
       "title": "Wissensdatenbank abfragen"
     },
+    "queryHistory": "Abfrageverlauf",
+    "queryLogs": "Abfrageprotokolle",
+    "queryLogsDesc": "Abfrageverlauf und Abrufkosten der Wissensdatenbank anzeigen",
+    "queryText": "Abfragetext",
+    "resultsCount": "Ergebnisse",
+    "retrievalCost": "Kosten",
     "searchPlaceholder": "Wissensdatenbanken suchen...",
     "source": "Quelle",
     "subtitle": "Verwalten Sie Ihre Wissensdatenbanken",
@@ -1637,6 +1700,8 @@
   },
   "results": {
     "attachments": "Anhänge",
+    "attachments_one": "{{count}} Anhang",
+    "attachments_other": "{{count}} Anhänge",
     "details": "Ergebnisdetails",
     "json": "JSON",
     "markdown": "Markdown",
@@ -1739,6 +1804,7 @@
     "numResults": "Anzahl der Ergebnisse",
     "queryDescription": "Geben Sie Ihre Anfrage ein, um das Internet nach relevanten Ergebnissen zu durchsuchen.",
     "queryPlaceholder": "Geben Sie Ihre Suchanfrage ein...",
+    "result": "Ergebnis",
     "results": {
       "date": "Datum",
       "found": "Ergebnisse gefunden",
@@ -1766,7 +1832,7 @@
     },
     "timeRange": {
       "any": "Jederzeit",
-      "day": "Letzte 24 Stunden",
+      "day": "Letzter Tag",
       "label": "Zeitraum",
       "month": "Letzter Monat",
       "week": "Letzte Woche",
@@ -1831,6 +1897,11 @@
         "goBack": "Zurück zu Wissensdatenbanken",
         "notFound": "Wissensdatenbank nicht gefunden oder Sie haben keinen Zugriff darauf.",
         "test": "Test"
+      },
+      "document": {
+        "deleteDocument": "Dokument löschen",
+        "retryIndexing": "Indizierung wiederholen",
+        "viewChunks": "Blöcke anzeigen"
       },
       "documentDetail": {
         "backToKB": "Zurück zur Wissensdatenbank",
@@ -1927,11 +1998,11 @@
         "submit": {
           "cancel": "Abbrechen",
           "create": "Wissensdatenbank erstellen",
-          "creating": "Erstellt...",
+          "creating": "Wird erstellt...",
           "update": "Wissensdatenbank aktualisieren",
-          "updating": "Aktualisiert..."
+          "updating": "Wird aktualisiert..."
         },
-        "subtitle": "Konfigurieren Sie Ihre Wissensdatenbank-Einstellungen für optimales Information Retrieval.",
+        "subtitle": "Konfigurieren Sie die Einstellungen Ihrer Wissensdatenbank für optimales Informationsabrufen.",
         "summarization": {
           "configureLLM": "LLM konfigurieren",
           "context": "Kontext",
@@ -2077,13 +2148,29 @@
           "hybrid_search": "Kombinieren Sie semantische und Schlüsselwortsuche für beste Ergebnisse",
           "vector_search": "Suche mit semantischer Ähnlichkeit und Embeddings"
         },
+        "disabled": "Deaktiviert",
         "embeddingRequired": "Vektor- und Hybridsuche erfordern, dass Embeddings für diese Wissensdatenbank konfiguriert sind",
+        "embeddingRequiredExplanation": "Bitte konfigurieren Sie einen Embedding-Anbieter für diese Wissensdatenbank, um diese Abruftypen zu verwenden.",
         "hybridAlpha": "Hybrid Alpha",
         "hybridAlphaHelp": "Balance zwischen semantischer (0.0) und Schlüsselwortsuche (1.0). 0.7 bedeutet 70% semantisch, 30% Schlüsselwort.",
         "loadError": "Abrufeinstellungen konnten nicht geladen werden",
         "name": "Name",
         "namePlaceholder": "z.B. Standardsuche, Semantische Suche, etc.",
         "noSettings": "Keine Abrufeinstellungen konfiguriert. Fügen Sie eine hinzu, um zu beginnen.",
+        "pricing": {
+          "costPerRetrieval": "Kosten pro Abruf",
+          "credit": "Kredit",
+          "credits": "Kredite",
+          "free": "Kostenlos",
+          "limitedTime": "Zeitlich begrenzt",
+          "noCharges": "Keine Gebühren bei Verwendung eigener API-Schlüssel für aktivierte Funktionen.",
+          "rerankerWC": "Reranker (WaterCrawl-Anbieter)",
+          "retrievalsFree": "Abrufe sind derzeit kostenlos!",
+          "title": "Abrufpreise",
+          "vectorSearchWC": "Vektorsuche (WaterCrawl-Anbieter)",
+          "yourConfiguration": "Ihre Konfiguration"
+        },
+        "requiresEmbedding": "Erfordert Embedding-Konfiguration",
         "reranker": "Reranker",
         "rerankerEnabled": "Reranker aktivieren",
         "rerankerEnabledHelp": "Verwenden Sie einen Reranker, um die Relevanz der Ergebnisse zu verbessern, indem Sie Ergebnisse neu sortieren",
@@ -2408,7 +2495,7 @@
       "loadGraphFailed": "Laden des Sitemap-Graphen fehlgeschlagen",
       "loadMarkdown": "Laden von Markdown fehlgeschlagen",
       "loadMarkdownFailed": "Laden des Sitemap-Markdowns fehlgeschlagen",
-      "loadMarkdownMessage": "Markdown-Inhalt kann nicht geladen werden. Bitte versuchen Sie es erneut",
+      "loadMarkdownMessage": "Markdown-Inhalt kann nicht geladen werden. Bitte versuchen Sie es erneut.",
       "loadSitemap": "Laden der Sitemap fehlgeschlagen"
     },
     "explorer": "Sitemap-Explorer",
@@ -2452,7 +2539,7 @@
       "includeSubdomains": "Subdomains einbeziehen",
       "includeSubdomainsDesc": "Alle Subdomains der Ziel-Website einbeziehen",
       "pathFilters": "Pfad-Filter",
-      "pathFiltersDesc": "Bestimmte URL-Pfade ein- oder ausschließen",
+      "pathFiltersDesc": "Spezifische URL-Pfade ein- oder ausschließen",
       "searchFilter": "URL-Filter",
       "searchFilterDesc": "Sitemap-URLs nach Suchbegriff filtern (z.B. 'blog', '/produkte')",
       "searchFilterPlaceholder": "Suchbegriff eingeben zum Filtern von URLs..."
@@ -2611,6 +2698,8 @@
       "noSpecsDescription": "Fügen Sie eine OpenAPI-Spezifikation hinzu, um Tools für Ihre Agenten zu generieren",
       "noTools": "Keine Tools verfügbar",
       "securityParamsExtracted": "{{count}} Sicherheitsparameter aus Spezifikation extrahiert",
+      "securityParamsExtracted_one": "{{count}} Sicherheitsparameter aus der Spezifikation extrahiert",
+      "securityParamsExtracted_other": "{{count}} Sicherheitsparameter aus der Spezifikation extrahiert",
       "specJson": "OpenAPI-Spezifikation",
       "specJsonHelp": "Fügen Sie Ihre OpenAPI-Spezifikation ein oder laden Sie eine JSON/YAML-Datei hoch",
       "specName": "Spezifikationsname",
@@ -2624,13 +2713,14 @@
     "createCustomTool": "Benutzerdefiniertes Werkzeug erstellen",
     "createSuccess": "Werkzeug erfolgreich erstellt",
     "deleteSuccess": "Werkzeug erfolgreich gelöscht",
+    "description": "Beschreibung",
     "drawer": {
       "artifact": "Artefakt",
       "description": "Beschreibung",
       "fetchError": "Werkzeugdetails konnten nicht geladen werden",
       "inputValues": "Eingabewerte",
       "noInputRequired": "Dieses Werkzeug erfordert keine Eingabeparameter. Klicken Sie auf Test ausführen.",
-      "noParameters": "Dieses Werkzeug hat keine Eingabeparameter",
+      "noParameters": "Dieses Werkzeug hat keine Eingabeparameter.",
       "notFound": "Werkzeug nicht gefunden",
       "parameters": "Parameter",
       "rawSchema": "Rohschema anzeigen",
@@ -2677,6 +2767,7 @@
       "urlRequired": "URL ist erforderlich"
     },
     "inactive": "Inaktiv",
+    "inputParameters": "Eingabeparameter",
     "management": "Werkzeugverwaltung",
     "managementDescription": "Verwalten Sie benutzerdefinierte HTTP-Werkzeuge und MCP-Server für Ihre Agenten",
     "mcp": {
@@ -2694,9 +2785,9 @@
       "availableTools": "Verfügbare Werkzeuge",
       "baseUrl": "Basis-URL (Optional)",
       "baseUrlExtracted": "Basis-URL aus Spezifikation extrahiert",
-      "baseUrlHelp": "Überschreiben Sie die Basis-URL aus der OpenAPI-Spezifikation. Unterstützt {{VARIABLE}} Platzhalter.",
+      "baseUrlHelp": "Überschreiben Sie die Basis-URL aus der OpenAPI-Spezifikation. Unterstützt {{VARIABLE}}-Platzhalter.",
       "baseUrlRequired": "Basis-URL",
-      "baseUrlRequiredHelp": "Geben Sie die Basis-URL für die API ein. Unterstützt {{VARIABLE}} Platzhalter.",
+      "baseUrlRequiredHelp": "Geben Sie die Basis-URL für die API ein. Unterstützt {{VARIABLE}}-Platzhalter.",
       "cannotRemoveRequired": "Kann nicht entfernt werden - von URL erforderlich",
       "cannotRemoveRequiredParam": "'{{name}}' kann nicht entfernt werden - es wird vom URL-Muster benötigt",
       "confirmDelete": "MCP-Server löschen",
@@ -2751,7 +2842,11 @@
       "pathVariableHintDescription": "Wenn der API-Schlüssel Teil des URL-Pfads sein muss, verwenden Sie {{VARIABLE_NAME}} als Platzhalter und fügen Sie einen Parameter mit demselben Namen vom Typ \"Pfad\" hinzu.",
       "pathVariableHintTitle": "Dynamische URL-Variablen",
       "pathVariablesDetected": "{{count}} Pfadvariable(n) erkannt - bitte geben Sie die Werte ein",
+      "pathVariablesDetected_one": "{{count}} Pfadvariable erkannt - bitte Werte ausfüllen",
+      "pathVariablesDetected_other": "{{count}} Pfadvariablen erkannt - bitte Werte ausfüllen",
       "queryParamsExtracted": "{{count}} Abfrageparameter aus der URL extrahiert",
+      "queryParamsExtracted_one": "{{count}} Abfrageparameter aus URL extrahiert",
+      "queryParamsExtracted_other": "{{count}} Abfrageparameter aus URL extrahiert",
       "reconnect": "Erneut verbinden",
       "required": "Erforderlich",
       "requiredFromUrl": "Aus URL-Pfad erkannt",
@@ -2791,8 +2886,12 @@
       "yamlConverted": "YAML zu JSON konvertiert"
     },
     "noBuiltInTools": "Keine integrierten Werkzeuge",
+    "noBuiltInToolsDescription": "Keine integrierten Werkzeuge verfügbar",
+    "noInputSchema": "Kein Eingabeschema",
+    "noParameters": "Keine Parameter",
     "noTools": "Keine Werkzeuge gefunden",
     "noToolsDescription": "Erstellen Sie Ihr erstes benutzerdefiniertes Werkzeug oder verbinden Sie sich mit einem MCP-Server, um zu beginnen",
+    "searchPlaceholder": "Werkzeuge durchsuchen...",
     "tabs": {
       "apiSpecs": "API-Spezifikationen",
       "builtin": "Integrierte Werkzeuge",
@@ -2815,6 +2914,7 @@
       "tryAgain": "Erneut versuchen"
     },
     "tool": "Werkzeug",
+    "toolKey": "Werkzeugschlüssel",
     "tools": "Werkzeuge",
     "type": {
       "apiSpec": "API-Spezifikation",

@@ -10,6 +10,9 @@ export interface Agent {
   uuid: string;
   name: string;
   status: AgentVersionStatus;  // Derived from versions
+  enable_as_tool: boolean;
+  tool_function_name?: string;
+  tool_description?: string;
   created_at: string;
   updated_at: string;
 }
@@ -22,6 +25,9 @@ export interface AgentCreateRequest {
 // Agent - Update request
 export interface AgentUpdateRequest {
   name?: string;
+  enable_as_tool?: boolean;
+  tool_function_name?: string;
+  tool_description?: string;
 }
 
 // Agent - Revert draft request
