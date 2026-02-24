@@ -13,6 +13,7 @@ import {
 import Card from '../shared/Card';
 
 import { useSettings } from '../../contexts/SettingsProvider';
+import { RetrievalType } from '../../types/knowledge';
 
 interface KnowledgeBasePricingInfoProps {
   isEmbeddingEnabled: boolean;
@@ -22,6 +23,10 @@ interface KnowledgeBasePricingInfoProps {
   rateLimit?: string;
   numberOfDocumentsLimit?: number;
   className?: string;
+  // Retrieval setting pricing
+  retrievalType?: RetrievalType;
+  rerankerEnabled?: boolean;
+  rerankerProviderType?: 'watercrawl' | 'external';
 }
 
 export const KnowledgeBasePricingInfo: React.FC<KnowledgeBasePricingInfoProps> = ({
@@ -32,8 +37,13 @@ export const KnowledgeBasePricingInfo: React.FC<KnowledgeBasePricingInfoProps> =
   rateLimit,
   numberOfDocumentsLimit,
   className = '',
+  retrievalType,
+  rerankerEnabled = false,
+  rerankerProviderType = 'external',
 }) => {
   const { t } = useTranslation();
+  
+  // Document costs
   const hasWaterCrawlCharges =
     (isEmbeddingEnabled && embeddingProviderType === 'watercrawl') ||
     (isEnhancementEnabled && summarizationProviderType === 'watercrawl');
@@ -42,6 +52,15 @@ export const KnowledgeBasePricingInfo: React.FC<KnowledgeBasePricingInfoProps> =
   const summarizationCost =
     isEnhancementEnabled && summarizationProviderType === 'watercrawl' ? 1 : 0;
   const totalCostPerDocument = embeddingCost + summarizationCost;
+  
+  // Retrieval costs
+  const usesVectorOrHybrid =
+    retrievalType === RetrievalType.VectorSearch || retrievalType === RetrievalType.HybridSearch;
+  const vectorCost = usesVectorOrHybrid && embeddingProviderType === 'watercrawl' ? 1 : 0;
+  const rerankerCost = rerankerEnabled && rerankerProviderType === 'watercrawl' ? 1 : 0;
+  const totalCostPerRetrieval = vectorCost + rerankerCost;
+  const hasRetrievalCharges = totalCostPerRetrieval > 0;
+  
   const { settings } = useSettings();
 
   if (!settings || !settings.is_enterprise_mode_active) return null;
@@ -123,6 +142,63 @@ export const KnowledgeBasePricingInfo: React.FC<KnowledgeBasePricingInfoProps> =
               </div>
             )}
           </div>
+
+          {/* Retrieval Cost Breakdown */}
+          {retrievalType && (
+            <div className="rounded-lg border border-border bg-card p-4">
+              <div className="mb-3 flex items-center gap-x-2">
+                <CreditCardIcon className="h-4 w-4 text-muted-foreground" />
+                <h4 className="font-medium text-foreground">
+                  {t('settings.knowledgeBase.retrievalSettings.pricing.costPerRetrieval')}
+                </h4>
+              </div>
+
+              {hasRetrievalCharges ? (
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">
+                      {t('settings.knowledgeBase.retrievalSettings.pricing.yourConfiguration')}:
+                    </span>
+                    <span className="text-lg font-semibold text-primary">
+                      {totalCostPerRetrieval}{' '}
+                      {totalCostPerRetrieval === 1
+                        ? t('settings.knowledgeBase.retrievalSettings.pricing.credit')
+                        : t('settings.knowledgeBase.retrievalSettings.pricing.credits')}
+                    </span>
+                  </div>
+
+                  <div className="space-y-1 text-sm text-muted-foreground">
+                    {vectorCost > 0 && (
+                      <div className="flex justify-between">
+                        <span>• {t('settings.knowledgeBase.retrievalSettings.pricing.vectorSearchWC')}:</span>
+                        <span>1 {t('settings.knowledgeBase.retrievalSettings.pricing.credit')}</span>
+                      </div>
+                    )}
+                    {rerankerCost > 0 && (
+                      <div className="flex justify-between">
+                        <span>• {t('settings.knowledgeBase.retrievalSettings.pricing.rerankerWC')}:</span>
+                        <span>1 {t('settings.knowledgeBase.retrievalSettings.pricing.credit')}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div className="text-sm">
+                  <div className="mb-2 flex items-center justify-between">
+                    <span className="text-muted-foreground">
+                      {t('settings.knowledgeBase.retrievalSettings.pricing.yourConfiguration')}:
+                    </span>
+                    <span className="text-lg font-semibold text-success">
+                      {t('settings.knowledgeBase.retrievalSettings.pricing.free')}
+                    </span>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    {t('settings.knowledgeBase.retrievalSettings.pricing.noCharges')}
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Rate Limit Information */}
           <div className="rounded-lg border border-border bg-card p-4">

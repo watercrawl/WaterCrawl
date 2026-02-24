@@ -14,7 +14,7 @@ from rest_framework.exceptions import PermissionDenied
 from common.application_context import get_application_context_api_key
 from core.models import CrawlRequest, SearchRequest, SitemapRequest
 from core import consts as core_consts
-from knowledge_base.models import KnowledgeBaseDocument
+from knowledge_base.models import KnowledgeBaseDocument, KnowledgeBaseQuery
 from plan import consts
 from plan.models import (
     Plan,
@@ -839,6 +839,8 @@ class UsageHistoryService:
             return calculate_number_of_knowledge_base_documents_credits(
                 request.knowledge_base
             )
+        elif isinstance(request, KnowledgeBaseQuery):
+            return request.retrieval_cost
 
         raise NotImplementedError(
             _("get_actual_credits: Unhandled type {type(request)}").format(
@@ -861,6 +863,8 @@ class UsageHistoryService:
             return calculate_number_of_knowledge_base_documents_credits(
                 request.knowledge_base
             )
+        elif isinstance(request, KnowledgeBaseQuery):
+            return request.retrieval_cost
         raise NotImplementedError(
             _("get_actual_credits: Unhandled type {type(request)}").format(
                 type(request)

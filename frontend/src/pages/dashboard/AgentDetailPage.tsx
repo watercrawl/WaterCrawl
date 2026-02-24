@@ -39,7 +39,6 @@ const AgentDetailPage: React.FC = () => {
   const [messageBlocks, setMessageBlocks] = useState<MessageBlock[]>([]);
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [showIntegrations, setShowIntegrations] = useState(false);
   const [publishedVersion, setPublishedVersion] = useState<AgentVersion | null>(null);
 
   useEffect(() => {
@@ -311,8 +310,9 @@ const AgentDetailPage: React.FC = () => {
             {t('agents.detail.editAgent')}
           </button>
           <button
-            onClick={() => setShowIntegrations(true)}
-            className="w-full inline-flex items-center justify-center gap-x-2 rounded-md bg-muted px-3 py-2 text-xs font-medium text-foreground hover:bg-muted/80 transition-colors"
+            onClick={() => navigate(`/dashboard/agents/${agentId}/integrations`)}
+            disabled={!isPublished}
+            className="w-full inline-flex items-center justify-center gap-x-2 rounded-md bg-muted px-3 py-2 text-xs font-medium text-foreground hover:bg-muted/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Cog6ToothIcon className="h-4 w-4" />
             {t('agents.detail.integrations')}
@@ -383,34 +383,6 @@ const AgentDetailPage: React.FC = () => {
           />
         )}
       </div>
-
-      {/* Integrations Modal/Drawer */}
-      {showIntegrations && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={() => setShowIntegrations(false)}>
-          <div className="bg-card rounded-lg border border-border p-6 max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-foreground">
-                {t('agents.detail.integrations')}
-              </h3>
-              <button
-                onClick={() => setShowIntegrations(false)}
-                className="text-muted-foreground hover:text-foreground"
-              >
-                ×
-              </button>
-            </div>
-            <div className="text-center py-8">
-              <Cog6ToothIcon className="mx-auto h-16 w-16 text-muted-foreground" />
-              <h4 className="mt-4 text-base font-semibold text-foreground">
-                {t('agents.detail.integrationsComingSoon')}
-              </h4>
-              <p className="mt-2 text-sm text-muted-foreground">
-                {t('agents.detail.integrationsDesc')}
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

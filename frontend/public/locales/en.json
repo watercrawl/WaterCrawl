@@ -13,7 +13,8 @@
     },
     "filters": {
       "allStatuses": "All Statuses",
-      "filterByStatus": "Filter by Status"
+      "filterByStatus": "Filter by Status",
+      "status": "Status"
     },
     "loading": "Loading activity logs...",
     "noSearchRequestsFound": "No search requests found",
@@ -23,6 +24,7 @@
     "sitemapLogs": "Sitemap Logs",
     "sitemapLogsDesc": "View your recent sitemap requests and their results",
     "table": {
+      "actions": "activityLogs.table.actions",
       "created": "Created",
       "documents": "Documents",
       "duration": "Duration",
@@ -115,10 +117,10 @@
       "addTool": "+ Add Tool",
       "advancedModelSettings": "Advanced Model Settings",
       "advancedSettings": "Advanced Settings",
+      "agentsAsTools": "Agents as Tools",
       "agentToolAdded": "Agent tool added successfully",
       "agentToolConfigSaved": "Agent tool configuration saved",
       "agentToolRemoved": "Agent tool removed successfully",
-      "agentTools": "Agent Tools",
       "agentToolsDescription": "Delegate tasks to other specialized agents",
       "builtInDataTools": "Built-in Data Tools",
       "builtInUtilityTools": "Built-in Utility Tools",
@@ -133,9 +135,16 @@
       "customHTTPTools": "Custom HTTP Tools",
       "description": "Description",
       "descriptionPlaceholder": "Describe what this agent does",
+      "disableToolWarningConsequence": "Disabling this feature will remove this agent from all places where it's being used as a tool. This action cannot be undone.",
+      "disableToolWarningMessage": "This agent is currently being used as a tool in {{count}} other agent(s).",
+      "disableToolWarningMessage_one": "agents.form.disableToolWarningMessage",
+      "disableToolWarningMessage_other": "agents.form.disableToolWarningMessage",
+      "disableToolWarningTitle": "Disable Agent as Tool",
       "draftAgent": "Draft Agent",
       "editDescription": "Update your agent's configuration and settings",
       "editTitle": "Edit Agent",
+      "enableAsTool": "Enable this agent as a tool",
+      "enableAsToolDescription": "Allow other agents to use this agent as a tool. You must configure the function name and description before publishing.",
       "enabled": "enabled",
       "frequencyPenalty": "Frequency Penalty",
       "frequencyPenaltyDescription": "Reduces repetition by penalizing tokens based on their frequency. Range: -2.0 to 2.0",
@@ -168,6 +177,7 @@
       "noKnowledgeBases": "No knowledge bases added",
       "noKnowledgeBasesConnected": "No knowledge bases connected",
       "noMCPTools": "No MCP tools configured",
+      "noRetrievalSettings": "agents.form.noRetrievalSettings",
       "noTools": "No tools added yet",
       "noVersions": "No version history available",
       "presencePenalty": "Presence Penalty",
@@ -202,8 +212,19 @@
       "temperature": "Temperature",
       "temperatureHelp": "Controls randomness: 0 is deterministic, higher values are more creative",
       "toolAdded": "Tool added successfully",
+      "toolConfigInfoMessage": "Configure how this agent appears when used as a tool by other agents. The function name and description help other agents understand when and how to use this tool.",
+      "toolConfigSaved": "Tool configuration saved successfully",
       "toolConfigUpdated": "Tool configuration updated successfully",
+      "toolConfiguration": "Tool Configuration",
       "toolDescription": "Tool Description",
+      "toolDescriptionHint": "Explain what this agent does when used as a tool. This helps other agents decide when to use it.",
+      "toolDescriptionLabel": "Tool Description",
+      "toolDescriptionPlaceholder": "Describe what this tool does and when to use it...",
+      "toolDescriptionRequired": "Tool description is required when agent is enabled as tool",
+      "toolFunctionName": "Function Name",
+      "toolFunctionNameHint": "A unique identifier for this tool. Use snake_case (e.g., my_tool_name).",
+      "toolFunctionNamePlaceholder": "e.g., analyze_sentiment, summarize_document",
+      "toolFunctionNameRequired": "Function name is required when agent is enabled as tool",
       "toolName": "Tool Name",
       "toolRemoved": "Tool removed successfully",
       "tools": {
@@ -225,6 +246,15 @@
       "topPDescription": "Controls diversity via nucleus sampling. 0.5 means half of all likelihood-weighted options are considered.",
       "updateSuccess": "Agent updated successfully",
       "versionHistory": "Version History"
+    },
+    "integrations": {
+      "apiDocumentation": "API Documentation",
+      "integrationType": "Integration Type",
+      "publishedOnly": "Integrations are only available for published agents",
+      "title": "Integrations",
+      "webhooks": "Webhooks",
+      "webhooksComingSoon": "Webhooks Coming Soon",
+      "webhooksDesc": "Get notified when your agent receives messages or completes tasks."
     },
     "jsonOutput": {
       "clearSchema": "Clear",
@@ -254,6 +284,7 @@
       "retrievalSettingHint": "Select which retrieval setting to use when querying this knowledge base. The default setting will be used if none is selected."
     },
     "noAgents": "No agents yet. Create your first agent to get started.",
+    "noAgentsFound": "No agents found",
     "noResults": "No agents found matching your search.",
     "notFound": "Agent not found",
     "searchPlaceholder": "Search agents...",
@@ -394,6 +425,7 @@
       "warning": "Make sure to copy your key now. You won't be able to see it again!"
     },
     "created": "Created",
+    "createFirstKey": "apiKeys.createFirstKey",
     "createNew": "Create New API Key",
     "deleteConfirmMessage": "Are you sure you want to delete the API key \"{{name}}\"?",
     "deleteConfirmTitle": "Delete API Key",
@@ -594,8 +626,11 @@
     "back": "Back",
     "backToHome": "Back to Home",
     "cancel": "Cancel",
+    "cards": "common.cards",
     "close": "Close",
+    "configure": "Configure",
     "configureModel": "Configure Model",
+    "confirm": "common.confirm",
     "confirmError": "Please enter the correct value to confirm deletion",
     "copied": "Copied!",
     "copiedToClipboard": "Copied to clipboard!",
@@ -619,7 +654,9 @@
     "duplicate": "Duplicate",
     "edit": "Edit",
     "editor": "Editor",
+    "error": "common.error",
     "expand": "Expand",
+    "false": "common.false",
     "forgotPassword": {
       "backToLogin": "Back to login",
       "checkEmail": "Check your email",
@@ -677,7 +714,9 @@
     "noModelsAvailableMessage": "No {{modelType}} models are available in your provider configurations. Please add or configure providers with {{modelType}} models in your team settings.",
     "noProviderConfigs": "No Provider Configurations Available",
     "noProviderConfigsMessage": "You need to configure at least one provider to use models. Please add a provider configuration in your team settings.",
+    "noResults": "common.noResults",
     "nothingFound": "Nothing found",
+    "open": "common.open",
     "openSidebar": "Open sidebar",
     "openUserMenu": "Open user menu",
     "optional": "Optional",
@@ -705,6 +744,8 @@
     "results": "Results",
     "save": "Save",
     "saved": "Saved!",
+    "saving": "common.saving",
+    "search": "common.search",
     "select": "Select",
     "selectAll": "Select All",
     "selectOption": "Select an option",
@@ -733,6 +774,7 @@
       "verifyEmail": "Please verify your email address"
     },
     "soon": "Soon",
+    "stop": "common.stop",
     "submit": "Submit",
     "subtitle": "Web Crawling Platform",
     "success": "Success",
@@ -743,6 +785,7 @@
       "system": "System",
       "title": "Theme"
     },
+    "true": "common.true",
     "typing": "Typing...",
     "unknown": "Unknown",
     "url": "URL",
@@ -1005,6 +1048,7 @@
       "knowledgeBase": "Knowledge Base",
       "mediaLibrary": "Media Library",
       "profile": "Profile",
+      "queries": "Query Logs",
       "search": "Search",
       "searches": "Searches",
       "settings": "Settings",
@@ -1151,6 +1195,7 @@
     "tryAgain": "Try Again"
   },
   "errors": {
+    "badRequest": "errors.badRequest",
     "contactSupport": "Please contact support if this problem persists",
     "generic": "Something went wrong. Please try again",
     "notFound": {
@@ -1246,6 +1291,9 @@
       "validEmail": "Please enter a valid email"
     }
   },
+  "knowledge": {
+    "noKnowledgeBases": "knowledge.noKnowledgeBases"
+  },
   "knowledgeBase": {
     "chunk": "Chunk",
     "contentPreview": "Content Preview",
@@ -1286,12 +1334,18 @@
       "importAllSuccess": "Successfully imported all results",
       "importFailed": "Failed to import selected results",
       "importSelected": "Import Selected ({{count}})",
+      "importSelected_one": "knowledgeBase.import.importSelected",
+      "importSelected_other": "knowledgeBase.import.importSelected",
       "importSuccess": "Successfully imported {{count}} result",
       "importSuccess_one": "Successfully imported {{count}} result",
       "importSuccess_other": "Successfully imported {{count}} results",
       "importUrls": "Import {{count}} URLs",
+      "importUrls_one": "knowledgeBase.import.importUrls",
+      "importUrls_other": "knowledgeBase.import.importUrls",
       "importUrlsFailed": "Failed to import URLs to knowledge base",
       "importUrlsSuccess": "Successfully started import of {{count}} URLs to knowledge base",
+      "importUrlsSuccess_one": "knowledgeBase.import.importUrlsSuccess",
+      "importUrlsSuccess_other": "knowledgeBase.import.importUrlsSuccess",
       "invalidRequest": "Invalid request. Please check your selections and try again.",
       "manual": "Manual Entry",
       "manualDesc": "Manually enter or paste text content",
@@ -1338,6 +1392,9 @@
     "keywords": "Keywords",
     "list": "Knowledge Bases",
     "new": "New Knowledge Base",
+    "noQueries": "No queries yet",
+    "noQueriesFiltered": "No queries found with the selected filter",
+    "noQueriesYet": "Query history will appear here once you start using knowledge base retrieval",
     "previewContent": "Preview full content",
     "pricing": {
       "costPerDocument": "Cost Per Document",
@@ -1372,6 +1429,12 @@
       "sources": "Sources",
       "title": "Query Knowledge Base"
     },
+    "queryHistory": "Query History",
+    "queryLogs": "Query Logs",
+    "queryLogsDesc": "View knowledge base query history and retrieval costs",
+    "queryText": "Query Text",
+    "resultsCount": "Results",
+    "retrievalCost": "Cost",
     "searchPlaceholder": "Search knowledge bases...",
     "source": "Source",
     "subtitle": "Manage your knowledge bases",
@@ -1637,6 +1700,8 @@
   },
   "results": {
     "attachments": "Attachments",
+    "attachments_one": "results.attachments",
+    "attachments_other": "results.attachments",
     "details": "Result Details",
     "json": "JSON",
     "markdown": "Markdown",
@@ -1739,6 +1804,7 @@
     "numResults": "Number of Results",
     "queryDescription": "Enter your query to search the internet for relevant results.",
     "queryPlaceholder": "Enter your search query...",
+    "result": "search.result",
     "results": {
       "date": "Date",
       "found": "results found",
@@ -1831,6 +1897,11 @@
         "goBack": "Go back to Knowledge Bases",
         "notFound": "Knowledge base not found or you don't have access to it.",
         "test": "Test"
+      },
+      "document": {
+        "deleteDocument": "settings.knowledgeBase.document.deleteDocument",
+        "retryIndexing": "settings.knowledgeBase.document.retryIndexing",
+        "viewChunks": "settings.knowledgeBase.document.viewChunks"
       },
       "documentDetail": {
         "backToKB": "Back to Knowledge Base",
@@ -2077,13 +2148,29 @@
           "hybrid_search": "Combine semantic and keyword search for best results",
           "vector_search": "Search using semantic similarity with embeddings"
         },
-        "embeddingRequired": "Vector and hybrid search require embeddings to be configured for this knowledge base",
+        "disabled": "Disabled",
+        "embeddingRequired": "Embeddings Required",
+        "embeddingRequiredExplanation": "Vector and hybrid search require embeddings to be configured for this knowledge base. Please enable semantic search in the Embedding Configuration section when creating a knowledge base to use these advanced search methods.",
         "hybridAlpha": "Hybrid Alpha",
         "hybridAlphaHelp": "Balance between semantic (0.0) and keyword (1.0) search. 0.7 means 70% semantic, 30% keyword.",
         "loadError": "Failed to load retrieval settings",
         "name": "Name",
         "namePlaceholder": "e.g., Default Search, Semantic Search, etc.",
         "noSettings": "No retrieval settings configured. Add one to get started.",
+        "pricing": {
+          "costPerRetrieval": "Cost per Retrieval",
+          "credit": "credit",
+          "credits": "credits",
+          "free": "Free",
+          "limitedTime": "Limited Time",
+          "noCharges": "No WaterCrawl credits will be used with your current configuration.",
+          "rerankerWC": "Reranker (WaterCrawl model)",
+          "retrievalsFree": "All retrievals are currently free! This is a promotional period.",
+          "title": "Retrieval Cost Information",
+          "vectorSearchWC": "Vector/Hybrid search (WaterCrawl embedding)",
+          "yourConfiguration": "Your configuration"
+        },
+        "requiresEmbedding": "Requires embeddings to be enabled",
         "reranker": "Reranker",
         "rerankerEnabled": "Enable Reranker",
         "rerankerEnabledHelp": "Use a reranker to improve result relevance by reordering results",
@@ -2611,6 +2698,8 @@
       "noSpecsDescription": "Add an OpenAPI specification to generate tools for your agents",
       "noTools": "No tools available",
       "securityParamsExtracted": "Extracted {{count}} security parameter(s) from spec",
+      "securityParamsExtracted_one": "tools.apiSpec.securityParamsExtracted",
+      "securityParamsExtracted_other": "tools.apiSpec.securityParamsExtracted",
       "specJson": "OpenAPI Specification",
       "specJsonHelp": "Paste your OpenAPI specification or upload a JSON/YAML file",
       "specName": "Spec Name",
@@ -2624,6 +2713,7 @@
     "createCustomTool": "Create Custom Tool",
     "createSuccess": "Tool created successfully",
     "deleteSuccess": "Tool deleted successfully",
+    "description": "tools.description",
     "drawer": {
       "artifact": "Artifact",
       "description": "Description",
@@ -2677,6 +2767,7 @@
       "urlRequired": "URL is required"
     },
     "inactive": "Inactive",
+    "inputParameters": "tools.inputParameters",
     "management": "Tools Management",
     "managementDescription": "Manage custom HTTP tools and MCP servers for your agents",
     "mcp": {
@@ -2751,7 +2842,11 @@
       "pathVariableHintDescription": "If the API key must be part of the URL path, use {{VARIABLE_NAME}} as a placeholder and add a parameter with the same name using \"Path\" type.",
       "pathVariableHintTitle": "Dynamic URL Variables",
       "pathVariablesDetected": "Detected {{count}} path variable(s) - please fill in the values",
+      "pathVariablesDetected_one": "tools.mcp.pathVariablesDetected",
+      "pathVariablesDetected_other": "tools.mcp.pathVariablesDetected",
       "queryParamsExtracted": "Extracted {{count}} query parameter(s) from URL",
+      "queryParamsExtracted_one": "tools.mcp.queryParamsExtracted",
+      "queryParamsExtracted_other": "tools.mcp.queryParamsExtracted",
       "reconnect": "Reconnect",
       "required": "Required",
       "requiredFromUrl": "Detected from URL path",
@@ -2791,8 +2886,12 @@
       "yamlConverted": "YAML converted to JSON"
     },
     "noBuiltInTools": "No built-in tools",
+    "noBuiltInToolsDescription": "tools.noBuiltInToolsDescription",
+    "noInputSchema": "tools.noInputSchema",
+    "noParameters": "tools.noParameters",
     "noTools": "No tools found",
     "noToolsDescription": "Create your first custom tool or connect to an MCP server to get started",
+    "searchPlaceholder": "Search tools...",
     "tabs": {
       "apiSpecs": "API Specs",
       "builtin": "Built-in Tools",
@@ -2815,6 +2914,7 @@
       "tryAgain": "Try Again"
     },
     "tool": "tool",
+    "toolKey": "tools.toolKey",
     "tools": "tools",
     "type": {
       "apiSpec": "API Spec",

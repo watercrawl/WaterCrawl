@@ -18,6 +18,26 @@ class Agent(BaseModel):
         related_name="agents",
     )
 
+    # Tool configuration
+    enable_as_tool = models.BooleanField(
+        verbose_name=_("Enable as Tool"),
+        default=False,
+        help_text=_("Allow this agent to be used as a tool in other agents"),
+    )
+    tool_function_name = models.CharField(
+        verbose_name=_("Tool Function Name"),
+        max_length=255,
+        null=True,
+        blank=True,
+        help_text=_("Custom function name when used as a tool"),
+    )
+    tool_description = models.TextField(
+        verbose_name=_("Tool Description"),
+        null=True,
+        blank=True,
+        help_text=_("Description of what this agent does when used as a tool"),
+    )
+
     @cached_property
     def current_published_version(self):
         return self.versions.filter(
@@ -375,27 +395,24 @@ class AgentAsTool(BaseModel):
 
     @cached_property
     def name(self):
-        """Tool name based on agent name."""
-        return self.tool_agent.name
+        """Tool name based on agent's tool configuration."""
+        return self.tool_agent.tool_function_name or self.tool_agent.name
 
     @cached_property
     def key(self):
-        """Unique key for the tool."""
-        return "agent_{}".format(
-            re.sub(r"[^a-zA-Z0-9_]", "_", self.tool_agent.name.lower())
-        )[:50]
+        """Unique key for the tool based on configured function name."""
+        function_name = (
+            self.tool_agent.tool_function_name or self.tool_agent.name.lower()
+        )
+        return "agent_{}".format(re.sub(r"[^a-zA-Z0-9_]", "_", function_name))[:50]
 
     @cached_property
     def description(self):
-        """Tool description from agent's system prompt or name."""
-        version = (
-            self.tool_agent.current_published_version
-            or self.tool_agent.current_draft_version
+        """Tool description from agent's tool configuration."""
+        return (
+            self.tool_agent.tool_description
+            or f"Delegate tasks to {self.tool_agent.name} agent"
         )
-        if version and version.system_prompt:
-            # Use first 200 chars of system prompt as description
-            return version.system_prompt[:200].strip()
-        return f"Delegate tasks to {self.tool_agent.name} agent"
 
     @property
     def input_schema(self):

@@ -6,7 +6,9 @@ import {
   KnowledgeBaseDetail,
   KnowledgeBaseDocument,
   KnowledgeBaseFormData,
+  KnowledgeBaseQuery,
   KnowledgeBaseQueryRequest,
+  QueryStatus,
   RetrievalSetting,
   RetrievalSettingFormData,
 } from '../../types/knowledge';
@@ -221,5 +223,29 @@ export const knowledgeBaseApi = {
     return api.delete(
       `/api/v1/knowledge-base/knowledge-bases/${knowledgeBaseUuid}/retrieval-settings/${uuid}/`
     );
+  },
+
+  // Query History
+  async listQueries(
+    knowledgeBaseUuid?: string,
+    page?: number,
+    pageSize?: number,
+    status?: QueryStatus
+  ) {
+    const params = new URLSearchParams();
+    if (page) params.append('page', page.toString());
+    if (pageSize) params.append('page_size', pageSize.toString());
+    if (status) params.append('status', status);
+    if (knowledgeBaseUuid) params.append('knowledge_base', knowledgeBaseUuid);
+
+    return api
+      .get<PaginatedResponse<KnowledgeBaseQuery>>('/api/v1/knowledge-base/queries/', { params })
+      .then(({ data }) => data);
+  },
+
+  async getQuery(uuid: string) {
+    return api
+      .get<KnowledgeBaseQuery>(`/api/v1/knowledge-base/queries/${uuid}/`)
+      .then(({ data }) => data);
   },
 };

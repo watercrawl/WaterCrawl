@@ -13,7 +13,8 @@
     },
     "filters": {
       "allStatuses": "همه وضعیت‌ها",
-      "filterByStatus": "فیلتر بر اساس وضعیت"
+      "filterByStatus": "فیلتر بر اساس وضعیت",
+      "status": "وضعیت"
     },
     "loading": "در حال بارگذاری گزارش‌های فعالیت...",
     "noSearchRequestsFound": "هیچ درخواست جستجویی یافت نشد",
@@ -23,6 +24,7 @@
     "sitemapLogs": "گزارش‌های نقشه سایت",
     "sitemapLogsDesc": "درخواست‌های نقشه سایت اخیر و نتایج آن‌ها را مشاهده کنید",
     "table": {
+      "actions": "اقدامات",
       "created": "ایجاد شده",
       "documents": "اسناد",
       "duration": "مدت زمان",
@@ -115,11 +117,11 @@
       "addTool": "+ افزودن ابزار",
       "advancedModelSettings": "تنظیمات پیشرفته مدل",
       "advancedSettings": "تنظیمات پیشرفته",
-      "agentToolAdded": "ابزار دستیار با موفقیت اضافه شد",
-      "agentToolConfigSaved": "پیکربندی ابزار دستیار ذخیره شد",
-      "agentToolRemoved": "ابزار دستیار با موفقیت حذف شد",
-      "agentTools": "ابزارهای دستیار",
-      "agentToolsDescription": "واگذاری وظایف به سایر دستیارهای تخصصی",
+      "agentsAsTools": "نمایندگان به‌عنوان ابزار",
+      "agentToolAdded": "ابزار نماینده با موفقیت اضافه شد",
+      "agentToolConfigSaved": "پیکربندی ابزار نماینده ذخیره شد",
+      "agentToolRemoved": "ابزار نماینده با موفقیت حذف شد",
+      "agentToolsDescription": "واگذاری وظایف به نمایندگان تخصصی دیگر",
       "builtInDataTools": "ابزارهای داده داخلی",
       "builtInUtilityTools": "ابزارهای کمکی داخلی",
       "configSaved": "پیکربندی با موفقیت ذخیره شد",
@@ -133,9 +135,16 @@
       "customHTTPTools": "ابزارهای HTTP سفارشی",
       "description": "توضیحات",
       "descriptionPlaceholder": "توضیح دهید این دستیار چه کاری انجام می‌دهد",
+      "disableToolWarningConsequence": "غیرفعال کردن این ویژگی، این نماینده را از همه جاهایی که به‌عنوان ابزار استفاده می‌شود حذف خواهد کرد. این عمل قابل برگشت نیست.",
+      "disableToolWarningMessage": "این نماینده در حال حاضر در {{count}} نماینده دیگر به‌عنوان ابزار استفاده می‌شود.",
+      "disableToolWarningMessage_one": "این نماینده در حال حاضر در {{count}} نماینده دیگر به‌عنوان ابزار استفاده می‌شود.",
+      "disableToolWarningMessage_other": "این نماینده در حال حاضر در {{count}} نماینده دیگر به‌عنوان ابزار استفاده می‌شود.",
+      "disableToolWarningTitle": "غیرفعال کردن نماینده به‌عنوان ابزار",
       "draftAgent": "نماینده پیش‌نویس",
       "editDescription": "پیکربندی و تنظیمات دستیار خود را به‌روزرسانی کنید",
       "editTitle": "ویرایش نماینده",
+      "enableAsTool": "فعال کردن این نماینده به‌عنوان ابزار",
+      "enableAsToolDescription": "به نمایندگان دیگر اجازه دهید از این نماینده به‌عنوان ابزار استفاده کنند. باید نام تابع و توضیحات را قبل از انتشار پیکربندی کنید.",
       "enabled": "فعال",
       "frequencyPenalty": "جریمه فرکانس",
       "frequencyPenaltyDescription": "تکرار را با جریمه کردن توکن‌ها بر اساس فرکانس آنها کاهش می‌دهد. محدوده: -2.0 تا 2.0",
@@ -168,6 +177,7 @@
       "noKnowledgeBases": "هیچ پایگاه دانشی متصل نشده است",
       "noKnowledgeBasesConnected": "هیچ پایگاه دانشی متصل نشده است",
       "noMCPTools": "ابزار MCP پیکربندی نشده است",
+      "noRetrievalSettings": "تنظیمات بازیابی پیکربندی نشده است.",
       "noTools": "هنوز ابزاری اضافه نشده است",
       "noVersions": "هیچ تاریخچه نسخه‌ای در دسترس نیست",
       "presencePenalty": "جریمه حضور",
@@ -202,8 +212,19 @@
       "temperature": "دما",
       "temperatureHelp": "تصادفی بودن را کنترل می‌کند: 0 قطعی است، مقادیر بالاتر خلاقانه‌ترند",
       "toolAdded": "ابزار با موفقیت اضافه شد",
+      "toolConfigInfoMessage": "نحوه نمایش این نماینده را هنگام استفاده به‌عنوان ابزار توسط نمایندگان دیگر پیکربندی کنید. نام تابع و توضیحات به نمایندگان دیگر کمک می‌کند تا بفهمند چه زمانی و چگونه از این ابزار استفاده کنند.",
+      "toolConfigSaved": "پیکربندی ابزار با موفقیت ذخیره شد",
       "toolConfigUpdated": "پیکربندی ابزار با موفقیت به‌روزرسانی شد",
+      "toolConfiguration": "پیکربندی ابزار",
       "toolDescription": "توضیحات ابزار",
+      "toolDescriptionHint": "توضیح دهید این نماینده هنگام استفاده به‌عنوان ابزار چه کاری انجام می‌دهد. این به نمایندگان دیگر کمک می‌کند تصمیم بگیرند چه زمانی از آن استفاده کنند.",
+      "toolDescriptionLabel": "توضیحات ابزار",
+      "toolDescriptionPlaceholder": "توضیح دهید این ابزار چه کاری انجام می‌دهد و چه زمانی از آن استفاده شود...",
+      "toolDescriptionRequired": "توضیحات ابزار هنگام فعال کردن نماینده به‌عنوان ابزار الزامی است",
+      "toolFunctionName": "نام تابع",
+      "toolFunctionNameHint": "یک شناسه منحصر به‌فرد برای این ابزار. از snake_case استفاده کنید (مثلاً my_tool_name).",
+      "toolFunctionNamePlaceholder": "مثلاً: analyze_sentiment، summarize_document",
+      "toolFunctionNameRequired": "نام تابع هنگام فعال کردن نماینده به‌عنوان ابزار الزامی است",
       "toolName": "نام ابزار",
       "toolRemoved": "ابزار با موفقیت حذف شد",
       "tools": {
@@ -225,6 +246,15 @@
       "topPDescription": "تنوع را از طریق نمونه‌گیری هسته‌ای کنترل می‌کند. 0.5 یعنی نیمی از همه گزینه‌های وزن‌دار احتمالی در نظر گرفته می‌شوند.",
       "updateSuccess": "دستیار با موفقیت به‌روزرسانی شد",
       "versionHistory": "تاریخچه نسخه"
+    },
+    "integrations": {
+      "apiDocumentation": "مستندات API",
+      "integrationType": "نوع یکپارچه‌سازی",
+      "publishedOnly": "یکپارچه‌سازی‌ها فقط برای نمایندگان منتشر شده در دسترس هستند",
+      "title": "یکپارچه‌سازی‌ها",
+      "webhooks": "وب‌هوک‌ها",
+      "webhooksComingSoon": "وب‌هوک‌ها به زودی",
+      "webhooksDesc": "زمانی که نماینده شما پیام دریافت می‌کند یا وظایف را تکمیل می‌کند، مطلع شوید."
     },
     "jsonOutput": {
       "clearSchema": "پاک کردن",
@@ -254,6 +284,7 @@
       "retrievalSettingHint": "انتخاب کنید که هنگام پرس و جو از این پایگاه دانش از کدام تنظیمات بازیابی استفاده شود. اگر هیچکدام انتخاب نشود، تنظیمات پیش‌فرض استفاده می‌شود."
     },
     "noAgents": "هنوز دستیاری وجود ندارد. اولین دستیار خود را ایجاد کنید تا شروع کنید.",
+    "noAgentsFound": "هیچ نماینده‌ای یافت نشد",
     "noResults": "دستیاری مطابق با جستجوی شما یافت نشد.",
     "notFound": "دستیار یافت نشد",
     "searchPlaceholder": "جستجوی دستیارها...",
@@ -394,6 +425,7 @@
       "warning": "حتماً کلید خود را اکنون کپی کنید. دیگر نمی‌توانید آن را مشاهده کنید!"
     },
     "created": "ایجاد شده",
+    "createFirstKey": "اولین کلید API خود را برای شروع ایجاد کنید",
     "createNew": "ایجاد کلید API جدید",
     "deleteConfirmMessage": "آیا مطمئن هستید که می‌خواهید کلید API \"{{name}}\" را حذف کنید؟",
     "deleteConfirmTitle": "حذف کلید API",
@@ -594,8 +626,11 @@
     "back": "بازگشت",
     "backToHome": "Back to Home",
     "cancel": "لغو",
+    "cards": "کارت‌ها",
     "close": "بستن",
+    "configure": "پیکربندی",
     "configureModel": "پیکربندی مدل",
+    "confirm": "تأیید",
     "confirmError": "لطفاً برای تأیید حذف، مقدار صحیح را وارد کنید",
     "copied": "کپی شد!",
     "copiedToClipboard": "در کلیپ‌بورد کپی شد!",
@@ -619,7 +654,9 @@
     "duplicate": "تکثیر",
     "edit": "ویرایش",
     "editor": "ویرایشگر",
+    "error": "خطا",
     "expand": "بزرگ‌نمایی",
+    "false": "نادرست",
     "forgotPassword": {
       "backToLogin": "بازگشت به ورود",
       "checkEmail": "ایمیل خود را بررسی کنید",
@@ -677,7 +714,9 @@
     "noModelsAvailableMessage": "هیچ مدل {{modelType}} در پیکربندی‌های ارائه‌دهنده شما موجود نیست. لطفاً ارائه‌دهندگانی با مدل‌های {{modelType}} در تنظیمات تیم اضافه یا پیکربندی کنید.",
     "noProviderConfigs": "پیکربندی ارائه‌دهنده موجود نیست",
     "noProviderConfigsMessage": "برای استفاده از مدل‌ها باید حداقل یک ارائه‌دهنده را پیکربندی کنید. لطفاً یک پیکربندی ارائه‌دهنده در تنظیمات تیم اضافه کنید.",
+    "noResults": "نتیجه‌ای یافت نشد",
     "nothingFound": "چیزی پیدا نشد.",
+    "open": "باز کردن",
     "openSidebar": "باز کردن نوار کناری",
     "openUserMenu": "باز کردن منوی کاربر",
     "optional": "اختیاری",
@@ -705,6 +744,8 @@
     "results": "نتایج",
     "save": "ذخیره",
     "saved": "ذخیره شد!",
+    "saving": "در حال ذخیره...",
+    "search": "جستجو",
     "select": "انتخاب",
     "selectAll": "انتخاب همه",
     "selectOption": "یک گزینه انتخاب کنید",
@@ -733,6 +774,7 @@
       "verifyEmail": "لطفاً آدرس ایمیل خود را تأیید کنید"
     },
     "soon": "به زودی",
+    "stop": "توقف",
     "submit": "ثبت",
     "subtitle": "پلتفرم خزش وب",
     "success": "موفقیت",
@@ -743,6 +785,7 @@
       "system": "سیستم",
       "title": "پوسته"
     },
+    "true": "درست",
     "typing": "در حال تایپ...",
     "unknown": "نامشخص",
     "url": "آدرس URL",
@@ -1005,6 +1048,7 @@
       "knowledgeBase": "پایگاه دانش",
       "mediaLibrary": "کتابخانه رسانه",
       "profile": "پروفایل",
+      "queries": "گزارش‌های پرس‌وجو",
       "search": "جستجو",
       "searches": "جستجوها",
       "settings": "تنظیمات",
@@ -1151,6 +1195,7 @@
     "tryAgain": "دوباره امتحان کنید"
   },
   "errors": {
+    "badRequest": "درخواست نامعتبر",
     "contactSupport": "لطفاً در صورت ادامه این مشکل با پشتیبانی تماس بگیرید",
     "generic": "مشکلی پیش آمد. لطفاً دوباره امتحان کنید",
     "notFound": {
@@ -1246,6 +1291,9 @@
       "validEmail": "لطفاً یک ایمیل معتبر وارد کنید"
     }
   },
+  "knowledge": {
+    "noKnowledgeBases": "پایگاه دانشی یافت نشد"
+  },
   "knowledgeBase": {
     "chunk": "قطعه",
     "contentPreview": "پیش‌نمایش محتوا",
@@ -1286,12 +1334,18 @@
       "importAllSuccess": "همه نتایج با موفقیت وارد شدند",
       "importFailed": "وارد کردن نتایج انتخاب شده ناموفق بود",
       "importSelected": "وارد کردن موارد انتخاب شده ({{count}})",
+      "importSelected_one": "وارد کردن انتخاب شده ({{count}})",
+      "importSelected_other": "وارد کردن انتخاب شده‌ها ({{count}})",
       "importSuccess": "{{count}} نتیجه با موفقیت وارد شد",
       "importSuccess_one": "Successfully imported {{count}} result",
       "importSuccess_other": "Successfully imported {{count}} results",
       "importUrls": "وارد کردن {{count}} URL",
+      "importUrls_one": "وارد کردن {{count}} URL",
+      "importUrls_other": "وارد کردن {{count}} URL",
       "importUrlsFailed": "وارد کردن URLها به پایگاه دانش ناموفق بود",
       "importUrlsSuccess": "وارد کردن {{count}} URL به پایگاه دانش با موفقیت آغاز شد",
+      "importUrlsSuccess_one": "وارد کردن {{count}} URL به پایگاه دانش با موفقیت آغاز شد",
+      "importUrlsSuccess_other": "وارد کردن {{count}} URL به پایگاه دانش با موفقیت آغاز شد",
       "invalidRequest": "درخواست نامعتبر. لطفاً انتخاب‌های خود را بررسی کرده و دوباره امتحان کنید.",
       "manual": "ورودی دستی",
       "manualDesc": "وارد کردن یا چسباندن دستی محتوای متنی",
@@ -1338,6 +1392,9 @@
     "keywords": "کلمات کلیدی",
     "list": "پایگاه‌های دانش",
     "new": "پایگاه دانش جدید",
+    "noQueries": "هنوز پرس‌وجویی نیست",
+    "noQueriesFiltered": "هیچ پرس‌وجویی با فیلتر انتخابی یافت نشد",
+    "noQueriesYet": "تاریخچه پرس‌وجو زمانی که شروع به استفاده از بازیابی پایگاه دانش کنید، اینجا نمایش داده می‌شود",
     "previewContent": "پیش‌نمایش محتوای کامل",
     "pricing": {
       "costPerDocument": "هزینه به ازای هر سند",
@@ -1372,6 +1429,12 @@
       "sources": "منابع",
       "title": "پرسش از پایگاه دانش"
     },
+    "queryHistory": "تاریخچه پرس‌وجو",
+    "queryLogs": "گزارش‌های پرس‌وجو",
+    "queryLogsDesc": "مشاهده تاریخچه پرس‌وجو و هزینه‌های بازیابی پایگاه دانش",
+    "queryText": "متن پرس‌وجو",
+    "resultsCount": "تعداد نتایج",
+    "retrievalCost": "هزینه",
     "searchPlaceholder": "جستجو در پایگاه‌های دانش...",
     "source": "منبع",
     "subtitle": "مدیریت پایگاه‌های دانش خود",
@@ -1637,6 +1700,8 @@
   },
   "results": {
     "attachments": "پیوست‌ها",
+    "attachments_one": "{{count}} پیوست",
+    "attachments_other": "{{count}} پیوست",
     "details": "جزئیات نتیجه",
     "json": "JSON",
     "markdown": "Markdown",
@@ -1739,6 +1804,7 @@
     "numResults": "تعداد نتایج",
     "queryDescription": "پرس‌وجوی خود را برای جستجوی اینترنت و یافتن نتایج مرتبط وارد کنید.",
     "queryPlaceholder": "پرس‌وجوی جستجوی خود را وارد کنید...",
+    "result": "نتیجه",
     "results": {
       "date": "تاریخ",
       "found": "نتیجه پیدا شد",
@@ -1831,6 +1897,11 @@
         "goBack": "بازگشت به پایگاه‌های دانش",
         "notFound": "پایگاه دانش پیدا نشد یا به آن دسترسی ندارید.",
         "test": "تست"
+      },
+      "document": {
+        "deleteDocument": "حذف سند",
+        "retryIndexing": "تلاش مجدد برای نمایه‌سازی",
+        "viewChunks": "مشاهده بخش‌ها"
       },
       "documentDetail": {
         "backToKB": "بازگشت به پایگاه دانش",
@@ -2077,13 +2148,29 @@
           "hybrid_search": "ترکیب جستجوی معنایی و جستجوی کلمات کلیدی برای بهترین نتایج",
           "vector_search": "جستجو با استفاده از شباهت معنایی با embeddings"
         },
+        "disabled": "غیرفعال",
         "embeddingRequired": "جستجوی برداری و ترکیبی نیاز به پیکربندی embeddings برای این پایگاه دانش دارد",
+        "embeddingRequiredExplanation": "لطفاً یک ارائه‌دهنده embeddings برای این پایگاه دانش پیکربندی کنید تا از این انواع بازیابی استفاده کنید.",
         "hybridAlpha": "آلفای ترکیبی",
         "hybridAlphaHelp": "تعادل بین جستجوی معنایی (0.0) و جستجوی کلمات کلیدی (1.0). 0.7 به معنای 70% معنایی، 30% کلمات کلیدی است.",
         "loadError": "بارگذاری تنظیمات بازیابی ناموفق بود",
         "name": "نام",
         "namePlaceholder": "مثال: جستجوی پیش‌فرض، جستجوی معنایی و غیره",
         "noSettings": "هیچ تنظیمات بازیابی پیکربندی نشده است. یکی اضافه کنید تا شروع کنید.",
+        "pricing": {
+          "costPerRetrieval": "هزینه به ازای هر بازیابی",
+          "credit": "اعتبار",
+          "credits": "اعتبارات",
+          "free": "رایگان",
+          "limitedTime": "محدود به زمان",
+          "noCharges": "هیچ هزینه‌ای هنگام استفاده از کلیدهای API خود برای ویژگی‌های فعال وجود ندارد.",
+          "rerankerWC": "بازترتیب‌کننده (ارائه‌دهنده WaterCrawl)",
+          "retrievalsFree": "بازیابی‌ها در حال حاضر رایگان هستند!",
+          "title": "قیمت‌گذاری بازیابی",
+          "vectorSearchWC": "جستجوی برداری (ارائه‌دهنده WaterCrawl)",
+          "yourConfiguration": "پیکربندی شما"
+        },
+        "requiresEmbedding": "نیاز به پیکربندی embeddings دارد",
         "reranker": "بازترتیب‌کننده",
         "rerankerEnabled": "فعال‌سازی بازترتیب‌کننده",
         "rerankerEnabledHelp": "از بازترتیب‌کننده برای بهبود ارتباط نتایج با بازترتیب نتایج استفاده کنید",
@@ -2611,6 +2698,8 @@
       "noSpecsDescription": "مشخصات OpenAPI را برای ایجاد ابزارها برای دستیارهایتان اضافه کنید",
       "noTools": "ابزاری موجود نیست",
       "securityParamsExtracted": "{{count}} پارامتر امنیتی از مشخصات استخراج شد",
+      "securityParamsExtracted_one": "{{count}} پارامتر امنیتی از مشخصات استخراج شد",
+      "securityParamsExtracted_other": "{{count}} پارامتر امنیتی از مشخصات استخراج شد",
       "specJson": "مشخصات OpenAPI",
       "specJsonHelp": "مشخصات OpenAPI خود را بچسبانید یا یک فایل JSON/YAML آپلود کنید",
       "specName": "نام مشخصات",
@@ -2624,6 +2713,7 @@
     "createCustomTool": "ایجاد ابزار سفارشی",
     "createSuccess": "ابزار با موفقیت ایجاد شد",
     "deleteSuccess": "ابزار با موفقیت حذف شد",
+    "description": "توضیحات",
     "drawer": {
       "artifact": "آرتیفکت",
       "description": "توضیحات",
@@ -2677,6 +2767,7 @@
       "urlRequired": "آدرس URL الزامی است"
     },
     "inactive": "غیرفعال",
+    "inputParameters": "پارامترهای ورودی",
     "management": "مدیریت ابزارها",
     "managementDescription": "مدیریت ابزارهای HTTP سفارشی و سرورهای MCP برای دستیارهای شما",
     "mcp": {
@@ -2751,7 +2842,11 @@
       "pathVariableHintDescription": "اگر کلید API باید بخشی از مسیر URL باشد، از {{VARIABLE_NAME}} به عنوان متغیر استفاده کنید و یک پارامتر با همان نام با استفاده از نوع \"مسیر\" اضافه کنید.",
       "pathVariableHintTitle": "متغیرهای URL پویا",
       "pathVariablesDetected": "{{count}} متغیر مسیر شناسایی شد - لطفاً مقادیر را پر کنید",
+      "pathVariablesDetected_one": "{{count}} متغیر مسیر شناسایی شد - لطفاً مقادیر را پر کنید",
+      "pathVariablesDetected_other": "{{count}} متغیر مسیر شناسایی شد - لطفاً مقادیر را پر کنید",
       "queryParamsExtracted": "{{count}} پارامتر پرس‌و‌جو از URL استخراج شد",
+      "queryParamsExtracted_one": "{{count}} پارامتر پرس‌وجو از URL استخراج شد",
+      "queryParamsExtracted_other": "{{count}} پارامتر پرس‌وجو از URL استخراج شد",
       "reconnect": "اتصال مجدد",
       "required": "الزامی",
       "requiredFromUrl": "از مسیر URL شناسایی شد",
@@ -2791,8 +2886,12 @@
       "yamlConverted": "YAML به JSON تبدیل شد"
     },
     "noBuiltInTools": "ابزار داخلی وجود ندارد",
+    "noBuiltInToolsDescription": "هیچ ابزار داخلی موجود نیست",
+    "noInputSchema": "طرح ورودی وجود ندارد",
+    "noParameters": "پارامتری وجود ندارد",
     "noTools": "ابزاری یافت نشد",
     "noToolsDescription": "اولین ابزار سفارشی خود را ایجاد کنید یا به یک سرور MCP متصل شوید تا شروع کنید",
+    "searchPlaceholder": "جستجوی ابزارها...",
     "tabs": {
       "apiSpecs": "مشخصات API",
       "builtin": "ابزارهای داخلی",
@@ -2815,6 +2914,7 @@
       "tryAgain": "تلاش مجدد"
     },
     "tool": "ابزار",
+    "toolKey": "کلید ابزار",
     "tools": "ابزارها",
     "type": {
       "apiSpec": "مشخصات API",

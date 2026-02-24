@@ -23,6 +23,11 @@ router.register(
     views.RetrievalSettingViewSet,
     basename="retrieval-settings",
 )
+router.register(
+    r"queries",
+    views.KnowledgeBaseQueryViewSet,
+    basename="knowledge-base-query",
+)
 
 urlpatterns = [
     path("", include(router.urls)),

@@ -49,8 +49,10 @@ export interface RetrievalSetting {
   reranker_enabled: boolean;
   reranker_model_key: string | null;
   reranker_provider_config: ProviderConfig | null;
+  reranker_model_config: Record<string, any> | null;
   top_k: number;
   hybrid_alpha: number | null;
+  retrieval_cost: number;
   created_at: string;
   updated_at: string;
 }
@@ -62,9 +64,29 @@ export interface RetrievalSettingFormData {
   reranker_enabled: boolean;
   reranker_model_key: string | null;
   reranker_provider_config_id: string | null;
-  reranker_model_config?: Record<string, any>;
+  reranker_model_config?: Record<string, any> | null;
   top_k: number;
   hybrid_alpha: number | null;
+}
+
+export enum QueryStatus {
+  New = 'new',
+  Processing = 'processing',
+  Finished = 'finished',
+  Failed = 'failed',
+}
+
+export interface KnowledgeBaseQuery {
+  uuid: string;
+  knowledge_base: string;
+  retrieval_setting: string | null;
+  query_text: string;
+  status: QueryStatus;
+  results_count: number;
+  retrieval_cost: number;
+  error_message: string | null;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface KnowledgeBaseDetail extends KnowledgeBase {

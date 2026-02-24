@@ -33,6 +33,7 @@ const CONTENT_TYPE_OPTIONS = [
   { value: ContentType.SitemapRequest, key: 'sitemap.title' },
   { value: ContentType.SearchRequest, key: 'search.title' },
   { value: ContentType.KnowledgeBaseDocument, key: 'knowledgeBase.document' },
+  { value: ContentType.KnowledgeBaseQuery, key: 'knowledgeBase.queryHistory' },
 ];
 
 const getContentTypeIcon = (contentType: ContentType) => {
@@ -45,6 +46,8 @@ const getContentTypeIcon = (contentType: ContentType) => {
       return <MagnifyingGlassIcon className="h-4 w-4" />;
     case ContentType.KnowledgeBaseDocument:
       return <BookOpenIcon className="h-4 w-4" />;
+    case ContentType.KnowledgeBaseQuery:
+      return <MagnifyingGlassIcon className="h-4 w-4" />;
     default:
       return <DocumentTextIcon className="h-4 w-4" />;
   }
@@ -60,6 +63,8 @@ const getContentTypeLabel = (contentType: ContentType, t: any) => {
       return t('search.title');
     case ContentType.KnowledgeBaseDocument:
       return t('knowledgeBase.document');
+    case ContentType.KnowledgeBaseQuery:
+      return t('knowledgeBase.queryHistory');
     default:
       return t('common.unknown');
   }

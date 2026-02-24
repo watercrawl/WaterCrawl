@@ -5,7 +5,7 @@ from django.dispatch import receiver
 from core.models import CrawlRequest, SearchRequest, SitemapRequest
 from core import consts as core_consts
 from knowledge_base import consts as knowledge_base_consts
-from knowledge_base.models import KnowledgeBaseDocument
+from knowledge_base.models import KnowledgeBaseDocument, KnowledgeBaseQuery
 from plan.services import UsageHistoryService
 
 
@@ -74,3 +74,26 @@ def update_knowledge_base_document(sender, instance: KnowledgeBaseDocument, **kw
         UsageHistoryService(instance.knowledge_base.team).create(
             instance, revertable=False
         )
+
+
+@receiver(models.signals.post_save, sender=KnowledgeBaseQuery)
+def update_knowledge_base_query(sender, instance: KnowledgeBaseQuery, **kwargs):
+    """Track credit usage for knowledge base queries."""
+    if not settings.CAPTURE_USAGE_HISTORY:
+        return
+
+    # Import here to avoid circular imports
+    from knowledge_base.models import (
+        QUERY_STATUS_NEW,
+        QUERY_STATUS_FINISHED,
+        QUERY_STATUS_FAILED,
+    )
+
+    if instance.status == QUERY_STATUS_NEW:
+        UsageHistoryService(instance.knowledge_base.team).create(instance)
+
+    if instance.status == QUERY_STATUS_FINISHED:
+        UsageHistoryService(instance.knowledge_base.team).update_used_credit(instance)
+
+    if instance.status == QUERY_STATUS_FAILED:
+        UsageHistoryService(instance.knowledge_base.team).revert_credit(instance)

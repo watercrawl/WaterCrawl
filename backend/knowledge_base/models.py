@@ -9,6 +9,13 @@ from knowledge_base.utils import chunk_default_separators
 from pgvector.django import VectorField
 
 
+# Query status constants
+QUERY_STATUS_NEW = "new"
+QUERY_STATUS_PROCESSING = "processing"
+QUERY_STATUS_FINISHED = "finished"
+QUERY_STATUS_FAILED = "failed"
+
+
 class KnowledgeBase(BaseModel):
     title = models.CharField(_("Title"), max_length=255)
     description = models.TextField(_("Description"))
@@ -265,6 +272,20 @@ class RetrievalSetting(BaseModel):
             "Weight for semantic search in hybrid mode (0.0-1.0, higher = more semantic). Used for weighted score ranking when reranker_enabled is false."
         ),
     )
+    reranker_model_config = models.JSONField(
+        _("Reranker Model Config"),
+        default=dict,
+        null=True,
+        blank=True,
+        help_text=_("Model config to be provided to the reranker"),
+    )
+
+    # Pricing fields
+    retrieval_cost = models.PositiveIntegerField(
+        _("Retrieval Cost"),
+        help_text=_("The cost in credits per retrieval using this setting"),
+        default=0,
+    )
 
     class Meta:
         verbose_name = _("Retrieval Setting")
@@ -315,6 +336,35 @@ class RetrievalSetting(BaseModel):
                     )
                 )
 
+    def _calculate_retrieval_cost(self):
+        """Calculate the cost in credits for using this retrieval setting."""
+        cost = 0
+
+        # Check if vector/hybrid search uses WaterCrawl embedding provider
+        if self.retrieval_type in [
+            self.RETRIEVAL_TYPE_VECTOR,
+            self.RETRIEVAL_TYPE_HYBRID,
+        ]:
+            if self.knowledge_base.embedding_provider_config:
+                # Check if it's a global WaterCrawl provider (not external/custom)
+                if self.knowledge_base.embedding_provider_config.is_global:
+                    cost += 1
+
+        # Check if reranker uses WaterCrawl provider
+        if self.reranker_enabled and self.reranker_provider_config:
+            # Check if it's a global WaterCrawl provider (not external/custom)
+            if self.reranker_provider_config.is_global:
+                cost += 1
+
+        return cost
+
+    def save(self, *args, **kwargs):
+        """Override save to calculate retrieval cost."""
+        # Calculate retrieval cost before saving
+        self.retrieval_cost = self._calculate_retrieval_cost()
+        print(self.retrieval_cost)
+        super().save(*args, **kwargs)
+
         # Ensure only one default per knowledge base
         if self.is_default:
             existing_default = RetrievalSetting.objects.filter(
@@ -327,6 +377,63 @@ class RetrievalSetting(BaseModel):
                     )
                 )
 
-    def save(self, *args, **kwargs):
-        # self.full_clean()
-        super().save(*args, **kwargs)
+
+class KnowledgeBaseQuery(BaseModel):
+    """Track knowledge base query requests for usage history and billing."""
+
+    QUERY_STATUS_CHOICES = (
+        (QUERY_STATUS_NEW, _("New")),
+        (QUERY_STATUS_PROCESSING, _("Processing")),
+        (QUERY_STATUS_FINISHED, _("Finished")),
+        (QUERY_STATUS_FAILED, _("Failed")),
+    )
+
+    knowledge_base = models.ForeignKey(
+        "knowledge_base.KnowledgeBase",
+        on_delete=models.CASCADE,
+        verbose_name=_("Knowledge Base"),
+        related_name="queries",
+    )
+    retrieval_setting = models.ForeignKey(
+        "knowledge_base.RetrievalSetting",
+        on_delete=models.SET_NULL,
+        verbose_name=_("Retrieval Setting"),
+        related_name="queries",
+        null=True,
+        blank=True,
+        help_text=_("The retrieval setting used for this query"),
+    )
+    query_text = models.TextField(
+        _("Query Text"),
+        help_text=_("The search query submitted by the user"),
+    )
+    status = models.CharField(
+        _("Status"),
+        max_length=20,
+        choices=QUERY_STATUS_CHOICES,
+        default=QUERY_STATUS_NEW,
+    )
+    results_count = models.PositiveIntegerField(
+        _("Results Count"),
+        default=0,
+        help_text=_("Number of results returned"),
+    )
+    retrieval_cost = models.PositiveIntegerField(
+        _("Retrieval Cost"),
+        default=0,
+        help_text=_("The cost in credits for this query"),
+    )
+    error_message = models.TextField(
+        _("Error Message"),
+        blank=True,
+        null=True,
+        help_text=_("Error message if query failed"),
+    )
+
+    class Meta:
+        verbose_name = _("Knowledge Base Query")
+        verbose_name_plural = _("Knowledge Base Queries")
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.knowledge_base.title} - {self.query_text[:50]}"

@@ -34,8 +34,61 @@ class AgentListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Agent
-        fields = ["uuid", "name", "status", "created_at", "updated_at"]
+        fields = [
+            "uuid",
+            "name",
+            "status",
+            "enable_as_tool",
+            "tool_function_name",
+            "tool_description",
+            "created_at",
+            "updated_at",
+        ]
         read_only_fields = ["uuid", "status", "created_at", "updated_at"]
+
+    def validate(self, attrs):
+        """Validate tool configuration when enable_as_tool is True."""
+        enable_as_tool = attrs.get("enable_as_tool")
+        if enable_as_tool is None and self.instance:
+            enable_as_tool = self.instance.enable_as_tool
+
+        if enable_as_tool:
+            tool_function_name = attrs.get("tool_function_name")
+            tool_description = attrs.get("tool_description")
+
+            if not tool_function_name or not tool_function_name.strip():
+                raise serializers.ValidationError(
+                    {
+                        "tool_function_name": _(
+                            "Tool function name is required when agent is enabled as tool"
+                        )
+                    }
+                )
+
+            if not tool_description or not tool_description.strip():
+                raise serializers.ValidationError(
+                    {
+                        "tool_description": _(
+                            "Tool description is required when agent is enabled as tool"
+                        )
+                    }
+                )
+
+        # Check if trying to disable tool feature while being used
+        if enable_as_tool is False and self.instance and self.instance.enable_as_tool:
+            # Check if agent is being used as tool in other agents
+            usage_count = self.instance.used_as_tool_in.count()
+            if usage_count > 0:
+                raise serializers.ValidationError(
+                    {
+                        "enable_as_tool": _(
+                            f"Cannot disable agent as tool. It is currently being used in {usage_count} agent(s). "
+                            "Remove it from those agents first."
+                        )
+                    }
+                )
+
+        return attrs
 
 
 class AgentRevertDraftSerializer(serializers.Serializer):
@@ -306,17 +359,27 @@ class AgentAsToolSerializer(serializers.ModelSerializer):
         team: Team = self.context["team"]
 
         # Check if agent exists and belongs to team
-        if not team.agents.filter(uuid=value).exists():
+        try:
+            tool_agent = team.agents.get(uuid=value)
+        except Agent.DoesNotExist:
             raise serializers.ValidationError(_("Agent not found"))
+
+        # Check if agent is enabled as tool
+        if not tool_agent.enable_as_tool:
+            raise serializers.ValidationError(
+                _("This agent is not enabled to be used as a tool")
+            )
+
+        # Check if agent is published
+        if not tool_agent.current_published_version:
+            raise serializers.ValidationError(
+                _("Only published agents can be used as tools")
+            )
 
         # Prevent self-reference
         parent_agent_version = self.context.get("parent_agent_version")
-        if parent_agent_version:
-            tool_agent = team.agents.get(uuid=value)
-            if tool_agent == parent_agent_version.agent:
-                raise serializers.ValidationError(
-                    _("Agent cannot use itself as a tool")
-                )
+        if parent_agent_version and tool_agent == parent_agent_version.agent:
+            raise serializers.ValidationError(_("Agent cannot use itself as a tool"))
 
         return value
 

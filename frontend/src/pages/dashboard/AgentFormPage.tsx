@@ -28,6 +28,7 @@ import {
   useAgentKnowledgeBases,
   useAgentContextVariables,
   useAgentVersions,
+  useAgentToolConfig,
 } from '../../hooks';
 import { agentApi } from '../../services/api/agent';
 import { toolsApi } from '../../services/api/tools';
@@ -49,6 +50,7 @@ const AgentFormPage: React.FC = () => {
   const [mcpServers, setMcpServers] = useState<MCPServer[]>([]);
   const [draftAgentTools, setDraftAgentTools] = useState<AgentAsTool[]>([]);
   const [editingAgentTool, setEditingAgentTool] = useState<AgentAsTool | null>(null);
+  const [agentData, setAgentData] = useState<Agent | null>(null);
 
   // Use custom hooks for form state management
   const formState = useAgentForm(agentId);
@@ -80,13 +82,15 @@ const AgentFormPage: React.FC = () => {
 
     setLoading(true);
     try {
-      const [draftData, toolsData, kbsData, agentToolsData] = await Promise.all([
+      const [agentDataResponse, draftData, toolsData, kbsData, agentToolsData] = await Promise.all([
+        agentApi.get(agentId),
         agentApi.getDraft(agentId),
         agentApi.listDraftTools(agentId),
         agentApi.listDraftKnowledgeBases(agentId),
         agentApi.getDraftAgentTools(agentId),
       ]);
 
+      setAgentData(agentDataResponse);
       formState.setDraft(draftData);
       formState.setName(draftData.agent_name);
       formState.setSystemPrompt(draftData.system_prompt || '');
@@ -122,6 +126,12 @@ const AgentFormPage: React.FC = () => {
   const contextVariablesHook = useAgentContextVariables(
     formState.contextVariables,
     formState.setContextVariables
+  );
+  const toolConfig = useAgentToolConfig(
+    agentId,
+    agentData?.enable_as_tool || false,
+    agentData?.tool_function_name || '',
+    agentData?.tool_description || ''
   );
 
   useEffect(() => {
@@ -179,6 +189,24 @@ const AgentFormPage: React.FC = () => {
     ],
   });
 
+  // Auto-save for tool toggle activation/deactivation only
+  useAutoSave({
+    enabled: !!agentId && agentData !== null,
+    delay: 500,
+    onSave: async () => {
+      // Only save the enable_as_tool flag, not the fields (those are saved via modal)
+      if (!agentId) return;
+      try {
+        await agentApi.update(agentId, {
+          enable_as_tool: toolConfig.enableAsTool,
+        });
+      } catch (error: any) {
+        console.error('Error auto-saving tool toggle:', error);
+      }
+    },
+    dependencies: [toolConfig.enableAsTool],
+  });
+
   useEffect(() => {
     if (formState.draft && formState.name) {
       setItems([
@@ -207,8 +235,24 @@ const AgentFormPage: React.FC = () => {
       return;
     }
 
-    // Save both agent name and draft first
-    await Promise.all([formState.saveAgentName(), formState.saveDraft()]);
+    // Validate tool configuration if enabled
+    if (toolConfig.enableAsTool) {
+      if (!toolConfig.toolFunctionName.trim()) {
+        toast.error(t('agents.form.toolFunctionNameRequired'));
+        return;
+      }
+      if (!toolConfig.toolDescription.trim()) {
+        toast.error(t('agents.form.toolDescriptionRequired'));
+        return;
+      }
+    }
+
+    // Save both agent name, draft, and tool config first
+    await Promise.all([
+      formState.saveAgentName(),
+      formState.saveDraft(),
+      toolConfig.saveToolConfig(),
+    ]);
 
     setPublishing(true);
     try {
@@ -310,16 +354,19 @@ const AgentFormPage: React.FC = () => {
   // Create temp agent for test bench
   const tempAgent = useMemo<Agent | null>(() => {
     const canTest = formState.providerConfigId && formState.modelKey && agentId;
-    if (!canTest || !formState.draft) return null;
+    if (!canTest || !formState.draft || !agentData) return null;
 
     return {
       uuid: agentId,
       name: formState.name || t('agents.form.draftAgent'),
       status: 'draft' as AgentVersionStatus,
+      enable_as_tool: agentData.enable_as_tool,
+      tool_function_name: agentData.tool_function_name,
+      tool_description: agentData.tool_description,
       created_at: formState.draft.created_at,
       updated_at: formState.draft.updated_at,
     };
-  }, [agentId, formState.providerConfigId, formState.modelKey, formState.draft, formState.name, t]);
+  }, [agentId, formState.providerConfigId, formState.modelKey, formState.draft, formState.name, agentData, t]);
 
   // Early return must be after all hooks
   if (loading) {
@@ -336,6 +383,14 @@ const AgentFormPage: React.FC = () => {
         isTabletOrMobile={isTabletOrMobile}
         publishing={publishing}
         saving={formState.saving}
+        isPublished={agentData?.status === 'published'}
+        enableAsTool={toolConfig.enableAsTool}
+        toolFunctionName={toolConfig.toolFunctionName}
+        toolDescription={toolConfig.toolDescription}
+        onEnableAsToolChange={toolConfig.setEnableAsTool}
+        onToolFunctionNameChange={toolConfig.setToolFunctionName}
+        onToolDescriptionChange={toolConfig.setToolDescription}
+        onSaveToolConfig={toolConfig.saveToolConfig}
         onVersionHistory={versions.loadVersionHistory}
         onPublish={handlePublish}
       />

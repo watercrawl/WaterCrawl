@@ -13,7 +13,8 @@
     },
     "filters": {
       "allStatuses": "所有状态",
-      "filterByStatus": "按状态筛选"
+      "filterByStatus": "按状态筛选",
+      "status": "状态"
     },
     "loading": "正在加载活动日志...",
     "noSearchRequestsFound": "未找到搜索请求",
@@ -23,6 +24,7 @@
     "sitemapLogs": "站点地图日志",
     "sitemapLogsDesc": "查看您最近的站点地图请求及其结果",
     "table": {
+      "actions": "操作",
       "created": "创建时间",
       "documents": "文档",
       "duration": "持续时间",
@@ -107,7 +109,7 @@
       "tools": "活跃工具",
       "toolsActive": "共 {{count}} 个"
     },
-    "duplicateSuccess": "代理复制成功",
+    "duplicateSuccess": "代理已成功复制",
     "form": {
       "addAgentTool": "添加代理作为工具",
       "addKnowledgeBase": "添加知识库",
@@ -115,11 +117,11 @@
       "addTool": "+ 添加工具",
       "advancedModelSettings": "高级模型设置",
       "advancedSettings": "高级设置",
-      "agentToolAdded": "代理工具添加成功",
+      "agentsAsTools": "代理作为工具",
+      "agentToolAdded": "已成功添加代理工具",
       "agentToolConfigSaved": "代理工具配置已保存",
-      "agentToolRemoved": "代理工具移除成功",
-      "agentTools": "代理工具",
-      "agentToolsDescription": "将任务委派给其他专业代理",
+      "agentToolRemoved": "已成功删除代理工具",
+      "agentToolsDescription": "将任务委托给其他专业代理",
       "builtInDataTools": "内置数据工具",
       "builtInUtilityTools": "内置实用工具",
       "configSaved": "配置保存成功",
@@ -133,9 +135,16 @@
       "customHTTPTools": "自定义HTTP工具",
       "description": "描述",
       "descriptionPlaceholder": "描述此代理的功能",
+      "disableToolWarningConsequence": "禁用此功能将从使用它作为工具的所有位置删除此代理。此操作无法撤消。",
+      "disableToolWarningMessage": "此代理目前正在{{count}}个其他代理中用作工具。",
+      "disableToolWarningMessage_one": "此代理目前正在{{count}}个其他代理中用作工具。",
+      "disableToolWarningMessage_other": "此代理目前正在{{count}}个其他代理中用作工具。",
+      "disableToolWarningTitle": "禁用代理作为工具",
       "draftAgent": "草稿代理",
       "editDescription": "更新代理的配置和设置",
       "editTitle": "编辑代理",
+      "enableAsTool": "启用此代理作为工具",
+      "enableAsToolDescription": "允许其他代理将此代理用作工具。您必须在发布前配置函数名称和描述。",
       "enabled": "已启用",
       "frequencyPenalty": "频率惩罚",
       "frequencyPenaltyDescription": "根据标记的频率进行惩罚以减少重复。范围：-2.0 到 2.0",
@@ -168,6 +177,7 @@
       "noKnowledgeBases": "未连接知识库",
       "noKnowledgeBasesConnected": "未连接知识库",
       "noMCPTools": "未配置MCP工具",
+      "noRetrievalSettings": "未配置检索设置。",
       "noTools": "尚未添加工具",
       "noVersions": "无版本历史可用",
       "presencePenalty": "存在惩罚",
@@ -202,8 +212,19 @@
       "temperature": "温度",
       "temperatureHelp": "控制随机性：0是确定性的，更高的值更具创造性",
       "toolAdded": "工具添加成功",
+      "toolConfigInfoMessage": "配置此代理被其他代理用作工具时的显示方式。函数名称和描述帮助其他代理了解何时以及如何使用此工具。",
+      "toolConfigSaved": "工具配置已成功保存",
       "toolConfigUpdated": "工具配置已成功更新",
+      "toolConfiguration": "工具配置",
       "toolDescription": "工具描述",
+      "toolDescriptionHint": "解释此代理用作工具时的作用。这有助于其他代理决定何时使用它。",
+      "toolDescriptionLabel": "工具描述",
+      "toolDescriptionPlaceholder": "描述此工具的功能以及何时使用它...",
+      "toolDescriptionRequired": "当代理启用为工具时，工具描述为必填项",
+      "toolFunctionName": "函数名称",
+      "toolFunctionNameHint": "此工具的唯一标识符。使用snake_case（例如：my_tool_name）。",
+      "toolFunctionNamePlaceholder": "例如：analyze_sentiment, summarize_document",
+      "toolFunctionNameRequired": "当代理启用为工具时，函数名称为必填项",
       "toolName": "工具名称",
       "toolRemoved": "工具删除成功",
       "tools": {
@@ -225,6 +246,15 @@
       "topPDescription": "通过核采样控制多样性。0.5表示考虑一半的概率加权选项。",
       "updateSuccess": "代理更新成功",
       "versionHistory": "版本历史"
+    },
+    "integrations": {
+      "apiDocumentation": "API文档",
+      "integrationType": "集成类型",
+      "publishedOnly": "集成仅适用于已发布的代理",
+      "title": "集成",
+      "webhooks": "Webhook",
+      "webhooksComingSoon": "Webhook即将推出",
+      "webhooksDesc": "当您的代理收到消息或完成任务时收到通知。"
     },
     "jsonOutput": {
       "clearSchema": "清除",
@@ -254,6 +284,7 @@
       "retrievalSettingHint": "选择查询此知识库时使用的检索设置。如果未选择，将使用默认设置。"
     },
     "noAgents": "暂无代理。创建您的第一个代理开始吧。",
+    "noAgentsFound": "未找到代理",
     "noResults": "未找到匹配搜索的代理。",
     "notFound": "未找到代理",
     "searchPlaceholder": "搜索代理...",
@@ -394,6 +425,7 @@
       "warning": "请确保现在复制您的密钥。您将无法再次查看它！"
     },
     "created": "已创建",
+    "createFirstKey": "创建您的第一个API密钥以开始使用",
     "createNew": "创建新 API 密钥",
     "deleteConfirmMessage": "您确定要删除 API 密钥 \"{{name}}\" 吗？",
     "deleteConfirmTitle": "删除 API 密钥",
@@ -594,8 +626,11 @@
     "back": "返回",
     "backToHome": "返回主页",
     "cancel": "取消",
+    "cards": "卡片",
     "close": "关闭",
+    "configure": "配置",
     "configureModel": "配置模型",
+    "confirm": "确认",
     "confirmError": "请输入正确的名称以确认删除",
     "copied": "已复制！",
     "copiedToClipboard": "已复制到剪贴板！",
@@ -619,7 +654,9 @@
     "duplicate": "复制",
     "edit": "编辑",
     "editor": "编辑器",
+    "error": "错误",
     "expand": "展开",
+    "false": "假",
     "forgotPassword": {
       "backToLogin": "返回登录",
       "checkEmail": "检查您的邮箱",
@@ -677,7 +714,9 @@
     "noModelsAvailableMessage": "您的提供商配置中没有{{modelType}}模型可用。请在团队设置中添加或配置具有{{modelType}}模型的提供商。",
     "noProviderConfigs": "无可用的提供商配置",
     "noProviderConfigsMessage": "您需要至少配置一个提供商才能使用模型。请在团队设置中添加提供商配置。",
+    "noResults": "无结果",
     "nothingFound": "未找到任何内容。",
+    "open": "打开",
     "openSidebar": "打开侧边栏",
     "openUserMenu": "打开用户菜单",
     "optional": "可选",
@@ -705,6 +744,8 @@
     "results": "结果",
     "save": "保存",
     "saved": "已保存！",
+    "saving": "保存中...",
+    "search": "搜索",
     "select": "选择",
     "selectAll": "全选",
     "selectOption": "选择一个选项",
@@ -733,6 +774,7 @@
       "verifyEmail": "请验证您的邮箱地址"
     },
     "soon": "即将推出",
+    "stop": "停止",
     "submit": "提交",
     "subtitle": "网络爬虫平台",
     "success": "成功",
@@ -743,6 +785,7 @@
       "system": "系统",
       "title": "主题"
     },
+    "true": "真",
     "typing": "正在输入...",
     "unknown": "未知",
     "url": "URL",
@@ -1005,6 +1048,7 @@
       "knowledgeBase": "知识库",
       "mediaLibrary": "媒体库",
       "profile": "个人资料",
+      "queries": "查询日志",
       "search": "搜索",
       "searches": "搜索",
       "settings": "设置",
@@ -1151,6 +1195,7 @@
     "tryAgain": "重试"
   },
   "errors": {
+    "badRequest": "无效请求",
     "contactSupport": "如果此问题仍然存在，请联系支持",
     "generic": "出错了。请重试",
     "notFound": {
@@ -1246,6 +1291,9 @@
       "validEmail": "请输入有效的邮箱"
     }
   },
+  "knowledge": {
+    "noKnowledgeBases": "未找到知识库"
+  },
   "knowledgeBase": {
     "chunk": "分块",
     "contentPreview": "内容预览",
@@ -1286,12 +1334,18 @@
       "importAllSuccess": "成功导入所有结果",
       "importFailed": "导入选中结果失败",
       "importSelected": "导入选中项 ({{count}})",
+      "importSelected_one": "导入{{count}}个选中项",
+      "importSelected_other": "导入{{count}}个选中项",
       "importSuccess": "成功导入 {{count}} 个结果",
       "importSuccess_one": "Successfully imported {{count}} result",
       "importSuccess_other": "Successfully imported {{count}} results",
       "importUrls": "导入 {{count}} 个URL",
+      "importUrls_one": "导入{{count}}个URL",
+      "importUrls_other": "导入{{count}}个URL",
       "importUrlsFailed": "将URL导入到知识库失败",
       "importUrlsSuccess": "成功开始将 {{count}} 个URL导入到知识库",
+      "importUrlsSuccess_one": "成功开始导入{{count}}个URL到知识库",
+      "importUrlsSuccess_other": "成功开始导入{{count}}个URL到知识库",
       "invalidRequest": "无效请求。请检查您的选择并重试。",
       "manual": "手动输入",
       "manualDesc": "手动输入或粘贴文本内容",
@@ -1338,6 +1392,9 @@
     "keywords": "关键词",
     "list": "知识库",
     "new": "新知识库",
+    "noQueries": "暂无查询",
+    "noQueriesFiltered": "未找到符合所选筛选条件的查询",
+    "noQueriesYet": "开始使用知识库检索后，查询历史记录将显示在此处",
     "previewContent": "预览完整内容",
     "pricing": {
       "costPerDocument": "每个文档的成本",
@@ -1372,6 +1429,12 @@
       "sources": "来源",
       "title": "查询知识库"
     },
+    "queryHistory": "查询历史",
+    "queryLogs": "查询日志",
+    "queryLogsDesc": "查看知识库查询历史和检索成本",
+    "queryText": "查询文本",
+    "resultsCount": "结果数",
+    "retrievalCost": "成本",
     "searchPlaceholder": "搜索知识库...",
     "source": "来源",
     "subtitle": "管理您的知识库",
@@ -1637,6 +1700,8 @@
   },
   "results": {
     "attachments": "附件",
+    "attachments_one": "{{count}}个附件",
+    "attachments_other": "{{count}}个附件",
     "details": "结果详情",
     "json": "JSON",
     "markdown": "Markdown",
@@ -1739,6 +1804,7 @@
     "numResults": "结果数量",
     "queryDescription": "输入您的查询以搜索互联网以获取相关结果。",
     "queryPlaceholder": "输入您的搜索查询...",
+    "result": "结果",
     "results": {
       "date": "日期",
       "found": "个结果",
@@ -1831,6 +1897,11 @@
         "goBack": "返回知识库",
         "notFound": "未找到知识库或您无权访问它。",
         "test": "测试"
+      },
+      "document": {
+        "deleteDocument": "删除文档",
+        "retryIndexing": "重试索引",
+        "viewChunks": "查看块"
       },
       "documentDetail": {
         "backToKB": "返回知识库",
@@ -2077,13 +2148,29 @@
           "hybrid_search": "结合语义搜索和关键词搜索以获得最佳结果",
           "vector_search": "使用嵌入的语义相似性进行搜索"
         },
+        "disabled": "已禁用",
         "embeddingRequired": "向量搜索和混合搜索需要为此知识库配置嵌入",
+        "embeddingRequiredExplanation": "请为此知识库配置嵌入提供商以使用这些检索类型。",
         "hybridAlpha": "混合Alpha",
         "hybridAlphaHelp": "语义搜索（0.0）和关键词搜索（1.0）之间的平衡。0.7表示70%语义，30%关键词。",
         "loadError": "加载检索设置失败",
         "name": "名称",
         "namePlaceholder": "例如：默认搜索、语义搜索等",
         "noSettings": "未配置检索设置。请添加一个以开始。",
+        "pricing": {
+          "costPerRetrieval": "每次检索成本",
+          "credit": "积分",
+          "credits": "积分",
+          "free": "免费",
+          "limitedTime": "限时",
+          "noCharges": "使用自己的API密钥启用功能时不收费。",
+          "rerankerWC": "重排序器（WaterCrawl提供商）",
+          "retrievalsFree": "检索目前免费！",
+          "title": "检索定价",
+          "vectorSearchWC": "向量搜索（WaterCrawl提供商）",
+          "yourConfiguration": "您的配置"
+        },
+        "requiresEmbedding": "需要嵌入配置",
         "reranker": "重排序器",
         "rerankerEnabled": "启用重排序器",
         "rerankerEnabledHelp": "使用重排序器通过重新排序结果来提高结果相关性",
@@ -2611,6 +2698,8 @@
       "noSpecsDescription": "添加OpenAPI规格以为您的代理生成工具",
       "noTools": "暂无可用工具",
       "securityParamsExtracted": "已从规格中提取{{count}}个安全参数",
+      "securityParamsExtracted_one": "从规格中提取了{{count}}个安全参数",
+      "securityParamsExtracted_other": "从规格中提取了{{count}}个安全参数",
       "specJson": "OpenAPI规格",
       "specJsonHelp": "粘贴您的OpenAPI规格或上传JSON/YAML文件",
       "specName": "规格名称",
@@ -2624,6 +2713,7 @@
     "createCustomTool": "创建自定义工具",
     "createSuccess": "工具创建成功",
     "deleteSuccess": "工具删除成功",
+    "description": "描述",
     "drawer": {
       "artifact": "工件",
       "description": "描述",
@@ -2677,6 +2767,7 @@
       "urlRequired": "URL为必填项"
     },
     "inactive": "不活跃",
+    "inputParameters": "输入参数",
     "management": "工具管理",
     "managementDescription": "管理代理的自定义HTTP工具和MCP服务器",
     "mcp": {
@@ -2751,7 +2842,11 @@
       "pathVariableHintDescription": "如果API密钥必须是URL路径的一部分，请使用{{VARIABLE_NAME}}作为占位符，并使用\"路径\"类型添加同名参数。",
       "pathVariableHintTitle": "动态URL变量",
       "pathVariablesDetected": "检测到{{count}}个路径变量 - 请填写值",
+      "pathVariablesDetected_one": "检测到{{count}}个路径变量 - 请填写值",
+      "pathVariablesDetected_other": "检测到{{count}}个路径变量 - 请填写值",
       "queryParamsExtracted": "从URL提取了{{count}}个查询参数",
+      "queryParamsExtracted_one": "从URL提取了{{count}}个查询参数",
+      "queryParamsExtracted_other": "从URL提取了{{count}}个查询参数",
       "reconnect": "重新连接",
       "required": "必填",
       "requiredFromUrl": "从URL路径检测",
@@ -2791,8 +2886,12 @@
       "yamlConverted": "YAML已转换为JSON"
     },
     "noBuiltInTools": "暂无内置工具",
+    "noBuiltInToolsDescription": "无可用的内置工具",
+    "noInputSchema": "无输入架构",
+    "noParameters": "无参数",
     "noTools": "未找到工具",
     "noToolsDescription": "创建您的第一个自定义工具或连接到MCP服务器以开始使用",
+    "searchPlaceholder": "搜索工具...",
     "tabs": {
       "apiSpecs": "API规格",
       "builtin": "内置工具",
@@ -2815,6 +2914,7 @@
       "tryAgain": "重试"
     },
     "tool": "个工具",
+    "toolKey": "工具键",
     "tools": "个工具",
     "type": {
       "apiSpec": "API规格",

@@ -36,11 +36,14 @@ const AgentFormAgentToolsSection: React.FC<AgentFormAgentToolsSectionProps> = ({
     const response = await agentApi.list(page, 10, search, { status: 'published' });
     return {
       results: response.results
-        .filter((agent: Agent) => agent.uuid !== currentAgentUuid)
+        .filter((agent: Agent) => 
+          agent.uuid !== currentAgentUuid && 
+          agent.enable_as_tool === true
+        )
         .map((agent: Agent) => ({
           uuid: agent.uuid,
           title: agent.name,
-          description: `${t('agents.status.' + agent.status)} - ${t('common.agent')}`,
+          description: agent.tool_description || `${t('agents.status.' + agent.status)} - ${t('common.agent')}`,
         })),
       count: response.count,
     };
@@ -54,7 +57,7 @@ const AgentFormAgentToolsSection: React.FC<AgentFormAgentToolsSectionProps> = ({
   return (
     <div>
       <SectionHeader
-        title={t('agents.form.agentTools')}
+        title={t('agents.form.agentsAsTools')}
         rightContent={
           <button
             type="button"

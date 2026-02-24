@@ -3,6 +3,7 @@ export enum ContentType {
   SitemapRequest = 'core.sitemaprequest',
   SearchRequest = 'core.searchrequest',
   KnowledgeBaseDocument = 'knowledge_base.knowledgebasedocument',
+  KnowledgeBaseQuery = 'knowledge_base.knowledgebasequery',
 }
 
 export interface TeamAPIKeySummary {
