@@ -13,7 +13,8 @@
     },
     "filters": {
       "allStatuses": "جميع الحالات",
-      "filterByStatus": "تصفية حسب الحالة"
+      "filterByStatus": "تصفية حسب الحالة",
+      "status": "الحالة"
     },
     "loading": "تحميل سجلات النشاط...",
     "noSearchRequestsFound": "لم يتم العثور على طلبات بحث",
@@ -23,6 +24,7 @@
     "sitemapLogs": "سجلات خريطة الموقع",
     "sitemapLogsDesc": "عرض طلبات خريطة الموقع الأخيرة ونتائجها",
     "table": {
+      "actions": "الإجراءات",
       "created": "تم الإنشاء",
       "documents": "المستندات",
       "duration": "المدة",
@@ -115,10 +117,10 @@
       "addTool": "+ إضافة أداة",
       "advancedModelSettings": "إعدادات النموذج المتقدمة",
       "advancedSettings": "الإعدادات المتقدمة",
-      "agentToolAdded": "تم إضافة الوكيل كأداة بنجاح",
+      "agentsAsTools": "الوكلاء كأدوات",
+      "agentToolAdded": "تمت إضافة أداة الوكيل بنجاح",
       "agentToolConfigSaved": "تم حفظ تكوين أداة الوكيل",
       "agentToolRemoved": "تمت إزالة أداة الوكيل بنجاح",
-      "agentTools": "أدوات الوكيل",
       "agentToolsDescription": "تفويض المهام إلى وكلاء متخصصين آخرين",
       "builtInDataTools": "أدوات البيانات المدمجة",
       "builtInUtilityTools": "أدوات المرافق المدمجة",
@@ -133,9 +135,16 @@
       "customHTTPTools": "أدوات HTTP مخصصة",
       "description": "الوصف",
       "descriptionPlaceholder": "صف ما يفعله هذا الوكيل",
+      "disableToolWarningConsequence": "سيؤدي تعطيل هذه الميزة إلى إزالة هذا الوكيل من جميع الأماكن التي يُستخدم فيها كأداة. لا يمكن التراجع عن هذا الإجراء.",
+      "disableToolWarningMessage": "يُستخدم هذا الوكيل حاليًا كأداة في {{count}} وكيل(وكلاء) آخر(ين).",
+      "disableToolWarningMessage_one": "يُستخدم هذا الوكيل حاليًا كأداة في وكيل واحد آخر.",
+      "disableToolWarningMessage_other": "يُستخدم هذا الوكيل حاليًا كأداة في {{count}} وكلاء آخرين.",
+      "disableToolWarningTitle": "تعطيل الوكيل كأداة",
       "draftAgent": "وكيل مسودة",
       "editDescription": "تحديث تكوين وإعدادات الوكيل الخاص بك",
       "editTitle": "تعديل الوكيل",
+      "enableAsTool": "تفعيل هذا الوكيل كأداة",
+      "enableAsToolDescription": "السماح للوكلاء الآخرين باستخدام هذا الوكيل كأداة. يجب تكوين اسم الدالة والوصف قبل النشر.",
       "enabled": "مُفعّل",
       "frequencyPenalty": "عقوبة التكرار",
       "frequencyPenaltyDescription": "يقلل التكرار عن طريق معاقبة الرموز بناءً على تكرارها. النطاق: -2.0 إلى 2.0",
@@ -168,6 +177,7 @@
       "noKnowledgeBases": "لم يتم الاتصال بقواعد المعرفة",
       "noKnowledgeBasesConnected": "لم يتم توصيل أي قواعد معرفة",
       "noMCPTools": "لم يتم تكوين أدوات MCP",
+      "noRetrievalSettings": "لم يتم تكوين إعدادات الاسترجاع.",
       "noTools": "لم تتم إضافة أدوات بعد",
       "noVersions": "لا يوجد سجل إصدارات متاح",
       "presencePenalty": "عقوبة الحضور",
@@ -202,8 +212,19 @@
       "temperature": "درجة الحرارة",
       "temperatureHelp": "يتحكم في العشوائية: 0 حتمي، القيم الأعلى أكثر إبداعاً",
       "toolAdded": "تمت إضافة الأداة بنجاح",
+      "toolConfigInfoMessage": "قم بتكوين كيفية ظهور هذا الوكيل عند استخدامه كأداة من قبل وكلاء آخرين. يساعد اسم الوظيفة والوصف الوكلاء الآخرين على فهم متى وكيف يستخدمون هذه الأداة.",
+      "toolConfigSaved": "تم حفظ تكوين الأداة بنجاح",
       "toolConfigUpdated": "تم تحديث تكوين الأداة بنجاح",
+      "toolConfiguration": "تكوين الأداة",
       "toolDescription": "وصف الأداة",
+      "toolDescriptionHint": "اشرح ما يفعله هذا الوكيل عند استخدامه كأداة. يساعد هذا الوكلاء الآخرين على تحديد متى يجب استخدامه.",
+      "toolDescriptionLabel": "وصف الأداة",
+      "toolDescriptionPlaceholder": "صف ما تفعله هذه الأداة ومتى تستخدمها...",
+      "toolDescriptionRequired": "وصف الأداة مطلوب عند تفعيل الوكيل كأداة",
+      "toolFunctionName": "اسم الدالة",
+      "toolFunctionNameHint": "معرف فريد لهذه الأداة. استخدم snake_case (مثل my_tool_name).",
+      "toolFunctionNamePlaceholder": "مثل: analyze_sentiment, summarize_document",
+      "toolFunctionNameRequired": "اسم الدالة مطلوب عند تفعيل الوكيل كأداة",
       "toolName": "اسم الأداة",
       "toolRemoved": "تمت إزالة الأداة بنجاح",
       "tools": {
@@ -225,6 +246,15 @@
       "topPDescription": "يتحكم في التنوع عبر أخذ العينات النووي. 0.5 يعني أن نصف جميع الخيارات المرجحة بالاحتمالية تؤخذ في الاعتبار.",
       "updateSuccess": "تم تحديث الوكيل بنجاح",
       "versionHistory": "سجل الإصدارات"
+    },
+    "integrations": {
+      "apiDocumentation": "توثيق الAPI",
+      "integrationType": "نوع التكامل",
+      "publishedOnly": "التكاملات متاحة فقط للوكلاء المنشورين",
+      "title": "التكاملات",
+      "webhooks": "Webhooks",
+      "webhooksComingSoon": "Webhooks قريبًا",
+      "webhooksDesc": "احصل على إشعارات عندما يتلقى وكيلك رسائل أو يكمل المهام."
     },
     "jsonOutput": {
       "clearSchema": "مسح",
@@ -254,6 +284,7 @@
       "retrievalSettingHint": "حدد إعداد الاسترجاع الذي سيتم استخدامه عند الاستعلام عن قاعدة المعرفة هذه. سيتم استخدام الإعداد الافتراضي إذا لم يتم تحديد أي منها."
     },
     "noAgents": "لا يوجد وكلاء بعد. أنشئ وكيلك الأول للبدء.",
+    "noAgentsFound": "لم يتم العثور على وكلاء",
     "noResults": "لم يتم العثور على وكلاء مطابقين لبحثك.",
     "notFound": "الوكيل غير موجود",
     "searchPlaceholder": "البحث عن وكلاء...",
@@ -394,6 +425,7 @@
       "warning": "تأكد من نسخ المفتاح الآن. لن تتمكن من رؤيته مرة أخرى!"
     },
     "created": "تم الإنشاء",
+    "createFirstKey": "أنشئ مفتاح API الأول للبدء",
     "createNew": "إنشاء مفتاح API جديد",
     "deleteConfirmMessage": "هل أنت متأكد من حذف مفتاح API \"{{name}}\"؟",
     "deleteConfirmTitle": "حذف مفتاح API",
@@ -594,8 +626,11 @@
     "back": "رجوع",
     "backToHome": "Back to Home",
     "cancel": "إلغاء",
+    "cards": "البطاقات",
     "close": "إغلاق",
+    "configure": "تكوين",
     "configureModel": "تكوين النموذج",
+    "confirm": "تأكيد",
     "confirmError": "الرجاء إدخال القيمة الصحيحة لتأكيد الحذف",
     "copied": "تم النسخ!",
     "copiedToClipboard": "تم النسخ إلى الحافظة!",
@@ -619,7 +654,9 @@
     "duplicate": "نسخ",
     "edit": "تعديل",
     "editor": "المحرر",
+    "error": "خطأ",
     "expand": "توسيع",
+    "false": "خطأ",
     "forgotPassword": {
       "backToLogin": "العودة لتسجيل الدخول",
       "checkEmail": "تحقق من بريدك الإلكتروني",
@@ -677,7 +714,9 @@
     "noModelsAvailableMessage": "لا توجد نماذج {{modelType}} متاحة في تكوينات المزود الخاصة بك. يرجى إضافة أو تكوين مزودين بنماذج {{modelType}} في إعدادات الفريق.",
     "noProviderConfigs": "لا توجد تكوينات مزود متاحة",
     "noProviderConfigsMessage": "تحتاج إلى تكوين مزود واحد على الأقل لاستخدام النماذج. يرجى إضافة تكوين مزود في إعدادات الفريق.",
+    "noResults": "لا توجد نتائج",
     "nothingFound": "لم يتم العثور على شيء.",
+    "open": "فتح",
     "openSidebar": "فتح الشريط الجانبي",
     "openUserMenu": "فتح قائمة المستخدم",
     "optional": "اختياري",
@@ -705,6 +744,8 @@
     "results": "النتائج",
     "save": "حفظ",
     "saved": "تم الحفظ!",
+    "saving": "جاري الحفظ...",
+    "search": "بحث",
     "select": "اختيار",
     "selectAll": "تحديد الكل",
     "selectOption": "حدد خيارًا",
@@ -733,6 +774,7 @@
       "verifyEmail": "يرجى التحقق من عنوان بريدك الإلكتروني"
     },
     "soon": "قريباً",
+    "stop": "إيقاف",
     "submit": "إرسال",
     "subtitle": "منصة زحف الويب",
     "success": "نجح",
@@ -743,6 +785,7 @@
       "system": "النظام",
       "title": "المظهر"
     },
+    "true": "صحيح",
     "typing": "جارٍ الكتابة...",
     "unknown": "غير معروف",
     "url": "عنوان URL",
@@ -1005,6 +1048,7 @@
       "knowledgeBase": "قاعدة المعرفة",
       "mediaLibrary": "مكتبة الوسائط",
       "profile": "الملف الشخصي",
+      "queries": "سجلات الاستعلام",
       "search": "بحث",
       "searches": "عمليات البحث",
       "settings": "الإعدادات",
@@ -1151,6 +1195,7 @@
     "tryAgain": "حاول مرة أخرى"
   },
   "errors": {
+    "badRequest": "طلب غير صالح",
     "contactSupport": "يرجى الاتصال بالدعم إذا استمرت هذه المشكلة",
     "generic": "حدث خطأ ما. يرجى المحاولة مرة أخرى",
     "notFound": {
@@ -1246,6 +1291,9 @@
       "validEmail": "يرجى إدخال بريد إلكتروني صالح"
     }
   },
+  "knowledge": {
+    "noKnowledgeBases": "لم يتم العثور على قواعد معرفة"
+  },
   "knowledgeBase": {
     "chunk": "قطعة",
     "contentPreview": "معاينة المحتوى",
@@ -1286,12 +1334,18 @@
       "importAllSuccess": "تم استيراد جميع النتائج بنجاح",
       "importFailed": "فشل استيراد النتائج المحددة",
       "importSelected": "استيراد المحدد ({{count}})",
+      "importSelected_one": "استيراد المحدد ({{count}})",
+      "importSelected_other": "استيراد المحددة ({{count}})",
       "importSuccess": "تم استيراد {{count}} نتيجة بنجاح",
       "importSuccess_one": "تم استيراد {{count}} نتيجة بنجاح",
       "importSuccess_other": "تم استيراد {{count}} نتيجة بنجاح",
       "importUrls": "استيراد {{count}} عنوان URL",
+      "importUrls_one": "استيراد {{count}} رابط",
+      "importUrls_other": "استيراد {{count}} روابط",
       "importUrlsFailed": "فشل استيراد عناوين URL إلى قاعدة المعرفة",
       "importUrlsSuccess": "تم بدء استيراد {{count}} عناوين URL إلى قاعدة المعرفة بنجاح",
+      "importUrlsSuccess_one": "تم بدء استيراد {{count}} رابط إلى قاعدة المعرفة بنجاح",
+      "importUrlsSuccess_other": "تم بدء استيراد {{count}} روابط إلى قاعدة المعرفة بنجاح",
       "invalidRequest": "طلب غير صالح. يرجى التحقق من اختياراتك والمحاولة مرة أخرى.",
       "manual": "إدخال يدوي",
       "manualDesc": "أدخل أو الصق محتوى نصي يدويًا",
@@ -1338,6 +1392,9 @@
     "keywords": "الكلمات المفتاحية",
     "list": "قواعد المعرفة",
     "new": "قاعدة معرفية جديدة",
+    "noQueries": "لا توجد استعلامات بعد",
+    "noQueriesFiltered": "لم يتم العثور على استعلامات بالفلتر المحدد",
+    "noQueriesYet": "سيظهر سجل الاستعلامات هنا بمجرد البدء في استخدام استرجاع قاعدة المعرفة",
     "previewContent": "معاينة المحتوى الكامل",
     "pricing": {
       "costPerDocument": "التكلفة لكل مستند",
@@ -1372,6 +1429,12 @@
       "sources": "المصادر",
       "title": "استعلام قاعدة المعرفة"
     },
+    "queryHistory": "سجل الاستعلامات",
+    "queryLogs": "سجلات الاستعلام",
+    "queryLogsDesc": "عرض سجل استعلامات قاعدة المعرفة وتكاليف الاسترجاع",
+    "queryText": "نص الاستعلام",
+    "resultsCount": "عدد النتائج",
+    "retrievalCost": "التكلفة",
     "searchPlaceholder": "البحث في قواعد المعرفة...",
     "source": "المصدر",
     "subtitle": "إدارة قواعد المعرفة الخاصة بك",
@@ -1637,6 +1700,8 @@
   },
   "results": {
     "attachments": "المرفقات",
+    "attachments_one": "{{count}} مرفق",
+    "attachments_other": "{{count}} مرفقات",
     "details": "تفاصيل النتيجة",
     "json": "JSON",
     "markdown": "Markdown",
@@ -1739,6 +1804,7 @@
     "numResults": "عدد النتائج",
     "queryDescription": "أدخل استعلامك للبحث عن نتائج ذات صلة على الإنترنت.",
     "queryPlaceholder": "أدخل استعلام البحث...",
+    "result": "نتيجة",
     "results": {
       "date": "التاريخ",
       "found": "نتيجة موجودة",
@@ -1831,6 +1897,11 @@
         "goBack": "العودة إلى قواعد المعرفة",
         "notFound": "لم يتم العثور على قاعدة المعرفة أو ليس لديك صلاحية للوصول إليها.",
         "test": "اختبار"
+      },
+      "document": {
+        "deleteDocument": "حذف المستند",
+        "retryIndexing": "إعادة محاولة الفهرسة",
+        "viewChunks": "عرض القطع"
       },
       "documentDetail": {
         "backToKB": "العودة إلى قاعدة المعرفة",
@@ -2077,13 +2148,29 @@
           "hybrid_search": "اجمع بين البحث الدلالي والبحث بالكلمات الرئيسية للحصول على أفضل النتائج",
           "vector_search": "البحث باستخدام التشابه الدلالي مع التضمينات"
         },
+        "disabled": "معطل",
         "embeddingRequired": "يتطلب البحث المتجه والهجين تكوين التضمينات لقاعدة المعرفة هذه",
+        "embeddingRequiredExplanation": "يرجى تكوين موفر التضمينات لقاعدة المعرفة هذه لاستخدام أنواع الاسترجاع هذه.",
         "hybridAlpha": "ألفا الهجين",
         "hybridAlphaHelp": "التوازن بين البحث الدلالي (0.0) والبحث بالكلمات الرئيسية (1.0). 0.7 يعني 70% دلالي، 30% كلمات رئيسية.",
         "loadError": "فشل في تحميل إعدادات الاسترجاع",
         "name": "الاسم",
         "namePlaceholder": "مثال: البحث الافتراضي، البحث الدلالي، إلخ.",
         "noSettings": "لم يتم تكوين إعدادات الاسترجاع. أضف واحدًا للبدء.",
+        "pricing": {
+          "costPerRetrieval": "التكلفة لكل استرجاع",
+          "credit": "رصيد",
+          "credits": "أرصدة",
+          "free": "مجاني",
+          "limitedTime": "لفترة محدودة",
+          "noCharges": "لا توجد رسوم عند استخدام مفاتيح API الخاصة بك للميزات المفعلة.",
+          "rerankerWC": "إعادة الترتيب (موفر WaterCrawl)",
+          "retrievalsFree": "عمليات الاسترجاع مجانية حالياً!",
+          "title": "أسعار الاسترجاع",
+          "vectorSearchWC": "البحث الدلالي (موفر WaterCrawl)",
+          "yourConfiguration": "التكوين الخاص بك"
+        },
+        "requiresEmbedding": "يتطلب تكوين التضمينات",
         "reranker": "إعادة الترتيب",
         "rerankerEnabled": "تفعيل إعادة الترتيب",
         "rerankerEnabledHelp": "استخدم إعادة الترتيب لتحسين صلة النتائج عن طريق إعادة ترتيب النتائج",
@@ -2611,6 +2698,8 @@
       "noSpecsDescription": "أضف مواصفات OpenAPI لإنشاء أدوات لوكلائك",
       "noTools": "لا توجد أدوات متاحة",
       "securityParamsExtracted": "تم استخراج {{count}} معلمة(معلمات) أمان من المواصفات",
+      "securityParamsExtracted_one": "تم استخراج {{count}} معامل أمان من المواصفات",
+      "securityParamsExtracted_other": "تم استخراج {{count}} معاملات أمان من المواصفات",
       "specJson": "مواصفات OpenAPI",
       "specJsonHelp": "الصق مواصفات OpenAPI الخاصة بك أو قم بتحميل ملف JSON/YAML",
       "specName": "اسم المواصفات",
@@ -2624,6 +2713,7 @@
     "createCustomTool": "إنشاء أداة مخصصة",
     "createSuccess": "تم إنشاء الأداة بنجاح",
     "deleteSuccess": "تم حذف الأداة بنجاح",
+    "description": "الوصف",
     "drawer": {
       "artifact": "القطعة الأثرية",
       "description": "الوصف",
@@ -2677,6 +2767,7 @@
       "urlRequired": "عنوان URL مطلوب"
     },
     "inactive": "غير نشط",
+    "inputParameters": "معاملات الإدخال",
     "management": "إدارة الأدوات",
     "managementDescription": "إدارة أدوات HTTP المخصصة وخوادم MCP لوكلائك",
     "mcp": {
@@ -2751,7 +2842,11 @@
       "pathVariableHintDescription": "إذا كان يجب أن يكون مفتاح API جزءاً من مسار URL، استخدم {{VARIABLE_NAME}} كعنصر نائب وأضف معلمة بنفس الاسم باستخدام نوع \"المسار\".",
       "pathVariableHintTitle": "متغيرات URL الديناميكية",
       "pathVariablesDetected": "تم اكتشاف {{count}} متغير(ات) مسار - يرجى ملء القيم",
+      "pathVariablesDetected_one": "تم اكتشاف {{count}} متغير مسار - يرجى ملء القيم",
+      "pathVariablesDetected_other": "تم اكتشاف {{count}} متغيرات مسار - يرجى ملء القيم",
       "queryParamsExtracted": "تم استخراج {{count}} معلمة(معلمات) استعلام من URL",
+      "queryParamsExtracted_one": "تم استخراج {{count}} معامل استعلام من URL",
+      "queryParamsExtracted_other": "تم استخراج {{count}} معاملات استعلام من URL",
       "reconnect": "إعادة الاتصال",
       "required": "مطلوب",
       "requiredFromUrl": "تم اكتشافه من مسار URL",
@@ -2791,8 +2886,12 @@
       "yamlConverted": "تم تحويل YAML إلى JSON"
     },
     "noBuiltInTools": "لا توجد أدوات مدمجة",
+    "noBuiltInToolsDescription": "لا توجد أدوات مدمجة متاحة",
+    "noInputSchema": "لا يوجد مخطط إدخال",
+    "noParameters": "لا توجد معاملات",
     "noTools": "لم يتم العثور على أدوات",
     "noToolsDescription": "أنشئ أداتك المخصصة الأولى أو اتصل بخادم MCP للبدء",
+    "searchPlaceholder": "بحث عن الأدوات...",
     "tabs": {
       "apiSpecs": "مواصفات API",
       "builtin": "الأدوات المدمجة",
@@ -2815,6 +2914,7 @@
       "tryAgain": "المحاولة مرة أخرى"
     },
     "tool": "أداة",
+    "toolKey": "مفتاح الأداة",
     "tools": "أدوات",
     "type": {
       "apiSpec": "مواصفات API",
