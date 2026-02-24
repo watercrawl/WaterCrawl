@@ -53,7 +53,7 @@ export const useAgentToolConfig = (
         || error.response?.data?.message
         || t('errors.generic');
       toast.error(errorMessage);
-      throw error;
+      // Do not re-throw the error to prevent unhandled promise rejections.
     }
   }, [agentId, enableAsTool, toolFunctionName, toolDescription, t]);
 
