@@ -362,7 +362,6 @@ class RetrievalSetting(BaseModel):
         """Override save to calculate retrieval cost."""
         # Calculate retrieval cost before saving
         self.retrieval_cost = self._calculate_retrieval_cost()
-        print(self.retrieval_cost)
         super().save(*args, **kwargs)
 
         # Ensure only one default per knowledge base
