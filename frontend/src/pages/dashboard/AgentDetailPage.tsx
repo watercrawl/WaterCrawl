@@ -41,14 +41,6 @@ const AgentDetailPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [publishedVersion, setPublishedVersion] = useState<AgentVersion | null>(null);
 
-  useEffect(() => {
-    if (agentId) {
-      fetchAgent();
-      fetchConversations();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [agentId]);
-
   // Fetch published version when agent is loaded and published
   useEffect(() => {
     const fetchPublishedVersion = async () => {
@@ -74,7 +66,7 @@ const AgentDetailPage: React.FC = () => {
     }
   }, [agent, setItems, t]);
 
-  const fetchAgent = async () => {
+  const fetchAgent = useCallback(async () => {
     if (!agentId) return;
     
     setLoading(true);
@@ -88,7 +80,7 @@ const AgentDetailPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [agentId, navigate, t]);
 
   const fetchConversations = useCallback(async () => {
     if (!agentId) return;
@@ -108,6 +100,13 @@ const AgentDetailPage: React.FC = () => {
       setLoadingConversations(false);
     }
   }, [agentId, t]);
+
+  useEffect(() => {
+    if (agentId) {
+      fetchAgent();
+      fetchConversations();
+    }
+  }, [agentId, fetchAgent, fetchConversations]);
 
   const fetchMessageBlocks = useCallback(async (conversationUuid: string) => {
     setLoadingMessages(true);

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
@@ -25,25 +25,7 @@ const AgentIntegrationsPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<IntegrationTab>('api');
 
-  useEffect(() => {
-    if (agentId) {
-      fetchAgent();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [agentId]);
-
-  useEffect(() => {
-    if (agent) {
-      setItems([
-        { label: t('dashboard.navigation.dashboard'), href: '/dashboard' },
-        { label: t('dashboard.navigation.agents'), href: '/dashboard/agents' },
-        { label: agent.name, href: `/dashboard/agents/${agentId}` },
-        { label: t('agents.integrations.title'), current: true },
-      ]);
-    }
-  }, [agent, agentId, setItems, t]);
-
-  const fetchAgent = async () => {
+  const fetchAgent = useCallback(async () => {
     if (!agentId) return;
 
     setLoading(true);
@@ -63,7 +45,26 @@ const AgentIntegrationsPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [agentId, navigate, t]);
+
+  useEffect(() => {
+    if (agentId) {
+      fetchAgent();
+    }
+  }, [agentId, fetchAgent]);
+
+  useEffect(() => {
+    if (agent) {
+      setItems([
+        { label: t('dashboard.navigation.dashboard'), href: '/dashboard' },
+        { label: t('dashboard.navigation.agents'), href: '/dashboard/agents' },
+        { label: agent.name, href: `/dashboard/agents/${agentId}` },
+        { label: t('agents.integrations.title'), current: true },
+      ]);
+    }
+  }, [agent, agentId, setItems, t]);
+
+
 
   if (loading) {
     return <Loading />;

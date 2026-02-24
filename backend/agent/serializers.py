@@ -56,6 +56,12 @@ class AgentListSerializer(serializers.ModelSerializer):
             tool_function_name = attrs.get("tool_function_name")
             tool_description = attrs.get("tool_description")
 
+            if tool_function_name is None and self.instance:
+                tool_function_name = self.instance.tool_function_name
+
+            if tool_description is None and self.instance:
+                tool_description = self.instance.tool_description
+
             if not tool_function_name or not tool_function_name.strip():
                 raise serializers.ValidationError(
                     {
