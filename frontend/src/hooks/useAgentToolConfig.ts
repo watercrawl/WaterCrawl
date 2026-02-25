@@ -41,8 +41,8 @@ export const useAgentToolConfig = (
     try {
       await agentApi.update(agentId, {
         enable_as_tool: enableAsTool,
-        tool_function_name: enableAsTool ? toolFunctionName : '',
-        tool_description: enableAsTool ? toolDescription : '',
+        tool_function_name: toolFunctionName,
+        tool_description: toolDescription
       });
       toast.success(t('agents.form.toolConfigSaved'));
     } catch (error: any) {
