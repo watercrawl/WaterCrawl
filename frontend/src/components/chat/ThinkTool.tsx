@@ -72,7 +72,7 @@ const ThinkTool: React.FC<ThinkToolProps> = ({ toolCall }) => {
         {/* Collapsed Summary View */}
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className={`w-full px-2.5 py-1.5 flex items-center gap-2 hover:bg-muted/30 transition-colors ${isRTL ? 'flex-row-reverse text-right' : 'flex-row text-left'}`}
+          className={`w-full px-2.5 py-1.5 flex items-center gap-2 hover:bg-muted/30 transition-colors text-start ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}
         >
           {isExpanded ? (
             <ChevronDownIcon className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />

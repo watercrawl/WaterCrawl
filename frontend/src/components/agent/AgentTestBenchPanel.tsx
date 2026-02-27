@@ -49,7 +49,7 @@ const AgentTestBenchPanel: React.FC<AgentTestBenchPanelProps> = ({
 
         {/* Sidebar Panel (when open) */}
         {isOpen && (
-          <div className="fixed inset-y-0 right-0 z-40 w-full max-w-md flex flex-col border-l border-border bg-card shadow-2xl">
+          <div className="fixed inset-y-0 right-0 z-40 w-full max-w-md flex flex-col border-s border-border bg-card shadow-2xl">
             {/* Header */}
             <div className="flex items-center justify-between border-b border-border bg-muted/50 px-6 py-4">
               <h2 className="text-sm font-semibold uppercase tracking-wide text-foreground">

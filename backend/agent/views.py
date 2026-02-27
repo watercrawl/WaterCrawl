@@ -20,6 +20,8 @@ from user.permissions import IsAuthenticatedTeam
 from common.services import EventStreamResponse
 from agent import consts
 from agent.tasks import validate_mcp_server_task
+from common.views import FlexibleChatRenderer
+
 from agent.models import (
     Agent,
     AgentVersion,
@@ -195,7 +197,6 @@ class AgentViewSet(
         serializer.is_valid(raise_exception=True)
 
         validated_data = serializer.validated_data
-        response_mode = validated_data.get("response_mode") or "streaming"
 
         # Validate output_schema requirement when json_output is enabled but no predefined schema
         output_schema = validated_data.get("output_schema")
@@ -222,6 +223,11 @@ class AgentViewSet(
                     _("One or more files not found or not accessible")
                 )
 
+        # Parse event_types filter (convert list to set)
+        event_types = validated_data.get("event_types")
+        if event_types:
+            event_types = set(event_types)
+
         conversation_service = ConversationService.get_or_create_conversation(
             team=request.current_team,
             agent=agent,
@@ -231,24 +237,15 @@ class AgentViewSet(
             inputs=serializer.validated_data.get("inputs", {}),
         )
 
-        if response_mode == "streaming":
-            # Return SSE stream using EventStreamResponse
-            return EventStreamResponse(
-                conversation_service.chat(
-                    query=validated_data["query"],
-                    files=files,
-                    output_schema=output_schema,
-                )
-            )
-        else:
-            # Blocking mode - return complete response
-            result = conversation_service.chat_blocking(
+        # Always return streaming response with keepalive pings
+        return EventStreamResponse(
+            conversation_service.chat(
                 query=validated_data["query"],
                 files=files,
                 output_schema=output_schema,
+                event_types=event_types,
             )
-            serializer = MessageBlockSerializer(result)
-            return Response(serializer.data)
+        )
 
     @action(
         detail=True,
@@ -266,9 +263,10 @@ class AgentViewSet(
         methods=["post"],
         url_path="chat-message",
         throttle_classes=[AgentRateThrottle],
+        renderer_classes=[FlexibleChatRenderer],
     )
     def chat_with_published(self, request, **kwargs):
-        """Chat with published version (streaming)."""
+        """Chat with published version (streaming or blocking)."""
         return self.chat(request, chat_with_draft=False)
 
     @action(detail=True, methods=["post"], url_path="revert-draft")

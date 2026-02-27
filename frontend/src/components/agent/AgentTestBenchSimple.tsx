@@ -15,8 +15,7 @@ import ChatBox from '../chat/ChatBox';
 import { agentApi } from '../../services/api/agent';
 
 import type { Agent, ContextParameters } from '../../types/agent';
-import type { MessageBlock, ChatEvent } from '../../types/conversation';
-
+import type { ChatEvent } from '../../types/conversation';
 
 interface AgentTestBenchSimpleProps {
   agent: Agent;
@@ -37,7 +36,6 @@ const AgentTestBenchSimple: React.FC<AgentTestBenchSimpleProps> = ({
   const [conversationId, setConversationId] = useState<string | undefined>(undefined);
   const [contextVariables, setContextVariables] = useState<ContextParameters[]>([]);
   const [chatKey, setChatKey] = useState(0); // Key to force re-render ChatBox
-  const [streamingMode, setStreamingMode] = useState(true); // Preserve streaming mode across new chats
   const [outputSchemaText, setOutputSchemaText] = useState<string>('');
   const [outputSchemaError, setOutputSchemaError] = useState<string | null>(null);
   const [showSchemaInput, setShowSchemaInput] = useState(false);
@@ -118,52 +116,9 @@ const AgentTestBenchSimple: React.FC<AgentTestBenchSimpleProps> = ({
   }, [contextVariables]);
 
   /**
-   * Send message to agent (blocking mode) - returns the response MessageBlock
+   * Send message to agent (streaming only) - calls onEvent for each event
    */
-  const handleSendMessage = async (query: string): Promise<MessageBlock> => {
-    // Draft mode simulation for temp agent
-    if (agent.uuid === 'temp') {
-      toast(t('agents.testBench.draftModeResponse'));
-      throw new Error('Draft mode - cannot send messages');
-    }
-
-    // For dynamic schema mode, validate that output_schema is provided
-    if (isDynamicSchemaMode && !parsedOutputSchema) {
-      toast.error(t('agents.testBench.outputSchemaRequired'));
-      throw new Error('output_schema is required in dynamic schema mode');
-    }
-
-    try {
-      // Call blocking API
-      const response = await agentApi.chatWithDraftBlocking(
-        agent.uuid,
-        {
-          query,
-          user: 'test-user',
-          inputs: buildInputs(),
-          conversation_id: conversationId,
-          output_schema: isDynamicSchemaMode ? parsedOutputSchema : undefined,
-        }
-      );
-
-      // Store conversation ID for follow-up messages
-      if (response.conversation_id) {
-        setConversationId(response.conversation_id);
-      }
-
-      // Return the message block
-      return response;
-    } catch (error: unknown) {
-      console.error('Error sending message:', error);
-      // Let ChatBox handle the error display
-      throw error;
-    }
-  };
-
-  /**
-   * Send message to agent (streaming mode) - calls onEvent for each event
-   */
-  const handleSendMessageStreaming = async (
+  const handleSendMessage = async (
     query: string,
     onEvent: (event: ChatEvent) => void,
     onEnd: () => void,
@@ -182,7 +137,7 @@ const AgentTestBenchSimple: React.FC<AgentTestBenchSimpleProps> = ({
     }
 
     try {
-      await agentApi.chatWithDraftStreaming(
+      await agentApi.chatWithDraft(
         agent.uuid,
         {
           query,
@@ -255,7 +210,7 @@ const AgentTestBenchSimple: React.FC<AgentTestBenchSimpleProps> = ({
                     className="block flex-1 rounded-md border border-input bg-background px-2 py-1.5 text-xs font-mono text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                   />
                 )}
-                <span className="text-[10px] text-muted-foreground w-12 flex-shrink-0 text-right">
+                <span className="text-[10px] text-muted-foreground w-12 flex-shrink-0 text-end">
                   ({variable.parameter_type})
                 </span>
               </div>
@@ -337,11 +292,7 @@ const AgentTestBenchSimple: React.FC<AgentTestBenchSimpleProps> = ({
         <ChatBox
           key={chatKey}
           onSendMessage={handleSendMessage}
-          onSendMessageStreaming={handleSendMessageStreaming}
           placeholder={t('agents.testBench.queryPlaceholder')}
-          showStreamingToggle={true}
-          streamingMode={streamingMode}
-          onStreamingModeChange={setStreamingMode}
         />
       </div>
     </div>

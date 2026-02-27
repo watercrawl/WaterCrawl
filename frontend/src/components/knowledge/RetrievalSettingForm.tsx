@@ -292,7 +292,7 @@ const RetrievalSettingForm: React.FC<RetrievalSettingFormProps> = ({
               <div className={`pt-4 border-t border-border ${!formData.reranker_enabled ? 'opacity-50' : ''}`}>
                 <label className="block text-sm font-medium text-foreground mb-3">
                   {t('settings.knowledgeBase.retrievalSettings.rerankerModel')} 
-                  <span className="text-error ml-1">*</span>
+                  <span className="text-error ms-1">*</span>
                 </label>
                 <ModelSelector
                   modelType="reranker"

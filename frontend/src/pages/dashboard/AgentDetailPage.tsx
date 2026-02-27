@@ -193,7 +193,7 @@ const AgentDetailPage: React.FC = () => {
   return (
     <div className="flex h-[calc(100vh-128px)] bg-background overflow-hidden">
       {/* Left Sidebar - Conversation History */}
-      <div className="w-80 border-r border-border bg-card flex flex-col flex-shrink-0 h-full">
+      <div className="w-80 border-e border-border bg-card flex flex-col flex-shrink-0 h-full">
         {/* Header */}
         <div className="border-b border-border p-3 flex-shrink-0">
           <div className="mb-2">
@@ -253,8 +253,8 @@ const AgentDetailPage: React.FC = () => {
                   <button
                     key={conversation.uuid}
                     onClick={() => handleConversationSelect(conversation)}
-                    className={`w-full text-left px-3 py-2 hover:bg-muted/30 transition-colors ${
-                      isSelected ? 'bg-primary/10 border-l-2 border-primary' : ''
+                    className={`w-full text-start px-3 py-2 hover:bg-muted/30 transition-colors ${
+                      isSelected ? 'bg-primary/10 border-s-2 border-primary' : ''
                     }`}
                   >
                     <div className="flex items-start gap-2">
@@ -333,7 +333,7 @@ const AgentDetailPage: React.FC = () => {
                   </h2>
                   <p className="mt-1 text-xs text-muted-foreground">
                     {selectedConversation.user_identifier && (
-                      <span className="mr-3">{selectedConversation.user_identifier}</span>
+                      <span className="me-3">{selectedConversation.user_identifier}</span>
                     )}
                     {new Date(selectedConversation.created_at).toLocaleString()}
                   </p>
@@ -377,6 +377,7 @@ const AgentDetailPage: React.FC = () => {
             agent={agent} 
             isPublished={isPublished}
             onConversationCreated={handleConversationCreated}
+            contextVariableTemplates={publishedVersion?.parameters}
             jsonOutput={publishedVersion?.json_output}
             jsonSchema={publishedVersion?.json_schema}
           />

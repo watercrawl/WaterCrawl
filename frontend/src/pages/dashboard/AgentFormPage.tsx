@@ -199,7 +199,7 @@ const AgentFormPage: React.FC = () => {
   // Auto-save agent name on changes
   const saveAgentNameWithState = useCallback(async () => {
     await saveAgentName();
-  }, [saveAgentName, agentData]);
+  }, [saveAgentName]);
 
   const nameDeps = useMemo(() => [name], [name]);
   useAutoSave({
@@ -282,10 +282,11 @@ const AgentFormPage: React.FC = () => {
       setItems([
         { label: t('dashboard.navigation.dashboard'), href: '/dashboard' },
         { label: t('dashboard.navigation.agents'), href: '/dashboard/agents' },
-        { label: name, current: true },
+        { label: name, href: `/dashboard/agents/${agentId}` },
+        { label: t('common.edit'), current: true },
       ]);
     }
-  }, [draft, name, setItems, t]);
+  }, [draft, name, agentId, setItems, t]);
 
   const handlePublish = useCallback(async () => {
     if (!agentId || !draft) return;
@@ -475,7 +476,7 @@ const AgentFormPage: React.FC = () => {
           className={
             isTabletOrMobile
               ? 'w-full overflow-y-auto bg-background p-6'
-              : 'w-1/2 overflow-y-auto border-r border-border bg-background p-4'
+              : 'w-1/2 overflow-y-auto border-e border-border bg-background p-4'
           }
         >
           <div className="space-y-4">

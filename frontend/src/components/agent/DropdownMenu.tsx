@@ -27,7 +27,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
             key={item.key}
             type="button"
             onClick={() => onSelect(item.key)}
-            className="w-full text-left rounded-md px-3 py-2 text-xs text-foreground hover:bg-muted"
+            className="w-full text-start rounded-md px-3 py-2 text-xs text-foreground hover:bg-muted"
           >
             <div className="font-medium">{item.label}</div>
             {item.description && (

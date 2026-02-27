@@ -332,7 +332,7 @@ const ToolDrawer: React.FC<ToolDrawerProps> = ({
         {/* Drawer */}
         <div className="fixed inset-0 overflow-hidden">
           <div className="absolute inset-0 overflow-hidden">
-            <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+            <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full ps-10">
               <TransitionChild
                 as={Fragment}
                 enter="transform transition ease-in-out duration-300"

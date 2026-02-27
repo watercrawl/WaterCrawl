@@ -229,7 +229,7 @@ const AgentFormHeader: React.FC<AgentFormHeaderProps> = ({
         <div>
           <label className="block text-sm font-medium text-foreground mb-1.5">
             {t('agents.form.toolFunctionName')}
-            <span className="text-error ml-1">*</span>
+            <span className="text-error ms-1">*</span>
           </label>
           <input
             type="text"
@@ -247,7 +247,7 @@ const AgentFormHeader: React.FC<AgentFormHeaderProps> = ({
         <div>
           <label className="block text-sm font-medium text-foreground mb-1.5">
             {t('agents.form.toolDescriptionLabel')}
-            <span className="text-error ml-1">*</span>
+            <span className="text-error ms-1">*</span>
           </label>
           <textarea
             value={toolDescription}

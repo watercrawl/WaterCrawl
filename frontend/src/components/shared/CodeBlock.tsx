@@ -91,7 +91,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
           {showLineNumbers ? (
             formattedContent.split('\n').map((line, index) => (
               <div key={index} className="flex">
-                <span className="select-none text-muted-foreground w-8 text-right pr-3 flex-shrink-0">
+                <span className="select-none text-muted-foreground w-8 text-end pe-3 flex-shrink-0">
                   {index + 1}
                 </span>
                 <code>{line}</code>

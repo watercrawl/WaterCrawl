@@ -118,22 +118,22 @@ const MediaLibraryPage: React.FC = () => {
             <table className="min-w-full divide-y divide-border">
               <thead className="bg-muted">
                 <tr>
-                  <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-foreground sm:pl-6">
+                  <th scope="col" className="py-3.5 ps-4 pe-3 text-start text-sm font-semibold text-foreground sm:ps-6">
                     {t('mediaLibrary.table.fileName')}
                   </th>
-                  <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-foreground">
+                  <th scope="col" className="px-3 py-3.5 text-start text-sm font-semibold text-foreground">
                     {t('mediaLibrary.table.type')}
                   </th>
-                  <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-foreground">
+                  <th scope="col" className="px-3 py-3.5 text-start text-sm font-semibold text-foreground">
                     {t('mediaLibrary.table.size')}
                   </th>
-                  <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-foreground">
+                  <th scope="col" className="px-3 py-3.5 text-start text-sm font-semibold text-foreground">
                     {t('mediaLibrary.table.relatedObject')}
                   </th>
-                  <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-foreground">
+                  <th scope="col" className="px-3 py-3.5 text-start text-sm font-semibold text-foreground">
                     {t('mediaLibrary.table.createdAt')}
                   </th>
-                  <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                  <th scope="col" className="relative py-3.5 ps-3 pe-4 sm:pe-6">
                     <span className="sr-only">{t('common.actions')}</span>
                   </th>
                 </tr>
@@ -141,7 +141,7 @@ const MediaLibraryPage: React.FC = () => {
               <tbody className="divide-y divide-border bg-card">
                 {mediaFiles.map((media) => (
                   <tr key={media.uuid} className="hover:bg-muted/50">
-                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
+                    <td className="whitespace-nowrap py-4 ps-4 pe-3 text-sm sm:ps-6">
                       <div className="flex items-center gap-2">
                         {getFileIcon(media.content_type)}
                         <span className="font-medium text-foreground">{media.file_name}</span>
@@ -159,7 +159,7 @@ const MediaLibraryPage: React.FC = () => {
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-muted-foreground">
                       {formatDistanceToNowLocalized(new Date(media.created_at), dateLocale)}
                     </td>
-                    <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                    <td className="relative whitespace-nowrap py-4 ps-3 pe-4 text-end text-sm font-medium sm:pe-6">
                       <div className="flex items-center justify-end gap-2">
                         <button
                           onClick={() => handleDownload(media)}

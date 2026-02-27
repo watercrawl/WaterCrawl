@@ -72,7 +72,7 @@ const ToolCard: React.FC<ToolCardProps> = ({
       <button
         onClick={handleClick}
         disabled={disabled && variant === 'selectable'}
-        className={`group w-full rounded-lg border ${padding} text-left transition-all duration-200 ${
+        className={`group w-full rounded-lg border ${padding} text-start transition-all duration-200 ${
           variant === 'selectable' && isSelected
             ? 'border-success bg-success-soft/20 cursor-not-allowed'
             : variant === 'selectable'

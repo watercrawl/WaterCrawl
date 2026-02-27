@@ -585,11 +585,6 @@ class ChatMessageRequestSerializer(serializers.Serializer):
     inputs = serializers.JSONField(
         required=False, default=dict, help_text="Variables for the conversation"
     )
-    response_mode = serializers.ChoiceField(
-        choices=["streaming", "blocking"],
-        default="streaming",
-        help_text="Mode of response return",
-    )
     user = serializers.CharField(
         required=True, help_text="User identifier for retrieval and statistics"
     )
@@ -611,6 +606,17 @@ class ChatMessageRequestSerializer(serializers.Serializer):
         help_text=(
             "JSON Schema for structured output format. Required when agent has "
             "json_output=True but no predefined json_schema. Must be a valid JSON Schema object."
+        ),
+    )
+    event_types = serializers.ListField(
+        child=serializers.CharField(),
+        required=False,
+        allow_null=True,
+        default=None,
+        help_text=(
+            "Optional list of event types to filter. Only specified event types will be sent. "
+            "Available types: 'message', 'tool_call', 'tool_result', 'conversation', 'title', 'done', 'error', 'ping'. "
+            "If not provided, all events are sent."
         ),
     )
 

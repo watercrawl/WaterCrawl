@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import { CpuChipIcon, BoltIcon, BoltSlashIcon } from '@heroicons/react/24/outline';
+import { CpuChipIcon } from '@heroicons/react/24/outline';
 import { PaperAirplaneIcon, StopCircleIcon } from '@heroicons/react/24/solid';
 
 import { useDirection } from '../../contexts/DirectionContext';
@@ -443,10 +443,8 @@ export const buildLiveMessageBlock = (state: StreamingState): MessageBlock => {
 // ============================================
 
 interface ChatBoxProps {
-  /** Callback for blocking mode - returns the assistant's MessageBlock */
-  onSendMessage: (query: string, fileUuids?: string[]) => Promise<MessageBlock>;
-  /** Callback for streaming mode - calls onEvent for each event */
-  onSendMessageStreaming?: (
+  /** Callback for streaming - calls onEvent for each event (all responses are SSE streams) */
+  onSendMessage: (
     query: string,
     onEvent: (event: ChatEvent) => void,
     onEnd: () => void,
@@ -458,14 +456,6 @@ interface ChatBoxProps {
   placeholder?: string;
   /** Disable input */
   disabled?: boolean;
-  /** Show streaming mode toggle (only if onSendMessageStreaming is provided) */
-  showStreamingToggle?: boolean;
-  /** Default mode (used for uncontrolled mode) */
-  defaultStreamingMode?: boolean;
-  /** Controlled streaming mode value */
-  streamingMode?: boolean;
-  /** Callback when streaming mode changes (enables controlled mode) */
-  onStreamingModeChange?: (mode: boolean) => void;
   /** Enable file attachments */
   enableFileAttachments?: boolean;
   /** Maximum number of file attachments */
@@ -473,24 +463,19 @@ interface ChatBoxProps {
 }
 
 /**
- * ChatBox component - Chat interface with blocking and streaming support
+ * ChatBox component - Chat interface with Server-Sent Events streaming
  * 
  * - Stores MessageBlock[] state
  * - Creates user MessageBlock when sending
- * - Blocking mode: receives complete MessageBlock from API
- * - Streaming mode: builds MessageBlock from events in real-time
+ * - Builds assistant MessageBlock from streaming events in real-time
+ * - Includes keepalive ping support (pings every 10 seconds)
  * - Shows loading/streaming placeholder while waiting
  */
 const ChatBox: React.FC<ChatBoxProps> = ({
   onSendMessage,
-  onSendMessageStreaming,
   initialMessageBlocks = [],
   placeholder,
   disabled = false,
-  showStreamingToggle = true,
-  defaultStreamingMode = false,
-  streamingMode: controlledStreamingMode,
-  onStreamingModeChange,
   enableFileAttachments = true,
   maxFileAttachments = 5,
 }) => {
@@ -499,20 +484,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({
   const isRTL = direction === 'rtl' || ['ar', 'fa', 'he'].includes(i18n.language);
   const [messageBlocks, setMessageBlocks] = useState<MessageBlock[]>(initialMessageBlocks);
   const [inputValue, setInputValue] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
-  
-  // Support both controlled and uncontrolled streaming mode
-  const [internalStreamingMode, setInternalStreamingMode] = useState(defaultStreamingMode && !!onSendMessageStreaming);
-  const isControlled = controlledStreamingMode !== undefined;
-  const streamingMode = isControlled ? controlledStreamingMode : internalStreamingMode;
-  const setStreamingMode = (mode: boolean) => {
-    if (isControlled && onStreamingModeChange) {
-      onStreamingModeChange(mode);
-    } else {
-      setInternalStreamingMode(mode);
-    }
-  };
   const [conversationId, setConversationId] = useState<string>('');
   const [error, setError] = useState<{ message: string; code?: string | number } | null>(null);
   const [attachments, setAttachments] = useState<FileAttachmentItem[]>([]);
@@ -528,7 +500,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({
   // Auto-scroll to bottom when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messageBlocks, isLoading, liveMessageBlock, error]);
+  }, [messageBlocks, isStreaming, liveMessageBlock, error]);
 
   // Auto-resize textarea
   useEffect(() => {
@@ -632,18 +604,16 @@ const ChatBox: React.FC<ChatBoxProps> = ({
   }, [t]);
 
   /**
-   * Handle streaming mode submit
+   * Handle streaming submit (always streaming mode)
    */
   const handleStreamingSubmit = async (query: string, fileUuids?: string[]): Promise<boolean> => {
-    if (!onSendMessageStreaming) return false;
-    
     setIsStreaming(true);
     setError(null);
     streamingStateRef.current = createStreamingState();
     abortControllerRef.current = new AbortController();
     
     try {
-      await onSendMessageStreaming(query, handleStreamingEvent, handleStreamingEnd, fileUuids);
+      await onSendMessage(query, handleStreamingEvent, handleStreamingEnd, fileUuids);
       // Even if the promise resolves, check if an error was received during streaming
       return !streamingStateRef.current.error;
     } catch (err: any) {
@@ -660,7 +630,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!inputValue.trim() || isLoading || isStreaming || disabled || hasPendingUploads) return;
+    if (!inputValue.trim() || isStreaming || disabled || hasPendingUploads) return;
 
     const query = inputValue.trim();
     const fileUuids = attachments
@@ -671,47 +641,13 @@ const ChatBox: React.FC<ChatBoxProps> = ({
     
     setError(null);
 
-    let success = false;
-    let assistantBlock: MessageBlock | null = null;
-
-    if (streamingMode && onSendMessageStreaming) {
-      success = await handleStreamingSubmit(query, fileUuids.length > 0 ? fileUuids : undefined);
-    } else {
-      setIsLoading(true);
-      try {
-        assistantBlock = await onSendMessage(query, fileUuids.length > 0 ? fileUuids : undefined);
-        
-        if (assistantBlock && (assistantBlock as any).code && (assistantBlock as any).message) {
-          setError({
-            message: (assistantBlock as any).message,
-            code: (assistantBlock as any).code,
-          });
-          success = false;
-        } else if (assistantBlock) {
-          if (assistantBlock.conversation_id) {
-            setConversationId(assistantBlock.conversation_id);
-          }
-          success = true;
-        } else {
-          throw new Error(t('chat.errorOccurred'));
-        }
-      } catch (err: any) {
-        console.error('Error in blocking submit:', err);
-        setError(extractErrorDetails(err));
-        success = false;
-      } finally {
-        setIsLoading(false);
-      }
-    }
+    // Always use streaming (all responses are SSE)
+    const success = await handleStreamingSubmit(query, fileUuids.length > 0 ? fileUuids : undefined);
 
     if (success) {
       const userBlock = createUserMessageBlock(query, conversationId, uploadedAttachments);
       
-      setMessageBlocks(prev => {
-        const next = [...prev, userBlock];
-        if (assistantBlock) next.push(assistantBlock);
-        return next;
-      });
+      setMessageBlocks(prev => [...prev, userBlock]);
       
       setInputValue('');
       attachments.forEach((a) => {
@@ -739,50 +675,10 @@ const ChatBox: React.FC<ChatBoxProps> = ({
     }
   };
 
-  // Can toggle streaming mode?
-  const canToggleStreaming = showStreamingToggle && !!onSendMessageStreaming;
-
-  const isProcessing = isLoading || isStreaming;
+  const isProcessing = isStreaming;
 
   return (
     <div className={`flex flex-col h-full bg-background ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
-      {/* Streaming Mode Toggle */}
-      {canToggleStreaming && (
-        <div className={`border-b border-border bg-card px-4 py-2 flex items-center ${isRTL ? 'flex-row-reverse' : 'flex-row'} justify-between`}>
-          <span className="text-xs text-muted-foreground">
-            {t('chat.responseMode')}
-          </span>
-          <div className="inline-flex rounded-md shadow-sm">
-            <button
-              type="button"
-              onClick={() => setStreamingMode(false)}
-              disabled={isProcessing}
-              className={`relative inline-flex items-center gap-x-1.5 ${isRTL ? 'rounded-r-md' : 'rounded-l-md'} px-3 py-1.5 text-xs font-medium transition-colors ${
-                !streamingMode
-                  ? 'bg-primary text-primary-foreground'
-                  : 'bg-card text-foreground ring-1 ring-inset ring-border hover:bg-muted'
-              } disabled:opacity-50`}
-            >
-              <BoltSlashIcon className="h-3.5 w-3.5" />
-              {t('chat.blocking')}
-            </button>
-            <button
-              type="button"
-              onClick={() => setStreamingMode(true)}
-              disabled={isProcessing}
-              className={`relative ${isRTL ? '-mr-px' : '-ml-px'} inline-flex items-center gap-x-1.5 ${isRTL ? 'rounded-l-md' : 'rounded-r-md'} px-3 py-1.5 text-xs font-medium transition-colors ${
-                streamingMode
-                  ? 'bg-primary text-primary-foreground'
-                  : 'bg-card text-foreground ring-1 ring-inset ring-border hover:bg-muted'
-              } disabled:opacity-50`}
-            >
-              <BoltIcon className="h-3.5 w-3.5" />
-              {t('chat.streaming')}
-            </button>
-          </div>
-        </div>
-      )}
-
       {/* Messages Area */}
       <div className="flex-1 overflow-y-auto px-4 py-6 space-y-4">
         {/* Empty state */}
@@ -825,29 +721,6 @@ const ChatBox: React.FC<ChatBoxProps> = ({
             error={error.message}
             code={error.code}
           />
-        )}
-
-        {/* Loading placeholder (blocking mode) */}
-        {isLoading && (
-          <div className={`flex gap-3 ${isRTL ? 'justify-end' : 'justify-start'} mb-4`}>
-            <div className="flex-shrink-0 mt-1">
-              <div className="h-7 w-7 rounded-full bg-primary/10 flex items-center justify-center">
-                <CpuChipIcon className="h-4 w-4 text-primary" />
-              </div>
-            </div>
-            <div className="rounded-2xl bg-card border border-border text-foreground overflow-hidden">
-              <div className="px-4 py-3">
-                <div className={`flex items-center gap-2 text-muted-foreground ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
-                  <div className="flex gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-current animate-bounce" style={{ animationDelay: '0ms' }} />
-                    <span className="w-1.5 h-1.5 rounded-full bg-current animate-bounce" style={{ animationDelay: '150ms' }} />
-                    <span className="w-1.5 h-1.5 rounded-full bg-current animate-bounce" style={{ animationDelay: '300ms' }} />
-                  </div>
-                  <span className="text-xs">{t('chat.thinking')}</span>
-                </div>
-              </div>
-            </div>
-          </div>
         )}
 
         {/* Streaming initial placeholder (before first content or structured response) */}

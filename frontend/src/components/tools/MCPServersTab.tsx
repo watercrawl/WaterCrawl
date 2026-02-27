@@ -840,8 +840,8 @@ const MCPServersTab: React.FC = () => {
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           {t('tools.mcp.parameterValue')}
-                          {(isRequired && !editingServer) && <span className="text-warning ml-1">*</span>}
-                          {editingServer && <span className="text-[10px] text-muted-foreground ml-1 font-normal">({t('common.optional')})</span>}
+                          {(isRequired && !editingServer) && <span className="text-warning ms-1">*</span>}
+                          {editingServer && <span className="text-[10px] text-muted-foreground ms-1 font-normal">({t('common.optional')})</span>}
                         </label>
                         <input
                           type="text"

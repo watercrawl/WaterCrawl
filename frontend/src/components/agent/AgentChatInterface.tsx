@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
@@ -14,13 +14,14 @@ import ChatBox from '../chat/ChatBox';
 
 import { agentApi } from '../../services/api/agent';
 
-import type { Agent } from '../../types/agent';
-import type { MessageBlock, ChatEvent } from '../../types/conversation';
+import type { Agent, ContextParameters } from '../../types/agent';
+import type { ChatEvent } from '../../types/conversation';
 
 interface AgentChatInterfaceProps {
   agent: Agent;
   isPublished: boolean;
   onConversationCreated?: (conversationId: string, title?: string) => void;
+  contextVariableTemplates?: ContextParameters[];
   /** Whether structured JSON output is enabled for this agent */
   jsonOutput?: boolean;
   /** Predefined JSON schema for output (null means dynamic mode when jsonOutput is true) */
@@ -31,20 +32,34 @@ const AgentChatInterface: React.FC<AgentChatInterfaceProps> = ({
   agent,
   isPublished,
   onConversationCreated,
+  contextVariableTemplates = [],
   jsonOutput = false,
   jsonSchema = null,
 }) => {
   const { t } = useTranslation();
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [chatKey, setChatKey] = useState(0);
-  const [streamingMode, setStreamingMode] = useState(true); // Preserve streaming mode across new chats
   const [_conversationTitle, setConversationTitle] = useState<string | null>(null);
+  const [contextVariables, setContextVariables] = useState<ContextParameters[]>([]);
   const [outputSchemaText, setOutputSchemaText] = useState<string>('');
   const [outputSchemaError, setOutputSchemaError] = useState<string | null>(null);
   const [showSchemaInput, setShowSchemaInput] = useState(false);
 
+  // Initialize context variables from templates
+  useEffect(() => {
+    if (contextVariableTemplates.length > 0) {
+      const initialized = contextVariableTemplates.map(template => ({
+        name: template.name,
+        value: template.value || '',
+        parameter_type: template.parameter_type,
+      }));
+      setContextVariables(initialized);
+    }
+  }, [contextVariableTemplates]);
+
   // Determine if we're in dynamic schema mode
-  const isDynamicSchemaMode = jsonOutput && !jsonSchema;
+  // Dynamic mode: json_output is enabled but no predefined schema
+  const isDynamicSchemaMode = jsonOutput === true && (jsonSchema === null || jsonSchema === undefined);
 
   // Parse output schema from text input
   const parsedOutputSchema = useMemo(() => {
@@ -91,49 +106,26 @@ const AgentChatInterface: React.FC<AgentChatInterfaceProps> = ({
   };
 
   /**
-   * Send message to agent (blocking mode) - returns the response MessageBlock
+   * Build inputs from context variables
    */
-  const handleSendMessage = async (query: string): Promise<MessageBlock> => {
-    // For dynamic schema mode, validate that output_schema is provided
-    if (isDynamicSchemaMode && !parsedOutputSchema) {
-      toast.error(t('agents.testBench.outputSchemaRequired'));
-      throw new Error('output_schema is required in dynamic schema mode');
-    }
-
-    try {
-      const response = await agentApi.chatWithPublishedBlocking(
-        agent.uuid,
-        {
-          query,
-          user: 'user',
-          inputs: {},
-          conversation_id: conversationId || undefined,
-          output_schema: isDynamicSchemaMode ? parsedOutputSchema : undefined,
-        }
-      );
-
-      // Store conversation ID for follow-up messages
-      if (response.conversation_id) {
-        setConversationId(response.conversation_id);
-        // Notify parent about new conversation
-        if (onConversationCreated && !conversationId) {
-          onConversationCreated(response.conversation_id);
-        }
+  const buildInputs = useCallback(() => {
+    const inputs: Record<string, any> = {};
+    contextVariables.forEach(v => {
+      if (v.parameter_type === 'number') {
+        inputs[v.name] = parseFloat(v.value) || 0;
+      } else if (v.parameter_type === 'boolean') {
+        inputs[v.name] = v.value === 'true';
+      } else {
+        inputs[v.name] = v.value;
       }
-
-      // ChatMessageResponse extends MessageBlock, so we can return it directly
-      return response;
-    } catch (error: unknown) {
-      console.error('Error sending query:', error);
-      // Let ChatBox handle the error display
-      throw error;
-    }
-  };
+    });
+    return inputs;
+  }, [contextVariables]);
 
   /**
-   * Send message to agent (streaming mode) - calls onEvent for each event
+   * Send message to agent (streaming only) - calls onEvent for each event
    */
-  const handleSendMessageStreaming = async (
+  const handleSendMessage = async (
     query: string,
     onEvent: (event: ChatEvent) => void,
     onEnd: () => void,
@@ -151,12 +143,12 @@ const AgentChatInterface: React.FC<AgentChatInterfaceProps> = ({
     let newConversationTitle: string | null = null;
 
     try {
-      await agentApi.chatWithPublishedStreaming(
+      await agentApi.chatWithPublished(
         agent.uuid,
         {
           query,
           user: 'user',
-          inputs: {},
+          inputs: buildInputs(),
           conversation_id: conversationId || undefined,
           files: fileUuids,
           output_schema: isDynamicSchemaMode ? parsedOutputSchema : undefined,
@@ -229,6 +221,52 @@ const AgentChatInterface: React.FC<AgentChatInterfaceProps> = ({
         </div>
       </div>
 
+      {/* Context Variables Section */}
+      {contextVariables.length > 0 && (
+        <div className="border-b border-border bg-card px-6 py-3 flex-shrink-0">
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="text-xs font-semibold uppercase tracking-wide text-foreground">
+              {t('agents.testBench.contextVariables')}
+            </h3>
+          </div>
+          <div className="space-y-2">
+            {contextVariables.map((variable, index) => (
+              <div key={variable.name} className="flex items-center gap-x-2">
+                <label className="text-xs font-medium text-foreground min-w-[120px]">
+                  {variable.name}:
+                </label>
+                {variable.parameter_type === 'boolean' ? (
+                  <select
+                    value={variable.value}
+                    onChange={e => {
+                      const updated = [...contextVariables];
+                      updated[index] = { ...updated[index], value: e.target.value };
+                      setContextVariables(updated);
+                    }}
+                    className="block flex-1 rounded-md border border-input bg-background px-2 py-1.5 text-xs font-mono text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                  >
+                    <option value="true">true</option>
+                    <option value="false">false</option>
+                  </select>
+                ) : (
+                  <input
+                    type={variable.parameter_type === 'number' ? 'number' : 'text'}
+                    value={variable.value}
+                    onChange={e => {
+                      const updated = [...contextVariables];
+                      updated[index] = { ...updated[index], value: e.target.value };
+                      setContextVariables(updated);
+                    }}
+                    placeholder={variable.parameter_type === 'number' ? '0' : t('agents.testBench.enterValue')}
+                    className="block flex-1 rounded-md border border-input bg-background px-2 py-1.5 text-xs font-mono text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Dynamic Schema Input Section */}
       {isDynamicSchemaMode && (
         <div className="border-b border-border bg-card px-6 py-3 flex-shrink-0">
@@ -286,11 +324,7 @@ const AgentChatInterface: React.FC<AgentChatInterfaceProps> = ({
         <ChatBox
           key={chatKey}
           onSendMessage={handleSendMessage}
-          onSendMessageStreaming={handleSendMessageStreaming}
           placeholder={t('agents.testBench.queryPlaceholder')}
-          showStreamingToggle={true}
-          streamingMode={streamingMode}
-          onStreamingModeChange={setStreamingMode}
         />
       </div>
     </div>

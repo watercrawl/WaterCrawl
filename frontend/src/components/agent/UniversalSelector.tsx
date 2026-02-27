@@ -78,7 +78,7 @@ const UniversalSelector = <T extends SelectionItem>({
             value={searchQuery}
             onChange={handleSearch}
             placeholder={searchPlaceholder || t('common.search')}
-            className="w-full pl-9 pr-4 py-2 text-sm rounded-lg border border-input bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full ps-9 pe-4 py-2 text-sm rounded-lg border border-input bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
       </div>
@@ -89,7 +89,7 @@ const UniversalSelector = <T extends SelectionItem>({
             <Loading size="md" />
           </div>
         ) : items.length > 0 ? (
-          <div className="space-y-2 pr-1">
+          <div className="space-y-2 pe-1">
             {items.map((item) => (
               <div
                 key={item.uuid}
@@ -99,7 +99,7 @@ const UniversalSelector = <T extends SelectionItem>({
                     : 'border-border bg-card hover:bg-muted/50'
                 }`}
               >
-                <div className="flex-1 min-w-0 pr-4">
+                <div className="flex-1 min-w-0 pe-4">
                   <div className="font-medium text-foreground truncate">{item.title}</div>
                   {item.description && (
                     <div className="text-xs text-muted-foreground truncate mt-0.5">

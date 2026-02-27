@@ -7,26 +7,19 @@ import {
   XMarkIcon,
   DocumentIcon,
   PhotoIcon,
-  MusicalNoteIcon,
 } from '@heroicons/react/24/outline';
 
 import { mediaApi } from '../../services/api/media';
 
 import type { Media } from '../../types/media';
 
-// Supported file types
-const SUPPORTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'];
+// Supported file types - Only PDF and images
+const SUPPORTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml', 'image/bmp'];
 const SUPPORTED_FILE_TYPES = [
   'application/pdf',
-  'text/plain',
-  'text/csv',
-  'text/markdown',
-  'application/json',
-  'application/xml',
 ];
-const SUPPORTED_AUDIO_TYPES = ['audio/wav', 'audio/mp3', 'audio/mpeg', 'audio/ogg', 'audio/webm'];
 
-const ALL_SUPPORTED_TYPES = [...SUPPORTED_IMAGE_TYPES, ...SUPPORTED_FILE_TYPES, ...SUPPORTED_AUDIO_TYPES];
+const ALL_SUPPORTED_TYPES = [...SUPPORTED_IMAGE_TYPES, ...SUPPORTED_FILE_TYPES];
 
 // Max file size (10MB)
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
@@ -54,9 +47,6 @@ interface FileAttachmentProps {
 const getFileIcon = (contentType: string) => {
   if (SUPPORTED_IMAGE_TYPES.includes(contentType)) {
     return PhotoIcon;
-  }
-  if (SUPPORTED_AUDIO_TYPES.includes(contentType)) {
-    return MusicalNoteIcon;
   }
   return DocumentIcon;
 };

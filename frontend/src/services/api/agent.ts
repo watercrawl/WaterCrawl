@@ -20,11 +20,7 @@ import {
   TestQueryResponse,
 } from '../../types/agent';
 import { PaginatedResponse } from '../../types/common';
-import {
-  ChatMessageRequest,
-  ChatMessageResponse,
-  ChatEvent,
-} from '../../types/conversation';
+import { ChatMessageRequest, ChatEvent } from '../../types/conversation';
 
 import api from './api';
 
@@ -240,24 +236,12 @@ export const agentApi = {
     );
   },
 
-  // Chat with Draft Agent - Blocking Mode
+  // Chat with Draft Agent (Streaming Only)
   // Note: output_schema is required when agent has json_output=true but no predefined json_schema
-  async chatWithDraftBlocking(
+  // All responses are Server-Sent Events streams with keepalive pings every 10 seconds
+  async chatWithDraft(
     agentUuid: string,
-    request: ChatMessageRequest
-  ): Promise<ChatMessageResponse> {
-    const { data } = await api.post<ChatMessageResponse>(
-      `/api/v1/agent/agents/${agentUuid}/draft/chat-message/`,
-      { ...request, response_mode: 'blocking' }
-    );
-    return data;
-  },
-
-  // Chat with Draft Agent - Streaming Mode
-  // Note: output_schema is required when agent has json_output=true but no predefined json_schema
-  async chatWithDraftStreaming(
-    agentUuid: string,
-    request: Omit<ChatMessageRequest, 'response_mode'>,
+    request: ChatMessageRequest,
     onEvent: (data: ChatEvent) => void,
     onEnd?: () => void
   ): Promise<void> {
@@ -265,30 +249,18 @@ export const agentApi = {
       `/api/v1/agent/agents/${agentUuid}/draft/chat-message/`,
       'POST',
       {},
-      { ...request, response_mode: 'streaming' },
+      request,
       onEvent,
       onEnd
     );
   },
 
-  // Chat with Published Agent - Blocking Mode
+  // Chat with Published Agent (Streaming Only)
   // Note: output_schema is required when agent has json_output=true but no predefined json_schema
-  async chatWithPublishedBlocking(
+  // All responses are Server-Sent Events streams with keepalive pings every 10 seconds
+  async chatWithPublished(
     agentUuid: string,
-    request: ChatMessageRequest
-  ): Promise<ChatMessageResponse> {
-    const { data } = await api.post<ChatMessageResponse>(
-      `/api/v1/agent/agents/${agentUuid}/chat-message/`,
-      { ...request, response_mode: 'blocking' }
-    );
-    return data;
-  },
-
-  // Chat with Published Agent - Streaming Mode
-  // Note: output_schema is required when agent has json_output=true but no predefined json_schema
-  async chatWithPublishedStreaming(
-    agentUuid: string,
-    request: Omit<ChatMessageRequest, 'response_mode'>,
+    request: ChatMessageRequest,
     onEvent: (data: ChatEvent) => void,
     onEnd?: () => void
   ): Promise<void> {
@@ -296,7 +268,7 @@ export const agentApi = {
       `/api/v1/agent/agents/${agentUuid}/chat-message/`,
       'POST',
       {},
-      { ...request, response_mode: 'streaming' },
+      request,
       onEvent,
       onEnd
     );
