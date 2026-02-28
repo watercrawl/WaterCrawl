@@ -1,631 +1,614 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: watercrawl\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-02-27 22:43+0000\n"
-"PO-Revision-Date: 2025-11-04 19:22\n"
-"Last-Translator: \n"
-"Language-Team: German\n"
-"Language: de_DE\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Crowdin-File: /development/backend/locale/en/LC_MESSAGES/django.po\n"
-"X-Crowdin-File-ID: 26\n"
-"X-Crowdin-Language: de\n"
-"X-Crowdin-Project: watercrawl\n"
-"X-Crowdin-Project-ID: 819230\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: agent/filters.py:15 knowledge_base/filters.py:13
 msgid "Search"
-msgstr "Suchen"
+msgstr ""
 
 #: agent/filters.py:16
 msgid "Search agents by name"
-msgstr "Agenten nach Namen suchen"
+msgstr ""
 
 #: agent/filters.py:21 agent/models.py:79 agent/models.py:185
 #: core/models.py:125 core/models.py:199 knowledge_base/filters.py:38
 #: knowledge_base/models.py:94 knowledge_base/models.py:147
 #: knowledge_base/models.py:410 plan/models.py:153 plan/models.py:175
 msgid "Status"
-msgstr "Status"
+msgstr ""
 
 #: agent/filters.py:22
 msgid "Filter agents by status (published, draft)"
-msgstr "Agenten nach Status filtern (veröffentlicht, Entwurf)"
+msgstr ""
 
 #: agent/models.py:13 agent/models.py:135 agent/models.py:149
 #: agent/models.py:175 agent/models.py:222 agent/models.py:251
 #: agent/models.py:268 core/models.py:147 knowledge_base/models.py:219
 #: user/models.py:75 user/models.py:164
 msgid "Name"
-msgstr "Name"
+msgstr ""
 
 #: agent/models.py:17 agent/models.py:160 agent/models.py:196
 #: agent/models.py:246 core/consts.py:203 knowledge_base/models.py:25
 #: llm/models.py:23 plan/models.py:124 plan/models.py:206 user/models.py:96
 #: user/models.py:114 user/models.py:134 user/models.py:169 user/models.py:195
 msgid "Team"
-msgstr "Team"
+msgstr ""
 
 #: agent/models.py:23
-#| msgid "Agent as Tool"
 msgid "Enable as Tool"
-msgstr "Als Werkzeug aktivieren"
+msgstr ""
 
 #: agent/models.py:25
-#| msgid "The agent to be used as a tool"
 msgid "Allow this agent to be used as a tool in other agents"
 msgstr ""
-"Diesem Agenten erlauben, als Werkzeug in anderen Agenten verwendet zu werden"
 
 #: agent/models.py:28
 msgid "Tool Function Name"
-msgstr "Werkzeugfunktionsname"
+msgstr ""
 
 #: agent/models.py:32
-#| msgid "The agent to be used as a tool"
 msgid "Custom function name when used as a tool"
-msgstr "Benutzerdefinierter Funktionsname bei Verwendung als Werkzeug"
+msgstr ""
 
 #: agent/models.py:35
-#| msgid "Description"
 msgid "Tool Description"
-msgstr "Werkzeugbeschreibung"
+msgstr ""
 
 #: agent/models.py:38
-#| msgid "The agent to be used as a tool"
 msgid "Description of what this agent does when used as a tool"
 msgstr ""
-"Beschreibung dessen, was dieser Agent tut, wenn er als Werkzeug verwendet "
-"wird"
 
 #: agent/models.py:67 agent/models.py:75 agent/models.py:119
 #: agent/models.py:303 agent/models.py:327
 msgid "Agent"
-msgstr "Agent"
+msgstr ""
 
 #: agent/models.py:68 agent/models.py:120
 msgid "Agents"
-msgstr "Agenten"
+msgstr ""
 
 #: agent/models.py:84
 msgid "System Prompt"
-msgstr "System-Prompt"
+msgstr ""
 
 #: agent/models.py:89
 msgid "Config Provider"
-msgstr "Konfigurationsanbieter"
+msgstr ""
 
 #: agent/models.py:95
 msgid "LLM Model"
-msgstr "LLM-Modell"
+msgstr ""
 
 #: agent/models.py:104
 msgid "JSON Output"
-msgstr "JSON-Ausgabe"
+msgstr ""
 
 #: agent/models.py:106
 msgid "Enable structured JSON output formatting"
-msgstr "Strukturierte JSON-Ausgabeformatierung aktivieren"
+msgstr ""
 
 #: agent/models.py:109 llm/models_config/config.py:313
 msgid "JSON Schema"
-msgstr "JSON-Schema"
+msgstr ""
 
 #: agent/models.py:112
 msgid "JSON Schema for structured output format"
-msgstr "JSON-Schema für strukturiertes Ausgabeformat"
+msgstr ""
 
 #: agent/models.py:126
 msgid "Agent Version"
-msgstr "Agent-Version"
+msgstr ""
 
 #: agent/models.py:131
 msgid "Parameter Type"
-msgstr "Parametertyp"
+msgstr ""
 
 #: agent/models.py:137 agent/models.py:223 agent/models.py:269
 msgid "Value"
-msgstr "Wert"
+msgstr ""
 
 #: agent/models.py:144
 msgid "Agent Context Parameter"
-msgstr "Agent-Kontextparameter"
+msgstr ""
 
 #: agent/models.py:145
 msgid "Agent Context Parameters"
-msgstr "Agent-Kontextparameter"
+msgstr ""
 
 #: agent/models.py:150
 msgid "LLM Description"
-msgstr "LLM-Beschreibung"
+msgstr ""
 
 #: agent/models.py:151 core/models.py:148 user/models.py:174
 msgid "Key"
-msgstr "Schlüssel"
+msgstr ""
 
 #: agent/models.py:153
 msgid "Tool Type"
-msgstr "Werkzeugtyp"
+msgstr ""
 
 #: agent/models.py:170 agent/models.py:297
 msgid "Tool"
-msgstr "Werkzeug"
+msgstr ""
 
 #: agent/models.py:171
 msgid "Tools"
-msgstr "Tools"
+msgstr ""
 
 #: agent/models.py:176 core/models.py:74 core/models.py:196
 msgid "URL"
-msgstr "URL"
+msgstr ""
 
 #: agent/models.py:178
 msgid "Transport Type"
-msgstr "Transporttyp"
+msgstr ""
 
 #: agent/models.py:191 knowledge_base/models.py:426
 msgid "Error Message"
-msgstr "Fehlermeldung"
+msgstr ""
 
 #: agent/models.py:206 agent/models.py:214 agent/models.py:230
 msgid "MCP Server"
-msgstr "MCP-Server"
+msgstr ""
 
 #: agent/models.py:207
 msgid "MCP Servers"
-msgstr "MCP-Server"
+msgstr ""
 
 #: agent/models.py:218 agent/models.py:264
 msgid "Tool Parameter Type"
-msgstr "Tool-Parametertyp"
+msgstr ""
 
 #: agent/models.py:238
 msgid "MCP Tool"
-msgstr "MCP-Tool"
+msgstr ""
 
 #: agent/models.py:239
 msgid "MCP Tools"
-msgstr "MCP-Werkzeuge"
+msgstr ""
 
 #: agent/models.py:260 agent/models.py:276
 msgid "API Spec"
-msgstr "API-Spezifikation"
+msgstr ""
 
 #: agent/models.py:279
 msgid "Method"
-msgstr "Methode"
+msgstr ""
 
 #: agent/models.py:280
 msgid "Path"
-msgstr "Pfad"
+msgstr ""
 
 #: agent/models.py:282 user/models.py:200
 msgid "Content Type"
-msgstr "Inhaltstyp"
+msgstr ""
 
 #: agent/models.py:289
 msgid "API Spec Tool"
-msgstr "API-Spezifikations-Tool"
+msgstr ""
 
 #: agent/models.py:290
 msgid "API Spec Tools"
-msgstr "API-Spezifikations-Werkzeuge"
+msgstr ""
 
 #: agent/models.py:313
 msgid "Agent Tool"
-msgstr "Agenten-Tool"
+msgstr ""
 
 #: agent/models.py:314
 msgid "Agent Tools"
-msgstr "Agenten-Tools"
+msgstr ""
 
 #: agent/models.py:321 knowledge_base/filters.py:43
 #: knowledge_base/models.py:117 knowledge_base/models.py:132
 #: knowledge_base/models.py:215 knowledge_base/models.py:393
 msgid "Knowledge Base"
-msgstr "Wissensdatenbank"
+msgstr ""
 
 #: agent/models.py:367
 msgid "Agent Knowledge Base"
-msgstr "Agenten-Wissensdatenbank"
+msgstr ""
 
 #: agent/models.py:368
 msgid "Agent Knowledge Bases"
-msgstr "Agenten-Wissensdatenbanken"
+msgstr ""
 
 #: agent/models.py:380
 msgid "Tool Agent"
-msgstr "Tool-Agent"
+msgstr ""
 
 #: agent/models.py:382
 msgid "The agent to be used as a tool"
-msgstr "Der als Tool zu verwendende Agent"
+msgstr ""
 
 #: agent/models.py:387
 msgid "Parent Agent Version"
-msgstr "Übergeordnete Agent-Version"
+msgstr ""
 
 #: agent/models.py:389
 msgid "The agent version that uses this agent as a tool"
-msgstr "Die Agent-Version, die diesen Agent als Tool verwendet"
+msgstr ""
 
 #: agent/models.py:393
 msgid "Configuration for how the tool agent should be invoked"
-msgstr "Konfiguration für den Aufruf des Tool-Agenten"
+msgstr ""
 
 #: agent/models.py:474
 msgid "Agent as Tool"
-msgstr "Agent als Tool"
+msgstr ""
 
 #: agent/models.py:475
 msgid "Agents as Tools"
-msgstr "Agenten als Tools"
+msgstr ""
 
 #: agent/models.py:484
 msgid "agent"
-msgstr "Agent"
+msgstr ""
 
 #: agent/models.py:490
 msgid "agent version"
-msgstr "Agent-Version"
+msgstr ""
 
 #: agent/models.py:496 core/models.py:19 core/models.py:117 core/models.py:172
 #: core/models.py:193
 msgid "team"
-msgstr "Team"
+msgstr ""
 
 #: agent/models.py:502
 msgid "Conversation"
-msgstr "Konversation"
+msgstr ""
 
 #: agent/models.py:503
 msgid "Conversations"
-msgstr "Konversationen"
+msgstr ""
 
 #: agent/models.py:510
 msgid "conversation"
-msgstr "Konversation"
+msgstr ""
 
 #: agent/models.py:537
 msgid "Message"
-msgstr "Nachricht"
+msgstr ""
 
 #: agent/models.py:538
 msgid "Messages"
-msgstr "Nachrichten"
+msgstr ""
 
 #: agent/serializers.py:69
-#| msgid "Reranker model key is required when reranker is enabled."
 msgid "Tool function name is required when agent is enabled as tool"
 msgstr ""
-"Werkzeugfunktionsname ist erforderlich, wenn Agent als Werkzeug aktiviert "
-"ist"
 
 #: agent/serializers.py:78
-#| msgid ""
-#| "Reranker provider config is required when reranker is enabled."
 msgid "Tool description is required when agent is enabled as tool"
 msgstr ""
-"Werkzeugbeschreibung ist erforderlich, wenn Agent als Werkzeug aktiviert ist"
 
 #: agent/serializers.py:92
-#| msgid "Remove tool from draft"
 msgid "Remove it from those agents first."
-msgstr "Entfernen Sie es zuerst von diesen Agenten."
+msgstr ""
 
 #: agent/serializers.py:109
 msgid "Version does not exist"
-msgstr "Version existiert nicht"
+msgstr ""
 
 #: agent/serializers.py:112
 msgid "You cannot revert to current draft version"
-msgstr "Sie können nicht zur aktuellen Entwurfsversion zurückkehren"
+msgstr ""
 
 #: agent/serializers.py:168 agent/serializers.py:194 llm/views.py:238
 msgid "Provider config not found"
-msgstr "Anbieterkonfiguration nicht gefunden"
+msgstr ""
 
 #: agent/serializers.py:183
 msgid "Provider config UUID is required"
-msgstr "Anbieterkonfigurations-UUID ist erforderlich"
+msgstr ""
 
 #: agent/serializers.py:203 knowledge_base/serializers.py:467
 msgid "Invalid llm model Key."
-msgstr "Ungültiger LLM-Modell-Schlüssel."
+msgstr ""
 
 #: agent/serializers.py:251
 msgid "Tool not found"
-msgstr "Tool nicht gefunden"
+msgstr ""
 
 #: agent/serializers.py:303
 msgid "Knowledge base not found"
-msgstr "Wissensdatenbank nicht gefunden"
+msgstr ""
 
 #: agent/serializers.py:371
 msgid "Agent not found"
-msgstr "Agent nicht gefunden"
+msgstr ""
 
 #: agent/serializers.py:376
-#| msgid "The agent to be used as a tool"
 msgid "This agent is not enabled to be used as a tool"
-msgstr "Dieser Agent ist nicht für die Verwendung als Werkzeug aktiviert"
+msgstr ""
 
 #: agent/serializers.py:382
-#| msgid "The agent to be used as a tool"
 msgid "Only published agents can be used as tools"
-msgstr "Nur veröffentlichte Agenten können als Werkzeuge verwendet werden"
+msgstr ""
 
 #: agent/serializers.py:388
 msgid "Agent cannot use itself as a tool"
-msgstr "Agent kann sich nicht selbst als Tool verwenden"
+msgstr ""
 
 #: agent/serializers.py:432 agent/serializers.py:466 agent/serializers.py:496
-#| msgid "Base URL is required"
 msgid "Value is required"
-msgstr "Wert ist erforderlich"
+msgstr ""
 
 #: agent/services.py:144
 msgid "Published version cannot be edited."
-msgstr "Veröffentlichte Version kann nicht bearbeitet werden."
+msgstr ""
 
 #: agent/services.py:148
 msgid "System prompt is required."
-msgstr "System-Prompt ist erforderlich."
+msgstr ""
 
 #: agent/services.py:151
 msgid "Provider config is required."
-msgstr "Anbieterkonfiguration ist erforderlich."
+msgstr ""
 
 #: agent/services.py:154
 msgid "LLM model is required."
-msgstr "LLM-Modell ist erforderlich."
+msgstr ""
 
 #: agent/services.py:233 agent/services.py:370
 msgid "Value for new parameters is required"
-msgstr "Wert für neue Parameter ist erforderlich"
+msgstr ""
 
 #: agent/tools/base.py:84
 #, python-brace-format
 msgid "Tool with Type {tool_type} has no attribute name."
-msgstr "Tool mit Typ {tool_type} hat keinen Attributnamen."
+msgstr ""
 
 #: agent/tools/base.py:98
 #, python-brace-format
 msgid "{tool_type} has no attribute description."
-msgstr "{tool_type} hat keine Attributbeschreibung."
+msgstr ""
 
 #: agent/tools/base.py:148
 #, python-brace-format
 msgid "Tool {tool_key} not found"
-msgstr "Tool {tool_key} nicht gefunden"
+msgstr ""
 
 #: agent/views.py:71
 msgid "List agents"
-msgstr "Agenten auflisten"
+msgstr ""
 
 #: agent/views.py:76
 msgid "Create agent"
-msgstr "Agent erstellen"
+msgstr ""
 
 #: agent/views.py:81
 msgid "Delete agent"
-msgstr "Agent löschen"
+msgstr ""
 
 #: agent/views.py:86
 msgid "Publish draft"
-msgstr "Entwurf veröffentlichen"
+msgstr ""
 
 #: agent/views.py:92
 msgid "Get or update draft version"
-msgstr "Entwurfsversion abrufen oder aktualisieren"
+msgstr ""
 
 #: agent/views.py:99
 msgid "Chat with draft agent"
-msgstr "Mit Entwurfs-Agent chatten"
+msgstr ""
 
 #: agent/views.py:106
 msgid "Chat with published agent"
-msgstr "Mit veröffentlichtem Agent chatten"
+msgstr ""
 
 #: agent/views.py:167
 msgid "No published version found"
-msgstr "Keine veröffentlichte Version gefunden"
+msgstr ""
 
 #: agent/views.py:177
 msgid "No draft version found"
-msgstr "Keine Entwurfsversion gefunden"
+msgstr ""
 
 #: agent/views.py:194
 msgid "No draft or published version found"
-msgstr "Kein Entwurf oder veröffentlichte Version gefunden"
+msgstr ""
 
 #: agent/views.py:208
 msgid ""
 "output_schema is required when agent has structured output enabled but no "
 "predefined schema. Please provide a valid JSON Schema."
 msgstr ""
-"output_schema ist erforderlich, wenn der Agent strukturierte Ausgabe "
-"aktiviert hat, aber kein vordefiniertes Schema. Bitte geben Sie ein gültiges"
-" JSON-Schema an."
 
 #: agent/views.py:223
 msgid "One or more files not found or not accessible"
-msgstr "Eine oder mehrere Dateien nicht gefunden oder nicht zugänglich"
+msgstr ""
 
 #: agent/views.py:290
 msgid "List agent versions"
-msgstr "Agent-Versionen auflisten"
+msgstr ""
 
 #: agent/views.py:296
 msgid "Get single version"
-msgstr "Einzelne Version abrufen"
+msgstr ""
 
 #: agent/views.py:330
 msgid "List draft tools"
-msgstr "Entwurfs-Tools auflisten"
+msgstr ""
 
 #: agent/views.py:335
 msgid "Get draft tool"
-msgstr "Entwurfs-Tool abrufen"
+msgstr ""
 
 #: agent/views.py:340
 msgid "Add tool to draft"
-msgstr "Tool zum Entwurf hinzufügen"
+msgstr ""
 
 #: agent/views.py:345 agent/views.py:350
 msgid "Update tool in draft"
-msgstr "Tool im Entwurf aktualisieren"
+msgstr ""
 
 #: agent/views.py:355
 msgid "Remove tool from draft"
-msgstr "Tool aus Entwurf entfernen"
+msgstr ""
 
 #: agent/views.py:408
 msgid "List draft knowledge bases"
-msgstr "Entwurfs-Wissensdatenbanken auflisten"
+msgstr ""
 
 #: agent/views.py:413
 msgid "Get draft knowledge base"
-msgstr "Entwurfs-Wissensdatenbank abrufen"
+msgstr ""
 
 #: agent/views.py:418
 msgid "Add knowledge base to draft"
-msgstr "Wissensdatenbank zum Entwurf hinzufügen"
+msgstr ""
 
 #: agent/views.py:423 agent/views.py:428
 msgid "Update knowledge base in draft"
-msgstr "Wissensdatenbank im Entwurf aktualisieren"
+msgstr ""
 
 #: agent/views.py:433
 msgid "Remove knowledge base from draft"
-msgstr "Wissensdatenbank aus Entwurf entfernen"
+msgstr ""
 
 #: agent/views.py:484
 msgid "List draft agent tools"
-msgstr "Entwurfs-Agent-Tools auflisten"
+msgstr ""
 
 #: agent/views.py:489
 msgid "Get draft agent tool"
-msgstr "Entwurfs-Agent-Tool abrufen"
+msgstr ""
 
 #: agent/views.py:494
 msgid "Add agent as tool to draft"
-msgstr "Agent als Tool zum Entwurf hinzufügen"
+msgstr ""
 
 #: agent/views.py:499 agent/views.py:504
 msgid "Update agent tool in draft"
-msgstr "Agent-Tool im Entwurf aktualisieren"
+msgstr ""
 
 #: agent/views.py:509
 msgid "Remove agent tool from draft"
-msgstr "Agent-Tool aus Entwurf entfernen"
+msgstr ""
 
 #: agent/views.py:563
 msgid "List built-in tools"
-msgstr "Integrierte Tools auflisten"
+msgstr ""
 
 #: agent/views.py:568
 msgid "Get built-in tool"
-msgstr "Integriertes Tool abrufen"
+msgstr ""
 
 #: agent/views.py:573
 msgid "Test built-in tool"
-msgstr "Integriertes Tool testen"
+msgstr ""
 
 #: agent/views.py:635
 #, python-brace-format
 msgid "Tool failed to execute: {error}"
-msgstr "Tool-Ausführung fehlgeschlagen: {error}"
+msgstr ""
 
 #: agent/views.py:641
 msgid "List API spec tools"
-msgstr "API-Spezifikations-Tools auflisten"
+msgstr ""
 
 #: agent/views.py:646
 msgid "Get API spec tool"
-msgstr "API-Spezifikations-Tool abrufen"
+msgstr ""
 
 #: agent/views.py:651
 msgid "Create API spec tools"
-msgstr "API-Spezifikations-Tools erstellen"
+msgstr ""
 
 #: agent/views.py:656
 msgid "Delete API spec"
-msgstr "API-Spezifikation löschen"
+msgstr ""
 
 #: agent/views.py:713
 msgid "API spec is in use"
-msgstr "API-Spezifikation wird verwendet"
+msgstr ""
 
 #: agent/views.py:719
 msgid "List MCP servers"
-msgstr "MCP-Server auflisten"
+msgstr ""
 
 #: agent/views.py:724
 msgid "Get MCP server status"
-msgstr "MCP-Server-Status abrufen"
+msgstr ""
 
 #: agent/views.py:729
 msgid "Create MCP server"
-msgstr "MCP-Server erstellen"
+msgstr ""
 
 #: agent/views.py:734
 msgid "Delete MCP server"
-msgstr "MCP-Server löschen"
+msgstr ""
 
 #: agent/views.py:739
 msgid "OAuth redirect"
-msgstr "OAuth-Weiterleitung"
+msgstr ""
 
 #: agent/views.py:745
 msgid "OAuth callback"
-msgstr "OAuth-Callback"
+msgstr ""
 
 #: agent/views.py:751
 msgid "Revalidate MCP server"
-msgstr "MCP-Server erneut validieren"
+msgstr ""
 
 #: agent/views.py:811
 msgid "MCP server is in use"
-msgstr "MCP-Server wird verwendet"
+msgstr ""
 
 #: agent/views.py:821
 msgid "MCP server is not configured for OAuth"
-msgstr "MCP-Server ist nicht für OAuth konfiguriert"
+msgstr ""
 
 #: agent/views.py:861
 msgid "List conversations"
-msgstr "Konversationen auflisten"
+msgstr ""
 
 #: agent/views.py:866
 msgid "Get conversation"
-msgstr "Konversation abrufen"
+msgstr ""
 
 #: agent/views.py:897
 msgid "List conversation messages"
-msgstr "Konversationsnachrichten auflisten"
+msgstr ""
 
 #: agent/views.py:920
 msgid "List conversation message blocks"
-msgstr "Konversationsnachrichtenblöcke auflisten"
+msgstr ""
 
 #: common/docs.py:3
 msgid ""
 "\n"
 "# Introduction\n"
 "\n"
-"This documentation covers all the external APIs that can be accessed using a Team API Key. These APIs are designed for integration with external systems and services.\n"
+"This documentation covers all the external APIs that can be accessed using a "
+"Team API Key. These APIs are designed for integration with external systems "
+"and services.\n"
 "\n"
 "## Authentication\n"
 "\n"
-"All endpoints in this documentation require authentication using an API Key. To authenticate your requests:\n"
+"All endpoints in this documentation require authentication using an API Key. "
+"To authenticate your requests:\n"
 "\n"
-"1. Generate an API Key from the [API Keys Dashboard](https://app.watercrawl.dev/dashboard/api-keys)\n"
+"1. Generate an API Key from the [API Keys Dashboard](https://"
+"app.watercrawl.dev/dashboard/api-keys)\n"
 "2. Include the API Key in your requests using the `X-API-Key` header:\n"
 "\n"
 "```bash\n"
@@ -639,2059 +622,1975 @@ msgid ""
 "- Each API Key is associated with a specific team\n"
 "\n"
 "## Rate Limiting\n"
-"API requests are rate-limited based on your team's plan. Please refer to your plan details for specific limits.\n"
+"API requests are rate-limited based on your team's plan. Please refer to "
+"your plan details for specific limits.\n"
 msgstr ""
-"\n"
-"# Einführung\n"
-"\n"
-"Diese Dokumentation behandelt alle externen APIs, die mit einem Team-API-Schlüssel zugänglich sind. Diese APIs sind für die Integration mit externen Systemen und Diensten konzipiert.\n"
-"\n"
-"## Authentifizierung\n"
-"\n"
-"Alle Endpunkte in dieser Dokumentation erfordern eine Authentifizierung mit einem API-Schlüssel. Um Ihre Anfragen zu authentifizieren:\n"
-"\n"
-"1. Generieren Sie einen API-Schlüssel vom [API-Schlüssel-Dashboard](https://app.watercrawl.dev/dashboard/api-keys)\n"
-"2. Fügen Sie den API-Schlüssel in Ihren Anfragen mit dem `X-API-Key`-Header ein:\n"
-"\n"
-"```bash\n"
-"curl -H \"X-API-Key: your_api_key_here\" https://api.watercrawl.dev/v1/...\n"
-"```\n"
-"\n"
-"### Wichtige Hinweise:\n"
-"- Halten Sie Ihren API-Schlüssel sicher und teilen Sie ihn niemals öffentlich\n"
-"- Sie können mehrere API-Schlüssel für verschiedene Zwecke generieren\n"
-"- Sie können API-Schlüssel jederzeit über das Dashboard widerrufen\n"
-"- Jeder API-Schlüssel ist einem bestimmten Team zugeordnet\n"
-"\n"
-"## Ratenbegrenzung\n"
-"API-Anfragen sind basierend auf dem Plan Ihres Teams begrenzt. Bitte beachten Sie Ihre Plandetails für spezifische Limits.\n"
 
 #: common/docs.py:30
 msgid ""
-"API Key for team authentication. Generate from "
-"https://app.watercrawl.dev/dashboard/api-keys"
+"API Key for team authentication. Generate from https://app.watercrawl.dev/"
+"dashboard/api-keys"
 msgstr ""
-"API-Schlüssel für Team-Authentifizierung. Generieren Sie unter "
-"https://app.watercrawl.dev/dashboard/api-keys"
 
 #: common/handlers.py:20
 msgid "An unexpected error occurred."
-msgstr "Ein unerwarteter Fehler ist aufgetreten."
+msgstr ""
 
 #: common/handlers.py:28 common/handlers.py:37
 msgid "Invalid input data."
-msgstr "Ungültige Eingabedaten."
+msgstr ""
 
 #: common/handlers.py:59 common/handlers.py:63
 msgid "Not found."
-msgstr "Nicht gefunden."
+msgstr ""
 
 #: common/schema.py:30
 msgid "Bad Request"
-msgstr "Fehlerhafte Anfrage"
+msgstr ""
 
 #: common/schema.py:40
 msgid "Not Found"
-msgstr "Nicht gefunden"
+msgstr ""
 
 #: common/schema.py:48
 msgid "Internal Server Error"
-msgstr "Interner Serverfehler"
+msgstr ""
 
 #: common/services.py:125
 msgid "No recipient provided"
-msgstr "Kein Empfänger angegeben"
+msgstr ""
 
 #: common/services.py:127
 msgid "No subject provided"
-msgstr "Kein Betreff angegeben"
+msgstr ""
 
 #: common/services.py:129
 msgid "No body or html provided"
-msgstr "Kein Text oder HTML angegeben"
+msgstr ""
 
 #: common/views.py:29
 msgid "Frontend Setting"
-msgstr "Frontend-Einstellung"
+msgstr ""
 
 #: common/views.py:30
 msgid "Retrieve the frontend setting."
-msgstr "Die Frontend-Einstellung abrufen."
+msgstr ""
 
 #: core/admin.py:41 core/admin.py:44
 msgid "Duplicate"
-msgstr "Duplizieren"
+msgstr ""
 
 #: core/consts.py:41 knowledge_base/consts.py:11 knowledge_base/models.py:384
 msgid "New"
-msgstr "Neu"
+msgstr ""
 
 #: core/consts.py:42
 msgid "Running"
-msgstr "Läuft"
+msgstr ""
 
 #: core/consts.py:43 knowledge_base/models.py:386
 msgid "Finished"
-msgstr "Abgeschlossen"
+msgstr ""
 
 #: core/consts.py:44
 msgid "Canceling"
-msgstr "Wird abgebrochen"
+msgstr ""
 
 #: core/consts.py:45 plan/consts.py:22
 msgid "Canceled"
-msgstr "Abgebrochen"
+msgstr ""
 
 #: core/consts.py:46 knowledge_base/consts.py:16 knowledge_base/models.py:387
 msgid "Failed"
-msgstr "Fehlgeschlagen"
+msgstr ""
 
 #: core/consts.py:154
 msgid "PDF"
-msgstr "PDF"
+msgstr ""
 
 #: core/consts.py:155
 msgid "Screenshot"
-msgstr "Screenshot"
+msgstr ""
 
 #: core/consts.py:160
 msgid "Web"
-msgstr "Web"
+msgstr ""
 
 #: core/consts.py:167
 msgid "Basic"
-msgstr "Basis"
+msgstr ""
 
 #: core/consts.py:168
 msgid "Advanced"
-msgstr "Erweitert"
+msgstr ""
 
 #: core/consts.py:169
 msgid "Ultimate"
-msgstr "Ultimate"
+msgstr ""
 
 #: core/consts.py:179
 msgid "Any"
-msgstr "Beliebig"
+msgstr ""
 
 #: core/consts.py:180
 msgid "Day"
-msgstr "Tag"
+msgstr ""
 
 #: core/consts.py:181
 msgid "Week"
-msgstr "Woche"
+msgstr ""
 
 #: core/consts.py:182
 msgid "Month"
-msgstr "Monat"
+msgstr ""
 
 #: core/consts.py:183
 msgid "Year"
-msgstr "Jahr"
+msgstr ""
 
 #: core/consts.py:191
 msgid "HTTP"
-msgstr "HTTP"
+msgstr ""
 
 #: core/consts.py:192
 msgid "SOCKS4"
-msgstr "SOCKS4"
+msgstr ""
 
 #: core/consts.py:193
 msgid "SOCKS5"
-msgstr "SOCKS5"
+msgstr ""
 
 #: core/consts.py:201
 msgid "General"
-msgstr "Allgemein"
+msgstr ""
 
 #: core/consts.py:202 llm/consts.py:91
 msgid "Premium"
-msgstr "Premium"
+msgstr ""
 
 #: core/consts.py:210
 msgid "Single"
-msgstr "Einzeln"
+msgstr ""
 
 #: core/consts.py:211
 msgid "Batch"
-msgstr "Stapel"
+msgstr ""
 
 #: core/docs.py:253
 msgid "Filter crawl requests by UUID."
-msgstr "Crawl-Anfragen nach UUID filtern."
+msgstr ""
 
 #: core/docs.py:259
 msgid "Filter crawl requests by start URL."
-msgstr "Crawl-Anfragen nach Start-URL filtern."
+msgstr ""
 
 #: core/docs.py:265
 msgid "Filter crawl requests by status."
-msgstr "Crawl-Anfragen nach Status filtern."
+msgstr ""
 
 #: core/docs.py:271
 msgid "Filter crawl requests by date"
-msgstr "Crawl-Anfragen nach Datum filtern"
+msgstr ""
 
 #: core/docs.py:280 core/docs.py:301
 msgid "Prefetch crawl results. Default: False."
-msgstr "Crawl-Ergebnisse vorladen. Standard: False."
+msgstr ""
 
 #: core/docs.py:286
 msgid "Filter crawl results by URL."
-msgstr "Crawl-Ergebnisse nach URL filtern."
+msgstr ""
 
 #: core/docs.py:292
 msgid "Filter crawl results by date"
-msgstr "Crawl-Ergebnisse nach Datum filtern"
+msgstr ""
 
 #: core/docs.py:312
 msgid ""
 "Format of the download file. Default: json. Available formats: markdown, "
 "json."
 msgstr ""
-"Format der Download-Datei. Standard: json. Verfügbare Formate: markdown, "
-"json."
 
 #: core/models.py:23
 msgid "urls"
-msgstr "URLs"
+msgstr ""
 
 #: core/models.py:25
 msgid "crawl type"
-msgstr "Crawl-Typ"
+msgstr ""
 
 #: core/models.py:31
 msgid "status"
-msgstr "Status"
+msgstr ""
 
 #: core/models.py:36
 msgid "options"
-msgstr "Optionen"
+msgstr ""
 
 #: core/models.py:37
 msgid "duration"
-msgstr "Dauer"
+msgstr ""
 
 #: core/models.py:39
 msgid "sitemap"
-msgstr "Sitemap"
+msgstr ""
 
 #: core/models.py:57
 msgid "URL must be a string."
-msgstr "URL muss eine Zeichenkette sein."
+msgstr ""
 
 #: core/models.py:63 core/models.py:70
 msgid "Crawl Request"
-msgstr "Crawl-Anfrage"
+msgstr ""
 
 #: core/models.py:64
 msgid "Crawl Requests"
-msgstr "Crawl-Anfragen"
+msgstr ""
 
 #: core/models.py:76 core/models.py:131 core/models.py:206
 msgid "Result"
-msgstr "Ergebnis"
+msgstr ""
 
 #: core/models.py:81 core/models.py:88
 msgid "Crawl Result"
-msgstr "Crawl-Ergebnis"
+msgstr ""
 
 #: core/models.py:82
 msgid "Crawl Results"
-msgstr "Crawl-Ergebnisse"
+msgstr ""
 
 #: core/models.py:93
 msgid "Attachment Type"
-msgstr "Anhangstyp"
+msgstr ""
 
 #: core/models.py:98
 msgid "Attachment"
-msgstr "Anhang"
+msgstr ""
 
 #: core/models.py:102
 msgid "Crawl Result Attachment"
-msgstr "Crawl-Ergebnis-Anhang"
+msgstr ""
 
 #: core/models.py:103
 msgid "Crawl Result Attachments"
-msgstr "Crawl-Ergebnis-Anhänge"
+msgstr ""
 
 #: core/models.py:120
 msgid "Query"
-msgstr "Abfrage"
+msgstr ""
 
 #: core/models.py:121
 msgid "Search Options"
-msgstr "Suchoptionen"
+msgstr ""
 
 #: core/models.py:122
 msgid "Result Limit"
-msgstr "Ergebnislimit"
+msgstr ""
 
 #: core/models.py:123 core/models.py:204
 msgid "Duration"
-msgstr "Dauer"
+msgstr ""
 
 #: core/models.py:142
 msgid "Search Request"
-msgstr "Suchanfrage"
+msgstr ""
 
 #: core/models.py:143
 msgid "Search Requests"
-msgstr "Suchanfragen"
+msgstr ""
 
 #: core/models.py:149 knowledge_base/models.py:231 user/models.py:88
 msgid "Is Default"
-msgstr "Ist Standard"
+msgstr ""
 
 #: core/models.py:151
 msgid "Proxy Category"
-msgstr "Proxy-Kategorie"
+msgstr ""
 
 #: core/models.py:157
 msgid "Proxy Type"
-msgstr "Proxy-Typ"
+msgstr ""
 
 #: core/models.py:163
 msgid "Host"
-msgstr "Host"
+msgstr ""
 
 #: core/models.py:166
 msgid "Port"
-msgstr "Port"
+msgstr ""
 
 #: core/models.py:167
 msgid "Username"
-msgstr "Benutzername"
+msgstr ""
 
 #: core/models.py:168
 msgid "Password"
-msgstr "Passwort"
+msgstr ""
 
 #: core/models.py:179
 msgid "Proxy Server"
-msgstr "Proxy-Server"
+msgstr ""
 
 #: core/models.py:180
 msgid "Proxy Servers"
-msgstr "Proxy-Server"
+msgstr ""
 
 #: core/models.py:197
 msgid "Options"
-msgstr "Optionen"
+msgstr ""
 
 #: core/models.py:214
 msgid "Sitemap Request"
-msgstr "Sitemap-Anfrage"
+msgstr ""
 
 #: core/models.py:215
 msgid "Sitemap Requests"
-msgstr "Sitemap-Anfragen"
+msgstr ""
 
 #: core/serializers.py:82 core/serializers.py:356 core/serializers.py:399
 msgid "Proxy server does not exist"
-msgstr "Proxy-Server existiert nicht"
+msgstr ""
 
 #: core/serializers.py:374
 msgid "This field is required"
-msgstr "Dieses Feld ist erforderlich"
+msgstr ""
 
 #: core/services.py:772
 msgid "At least one URL is required for the crawl request."
-msgstr "Mindestens eine URL ist für die Crawl-Anfrage erforderlich."
+msgstr ""
 
 #: core/views.py:44
 msgid "Start a new crawl request"
-msgstr "Eine neue Crawl-Anfrage starten"
+msgstr ""
 
 #: core/views.py:49
 msgid "Batch create crawl requests"
-msgstr "Crawl-Anfragen stapelweise erstellen"
+msgstr ""
 
 #: core/views.py:56
 msgid "List crawl requests"
-msgstr "Crawl-Anfragen auflisten"
+msgstr ""
 
 #: core/views.py:62
 msgid "Get crawl request"
-msgstr "Crawl-Anfrage abrufen"
+msgstr ""
 
 #: core/views.py:67
 msgid "Cancel a running crawl"
-msgstr "Einen laufenden Crawl abbrechen"
+msgstr ""
 
 #: core/views.py:72
 msgid "Download crawl result"
-msgstr "Crawl-Ergebnis herunterladen"
+msgstr ""
 
 #: core/views.py:79
 msgid "Check crawl status"
-msgstr "Crawl-Status überprüfen"
+msgstr ""
 
 #: core/views.py:91 core/views.py:492
 msgid "Get sitemap graph"
-msgstr "Sitemap-Graph abrufen"
+msgstr ""
 
 #: core/views.py:97
 msgid "Get markdown report"
-msgstr "Markdown-Bericht abrufen"
+msgstr ""
 
 #: core/views.py:141
 msgid "Only running crawl requests can be deleted"
-msgstr "Nur laufende Crawl-Anfragen können gelöscht werden"
+msgstr ""
 
 #: core/views.py:161
 msgid "Invalid output format"
-msgstr "Ungültiges Ausgabeformat"
+msgstr ""
 
 #: core/views.py:187 core/views.py:200
 msgid "Sitemap for this crawl request does not exist"
-msgstr "Sitemap für diese Crawl-Anfrage existiert nicht"
+msgstr ""
 
 #: core/views.py:213
 msgid "List crawl results"
-msgstr "Crawl-Ergebnisse auflisten"
+msgstr ""
 
 #: core/views.py:219
 msgid "Get crawl result"
-msgstr "Crawl-Ergebnis abrufen"
+msgstr ""
 
 #: core/views.py:250
 msgid "Usage Report"
-msgstr "Nutzungsbericht"
+msgstr ""
 
 #: core/views.py:268
 msgid "Plugin Form"
-msgstr "Plugin-Formular"
+msgstr ""
 
 #: core/views.py:281
 msgid "List search requests"
-msgstr "Suchanfragen auflisten"
+msgstr ""
 
 #: core/views.py:286
 msgid "Get search request"
-msgstr "Suchanfrage abrufen"
+msgstr ""
 
 #: core/views.py:292
 msgid "Create search request"
-msgstr "Suchanfrage erstellen"
+msgstr ""
 
 #: core/views.py:297
 msgid "Stop search request"
-msgstr "Suchanfrage stoppen"
+msgstr ""
 
 #: core/views.py:302
 msgid "Check search request status"
-msgstr "Suchanfragen-Status überprüfen"
+msgstr ""
 
 #: core/views.py:340
 msgid "Only running search requests can be deleted"
-msgstr "Nur laufende Suchanfragen können gelöscht werden"
+msgstr ""
 
 #: core/views.py:360
 msgid "List proxy servers"
-msgstr "Proxy-Server auflisten"
+msgstr ""
 
 #: core/views.py:365
 msgid "Create proxy server"
-msgstr "Proxy-Server erstellen"
+msgstr ""
 
 #: core/views.py:370
 msgid "Get proxy server"
-msgstr "Proxy-Server abrufen"
+msgstr ""
 
 #: core/views.py:375
 msgid "Delete proxy server"
-msgstr "Proxy-Server löschen"
+msgstr ""
 
 #: core/views.py:380 core/views.py:385
 msgid "Update proxy server"
-msgstr "Proxy-Server aktualisieren"
+msgstr ""
 
 #: core/views.py:390
 msgid "List all proxy servers (Global and Private proxies)"
-msgstr "Alle Proxy-Server auflisten (Global und Privat)"
+msgstr ""
 
 #: core/views.py:396
 msgid "Test proxy"
-msgstr "Proxy testen"
+msgstr ""
 
 #: core/views.py:460
 msgid "List sitemap requests"
-msgstr "Sitemap-Anfragen auflisten"
+msgstr ""
 
 #: core/views.py:465
 msgid "Create sitemap request"
-msgstr "Sitemap-Anfrage erstellen"
+msgstr ""
 
 #: core/views.py:470
 msgid "Get sitemap request"
-msgstr "Sitemap-Anfrage abrufen"
+msgstr ""
 
 #: core/views.py:475
 msgid "Delete sitemap request"
-msgstr "Sitemap-Anfrage löschen"
+msgstr ""
 
 #: core/views.py:480
 msgid "Check sitemap request status"
-msgstr "Sitemap-Anfragen-Status überprüfen"
+msgstr ""
 
 #: core/views.py:498
 msgid "Get sitemap markdown"
-msgstr "Sitemap-Markdown abrufen"
+msgstr ""
 
 #: core/views.py:537
 msgid "Only running sitemap requests can be deleted"
-msgstr "Nur laufende Sitemap-Anfragen können gelöscht werden"
+msgstr ""
 
 #: core/views.py:563 core/views.py:576
 msgid "Sitemap for this request does not exist"
-msgstr "Sitemap für diese Anfrage existiert nicht"
+msgstr ""
 
 #: knowledge_base/admin.py:31
 msgid "Chunking Configuration"
-msgstr "Chunking-Konfiguration"
+msgstr ""
 
 #: knowledge_base/admin.py:37
 msgid "Embedding Configuration"
-msgstr "Embedding-Konfiguration"
+msgstr ""
 
 #: knowledge_base/admin.py:43
 msgid "Chunk Enhancement"
-msgstr "Chunk-Verbesserung"
+msgstr ""
 
 #: knowledge_base/admin.py:53 knowledge_base/admin.py:77
 #: knowledge_base/admin.py:102 knowledge_base/models.py:145 llm/admin.py:30
 #: user/models.py:233
 msgid "Metadata"
-msgstr "Metadaten"
+msgstr ""
 
 #: knowledge_base/admin.py:71 knowledge_base/models.py:136
 #: knowledge_base/models.py:175
 msgid "Content"
-msgstr "Inhalt"
+msgstr ""
 
 #: knowledge_base/admin.py:95 knowledge_base/models.py:181 llm/consts.py:24
 msgid "Embedding"
-msgstr "Embedding"
+msgstr ""
 
 #: knowledge_base/consts.py:12
 msgid "Reindexing"
-msgstr "Neuindizierung"
+msgstr ""
 
 #: knowledge_base/consts.py:13
 msgid "Crawling"
-msgstr "Crawling"
+msgstr ""
 
 #: knowledge_base/consts.py:14 knowledge_base/models.py:385
 msgid "Processing"
-msgstr "Verarbeitung"
+msgstr ""
 
 #: knowledge_base/consts.py:15
 msgid "Ready"
-msgstr "Bereit"
+msgstr ""
 
 #: knowledge_base/consts.py:23 plan/consts.py:21
 msgid "Active"
-msgstr "Aktiv"
+msgstr ""
 
 #: knowledge_base/consts.py:24
 msgid "Archived"
-msgstr "Archiviert"
+msgstr ""
 
 #: knowledge_base/consts.py:25
 msgid "Deleted"
-msgstr "Gelöscht"
+msgstr ""
 
 #: knowledge_base/consts.py:32
 msgid "Standard"
-msgstr "Standard"
+msgstr ""
 
 #: knowledge_base/consts.py:33
 msgid "Context-Aware"
-msgstr "Kontextbewusst"
+msgstr ""
 
 #: knowledge_base/consts.py:40
 msgid "Manual"
-msgstr "Manuell"
+msgstr ""
 
 #: knowledge_base/consts.py:41 user/models.py:209
 msgid "File"
-msgstr "Datei"
+msgstr ""
 
 #: knowledge_base/consts.py:42
 msgid "Crawl"
-msgstr "Crawl"
+msgstr ""
 
 #: knowledge_base/consts.py:49
 msgid "OpenSearch"
-msgstr "OpenSearch"
+msgstr ""
 
 #: knowledge_base/consts.py:50
 msgid "PostgreSQL"
-msgstr "PostgreSQL"
+msgstr ""
 
 #: knowledge_base/consts.py:51
 msgid "Weaviate"
-msgstr "Weaviate"
+msgstr ""
 
 #: knowledge_base/factories.py:69
 #, python-brace-format
 msgid "Text splitter type '{splitter_type}' not supported"
-msgstr "Text-Splitter-Typ '{splitter_type}' wird nicht unterstützt"
+msgstr ""
 
 #: knowledge_base/factories.py:134
 #, python-brace-format
 msgid "Unsupported embedding provider: {provider_name}"
-msgstr "Nicht unterstützter Embedding-Anbieter: {provider_name}"
+msgstr ""
 
 #: knowledge_base/factories.py:152
 #, python-brace-format
 msgid "Unsupported vector store type: {name}"
-msgstr "Nicht unterstützter Vektorspeichertyp: {name}"
+msgstr ""
 
 #: knowledge_base/factories.py:230
 #, python-brace-format
 msgid "Unsupported document type: {extension}"
-msgstr "Nicht unterstützter Dokumenttyp: {extension}"
+msgstr ""
 
 #: knowledge_base/filters.py:14
-#| msgid "Add knowledge base to draft"
 msgid "Search knowledge bases by title or description"
-msgstr "Wissensdatenbanken nach Titel oder Beschreibung durchsuchen"
+msgstr ""
 
 #: knowledge_base/filters.py:39
-#| msgid "Filter crawl requests by status."
 msgid "Filter by query status"
-msgstr "Nach Abfragestatus filtern"
+msgstr ""
 
 #: knowledge_base/filters.py:44
-#| msgid "Query knowledge base"
 msgid "Filter by knowledge base UUID"
-msgstr "Nach Wissensdatenbank-UUID filtern"
+msgstr ""
 
 #: knowledge_base/models.py:20 knowledge_base/models.py:135 llm/models.py:8
 #: plan/models.py:107
 msgid "Title"
-msgstr "Titel"
+msgstr ""
 
 #: knowledge_base/models.py:21 plan/models.py:15
 msgid "Description"
-msgstr "Beschreibung"
+msgstr ""
 
 #: knowledge_base/models.py:29
 msgid "Chunk size"
-msgstr "Chunk-Größe"
+msgstr ""
 
 #: knowledge_base/models.py:30
 msgid "Number of documents to be processed in each chunk"
-msgstr "Anzahl der Dokumente, die in jedem Chunk verarbeitet werden"
+msgstr ""
 
 #: knowledge_base/models.py:34
 msgid "Chunk overlap"
-msgstr "Chunk-Überschneidung"
+msgstr ""
 
 #: knowledge_base/models.py:35
 msgid "Number of overlapping documents in each chunk"
-msgstr "Anzahl der überlappenden Dokumente in jedem Chunk"
+msgstr ""
 
 #: knowledge_base/models.py:39
 msgid "Chunk separator"
-msgstr "Chunk-Trennzeichen"
+msgstr ""
 
 #: knowledge_base/models.py:40
 msgid "Separator used to split documents into chunks"
-msgstr "Trennzeichen zum Aufteilen von Dokumenten in Chunks"
+msgstr ""
 
 #: knowledge_base/models.py:44
 msgid "Embedding Model"
-msgstr "Embedding-Modell"
+msgstr ""
 
 #: knowledge_base/models.py:52
 msgid "Embedding Provider Config"
-msgstr "Embedding-Anbieter-Konfiguration"
+msgstr ""
 
 #: knowledge_base/models.py:56
 msgid "Provider configuration for embedding models"
-msgstr "Anbieterkonfiguration für Embedding-Modelle"
+msgstr ""
 
 #: knowledge_base/models.py:61
 msgid "Summarization Provider Config"
-msgstr "Zusammenfassungs-Anbieter-Konfiguration"
+msgstr ""
 
 #: knowledge_base/models.py:65
 msgid "Provider configuration for summarization models"
-msgstr "Anbieterkonfiguration für Zusammenfassungsmodelle"
+msgstr ""
 
 #: knowledge_base/models.py:68
 msgid "Summarization Model"
-msgstr "Zusammenfassungsmodell"
+msgstr ""
 
 #: knowledge_base/models.py:74
 msgid "Summarizer Context"
-msgstr "Zusammenfassungs-Kontext"
+msgstr ""
 
 #: knowledge_base/models.py:77
 msgid "Context to be provided to the summarizer"
-msgstr "Kontext, der der Zusammenfassung bereitgestellt wird"
+msgstr ""
 
 #: knowledge_base/models.py:80
 msgid "Summarizer Type"
-msgstr "Zusammenfassungstyp"
+msgstr ""
 
 #: knowledge_base/models.py:84
 msgid "The type of summarizer to use for document summarization"
-msgstr "Der Typ der Zusammenfassung für die Dokumentzusammenfassung"
+msgstr ""
 
 #: knowledge_base/models.py:87
 msgid "Summarizer LLM Config"
-msgstr "Zusammenfasser-LLM-Konfiguration"
+msgstr ""
 
 #: knowledge_base/models.py:91
 msgid "LLM config to be provided to the summarizer"
-msgstr "LLM-Konfiguration für den Zusammenfasser"
+msgstr ""
 
 #: knowledge_base/models.py:100
 msgid "Knowledge Base Each Document Cost"
-msgstr "Wissensdatenbank - Kosten pro Dokument"
+msgstr ""
 
 #: knowledge_base/models.py:101
 msgid "The cost of each document in the knowledge base"
-msgstr "Die Kosten für jedes Dokument in der Wissensdatenbank"
+msgstr ""
 
 #: knowledge_base/models.py:105
 msgid "Vector Store Type"
-msgstr "Vektorspeichertyp"
+msgstr ""
 
 #: knowledge_base/models.py:108
 msgid "Type of vector store used for this knowledge base"
-msgstr "Typ des für diese Wissensdatenbank verwendeten Vektorspeichers"
+msgstr ""
 
 #: knowledge_base/models.py:118
 msgid "Knowledge Bases"
-msgstr "Wissensdatenbanken"
+msgstr ""
 
 #: knowledge_base/models.py:138
 msgid "Source Type"
-msgstr "Quellentyp"
+msgstr ""
 
 #: knowledge_base/models.py:143
 msgid "Source"
-msgstr "Quelle"
+msgstr ""
 
 #: knowledge_base/models.py:144
 msgid "Error"
-msgstr "Fehler"
+msgstr ""
 
 #: knowledge_base/models.py:154 knowledge_base/models.py:171
 msgid "Document"
-msgstr "Dokument"
+msgstr ""
 
 #: knowledge_base/models.py:155
 msgid "Documents"
-msgstr "Dokumente"
+msgstr ""
 
 #: knowledge_base/models.py:174
 msgid "Index"
-msgstr "Index"
+msgstr ""
 
 #: knowledge_base/models.py:182
 msgid "Vector embedding for semantic search"
-msgstr "Vektor-Embedding für semantische Suche"
+msgstr ""
 
 #: knowledge_base/models.py:186
 msgid "Chunk"
-msgstr "Chunk"
+msgstr ""
 
 #: knowledge_base/models.py:187
 msgid "Chunks"
-msgstr "Chunks"
+msgstr ""
 
 #: knowledge_base/models.py:207
 msgid "Vector Search"
-msgstr "Vektorsuche"
+msgstr ""
 
 #: knowledge_base/models.py:208
 msgid "Full-Text Search"
-msgstr "Volltextsuche"
+msgstr ""
 
 #: knowledge_base/models.py:209
 msgid "Hybrid Search"
-msgstr "Hybride Suche"
+msgstr ""
 
 #: knowledge_base/models.py:221
 msgid "Name for this retrieval setting"
-msgstr "Name für diese Abrufeinstellung"
+msgstr ""
 
 #: knowledge_base/models.py:224
 msgid "Retrieval Type"
-msgstr "Abruftyp"
+msgstr ""
 
 #: knowledge_base/models.py:228
 msgid "Type of retrieval to use"
-msgstr "Zu verwendender Abruftyp"
+msgstr ""
 
 #: knowledge_base/models.py:234
 msgid "Whether this is the default retrieval setting for the knowledge base"
-msgstr "Ob dies die Standard-Abrufeinstellung für die Wissensdatenbank ist"
+msgstr ""
 
 #: knowledge_base/models.py:239
 msgid "Reranker Enabled"
-msgstr "Reranker aktiviert"
+msgstr ""
 
 #: knowledge_base/models.py:241
 msgid "Whether to use reranker model for post-processing results"
 msgstr ""
-"Ob das Reranker-Modell für die Nachbearbeitung von Ergebnissen verwendet "
-"werden soll"
 
 #: knowledge_base/models.py:246
 msgid "Reranker Provider Config"
-msgstr "Reranker-Anbieterkonfiguration"
+msgstr ""
 
 #: knowledge_base/models.py:250
 msgid "Provider configuration for reranker model"
-msgstr "Anbieterkonfiguration für Reranker-Modell"
+msgstr ""
 
 #: knowledge_base/models.py:253
 msgid "Reranker Model Key"
-msgstr "Reranker-Modell-Schlüssel"
+msgstr ""
 
 #: knowledge_base/models.py:257
 msgid "Model key for reranker (required if reranker_enabled is true)"
 msgstr ""
-"Modell-Schlüssel für Reranker (erforderlich, wenn reranker_enabled wahr ist)"
 
 #: knowledge_base/models.py:261 llm/models_config/config.py:200
 msgid "Top K"
-msgstr "Top K"
+msgstr ""
 
 #: knowledge_base/models.py:263
 msgid "Number of top results to retrieve"
-msgstr "Anzahl der abzurufenden Top-Ergebnisse"
+msgstr ""
 
 #: knowledge_base/models.py:267
 msgid "Hybrid Alpha"
-msgstr "Hybrid Alpha"
+msgstr ""
 
 #: knowledge_base/models.py:272
 msgid ""
-"Weight for semantic search in hybrid mode (0.0-1.0, higher = more semantic)."
-" Used for weighted score ranking when reranker_enabled is false."
+"Weight for semantic search in hybrid mode (0.0-1.0, higher = more semantic). "
+"Used for weighted score ranking when reranker_enabled is false."
 msgstr ""
-"Gewichtung für semantische Suche im Hybrid-Modus (0.0-1.0, höher = mehr "
-"semantisch). Wird für gewichtetes Score-Ranking verwendet, wenn "
-"reranker_enabled false ist."
 
 #: knowledge_base/models.py:276
-#| msgid "Reranker Provider Config"
 msgid "Reranker Model Config"
-msgstr "Reranker-Modellkonfiguration"
+msgstr ""
 
 #: knowledge_base/models.py:280
-#| msgid "LLM config to be provided to the summarizer"
 msgid "Model config to be provided to the reranker"
-msgstr "Modellkonfiguration, die dem Reranker bereitgestellt werden soll"
+msgstr ""
 
 #: knowledge_base/models.py:285 knowledge_base/models.py:421
-#| msgid "Retrieval Type"
 msgid "Retrieval Cost"
-msgstr "Abrufkosten"
+msgstr ""
 
 #: knowledge_base/models.py:286
 msgid "The cost in credits per retrieval using this setting"
-msgstr "Die Kosten in Guthaben pro Abruf mit dieser Einstellung"
+msgstr ""
 
 #: knowledge_base/models.py:291 knowledge_base/models.py:399
 msgid "Retrieval Setting"
-msgstr "Abrufeinstellung"
+msgstr ""
 
 #: knowledge_base/models.py:292
 msgid "Retrieval Settings"
-msgstr "Abrufeinstellungen"
+msgstr ""
 
 #: knowledge_base/models.py:306 knowledge_base/serializers.py:81
 msgid "Reranker model key is required when reranker is enabled."
 msgstr ""
-"Reranker-Modell-Schlüssel ist erforderlich, wenn Reranker aktiviert ist."
 
 #: knowledge_base/models.py:314 knowledge_base/serializers.py:73
 msgid "Reranker provider config is required when reranker is enabled."
 msgstr ""
-"Reranker-Anbieterkonfiguration ist erforderlich, wenn Reranker aktiviert "
-"ist."
 
 #: knowledge_base/models.py:322
 msgid "Reranker provider config is required when using rerank model strategy."
 msgstr ""
-"Reranker-Anbieterkonfiguration ist erforderlich bei Verwendung der Rerank-"
-"Modell-Strategie."
 
 #: knowledge_base/models.py:335 knowledge_base/serializers.py:100
 msgid ""
-"Vector search and hybrid search require the knowledge base to have embedding"
-" configuration."
+"Vector search and hybrid search require the knowledge base to have embedding "
+"configuration."
 msgstr ""
-"Vektorsuche und hybride Suche erfordern, dass die Wissensdatenbank eine "
-"Embedding-Konfiguration hat."
 
 #: knowledge_base/models.py:375
 msgid "Only one retrieval setting can be set as default per knowledge base."
 msgstr ""
-"Nur eine Abrufeinstellung kann pro Wissensdatenbank als Standard gesetzt "
-"werden."
 
 #: knowledge_base/models.py:403
-#| msgid "Initial retrieval setting is required."
 msgid "The retrieval setting used for this query"
-msgstr "Die für diese Abfrage verwendete Abrufeinstellung"
+msgstr ""
 
 #: knowledge_base/models.py:406
-#| msgid "Query"
 msgid "Query Text"
-msgstr "Abfragetext"
+msgstr ""
 
 #: knowledge_base/models.py:407
 msgid "The search query submitted by the user"
-msgstr "Die vom Benutzer eingereichte Suchabfrage"
+msgstr ""
 
 #: knowledge_base/models.py:416
-#| msgid "Result Limit"
 msgid "Results Count"
-msgstr "Ergebnisanzahl"
+msgstr ""
 
 #: knowledge_base/models.py:418
-#| msgid "Number of top results to retrieve"
 msgid "Number of results returned"
-msgstr "Anzahl der zurückgegebenen Ergebnisse"
+msgstr ""
 
 #: knowledge_base/models.py:423
 msgid "The cost in credits for this query"
-msgstr "Die Kosten in Guthaben für diese Abfrage"
+msgstr ""
 
 #: knowledge_base/models.py:429
 msgid "Error message if query failed"
-msgstr "Fehlermeldung, wenn Abfrage fehlgeschlagen ist"
+msgstr ""
 
 #: knowledge_base/models.py:433
-#| msgid "Knowledge Base"
 msgid "Knowledge Base Query"
-msgstr "Wissensdatenbank-Abfrage"
+msgstr ""
 
 #: knowledge_base/models.py:434
-#| msgid "Knowledge Bases"
 msgid "Knowledge Base Queries"
-msgstr "Wissensdatenbank-Abfragen"
+msgstr ""
 
 #: knowledge_base/serializers.py:61
 msgid "Invalid reranker provider config id."
-msgstr "Ungültige Reranker-Anbieterkonfigurations-ID."
+msgstr ""
 
 #: knowledge_base/serializers.py:202
 msgid "Invalid embedding provider config id."
-msgstr "Ungültige Embedding-Anbieter-Konfigurations-ID."
+msgstr ""
 
 #: knowledge_base/serializers.py:217
 msgid "Invalid summarization provider config id."
-msgstr "Ungültige Zusammenfassungs-Anbieter-Konfigurations-ID."
+msgstr ""
 
 #: knowledge_base/serializers.py:230
 msgid "Embedding model key is required."
-msgstr "Embedding-Modell-Schlüssel ist erforderlich."
+msgstr ""
 
 #: knowledge_base/serializers.py:239
 msgid "Invalid embedding model Key."
-msgstr "Ungültiger Embedding-Modell-Schlüssel."
+msgstr ""
 
 #: knowledge_base/serializers.py:247
 msgid "Summarization model id is required."
-msgstr "Zusammenfassungsmodell-ID ist erforderlich."
+msgstr ""
 
 #: knowledge_base/serializers.py:261
 msgid "Invalid summarization model Key."
-msgstr "Ungültiger Zusammenfassungsmodell-Schlüssel."
+msgstr ""
 
 #: knowledge_base/serializers.py:279
 msgid "Initial retrieval setting is required."
-msgstr "Anfängliche Abrufeinstellung ist erforderlich."
+msgstr ""
 
 #: knowledge_base/serializers.py:378
 msgid "crawl_result_uuids cannot be empty."
-msgstr "crawl_result_uuids darf nicht leer sein."
+msgstr ""
 
 #: knowledge_base/serializers.py:385
 msgid "No valid crawl results found for the provided UUIDs."
-msgstr "Keine gültigen Crawl-Ergebnisse für die angegebenen UUIDs gefunden."
+msgstr ""
 
 #: knowledge_base/serializers.py:405
 msgid "Invalid crawl request UUID."
-msgstr "Ungültige Crawl-Anfrage-UUID."
+msgstr ""
 
 #: knowledge_base/serializers.py:423
 msgid "Files cannot be empty."
-msgstr "Dateien dürfen nicht leer sein."
+msgstr ""
 
 #: knowledge_base/serializers.py:429
 msgid "File must be a pdf, docx, image, or text."
-msgstr "Datei muss eine PDF, DOCX, Bild oder Text sein."
+msgstr ""
 
 #: knowledge_base/serializers.py:456
 msgid "Invalid provider config id."
-msgstr "Ungültige Anbieter-Konfigurations-ID."
+msgstr ""
 
 #: knowledge_base/views.py:53
 msgid "List knowledge bases"
-msgstr "Wissensdatenbanken auflisten"
+msgstr ""
 
 #: knowledge_base/views.py:54
 msgid "List all knowledge bases for the current team."
-msgstr "Alle Wissensdatenbanken für das aktuelle Team auflisten."
+msgstr ""
 
 #: knowledge_base/views.py:58
 msgid "Get knowledge base details"
-msgstr "Wissensdatenbank-Details abrufen"
+msgstr ""
 
 #: knowledge_base/views.py:59
 msgid "Get details for a specific knowledge base."
-msgstr "Details für eine bestimmte Wissensdatenbank abrufen."
+msgstr ""
 
 #: knowledge_base/views.py:66
 msgid "Create knowledge base"
-msgstr "Wissensdatenbank erstellen"
+msgstr ""
 
 #: knowledge_base/views.py:67
 msgid "Create a new knowledge base for the current team."
-msgstr "Eine neue Wissensdatenbank für das aktuelle Team erstellen."
+msgstr ""
 
 #: knowledge_base/views.py:75
 msgid "Update knowledge base"
-msgstr "Wissensdatenbank aktualisieren"
+msgstr ""
 
 #: knowledge_base/views.py:76
 msgid "Update an existing knowledge base."
-msgstr "Eine bestehende Wissensdatenbank aktualisieren."
+msgstr ""
 
 #: knowledge_base/views.py:80
 msgid "Partially update knowledge base"
-msgstr "Wissensdatenbank teilweise aktualisieren"
+msgstr ""
 
 #: knowledge_base/views.py:81
 msgid "Partially update an existing knowledge base."
-msgstr "Eine bestehende Wissensdatenbank teilweise aktualisieren."
+msgstr ""
 
 #: knowledge_base/views.py:85
 msgid "Delete knowledge base"
-msgstr "Wissensdatenbank löschen"
+msgstr ""
 
 #: knowledge_base/views.py:86
 msgid "Delete an existing knowledge base."
-msgstr "Eine bestehende Wissensdatenbank löschen."
+msgstr ""
 
 #: knowledge_base/views.py:90
 msgid "Enhance knowledge base context aware text"
-msgstr "Wissensdatenbank mit kontextbewusstem Text verbessern"
+msgstr ""
 
 #: knowledge_base/views.py:91
 msgid "Enhance documents using context-aware summarization."
-msgstr "Dokumente mit kontextbewusster Zusammenfassung verbessern."
+msgstr ""
 
 #: knowledge_base/views.py:97
 msgid "Query knowledge base"
-msgstr "Wissensdatenbank abfragen"
+msgstr ""
 
 #: knowledge_base/views.py:98
 msgid "Execute a query against the knowledge base."
-msgstr "Eine Abfrage gegen die Wissensdatenbank ausführen."
+msgstr ""
 
 #: knowledge_base/views.py:223
 msgid "Insufficient credits. Please upgrade your plan."
-msgstr "Unzureichendes Guthaben. Bitte upgraden Sie Ihren Plan."
+msgstr ""
 
 #: knowledge_base/views.py:231
 msgid ""
 "Daily credit limit reached. Please try again tomorrow or upgrade your plan."
 msgstr ""
-"Tägliches Guthabenlimit erreicht. Bitte versuchen Sie es morgen erneut oder "
-"upgraden Sie Ihren Plan."
 
 #: knowledge_base/views.py:272
 msgid "List documents"
-msgstr "Dokumente auflisten"
+msgstr ""
 
 #: knowledge_base/views.py:273
 msgid "List all documents for a knowledge base."
-msgstr "Alle Dokumente für eine Wissensdatenbank auflisten."
+msgstr ""
 
 #: knowledge_base/views.py:280
 msgid "Get document details"
-msgstr "Dokument-Details abrufen"
+msgstr ""
 
 #: knowledge_base/views.py:281
 msgid "Get details for a specific document."
-msgstr "Details für ein bestimmtes Dokument abrufen."
+msgstr ""
 
 #: knowledge_base/views.py:285
 msgid "Create document"
-msgstr "Dokument erstellen"
+msgstr ""
 
 #: knowledge_base/views.py:286
 msgid "Create a new document for a knowledge base."
-msgstr "Ein neues Dokument für eine Wissensdatenbank erstellen."
+msgstr ""
 
 #: knowledge_base/views.py:290
 msgid "Update document"
-msgstr "Dokument aktualisieren"
+msgstr ""
 
 #: knowledge_base/views.py:291
 msgid "Update an existing document."
-msgstr "Ein bestehendes Dokument aktualisieren."
+msgstr ""
 
 #: knowledge_base/views.py:295
 msgid "Partially update document"
-msgstr "Dokument teilweise aktualisieren"
+msgstr ""
 
 #: knowledge_base/views.py:296
 msgid "Partially update an existing document."
-msgstr "Ein bestehendes Dokument teilweise aktualisieren."
+msgstr ""
 
 #: knowledge_base/views.py:300
 msgid "Delete document"
-msgstr "Dokument löschen"
+msgstr ""
 
 #: knowledge_base/views.py:301
 msgid "Delete an existing document."
-msgstr "Ein bestehendes Dokument löschen."
+msgstr ""
 
 #: knowledge_base/views.py:305
 msgid "Process URLs"
-msgstr "URLs verarbeiten"
+msgstr ""
 
 #: knowledge_base/views.py:306
 msgid "Process a list of URLs and add them to the knowledge base."
-msgstr "Eine Liste von URLs verarbeiten und zur Wissensdatenbank hinzufügen."
+msgstr ""
 
 #: knowledge_base/views.py:314
 msgid "Process crawl results"
-msgstr "Crawl-Ergebnisse verarbeiten"
+msgstr ""
 
 #: knowledge_base/views.py:315
 msgid "Process crawl results and add them to the knowledge base."
-msgstr "Crawl-Ergebnisse verarbeiten und zur Wissensdatenbank hinzufügen."
+msgstr ""
 
 #: knowledge_base/views.py:323
 msgid "Process crawl request"
-msgstr "Crawl-Anfrage verarbeiten"
+msgstr ""
 
 #: knowledge_base/views.py:324
 msgid "Process a crawl request and add it to the knowledge base."
-msgstr "Eine Crawl-Anfrage verarbeiten und zur Wissensdatenbank hinzufügen."
+msgstr ""
 
 #: knowledge_base/views.py:332
 msgid "Process files"
-msgstr "Dateien verarbeiten"
+msgstr ""
 
 #: knowledge_base/views.py:333
 msgid "Process a list of files and add them to the knowledge base."
 msgstr ""
-"Eine Liste von Dateien verarbeiten und zur Wissensdatenbank hinzufügen."
 
 #: knowledge_base/views.py:341
 msgid "Retry document"
-msgstr "Dokument erneut versuchen"
+msgstr ""
 
 #: knowledge_base/views.py:342
 msgid "Retry a failed document. to index it again."
 msgstr ""
-"Ein fehlgeschlagenes Dokument erneut versuchen, um es erneut zu indizieren."
 
 #: knowledge_base/views.py:381 knowledge_base/views.py:422
 #: knowledge_base/views.py:450 knowledge_base/views.py:482
 #: knowledge_base/views.py:513
 msgid "You cannot add documents to this knowledge base."
-msgstr "Sie können dieser Wissensdatenbank keine Dokumente hinzufügen."
+msgstr ""
 
 #: knowledge_base/views.py:542
 msgid "You can only retry just failed documents."
-msgstr "Sie können nur fehlgeschlagene Dokumente erneut versuchen."
+msgstr ""
 
 #: knowledge_base/views.py:544
 msgid "You cannot make changes to this knowledge base."
-msgstr "Sie können keine Änderungen an dieser Wissensdatenbank vornehmen."
+msgstr ""
 
 #: knowledge_base/views.py:552
 msgid "List document chunks"
-msgstr "Dokument-Chunks auflisten"
+msgstr ""
 
 #: knowledge_base/views.py:553
 msgid "List all chunks for a document."
-msgstr "Alle Chunks für ein Dokument auflisten."
+msgstr ""
 
 #: knowledge_base/views.py:575
 msgid "List retrieval settings"
-msgstr "Abrufeinstellungen auflisten"
+msgstr ""
 
 #: knowledge_base/views.py:576
 msgid "List all retrieval settings for a knowledge base."
-msgstr "Alle Abrufeinstellungen für eine Wissensdatenbank auflisten."
+msgstr ""
 
 #: knowledge_base/views.py:580
 msgid "Get retrieval setting"
-msgstr "Abrufeinstellung abrufen"
+msgstr ""
 
 #: knowledge_base/views.py:581
 msgid "Get details for a specific retrieval setting."
-msgstr "Details für eine spezifische Abrufeinstellung abrufen."
+msgstr ""
 
 #: knowledge_base/views.py:585
 msgid "Create retrieval setting"
-msgstr "Abrufeinstellung erstellen"
+msgstr ""
 
 #: knowledge_base/views.py:586
 msgid "Create a new retrieval setting for a knowledge base."
-msgstr "Eine neue Abrufeinstellung für eine Wissensdatenbank erstellen."
+msgstr ""
 
 #: knowledge_base/views.py:590
 msgid "Update retrieval setting"
-msgstr "Abrufeinstellung aktualisieren"
+msgstr ""
 
 #: knowledge_base/views.py:591
 msgid "Update an existing retrieval setting."
-msgstr "Eine vorhandene Abrufeinstellung aktualisieren."
+msgstr ""
 
 #: knowledge_base/views.py:595
 msgid "Partially update retrieval setting"
-msgstr "Abrufeinstellung teilweise aktualisieren"
+msgstr ""
 
 #: knowledge_base/views.py:596
 msgid "Partially update an existing retrieval setting."
-msgstr "Eine vorhandene Abrufeinstellung teilweise aktualisieren."
+msgstr ""
 
 #: knowledge_base/views.py:600
 msgid "Delete retrieval setting"
-msgstr "Abrufeinstellung löschen"
+msgstr ""
 
 #: knowledge_base/views.py:601
 msgid "Delete an existing retrieval setting."
-msgstr "Eine vorhandene Abrufeinstellung löschen."
+msgstr ""
 
 #: llm/admin.py:23
 msgid "API Configuration"
-msgstr "API-Konfiguration"
+msgstr ""
 
 #: llm/admin_api/serializers.py:44 llm/serializers.py:44
 msgid "API key is required"
-msgstr "API-Schlüssel ist erforderlich"
+msgstr ""
 
 #: llm/admin_api/serializers.py:46 llm/serializers.py:46
 msgid "Base URL is required"
-msgstr "Basis-URL ist erforderlich"
+msgstr ""
 
 #: llm/admin_api/serializers.py:63 llm/admin_api/serializers.py:64
 #: llm/serializers.py:63 llm/serializers.py:64
 msgid "Invalid API key or base URL. Test failed"
-msgstr "Ungültiger API-Schlüssel oder Basis-URL. Test fehlgeschlagen"
+msgstr ""
 
 #: llm/admin_api/views.py:29 llm/admin_api/views.py:30
 msgid "List provider configs"
-msgstr "Anbieterkonfigurationen auflisten"
+msgstr ""
 
 #: llm/admin_api/views.py:34 llm/admin_api/views.py:35 llm/views.py:28
 msgid "Create provider config"
-msgstr "Anbieterkonfiguration erstellen"
+msgstr ""
 
 #: llm/admin_api/views.py:39 llm/admin_api/views.py:40 llm/views.py:33
 msgid "Get provider config"
-msgstr "Anbieterkonfiguration abrufen"
+msgstr ""
 
 #: llm/admin_api/views.py:44 llm/admin_api/views.py:45
 #: llm/admin_api/views.py:49 llm/admin_api/views.py:50 llm/views.py:45
 #: llm/views.py:50
 msgid "Update provider config"
-msgstr "Anbieterkonfiguration aktualisieren"
+msgstr ""
 
 #: llm/admin_api/views.py:54 llm/admin_api/views.py:55 llm/views.py:40
 msgid "Delete provider config"
-msgstr "Anbieterkonfiguration löschen"
+msgstr ""
 
 #: llm/admin_api/views.py:59 llm/admin_api/views.py:60
 msgid "Sync embeddings"
-msgstr "Embeddings synchronisieren"
+msgstr ""
 
 #: llm/admin_api/views.py:66 llm/admin_api/views.py:67
 msgid "Sync LLM models"
-msgstr "LLM-Modelle synchronisieren"
+msgstr ""
 
 #: llm/admin_api/views.py:73 llm/admin_api/views.py:74
 msgid "Test config"
-msgstr "Konfiguration testen"
+msgstr ""
 
 #: llm/admin_api/views.py:80 llm/admin_api/views.py:81
 msgid "List providers"
-msgstr "Anbieter auflisten"
+msgstr ""
 
 #: llm/admin_api/views.py:86 llm/views.py:93
 msgid "List of available providers"
-msgstr "Liste der verfügbaren Anbieter"
+msgstr ""
 
 #: llm/admin_api/views.py:168 llm/admin_api/views.py:169
 msgid "List LLM models"
-msgstr "LLM-Modelle auflisten"
+msgstr ""
 
 #: llm/admin_api/views.py:173 llm/admin_api/views.py:174
 msgid "Get LLM model"
-msgstr "LLM-Modell abrufen"
+msgstr ""
 
 #: llm/admin_api/views.py:184 llm/admin_api/views.py:193
 #: llm/admin_api/views.py:219 llm/admin_api/views.py:229
 msgid "Provider not found"
-msgstr "Anbieter nicht gefunden"
+msgstr ""
 
 #: llm/admin_api/views.py:203 llm/admin_api/views.py:204
 msgid "List provider embeddings"
-msgstr "Anbieter-Embeddings auflisten"
+msgstr ""
 
 #: llm/admin_api/views.py:208 llm/admin_api/views.py:209
 msgid "Get provider embedding"
-msgstr "Anbieter-Embedding abrufen"
+msgstr ""
 
 #: llm/admin_api/views.py:238 llm/views.py:186
 msgid "List provider config models"
-msgstr "Anbieterkonfigurationsmodelle auflisten"
+msgstr ""
 
 #: llm/admin_api/views.py:239 llm/views.py:187
 msgid "Get all models for a provider config with their status."
-msgstr "Alle Modelle für eine Anbieterkonfiguration mit ihrem Status abrufen."
+msgstr ""
 
 #: llm/admin_api/views.py:243 llm/views.py:191
 msgid "Get provider config model"
-msgstr "Anbieterkonfigurationsmodell abrufen"
+msgstr ""
 
 #: llm/admin_api/views.py:244 llm/views.py:192
 msgid "Get a specific model configuration."
-msgstr "Eine spezifische Modellkonfiguration abrufen."
+msgstr ""
 
 #: llm/admin_api/views.py:248 llm/views.py:196
 msgid "Create custom model"
-msgstr "Benutzerdefiniertes Modell erstellen"
+msgstr ""
 
 #: llm/admin_api/views.py:249 llm/views.py:197
 msgid "Create a custom user-defined model for this provider config."
 msgstr ""
-"Ein benutzerdefiniertes Modell für diese Anbieterkonfiguration erstellen."
 
 #: llm/admin_api/views.py:255 llm/views.py:203
 msgid "Update custom model"
-msgstr "Benutzerdefiniertes Modell aktualisieren"
+msgstr ""
 
 #: llm/admin_api/views.py:256 llm/views.py:204
 msgid "Update a custom user-defined model."
-msgstr "Ein benutzerdefiniertes Modell aktualisieren."
+msgstr ""
 
 #: llm/admin_api/views.py:262 llm/views.py:210
 msgid "Delete custom model"
-msgstr "Benutzerdefiniertes Modell löschen"
+msgstr ""
 
 #: llm/admin_api/views.py:263 llm/views.py:211
 msgid "Delete a custom user-defined model."
-msgstr "Ein benutzerdefiniertes Modell löschen."
+msgstr ""
 
 #: llm/admin_api/views.py:282
 msgid "Global provider config not found"
-msgstr "Globale Anbieterkonfiguration nicht gefunden"
+msgstr ""
 
 #: llm/admin_api/views.py:339 llm/admin_api/views.py:374 llm/views.py:295
 #: llm/views.py:331
 msgid "Custom model not found"
-msgstr "Benutzerdefiniertes Modell nicht gefunden"
+msgstr ""
 
 #: llm/admin_api/views.py:380 llm/views.py:337
 msgid "Set model status"
-msgstr "Modellstatus setzen"
+msgstr ""
 
 #: llm/admin_api/views.py:381 llm/views.py:338
 msgid "Activate or deactivate a model for this provider config."
 msgstr ""
-"Ein Modell für diese Anbieterkonfiguration aktivieren oder deaktivieren."
 
 #: llm/consts.py:11 llm/consts.py:37
 msgid "OpenAI"
-msgstr "OpenAI"
+msgstr ""
 
 #: llm/consts.py:12 llm/consts.py:46
 msgid "Anthropic"
-msgstr "Anthropic"
+msgstr ""
 
 #: llm/consts.py:13 llm/consts.py:55
 msgid "Google Generative AI"
-msgstr "Google Generative AI"
+msgstr ""
 
 #: llm/consts.py:14 llm/consts.py:64
 msgid "Cohere"
-msgstr "Cohere"
+msgstr ""
 
 #: llm/consts.py:15 llm/consts.py:73
 msgid "Ollama"
-msgstr "Ollama"
+msgstr ""
 
 #: llm/consts.py:23
 msgid "LLM"
-msgstr "LLM"
+msgstr ""
 
 #: llm/consts.py:25
 msgid "Reranker"
-msgstr "Reranker"
+msgstr ""
 
 #: llm/consts.py:88
 msgid "Not Available"
-msgstr "Nicht verfügbar"
+msgstr ""
 
 #: llm/consts.py:89
 msgid "Available"
-msgstr "Verfügbar"
+msgstr ""
 
 #: llm/consts.py:90
 msgid "Team Only"
-msgstr "Nur Team"
+msgstr ""
 
 #: llm/consts.py:97
 msgid "Start"
-msgstr "Start"
+msgstr ""
 
 #: llm/consts.py:98
 msgid "End"
-msgstr "Ende"
+msgstr ""
 
 #: llm/factories.py:43
 msgid "Provider config is required"
-msgstr "Anbieterkonfiguration ist erforderlich"
+msgstr ""
 
 #: llm/factories.py:88
 #, python-brace-format
 msgid "Unsupported provider: {provider_name}"
-msgstr "Nicht unterstützter Anbieter: {provider_name}"
+msgstr ""
 
 #: llm/models.py:10
 msgid "Provider"
-msgstr "Anbieter"
+msgstr ""
 
 #: llm/models.py:15 plan/models.py:229
 msgid "API Key"
-msgstr "API-Schlüssel"
+msgstr ""
 
 #: llm/models.py:17
 msgid "API Base URL"
-msgstr "API-Basis-URL"
+msgstr ""
 
 #: llm/models.py:19 llm/models_config/config.py:162
 msgid "Temperature"
-msgstr "Temperatur"
+msgstr ""
 
 #: llm/models.py:35 llm/models.py:54
 msgid "Provider Config"
-msgstr "Anbieterkonfiguration"
+msgstr ""
 
 #: llm/models.py:36
 msgid "Provider Configs"
-msgstr "Anbieterkonfigurationen"
+msgstr ""
 
 #: llm/models.py:58
 msgid "Model Key"
-msgstr "Modell-Schlüssel"
+msgstr ""
 
 #: llm/models.py:60
 msgid "Unique identifier for the model"
-msgstr "Eindeutiger Bezeichner für das Modell"
+msgstr ""
 
 #: llm/models.py:63
 msgid "Model Type"
-msgstr "Modelltyp"
+msgstr ""
 
 #: llm/models.py:69
 msgid "Is Active"
-msgstr "Ist aktiv"
+msgstr ""
 
 #: llm/models.py:71
 msgid "Whether this model is available for use"
-msgstr "Ob dieses Modell zur Verwendung verfügbar ist"
+msgstr ""
 
 #: llm/models.py:74
 msgid "Is Custom"
-msgstr "Ist benutzerdefiniert"
+msgstr ""
 
 #: llm/models.py:76
 msgid "Whether this is a custom user-defined model"
-msgstr "Ob dies ein benutzerdefiniertes Modell ist"
+msgstr ""
 
 #: llm/models.py:79
 msgid "Custom Label"
-msgstr "Benutzerdefiniertes Label"
+msgstr ""
 
 #: llm/models.py:83
 msgid "Human-readable label for custom models"
-msgstr "Für Menschen lesbares Label für benutzerdefinierte Modelle"
+msgstr ""
 
 #: llm/models.py:86
 msgid "Custom Configuration"
-msgstr "Benutzerdefinierte Konfiguration"
+msgstr ""
 
 #: llm/models.py:90
 msgid ""
 "Custom model configuration (features, model_properties, parameter_rules)"
 msgstr ""
-"Benutzerdefinierte Modellkonfiguration (Funktionen, Modelleigenschaften, "
-"Parameterregeln)"
 
 #: llm/models.py:95
 msgid "Provider Config Model"
-msgstr "Anbieterkonfigurationsmodell"
+msgstr ""
 
 #: llm/models.py:96
 msgid "Provider Config Models"
-msgstr "Anbieterkonfigurationsmodelle"
+msgstr ""
 
 #: llm/models_config/config.py:167
 msgid "Controls randomness. Lower values make the model more deterministic."
 msgstr ""
-"Steuert die Zufälligkeit. Niedrigere Werte machen das Modell "
-"deterministischer."
 
 #: llm/models_config/config.py:181
 msgid "Top P"
-msgstr "Top P"
+msgstr ""
 
 #: llm/models_config/config.py:186
 msgid ""
 "Nucleus sampling: only consider tokens with cumulative probability >= top_p."
 msgstr ""
-"Nucleus-Sampling: nur Token mit kumulativer Wahrscheinlichkeit >= top_p "
-"berücksichtigen."
 
 #: llm/models_config/config.py:202
 msgid "Only sample from the top K tokens."
-msgstr "Nur aus den Top-K-Token samplen."
+msgstr ""
 
 #: llm/models_config/config.py:214
 msgid "Max Tokens"
-msgstr "Maximale Token"
+msgstr ""
 
 #: llm/models_config/config.py:216
 msgid "Maximum number of tokens to generate."
-msgstr "Maximale Anzahl zu generierender Token."
+msgstr ""
 
 #: llm/models_config/config.py:228
 msgid "Presence Penalty"
-msgstr "Präsenzstrafe"
+msgstr ""
 
 #: llm/models_config/config.py:233
 msgid "Penalize new tokens based on whether they appear in the text so far."
 msgstr ""
-"Neue Token bestrafen, basierend darauf, ob sie im bisherigen Text "
-"erscheinen."
 
 #: llm/models_config/config.py:249
 msgid "Frequency Penalty"
-msgstr "Häufigkeitsstrafe"
+msgstr ""
 
 #: llm/models_config/config.py:254
 msgid "Penalize new tokens based on their frequency in the text so far."
 msgstr ""
-"Neue Token basierend auf ihrer Häufigkeit im bisherigen Text bestrafen."
 
 #: llm/models_config/config.py:268
 msgid "Stop Sequences"
-msgstr "Stopp-Sequenzen"
+msgstr ""
 
 #: llm/models_config/config.py:272
 msgid "Sequences where the model will stop generating further tokens."
-msgstr "Sequenzen, bei denen das Modell aufhört, weitere Token zu generieren."
+msgstr ""
 
 #: llm/models_config/config.py:284
 msgid "Seed"
-msgstr "Seed"
+msgstr ""
 
 #: llm/models_config/config.py:286
 msgid "Random seed for reproducible outputs."
-msgstr "Zufalls-Seed für reproduzierbare Ausgaben."
+msgstr ""
 
 #: llm/models_config/config.py:296
 msgid "Response Format"
-msgstr "Antwortformat"
+msgstr ""
 
 #: llm/models_config/config.py:299
 msgid "Specifying the format that the model must output."
-msgstr "Angabe des Formats, das das Modell ausgeben muss."
+msgstr ""
 
 #: llm/models_config/config.py:318
 msgid ""
 "JSON schema definition for structured output when response_format is "
 "json_schema."
 msgstr ""
-"JSON-Schema-Definition für strukturierte Ausgabe, wenn response_format "
-"json_schema ist."
 
 #: llm/serializers.py:285
 msgid "A model with this key already exists for this provider config."
 msgstr ""
-"Ein Modell mit diesem Schlüssel existiert bereits für diese "
-"Anbieterkonfiguration."
 
 #: llm/views.py:23
 msgid "List team provider configs"
-msgstr "Team-Anbieterkonfigurationen auflisten"
+msgstr ""
 
 #: llm/views.py:24
 msgid "Get all provider configurations for the current team."
-msgstr "Alle Anbieterkonfigurationen für das aktuelle Team abrufen."
+msgstr ""
 
 #: llm/views.py:29
 msgid "Create a new provider configuration for the current team."
-msgstr "Eine neue Anbieterkonfiguration für das aktuelle Team erstellen."
+msgstr ""
 
 #: llm/views.py:35
 msgid "Get detailed information about a specific provider configuration."
 msgstr ""
-"Detaillierte Informationen über eine bestimmte Anbieterkonfiguration "
-"abrufen."
 
 #: llm/views.py:41
 msgid "Delete a provider configuration."
-msgstr "Eine Anbieterkonfiguration löschen."
+msgstr ""
 
 #: llm/views.py:46 llm/views.py:51
 msgid "Update a provider configuration."
-msgstr "Eine Anbieterkonfiguration aktualisieren."
+msgstr ""
 
 #: llm/views.py:55 llm/views.py:88
 msgid "List available providers"
-msgstr "Verfügbare Anbieter auflisten"
+msgstr ""
 
 #: llm/views.py:56 llm/views.py:89
 msgid "Get a list of available LLM providers."
-msgstr "Eine Liste der verfügbaren LLM-Anbieter abrufen."
+msgstr ""
 
 #: llm/views.py:61
 msgid "List all provider configs (Global and Team-specific)"
-msgstr "Alle Anbieterkonfigurationen auflisten (Global und teamspezifisch)"
+msgstr ""
 
 #: llm/views.py:63
 msgid ""
-"Get all available provider configurations including global and team-specific"
-" ones."
+"Get all available provider configurations including global and team-specific "
+"ones."
 msgstr ""
-"Alle verfügbaren Anbieterkonfigurationen einschließlich globaler und "
-"teamspezifischer abrufen."
 
 #: llm/views.py:69
 msgid "Test provider config"
-msgstr "Anbieterkonfiguration testen"
+msgstr ""
 
 #: llm/views.py:70
 msgid "Test a provider configuration without saving it."
-msgstr "Eine Anbieterkonfiguration testen, ohne sie zu speichern."
+msgstr ""
 
 #: llm/views.py:78
 msgid "Get provider models"
-msgstr "Anbietermodelle abrufen"
+msgstr ""
 
 #: llm/views.py:79
 msgid "Get all models supported by a specific provider."
-msgstr "Alle von einem bestimmten Anbieter unterstützten Modelle abrufen."
+msgstr ""
 
 #: llm/views.py:83
 msgid "Get provider embedding models"
-msgstr "Anbieter-Embedding-Modelle abrufen"
+msgstr ""
 
 #: llm/views.py:84
 msgid "Get all embedding models supported by a specific provider."
 msgstr ""
-"Alle Embedding-Modelle abrufen, die von einem bestimmten Anbieter "
-"unterstützt werden."
 
 #: llm/views.py:181
 msgid "Test failed"
-msgstr "Test fehlgeschlagen"
+msgstr ""
 
 #: locker/helpers.py:44
 #, python-brace-format
 msgid "Failed to acquire lock '{lock_name}' within {wait_time} seconds"
 msgstr ""
-"Lock '{lock_name}' konnte nicht innerhalb von {wait_time} Sekunden erworben "
-"werden"
 
 #: plan/admin.py:50
 msgid "Stripe Configuration"
-msgstr "Stripe-Konfiguration"
+msgstr ""
 
 #: plan/admin.py:52
 msgid "Plan Limits"
-msgstr "Planlimits"
+msgstr ""
 
 #: plan/admin.py:69 plan/admin.py:104 plan/admin.py:121 plan/admin.py:132
 msgid "Timestamps"
-msgstr "Zeitstempel"
+msgstr ""
 
 #: plan/admin.py:91
 msgid "Credits"
-msgstr "Credits"
+msgstr ""
 
 #: plan/admin.py:93
 msgid "Subscription Details"
-msgstr "Abonnement-Details"
+msgstr ""
 
 #: plan/admin.py:120
 msgid "Payment Details"
-msgstr "Zahlungsdetails"
+msgstr ""
 
 #: plan/authentication.py:18
 msgid "No Stripe signature found"
-msgstr "Keine Stripe-Signatur gefunden"
+msgstr ""
 
 #: plan/authentication.py:30
 msgid "Invalid Stripe signature"
-msgstr "Ungültige Stripe-Signatur"
+msgstr ""
 
 #: plan/consts.py:7
 msgid "Yearly"
-msgstr "Jährlich"
+msgstr ""
 
 #: plan/consts.py:8
 msgid "Monthly"
-msgstr "Monatlich"
+msgstr ""
 
 #: plan/consts.py:23
 msgid "Incomplete"
-msgstr "Unvollständig"
+msgstr ""
 
 #: plan/consts.py:24
 msgid "Incomplete Expired"
-msgstr "Unvollständig abgelaufen"
+msgstr ""
 
 #: plan/consts.py:25
 msgid "Past Due"
-msgstr "Überfällig"
+msgstr ""
 
 #: plan/consts.py:26
 msgid "Paused"
-msgstr "Pausiert"
+msgstr ""
 
 #: plan/consts.py:27
 msgid "Trialing"
-msgstr "Testphase"
+msgstr ""
 
 #: plan/consts.py:28
 msgid "Unpaid"
-msgstr "Unbezahlt"
+msgstr ""
 
 #: plan/consts.py:35
 msgid "Default"
-msgstr "Standard"
+msgstr ""
 
 #: plan/consts.py:36
 msgid "Info"
-msgstr "Info"
+msgstr ""
 
 #: plan/consts.py:37
 msgid "Cross"
-msgstr "Kreuz"
+msgstr ""
 
 #: plan/consts.py:38
 msgid "Check"
-msgstr "Häkchen"
+msgstr ""
 
 #: plan/filters.py:11 plan/models.py:212
 msgid "Content type"
-msgstr "Inhaltstyp"
+msgstr ""
 
 #: plan/filters.py:13
 msgid "Crawl request"
-msgstr "Crawl-Anfrage"
+msgstr ""
 
 #: plan/filters.py:14
 msgid "Search request"
-msgstr "Suchanfrage"
+msgstr ""
 
 #: plan/filters.py:15
 msgid "Sitemap request"
-msgstr "Sitemap-Anfrage"
+msgstr ""
 
 #: plan/filters.py:16
 msgid "Knowledge base document"
-msgstr "Wissensdatenbank-Dokument"
+msgstr ""
 
 #: plan/filters.py:21
 msgid "API key"
-msgstr "API-Schlüssel"
+msgstr ""
 
 #: plan/filters.py:33
 msgid "Invalid value. Expected format: app_label.model"
-msgstr "Ungültiger Wert. Erwartetes Format: app_label.model"
+msgstr ""
 
 #: plan/models.py:10
 msgid "name"
-msgstr "Name"
+msgstr ""
 
 #: plan/models.py:11
 msgid "Label"
-msgstr "Bezeichnung"
+msgstr ""
 
 #: plan/models.py:13
 msgid "Group"
-msgstr "Gruppe"
+msgstr ""
 
 #: plan/models.py:17
 msgid "Price before discount"
-msgstr "Preis vor Rabatt"
+msgstr ""
 
 #: plan/models.py:23
 msgid "Price"
-msgstr "Preis"
+msgstr ""
 
 #: plan/models.py:25
 msgid "Stripe price id"
-msgstr "Stripe-Preis-ID"
+msgstr ""
 
 #: plan/models.py:28
 msgid "Number of users"
-msgstr "Anzahl der Benutzer"
+msgstr ""
 
 #: plan/models.py:29
 msgid "Number of users that can be added to the team."
-msgstr "Anzahl der Benutzer, die dem Team hinzugefügt werden können."
+msgstr ""
 
 #: plan/models.py:33
 msgid "Page credit"
-msgstr "Seiten-Credit"
+msgstr ""
 
 #: plan/models.py:34
 msgid "Number of pages that can be crawled in plan duration."
-msgstr "Anzahl der Seiten, die während der Plandauer gecrawlt werden können."
+msgstr ""
 
 #: plan/models.py:38
 msgid "Daily page credit"
-msgstr "Tägliches Seiten-Credit"
+msgstr ""
 
 #: plan/models.py:40
 msgid ""
 "Number of pages that can be crawled per day. resets at midnight. -1 for "
 "unlimited"
 msgstr ""
-"Anzahl der Seiten, die pro Tag gecrawlt werden können. Wird um Mitternacht "
-"zurückgesetzt. -1 für unbegrenzt"
 
 #: plan/models.py:45
 msgid "Crawl max depth"
-msgstr "Maximale Crawl-Tiefe"
+msgstr ""
 
 #: plan/models.py:45
 msgid "Max depth of crawling."
-msgstr "Maximale Tiefe des Crawlings."
+msgstr ""
 
 #: plan/models.py:48
 msgid "Crawl max limit"
-msgstr "Maximales Crawl-Limit"
+msgstr ""
 
 #: plan/models.py:48
 msgid "Max number of pages to crawl."
-msgstr "Maximale Anzahl der zu crawlenden Seiten."
+msgstr ""
 
 #: plan/models.py:51
 msgid "Max concurrent crawl"
-msgstr "Maximale gleichzeitige Crawls"
+msgstr ""
 
 #: plan/models.py:52
 msgid "Max Number of concurrent crawling."
-msgstr "Maximale Anzahl gleichzeitiger Crawls."
+msgstr ""
 
 #: plan/models.py:56
 msgid "Number of knowledge bases"
-msgstr "Anzahl der Wissensdatenbanken"
+msgstr ""
 
 #: plan/models.py:58
-#| msgid "Number of users"
 msgid "Number of agents"
-msgstr "Anzahl der Agenten"
+msgstr ""
 
 #: plan/models.py:60
 msgid "Number of each knowledge base documents"
-msgstr "Anzahl der Dokumente je Wissensdatenbank"
+msgstr ""
 
 #: plan/models.py:63
 msgid "Knowledge base retrival rate limit"
-msgstr "Ratenlimit für Wissensdatenbank-Abrufe"
+msgstr ""
 
 #: plan/models.py:64 plan/models.py:72
 msgid "DRF-style rate string, e.g. '100/min', '500/day'"
-msgstr "DRF-Stil Rate-String, z.B. '100/min', '500/day'"
+msgstr ""
 
 #: plan/models.py:71
 msgid "Agent call rate limit"
-msgstr "Ratenlimit für Agentenaufrufe"
+msgstr ""
 
 #: plan/models.py:78
 msgid "Is default"
-msgstr "Ist Standard"
+msgstr ""
 
 #: plan/models.py:79 plan/models.py:98
 msgid "Order"
-msgstr "Reihenfolge"
+msgstr ""
 
 #: plan/models.py:80
 msgid "Is active"
-msgstr "Ist aktiv"
+msgstr ""
 
 #: plan/models.py:83 plan/models.py:133
 msgid "Plan"
-msgstr "Plan"
+msgstr ""
 
 #: plan/models.py:84
 msgid "Plans"
-msgstr "Pläne"
+msgstr ""
 
 #: plan/models.py:100
 msgid "Icon"
-msgstr "Symbol"
+msgstr ""
 
 #: plan/models.py:110
 msgid "Help text"
-msgstr "Hilfetext"
+msgstr ""
 
 #: plan/models.py:113
 msgid "Plan Feature"
-msgstr "Plan-Funktion"
+msgstr ""
 
 #: plan/models.py:114
 msgid "Plan Features"
-msgstr "Plan-Funktionen"
+msgstr ""
 
 #: plan/models.py:129
 msgid "Stripe subscription id"
-msgstr "Stripe-Abonnement-ID"
+msgstr ""
 
 #: plan/models.py:137
 msgid "Remain page credit"
-msgstr "Verbleibendes Seiten-Credit"
+msgstr ""
 
 #: plan/models.py:139
 msgid "Remain daily page credit"
-msgstr "Verbleibendes tägliches Seiten-Credit"
+msgstr ""
 
 #: plan/models.py:142
 msgid "Start datetime"
-msgstr "Startdatum und -zeit"
+msgstr ""
 
 #: plan/models.py:144
 msgid "Current period start datetime"
-msgstr "Startdatum und -zeit der aktuellen Periode"
+msgstr ""
 
 #: plan/models.py:147
 msgid "Current period end datetime"
-msgstr "Enddatum und -zeit der aktuellen Periode"
+msgstr ""
 
 #: plan/models.py:149
 msgid "Canceled at"
-msgstr "Abgebrochen am"
+msgstr ""
 
 #: plan/models.py:157 plan/models.py:168
 msgid "Subscription"
-msgstr "Abonnement"
+msgstr ""
 
 #: plan/models.py:158
 msgid "Subscriptions"
-msgstr "Abonnements"
+msgstr ""
 
 #: plan/models.py:171
 msgid "Amount"
-msgstr "Betrag"
+msgstr ""
 
 #: plan/models.py:173
 msgid "Stripe payment id"
-msgstr "Stripe-Zahlungs-ID"
+msgstr ""
 
 #: plan/models.py:183
 msgid "Subscription Payment"
-msgstr "Abonnement-Zahlung"
+msgstr ""
 
 #: plan/models.py:184
 msgid "Subscription Payments"
-msgstr "Abonnement-Zahlungen"
+msgstr ""
 
 #: plan/models.py:192
 msgid "Data"
-msgstr "Daten"
+msgstr ""
 
 #: plan/models.py:195
 msgid "Stripe webhook history"
-msgstr "Stripe-Webhook-Verlauf"
+msgstr ""
 
 #: plan/models.py:196
 msgid "Stripe webhook histories"
-msgstr "Stripe-Webhook-Verläufe"
+msgstr ""
 
 #: plan/models.py:219
 msgid "Content ID"
-msgstr "Inhalts-ID"
+msgstr ""
 
 #: plan/models.py:235
 msgid "Requested Page Credit"
-msgstr "Angefordertes Seiten-Credit"
+msgstr ""
 
 #: plan/models.py:238
 msgid "Actual Page Credit Used"
-msgstr "Tatsächlich verwendetes Seiten-Credit"
+msgstr ""
 
 #: plan/models.py:242
 msgid "Usage History"
-msgstr "Nutzungsverlauf"
+msgstr ""
 
 #: plan/models.py:243
 msgid "Usage Histories"
-msgstr "Nutzungsverläufe"
+msgstr ""
 
 #: plan/serializers.py:78
 msgid "Plan not found"
-msgstr "Plan nicht gefunden"
+msgstr ""
 
 #: plan/services.py:157
 msgid "Unlimited"
-msgstr "Unbegrenzt"
+msgstr ""
 
 #: plan/services.py:261 plan/views.py:57
 msgid "You have no active subscription"
-msgstr "Sie haben kein aktives Abonnement"
+msgstr ""
 
 #: plan/services.py:656
 msgid "You can't downgrade your plan."
-msgstr "Sie können Ihren Plan nicht herabstufen."
+msgstr ""
 
 #: plan/services.py:703
 msgid "Team already has an active subscription."
-msgstr "Das Team hat bereits ein aktives Abonnement."
+msgstr ""
 
 #: plan/services.py:737 plan/services.py:767 plan/services.py:790
 msgid "Team does not have an active subscription."
-msgstr "Das Team hat kein aktives Abonnement."
+msgstr ""
 
 #: plan/services.py:740 plan/services.py:770
 msgid "You cannot cancel freemium plan."
-msgstr "Sie können den Freemium-Plan nicht kündigen."
+msgstr ""
 
 #: plan/services.py:793
 msgid "You cannot renew freemium plan."
-msgstr "Sie können den Freemium-Plan nicht erneuern."
+msgstr ""
 
 #: plan/services.py:796
 msgid "This plan is already active."
-msgstr "Dieser Plan ist bereits aktiv."
+msgstr ""
 
 #: plan/services.py:846 plan/services.py:869
 msgid "get_actual_credits: Unhandled type {type(request)}"
-msgstr "get_actual_credits: Nicht behandelter Typ {type(request)}"
+msgstr ""
 
 #: plan/throttle.py:19 plan/throttle.py:34
 msgid "Cannot throttle a request without a team attached to it."
-msgstr "Eine Anfrage ohne zugeordnetes Team kann nicht gedrosselt werden."
+msgstr ""
 
 #: plan/validators.py:46
 #, python-brace-format
@@ -2699,8 +2598,6 @@ msgid ""
 "You have no more daily credit left in your plan. for current request you "
 "need {} credits."
 msgstr ""
-"Sie haben kein tägliches Credit mehr in Ihrem Plan. Für die aktuelle Anfrage"
-" benötigen Sie {} Credits."
 
 #: plan/validators.py:53
 #, python-brace-format
@@ -2708,8 +2605,6 @@ msgid ""
 "You just have {} daily credit left in your plan. for current request you "
 "need {} credits."
 msgstr ""
-"Sie haben nur noch {} tägliches Credit in Ihrem Plan. Für die aktuelle "
-"Anfrage benötigen Sie {} Credits."
 
 #: plan/validators.py:66
 #, python-brace-format
@@ -2717,8 +2612,6 @@ msgid ""
 "You have no more pages left in your plan. for current request you need {} "
 "credits."
 msgstr ""
-"Sie haben keine Seiten mehr in Ihrem Plan. Für die aktuelle Anfrage "
-"benötigen Sie {} Credits."
 
 #: plan/validators.py:73
 #, python-brace-format
@@ -2726,16 +2619,12 @@ msgid ""
 "You just have {} credits left in your plan. for current request you need {} "
 "credits."
 msgstr ""
-"Sie haben nur noch {} Credits in Ihrem Plan. Für die aktuelle Anfrage "
-"benötigen Sie {} Credits."
 
 #: plan/validators.py:115
 msgid ""
-"With the current plan you cannot use this proxy server. Upgrade your plan to"
-" use Premium proxy servers."
+"With the current plan you cannot use this proxy server. Upgrade your plan to "
+"use Premium proxy servers."
 msgstr ""
-"Mit dem aktuellen Plan können Sie diesen Proxy-Server nicht verwenden. "
-"Aktualisieren Sie Ihren Plan, um Premium-Proxy-Server zu nutzen."
 
 #: plan/validators.py:129
 #, python-brace-format
@@ -2743,8 +2632,6 @@ msgid ""
 "Your plan does not support more than {} depth. change the max depth in "
 "spider options."
 msgstr ""
-"Ihr Plan unterstützt nicht mehr als {} Tiefe. Ändern Sie die maximale Tiefe "
-"in den Spider-Optionen."
 
 #: plan/validators.py:142
 #, python-brace-format
@@ -2752,8 +2639,6 @@ msgid ""
 "Your plan does not support more than {} pages per crawl. change the page "
 "limit in spider options."
 msgstr ""
-"Ihr Plan unterstützt nicht mehr als {} Seiten pro Crawl. Ändern Sie das "
-"Seitenlimit in den Spider-Optionen."
 
 #: plan/validators.py:164
 #, python-brace-format
@@ -2761,8 +2646,6 @@ msgid ""
 "Your plan does not support more than {} concurrent crawls. Wait for them to "
 "finish."
 msgstr ""
-"Ihr Plan unterstützt nicht mehr als {} gleichzeitige Crawls. Warten Sie, bis"
-" diese abgeschlossen sind."
 
 #: plan/validators.py:200
 #, python-brace-format
@@ -2770,8 +2653,6 @@ msgid ""
 "Your plan does not support more than {} concurrent searches. Wait for them "
 "to finish."
 msgstr ""
-"Ihr Plan unterstützt nicht mehr als {} gleichzeitige Suchen. Warten Sie, bis"
-" diese abgeschlossen sind."
 
 #: plan/validators.py:233
 #, python-brace-format
@@ -2779,19 +2660,12 @@ msgid ""
 "Your plan does not support more than {} concurrent sitemaps. Wait for them "
 "to finish."
 msgstr ""
-"Ihr Plan unterstützt nicht mehr als {} gleichzeitige Sitemaps. Warten Sie, "
-"bis diese abgeschlossen sind."
 
 #: plan/validators.py:250
 #, python-brace-format
-#| msgid ""
-#| "Your plan does not support more than {} knowledge bases. You can not create "
-#| "more."
 msgid ""
 "Your plan does not support more than {} agents. You can not create more."
 msgstr ""
-"Ihr Plan unterstützt nicht mehr als {} Agenten. Sie können keine weiteren "
-"erstellen."
 
 #: plan/validators.py:280
 #, python-brace-format
@@ -2799,8 +2673,6 @@ msgid ""
 "Your plan does not support more than {} knowledge bases. You can not create "
 "more."
 msgstr ""
-"Ihr Plan unterstützt nicht mehr als {} Wissensdatenbanken. Sie können keine "
-"weiteren erstellen."
 
 #: plan/validators.py:313
 #, python-brace-format
@@ -2809,488 +2681,472 @@ msgid ""
 "base. This knowledge base has {} documents left. Your request will add {} "
 "documents."
 msgstr ""
-"Ihr aktueller Plan unterstützt nicht mehr als {} Dokumente pro "
-"Wissensdatenbank. Diese Wissensdatenbank hat noch {} Dokumente übrig. Ihre "
-"Anfrage wird {} Dokumente hinzufügen."
 
 #: plan/validators.py:408
 msgid "You have reached the maximum number of users for your plan."
-msgstr "Sie haben die maximale Anzahl von Benutzern für Ihren Plan erreicht."
+msgstr ""
 
 #: plan/views.py:22
 msgid "List available plans"
-msgstr "Verfügbare Pläne auflisten"
+msgstr ""
 
 #: plan/views.py:24
 msgid ""
-"Returns a list of all active subscription plans with their details including"
-" pricing, features and limits."
+"Returns a list of all active subscription plans with their details including "
+"pricing, features and limits."
 msgstr ""
-"Gibt eine Liste aller aktiven Abonnementpläne mit ihren Details "
-"einschließlich Preisen, Funktionen und Limits zurück."
 
 #: plan/views.py:29
 msgid "Get plan details"
-msgstr "Plandetails abrufen"
+msgstr ""
 
 #: plan/views.py:31
 msgid "Returns detailed information about a specific subscription plan."
 msgstr ""
-"Gibt detaillierte Informationen über einen bestimmten Abonnementplan zurück."
 
 #: plan/views.py:49
 msgid "Get current subscription details"
-msgstr "Aktuelle Abonnementdetails abrufen"
+msgstr ""
 
 #: plan/views.py:51 plan/views.py:63
 msgid "Returns detailed information about the team's current subscription."
 msgstr ""
-"Gibt detaillierte Informationen über das aktuelle Abonnement des Teams "
-"zurück."
 
 #: plan/views.py:61
 msgid "Get subscription details"
-msgstr "Abonnementdetails abrufen"
+msgstr ""
 
 #: plan/views.py:68
 msgid "List team subscriptions"
-msgstr "Team-Abonnements auflisten"
+msgstr ""
 
 #: plan/views.py:69
 msgid "Returns a list of all active subscriptions for the team."
-msgstr "Gibt eine Liste aller aktiven Abonnements für das Team zurück."
+msgstr ""
 
 #: plan/views.py:73
 msgid "Start a new subscription"
-msgstr "Ein neues Abonnement starten"
+msgstr ""
 
 #: plan/views.py:74
 msgid "Starts a new subscription for the team."
-msgstr "Startet ein neues Abonnement für das Team."
+msgstr ""
 
 #: plan/views.py:77
 msgid "Subscription started successfully."
-msgstr "Abonnement erfolgreich gestartet."
+msgstr ""
 
 #: plan/views.py:85 plan/views.py:115
 msgid "The URL to redirect the user to for payment processing."
 msgstr ""
-"Die URL, zu der der Benutzer zur Zahlungsabwicklung weitergeleitet wird."
 
 #: plan/views.py:91 plan/views.py:104 plan/views.py:121
 msgid "Returns the URL to redirect the user to for payment processing."
 msgstr ""
-"Gibt die URL zurück, zu der der Benutzer zur Zahlungsabwicklung "
-"weitergeleitet wird."
 
 #: plan/views.py:97
 msgid "Cancel subscription"
-msgstr "Abonnement kündigen"
+msgstr ""
 
 #: plan/views.py:98
 msgid "Cancels the active subscription for the team."
-msgstr "Kündigt das aktive Abonnement für das Team."
+msgstr ""
 
 #: plan/views.py:102
 msgid "Get customer session URL"
-msgstr "Kundensitzungs-URL abrufen"
+msgstr ""
 
 #: plan/views.py:167
 msgid "You cannot start freemium plan for this team"
-msgstr "Sie können den Freemium-Plan für dieses Team nicht starten"
+msgstr ""
 
 #: plan/views.py:219
 msgid "Handle Stripe webhooks"
-msgstr "Stripe-Webhooks verarbeiten"
+msgstr ""
 
 #: plan/views.py:221
 msgid ""
 "Processes webhook events from Stripe for subscription and payment updates."
 msgstr ""
-"Verarbeitet Webhook-Ereignisse von Stripe für Abonnement- und "
-"Zahlungsaktualisierungen."
 
 #: plan/views.py:243
 msgid "List usage history"
-msgstr "Nutzungsverlauf auflisten"
+msgstr ""
 
 #: plan/views.py:244
 msgid "List usage history for the team."
-msgstr "Nutzungsverlauf für das Team auflisten."
+msgstr ""
 
 #: plan/views.py:248
 msgid "Get usage history"
-msgstr "Nutzungsverlauf abrufen"
+msgstr ""
 
 #: plan/views.py:249
 msgid "Get usage history for the team."
-msgstr "Nutzungsverlauf für das Team abrufen."
+msgstr ""
 
 #: user/admin.py:20
 msgid "Personal info"
-msgstr "Persönliche Informationen"
+msgstr ""
 
 #: user/admin.py:22
 msgid "Permissions"
-msgstr "Berechtigungen"
+msgstr ""
 
 #: user/admin.py:34
 msgid "Email verification"
-msgstr "E-Mail-Verifizierung"
+msgstr ""
 
 #: user/admin.py:38
 msgid "Password reset"
-msgstr "Passwort zurücksetzen"
+msgstr ""
 
 #: user/decorators.py:51
 msgid "Invalid API key"
-msgstr "Ungültiger API-Schlüssel"
+msgstr ""
 
 #: user/managers.py:11
 msgid "Superuser must have is_staff=True."
-msgstr "Superuser muss is_staff=True haben."
+msgstr ""
 
 #: user/managers.py:13
 msgid "Superuser must have is_superuser=True."
-msgstr "Superuser muss is_superuser=True haben."
+msgstr ""
 
 #: user/managers.py:24
 msgid "The given email must be set"
-msgstr "Die angegebene E-Mail-Adresse muss gesetzt sein"
+msgstr ""
 
 #: user/models.py:19 user/models.py:145
 msgid "Email Address"
-msgstr "E-Mail-Adresse"
+msgstr ""
 
 #: user/models.py:21
 msgid "Reset Password Expires At"
-msgstr "Passwort-Reset läuft ab am"
+msgstr ""
 
 #: user/models.py:26
 msgid "Reset Password Token"
-msgstr "Passwort-Reset-Token"
+msgstr ""
 
 #: user/models.py:32
 msgid "Email Verification Token"
-msgstr "E-Mail-Verifizierungs-Token"
+msgstr ""
 
 #: user/models.py:38
 msgid "Email Verified"
-msgstr "E-Mail verifiziert"
+msgstr ""
 
 #: user/models.py:42
 msgid "Privacy Confirmed At"
-msgstr "Datenschutz bestätigt am"
+msgstr ""
 
 #: user/models.py:47
 msgid "Terms Confirmed At"
-msgstr "Bedingungen bestätigt am"
+msgstr ""
 
 #: user/models.py:52
 msgid "Newsletter Confirmed"
-msgstr "Newsletter bestätigt"
+msgstr ""
 
 #: user/models.py:63 user/models.py:108
 msgid "User"
-msgstr "Benutzer"
+msgstr ""
 
 #: user/models.py:64
 msgid "Users"
-msgstr "Benutzer"
+msgstr ""
 
 #: user/models.py:80
 msgid "Members"
-msgstr "Mitglieder"
+msgstr ""
 
 #: user/models.py:85
 msgid "Stripe Customer ID"
-msgstr "Stripe-Kunden-ID"
+msgstr ""
 
 #: user/models.py:97
 msgid "Teams"
-msgstr "Teams"
+msgstr ""
 
 #: user/models.py:119
 msgid "Is Owner"
-msgstr "Ist Eigentümer"
+msgstr ""
 
 #: user/models.py:127
 msgid "Team Member"
-msgstr "Teammitglied"
+msgstr ""
 
 #: user/models.py:128
 msgid "Team Members"
-msgstr "Teammitglieder"
+msgstr ""
 
 #: user/models.py:139
 msgid "Invitation Token"
-msgstr "Einladungs-Token"
+msgstr ""
 
 #: user/models.py:149
 msgid "Activated"
-msgstr "Aktiviert"
+msgstr ""
 
 #: user/models.py:157
 msgid "Team Invitation"
-msgstr "Team-Einladung"
+msgstr ""
 
 #: user/models.py:158
 msgid "Team Invitations"
-msgstr "Team-Einladungen"
+msgstr ""
 
 #: user/models.py:177
 msgid "Last Used At"
-msgstr "Zuletzt verwendet am"
+msgstr ""
 
 #: user/models.py:186
 msgid "Team API Key"
-msgstr "Team-API-Schlüssel"
+msgstr ""
 
 #: user/models.py:187
 msgid "Team API Keys"
-msgstr "Team-API-Schlüssel"
+msgstr ""
 
 #: user/models.py:202
 msgid "MIME type of the file (e.g., 'text/csv', 'application/json')"
-msgstr "MIME-Typ der Datei (z.B. 'text/csv', 'application/json')"
+msgstr ""
 
 #: user/models.py:205
 msgid "File Name"
-msgstr "Dateiname"
+msgstr ""
 
 #: user/models.py:214
 msgid "Size"
-msgstr "Größe"
+msgstr ""
 
 #: user/models.py:215
 msgid "File size in bytes"
-msgstr "Dateigröße in Bytes"
+msgstr ""
 
 #: user/models.py:221
 msgid "Related Object Type"
-msgstr "Zugehöriger Objekttyp"
+msgstr ""
 
 #: user/models.py:227
 msgid "Related Object ID"
-msgstr "Zugehörige Objekt-ID"
+msgstr ""
 
 #: user/models.py:236
 msgid "Additional metadata (e.g., conversation_id, agent_version_id)"
-msgstr "Zusätzliche Metadaten (z.B. conversation_id, agent_version_id)"
+msgstr ""
 
 #: user/models.py:240 user/models.py:241
 msgid "Media"
-msgstr "Medien"
+msgstr ""
 
 #: user/serializers.py:24
 msgid "Email already exists"
-msgstr "E-Mail-Adresse existiert bereits"
+msgstr ""
 
 #: user/serializers.py:75 user/serializers.py:77
 msgid "Invalid email or password"
-msgstr "Ungültige E-Mail-Adresse oder Passwort"
+msgstr ""
 
 #: user/serializers.py:80
 msgid "Email is not verified"
-msgstr "E-Mail ist nicht verifiziert"
+msgstr ""
 
 #: user/serializers.py:235
 msgid "Only PDF and image files (JPEG, PNG, GIF, WebP, SVG, BMP) are allowed."
 msgstr ""
-"Es sind nur PDF- und Bilddateien (JPEG, PNG, GIF, WebP, SVG, BMP) erlaubt."
 
 #: user/services.py:178
 msgid "User is already a member of the team"
-msgstr "Benutzer ist bereits Mitglied des Teams"
+msgstr ""
 
 #: user/services.py:273
 msgid "User does not exist"
-msgstr "Benutzer existiert nicht"
+msgstr ""
 
 #: user/services.py:311
 msgid "Signup is not active"
-msgstr "Registrierung ist nicht aktiv"
+msgstr ""
 
 #: user/views.py:42 user/views.py:43
 msgid "Install WaterCrawl"
-msgstr "WaterCrawl installieren"
+msgstr ""
 
 #: user/views.py:71 user/views.py:72 user/views.py:112 user/views.py:113
 msgid "Register a new user"
-msgstr "Einen neuen Benutzer registrieren"
+msgstr ""
 
 #: user/views.py:97 user/views.py:98
 msgid "Verify invitation"
-msgstr "Einladung überprüfen"
+msgstr ""
 
 #: user/views.py:143
 msgid "You can not register you already have an account"
-msgstr "Sie können sich nicht registrieren, Sie haben bereits ein Konto"
+msgstr ""
 
 #: user/views.py:151
 msgid ""
 "Emails do not match the invitation email. you have to register with the "
 "email that was invited"
 msgstr ""
-"E-Mail-Adressen stimmen nicht mit der Einladungs-E-Mail überein. Sie müssen "
-"sich mit der E-Mail-Adresse registrieren, die eingeladen wurde"
 
 #: user/views.py:169 user/views.py:170
 msgid "Authenticate using email and password"
-msgstr "Mit E-Mail und Passwort authentifizieren"
+msgstr ""
 
 #: user/views.py:201 user/views.py:202
 msgid "Send a verification email"
-msgstr "Eine Verifizierungs-E-Mail senden"
+msgstr ""
 
 #: user/views.py:228 user/views.py:229
 msgid "Authenticate using OAuth"
-msgstr "Mit OAuth authentifizieren"
+msgstr ""
 
 #: user/views.py:254
 msgid "Invalid token"
-msgstr "Ungültiges Token"
+msgstr ""
 
 #: user/views.py:267 user/views.py:268
 msgid "Send a forgot password email"
-msgstr "Eine E-Mail zum Passwort vergessen senden"
+msgstr ""
 
 #: user/views.py:288 user/views.py:289
 msgid "Verify reset password token"
-msgstr "Passwort-Reset-Token überprüfen"
+msgstr ""
 
 #: user/views.py:295 user/views.py:296
 msgid "Reset password"
-msgstr "Passwort zurücksetzen"
+msgstr ""
 
 #: user/views.py:324 user/views.py:325
 msgid "Verify email"
-msgstr "E-Mail verifizieren"
+msgstr ""
 
 #: user/views.py:358
 msgid "Get user profile"
-msgstr "Benutzerprofil abrufen"
+msgstr ""
 
 #: user/views.py:359
 msgid "Get the current user profile"
-msgstr "Das aktuelle Benutzerprofil abrufen"
+msgstr ""
 
 #: user/views.py:363 user/views.py:364
 msgid "Update user profile"
-msgstr "Benutzerprofil aktualisieren"
+msgstr ""
 
 #: user/views.py:386 user/views.py:387
 msgid "Get my invitations"
-msgstr "Meine Einladungen abrufen"
+msgstr ""
 
 #: user/views.py:391 user/views.py:392
 msgid "Accept an invitation"
-msgstr "Eine Einladung annehmen"
+msgstr ""
 
 #: user/views.py:418 user/views.py:419
 msgid "Create a new team"
-msgstr "Ein neues Team erstellen"
+msgstr ""
 
 #: user/views.py:423 user/views.py:424
 msgid "Get a team"
-msgstr "Ein Team abrufen"
+msgstr ""
 
 #: user/views.py:428 user/views.py:429
 msgid "Update a team"
-msgstr "Ein Team aktualisieren"
+msgstr ""
 
 #: user/views.py:433 user/views.py:434
 msgid "List teams"
-msgstr "Teams auflisten"
+msgstr ""
 
 #: user/views.py:438
 msgid "Get/Update the current team"
-msgstr "Das aktuelle Team abrufen/aktualisieren"
+msgstr ""
 
 #: user/views.py:439
 msgid "Get the current team"
-msgstr "Das aktuelle Team abrufen"
+msgstr ""
 
 #: user/views.py:444 user/views.py:445
 msgid "Invite a user to the current team"
-msgstr "Einen Benutzer zum aktuellen Team einladen"
+msgstr ""
 
 #: user/views.py:451 user/views.py:452
 msgid "List invitations to the current team"
-msgstr "Einladungen zum aktuellen Team auflisten"
+msgstr ""
 
 #: user/views.py:457 user/views.py:458
 msgid "Revoke an invitation"
-msgstr "Eine Einladung widerrufen"
+msgstr ""
 
 #: user/views.py:463
 msgid "Get the invitation URL"
-msgstr "Einladungs-URL abrufen"
+msgstr ""
 
 #: user/views.py:464
 msgid "Get the invitation URL for the selected invitation"
-msgstr "Einladungs-URL für die ausgewählte Einladung abrufen"
+msgstr ""
 
 #: user/views.py:469
 msgid "Resend the invitation email"
-msgstr "Einladungs-E-Mail erneut senden"
+msgstr ""
 
 #: user/views.py:470
 msgid "Resend the invitation email to the invited user"
-msgstr "Einladungs-E-Mail an den eingeladenen Benutzer erneut senden"
+msgstr ""
 
 #: user/views.py:587 user/views.py:588
 msgid "Create a new API key"
-msgstr "Einen neuen API-Schlüssel erstellen"
+msgstr ""
 
 #: user/views.py:592 user/views.py:593
 msgid "List API keys"
-msgstr "API-Schlüssel auflisten"
+msgstr ""
 
 #: user/views.py:597 user/views.py:598
 msgid "Delete an API key"
-msgstr "Einen API-Schlüssel löschen"
+msgstr ""
 
 #: user/views.py:625 user/views.py:626
 msgid "List team members"
-msgstr "Teammitglieder auflisten"
+msgstr ""
 
 #: user/views.py:630 user/views.py:631
 msgid "Delete a team member"
-msgstr "Ein Teammitglied löschen"
+msgstr ""
 
 #: user/views.py:648
 msgid "You can not delete the owner of the team"
-msgstr "Sie können den Eigentümer des Teams nicht löschen"
+msgstr ""
 
 #: user/views.py:654
 msgid "List media files"
-msgstr "Mediendateien auflisten"
+msgstr ""
 
 #: user/views.py:655
 msgid "List all media files for the current team"
-msgstr "Alle Mediendateien für das aktuelle Team auflisten"
+msgstr ""
 
 #: user/views.py:659
 msgid "Delete media file"
-msgstr "Mediendatei löschen"
+msgstr ""
 
 #: user/views.py:660
 msgid "Delete a media file"
-msgstr "Eine Mediendatei löschen"
+msgstr ""
 
 #: user/views.py:664
 msgid "Upload media file"
-msgstr "Mediendatei hochladen"
+msgstr ""
 
 #: user/views.py:665
 msgid "Upload a media file for use in agent conversations"
-msgstr "Eine Mediendatei für die Verwendung in Agent-Konversationen hochladen"
+msgstr ""
 
 #: user/views.py:712 user/views.py:713
 msgid "Refresh token"
-msgstr "Token aktualisieren"
+msgstr ""
 
 #: user/views.py:723 user/views.py:724
 msgid "Verify token"
-msgstr "Token überprüfen"
+msgstr ""

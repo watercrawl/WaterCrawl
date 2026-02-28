@@ -11,6 +11,7 @@ from agent.models import (
     AgentVersion,
     AgentTool,
     AgentKnowledgeBase,
+    AgentAsTool,
     Tool,
     APISpec,
     APISpecTool,
@@ -69,9 +70,9 @@ class AgentService:
             system_prompt=version.system_prompt,
             provider_config=version.provider_config,
             llm_model_key=version.llm_model_key,
-            llm_configs=version.llm_configs.copy(),
+            llm_configs=version.llm_configs.copy() if version.llm_configs else {},
             json_output=version.json_output,
-            json_schema=version.json_schema,
+            json_schema=version.json_schema.copy() if version.json_schema else None,
         )
 
         # Copy tools
@@ -90,10 +91,20 @@ class AgentService:
                 config=agent_kb.config.copy(),
             )
 
+        # Copy subagents (agents used as tools)
+        for agent_as_tool in version.agent_as_tools.all():
+            AgentAsTool.objects.create(
+                parent_agent_version=draft,
+                tool_agent=agent_as_tool.tool_agent,
+                config=agent_as_tool.config.copy(),
+            )
+
         # Copy Context Parameters
         for context_parameter in version.parameters.all():
             draft.parameters.create(
-                name=context_parameter.name, value=context_parameter.value
+                name=context_parameter.name,
+                value=context_parameter.value,
+                parameter_type=context_parameter.parameter_type,
             )
 
         return draft

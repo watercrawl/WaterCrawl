@@ -641,7 +641,7 @@ const APISpecsTab: React.FC = () => {
           <div>
             <label className="block text-sm font-medium text-foreground mb-1">
               {specHasBaseUrl ? t('tools.apiSpec.baseUrl') : t('tools.apiSpec.baseUrlRequired')}
-              {!specHasBaseUrl && <span className="text-warning ml-1">*</span>}
+              {!specHasBaseUrl && <span className="text-warning ms-1">*</span>}
             </label>
             <input
               type="url"
@@ -791,7 +791,7 @@ const APISpecsTab: React.FC = () => {
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           {t('tools.mcp.parameterValue')}
-                          {isRequired && <span className="text-warning ml-1">*</span>}
+                          {isRequired && <span className="text-warning ms-1">*</span>}
                         </label>
                         <input
                           type="text"

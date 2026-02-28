@@ -106,11 +106,11 @@ export interface Conversation {
 export interface ChatMessageRequest {
   query: string;
   user: string;
-  response_mode?: ResponseMode;
   inputs?: Record<string, any>;
   conversation_id?: string;
   files?: string[]; // Array of Media file UUIDs
   output_schema?: Record<string, unknown> | null; // JSON Schema for structured output (required when agent has json_output=true but no predefined schema)
+  event_types?: string[]; // Optional filter for event types (e.g., ['message', 'done'])
 }
 
 // File attachment for chat messages

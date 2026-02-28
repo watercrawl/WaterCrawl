@@ -3,6 +3,7 @@ from drf_spectacular.utils import extend_schema_view, extend_schema
 from drf_spectacular.views import SpectacularAPIView
 from drf_spectacular.generators import SchemaGenerator
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.renderers import JSONRenderer
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -10,6 +11,17 @@ from rest_framework.views import APIView
 from common import serializers, docs
 from common.services import FrontendSettingService
 from user.permissions import IsAuthenticatedTeam
+
+
+# Custom renderer that accepts both JSON and SSE media types
+class FlexibleChatRenderer(JSONRenderer):
+    """
+    Renderer that accepts both application/json and text/event-stream.
+    Used for chat endpoints to prevent 406 errors regardless of Accept header.
+    """
+
+    media_type = "*/*"
+    format = "json"
 
 
 @extend_schema_view(

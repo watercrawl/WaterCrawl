@@ -214,3 +214,47 @@ class MediaUploadSerializer(serializers.Serializer):
         default=dict,
         help_text="Optional metadata dictionary (e.g., conversation_id, agent_version_id)",
     )
+
+    def validate_file(self, value):
+        """Validate that only PDF and image files are uploaded."""
+        # Allowed content types
+        allowed_types = [
+            "application/pdf",
+            "image/jpeg",
+            "image/jpg",
+            "image/png",
+            "image/gif",
+            "image/webp",
+            "image/svg+xml",
+            "image/bmp",
+        ]
+
+        # Check content type
+        if value.content_type not in allowed_types:
+            raise serializers.ValidationError(
+                _(
+                    "Only PDF and image files (JPEG, PNG, GIF, WebP, SVG, BMP) are allowed."
+                )
+            )
+
+        # Optional: Check file extension as additional validation
+        allowed_extensions = [
+            ".pdf",
+            ".jpg",
+            ".jpeg",
+            ".png",
+            ".gif",
+            ".webp",
+            ".svg",
+            ".bmp",
+        ]
+        file_ext = (
+            value.name.lower()[value.name.rfind(".") :] if "." in value.name else ""
+        )
+
+        if file_ext and file_ext not in allowed_extensions:
+            raise serializers.ValidationError(
+                f"File extension '{file_ext}' is not allowed. Only PDF and image files are accepted."
+            )
+
+        return value

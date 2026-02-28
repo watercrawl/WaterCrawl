@@ -43,7 +43,7 @@ const ToolCallCard: React.FC<ToolCallCardProps> = ({ toolCall, isParallel = fals
       <button
         onClick={() => setIsExpanded(!isExpanded)}
         disabled={isLoading && !toolCall.input}
-        className="w-full px-4 py-3 flex items-center gap-3 text-left hover:bg-muted/50 transition-colors disabled:cursor-not-allowed"
+        className="w-full px-4 py-3 flex items-center gap-3 text-start hover:bg-muted/50 transition-colors disabled:cursor-not-allowed"
       >
         {/* Expand/Collapse Icon */}
         <div className="flex-shrink-0">

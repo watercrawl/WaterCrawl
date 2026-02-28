@@ -65,6 +65,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^4.2.0"
 ruff = "^0.11.2"
+polib = "^1.2.0"
 
 
 [tool.poetry.dependencies]

@@ -935,8 +935,8 @@ class AgentToolExecutor(ToolExecutor):
                     status="error",
                 )
 
-            # Invoke the agent with the query
-            message_block = conversation.chat_blocking(query, sub_agent=True)
+            # Invoke the agent with the query (using sync method that consumes streaming)
+            message_block = conversation.chat_sync(query, sub_agent=True)
 
             # Extract the response from messages
             message = message_block.messages.last()

@@ -117,3 +117,41 @@ AUDIO_MIME_TYPES = [
 ]
 
 ALL_SUPPORTED_MIME_TYPES = IMAGE_MIME_TYPES + FILE_MIME_TYPES + AUDIO_MIME_TYPES
+
+# Chat event types (for event_types filtering)
+EVENT_TYPE_CONTENT = "content"
+EVENT_TYPE_CHAT_MODEL_START = "chat_model_start"
+EVENT_TYPE_CHAT_MODEL_END = "chat_model_end"
+EVENT_TYPE_TOOL_CALL_START = "tool_call_start"
+EVENT_TYPE_TOOL_CALL_END = "tool_call_end"
+EVENT_TYPE_CONVERSATION = "conversation"
+EVENT_TYPE_TITLE = "title"
+EVENT_TYPE_DONE = "done"
+EVENT_TYPE_ERROR = "error"
+EVENT_TYPE_PING = "ping"
+EVENT_TYPE_STRUCTURED_RESPONSE = "structured_response"
+
+# Critical events that are always sent (cannot be filtered out)
+CRITICAL_EVENT_TYPES = {
+    EVENT_TYPE_PING,
+    EVENT_TYPE_CONVERSATION,
+    EVENT_TYPE_DONE,
+    EVENT_TYPE_ERROR,
+}
+
+# All valid event types
+EVENT_TYPE_CHOICES = (
+    (EVENT_TYPE_CONTENT, "Content"),
+    (EVENT_TYPE_CHAT_MODEL_START, "Chat Model Start"),
+    (EVENT_TYPE_CHAT_MODEL_END, "Chat Model End"),
+    (EVENT_TYPE_TOOL_CALL_START, "Tool Call Start"),
+    (EVENT_TYPE_TOOL_CALL_END, "Tool Call End"),
+    (EVENT_TYPE_CONVERSATION, "Conversation"),
+    (EVENT_TYPE_TITLE, "Title"),
+    (EVENT_TYPE_DONE, "Done"),
+    (EVENT_TYPE_ERROR, "Error"),
+    (EVENT_TYPE_PING, "Ping"),
+    (EVENT_TYPE_STRUCTURED_RESPONSE, "Structured Response"),
+)
+
+VALID_EVENT_TYPES = {choice[0] for choice in EVENT_TYPE_CHOICES}

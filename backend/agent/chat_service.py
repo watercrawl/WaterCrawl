@@ -2,9 +2,8 @@ import base64
 import logging
 import time
 import traceback
-from typing import Generator, List, Dict, Any, Optional, AsyncIterator, Union
+from typing import Generator, List, Dict, Any, Optional, AsyncIterator, Union, Set
 
-from django.core.exceptions import ValidationError
 from langchain_core.messages import (
     SystemMessage,
     AIMessage,
@@ -124,10 +123,19 @@ class ChatMessageHistory:
 class FrontendEventStream:
     """Unified processor for astream_events to frontend consumption."""
 
-    def __init__(self, chain, include_types: Optional[list[str]] = None):
+    def __init__(
+        self,
+        chain,
+        include_types: Optional[list[str]] = None,
+        event_types: Optional[Set[str]] = None,
+    ):
         self.chain: Runnable = chain
         self.include_types = include_types or ["chat_model", "tool", "chain"]
         self.agent_state = None
+        self.event_types = (
+            event_types  # None means all events, empty set means all events
+        )
+        self.last_event_time = time.time()
 
     @property
     def messages(self) -> List[BaseMessage]:
@@ -141,10 +149,30 @@ class FrontendEventStream:
             return None
         return self.agent_state.get("structured_response")
 
+    def should_send_event(self, event: dict) -> bool:
+        """Check if event should be sent based on event_types filter.
+
+        Always send: ping, conversation, done, error
+        If event_types is None or empty set, send all events.
+        Otherwise, only send events in the filter.
+        """
+        event_name = event.get("event")
+
+        # Always send these critical events
+        if event_name in consts.CRITICAL_EVENT_TYPES:
+            return True
+
+        # If no filter or empty filter, send all events
+        if self.event_types is None or len(self.event_types) == 0:
+            return True
+
+        # Otherwise check if event is in filter
+        return event_name in self.event_types
+
     async def stream_to_frontend(
         self, input_data: Dict[str, Any]
     ) -> AsyncIterator[Dict[str, Any]]:
-        """Main streaming method that handles all event types."""
+        """Main streaming method that handles all event types with keepalive pings."""
 
         runnable_config = RunnableConfig(recursion_limit=100)
 
@@ -155,14 +183,27 @@ class FrontendEventStream:
             config=runnable_config,
             exclude_tags=["sub_agent"],
         ):
+            # Check if we need to send a keepalive ping
+            current_time = time.time()
+            if current_time - self.last_event_time >= 10:
+                yield {
+                    "event": consts.EVENT_TYPE_PING,
+                    "data": {"timestamp": int(current_time)},
+                }
+                self.last_event_time = current_time
+
             processed = await self._process_event(event)
-            if processed:
+            if processed and self.should_send_event(processed):
                 yield processed
+                self.last_event_time = current_time
+
         if self.structured_response:
-            yield self.make_event(
-                "structured_response",
+            structured_event = self.make_event(
+                consts.EVENT_TYPE_STRUCTURED_RESPONSE,
                 self.structured_response,
             )
+            if self.should_send_event(structured_event):
+                yield structured_event
 
     async def _process_event(self, event: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         """Process individual events based on type."""
@@ -187,7 +228,7 @@ class FrontendEventStream:
 
         if event_type == "on_tool_start":
             return self.make_event(
-                "tool_call_start",
+                consts.EVENT_TYPE_TOOL_CALL_START,
                 {
                     "run_id": event["run_id"],
                     "name": event_name,
@@ -203,7 +244,7 @@ class FrontendEventStream:
             processed_output = await self._extract_command_output(output, event_name)
 
             return self.make_event(
-                "tool_call_end",
+                consts.EVENT_TYPE_TOOL_CALL_END,
                 {
                     "run_id": event["run_id"],
                     "name": event_name,
@@ -215,7 +256,7 @@ class FrontendEventStream:
 
         elif event_type == "on_tool_error":
             return self.make_event(
-                "tool_call_end",
+                consts.EVENT_TYPE_TOOL_CALL_END,
                 {
                     "run_id": event["run_id"],
                     "name": event_name,
@@ -250,7 +291,7 @@ class FrontendEventStream:
         """Handle chat model streaming events."""
         if event["event"] == "on_chat_model_stream":
             return self.make_event(
-                "content",
+                consts.EVENT_TYPE_CONTENT,
                 {
                     "source": event["name"],
                     "text": self.get_text_from_ai_message(event["data"]["chunk"]),
@@ -259,14 +300,14 @@ class FrontendEventStream:
             )
         elif event["event"] == "on_chat_model_start":
             return self.make_event(
-                "chat_model_start",
+                consts.EVENT_TYPE_CHAT_MODEL_START,
                 {
                     "run_id": event["run_id"],
                 },
             )
         elif event["event"] == "on_chat_model_end":
             return self.make_event(
-                "chat_model_end",
+                consts.EVENT_TYPE_CHAT_MODEL_END,
                 {
                     "run_id": event["run_id"],
                 },
@@ -481,6 +522,7 @@ class ConversationService:
         query: str,
         files: Optional[List[Media]] = None,
         output_schema: Optional[Dict[str, Any]] = None,
+        event_types: Optional[Set[str]] = None,
     ) -> Generator[dict, None, None]:
         """
         Process chat message and generate streaming response using AgentFactory.
@@ -490,45 +532,54 @@ class ConversationService:
             files: Optional list of Media files to attach to the message
             output_schema: Optional JSON Schema for structured output (used when agent has
                           json_output=True but no predefined schema)
+            event_types: Optional set of event types to filter (e.g., {'content', 'tool_call_start'})
+                        If None or empty set, all events are sent.
+                        Note: ping, conversation, done, and error events are always sent.
 
         Yields dictionary events that will be formatted by EventStreamResponse.
+        Sends keepalive pings every 10 seconds if no events are generated.
         """
         messages, message_ids = self.build_current_state(query, files=files)
         agent_executor = self.create_agent_executor(output_schema=output_schema)
 
-        stream = FrontendEventStream(agent_executor)
+        # Create stream with event filtering
+        stream = FrontendEventStream(agent_executor, event_types=event_types)
 
         yield stream.make_event(
-            "conversation",
+            consts.EVENT_TYPE_CONVERSATION,
             {
                 "id": str(self.conversation.uuid),
             },
         )
 
         try:
-            yield from async_generator_to_sync(
+            for event in async_generator_to_sync(
                 stream.stream_to_frontend,
                 {
                     "messages": messages,
                 },
-            )
+            ):
+                yield event
 
-            # Send completion event
+            # Persist output and send completion events
             new_messages = [
                 message for message in stream.messages if message.id not in message_ids
             ]
             self.persist_output(new_messages, stream.structured_response)
             self.fill_title(query)
-            yield stream.make_event("title", {"title": self.conversation.title})
-            yield stream.make_event("done", {})
+
+            # Title and done events (always sent due to critical status)
+            yield stream.make_event(
+                consts.EVENT_TYPE_TITLE, {"title": self.conversation.title}
+            )
+            yield stream.make_event(consts.EVENT_TYPE_DONE, {})
 
         except Exception as e:
             logger.error(f"Agent execution failed: {str(e)}")
             traceback.print_exc()
+            yield {"event": consts.EVENT_TYPE_ERROR, "data": {"error": str(e)}}
 
-            yield {"event": "error", "data": {"error": str(e)}}
-
-    def chat_blocking(
+    def chat_sync(
         self,
         query: str,
         files: Optional[List[Media]] = None,
@@ -536,45 +587,26 @@ class ConversationService:
         sub_agent: bool = False,
     ) -> MessageBlock:
         """
-        Process chat message using AgentFactory and return complete response (blocking mode).
+        Synchronous chat method that consumes streaming events and returns final MessageBlock.
+        Used for subagent calls that need blocking behavior.
 
         Args:
             query: The user's text input
             files: Optional list of Media files to attach to the message
-            output_schema: Optional JSON Schema for structured output (used when agent has
-                          json_output=True but no predefined schema)
+            output_schema: Optional JSON Schema for structured output
+            sub_agent: Whether this is a subagent call
 
-        Returns dictionary with conversation and message information.
+        Returns:
+            MessageBlock containing the agent's response
         """
-        # Add user message
-        messages, message_ids = self.build_current_state(query, files=files)
+        # Consume all streaming events
+        for _ in self.chat(
+            query, files=files, output_schema=output_schema, event_types=None
+        ):
+            pass  # Just consume events, we'll return the persisted block
 
-        agent_executor = self.create_agent_executor(
-            output_schema=output_schema, sub_agent=sub_agent
-        )
-
-        try:
-            # Execute agent (blocking)
-            result = agent_executor.invoke(
-                {
-                    "messages": messages,
-                },
-            )
-
-            # remove history from new messages and persist
-            new_messages = [
-                message
-                for message in result["messages"]
-                if message.id not in message_ids
-            ]
-            block = self.persist_output(new_messages, result.get("structured_response"))
-            self.fill_title(query)
-            return block
-
-        except Exception as e:
-            logger.error(f"Agent execution failed: {str(e)}")
-            traceback.print_exc()
-            raise ValidationError(str(e))
+        # Return the last persisted message block
+        return self.conversation.blocks.order_by("-created_at").first()
 
     def persist_output(
         self,

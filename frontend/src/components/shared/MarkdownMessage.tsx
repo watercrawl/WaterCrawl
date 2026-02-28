@@ -170,7 +170,7 @@ const MarkdownMessage: React.FC<MarkdownMessageProps> = ({ content, className = 
             return (
               <ul 
                 className={`space-y-2 mb-4 text-foreground ${
-                  isTaskList ? 'list-none' : 'list-disc pl-6 marker:text-primary'
+                  isTaskList ? 'list-none' : 'list-disc ps-6 marker:text-primary'
                 }`}
                 {...props}
               >
@@ -180,7 +180,7 @@ const MarkdownMessage: React.FC<MarkdownMessageProps> = ({ content, className = 
           },
           ol({ node: _node, children, ...props }) {
             return (
-              <ol className="list-decimal pl-6 space-y-2 mb-4 text-foreground marker:text-primary marker:font-semibold" {...props}>
+              <ol className="list-decimal ps-6 space-y-2 mb-4 text-foreground marker:text-primary marker:font-semibold" {...props}>
                 {children}
               </ol>
             );
@@ -203,7 +203,7 @@ const MarkdownMessage: React.FC<MarkdownMessageProps> = ({ content, className = 
           blockquote({ node: _node, children, ...props }) {
             return (
               <blockquote
-                className="border-l-4 border-primary pl-4 py-2 my-4 italic text-muted-foreground bg-muted/30 rounded-r"
+                className="border-s-4 border-primary ps-4 py-2 my-4 italic text-muted-foreground bg-muted/30 rounded-e"
                 {...props}
               >
                 {children}
@@ -243,7 +243,7 @@ const MarkdownMessage: React.FC<MarkdownMessageProps> = ({ content, className = 
           },
           th({ node: _node, children, ...props }) {
             return (
-              <th className="px-4 py-3 text-left text-xs font-semibold text-foreground uppercase tracking-wider" {...props}>
+              <th className="px-4 py-3 text-start text-xs font-semibold text-foreground uppercase tracking-wider" {...props}>
                 {children}
               </th>
             );

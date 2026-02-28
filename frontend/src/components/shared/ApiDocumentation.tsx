@@ -26,6 +26,8 @@ interface ApiDocumentationProps {
   tabs: ApiDocTab[];
   emptyStateDescriptionKey?: string;
   showEmptyState?: boolean;
+  showHeader?: boolean;
+  showBorder?: boolean;
 }
 
 function classNamesHelper(...classes: string[]) {
@@ -47,6 +49,8 @@ export const ApiDocumentation: React.FC<ApiDocumentationProps> = ({
   tabs,
   emptyStateDescriptionKey,
   showEmptyState = false,
+  showHeader = true,
+  showBorder = true,
 }) => {
   const { t } = useTranslation();
   const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
@@ -90,12 +94,14 @@ export const ApiDocumentation: React.FC<ApiDocumentationProps> = ({
   }
 
   return (
-    <div className="rounded-lg border border-border bg-card">
-      <div className="border-b border-border px-6 py-4">
-        <h3 className="text-base font-semibold text-foreground">{t(titleKey)}</h3>
-        <p className="mt-1 text-sm text-muted-foreground">{t(descriptionKey)}</p>
-      </div>
-      <div className="p-6">
+    <div className={showBorder ? "rounded-lg border border-border bg-card" : ""}>
+      {showHeader && (
+        <div className="border-b border-border px-6 py-4">
+          <h3 className="text-base font-semibold text-foreground">{t(titleKey)}</h3>
+          <p className="mt-1 text-sm text-muted-foreground">{t(descriptionKey)}</p>
+        </div>
+      )}
+      <div className={showBorder ? "p-6" : ""}>
         <TabGroup selectedIndex={selectedTab} onChange={setSelectedTab}>
           <TabList className="flex gap-x-1 rounded-lg bg-muted p-1">
             {tabs.map(tab => (

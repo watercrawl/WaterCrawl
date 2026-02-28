@@ -11,7 +11,7 @@ import Loading from '../../components/shared/Loading';
 import { useBreadcrumbs } from '../../contexts/BreadcrumbContext';
 import { agentApi } from '../../services/api/agent';
 
-import type { Agent } from '../../types/agent';
+import type { Agent, AgentVersion } from '../../types/agent';
 
 type IntegrationTab = 'api' | 'webhooks' | 'embed';
 
@@ -22,6 +22,7 @@ const AgentIntegrationsPage: React.FC = () => {
   const { agentId } = useParams<{ agentId: string }>();
 
   const [agent, setAgent] = useState<Agent | null>(null);
+  const [publishedVersion, setPublishedVersion] = useState<AgentVersion | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<IntegrationTab>('api');
 
@@ -37,6 +38,15 @@ const AgentIntegrationsPage: React.FC = () => {
       if (agentData.status !== 'published') {
         toast.error(t('agents.integrations.publishedOnly'));
         navigate(`/dashboard/agents/${agentId}`);
+        return;
+      }
+
+      // Fetch published version to get context variables
+      try {
+        const version = await agentApi.getPublishedVersion(agentData.uuid);
+        setPublishedVersion(version);
+      } catch (error) {
+        console.error('Error fetching published version:', error);
       }
     } catch (error: any) {
       console.error('Error fetching agent:', error);
@@ -91,7 +101,7 @@ const AgentIntegrationsPage: React.FC = () => {
   const renderTabContent = () => {
     switch (activeTab) {
       case 'api':
-        return <AgentApiDocumentation agent={agent} />;
+        return <AgentApiDocumentation agent={agent} contextVariables={publishedVersion?.parameters} />;
       case 'webhooks':
         return (
           <div className="flex h-full items-center justify-center">
@@ -151,7 +161,7 @@ const AgentIntegrationsPage: React.FC = () => {
       {/* Split View */}
       <div className="flex h-[calc(100vh-128px-64px)]">
         {/* Sidebar Navigation */}
-        <div className="w-64 border-r border-border bg-card flex-shrink-0">
+        <div className="w-64 border-e border-border bg-card flex-shrink-0">
           <div className="p-4">
             <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
               {t('agents.integrations.integrationType')}
@@ -174,7 +184,7 @@ const AgentIntegrationsPage: React.FC = () => {
                     }`}
                   >
                     <Icon className="h-5 w-5 flex-shrink-0" />
-                    <span className="flex-1 text-left">{tab.label}</span>
+                    <span className="flex-1 text-start">{tab.label}</span>
                     {tab.comingSoon && (
                       <span className="text-xs bg-muted px-1.5 py-0.5 rounded">
                         {t('common.soon')}

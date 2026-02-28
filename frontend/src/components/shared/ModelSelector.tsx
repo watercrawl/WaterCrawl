@@ -569,7 +569,7 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({
                       key={pc.uuid}
                       type="button"
                       onClick={() => handleProviderSelect(pc.uuid)}
-                      className="w-full rounded-md border border-border bg-card px-4 py-3 text-left hover:bg-muted focus:outline-none focus:ring-2 focus:ring-primary"
+                      className="w-full rounded-md border border-border bg-card px-4 py-3 text-start hover:bg-muted focus:outline-none focus:ring-2 focus:ring-primary"
                     >
                       <div className="font-medium text-foreground">{pc.title}</div>
                       <div className="text-sm text-muted-foreground">{pc.providerName}</div>
