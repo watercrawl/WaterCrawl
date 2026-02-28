@@ -107,15 +107,18 @@ for event in client.chat_with_agent(
     conversation_id=None,  # Optional: continue existing conversation
     inputs=${inputsPython},${inputsComment}
     files=[],
-    event_types=None  # Optional: filter events (e.g., ['message', 'done'])${schemaParam}
+    event_types=None  # Optional: filter events (e.g., ['content', 'done'])${schemaParam}
 ):
     # Handle different event types
-    if event['event'] == 'message':
-        # Stream message chunks as they arrive
-        print(event['data'], end='', flush=True)
-    elif event['event'] == 'tool_call':
+    if event['event'] == 'content':
+        # Stream content chunks as they arrive
+        print(event['data']['text'], end='', flush=True)
+    elif event['event'] == 'tool_call_start':
         # Agent is calling a tool
-        print(f"\\nTool: {event['data']['tool_name']}")
+        print(f"\\nTool: {event['data']['name']}")
+    elif event['event'] == 'tool_call_end':
+        # Tool execution completed
+        print(f"\\nTool result: {event['data']['output']}")
     elif event['event'] == 'done':
         # Stream completed
         print("\\nDone")
@@ -124,14 +127,17 @@ for event in client.chat_with_agent(
         pass
 
 # Available event types:
-# - message: Text chunks from the agent
-# - tool_call: When agent calls a tool
-# - tool_result: Result from tool execution
+# - content: Text chunks from the agent
+# - chat_model_start: Chat model started
+# - chat_model_end: Chat model finished
+# - tool_call_start: Tool execution started
+# - tool_call_end: Tool execution finished
 # - conversation: Conversation metadata
 # - title: Generated conversation title
 # - done: Stream completion
 # - error: Error occurred
-# - ping: Keepalive signal`;
+# - ping: Keepalive signal
+# - structured_response: JSON structured output (when enabled)`;
     };
 
     const generateNodeCode = (apiKey: string) => {
@@ -159,34 +165,40 @@ const stream = client.chatWithAgent({
   conversationId: null,  // Optional: continue existing conversation
   inputs: ${inputsNode},${inputsCommentNode}
   files: [],
-  eventTypes: null  // Optional: filter events (e.g., ['message', 'done'])${schemaParam}
+  eventTypes: null  // Optional: filter events (e.g., ['content', 'done'])${schemaParam}
 });
 
 for await (const event of stream) {
   // Handle different event types
-  if (event.event === 'message') {
-    // Stream message chunks as they arrive
-    process.stdout.write(event.data);
-  } else if (event.event === 'tool_call') {
+  if (event.event === 'content') {
+    // Stream content chunks as they arrive
+    process.stdout.write(event.data.text);
+  } else if (event.event === 'tool_call_start') {
     // Agent is calling a tool
-    console.log(\`\\nTool: \${event.data.tool_name}\`);
+    console.log(\`\nTool: \${event.data.name}\`);
+  } else if (event.event === 'tool_call_end') {
+    // Tool execution completed
+    console.log(\`\nTool result: \${event.data.output}\`);
   } else if (event.event === 'done') {
     // Stream completed
-    console.log('\\nDone');
+    console.log('\nDone');
   } else if (event.event === 'ping') {
     // Keepalive ping (sent every 10s if no events)
   }
 }
 
 // Available event types:
-// - message: Text chunks from the agent
-// - tool_call: When agent calls a tool
-// - tool_result: Result from tool execution
+// - content: Text chunks from the agent
+// - chat_model_start: Chat model started
+// - chat_model_end: Chat model finished
+// - tool_call_start: Tool execution started
+// - tool_call_end: Tool execution finished
 // - conversation: Conversation metadata
 // - title: Generated conversation title
 // - done: Stream completion
 // - error: Error occurred
-// - ping: Keepalive signal`;
+// - ping: Keepalive signal
+// - structured_response: JSON structured output (when enabled)`;
     };
 
     return [

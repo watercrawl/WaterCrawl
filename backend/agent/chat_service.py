@@ -159,7 +159,7 @@ class FrontendEventStream:
         event_name = event.get("event")
 
         # Always send these critical events
-        if event_name in {"ping", "conversation", "done", "error"}:
+        if event_name in consts.CRITICAL_EVENT_TYPES:
             return True
 
         # If no filter or empty filter, send all events
@@ -186,7 +186,10 @@ class FrontendEventStream:
             # Check if we need to send a keepalive ping
             current_time = time.time()
             if current_time - self.last_event_time >= 10:
-                yield {"event": "ping", "data": {"timestamp": int(current_time)}}
+                yield {
+                    "event": consts.EVENT_TYPE_PING,
+                    "data": {"timestamp": int(current_time)},
+                }
                 self.last_event_time = current_time
 
             processed = await self._process_event(event)
@@ -196,7 +199,7 @@ class FrontendEventStream:
 
         if self.structured_response:
             structured_event = self.make_event(
-                "structured_response",
+                consts.EVENT_TYPE_STRUCTURED_RESPONSE,
                 self.structured_response,
             )
             if self.should_send_event(structured_event):
@@ -225,7 +228,7 @@ class FrontendEventStream:
 
         if event_type == "on_tool_start":
             return self.make_event(
-                "tool_call_start",
+                consts.EVENT_TYPE_TOOL_CALL_START,
                 {
                     "run_id": event["run_id"],
                     "name": event_name,
@@ -241,7 +244,7 @@ class FrontendEventStream:
             processed_output = await self._extract_command_output(output, event_name)
 
             return self.make_event(
-                "tool_call_end",
+                consts.EVENT_TYPE_TOOL_CALL_END,
                 {
                     "run_id": event["run_id"],
                     "name": event_name,
@@ -253,7 +256,7 @@ class FrontendEventStream:
 
         elif event_type == "on_tool_error":
             return self.make_event(
-                "tool_call_end",
+                consts.EVENT_TYPE_TOOL_CALL_END,
                 {
                     "run_id": event["run_id"],
                     "name": event_name,
@@ -288,7 +291,7 @@ class FrontendEventStream:
         """Handle chat model streaming events."""
         if event["event"] == "on_chat_model_stream":
             return self.make_event(
-                "content",
+                consts.EVENT_TYPE_CONTENT,
                 {
                     "source": event["name"],
                     "text": self.get_text_from_ai_message(event["data"]["chunk"]),
@@ -297,14 +300,14 @@ class FrontendEventStream:
             )
         elif event["event"] == "on_chat_model_start":
             return self.make_event(
-                "chat_model_start",
+                consts.EVENT_TYPE_CHAT_MODEL_START,
                 {
                     "run_id": event["run_id"],
                 },
             )
         elif event["event"] == "on_chat_model_end":
             return self.make_event(
-                "chat_model_end",
+                consts.EVENT_TYPE_CHAT_MODEL_END,
                 {
                     "run_id": event["run_id"],
                 },
@@ -529,7 +532,7 @@ class ConversationService:
             files: Optional list of Media files to attach to the message
             output_schema: Optional JSON Schema for structured output (used when agent has
                           json_output=True but no predefined schema)
-            event_types: Optional set of event types to filter (e.g., {'message', 'tool_call'})
+            event_types: Optional set of event types to filter (e.g., {'content', 'tool_call_start'})
                         If None or empty set, all events are sent.
                         Note: ping, conversation, done, and error events are always sent.
 
@@ -543,7 +546,7 @@ class ConversationService:
         stream = FrontendEventStream(agent_executor, event_types=event_types)
 
         yield stream.make_event(
-            "conversation",
+            consts.EVENT_TYPE_CONVERSATION,
             {
                 "id": str(self.conversation.uuid),
             },
@@ -566,13 +569,15 @@ class ConversationService:
             self.fill_title(query)
 
             # Title and done events (always sent due to critical status)
-            yield stream.make_event("title", {"title": self.conversation.title})
-            yield stream.make_event("done", {})
+            yield stream.make_event(
+                consts.EVENT_TYPE_TITLE, {"title": self.conversation.title}
+            )
+            yield stream.make_event(consts.EVENT_TYPE_DONE, {})
 
         except Exception as e:
             logger.error(f"Agent execution failed: {str(e)}")
             traceback.print_exc()
-            yield {"event": "error", "data": {"error": str(e)}}
+            yield {"event": consts.EVENT_TYPE_ERROR, "data": {"error": str(e)}}
 
     def chat_sync(
         self,

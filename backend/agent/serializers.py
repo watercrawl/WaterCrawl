@@ -2,6 +2,7 @@ from django.db.transaction import atomic
 from rest_framework import serializers
 from django.utils.translation import gettext as _
 
+from agent import consts
 from agent.models import (
     Agent,
     AgentVersion,
@@ -609,14 +610,15 @@ class ChatMessageRequestSerializer(serializers.Serializer):
         ),
     )
     event_types = serializers.ListField(
-        child=serializers.CharField(),
+        child=serializers.ChoiceField(choices=consts.EVENT_TYPE_CHOICES),
         required=False,
         allow_null=True,
         default=None,
         help_text=(
             "Optional list of event types to filter. Only specified event types will be sent. "
-            "Available types: 'message', 'tool_call', 'tool_result', 'conversation', 'title', 'done', 'error', 'ping'. "
-            "If not provided, all events are sent."
+            f"Available types: {', '.join([choice[0] for choice in consts.EVENT_TYPE_CHOICES])}. "
+            "If not provided, all events are sent. "
+            f"Note: {', '.join(consts.CRITICAL_EVENT_TYPES)} are always sent regardless of filter."
         ),
     )
 
