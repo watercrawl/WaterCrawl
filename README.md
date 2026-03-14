@@ -1,4 +1,4 @@
-![Water Crawl](https://raw.githubusercontent.com/watercrawl/WaterCrawl/5bb91dcb07a619469688372444e27dc3deab185b/assets/banner.png)
+![Water Crawl](assets/banner.png)
 
 <div align="center">
 
@@ -66,6 +66,7 @@ For local development and contribution, please follow our [Contributing Guide](.
 
 ## ✨ Features
 
+### Core Capabilities
 - **🕸️ Advanced Web Crawling & Scraping** - Crawl websites with highly customizable options for depth, speed, and targeting specific content
 - **🔍 Powerful Search Engine** - Find relevant content across the web with multiple search depths (basic, advanced, ultimate)
 - **🌐 Multi-language Support** - Search and crawl content in different languages with country-specific targeting
@@ -74,6 +75,14 @@ For local development and contribution, please follow our [Contributing Guide](.
 - **🔌 Rich Ecosystem** - Integrations with Dify, N8N, and other AI/automation platforms
 - **🏠 Self-hosted & Open Source** - Full control over your data with easy deployment options
 - **📊 Advanced Results Handling** - Download and process search results with customizable parameters
+
+### AI Agent Capabilities 🆕
+- **📚 Knowledge Base Management** - Create and manage intelligent knowledge bases from your data sources with AI-powered indexing and retrieval
+- **🤖 Custom Agent** - Deploy custom AI agents tailored to your specific workflows with intelligent decision-making capabilities
+- **🔧 MCP Tools Integration** - Extend functionality with Model Context Protocol tools and custom integrations
+- **🌐 HTTP Calls as Tools** - Convert any HTTP API into callable tools for your AI agents and workflows
+- **🔗 Connect Knowledge Base to Agents** - Link knowledge bases directly to AI agents for enhanced context and intelligent responses
+- **🎯 Use Agent as Tool** - Compose complex workflows by using agents as tools within other agents for hierarchical task delegation
 
 Check our [API Overview](https://docs.watercrawl.dev/intro) to learn more about these features.
 
