@@ -63,7 +63,7 @@ export const AdminLayout: React.FC = () => {
       {/* Mobile Sidebar */}
       <MobileSidebarContainer isOpen={sidebarOpen} onClose={closeSidebar}>
         <Sidebar
-          logo={!isDark ? '/logo.svg' : '/logo-dark.svg'}
+          logo={!isDark ? '/logo.svg?v=1' : '/logo-dark.svg?v=1'}
           logoAlt="WaterCrawl Admin"
           title={t('admin.panelTitle')}
           subtitle="Administration Panel"
@@ -79,7 +79,7 @@ export const AdminLayout: React.FC = () => {
       {/* Desktop Sidebar */}
       <DesktopSidebarContainer>
         <Sidebar
-          logo={!isDark ? '/logo.svg' : '/logo-dark.svg'}
+          logo={!isDark ? '/logo.svg?v=1' : '/logo-dark.svg?v=1'}
           logoAlt="WaterCrawl Admin"
           title={t('admin.panelTitle')}
           subtitle="Administration Panel"

@@ -33,7 +33,7 @@ export const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
         {/* Logo, Name and Version */}
         <div className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2.5">
           <img
-            src={isDark ? '/logo-dark.svg' : '/logo.svg'}
+            src={isDark ? '/logo-dark.svg?v=1' : '/logo.svg?v=1'}
             alt="WaterCrawl"
             className="h-10 w-10"
           />

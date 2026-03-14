@@ -26,7 +26,7 @@ export const PublicSkeleton: React.FC<{ children: React.ReactNode }> = ({ childr
           <span>
             {theme === 'dark' ? (
               <img
-                src="/logo-dark.svg"
+                src="/logo-dark.svg?v=1"
                 alt="WaterCrawl"
                 className="mx-2 inline-block"
                 width={42}
@@ -34,7 +34,7 @@ export const PublicSkeleton: React.FC<{ children: React.ReactNode }> = ({ childr
               />
             ) : (
               <img
-                src="/logo.svg"
+                src="/logo.svg?v=1"
                 alt="WaterCrawl"
                 className="mx-2 inline-block"
                 width={42}
