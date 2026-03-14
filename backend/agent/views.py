@@ -4,7 +4,7 @@ from django.shortcuts import render
 from drf_spectacular.types import OpenApiTypes
 from langchain_core.messages import ToolMessage
 from rest_framework import status, mixins
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -121,7 +121,7 @@ class AgentViewSet(
 ):
     """ViewSet for managing agents."""
 
-    permission_classes = [IsAuthenticatedTeam]
+    permission_classes = [IsAuthenticated, IsAuthenticatedTeam]
     queryset = Agent.objects.none()
     serializer_class = AgentListSerializer
     filterset_class = AgentFilter
@@ -264,6 +264,7 @@ class AgentViewSet(
         url_path="chat-message",
         throttle_classes=[AgentRateThrottle],
         renderer_classes=[FlexibleChatRenderer],
+        permission_classes=[IsAuthenticatedTeam],
     )
     def chat_with_published(self, request, **kwargs):
         """Chat with published version (streaming or blocking)."""
@@ -305,7 +306,7 @@ class AgentVersionViewSet(
     mixins.RetrieveModelMixin,
     GenericViewSet,
 ):
-    permission_classes = [IsAuthenticatedTeam]
+    permission_classes = [IsAuthenticated, IsAuthenticatedTeam]
     queryset = AgentVersion.objects.none()
     lookup_field = "uuid"
 
@@ -369,7 +370,7 @@ class AgentDraftToolViewSet(
     """ViewSet for managing tools in agent drafts."""
 
     pagination_class = None
-    permission_classes = [IsAuthenticatedTeam]
+    permission_classes = [IsAuthenticated, IsAuthenticatedTeam]
     queryset = AgentTool.objects.none()
     lookup_field = "uuid"
 
@@ -447,7 +448,7 @@ class AgentDraftKnowledgeBaseViewSet(
     """ViewSet for managing knowledge bases in agent drafts."""
 
     pagination_class = None
-    permission_classes = [IsAuthenticatedTeam]
+    permission_classes = [IsAuthenticated, IsAuthenticatedTeam]
     queryset = AgentKnowledgeBase.objects.none()
     lookup_field = "uuid"
 
@@ -523,7 +524,7 @@ class AgentAsToolViewSet(
     """ViewSet for managing agents as tools in agent drafts."""
 
     pagination_class = None
-    permission_classes = [IsAuthenticatedTeam]
+    permission_classes = [IsAuthenticated, IsAuthenticatedTeam]
     queryset = AgentAsTool.objects.none()
     lookup_field = "uuid"
 
@@ -583,7 +584,7 @@ class ToolViewSet(
 ):
     """ViewSet for listing built-in tools."""
 
-    permission_classes = [IsAuthenticatedTeam]
+    permission_classes = [IsAuthenticated, IsAuthenticatedTeam]
     serializer_class = ToolListSerializer
     queryset = Tool.objects.none()
 
@@ -669,7 +670,7 @@ class APISpecViewSet(
 ):
     """ViewSet for managing API specs."""
 
-    permission_classes = [IsAuthenticatedTeam]
+    permission_classes = [IsAuthenticated, IsAuthenticatedTeam]
     serializer_class = APISpecSerializer
     queryset = APISpec.objects.none()
     lookup_field = "uuid"
@@ -765,7 +766,7 @@ class MCPServerViewSet(
 ):
     """ViewSet for managing MCP servers."""
 
-    permission_classes = [IsAuthenticatedTeam]
+    permission_classes = [IsAuthenticated, IsAuthenticatedTeam]
     serializer_class = MCPServerSerializer
     queryset = MCPServer.objects.none()
     lookup_field = "uuid"
