@@ -12,6 +12,7 @@ from rest_framework.mixins import (
     UpdateModelMixin,
     DestroyModelMixin,
 )
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
@@ -165,6 +166,7 @@ class KnowledgeBaseViewSet(
         url_path="context-aware-enhancer",
         name="context-aware-enhancer",
         throttle_classes=[SummaryEnhancementRateThrottle],
+        permission_classes=[IsAuthenticated, IsAuthenticatedTeam],
     )
     def context_aware_enhancer(self, request):
         """Enhance documents using context-aware summarization."""
