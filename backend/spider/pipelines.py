@@ -14,24 +14,22 @@ from .spiders.sitemap import SitemapScrapper
 
 
 class SpiderPipeline:
-    @sync_to_async
-    def process_item(self, item: ScrapedItem, spider):
+    # Note: do not use @sync_to_async as a method decorator here. asgiref's
+    # SyncToAsync.__get__ returns a fresh functools.partial on every attribute
+    # access, which breaks Scrapy 2.14+ MiddlewareManager's
+    # _mw_methods_requiring_spider set membership check (the two
+    # pipe.process_item accesses produce two non-equal partials). When the
+    # check misses, Scrapy calls the method without the spider argument and
+    # silently drops every item. Define an async method and wrap the ORM call
+    # internally instead.
+    async def process_item(self, item, spider):
         if isinstance(item, ScrapedItem) and isinstance(spider, SiteScrapper):
-            """
-            spider # type: SiteScrapper
-            """
-            spider.crawler_service.add_scraped_item(item)
+            await sync_to_async(spider.crawler_service.add_scraped_item)(item)
         elif isinstance(item, SearchResult) and isinstance(spider, SearchScrapper):
-            """
-            spider # type: SearchScrapper
-            """
-            spider.search_service.add_search_result(item)
-
+            await sync_to_async(spider.search_service.add_search_result)(item)
         elif isinstance(item, SitemapResult) and isinstance(spider, SitemapScrapper):
-            """
-            spider # type: SitemapScrapper
-            """
-            spider.sitemap_request_service.add_sitemap_result(item)
+            await sync_to_async(spider.sitemap_request_service.add_sitemap_result)(item)
+        return item
 
 
 class SiteScrapperPipeline:

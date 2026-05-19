@@ -8,6 +8,11 @@ from watercrawl.sentry import init_sentry
 
 sys.path.append(os.path.dirname(os.path.abspath(".")))
 os.environ["DJANGO_SETTINGS_MODULE"] = "watercrawl.settings"
+# Scrapy >= 2.14 runs spider __init__/from_crawler inside the asyncio event loop,
+# so the sync ORM lookups in our spider constructors would raise
+# SynchronousOnlyOperation. The lookups are brief and one-shot, so we opt in to
+# Django's documented escape hatch for sync-from-async ORM access.
+os.environ.setdefault("DJANGO_ALLOW_ASYNC_UNSAFE", "true")
 django.setup()
 
 init_sentry()
@@ -120,6 +125,11 @@ HTTPCACHE_STORAGE = "scrapy.extensions.httpcache.FilesystemCacheStorage"
 # Set settings whose default value is deprecated to a future-proof value
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
+
+# Scrapy 2.14 switched the default scheduler priority queue to
+# DownloaderAwarePriorityQueue, which raises if CONCURRENT_REQUESTS_PER_IP is
+# set. We rely on per-IP concurrency limits, so pin the previous default.
+SCHEDULER_PRIORITY_QUEUE = "scrapy.pqueues.ScrapyPriorityQueue"
 
 LOG_LEVEL = settings.SCRAPY_LOG_LEVEL
 
