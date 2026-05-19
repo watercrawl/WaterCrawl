@@ -46,16 +46,14 @@ def _patch_redis_connections(monkeypatch, fake_redis):
         core_services, "get_redis_connection", lambda *a, **kw: fake_redis
     )
 
-    # Patch locker.helpers Redis client constructor as well.
-    try:
-        import locker.helpers as locker_helpers
+    # locker/helpers.py builds the Redis client at module import time:
+    #   connection = Redis(host=..., port=..., db=..., password=...)
+    # By the time this fixture runs, that connection object already exists,
+    # so patching ``redis.Redis`` is too late. Replace the cached connection
+    # object directly so ``redis_lock`` writes/reads against fakeredis.
+    import locker.helpers as locker_helpers
 
-        if hasattr(locker_helpers, "redis"):
-            monkeypatch.setattr(
-                locker_helpers.redis, "Redis", lambda *_a, **_kw: fake_redis
-            )
-    except Exception:
-        pass
+    monkeypatch.setattr(locker_helpers, "connection", fake_redis)
 
 
 # --- API client / auth -------------------------------------------------------
