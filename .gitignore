@@ -34,3 +34,4 @@ VERSION
 
 # Docker volumes
 docker/volumes/
+docker/volumes-dev/

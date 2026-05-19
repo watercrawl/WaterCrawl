@@ -27,5 +27,5 @@ Thumbs.db
 .scrapy/*
 .celery/*
 docker-compose.yml
-celerybeat-schedule.db
+celerybeat-schedule*
 VERSION

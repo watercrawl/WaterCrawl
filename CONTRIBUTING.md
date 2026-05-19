@@ -140,6 +140,36 @@ pnpm run lint:fix
 
 Our CI pipeline automatically runs linting checks on pull requests. Please ensure your code passes these checks before submitting a PR.
 
+### Testing
+
+The backend has a pytest suite that you **must run before committing**.
+
+Install the test dependency group once (Poetry creates the venv if it doesn't already exist):
+
+```bash
+cd backend
+poetry install --with test
+```
+
+Run the suite:
+
+```bash
+cd backend
+poetry run pytest
+```
+
+The suite expects the dev Postgres container from `docker/docker-compose.local.yml` (already started in step 3 of the setup above). It uses `watercrawl.settings_test`, which forces in-memory cache/storage/email and eager Celery so nothing else needs to be running.
+
+Useful flags:
+
+```bash
+poetry run pytest -k some_test_name            # run a subset
+poetry run pytest --cov=. --cov-report=term-missing  # coverage report
+poetry run pytest -x --tb=short                # stop on first failure
+```
+
+If you add a new feature or fix a bug, add a test for it. The CI workflow in `.github/workflows/backend-tests.yml` runs the same `pytest` command against Postgres 16 and will block merges if anything fails.
+
 ## Submitting Changes
 
 1. **Create an issue first**:
@@ -152,7 +182,15 @@ Our CI pipeline automatically runs linting checks on pull requests. Please ensur
    git checkout -b feature/your-feature-name
    ```
 
-3. Make your changes and commit them with clear, descriptive commit messages.
+3. Make your changes. Before each commit, run the linter **and the test suite** locally:
+
+   ```bash
+   cd backend
+   poetry run ruff check
+   poetry run pytest
+   ```
+
+   Both must pass. Commit with clear, descriptive messages.
 
 4. Push your branch to your fork:
    ```bash
