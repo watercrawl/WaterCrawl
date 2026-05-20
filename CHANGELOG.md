@@ -5,6 +5,51 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.12.3] - 2026-05-20
+
+### Security
+- **Multiple Security Vulnerabilities Fixed** - Resolved 46 outstanding `pnpm audit` advisories (14 high, 30 moderate, 2 low) across frontend and docs
+  - Upgraded axios from 1.13.5 to 1.16.0 (fixes NO_PROXY bypass)
+  - Upgraded vite from 6.4.1 to 6.4.2 (fixes dev-server arbitrary file read)
+  - Upgraded Scrapy from 2.13.4 to 2.15.2 (fixes referrer-policy arbitrary import, GHSA-cwxj-rr6w-m6w7)
+  - Upgraded Django from 5.2.11 to 5.2.14
+  - Raised pnpm override floors: `dompurify`, `fast-xml-parser`, `minimatch`, `lodash`, `axios`
+  - Added pnpm overrides: `picomatch`, `flatted`, `yaml`, `rollup`
+  - Raised backend floors: `urllib3` >=2.7.0, `cryptography` >=46.0.7, `sqlparse` >=0.5.5
+  - Refreshed docs pnpm overrides: `dompurify`, `webpack-dev-server`, `node-forge`, `path-to-regexp`, `postcss`, `ws`, `yaml`, and others
+
+### Fixed
+- **Scrapy 2.14/2.15 Async-Init Regressions** - Three silent breakages introduced by Scrapy moving spider startup into the asyncio event loop
+  - Added `DJANGO_ALLOW_ASYNC_UNSAFE=true` in `spider/settings.py` so ORM lookups in `Spider.__init__` no longer raise `SynchronousOnlyOperation`
+  - Pinned `SCHEDULER_PRIORITY_QUEUE` back to `scrapy.pqueues.ScrapyPriorityQueue` (Scrapy 2.14's new default `DownloaderAwarePriorityQueue` rejects `CONCURRENT_REQUESTS_PER_IP`)
+  - Rewrote `SpiderPipeline.process_item` as a real `async def`; the previous `@sync_to_async` decorator caused asgiref's descriptor to return a fresh `functools.partial` per access, which broke Scrapy 2.14's `MiddlewareManager` and silently dropped every scraped item
+
+### Added
+- **Backend Unit Test Suite** - Introduced a pytest-based test suite for all backend apps (~210 tests, ≈75% line coverage)
+  - Added test infrastructure: `backend/conftest.py`, `backend/watercrawl/settings_test.py`, per-app `factories.py`
+  - Added test dependency group in `backend/pyproject.toml` (pytest, pytest-django, pytest-cov, pytest-mock, pytest-asyncio, factory-boy, fakeredis, responses, freezegun)
+  - Added regression tests for the three Scrapy 2.14/2.15 fixes above
+  - Coverage spans `user`, `core`, `plan`, `spider`, `common`, `locker`, and `watercrawl`
+- **Backend Tests CI Workflow** - Added `.github/workflows/backend-tests.yml` running pytest against a Postgres 16 service container with coverage XML output
+
+### Changed
+- **Backend Dependencies**
+  - Upgraded djangorestframework from 3.15.2 to 3.17.1
+  - Upgraded celery from 5.4.0 to 5.6.3
+  - Upgraded redis from 5.2.1 to 5.3.1
+  - Upgraded django-celery-beat from 2.8.1 to 2.9.0
+  - Upgraded django-celery-results from 2.5.1 to 2.6.0
+  - Upgraded drf-spectacular from 0.28.0 to 0.29.0
+  - Upgraded drf-spectacular-sidecar from 2024.12.1 to 2026.5.1
+  - Upgraded psycopg2-binary from 2.9.10 to 2.9.12
+  - Upgraded django-cors-headers from 4.6.0 to 4.9.0
+  - Upgraded stripe from 11.5.0 to 11.6.0
+  - Upgraded django-filter from 25.1 to 25.2
+  - Upgraded sentry-sdk from 2.43.0 to 2.59.0
+- **Frontend Dependencies** - Patch/minor refresh across `@auth0/auth0-react`, `@headlessui/react`, `@react-oauth/google`, `@sentry/react`, `@sentry/vite-plugin`, `autoprefixer`, `core-js`, `postcss`, `react-hook-form`, `react-router-dom`, `styled-components`, `tailwind-merge`, `tailwindcss`, plus dev deps (`@eslint/js`, `@tailwindcss/forms`, `@types/node`, `@types/react`, `dotenv`, `eslint`, `eslint-plugin-react-refresh`, `typescript-eslint`)
+- **Contributing Guide** - Added a Testing section to `CONTRIBUTING.md` and updated the submission flow to require running ruff and pytest locally before each commit
+- **Docker Images** - Rolled base image tags to `v0.12.3` in `docker-compose.yml`, `docker/backend/Dockerfile`, and `docker/.env.example`
+
 ## [0.12.2] - 2026-02-20
 
 ### Security
