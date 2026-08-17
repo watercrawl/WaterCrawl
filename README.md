@@ -100,7 +100,7 @@ Check our [API Overview](https://docs.watercrawl.dev/intro) to learn more about 
 
 ## ⭐ Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=watercrawl/watercrawl&type=Date)](https://star-history.com/#watercrawl/watercrawl&Date)
+[![Star History Chart](https://star-history.dera.page/svg?repos=watercrawl/watercrawl&type=Date)](https://star-history.dera.page/#watercrawl/watercrawl&type=date)
 
 ## 🔒 Security Disclosure
 
