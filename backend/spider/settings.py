@@ -71,6 +71,7 @@ SPIDER_MIDDLEWARES = {
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
     "spider.middlewares.LimitRequestsMiddleware": 543,
+    "spider.middlewares.CamofoxMiddleware": 555,
     "spider.middlewares.PlaywrightMiddleware": 560,
 }
 
@@ -135,6 +136,10 @@ LOG_LEVEL = settings.SCRAPY_LOG_LEVEL
 
 PLAYWRIGHT_SERVER = settings.PLAYWRIGHT_SERVER
 PLAYWRIGHT_API_KEY = settings.PLAYWRIGHT_API_KEY
+
+CAMOFOX_URL = settings.CAMOFOX_URL
+CAMOFOX_API_KEY = settings.CAMOFOX_API_KEY
+CAMOFOX_ENABLED = settings.CAMOFOX_ENABLED
 
 DEPTH_STATS_VERBOSE = True
 

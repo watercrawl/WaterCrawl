@@ -377,6 +377,10 @@ SCRAPY_GOOGLE_SEARCH_PAGE_LIMIT = env(
 PLAYWRIGHT_SERVER = env("PLAYWRIGHT_SERVER", cast=str, default=None)
 PLAYWRIGHT_API_KEY = env("PLAYWRIGHT_API_KEY", cast=str, default=None)
 
+CAMOFOX_URL = env("CAMOFOX_URL", cast=str, default=None)
+CAMOFOX_API_KEY = env("CAMOFOX_API_KEY", cast=str, default=None)
+CAMOFOX_ENABLED = env("CAMOFOX_ENABLED", cast=bool, default=False)
+
 STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY", cast=str, default="")
 STRIPE_WEBHOOK_SECRET = env("STRIPE_WEBHOOK_SECRET", cast=str, default="")
 

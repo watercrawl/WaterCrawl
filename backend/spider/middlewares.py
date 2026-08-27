@@ -1,3 +1,4 @@
+import asyncio
 import traceback
 
 import httpx
@@ -154,3 +155,124 @@ class LimitRequestsMiddleware:
 
     def process_exception(self, request, exception, spider):
         return None
+
+
+class CamofoxMiddleware:
+    def __init__(self, helpers, pubsub_service, camofox_url, camofox_api_key):
+        self.helpers = helpers
+        self.pubsub_service = pubsub_service
+        self.camofox_url = camofox_url
+        self.camofox_api_key = camofox_api_key
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        camofox_url = crawler.settings.get("CAMOFOX_URL")
+        camofox_api_key = crawler.settings.get("CAMOFOX_API_KEY")
+        camofox_enabled = crawler.settings.getbool("CAMOFOX_ENABLED", False)
+        return cls(
+            helpers=crawler.spider.helpers,
+            pubsub_service=crawler.spider.pubsub_service,
+            camofox_url=camofox_url if camofox_enabled else None,
+            camofox_api_key=camofox_api_key,
+        )
+
+    async def process_request(self, request, spider):
+        if not self.camofox_url:
+            return
+
+        if "skip_playwright" in request.meta and request.meta["skip_playwright"]:
+            spider.logger.info("Skipping Camofox for request: %s", request.url)
+            return
+
+        user_id = "watercrawl"
+        session_key = "crawl"
+        wait_sec = self.helpers.wait_time / 1000.0
+
+        headers = {"Content-Type": "application/json"}
+        if self.camofox_api_key:
+            headers["Authorization"] = f"Bearer {self.camofox_api_key}"
+
+        async with httpx.AsyncClient(
+            timeout=httpx.Timeout(self.helpers.timeout / 1000.0 + 10.0)
+        ) as client:
+            try:
+                tab_resp = await client.post(
+                    f"{self.camofox_url}/tabs",
+                    json={
+                        "userId": user_id,
+                        "sessionKey": session_key,
+                        "url": request.url,
+                    },
+                    headers=headers,
+                )
+                tab_resp.raise_for_status()
+                tab_id = tab_resp.json()["tabId"]
+
+                if wait_sec > 0:
+                    await asyncio.sleep(wait_sec)
+
+                try:
+                    eval_resp = await client.post(
+                        f"{self.camofox_url}/tabs/{tab_id}/evaluate",
+                        json={
+                            "userId": user_id,
+                            "expression": "document.documentElement.outerHTML",
+                        },
+                        headers=headers,
+                    )
+                    eval_resp.raise_for_status()
+                    html = eval_resp.json().get("result", "")
+                except Exception as e:
+                    spider.logger.warning(
+                        "Camofox evaluate failed for %s: %s", request.url, e
+                    )
+                    html = ""
+
+                try:
+                    await client.delete(
+                        f"{self.camofox_url}/tabs/{tab_id}",
+                        params={"userId": user_id},
+                        headers=headers,
+                    )
+                except Exception as e:
+                    spider.logger.warning("Camofox tab delete failed: %s", e)
+
+                request.meta["playwright"] = True
+                request.meta["attachments"] = []
+                return HtmlResponse(
+                    url=request.url,
+                    body=html,
+                    status=200,
+                    request=request,
+                    encoding="utf-8",
+                )
+
+            except httpx.ConnectError:
+                spider.logger.error(
+                    "Camofox unreachable at %s for %s",
+                    self.camofox_url,
+                    request.url,
+                )
+                self.pubsub_service.send_feed(
+                    "Camofox server is not reachable. "
+                    "Falling back to standard downloader.",
+                    feed_type="warning",
+                )
+                return
+
+            except httpx.TimeoutException:
+                spider.logger.error("Camofox timeout for %s", request.url)
+                self.pubsub_service.send_feed(
+                    f"Camofox request timed out for {request.url}",
+                    feed_type="error",
+                )
+                return
+
+            except Exception as e:
+                spider.logger.error("Camofox error for %s: %s", request.url, e)
+                traceback.print_exc()
+                self.pubsub_service.send_feed(
+                    f"Camofox failed to process {request.url}: {e}",
+                    feed_type="error",
+                )
+                return
